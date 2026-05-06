@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+/* =============================================================================
+   인생의 회전목마 - 디자인 토큰
+   진지한 주술사 컨셉: 깊은 자색 + 금색 별빛 + 한지/먹색
+
+   Pretendard 폰트는 layout.tsx 의 <link> 태그로 직접 로드한다.
+   (CSS @import 순서 spec 위반을 피하기 위함.)
+   ============================================================================= */
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* 라이트 모드: 한지 위에 먹으로 쓴 듯한 톤 */
+  --background: oklch(0.97 0.005 80);
+  --foreground: oklch(0.18 0.02 285);
+
+  --card: oklch(0.985 0.004 80);
+  --card-foreground: oklch(0.18 0.02 285);
+
+  --popover: oklch(0.985 0.004 80);
+  --popover-foreground: oklch(0.18 0.02 285);
+
+  --primary: oklch(0.38 0.16 295); /* 깊은 자색 (자운) */
+  --primary-foreground: oklch(0.97 0.01 290);
+
+  --secondary: oklch(0.92 0.012 290);
+  --secondary-foreground: oklch(0.22 0.04 290);
+
+  --muted: oklch(0.93 0.008 80);
+  --muted-foreground: oklch(0.45 0.02 285);
+
+  --accent: oklch(0.74 0.10 85); /* 금색 별빛 */
+  --accent-foreground: oklch(0.18 0.04 80);
+
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
+
+  --border: oklch(0.88 0.01 285);
+  --input: oklch(0.88 0.01 285);
+  --ring: oklch(0.38 0.16 295);
+
+  --chart-1: oklch(0.6 0.18 295);
+  --chart-2: oklch(0.65 0.13 85);
+  --chart-3: oklch(0.55 0.18 25);
+  --chart-4: oklch(0.55 0.16 200);
+  --chart-5: oklch(0.65 0.16 145);
+
+  /* 둥글둥글한 디자인을 위한 큰 radius. */
+  --radius: 1rem;
+}
+
+.dark {
+  /* 다크 모드: 밤하늘에 별이 떠 있는 듯한 톤. 기본값. */
+  --background: oklch(0.13 0.022 285);
+  --foreground: oklch(0.93 0.012 290);
+
+  --card: oklch(0.17 0.025 285);
+  --card-foreground: oklch(0.93 0.012 290);
+
+  --popover: oklch(0.15 0.025 285);
+  --popover-foreground: oklch(0.93 0.012 290);
+
+  --primary: oklch(0.68 0.18 295); /* 밝은 자색 */
+  --primary-foreground: oklch(0.13 0.025 285);
+
+  --secondary: oklch(0.24 0.03 285);
+  --secondary-foreground: oklch(0.93 0.012 290);
+
+  --muted: oklch(0.22 0.025 285);
+  --muted-foreground: oklch(0.7 0.02 290);
+
+  --accent: oklch(0.78 0.12 85); /* 빛나는 금색 */
+  --accent-foreground: oklch(0.18 0.04 80);
+
+  --destructive: oklch(0.62 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
+
+  --border: oklch(0.27 0.03 285);
+  --input: oklch(0.27 0.03 285);
+  --ring: oklch(0.68 0.18 295);
+
+  --chart-1: oklch(0.7 0.2 295);
+  --chart-2: oklch(0.78 0.13 85);
+  --chart-3: oklch(0.65 0.2 25);
+  --chart-4: oklch(0.65 0.18 200);
+  --chart-5: oklch(0.72 0.18 145);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* 산세리프 — Pretendard (CDN), system font fallback. */
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Noto Sans KR",
+    "Malgun Gothic", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* 명조 (mystic 강조용) — 시스템 명조체 fallback. */
+  --font-serif: "Apple SD Gothic Neo", "Nanum Myeongjo", "Noto Serif KR",
+    "AppleGothic", "Malgun Gothic", serif;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* 신비한 분위기 강조용 명조체. */
+  .font-mystic {
+    font-family: var(--font-serif);
+    letter-spacing: -0.01em;
+  }
+
+  /* 운명의 별빛 텍스트 강조 */
+  .text-mystic-gold {
+    color: var(--color-accent);
+  }
+
+  /* 회전목마처럼 천천히 도는 애니메이션 */
+  @keyframes carousel-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-carousel {
+    animation: carousel-spin 60s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-carousel {
+      animation: none;
+    }
+  }
+}

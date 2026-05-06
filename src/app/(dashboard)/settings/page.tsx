@@ -1,0 +1,148 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Crown, User } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { CancelSubscriptionButton } from "@/components/subscription/cancel-subscription-button";
+import { ROUTES } from "@/lib/constants";
+import { requireProfile } from "@/lib/auth/get-user";
+import {
+  getLatestSubscription,
+  hasActiveSubscription,
+} from "@/lib/payment/subscription-state";
+import { formatKoreanDate } from "@/lib/utils";
+
+export const metadata: Metadata = {
+  title: "설정",
+};
+
+export default async function SettingsPage() {
+  const { user, profile } = await requireProfile();
+  const subscribed = await hasActiveSubscription(user.id);
+  const subscription = await getLatestSubscription(user.id);
+
+  return (
+    <div className="space-y-6">
+      <header className="space-y-1">
+        <h1 className="font-mystic text-3xl font-semibold tracking-tight">
+          내 자리
+        </h1>
+        <p className="text-sm text-muted-foreground">
+          멤버십과 정보를 살펴볼 수 있어.
+        </p>
+      </header>
+
+      {/* 멤버십 카드 */}
+      <Card
+        className={
+          subscribed
+            ? "border-accent/30 bg-card/60 backdrop-blur ring-1 ring-accent/20"
+            : "border-border/40 bg-card/50 backdrop-blur"
+        }
+      >
+        <CardHeader className="pb-3">
+          <CardTitle className="font-mystic flex items-center gap-2 text-lg">
+            <Crown
+              className={
+                subscribed
+                  ? "h-5 w-5 text-accent"
+                  : "h-5 w-5 text-muted-foreground"
+              }
+              aria-hidden
+            />
+            멤버십
+          </CardTitle>
+          <CardDescription className="text-xs">
+            {subscribed
+              ? "프리미엄 사용 중. 모든 풀이가 무제한이야."
+              : "지금은 무료 멤버십이야."}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {subscribed && subscription ? (
+            <>
+              <div className="rounded-2xl bg-muted/30 p-3 text-sm">
+                <Row
+                  label="다음 결제일"
+                  value={
+                    subscription.currentPeriodEndsAt
+                      ? formatKoreanDate(
+                          new Date(subscription.currentPeriodEndsAt),
+                        )
+                      : "—"
+                  }
+                />
+                {subscription.cancelAtPeriodEnd ? (
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    이 날짜 이후 자동으로 만료돼.
+                  </p>
+                ) : null}
+              </div>
+              {!subscription.cancelAtPeriodEnd ? (
+                <CancelSubscriptionButton />
+              ) : null}
+            </>
+          ) : (
+            <Button asChild className="w-full" size="sm">
+              <Link href={ROUTES.pricing}>프리미엄으로 업그레이드</Link>
+            </Button>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* 기본 정보 카드 */}
+      <Card className="border-border/40 bg-card/50 backdrop-blur">
+        <CardHeader className="pb-3">
+          <CardTitle className="font-mystic flex items-center gap-2 text-lg">
+            <User className="h-5 w-5 text-primary" aria-hidden />
+            내 정보
+          </CardTitle>
+          <CardDescription className="text-xs">
+            사주 풀이에 쓰이는 정보야.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="text-sm">
+          <Row label="이름" value={profile.displayName ?? "—"} />
+          <Row label="이메일" value={user.email ?? "—"} />
+          <Row
+            label="생년월일"
+            value={`${profile.birthDate} (${profile.calendarSystem === "lunar" ? "음력" : "양력"})`}
+          />
+          <Row label="태어난 시각" value={profile.birthTime ?? "모름"} />
+          <Row
+            label="성별"
+            value={
+              profile.gender === "male"
+                ? "남"
+                : profile.gender === "female"
+                  ? "여"
+                  : "기타"
+            }
+          />
+          <Row label="MBTI" value={profile.mbti ?? "—"} />
+          <Row label="출생지" value={profile.birthPlace ?? "—"} />
+        </CardContent>
+      </Card>
+
+      <p className="text-center text-xs text-muted-foreground/60">
+        {profile.displayName ?? "친구"}야, 오늘도 별이 함께해.
+      </p>
+    </div>
+  );
+}
+
+function Row({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between border-b border-border/30 py-2 last:border-0">
+      <dt className="text-xs text-muted-foreground">{label}</dt>
+      <dd className="font-medium text-sm">{value}</dd>
+    </div>
+  );
+}

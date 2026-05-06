@@ -1,0 +1,21 @@
+{
+  "name": "인생의 회전목마",
+  "short_name": "회전목마",
+  "description": "별의 흐름과 카드의 계시로 오늘의 운명을 읽어드려요. 사주·타로·MBTI 통합 AI 운세 풀이.",
+  "lang": "ko",
+  "start_url": "/today",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0d0a14",
+  "background_color": "#0d0a14",
+  "categories": ["lifestyle", "entertainment"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
