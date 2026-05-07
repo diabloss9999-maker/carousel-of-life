@@ -12,7 +12,12 @@ import { ChevronLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { savePersonalityResult } from "@/lib/personality/actions";
-import { QUESTIONS, type Choice } from "@/lib/personality/questions";
+import {
+  QUESTIONS,
+  calcPersonalityResult,
+  type Choice,
+  type AxisResult,
+} from "@/lib/personality/questions";
 import { TYPE_INFO } from "@/lib/personality/types";
 import { cn } from "@/lib/utils";
 
@@ -28,6 +33,7 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
   );
   const [current, setCurrent] = useState(0); // 현재 문항 인덱스
   const [resultType, setResultType] = useState<string | null>(currentType);
+  const [axes, setAxes] = useState<Record<string, AxisResult> | null>(null);
   const [isPending, startTransition] = useTransition();
 
   /** 선택지 클릭 시 호출. */
@@ -40,7 +46,9 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
       // 다음 문항으로 이동
       setTimeout(() => setCurrent((c) => c + 1), 280);
     } else {
-      // 마지막 문항 — 제출
+      // 마지막 문항 — 퍼센트 계산 후 제출
+      const calcResult = calcPersonalityResult(next as Choice[]);
+      setAxes(calcResult.axes);
       startTransition(async () => {
         const result = await savePersonalityResult(next as Choice[]);
         setResultType(result.type);
@@ -48,17 +56,19 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
     }
   }
 
-  /** 결과 화면 */
+  /** 결과 화면 (테스트 완료 후 or 기존 결과) */
   if (resultType && !started) {
     const info = TYPE_INFO[resultType as keyof typeof TYPE_INFO];
     return (
       <ResultCard
         info={info}
+        axes={axes}
         onRetest={() => {
           setStarted(true);
           setAnswers(Array(20).fill(null));
           setCurrent(0);
           setResultType(null);
+          setAxes(null);
         }}
       />
     );
@@ -116,11 +126,13 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
     return (
       <ResultCard
         info={info}
+        axes={axes}
         onRetest={() => {
           setStarted(true);
           setAnswers(Array(20).fill(null));
           setCurrent(0);
           setResultType(null);
+          setAxes(null);
         }}
       />
     );
@@ -224,26 +236,79 @@ function ChoiceButton({
   );
 }
 
+const AXIS_CONFIG = [
+  { axis: "EI", labelA: "E 외향", labelB: "I 내향" },
+  { axis: "SN", labelA: "S 감각", labelB: "N 직관" },
+  { axis: "TF", labelA: "T 사고", labelB: "F 감정" },
+  { axis: "JP", labelA: "J 판단", labelB: "P 인식" },
+] as const;
+
 function ResultCard({
   info,
+  axes,
   onRetest,
 }: {
   info: (typeof TYPE_INFO)[keyof typeof TYPE_INFO];
+  axes: Record<string, AxisResult> | null;
   onRetest: () => void;
 }) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* 유형 헤더 */}
       <div className="rounded-2xl border border-primary/30 bg-primary/5 p-6 text-center space-y-3">
         <p className="text-5xl">{info.emoji}</p>
         <div className="space-y-1">
-          <p className="font-mystic text-3xl font-bold tracking-widest text-primary">
+          <p className="font-mystic text-4xl font-bold tracking-widest text-primary">
             {info.type}
           </p>
           <p className="font-mystic text-lg font-medium">{info.nickname}</p>
         </div>
         <p className="text-sm text-muted-foreground leading-relaxed">
           {info.summary}
+        </p>
+      </div>
+
+      {/* 축별 퍼센트 바 */}
+      {axes && (
+        <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
+          <h3 className="font-mystic font-semibold text-sm">📊 성향 강도</h3>
+          <div className="space-y-3">
+            {AXIS_CONFIG.map(({ axis, labelA, labelB }) => {
+              const ax = axes[axis];
+              if (!ax) return null;
+              const isA = ax.winner === "A";
+              const winnerLabel = isA ? labelA : labelB;
+              const pct = ax.pct;
+              return (
+                <div key={axis} className="space-y-1">
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span className={cn(isA ? "text-primary font-semibold" : "")}>{labelA}</span>
+                    <span className={cn(!isA ? "text-primary font-semibold" : "")}>{labelB}</span>
+                  </div>
+                  <div className="relative h-2.5 w-full rounded-full bg-border/40 overflow-hidden">
+                    <div
+                      className={cn(
+                        "absolute top-0 h-full rounded-full bg-primary transition-all",
+                        isA ? "left-0" : "right-0",
+                      )}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                  <p className="text-[11px] text-center text-muted-foreground">
+                    {winnerLabel} {pct}%
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* 상세 설명 */}
+      <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
+        <h3 className="font-mystic font-semibold text-sm">🔍 나는 이런 사람이야</h3>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {info.description}
         </p>
       </div>
 
@@ -277,14 +342,19 @@ function ResultCard({
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
         <h3 className="font-mystic font-semibold text-sm">💞 잘 맞는 유형</h3>
         <div className="flex gap-2 flex-wrap">
-          {info.compatibleWith.map((t) => (
-            <span
-              key={t}
-              className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-mystic font-semibold text-primary"
-            >
-              {t}
-            </span>
-          ))}
+          {info.compatibleWith.map((t) => {
+            const ti = TYPE_INFO[t];
+            return (
+              <div
+                key={t}
+                className="flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1"
+              >
+                <span className="text-base">{ti.emoji}</span>
+                <span className="text-xs font-mystic font-semibold text-primary">{t}</span>
+                <span className="text-xs text-muted-foreground">{ti.nickname}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
 

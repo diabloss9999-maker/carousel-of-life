@@ -29,46 +29,59 @@ const ELEMENTS: Array<{
   dotColor: string;
   /** 라벨 텍스트 색 */
   textColor: string;
+  /** 부드러운 패널 배경 */
+  panelColor: string;
 }> = [
   {
     key: "wood",
     ko: "나무",
     hanja: "木",
-    barColor: "bg-[oklch(0.65_0.16_145)]",
-    dotColor: "bg-[oklch(0.65_0.16_145)]",
-    textColor: "text-[oklch(0.78_0.18_145)]",
+    barColor:
+      "bg-gradient-to-br from-emerald-200 via-emerald-400 to-emerald-700",
+    dotColor: "bg-emerald-500",
+    textColor: "text-emerald-700 dark:text-emerald-200",
+    panelColor:
+      "border-emerald-200/60 bg-emerald-50/65 dark:border-emerald-200/15 dark:bg-emerald-500/10",
   },
   {
     key: "fire",
     ko: "불",
     hanja: "火",
-    barColor: "bg-destructive",
-    dotColor: "bg-destructive",
-    textColor: "text-destructive",
+    barColor: "bg-gradient-to-br from-rose-200 via-red-400 to-red-700",
+    dotColor: "bg-red-500",
+    textColor: "text-red-700 dark:text-red-200",
+    panelColor:
+      "border-red-200/60 bg-red-50/65 dark:border-red-200/15 dark:bg-red-500/10",
   },
   {
     key: "earth",
     ko: "흙",
     hanja: "土",
-    barColor: "bg-[oklch(0.72_0.10_60)]",
-    dotColor: "bg-[oklch(0.72_0.10_60)]",
-    textColor: "text-[oklch(0.52_0.10_60)]",
+    barColor: "bg-gradient-to-br from-amber-100 via-yellow-500 to-orange-700",
+    dotColor: "bg-amber-500",
+    textColor: "text-amber-700 dark:text-amber-200",
+    panelColor:
+      "border-amber-200/70 bg-amber-50/70 dark:border-amber-200/15 dark:bg-amber-400/10",
   },
   {
     key: "metal",
     ko: "쇠",
     hanja: "金",
-    barColor: "bg-muted-foreground",
-    dotColor: "bg-muted-foreground",
-    textColor: "text-foreground",
+    barColor: "bg-gradient-to-br from-zinc-50 via-zinc-300 to-zinc-600",
+    dotColor: "bg-zinc-500",
+    textColor: "text-zinc-700 dark:text-zinc-100",
+    panelColor:
+      "border-zinc-200/70 bg-zinc-50/70 dark:border-zinc-200/15 dark:bg-zinc-300/10",
   },
   {
     key: "water",
     ko: "물",
     hanja: "水",
-    barColor: "bg-[oklch(0.45_0.20_250)]",
-    dotColor: "bg-[oklch(0.45_0.20_250)]",
-    textColor: "text-[oklch(0.65_0.15_250)]",
+    barColor: "bg-gradient-to-br from-sky-200 via-blue-500 to-blue-800",
+    dotColor: "bg-blue-600",
+    textColor: "text-blue-700 dark:text-sky-200",
+    panelColor:
+      "border-sky-200/70 bg-sky-50/70 dark:border-sky-200/15 dark:bg-blue-500/10",
   },
 ];
 
@@ -94,23 +107,34 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
   }
 
   return (
-    <Card className="border-border/40 bg-card/50 backdrop-blur">
-      <CardHeader className="pb-3">
-        <CardTitle className="font-mystic text-lg">오행 분포</CardTitle>
-        <CardDescription className="text-xs">
-          사주 {total} 글자가 어떤 기운으로 채워졌는지 한눈에.
-        </CardDescription>
+    <Card className="relative overflow-hidden border-amber-200/70 bg-[linear-gradient(135deg,oklch(0.98_0.018_88/0.92),oklch(0.91_0.045_82/0.78)),radial-gradient(circle_at_top_right,oklch(0.82_0.10_90/0.28),transparent_34%),radial-gradient(circle_at_bottom_left,oklch(0.58_0.11_35/0.14),transparent_38%)] shadow-[0_24px_70px_oklch(0.16_0.05_55/0.16)] backdrop-blur dark:border-amber-300/20 dark:bg-[linear-gradient(135deg,oklch(0.22_0.035_55/0.82),oklch(0.14_0.025_55/0.92)),radial-gradient(circle_at_top_right,oklch(0.68_0.11_88/0.18),transparent_36%),radial-gradient(circle_at_bottom_left,oklch(0.50_0.10_25/0.14),transparent_40%)]">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-45 [background-image:linear-gradient(90deg,oklch(0.50_0.04_80/0.08)_1px,transparent_1px),linear-gradient(0deg,oklch(0.50_0.04_80/0.08)_1px,transparent_1px)] [background-size:18px_18px]"
+        aria-hidden
+      />
+      <CardHeader className="relative pb-4">
+        <div className="flex items-start justify-between gap-4">
+          <div className="space-y-1.5">
+            <CardTitle className="font-mystic text-xl text-amber-950 dark:text-amber-50">
+              오행 분포
+            </CardTitle>
+            <CardDescription className="text-xs text-stone-600 dark:text-amber-100/65">
+              사주 {total} 글자가 어떤 기운으로 채워졌는지 한눈에.
+            </CardDescription>
+          </div>
+          <div className="hidden rounded-full border border-amber-300/60 bg-amber-50/70 px-3 py-1 text-[10px] font-medium text-amber-900 shadow-inner shadow-white/50 dark:border-amber-200/15 dark:bg-amber-200/10 dark:text-amber-100/80 sm:block">
+            五行
+          </div>
+        </div>
       </CardHeader>
-      <CardContent className="space-y-5">
-        {/* stacked bar + 라벨을 하나의 묶음으로 */}
-        <div className="space-y-1.5">
-          {/* 한 줄 stacked bar */}
-          <div className="flex gap-1">
+      <CardContent className="relative space-y-5">
+        <div className="space-y-3 rounded-xl border border-amber-200/60 bg-white/40 p-3 shadow-[inset_0_1px_0_rgb(255_255_255/0.55),0_12px_30px_oklch(0.18_0.04_55/0.08)] dark:border-amber-200/10 dark:bg-white/[0.045]">
+          <div className="grid grid-cols-6 gap-1.5 sm:grid-cols-8">
             {slots.map((el, i) => (
               <div
                 key={i}
                 className={cn(
-                  "h-10 flex-1 rounded-md transition-all",
+                  "h-12 rounded-lg border border-white/45 shadow-[inset_0_1px_0_rgb(255_255_255/0.45),0_8px_18px_rgb(0_0_0/0.10)] transition-all hover:-translate-y-0.5 sm:h-14",
                   el.barColor,
                 )}
                 aria-label={`${el.ko} (${el.hanja})`}
@@ -119,42 +143,52 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
             ))}
           </div>
 
-          {/* 오행 라벨 — bar 바로 아래 한 줄로 붙여서 */}
-          <div className="flex items-center gap-x-4 gap-y-1 flex-wrap px-0.5">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
             {ELEMENTS.map((el) => {
               const count = elements[el.key];
               return (
-                <span
+                <div
                   key={el.key}
                   className={cn(
-                    "flex items-center gap-1.5 text-xs transition-opacity",
+                    "flex items-center justify-between gap-2 rounded-lg border px-2.5 py-2 text-xs transition-opacity",
+                    el.panelColor,
                     count === 0 && "opacity-35",
                   )}
                 >
+                  <span className="flex min-w-0 items-center gap-1.5">
+                    <span
+                      className={cn(
+                        "h-2.5 w-2.5 flex-shrink-0 rounded-full shadow-sm",
+                        el.dotColor,
+                      )}
+                      aria-hidden
+                    />
+                    <span className="truncate text-stone-600 dark:text-amber-100/65">
+                      {el.ko}
+                    </span>
+                  </span>
                   <span
                     className={cn(
-                      "h-2.5 w-2.5 rounded-full flex-shrink-0",
-                      el.dotColor,
+                      "font-mystic text-sm font-semibold tabular-nums",
+                      el.textColor,
                     )}
-                    aria-hidden
-                  />
-                  <span className="text-muted-foreground">{el.ko}</span>
-                  <span className={cn("font-mystic font-semibold tabular-nums", el.textColor)}>
+                  >
                     {count}
                   </span>
-                </span>
+                </div>
               );
             })}
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 pt-3 border-t border-border/40">
+        <div className="grid grid-cols-1 gap-3 border-t border-amber-200/55 pt-4 dark:border-amber-200/10 sm:grid-cols-2">
           <Insight
             title="강한 기운"
             hanja={strongest.hanja}
             value={strongest.ko}
             textColor={strongest.textColor}
             dotColor={strongest.dotColor}
+            panelColor={strongest.panelColor}
           />
           <Insight
             title="약한 기운"
@@ -162,6 +196,7 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
             value={weakest.ko}
             textColor={weakest.textColor}
             dotColor={weakest.dotColor}
+            panelColor={weakest.panelColor}
             muted
           />
         </div>
@@ -176,6 +211,7 @@ function Insight({
   value,
   textColor,
   dotColor,
+  panelColor,
   muted = false,
 }: {
   title: string;
@@ -183,23 +219,32 @@ function Insight({
   value: string;
   textColor: string;
   dotColor: string;
+  panelColor: string;
   muted?: boolean;
 }) {
   return (
     <div
       className={cn(
-        "rounded-2xl px-3 py-2.5",
-        muted ? "bg-muted/30" : "bg-primary/10",
+        "rounded-xl border px-3 py-3 shadow-[inset_0_1px_0_rgb(255_255_255/0.45),0_10px_24px_rgb(0_0_0/0.06)]",
+        panelColor,
+        muted && "opacity-80",
       )}
     >
-      <p className="text-[11px] text-muted-foreground">{title}</p>
-      <p className={cn("font-medium mt-0.5 flex items-center gap-1.5", textColor)}>
+      <p className="text-[11px] font-medium text-stone-500 dark:text-amber-100/50">
+        {title}
+      </p>
+      <p
+        className={cn(
+          "mt-1 flex items-center gap-2 font-medium",
+          textColor,
+        )}
+      >
         <span
-          className={cn("h-2.5 w-2.5 rounded-full flex-shrink-0", dotColor)}
+          className={cn("h-2.5 w-2.5 flex-shrink-0 rounded-full", dotColor)}
           aria-hidden
         />
-        <span className="font-mystic">
-          {value} <span className="opacity-60 text-xs">{hanja}</span>
+        <span className="font-mystic text-lg">
+          {value} <span className="text-xs opacity-60">{hanja}</span>
         </span>
       </p>
     </div>

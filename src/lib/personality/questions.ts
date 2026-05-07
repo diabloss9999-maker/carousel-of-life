@@ -53,10 +53,33 @@ export type PersonalityType =
   | "ESTP" | "ESFP" | "ENFP" | "ENTP"
   | "ESTJ" | "ESFJ" | "ENFJ" | "ENTJ";
 
+export interface AxisResult {
+  /** 첫 번째 성향 레이블 (E·S·T·J). */
+  labelA: string;
+  /** 두 번째 성향 레이블 (I·N·F·P). */
+  labelB: string;
+  /** 결정된 성향 (A or B). */
+  winner: "A" | "B";
+  /** winner 성향의 퍼센트 (0-100). */
+  pct: number;
+}
+
+export interface PersonalityResult {
+  type: PersonalityType;
+  axes: Record<Axis, AxisResult>;
+}
+
+const AXIS_LABELS: Record<Axis, [string, string]> = {
+  EI: ["E", "I"],
+  SN: ["S", "N"],
+  TF: ["T", "F"],
+  JP: ["J", "P"],
+};
+
 /**
- * 20개 답변 배열(A|B)을 받아 성격 유형 코드를 반환한다.
+ * 20개 답변 배열(A|B)을 받아 유형 코드와 축별 퍼센트를 반환한다.
  */
-export function calcPersonalityType(answers: Choice[]): PersonalityType {
+export function calcPersonalityResult(answers: Choice[]): PersonalityResult {
   const count: Record<Axis, { A: number; B: number }> = {
     EI: { A: 0, B: 0 },
     SN: { A: 0, B: 0 },
@@ -70,10 +93,31 @@ export function calcPersonalityType(answers: Choice[]): PersonalityType {
     else if (ans === "B") count[q.axis].B++;
   });
 
-  const e = count.EI.A >= count.EI.B ? "E" : "I";
-  const s = count.SN.A >= count.SN.B ? "S" : "N";
-  const t = count.TF.A >= count.TF.B ? "T" : "F";
-  const j = count.JP.A >= count.JP.B ? "J" : "P";
+  const axes = {} as Record<Axis, AxisResult>;
+  for (const axis of ["EI", "SN", "TF", "JP"] as Axis[]) {
+    const total = count[axis].A + count[axis].B || 1;
+    const winner = count[axis].A >= count[axis].B ? "A" : "B";
+    const winCount = winner === "A" ? count[axis].A : count[axis].B;
+    const [lA, lB] = AXIS_LABELS[axis];
+    axes[axis] = {
+      labelA: lA,
+      labelB: lB,
+      winner,
+      pct: Math.round((winCount / total) * 100),
+    };
+  }
 
-  return `${e}${s}${t}${j}` as PersonalityType;
+  const e = axes.EI.winner === "A" ? "E" : "I";
+  const s = axes.SN.winner === "A" ? "S" : "N";
+  const t = axes.TF.winner === "A" ? "T" : "F";
+  const j = axes.JP.winner === "A" ? "J" : "P";
+
+  return { type: `${e}${s}${t}${j}` as PersonalityType, axes };
+}
+
+/**
+ * 하위 호환: 유형 코드만 필요한 경우.
+ */
+export function calcPersonalityType(answers: Choice[]): PersonalityType {
+  return calcPersonalityResult(answers).type;
 }
