@@ -40,7 +40,6 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
     elements.earth +
     elements.metal +
     elements.water;
-  const max = Math.max(1, ...Object.values(elements));
 
   const sorted = [...ELEMENTS].sort(
     (a, b) => elements[b.key] - elements[a.key],
@@ -60,7 +59,8 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
         <div className="space-y-3">
           {ELEMENTS.map((el) => {
             const value = elements[el.key];
-            const widthPercent = max === 0 ? 0 : (value / max) * 100;
+            // 전체(total) 8 글자 중 비율로 표시.
+            const widthPercent = total === 0 ? 0 : (value / total) * 100;
             return (
               <div key={el.key} className="space-y-1.5">
                 <div className="flex items-center justify-between text-sm">
