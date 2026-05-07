@@ -7,6 +7,7 @@ import {
   CardOrientationBadge,
   TarotCardDisplay,
 } from "@/components/tarot/tarot-card-display";
+import { ShareButton } from "@/components/shared/share-button";
 import type { TarotReading } from "@/db/schema";
 import { formatKoreanDate } from "@/lib/utils";
 
@@ -59,10 +60,16 @@ export function TarotReadingCard({ reading }: TarotReadingCardProps) {
           </div>
         ) : null}
 
-        <div className="border-t border-border/40 pt-6">
+        <div className="border-t border-border/40 pt-6 space-y-4">
           <p className="font-mystic whitespace-pre-line leading-relaxed text-foreground/90">
             {reading.interpretation}
           </p>
+          <div className="flex justify-end">
+            <ShareButton
+              title={`타로 한 장: ${card?.nameKo ?? ""}`}
+              text={`[타로] ${card?.nameKo ?? ""} (${card?.isReversed ? "거꾸로" : "바로 선"})${reading.question ? `\n\nQ. ${reading.question}` : ""}\n\n${reading.interpretation}`}
+            />
+          </div>
         </div>
       </CardContent>
     </Card>

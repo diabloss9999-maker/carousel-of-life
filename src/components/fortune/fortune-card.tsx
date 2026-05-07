@@ -5,6 +5,7 @@ import {
   CardContent,
   CardHeader,
 } from "@/components/ui/card";
+import { ShareButton } from "@/components/shared/share-button";
 import type { DailyFortune } from "@/db/schema";
 import { FORTUNE_CATEGORIES, type FortuneCategoryId } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -46,6 +47,13 @@ export function FortuneCard({ fortune }: FortuneCardProps) {
           />
           <LuckyItem label="행운의 수" value={String(fortune.luckyNumber ?? "—")} />
           <LuckyItem label="행운의 방향" value={fortune.luckyDirection ?? "—"} />
+        </div>
+
+        <div className="flex justify-end">
+          <ShareButton
+            title={`오늘의 ${label}: ${fortune.title}`}
+            text={`[${label}] ${fortune.score}점\n${fortune.title}\n\n${fortune.content}\n\n행운: ${fortune.luckyColor ?? "—"} / ${fortune.luckyNumber ?? "—"} / ${fortune.luckyDirection ?? "—"}`}
+          />
         </div>
       </CardContent>
     </Card>

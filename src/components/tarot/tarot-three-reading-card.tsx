@@ -9,6 +9,7 @@ import {
   CardOrientationBadge,
   TarotCardDisplay,
 } from "@/components/tarot/tarot-card-display";
+import { ShareButton } from "@/components/shared/share-button";
 import type { TarotReading } from "@/db/schema";
 import { parseThreeInterpretation } from "@/lib/tarot/service";
 import { cn, formatKoreanDate } from "@/lib/utils";
@@ -106,6 +107,13 @@ export function TarotThreeReadingCard({ reading }: TarotThreeReadingCardProps) {
           <p className="font-mystic whitespace-pre-line leading-relaxed text-foreground/90">
             {parsed.synthesis}
           </p>
+        </div>
+
+        <div className="flex justify-end">
+          <ShareButton
+            title={`타로 3장 스프레드: ${parsed.summary}`}
+            text={`[타로 3장 — 과거·현재·미래]${reading.question ? `\nQ. ${reading.question}` : ""}\n\n핵심: ${parsed.summary}\n\n과거: ${parsed.past}\n\n현재: ${parsed.present}\n\n미래: ${parsed.future}\n\n종합: ${parsed.synthesis}`}
+          />
         </div>
       </CardContent>
     </Card>
