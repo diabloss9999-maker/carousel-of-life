@@ -34,6 +34,8 @@ const signupSchema = credentialsSchema.extend({
 
 /**
  * 이메일 + 비밀번호 로그인.
+ *
+ * autoLogin 필드: "true"(기본) 이면 세션 장기 유지, "false" 이면 세션 쿠키로 설정.
  */
 export async function loginAction(
   _prev: AuthFormState,
@@ -50,7 +52,9 @@ export async function loginAction(
     };
   }
 
-  const supabase = await createClient();
+  // 자동 로그인 여부 — 기본값 true (체크박스가 없으면 항상 유지).
+  const persistSession = formData.get("autoLogin") !== "false";
+  const supabase = await createClient(persistSession);
   const { error } = await supabase.auth.signInWithPassword(parsed.data);
 
   if (error) {

@@ -8,7 +8,13 @@ import { cookies } from "next/headers";
 
 import { clientEnv } from "@/lib/env";
 
-export async function createClient() {
+/**
+ * Supabase 서버 클라이언트를 생성한다.
+ *
+ * @param persistSession true(기본) 이면 Supabase 기본 쿠키 maxAge 를 그대로 사용 (장기 유지).
+ *                       false 이면 세션 쿠키로 설정 — 브라우저를 닫으면 로그아웃된다.
+ */
+export async function createClient(persistSession = true) {
   if (
     !clientEnv.NEXT_PUBLIC_SUPABASE_URL ||
     !clientEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -30,9 +36,13 @@ export async function createClient() {
         },
         setAll(cookiesToSet) {
           try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options),
-            );
+            cookiesToSet.forEach(({ name, value, options }) => {
+              // persistSession=false 이면 maxAge/expires 를 제거하여 세션 쿠키로 만든다.
+              const finalOptions = persistSession
+                ? options
+                : { ...options, maxAge: undefined, expires: undefined };
+              cookieStore.set(name, value, finalOptions);
+            });
           } catch {
             // Server Component 에서는 쿠키 설정이 불가능하다.
             // 이 분기는 Server Action / Route Handler 가 아닌 경우 발생하며 무시해도 안전하다.
