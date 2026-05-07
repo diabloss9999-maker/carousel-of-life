@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 
@@ -5,9 +6,70 @@ import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
 import { siteConfig } from "@/config/site";
 
+export const metadata: Metadata = {
+  // 랜딩은 사이트 기본 타이틀 그대로 노출 (template 우회).
+  title: { absolute: `${siteConfig.name} — ${siteConfig.tagline}` },
+  description:
+    "AI 가 사주팔자·타로·MBTI 를 통합해 매일의 운명을 풀이해드려요. 가입 후 매일 무료로 운세 2회·타로 2장·주술사 문답 3회를 받아볼 수 있어요.",
+  alternates: {
+    canonical: "/",
+  },
+};
+
+/**
+ * 검색엔진용 JSON-LD 구조화 데이터.
+ * WebSite + Organization 두 타입을 한 번에 노출.
+ */
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${siteConfig.url}/#website`,
+      url: siteConfig.url,
+      name: siteConfig.name,
+      alternateName: siteConfig.englishName,
+      description: siteConfig.description,
+      inLanguage: "ko-KR",
+      publisher: { "@id": `${siteConfig.url}/#organization` },
+    },
+    {
+      "@type": "Organization",
+      "@id": `${siteConfig.url}/#organization`,
+      name: siteConfig.name,
+      url: siteConfig.url,
+      logo: `${siteConfig.url}/icon.svg`,
+      sameAs: [],
+    },
+    {
+      "@type": "WebApplication",
+      name: siteConfig.name,
+      url: siteConfig.url,
+      applicationCategory: "LifestyleApplication",
+      operatingSystem: "Web",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "KRW",
+        description: "무료 가입 후 매일 운세 2회·타로 2장·주술사 문답 3회 제공",
+      },
+    },
+  ],
+};
+
 export default function HomePage() {
   return (
     <main className="relative min-h-screen overflow-hidden">
+      <script
+        type="application/ld+json"
+        // 정적 객체를 직렬화하는 표준 JSON-LD 패턴. </script> 시퀀스를 이스케이프해 인젝션 방지.
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData).replace(
+            /</g,
+            "\\u003c",
+          ),
+        }}
+      />
       {/* 랜딩에서는 layout 의 가독성 오버레이를 살짝 옅게 (일러스트 강조) */}
       <div
         aria-hidden

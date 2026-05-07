@@ -14,6 +14,7 @@ import { LoginForm } from "./login-form";
 export const metadata: Metadata = {
   title: "로그인",
   description: "이미 가입한 분의 자리로 들어옵니다.",
+  alternates: { canonical: "/login" },
 };
 
 export default function LoginPage() {

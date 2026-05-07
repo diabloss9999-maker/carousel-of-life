@@ -13,7 +13,9 @@ import { SignupForm } from "./signup-form";
 
 export const metadata: Metadata = {
   title: "회원가입",
-  description: "운명의 책장에 이름을 더해보세요.",
+  description:
+    "운명의 책장에 이름을 더해보세요. 가입 즉시 매일 무료로 운세 2회·타로 2장·주술사 문답 3회를 받아볼 수 있어요.",
+  alternates: { canonical: "/signup" },
 };
 
 export default function SignupPage() {

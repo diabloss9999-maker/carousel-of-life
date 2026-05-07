@@ -17,7 +17,9 @@ import { formatKRW } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "멤버십",
-  description: "무료와 프리미엄 멤버십을 비교해보세요.",
+  description:
+    "무료와 프리미엄 멤버십을 비교해보세요. 프리미엄은 타로 3장 스프레드, 사주 심층 분석, 무제한 풀이를 제공해요.",
+  alternates: { canonical: "/pricing" },
 };
 
 export default async function PricingPage() {
