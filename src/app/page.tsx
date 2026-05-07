@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 
@@ -9,40 +8,10 @@ import { siteConfig } from "@/config/site";
 export default function HomePage() {
   return (
     <main className="relative min-h-screen overflow-hidden">
-      {/* 모바일 배경 (세로) */}
+      {/* 랜딩에서는 layout 의 가독성 오버레이를 살짝 옅게 (일러스트 강조) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-20 sm:hidden"
-      >
-        <Image
-          src="/mystic-bg-mobile.png"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-      </div>
-
-      {/* 데스크톱 배경 (가로) */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-20 hidden sm:block"
-      >
-        <Image
-          src="/mystic-bg-wide.png"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-      </div>
-
-      {/* 콘텐츠 가독성용 부드러운 그라디언트 (위쪽 살짝 어둡게) */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-1/2 bg-gradient-to-b from-background/15 to-transparent"
+        className="pointer-events-none fixed inset-0 -z-[5] bg-gradient-to-t from-background/30 via-transparent to-background/15"
       />
 
       <section className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-start gap-7 px-6 pt-20 pb-40 text-center sm:justify-center sm:pt-12 sm:pb-12">
