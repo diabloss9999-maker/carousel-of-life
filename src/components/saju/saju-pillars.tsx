@@ -57,11 +57,11 @@ const BRANCH_TO_ELEMENT: Record<string, ElementKey> = {
 };
 
 const ELEMENT_TONE: Record<ElementKey, string> = {
-  wood: "bg-[oklch(0.65_0.16_145)]/15 text-[oklch(0.78_0.18_145)]",
-  fire: "bg-destructive/15 text-destructive",
-  earth: "bg-accent/15 text-accent",
+  wood:  "bg-[oklch(0.65_0.16_145)]/15 text-[oklch(0.78_0.18_145)]",
+  fire:  "bg-destructive/15 text-destructive",
+  earth: "bg-[oklch(0.72_0.10_60)]/20 text-[oklch(0.52_0.10_60)]",
   metal: "bg-muted-foreground/15 text-foreground",
-  water: "bg-primary/15 text-primary",
+  water: "bg-[oklch(0.45_0.20_250)]/20 text-[oklch(0.65_0.15_250)]",
 };
 
 export function SajuPillars({ pillars }: SajuPillarsProps) {

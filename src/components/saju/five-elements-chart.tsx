@@ -23,14 +23,53 @@ const ELEMENTS: Array<{
   key: keyof FiveElementsValue;
   ko: string;
   hanja: string;
-  emoji: string;
-  color: string;
+  /** stacked bar 칸 배경색 */
+  barColor: string;
+  /** 라벨 도트 색 */
+  dotColor: string;
+  /** 라벨 텍스트 색 */
+  textColor: string;
 }> = [
-  { key: "wood",  ko: "나무", hanja: "木", emoji: "🌿", color: "bg-[oklch(0.65_0.16_145)]" },
-  { key: "fire",  ko: "불",   hanja: "火", emoji: "🔥", color: "bg-destructive" },
-  { key: "earth", ko: "흙",   hanja: "土", emoji: "🪨", color: "bg-accent" },
-  { key: "metal", ko: "쇠",   hanja: "金", emoji: "⚙️", color: "bg-muted-foreground" },
-  { key: "water", ko: "물",   hanja: "水", emoji: "💧", color: "bg-primary" },
+  {
+    key: "wood",
+    ko: "나무",
+    hanja: "木",
+    barColor: "bg-[oklch(0.65_0.16_145)]",
+    dotColor: "bg-[oklch(0.65_0.16_145)]",
+    textColor: "text-[oklch(0.78_0.18_145)]",
+  },
+  {
+    key: "fire",
+    ko: "불",
+    hanja: "火",
+    barColor: "bg-destructive",
+    dotColor: "bg-destructive",
+    textColor: "text-destructive",
+  },
+  {
+    key: "earth",
+    ko: "흙",
+    hanja: "土",
+    barColor: "bg-[oklch(0.72_0.10_60)]",
+    dotColor: "bg-[oklch(0.72_0.10_60)]",
+    textColor: "text-[oklch(0.52_0.10_60)]",
+  },
+  {
+    key: "metal",
+    ko: "쇠",
+    hanja: "金",
+    barColor: "bg-muted-foreground",
+    dotColor: "bg-muted-foreground",
+    textColor: "text-foreground",
+  },
+  {
+    key: "water",
+    ko: "물",
+    hanja: "水",
+    barColor: "bg-[oklch(0.45_0.20_250)]",
+    dotColor: "bg-[oklch(0.45_0.20_250)]",
+    textColor: "text-[oklch(0.65_0.15_250)]",
+  },
 ];
 
 export function FiveElementsChart({ elements }: FiveElementsChartProps) {
@@ -63,61 +102,67 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-5">
-        {/* 한 줄 stacked bar — 각 칸이 사주 1글자, 색은 그 글자의 오행. */}
-        <div className="flex gap-1">
-          {slots.map((el, i) => (
-            <div
-              key={i}
-              className={cn(
-                "h-10 flex-1 rounded-md transition-all flex items-center justify-center text-xs",
-                el.color,
-              )}
-              aria-label={el.ko}
-              title={`${el.ko} (${el.hanja})`}
-            >
-              <span aria-hidden className="opacity-90">
-                {el.emoji}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        {/* 라벨: 5개 오행 정보 */}
-        <div className="grid grid-cols-5 gap-2">
-          {ELEMENTS.map((el) => {
-            const count = elements[el.key];
-            return (
+        {/* stacked bar + 라벨을 하나의 묶음으로 */}
+        <div className="space-y-1.5">
+          {/* 한 줄 stacked bar */}
+          <div className="flex gap-1">
+            {slots.map((el, i) => (
               <div
-                key={el.key}
+                key={i}
                 className={cn(
-                  "rounded-xl px-2 py-2 text-center transition-opacity",
-                  count === 0 && "opacity-40",
+                  "h-10 flex-1 rounded-md transition-all",
+                  el.barColor,
                 )}
-              >
-                <div className="flex items-center justify-center gap-1 text-xs">
-                  <span aria-hidden>{el.emoji}</span>
-                  <span className="font-medium">{el.ko}</span>
-                </div>
-                <p className="font-mystic text-base font-semibold tabular-nums mt-0.5">
-                  {count}
-                </p>
-              </div>
-            );
-          })}
+                aria-label={`${el.ko} (${el.hanja})`}
+                title={`${el.ko} (${el.hanja})`}
+              />
+            ))}
+          </div>
+
+          {/* 오행 라벨 — bar 바로 아래 한 줄로 붙여서 */}
+          <div className="flex items-center gap-x-4 gap-y-1 flex-wrap px-0.5">
+            {ELEMENTS.map((el) => {
+              const count = elements[el.key];
+              return (
+                <span
+                  key={el.key}
+                  className={cn(
+                    "flex items-center gap-1.5 text-xs transition-opacity",
+                    count === 0 && "opacity-35",
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "h-2.5 w-2.5 rounded-full flex-shrink-0",
+                      el.dotColor,
+                    )}
+                    aria-hidden
+                  />
+                  <span className="text-muted-foreground">{el.ko}</span>
+                  <span className={cn("font-mystic font-semibold tabular-nums", el.textColor)}>
+                    {count}
+                  </span>
+                </span>
+              );
+            })}
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-2 pt-3 border-t border-border/40">
           <Insight
             title="강한 기운"
-            emoji={strongest.emoji}
+            hanja={strongest.hanja}
             value={strongest.ko}
-            tone="primary"
+            textColor={strongest.textColor}
+            dotColor={strongest.dotColor}
           />
           <Insight
             title="약한 기운"
-            emoji={weakest.emoji}
+            hanja={weakest.hanja}
             value={weakest.ko}
-            tone="muted"
+            textColor={weakest.textColor}
+            dotColor={weakest.dotColor}
+            muted
           />
         </div>
       </CardContent>
@@ -127,26 +172,35 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
 
 function Insight({
   title,
-  emoji,
+  hanja,
   value,
-  tone,
+  textColor,
+  dotColor,
+  muted = false,
 }: {
   title: string;
-  emoji: string;
+  hanja: string;
   value: string;
-  tone: "primary" | "muted";
+  textColor: string;
+  dotColor: string;
+  muted?: boolean;
 }) {
   return (
     <div
       className={cn(
         "rounded-2xl px-3 py-2.5",
-        tone === "primary" ? "bg-primary/10" : "bg-muted/30",
+        muted ? "bg-muted/30" : "bg-primary/10",
       )}
     >
       <p className="text-[11px] text-muted-foreground">{title}</p>
-      <p className="font-medium mt-0.5 flex items-center gap-1.5">
-        <span aria-hidden>{emoji}</span>
-        <span>{value}</span>
+      <p className={cn("font-medium mt-0.5 flex items-center gap-1.5", textColor)}>
+        <span
+          className={cn("h-2.5 w-2.5 rounded-full flex-shrink-0", dotColor)}
+          aria-hidden
+        />
+        <span className="font-mystic">
+          {value} <span className="opacity-60 text-xs">{hanja}</span>
+        </span>
       </p>
     </div>
   );
