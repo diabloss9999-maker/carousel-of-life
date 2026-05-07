@@ -8,6 +8,7 @@ import {
   Sparkles,
   Compass,
   Heart,
+  Archive,
   Settings,
   type LucideIcon,
 } from "lucide-react";
@@ -30,5 +31,6 @@ export const mainNav: NavItem[] = [
   { href: ROUTES.tarot, label: "타로", icon: Sparkles, authOnly: true },
   { href: ROUTES.saju, label: "사주", icon: Compass, authOnly: true },
   { href: ROUTES.compatibility, label: "궁합", icon: Heart, authOnly: true },
+  { href: ROUTES.history as Route, label: "기록", icon: Archive, authOnly: true },
   { href: ROUTES.settings, label: "설정", icon: Settings, authOnly: true },
 ];

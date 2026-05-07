@@ -78,6 +78,7 @@ export const ROUTES = {
   tarot: "/tarot",
   saju: "/saju",
   compatibility: "/compatibility",
+  history: "/history",
   settings: "/settings",
   pricing: "/pricing",
   authCallback: "/auth/callback",
