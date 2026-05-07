@@ -12,6 +12,7 @@ import {
   type FortuneCategoryId,
 } from "@/lib/constants";
 import { getDailyFortune } from "@/lib/fortunes/service";
+import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { formatKoreanDate } from "@/lib/utils";
 
@@ -44,9 +45,10 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
 
   const { profile } = await requireProfile();
 
-  const [fortune, usage] = await Promise.all([
+  const [fortune, usage, subscribed] = await Promise.all([
     getDailyFortune(profile.userId, category),
     getTodayUsage(profile.userId),
+    hasActiveSubscription(profile.userId),
   ]);
 
   const today = formatKoreanDate(new Date());
@@ -68,6 +70,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
         fortuneCount={usage.fortuneCount}
         tarotCount={usage.tarotCount}
         chatCount={usage.chatCount}
+        subscribed={subscribed}
       />
 
       <CategoryTabs current={category} />

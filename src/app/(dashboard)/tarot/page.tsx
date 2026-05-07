@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { TarotDrawForm } from "@/components/tarot/tarot-draw-form";
 import { TarotReadingCard } from "@/components/tarot/tarot-reading-card";
 import { requireProfile } from "@/lib/auth/get-user";
+import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { getRecentTarotReadings } from "@/lib/tarot/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { QuotaBar } from "@/components/fortune/quota-bar";
@@ -15,9 +16,10 @@ export const metadata: Metadata = {
 export default async function TarotPage() {
   const { profile } = await requireProfile();
 
-  const [readings, usage] = await Promise.all([
+  const [readings, usage, subscribed] = await Promise.all([
     getRecentTarotReadings(profile.userId, 5),
     getTodayUsage(profile.userId),
+    hasActiveSubscription(profile.userId),
   ]);
 
   return (
@@ -35,6 +37,7 @@ export default async function TarotPage() {
         fortuneCount={usage.fortuneCount}
         tarotCount={usage.tarotCount}
         chatCount={usage.chatCount}
+        subscribed={subscribed}
       />
 
       <TarotDrawForm />

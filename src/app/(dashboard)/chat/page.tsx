@@ -13,6 +13,7 @@ import { QuotaBar } from "@/components/fortune/quota-bar";
 import { NewSessionButton } from "@/components/chat/new-session-button";
 import { requireProfile } from "@/lib/auth/get-user";
 import { listSessions } from "@/lib/chat/service";
+import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { formatKoreanDate } from "@/lib/utils";
 
@@ -24,9 +25,10 @@ export const metadata: Metadata = {
 export default async function ChatPage() {
   const { profile } = await requireProfile();
 
-  const [sessions, usage] = await Promise.all([
+  const [sessions, usage, subscribed] = await Promise.all([
     listSessions(profile.userId, 30),
     getTodayUsage(profile.userId),
+    hasActiveSubscription(profile.userId),
   ]);
 
   return (
@@ -47,6 +49,7 @@ export default async function ChatPage() {
         fortuneCount={usage.fortuneCount}
         tarotCount={usage.tarotCount}
         chatCount={usage.chatCount}
+        subscribed={subscribed}
       />
 
       {sessions.length === 0 ? (
