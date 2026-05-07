@@ -47,52 +47,78 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
   const strongest = sorted[0];
   const weakest = sorted[sorted.length - 1];
 
+  // 한 줄에 펼치기 위한 슬롯 배열. 각 칸 = 사주 1글자.
+  const slots: Array<(typeof ELEMENTS)[number]> = [];
+  for (const el of ELEMENTS) {
+    const count = elements[el.key];
+    for (let i = 0; i < count; i++) slots.push(el);
+  }
+
   return (
     <Card className="border-border/40 bg-card/50 backdrop-blur">
       <CardHeader className="pb-3">
         <CardTitle className="font-mystic text-lg">오행 분포</CardTitle>
         <CardDescription className="text-xs">
-          여덟 글자에 깃든 다섯 기운이야.
+          사주 {total} 글자가 어떤 기운으로 채워졌는지 한눈에.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-5">
-        <div className="space-y-3">
+        {/* 한 줄 stacked bar — 각 칸이 사주 1글자, 색은 그 글자의 오행. */}
+        <div className="flex gap-1">
+          {slots.map((el, i) => (
+            <div
+              key={i}
+              className={cn(
+                "h-10 flex-1 rounded-md transition-all flex items-center justify-center text-xs",
+                el.color,
+              )}
+              aria-label={el.ko}
+              title={`${el.ko} (${el.hanja})`}
+            >
+              <span aria-hidden className="opacity-90">
+                {el.emoji}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* 라벨: 5개 오행 정보 */}
+        <div className="grid grid-cols-5 gap-2">
           {ELEMENTS.map((el) => {
-            const value = elements[el.key];
+            const count = elements[el.key];
             return (
-              <div key={el.key} className="space-y-1.5">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="font-medium flex items-center gap-1.5">
-                    <span aria-hidden>{el.emoji}</span>
-                    <span>{el.ko}</span>
-                    <span className="text-xs text-muted-foreground/60 font-mystic">
-                      ({el.hanja})
-                    </span>
-                  </span>
-                  <span className="text-muted-foreground tabular-nums text-xs">
-                    {value} / {total}
-                  </span>
+              <div
+                key={el.key}
+                className={cn(
+                  "rounded-xl px-2 py-2 text-center transition-opacity",
+                  count === 0 && "opacity-40",
+                )}
+              >
+                <div className="flex items-center justify-center gap-1 text-xs">
+                  <span aria-hidden>{el.emoji}</span>
+                  <span className="font-medium">{el.ko}</span>
                 </div>
-                {/* 사주 글자 수만큼의 칸 grid — 채워진 칸 / 빈 칸으로 시각화. */}
-                <div className="flex gap-1">
-                  {Array.from({ length: total }).map((_, i) => (
-                    <div
-                      key={i}
-                      className={cn(
-                        "h-3 flex-1 rounded-md transition-all",
-                        i < value ? el.color : "bg-muted/40",
-                      )}
-                    />
-                  ))}
-                </div>
+                <p className="font-mystic text-base font-semibold tabular-nums mt-0.5">
+                  {count}
+                </p>
               </div>
             );
           })}
         </div>
 
         <div className="grid grid-cols-2 gap-2 pt-3 border-t border-border/40">
-          <Insight title="강한 기운" emoji={strongest.emoji} value={strongest.ko} tone="primary" />
-          <Insight title="약한 기운" emoji={weakest.emoji} value={weakest.ko} tone="muted" />
+          <Insight
+            title="강한 기운"
+            emoji={strongest.emoji}
+            value={strongest.ko}
+            tone="primary"
+          />
+          <Insight
+            title="약한 기운"
+            emoji={weakest.emoji}
+            value={weakest.ko}
+            tone="muted"
+          />
         </div>
       </CardContent>
     </Card>
