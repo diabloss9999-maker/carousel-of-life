@@ -45,16 +45,8 @@ export default async function DashboardLayout({
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-all"
-                    style={{ color: "oklch(0.93 0.018 85)" }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.color = "oklch(0.88 0.14 82)";
-                      (e.currentTarget as HTMLElement).style.background = "oklch(0.76 0.14 80 / 0.15)";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.color = "oklch(0.93 0.018 85)";
-                      (e.currentTarget as HTMLElement).style.background = "transparent";
-                    }}
+                    className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-all
+                      text-[oklch(0.93_0.018_85)] hover:text-[oklch(0.88_0.14_82)] hover:bg-[oklch(0.76_0.14_80/0.15)]"
                   >
                     <Icon className="h-4 w-4" aria-hidden />
                     {item.label}
