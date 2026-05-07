@@ -17,17 +17,17 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-40 overflow-hidden border-b border-primary/20 shadow-sm">
-        {/* 라일락 그라디언트 배경 */}
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-20 bg-gradient-to-b from-[oklch(0.86_0.06_295)] via-[oklch(0.82_0.08_295)] to-[oklch(0.76_0.10_295)]"
-        />
-
+      <header
+        className="sticky top-0 z-40 overflow-hidden border-b border-primary/20 shadow-sm"
+        style={{
+          background:
+            "linear-gradient(to bottom, oklch(0.86 0.06 295), oklch(0.82 0.08 295) 50%, oklch(0.76 0.10 295))",
+        }}
+      >
         {/* 좌측 일러스트 (회전목마) */}
         <div
           aria-hidden
-          className="pointer-events-none absolute left-0 top-0 -z-10 h-full"
+          className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2"
         >
           <Image
             src="/header-left.png"
@@ -35,14 +35,14 @@ export default async function DashboardLayout({
             width={280}
             height={215}
             priority
-            className="h-full w-auto"
+            className="h-20 w-auto sm:h-24 md:h-28"
           />
         </div>
 
-        {/* 우측 일러스트 (수정구슬+카드) — 모바일에서는 숨김 */}
+        {/* 우측 일러스트 (수정구슬+카드) */}
         <div
           aria-hidden
-          className="pointer-events-none absolute right-0 top-0 -z-10 hidden h-full sm:block"
+          className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 hidden sm:block"
         >
           <Image
             src="/header-right.png"
@@ -50,14 +50,14 @@ export default async function DashboardLayout({
             width={280}
             height={215}
             priority
-            className="h-full w-auto"
+            className="h-20 w-auto sm:h-24 md:h-28"
           />
         </div>
 
-        <div className="relative mx-auto flex h-16 w-full max-w-5xl items-center justify-between gap-2 pl-20 pr-4 sm:h-20 sm:pl-32 sm:pr-32">
+        <div className="relative mx-auto flex h-16 w-full max-w-5xl items-center justify-between gap-2 pl-20 pr-2 sm:h-20 sm:pl-28 sm:pr-28 md:pl-32 md:pr-32">
           <Link
             href={ROUTES.today}
-            className="font-mystic text-lg font-semibold tracking-tight text-[#3a2554] hover:text-[#5b2db8] transition-colors drop-shadow-sm whitespace-nowrap sm:text-xl"
+            className="font-mystic text-base font-semibold tracking-tight text-[#3a2554] hover:text-[#5b2db8] transition-colors drop-shadow-sm whitespace-nowrap sm:text-lg md:text-xl"
           >
             {siteConfig.name}
           </Link>
@@ -85,7 +85,7 @@ export default async function DashboardLayout({
               type="submit"
               variant="ghost"
               size="sm"
-              className="rounded-full bg-white/40 text-[#5b3a8a] hover:bg-white/60 hover:text-[#3a2554] backdrop-blur-sm"
+              className="rounded-full bg-white/50 text-[#5b3a8a] hover:bg-white/70 hover:text-[#3a2554] backdrop-blur-sm shadow-sm"
             >
               로그아웃
             </Button>
@@ -99,7 +99,12 @@ export default async function DashboardLayout({
         </div>
       </main>
 
-      <nav className="sticky bottom-0 z-30 border-t border-primary/20 bg-[oklch(0.82_0.08_295)]/85 backdrop-blur md:hidden">
+      <nav
+        className="sticky bottom-0 z-30 border-t border-primary/20 backdrop-blur md:hidden"
+        style={{
+          background: "oklch(0.82 0.08 295 / 0.92)",
+        }}
+      >
         <div className="mx-auto flex max-w-5xl items-stretch justify-around">
           {mainNav.map((item) => {
             const Icon = item.icon;
