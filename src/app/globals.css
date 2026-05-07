@@ -11,37 +11,37 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* 라이트 모드: 한지 위에 먹으로 쓴 듯한 톤 */
-  --background: oklch(0.97 0.005 80);
-  --foreground: oklch(0.18 0.02 285);
+  /* 라이트 모드: 양피지 위 골드+다크 잉크 */
+  --background: oklch(0.96 0.012 85);
+  --foreground: oklch(0.22 0.04 55);
 
-  --card: oklch(0.985 0.004 80);
-  --card-foreground: oklch(0.18 0.02 285);
+  --card: oklch(0.98 0.008 85);
+  --card-foreground: oklch(0.22 0.04 55);
 
-  --popover: oklch(0.985 0.004 80);
-  --popover-foreground: oklch(0.18 0.02 285);
+  --popover: oklch(0.98 0.008 85);
+  --popover-foreground: oklch(0.22 0.04 55);
 
-  --primary: oklch(0.38 0.16 295); /* 깊은 자색 (자운) */
-  --primary-foreground: oklch(0.97 0.01 290);
+  --primary: oklch(0.58 0.14 75); /* 골드 */
+  --primary-foreground: oklch(0.98 0.006 85);
 
-  --secondary: oklch(0.92 0.012 290);
-  --secondary-foreground: oklch(0.22 0.04 290);
+  --secondary: oklch(0.90 0.02 85);
+  --secondary-foreground: oklch(0.28 0.06 60);
 
-  --muted: oklch(0.93 0.008 80);
-  --muted-foreground: oklch(0.45 0.02 285);
+  --muted: oklch(0.92 0.014 85);
+  --muted-foreground: oklch(0.48 0.06 70);
 
-  --accent: oklch(0.74 0.10 85); /* 금색 별빛 */
-  --accent-foreground: oklch(0.18 0.04 80);
+  --accent: oklch(0.72 0.14 80); /* 황금 강조 */
+  --accent-foreground: oklch(0.14 0.04 55);
 
   --destructive: oklch(0.55 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
 
-  --border: oklch(0.88 0.01 285);
-  --input: oklch(0.88 0.01 285);
-  --ring: oklch(0.38 0.16 295);
+  --border: oklch(0.84 0.04 80);
+  --input: oklch(0.84 0.04 80);
+  --ring: oklch(0.58 0.14 75);
 
-  --chart-1: oklch(0.6 0.18 295);
-  --chart-2: oklch(0.65 0.13 85);
+  --chart-1: oklch(0.62 0.14 75);
+  --chart-2: oklch(0.78 0.12 85);
   --chart-3: oklch(0.55 0.18 25);
   --chart-4: oklch(0.55 0.16 200);
   --chart-5: oklch(0.65 0.16 145);
@@ -51,37 +51,37 @@
 }
 
 .dark {
-  /* 다크 모드: 밤하늘에 별이 떠 있는 듯한 톤. 기본값. */
-  --background: oklch(0.13 0.022 285);
-  --foreground: oklch(0.93 0.012 290);
+  /* 다크 모드: 밤하늘 + 골드 별빛 + 따뜻한 화이트 텍스트 */
+  --background: oklch(0.11 0.022 55);       /* 깊은 골드빛 어둠 */
+  --foreground: oklch(0.96 0.018 85);        /* 따뜻한 크림 화이트 */
 
-  --card: oklch(0.17 0.025 285);
-  --card-foreground: oklch(0.93 0.012 290);
+  --card: oklch(0.15 0.028 55);
+  --card-foreground: oklch(0.96 0.018 85);
 
-  --popover: oklch(0.15 0.025 285);
-  --popover-foreground: oklch(0.93 0.012 290);
+  --popover: oklch(0.13 0.025 55);
+  --popover-foreground: oklch(0.96 0.018 85);
 
-  --primary: oklch(0.68 0.18 295); /* 밝은 자색 */
-  --primary-foreground: oklch(0.13 0.025 285);
+  --primary: oklch(0.76 0.14 80);            /* 선명한 골드 */
+  --primary-foreground: oklch(0.12 0.03 55);
 
-  --secondary: oklch(0.24 0.03 285);
-  --secondary-foreground: oklch(0.93 0.012 290);
+  --secondary: oklch(0.22 0.04 60);
+  --secondary-foreground: oklch(0.92 0.016 85);
 
-  --muted: oklch(0.22 0.025 285);
-  --muted-foreground: oklch(0.7 0.02 290);
+  --muted: oklch(0.20 0.032 58);
+  --muted-foreground: oklch(0.70 0.08 80);   /* 연골드 뮤트 */
 
-  --accent: oklch(0.78 0.12 85); /* 빛나는 금색 */
-  --accent-foreground: oklch(0.18 0.04 80);
+  --accent: oklch(0.82 0.14 82);             /* 밝은 황금 강조 */
+  --accent-foreground: oklch(0.12 0.03 55);
 
   --destructive: oklch(0.62 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
 
-  --border: oklch(0.27 0.03 285);
-  --input: oklch(0.27 0.03 285);
-  --ring: oklch(0.68 0.18 295);
+  --border: oklch(0.30 0.05 70);             /* 골드빛 테두리 */
+  --input: oklch(0.30 0.05 70);
+  --ring: oklch(0.76 0.14 80);
 
-  --chart-1: oklch(0.7 0.2 295);
-  --chart-2: oklch(0.78 0.13 85);
+  --chart-1: oklch(0.76 0.14 80);
+  --chart-2: oklch(0.82 0.14 82);
   --chart-3: oklch(0.65 0.2 25);
   --chart-4: oklch(0.65 0.18 200);
   --chart-5: oklch(0.72 0.18 145);
