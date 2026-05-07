@@ -80,6 +80,7 @@ export function TarotThreeReadingCard({ reading }: TarotThreeReadingCardProps) {
                   </span>
                 </div>
                 <TarotCardDisplay
+                  id={card.id}
                   nameKo={card.nameKo}
                   nameEn={card.nameEn}
                   isReversed={card.isReversed}

@@ -52,6 +52,7 @@ export function TarotReadingCard({ reading }: TarotReadingCardProps) {
         {card ? (
           <div className="flex flex-col items-center gap-3">
             <TarotCardDisplay
+              id={card.id}
               nameKo={card.nameKo}
               nameEn={card.nameEn}
               isReversed={card.isReversed}

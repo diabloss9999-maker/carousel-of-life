@@ -1,53 +1,90 @@
+"use client";
+
+/**
+ * 타로 카드 시각적 표시 컴포넌트.
+ *
+ * - 이미지가 있으면 next/image 로 렌더링 (public/tarot/{id}.png)
+ * - 이미지 로드 실패 / id 없음 → 텍스트 폴백 카드
+ * - 역방향(isReversed) 은 래퍼를 rotate-180 하여 표현
+ */
+
+import { useState } from "react";
+import Image from "next/image";
 import { Sparkles } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 interface TarotCardDisplayProps {
+  /** cards.ts 의 TarotCard.id (예: "the_fool", "cups_1"). */
+  id: string;
   nameKo: string;
   nameEn: string;
   isReversed: boolean;
   className?: string;
 }
 
-/**
- * 뽑힌 타로 카드를 시각적으로 표시.
- *
- * MVP: 이미지 없이 카드 모양 + 이름 + 정/역방향 텍스트만.
- * 추후 라이더-웨이트 이미지 연결 가능.
- */
 export function TarotCardDisplay({
+  id,
   nameKo,
   nameEn,
   isReversed,
   className,
 }: TarotCardDisplayProps) {
+  const [imgError, setImgError] = useState(false);
+  const src = `/tarot/${id}.png`;
+
   return (
     <div
       className={cn(
-        "relative aspect-[2/3] w-44 sm:w-56 mx-auto",
-        "rounded-xl border-2 border-accent/40",
-        "bg-gradient-to-br from-card via-card to-primary/10",
-        "flex flex-col items-center justify-between p-4 sm:p-6",
-        "shadow-lg shadow-primary/10",
+        "relative mx-auto w-44 sm:w-56",
         isReversed && "rotate-180",
         className,
       )}
       aria-label={`${nameKo} ${isReversed ? "거꾸로 선" : "바로 선"}`}
     >
-      <Sparkles
-        className="h-5 w-5 text-accent self-start"
-        aria-hidden
-      />
+      {!imgError ? (
+        <Image
+          src={src}
+          alt={nameKo}
+          width={448}
+          height={672}
+          className="w-full rounded-xl shadow-lg shadow-primary/10"
+          onError={() => setImgError(true)}
+          sizes="(max-width: 640px) 176px, 224px"
+          priority={false}
+        />
+      ) : (
+        <FallbackCard nameKo={nameKo} nameEn={nameEn} />
+      )}
+    </div>
+  );
+}
 
+/** 이미지 없을 때 보여주는 텍스트 카드. */
+function FallbackCard({
+  nameKo,
+  nameEn,
+}: {
+  nameKo: string;
+  nameEn: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "aspect-[2/3] w-full",
+        "rounded-xl border-2 border-accent/40",
+        "bg-gradient-to-br from-card via-card to-primary/10",
+        "flex flex-col items-center justify-between p-4 sm:p-6",
+        "shadow-lg shadow-primary/10",
+      )}
+    >
+      <Sparkles className="h-5 w-5 text-accent self-start" aria-hidden />
       <div className="text-center space-y-2">
         <p className="font-mystic text-base sm:text-lg font-semibold leading-tight">
           {nameKo}
         </p>
-        <p className="text-xs text-muted-foreground tracking-wide">
-          {nameEn}
-        </p>
+        <p className="text-xs text-muted-foreground tracking-wide">{nameEn}</p>
       </div>
-
       <Sparkles
         className="h-5 w-5 text-accent self-end rotate-180"
         aria-hidden
@@ -58,7 +95,7 @@ export function TarotCardDisplay({
 
 /**
  * 카드 옆에 표시되는 정/역방향 배지.
- * 카드 자체가 회전되어 있으므로 별도 텍스트 표시.
+ * 카드 자체가 회전되어 있으므로 별도 텍스트로 표시.
  */
 export function CardOrientationBadge({
   isReversed,
