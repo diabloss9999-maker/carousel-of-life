@@ -13,7 +13,7 @@ const drawSchema = z.object({
   question: z
     .string()
     .trim()
-    .max(200, "질문이 너무 길어요. 200자 이내로 줄여주세요.")
+    .max(100, "질문은 100자 이내로 짧게 부탁해.")
     .optional()
     .or(z.literal("")),
 });
