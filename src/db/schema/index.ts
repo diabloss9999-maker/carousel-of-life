@@ -98,6 +98,13 @@ export const profiles = pgTable("profiles", {
   sajuPillars: jsonb("saju_pillars"),
   /** 오행 분포: { wood, fire, earth, metal, water }. */
   fiveElements: jsonb("five_elements"),
+  /**
+   * 프리미엄 전용 사주 심층 풀이 캐시.
+   *
+   * 한 번 생성되면 영구 보관. 형태:
+   * { personality, strengths, cautions, loveStyle, careerFit, healthCare, lifeFlow, model, createdAt }
+   */
+  sajuDeepReading: jsonb("saju_deep_reading"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),

@@ -30,3 +30,15 @@ export const compatibilityAiSchema = z.object({
 });
 
 export type CompatibilityAiOutput = z.infer<typeof compatibilityAiSchema>;
+
+export const sajuDeepAiSchema = z.object({
+  personality: z.string().min(1).max(2000),
+  strengths: z.string().min(1).max(2000),
+  cautions: z.string().min(1).max(2000),
+  loveStyle: z.string().min(1).max(2000),
+  careerFit: z.string().min(1).max(2000),
+  healthCare: z.string().min(1).max(2000),
+  lifeFlow: z.string().min(1).max(3000),
+});
+
+export type SajuDeepAiOutput = z.infer<typeof sajuDeepAiSchema>;

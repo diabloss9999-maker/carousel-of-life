@@ -1,0 +1,1 @@
+ALTER TABLE "profiles" ADD COLUMN "saju_deep_reading" jsonb;

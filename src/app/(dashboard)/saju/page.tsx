@@ -8,6 +8,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { CalculateSajuButton } from "@/components/saju/calculate-saju-button";
+import { DeepReadingButton } from "@/components/saju/deep-reading-button";
+import { DeepReadingCard } from "@/components/saju/deep-reading-card";
 import {
   FiveElementsChart,
   type FiveElementsValue,
@@ -17,6 +19,8 @@ import {
   type SajuPillarsValue,
 } from "@/components/saju/saju-pillars";
 import { requireProfile } from "@/lib/auth/get-user";
+import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import { asSajuDeepReading } from "@/lib/saju/deep-reading";
 
 export const metadata: Metadata = {
   title: "사주팔자",
@@ -42,9 +46,7 @@ function asPillars(v: unknown): SajuPillarsValue | null {
   };
 }
 
-function isPillar(
-  v: unknown,
-): v is { stem: string; branch: string } {
+function isPillar(v: unknown): v is { stem: string; branch: string } {
   if (!v || typeof v !== "object") return false;
   const o = v as Record<string, unknown>;
   return typeof o.stem === "string" && typeof o.branch === "string";
@@ -75,6 +77,8 @@ export default async function SajuPage() {
 
   const pillars = asPillars(profile.sajuPillars);
   const elements = asFiveElements(profile.fiveElements);
+  const deepReading = asSajuDeepReading(profile.sajuDeepReading);
+  const subscribed = await hasActiveSubscription(profile.userId);
 
   return (
     <div className="space-y-8">
@@ -92,7 +96,14 @@ export default async function SajuPage() {
           <SajuPillars pillars={pillars} />
           <FiveElementsChart elements={elements} />
 
-          <Card className="border-border/60 bg-card/60 backdrop-blur">
+          {/* 심층 분석 영역 */}
+          {deepReading ? (
+            <DeepReadingCard reading={deepReading} />
+          ) : (
+            <DeepReadingButton locked={!subscribed} />
+          )}
+
+          <Card className="border-border/40 bg-card/40 backdrop-blur">
             <CardHeader>
               <CardTitle className="font-mystic text-lg">
                 기억해두면 좋은 것
