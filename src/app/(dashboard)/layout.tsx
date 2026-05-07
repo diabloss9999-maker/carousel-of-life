@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -18,42 +17,14 @@ export default async function DashboardLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <header
-        className="sticky top-0 z-40 overflow-hidden border-b border-primary/20 shadow-sm"
+        className="sticky top-0 z-40 border-b border-primary/20 shadow-sm"
         style={{
-          background:
-            "linear-gradient(to bottom, oklch(0.86 0.06 295), oklch(0.82 0.08 295) 50%, oklch(0.76 0.10 295))",
+          backgroundImage: "url(/header-bg.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
         }}
       >
-        {/* 좌측 일러스트 (회전목마) */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2"
-        >
-          <Image
-            src="/header-left.png"
-            alt=""
-            width={280}
-            height={215}
-            priority
-            className="h-20 w-auto sm:h-24 md:h-28"
-          />
-        </div>
-
-        {/* 우측 일러스트 (수정구슬+카드) */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 hidden sm:block"
-        >
-          <Image
-            src="/header-right.png"
-            alt=""
-            width={280}
-            height={215}
-            priority
-            className="h-20 w-auto sm:h-24 md:h-28"
-          />
-        </div>
-
         <div className="relative mx-auto flex h-16 w-full max-w-5xl items-center justify-between gap-2 pl-20 pr-2 sm:h-20 sm:pl-28 sm:pr-28 md:pl-32 md:pr-32">
           <Link
             href={ROUTES.today}
@@ -71,7 +42,7 @@ export default async function DashboardLayout({
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-[#5b3a8a] hover:bg-white/40 hover:text-[#3a2554] transition-colors"
+                    className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-[#5b3a8a] hover:bg-white/50 hover:text-[#3a2554] transition-colors"
                   >
                     <Icon className="h-4 w-4" aria-hidden />
                     {item.label}
@@ -85,7 +56,7 @@ export default async function DashboardLayout({
               type="submit"
               variant="ghost"
               size="sm"
-              className="rounded-full bg-white/50 text-[#5b3a8a] hover:bg-white/70 hover:text-[#3a2554] backdrop-blur-sm shadow-sm"
+              className="rounded-full bg-white/60 text-[#5b3a8a] hover:bg-white/80 hover:text-[#3a2554] backdrop-blur-sm shadow-sm"
             >
               로그아웃
             </Button>
