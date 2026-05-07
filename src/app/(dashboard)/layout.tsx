@@ -26,11 +26,10 @@ export default async function DashboardLayout({
         }}
       >
         <div className="relative mx-auto flex h-16 w-full max-w-5xl items-center justify-between gap-2 pl-20 pr-2 sm:h-20 sm:pl-28 sm:pr-28 md:pl-32 md:pr-32">
-          {/* 로고 — 골드 */}
+          {/* 로고 — 검정 */}
           <Link
             href={ROUTES.today}
-            className="font-mystic text-base font-semibold tracking-tight whitespace-nowrap sm:text-lg md:text-xl transition-opacity hover:opacity-80"
-            style={{ color: "oklch(0.88 0.14 82)" }}
+            className="font-mystic text-base font-semibold tracking-tight whitespace-nowrap sm:text-lg md:text-xl transition-opacity hover:opacity-70 text-black"
           >
             {siteConfig.name}
           </Link>
@@ -45,8 +44,7 @@ export default async function DashboardLayout({
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-all
-                      text-[oklch(0.93_0.018_85)] hover:text-[oklch(0.88_0.14_82)] hover:bg-[oklch(0.76_0.14_80/0.15)]"
+                    className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-all text-black hover:bg-black/10"
                   >
                     <Icon className="h-4 w-4" aria-hidden />
                     {item.label}
@@ -61,12 +59,7 @@ export default async function DashboardLayout({
               type="submit"
               variant="ghost"
               size="sm"
-              className="rounded-full border backdrop-blur-sm shadow-sm text-sm font-medium transition-all"
-              style={{
-                color: "oklch(0.88 0.14 82)",
-                borderColor: "oklch(0.76 0.14 80 / 0.5)",
-                background: "oklch(0.76 0.14 80 / 0.12)",
-              }}
+              className="rounded-full border border-black/30 bg-black/10 text-black hover:bg-black/20 backdrop-blur-sm shadow-sm text-sm font-medium transition-all"
             >
               로그아웃
             </Button>
@@ -95,8 +88,7 @@ export default async function DashboardLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex flex-1 flex-col items-center gap-0.5 px-2 py-2 text-xs transition-colors"
-                style={{ color: "oklch(0.82 0.10 82)" }}
+                className="flex flex-1 flex-col items-center gap-0.5 px-2 py-2 text-xs transition-colors text-black/80 hover:text-black"
               >
                 <Icon className="h-5 w-5" aria-hidden />
                 <span>{item.label}</span>
