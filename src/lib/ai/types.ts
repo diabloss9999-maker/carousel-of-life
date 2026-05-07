@@ -23,6 +23,16 @@ export const tarotSingleAiSchema = z.object({
 
 export type TarotSingleAiOutput = z.infer<typeof tarotSingleAiSchema>;
 
+export const tarotThreeAiSchema = z.object({
+  past: z.string().min(1).max(2000),
+  present: z.string().min(1).max(2000),
+  future: z.string().min(1).max(2000),
+  synthesis: z.string().min(1).max(2000),
+  summary: z.string().min(1).max(80),
+});
+
+export type TarotThreeAiOutput = z.infer<typeof tarotThreeAiSchema>;
+
 export const compatibilityAiSchema = z.object({
   score: z.number().int().min(1).max(100),
   summary: z.string().min(1).max(80),

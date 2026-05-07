@@ -121,6 +121,50 @@ ${opts.card.name} (${orient})
 }
 
 /**
+ * 타로 3장 스프레드 (과거-현재-미래) 프롬프트.
+ */
+export function buildTarotThreePrompt(opts: {
+  profile: BuildContextOptions["profile"];
+  question: string | null;
+  cards: Array<{ id: string; name: string; isReversed: boolean }>;
+}): string {
+  const ctx = buildUserContext({ profile: opts.profile });
+  const positions = ["과거", "현재", "미래"] as const;
+  const cardLines = opts.cards
+    .map((c, i) => {
+      const orient = c.isReversed ? "역방향(逆位)" : "정방향(正位)";
+      return `[${positions[i]}] ${c.name} (${orient})`;
+    })
+    .join("\n");
+
+  return `[질문자 정보]
+${ctx}
+
+[질문]
+${opts.question?.trim() || "(질문 없음 — 흐름을 살피기 위한 한 묶음)"}
+
+[뽑힌 카드 — 과거 → 현재 → 미래]
+${cardLines}
+
+[지시]
+세 장의 카드가 보여주는 흐름을 풀이해주세요.
+- 첫 카드 = 지나온 자리 (과거)
+- 두 번째 카드 = 지금의 자리 (현재)
+- 세 번째 카드 = 다가올 자리 (미래)
+세 장이 하나의 이야기로 자연스럽게 이어지도록.
+
+다음 JSON 스키마를 정확히 따라 단 하나의 JSON 객체로만 응답하세요. 추가 설명·markdown·코드펜스 없이 JSON 만 출력합니다. 모든 본문은 반말 친구 톤, 쉬운 단어로.
+
+{
+  "past": "5-7문장의 과거 카드 풀이",
+  "present": "5-7문장의 현재 카드 풀이",
+  "future": "5-7문장의 미래 카드 풀이",
+  "synthesis": "5-7문장으로 세 카드를 하나의 흐름·이야기로 묶어주는 종합 풀이",
+  "summary": "한 줄 핵심 (40자 이내)"
+}`;
+}
+
+/**
  * 궁합 풀이 프롬프트.
  */
 export interface PartnerInfo {

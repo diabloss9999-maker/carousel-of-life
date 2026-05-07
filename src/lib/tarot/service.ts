@@ -1,12 +1,10 @@
 /**
  * 타로 풀이 비즈니스 로직.
  *
- * - 사용자가 카드 뽑기를 요청하면: 한도 체크 → 카드 뽑기 → AI 풀이 → DB 저장
- * - MVP: single 스프레드만 지원 (1장)
+ * - single 스프레드 (1장): 무료, 일일 한도
+ * - three 스프레드 (3장 — 과거·현재·미래): 프리미엄 전용, 무제한
  */
 import "server-only";
-
-import { z } from "zod";
 
 import { db } from "@/db";
 import {
@@ -15,22 +13,24 @@ import {
   type TarotReading,
 } from "@/db/schema";
 import { generateJson } from "@/lib/ai/generate";
-import { buildTarotSinglePrompt } from "@/lib/ai/prompts";
+import {
+  buildTarotSinglePrompt,
+  buildTarotThreePrompt,
+} from "@/lib/ai/prompts";
+import {
+  tarotSingleAiSchema,
+  tarotThreeAiSchema,
+  type TarotThreeAiOutput,
+} from "@/lib/ai/types";
 import {
   AI_LIMITS,
   AI_MODELS,
   FREE_DAILY_LIMITS,
 } from "@/lib/constants";
+import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { ensureSajuCalculated } from "@/lib/saju/calculate";
 import { drawCards, type DrawnCard } from "@/lib/tarot/draw";
-import {
-  checkAndIncrementQuota,
-} from "@/lib/usage/quota";
-
-const tarotSingleAiSchema = z.object({
-  interpretation: z.string().min(1).max(2000),
-  summary: z.string().min(1).max(80),
-});
+import { checkAndIncrementQuota } from "@/lib/usage/quota";
 
 export type TarotResult =
   | {
@@ -40,16 +40,16 @@ export type TarotResult =
       summary: string;
     }
   | { ok: false; reason: "quota_exceeded"; max: number }
+  | { ok: false; reason: "premium_only" }
   | { ok: false; reason: "ai_failed"; message: string };
 
 /**
- * single 스프레드 (한 장) 타로 풀이를 생성한다.
+ * single 스프레드 (한 장) 타로 풀이.
  */
 export async function createSingleTarot(opts: {
   profile: Profile;
   question: string | null;
 }): Promise<TarotResult> {
-  // 1) 한도 체크.
   const quota = await checkAndIncrementQuota({
     userId: opts.profile.userId,
     kind: "tarot",
@@ -59,11 +59,9 @@ export async function createSingleTarot(opts: {
     return { ok: false, reason: "quota_exceeded", max: quota.max };
   }
 
-  // 2) 카드 뽑기 (1장).
   const drawn = drawCards(1);
   const card = drawn[0];
 
-  // 3) 사주 보장.
   let profile: Profile;
   try {
     profile = await ensureSajuCalculated(opts.profile);
@@ -77,7 +75,6 @@ export async function createSingleTarot(opts: {
     };
   }
 
-  // 4) AI 풀이.
   let aiOutput;
   try {
     aiOutput = await generateJson({
@@ -104,7 +101,6 @@ export async function createSingleTarot(opts: {
     };
   }
 
-  // 5) DB 저장.
   const [row] = await db
     .insert(tarotReadings)
     .values({
@@ -126,7 +122,92 @@ export async function createSingleTarot(opts: {
 }
 
 /**
- * 사용자의 최근 타로 풀이 N 건을 조회한다.
+ * three 스프레드 (3장: 과거-현재-미래) 타로 풀이.
+ *
+ * 프리미엄 전용. interpretation 컬럼에 JSON 직렬화로 4개 섹션 저장.
+ */
+export async function createThreeCardTarot(opts: {
+  profile: Profile;
+  question: string | null;
+}): Promise<TarotResult> {
+  const subscribed = await hasActiveSubscription(opts.profile.userId);
+  if (!subscribed) {
+    return { ok: false, reason: "premium_only" };
+  }
+
+  const drawn = drawCards(3);
+
+  let profile: Profile;
+  try {
+    profile = await ensureSajuCalculated(opts.profile);
+  } catch (e) {
+    return {
+      ok: false,
+      reason: "ai_failed",
+      message:
+        "사주를 풀이할 별의 흐름을 읽지 못했어요: " +
+        (e instanceof Error ? e.message : "알 수 없는 원인"),
+    };
+  }
+
+  let aiOutput: TarotThreeAiOutput;
+  try {
+    aiOutput = await generateJson({
+      schema: tarotThreeAiSchema,
+      userPrompt: buildTarotThreePrompt({
+        profile,
+        question: opts.question,
+        cards: drawn.map((c) => ({
+          id: c.id,
+          name: c.nameKo,
+          isReversed: c.isReversed,
+        })),
+      }),
+      model: AI_MODELS.premium,
+      maxTokens: AI_LIMITS.tarotMaxTokens * 2,
+    });
+  } catch (e) {
+    return {
+      ok: false,
+      reason: "ai_failed",
+      message:
+        "세 장의 흐름을 읽지 못했어요: " +
+        (e instanceof Error ? e.message : "알 수 없는 원인"),
+    };
+  }
+
+  // interpretation 컬럼에 JSON 으로 4개 섹션 저장.
+  const interpretationJson = JSON.stringify({
+    type: "three",
+    past: aiOutput.past,
+    present: aiOutput.present,
+    future: aiOutput.future,
+    synthesis: aiOutput.synthesis,
+    summary: aiOutput.summary,
+  });
+
+  const [row] = await db
+    .insert(tarotReadings)
+    .values({
+      userId: profile.userId,
+      spreadType: "three",
+      question: opts.question,
+      cards: drawn,
+      interpretation: interpretationJson,
+      model: AI_MODELS.premium,
+    })
+    .returning();
+
+  return {
+    ok: true,
+    reading: row,
+    cards: drawn,
+    summary: aiOutput.summary,
+  };
+}
+
+/**
+ * 사용자의 최근 타로 풀이 N 건.
  */
 export async function getRecentTarotReadings(
   userId: string,
@@ -137,4 +218,28 @@ export async function getRecentTarotReadings(
     orderBy: (t, { desc }) => desc(t.createdAt),
     limit,
   });
+}
+
+/**
+ * three 스프레드 readings 의 interpretation 을 파싱한다.
+ */
+export interface ParsedThreeInterpretation {
+  type: "three";
+  past: string;
+  present: string;
+  future: string;
+  synthesis: string;
+  summary: string;
+}
+
+export function parseThreeInterpretation(
+  raw: string,
+): ParsedThreeInterpretation | null {
+  try {
+    const parsed = JSON.parse(raw);
+    if (parsed?.type !== "three") return null;
+    return parsed as ParsedThreeInterpretation;
+  } catch {
+    return null;
+  }
 }

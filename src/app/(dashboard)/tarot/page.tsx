@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 
 import { TarotDrawForm } from "@/components/tarot/tarot-draw-form";
 import { TarotReadingCard } from "@/components/tarot/tarot-reading-card";
+import { TarotThreeForm } from "@/components/tarot/tarot-three-form";
+import { TarotThreeReadingCard } from "@/components/tarot/tarot-three-reading-card";
 import { requireProfile } from "@/lib/auth/get-user";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { getRecentTarotReadings } from "@/lib/tarot/service";
@@ -40,7 +42,10 @@ export default async function TarotPage() {
         subscribed={subscribed}
       />
 
-      <TarotDrawForm />
+      <div className="grid gap-6 md:grid-cols-2">
+        <TarotDrawForm />
+        <TarotThreeForm subscribed={subscribed} />
+      </div>
 
       {readings.length > 0 ? (
         <section className="space-y-4">
@@ -48,9 +53,13 @@ export default async function TarotPage() {
             최근에 본 카드
           </h2>
           <div className="space-y-6">
-            {readings.map((reading) => (
-              <TarotReadingCard key={reading.id} reading={reading} />
-            ))}
+            {readings.map((reading) =>
+              reading.spreadType === "three" ? (
+                <TarotThreeReadingCard key={reading.id} reading={reading} />
+              ) : (
+                <TarotReadingCard key={reading.id} reading={reading} />
+              ),
+            )}
           </div>
         </section>
       ) : null}

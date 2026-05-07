@@ -1,0 +1,113 @@
+import { ArrowRight, Clock, History, Sparkles } from "lucide-react";
+
+import {
+  Card,
+  CardContent,
+  CardHeader,
+} from "@/components/ui/card";
+import {
+  CardOrientationBadge,
+  TarotCardDisplay,
+} from "@/components/tarot/tarot-card-display";
+import type { TarotReading } from "@/db/schema";
+import { parseThreeInterpretation } from "@/lib/tarot/service";
+import { cn, formatKoreanDate } from "@/lib/utils";
+
+interface TarotThreeReadingCardProps {
+  reading: TarotReading;
+}
+
+interface DrawnCardJson {
+  id: string;
+  nameKo: string;
+  nameEn: string;
+  isReversed: boolean;
+}
+
+function asDrawnCards(cards: unknown): DrawnCardJson[] {
+  if (Array.isArray(cards)) return cards as DrawnCardJson[];
+  return [];
+}
+
+const POSITIONS = [
+  { key: "past" as const, label: "과거", desc: "지나온 자리", icon: History },
+  { key: "present" as const, label: "현재", desc: "머무는 자리", icon: Clock },
+  {
+    key: "future" as const,
+    label: "미래",
+    desc: "다가올 자리",
+    icon: ArrowRight,
+  },
+];
+
+export function TarotThreeReadingCard({ reading }: TarotThreeReadingCardProps) {
+  const cards = asDrawnCards(reading.cards);
+  const parsed = parseThreeInterpretation(reading.interpretation);
+
+  if (!parsed || cards.length < 3) {
+    return null;
+  }
+
+  return (
+    <Card className="border-accent/30 bg-card/60 backdrop-blur ring-1 ring-accent/15">
+      <CardHeader className="space-y-3">
+        <p className="text-xs uppercase tracking-wider text-muted-foreground">
+          {formatKoreanDate(new Date(reading.createdAt))} · 3장 스프레드
+        </p>
+        {reading.question ? (
+          <p className="font-mystic text-base text-foreground/80 italic">
+            “{reading.question}”
+          </p>
+        ) : null}
+        <p className="font-mystic text-lg font-medium leading-relaxed">
+          {parsed.summary}
+        </p>
+      </CardHeader>
+      <CardContent className="space-y-8">
+        {/* 3장 카드 + 각 위치 풀이 */}
+        <div className="grid gap-6 md:grid-cols-3">
+          {POSITIONS.map((pos, i) => {
+            const card = cards[i];
+            const Icon = pos.icon;
+            return (
+              <div key={pos.key} className="flex flex-col items-center gap-3">
+                <div className="flex items-center gap-1.5 text-sm font-medium text-accent">
+                  <Icon className="h-4 w-4" aria-hidden />
+                  <span className="font-mystic">{pos.label}</span>
+                  <span className="text-xs text-muted-foreground/70 font-normal">
+                    {pos.desc}
+                  </span>
+                </div>
+                <TarotCardDisplay
+                  nameKo={card.nameKo}
+                  nameEn={card.nameEn}
+                  isReversed={card.isReversed}
+                  className="w-32 sm:w-36"
+                />
+                <CardOrientationBadge isReversed={card.isReversed} />
+                <p
+                  className={cn(
+                    "font-mystic whitespace-pre-line leading-relaxed text-sm text-foreground/85",
+                  )}
+                >
+                  {parsed[pos.key]}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* 종합 풀이 */}
+        <div className="rounded-2xl border border-accent/30 bg-accent/10 p-5 space-y-2">
+          <div className="flex items-center gap-1.5 text-sm font-medium text-accent">
+            <Sparkles className="h-4 w-4" aria-hidden />
+            <span className="font-mystic">종합 풀이</span>
+          </div>
+          <p className="font-mystic whitespace-pre-line leading-relaxed text-foreground/90">
+            {parsed.synthesis}
+          </p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
