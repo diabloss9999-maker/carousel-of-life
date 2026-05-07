@@ -11,6 +11,9 @@ import { MessageBubble } from "@/components/chat/message-bubble";
 import { ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
+/** 한 메시지 최대 글자 수. 서버 zod schema 와 동기화 유지. */
+const MAX_MESSAGE_LENGTH = 100;
+
 export interface InitialMessage {
   id: string;
   role: "user" | "assistant";
@@ -50,6 +53,10 @@ export function ChatWindow({ sessionId, initialMessages }: ChatWindowProps) {
     e.preventDefault();
     const trimmed = input.trim();
     if (!trimmed || isStreaming) return;
+    if (trimmed.length > MAX_MESSAGE_LENGTH) {
+      setError(`질문은 ${MAX_MESSAGE_LENGTH}자 이내로 짧게 부탁해.`);
+      return;
+    }
 
     setError(null);
     setInput("");
@@ -133,6 +140,7 @@ export function ChatWindow({ sessionId, initialMessages }: ChatWindowProps) {
   }
 
   const isQuotaError = error?.includes("한도");
+  const charsLeft = MAX_MESSAGE_LENGTH - input.length;
 
   return (
     <div className="flex h-[calc(100vh-12rem)] flex-col gap-4">
@@ -187,26 +195,42 @@ export function ChatWindow({ sessionId, initialMessages }: ChatWindowProps) {
         </div>
       ) : null}
 
-      <form onSubmit={handleSend} className="flex gap-2">
-        <Input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="궁금한 걸 물어봐"
-          disabled={isStreaming}
-          maxLength={2000}
-          className="flex-1"
-        />
-        <Button
-          type="submit"
-          disabled={isStreaming || isPending || input.trim().length === 0}
-          size="lg"
-        >
-          {isStreaming ? (
-            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-          ) : (
-            <Send className="h-4 w-4" aria-hidden />
-          )}
-        </Button>
+      <form onSubmit={handleSend} className="flex flex-col gap-1.5">
+        <div className="flex gap-2">
+          <Input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="궁금한 걸 물어봐 (100자 이내)"
+            disabled={isStreaming}
+            maxLength={MAX_MESSAGE_LENGTH}
+            className="flex-1"
+          />
+          <Button
+            type="submit"
+            disabled={isStreaming || isPending || input.trim().length === 0}
+            size="lg"
+          >
+            {isStreaming ? (
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+            ) : (
+              <Send className="h-4 w-4" aria-hidden />
+            )}
+          </Button>
+        </div>
+        <div className="flex items-center justify-end px-1">
+          <span
+            className={cn(
+              "text-xs tabular-nums",
+              charsLeft <= 0
+                ? "text-destructive font-medium"
+                : charsLeft <= 10
+                  ? "text-accent"
+                  : "text-muted-foreground",
+            )}
+          >
+            {input.length} / {MAX_MESSAGE_LENGTH}
+          </span>
+        </div>
       </form>
     </div>
   );

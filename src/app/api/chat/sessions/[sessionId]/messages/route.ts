@@ -21,7 +21,10 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const bodySchema = z.object({
-  content: z.string().min(1).max(2000),
+  content: z
+    .string()
+    .min(1, "질문을 입력해줘.")
+    .max(100, "질문은 100자 이내로 짧게 부탁해."),
 });
 
 export async function POST(
