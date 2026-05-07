@@ -59,8 +59,6 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
         <div className="space-y-3">
           {ELEMENTS.map((el) => {
             const value = elements[el.key];
-            // 전체(total) 8 글자 중 비율로 표시.
-            const widthPercent = total === 0 ? 0 : (value / total) * 100;
             return (
               <div key={el.key} className="space-y-1.5">
                 <div className="flex items-center justify-between text-sm">
@@ -75,14 +73,17 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
                     {value} / {total}
                   </span>
                 </div>
-                <div className="h-2.5 overflow-hidden rounded-full bg-muted/40">
-                  <div
-                    className={cn(
-                      "h-full rounded-full transition-all",
-                      el.color,
-                    )}
-                    style={{ width: `${widthPercent}%` }}
-                  />
+                {/* 사주 글자 수만큼의 칸 grid — 채워진 칸 / 빈 칸으로 시각화. */}
+                <div className="flex gap-1">
+                  {Array.from({ length: total }).map((_, i) => (
+                    <div
+                      key={i}
+                      className={cn(
+                        "h-3 flex-1 rounded-md transition-all",
+                        i < value ? el.color : "bg-muted/40",
+                      )}
+                    />
+                  ))}
                 </div>
               </div>
             );
