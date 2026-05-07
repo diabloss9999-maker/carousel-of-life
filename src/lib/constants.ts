@@ -79,6 +79,7 @@ export const ROUTES = {
   saju: "/saju",
   compatibility: "/compatibility",
   history: "/history",
+  personality: "/personality",
   settings: "/settings",
   pricing: "/pricing",
   authCallback: "/auth/callback",

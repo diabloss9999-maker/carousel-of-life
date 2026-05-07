@@ -1,0 +1,47 @@
+import type { Metadata } from "next";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { PersonalityTest } from "@/components/personality/personality-test";
+import { requireProfile } from "@/lib/auth/get-user";
+
+export const metadata: Metadata = {
+  title: "성격 유형",
+  description: "20문항으로 나의 성격 유형을 알아봐요.",
+};
+
+export default async function PersonalityPage() {
+  const { profile } = await requireProfile();
+
+  return (
+    <div className="space-y-8">
+      <header className="space-y-2">
+        <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
+          성격 유형
+        </h1>
+        <p className="text-muted-foreground">
+          20문항으로 나의 유형을 알아봐. 결과는 운세·타로 풀이에 자동 반영돼.
+        </p>
+      </header>
+
+      <Card className="border-border/40 bg-card/50 backdrop-blur">
+        <CardHeader className="pb-2">
+          <CardTitle className="font-mystic text-lg">나는 어떤 유형?</CardTitle>
+          <CardDescription className="text-xs">
+            {profile.mbti
+              ? `현재 유형: ${profile.mbti} — 다시 테스트하거나 그대로 유지할 수 있어.`
+              : "아직 유형 테스트를 하지 않았어. 지금 바로 알아봐!"}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <PersonalityTest currentType={profile.mbti ?? null} />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

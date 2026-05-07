@@ -1,0 +1,305 @@
+"use client";
+
+/**
+ * 성격 유형 테스트 클라이언트 컴포넌트.
+ *
+ * 20문항을 1개씩 보여주고 선택 시 자동으로 다음 문항으로 진행.
+ * 마지막 문항 제출 후 결과 카드를 렌더.
+ */
+
+import { useState, useTransition } from "react";
+import { ChevronLeft } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { savePersonalityResult } from "@/lib/personality/actions";
+import { QUESTIONS, type Choice } from "@/lib/personality/questions";
+import { TYPE_INFO } from "@/lib/personality/types";
+import { cn } from "@/lib/utils";
+
+interface PersonalityTestProps {
+  /** 이미 저장된 유형 (재테스트 or 첫 시작 여부 판단). */
+  currentType: string | null;
+}
+
+export function PersonalityTest({ currentType }: PersonalityTestProps) {
+  const [started, setStarted] = useState(false);
+  const [answers, setAnswers] = useState<(Choice | null)[]>(
+    Array(20).fill(null),
+  );
+  const [current, setCurrent] = useState(0); // 현재 문항 인덱스
+  const [resultType, setResultType] = useState<string | null>(currentType);
+  const [isPending, startTransition] = useTransition();
+
+  /** 선택지 클릭 시 호출. */
+  function handleSelect(choice: Choice) {
+    const next = [...answers];
+    next[current] = choice;
+    setAnswers(next);
+
+    if (current < QUESTIONS.length - 1) {
+      // 다음 문항으로 이동
+      setTimeout(() => setCurrent((c) => c + 1), 280);
+    } else {
+      // 마지막 문항 — 제출
+      startTransition(async () => {
+        const result = await savePersonalityResult(next as Choice[]);
+        setResultType(result.type);
+      });
+    }
+  }
+
+  /** 결과 화면 */
+  if (resultType && !started) {
+    const info = TYPE_INFO[resultType as keyof typeof TYPE_INFO];
+    return (
+      <ResultCard
+        info={info}
+        onRetest={() => {
+          setStarted(true);
+          setAnswers(Array(20).fill(null));
+          setCurrent(0);
+          setResultType(null);
+        }}
+      />
+    );
+  }
+
+  /** 시작 전 화면 */
+  if (!started) {
+    return (
+      <div className="flex flex-col items-center gap-6 py-8 text-center">
+        <div className="text-5xl">🌌</div>
+        <div className="space-y-2">
+          <h2 className="font-mystic text-2xl font-semibold">
+            나는 어떤 유형일까?
+          </h2>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            20개의 질문으로 나의 성격 유형을 알아봐.
+            <br />
+            솔직하게 답할수록 정확해져.
+          </p>
+        </div>
+        <div className="grid grid-cols-3 gap-3 text-xs text-muted-foreground">
+          <div className="rounded-xl border border-border/40 bg-card/50 p-3 space-y-1">
+            <p className="text-lg">⏱️</p>
+            <p>약 3~5분</p>
+          </div>
+          <div className="rounded-xl border border-border/40 bg-card/50 p-3 space-y-1">
+            <p className="text-lg">📝</p>
+            <p>20문항</p>
+          </div>
+          <div className="rounded-xl border border-border/40 bg-card/50 p-3 space-y-1">
+            <p className="text-lg">🔮</p>
+            <p>16가지 유형</p>
+          </div>
+        </div>
+        <Button size="lg" className="min-w-44" onClick={() => setStarted(true)}>
+          테스트 시작
+        </Button>
+      </div>
+    );
+  }
+
+  /** 제출 중 */
+  if (isPending) {
+    return (
+      <div className="flex flex-col items-center gap-4 py-16 text-center">
+        <div className="text-4xl animate-pulse">🔮</div>
+        <p className="font-mystic text-lg">유형을 분석하고 있어…</p>
+      </div>
+    );
+  }
+
+  /** 결과가 나온 직후 (테스트 완료) */
+  if (resultType) {
+    const info = TYPE_INFO[resultType as keyof typeof TYPE_INFO];
+    return (
+      <ResultCard
+        info={info}
+        onRetest={() => {
+          setStarted(true);
+          setAnswers(Array(20).fill(null));
+          setCurrent(0);
+          setResultType(null);
+        }}
+      />
+    );
+  }
+
+  /** 테스트 진행 화면 */
+  const q = QUESTIONS[current];
+  const progress = ((current) / QUESTIONS.length) * 100;
+
+  return (
+    <div className="space-y-6">
+      {/* 진행 바 */}
+      <div className="space-y-1.5">
+        <div className="flex justify-between text-xs text-muted-foreground">
+          <span>{current + 1} / {QUESTIONS.length}</span>
+          <span>{Math.round(progress)}%</span>
+        </div>
+        <div className="h-1.5 w-full rounded-full bg-border/40 overflow-hidden">
+          <div
+            className="h-full rounded-full bg-primary transition-all duration-300"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      </div>
+
+      {/* 문항 카드 */}
+      <div className="rounded-2xl border border-border/40 bg-card/60 p-6 backdrop-blur space-y-6">
+        <p className="font-mystic text-lg font-medium leading-relaxed text-center">
+          {current + 1}. 나는…
+        </p>
+
+        <div className="flex flex-col gap-3">
+          <ChoiceButton
+            label="A"
+            text={q.a}
+            selected={answers[current] === "A"}
+            onClick={() => handleSelect("A")}
+          />
+          <ChoiceButton
+            label="B"
+            text={q.b}
+            selected={answers[current] === "B"}
+            onClick={() => handleSelect("B")}
+          />
+        </div>
+      </div>
+
+      {/* 이전 문항 */}
+      {current > 0 && (
+        <div className="flex justify-start">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setCurrent((c) => c - 1)}
+            className="text-muted-foreground"
+          >
+            <ChevronLeft className="h-4 w-4 mr-1" />
+            이전 문항
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ChoiceButton({
+  label,
+  text,
+  selected,
+  onClick,
+}: {
+  label: string;
+  text: string;
+  selected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "flex items-start gap-3 rounded-xl border px-4 py-4 text-left text-sm transition-all",
+        "hover:border-primary/60 hover:bg-primary/5",
+        selected
+          ? "border-primary bg-primary/10 font-medium"
+          : "border-border/40 bg-card/40",
+      )}
+    >
+      <span
+        className={cn(
+          "flex-shrink-0 h-6 w-6 rounded-full border text-xs font-bold flex items-center justify-center mt-0.5",
+          selected
+            ? "border-primary bg-primary text-primary-foreground"
+            : "border-border/60 text-muted-foreground",
+        )}
+      >
+        {label}
+      </span>
+      <span className="leading-relaxed">{text}</span>
+    </button>
+  );
+}
+
+function ResultCard({
+  info,
+  onRetest,
+}: {
+  info: (typeof TYPE_INFO)[keyof typeof TYPE_INFO];
+  onRetest: () => void;
+}) {
+  return (
+    <div className="space-y-6">
+      {/* 유형 헤더 */}
+      <div className="rounded-2xl border border-primary/30 bg-primary/5 p-6 text-center space-y-3">
+        <p className="text-5xl">{info.emoji}</p>
+        <div className="space-y-1">
+          <p className="font-mystic text-3xl font-bold tracking-widest text-primary">
+            {info.type}
+          </p>
+          <p className="font-mystic text-lg font-medium">{info.nickname}</p>
+        </div>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {info.summary}
+        </p>
+      </div>
+
+      {/* 강점 */}
+      <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
+        <h3 className="font-mystic font-semibold text-sm text-accent">✨ 강점</h3>
+        <ul className="space-y-1.5">
+          {info.strengths.map((s) => (
+            <li key={s} className="flex items-center gap-2 text-sm">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+              {s}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* 주의점 */}
+      <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
+        <h3 className="font-mystic font-semibold text-sm text-muted-foreground">💡 이런 점 주의해</h3>
+        <ul className="space-y-1.5">
+          {info.cautions.map((c) => (
+            <li key={c} className="flex items-center gap-2 text-sm text-muted-foreground">
+              <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/50 flex-shrink-0" />
+              {c}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* 잘 맞는 유형 */}
+      <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
+        <h3 className="font-mystic font-semibold text-sm">💞 잘 맞는 유형</h3>
+        <div className="flex gap-2 flex-wrap">
+          {info.compatibleWith.map((t) => (
+            <span
+              key={t}
+              className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-mystic font-semibold text-primary"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <p className="text-center text-xs text-muted-foreground">
+        이 결과는 운세·타로·사주 풀이에 자동으로 반영돼.
+      </p>
+
+      <Button
+        variant="outline"
+        size="sm"
+        className="w-full"
+        onClick={onRetest}
+      >
+        다시 테스트하기
+      </Button>
+    </div>
+  );
+}

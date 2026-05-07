@@ -57,11 +57,14 @@ const BRANCH_TO_ELEMENT: Record<string, ElementKey> = {
 };
 
 const ELEMENT_TONE: Record<ElementKey, string> = {
-  wood:  "bg-[oklch(0.65_0.16_145)]/15 text-[oklch(0.78_0.18_145)]",
-  fire:  "bg-destructive/15 text-destructive",
-  earth: "bg-[oklch(0.72_0.10_60)]/20 text-[oklch(0.52_0.10_60)]",
-  metal: "bg-muted-foreground/15 text-foreground",
-  water: "bg-[oklch(0.45_0.20_250)]/20 text-[oklch(0.65_0.15_250)]",
+  wood: "border-emerald-300/45 bg-gradient-to-br from-emerald-100/95 via-emerald-200/65 to-emerald-600/30 text-emerald-950 shadow-emerald-950/10 dark:from-emerald-400/25 dark:via-emerald-500/18 dark:to-emerald-950/55 dark:text-emerald-100",
+  fire: "border-rose-300/50 bg-gradient-to-br from-rose-100/95 via-red-200/65 to-red-600/35 text-red-950 shadow-red-950/10 dark:from-red-400/25 dark:via-red-500/18 dark:to-red-950/55 dark:text-red-100",
+  earth:
+    "border-amber-300/55 bg-gradient-to-br from-amber-100/95 via-yellow-200/65 to-orange-500/30 text-amber-950 shadow-amber-950/10 dark:from-amber-300/24 dark:via-yellow-500/18 dark:to-amber-950/55 dark:text-amber-100",
+  metal:
+    "border-stone-300/65 bg-gradient-to-br from-stone-50/95 via-zinc-200/75 to-zinc-500/30 text-zinc-950 shadow-zinc-950/10 dark:from-zinc-200/22 dark:via-zinc-400/16 dark:to-zinc-950/55 dark:text-zinc-100",
+  water:
+    "border-sky-300/50 bg-gradient-to-br from-sky-100/95 via-cyan-200/65 to-blue-600/30 text-sky-950 shadow-sky-950/10 dark:from-sky-400/24 dark:via-blue-500/16 dark:to-blue-950/60 dark:text-sky-100",
 };
 
 export function SajuPillars({ pillars }: SajuPillarsProps) {
@@ -96,15 +99,28 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
   }, []);
 
   return (
-    <Card className="border-border/40 bg-card/50 backdrop-blur">
-      <CardHeader className="pb-3">
-        <CardTitle className="font-mystic text-lg">사주팔자</CardTitle>
-        <CardDescription className="text-xs">
-          네 기둥 여덟 글자 — 글자를 누르면 의미가 펼쳐져.
-        </CardDescription>
+    <Card className="relative overflow-visible border-amber-200/70 bg-[linear-gradient(135deg,oklch(0.98_0.018_88/0.92),oklch(0.91_0.045_82/0.78)),radial-gradient(circle_at_top_left,oklch(0.88_0.09_95/0.34),transparent_34%),radial-gradient(circle_at_bottom_right,oklch(0.72_0.11_35/0.22),transparent_38%)] shadow-[0_24px_70px_oklch(0.16_0.05_55/0.18)] backdrop-blur dark:border-amber-300/20 dark:bg-[linear-gradient(135deg,oklch(0.22_0.035_55/0.82),oklch(0.14_0.025_55/0.92)),radial-gradient(circle_at_top_left,oklch(0.68_0.11_88/0.22),transparent_36%),radial-gradient(circle_at_bottom_right,oklch(0.50_0.10_25/0.18),transparent_40%)]">
+      <div
+        className="pointer-events-none absolute inset-0 rounded-xl opacity-45 [background-image:linear-gradient(90deg,oklch(0.50_0.04_80/0.08)_1px,transparent_1px),linear-gradient(0deg,oklch(0.50_0.04_80/0.08)_1px,transparent_1px)] [background-size:18px_18px]"
+        aria-hidden
+      />
+      <CardHeader className="relative pb-4">
+        <div className="flex items-start justify-between gap-4">
+          <div className="space-y-1.5">
+            <CardTitle className="font-mystic text-xl text-amber-950 dark:text-amber-50">
+              사주팔자
+            </CardTitle>
+            <CardDescription className="text-xs text-stone-600 dark:text-amber-100/65">
+              네 기둥 여덟 글자 — 글자를 누르면 의미가 펼쳐져.
+            </CardDescription>
+          </div>
+          <div className="hidden rounded-full border border-amber-300/60 bg-amber-50/70 px-3 py-1 text-[10px] font-medium text-amber-900 shadow-inner shadow-white/50 dark:border-amber-200/15 dark:bg-amber-200/10 dark:text-amber-100/80 sm:block">
+            四柱
+          </div>
+        </div>
       </CardHeader>
-      <CardContent>
-        <div ref={wrapperRef} className="grid grid-cols-4 gap-3">
+      <CardContent className="relative">
+        <div ref={wrapperRef} className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {pillarKeys.map((key) => {
             const pillar = pillars[key];
             const label = PILLAR_LABEL[key];
@@ -115,11 +131,16 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
             return (
               <div
                 key={key}
-                className="flex flex-col items-center gap-2 text-center"
+                className="relative flex min-w-0 flex-col items-center gap-2 rounded-xl border border-amber-200/65 bg-white/42 px-2.5 py-3 text-center shadow-[inset_0_1px_0_rgb(255_255_255/0.55),0_10px_30px_oklch(0.18_0.04_55/0.08)] dark:border-amber-200/10 dark:bg-white/[0.045]"
               >
-                <span className="text-[11px] font-medium text-muted-foreground">
-                  {label.ko}
-                </span>
+                <div className="space-y-0.5">
+                  <span className="block text-[11px] font-semibold text-stone-600 dark:text-amber-100/70">
+                    {label.ko}
+                  </span>
+                  <span className="block text-[10px] text-stone-500 dark:text-amber-100/45">
+                    {label.desc}
+                  </span>
+                </div>
                 {pillar ? (
                   <>
                     <Char
@@ -149,21 +170,18 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
                     <CharEmpty />
                   </>
                 )}
-                <span className="text-[10px] text-muted-foreground/70">
-                  {label.desc}
-                </span>
               </div>
             );
           })}
         </div>
 
         {!pillars.hour ? (
-          <p className="mt-4 text-center text-xs text-muted-foreground">
+          <p className="mt-4 rounded-lg border border-amber-200/55 bg-amber-50/45 px-3 py-2 text-center text-xs text-stone-600 dark:border-amber-200/10 dark:bg-amber-200/5 dark:text-amber-100/65">
             태어난 시각이 비어있어 시주는 비워뒀어.
           </p>
         ) : null}
 
-        <p className="mt-3 text-center text-[11px] text-muted-foreground/70">
+        <p className="mt-3 text-center text-[11px] text-stone-500 dark:text-amber-100/45">
           글자를 탭하면 음양·오행·뜻을 볼 수 있어.
         </p>
       </CardContent>
@@ -194,17 +212,18 @@ function Char({ value, kind, id, active, onToggle }: CharProps) {
         aria-controls={`${id}-popover`}
         onClick={onToggle}
         className={cn(
-          "flex aspect-square w-full max-w-[56px] mx-auto flex-col items-center justify-center rounded-2xl transition-all",
-          "hover:scale-105 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
-          active && "ring-2 ring-primary/60 scale-105 shadow-md",
+          "mx-auto flex aspect-square w-full max-w-[62px] flex-col items-center justify-center rounded-xl border transition-all",
+          "shadow-lg ring-1 ring-white/35 hover:-translate-y-0.5 hover:scale-[1.03] hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70",
+          active &&
+            "scale-[1.04] border-amber-300 ring-2 ring-amber-400/70 shadow-xl",
           tone,
         )}
       >
-        <span className="font-mystic text-lg font-semibold leading-none sm:text-xl">
+        <span className="font-mystic text-2xl font-semibold leading-none sm:text-3xl">
           {value}
         </span>
         {ko ? (
-          <span className="mt-1 text-[10px] opacity-70">{ko}</span>
+          <span className="mt-1 text-[10px] font-medium opacity-75">{ko}</span>
         ) : null}
       </button>
 
@@ -232,13 +251,12 @@ function CharPopover({
       role="dialog"
       className={cn(
         "absolute left-1/2 top-full z-30 mt-2 w-56 -translate-x-1/2",
-        "rounded-xl border border-border/60 bg-popover/95 p-3 text-left text-xs",
-        "shadow-xl backdrop-blur-md",
+        "rounded-xl border border-amber-200/70 bg-amber-50/95 p-3 text-left text-xs text-stone-800",
+        "shadow-2xl shadow-stone-950/15 backdrop-blur-md dark:border-amber-200/15 dark:bg-stone-950/95 dark:text-amber-50",
       )}
     >
-      {/* arrow */}
       <span
-        className="absolute -top-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 border-l border-t border-border/60 bg-popover/95"
+        className="absolute -top-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 border-l border-t border-amber-200/70 bg-amber-50/95 dark:border-amber-200/15 dark:bg-stone-950/95"
         aria-hidden
       />
 
@@ -246,41 +264,43 @@ function CharPopover({
         <span className="font-mystic text-2xl font-semibold leading-none">
           {meaning.char}
         </span>
-        <span className="text-sm text-muted-foreground">{meaning.ko}</span>
-        <span className="ml-auto text-[10px] text-muted-foreground/80">
+        <span className="text-sm text-stone-500 dark:text-amber-100/60">
+          {meaning.ko}
+        </span>
+        <span className="ml-auto rounded-full bg-amber-200/45 px-2 py-0.5 text-[10px] text-amber-900 dark:bg-amber-200/10 dark:text-amber-100/80">
           {kind === "stem" ? "천간" : "지지"}
         </span>
       </div>
 
       <dl className="mt-2 grid grid-cols-2 gap-x-2 gap-y-1 text-[11px]">
         <div className="flex items-center gap-1">
-          <dt className="text-muted-foreground/70">음양</dt>
+          <dt className="text-stone-500 dark:text-amber-100/50">음양</dt>
           <dd className="font-medium">{polarityLabel}</dd>
         </div>
         <div className="flex items-center gap-1">
-          <dt className="text-muted-foreground/70">오행</dt>
+          <dt className="text-stone-500 dark:text-amber-100/50">오행</dt>
           <dd className="font-medium">{elementLabel}</dd>
         </div>
         {kind === "branch" ? (
           <>
             <div className="flex items-center gap-1">
-              <dt className="text-muted-foreground/70">동물</dt>
+              <dt className="text-stone-500 dark:text-amber-100/50">동물</dt>
               <dd className="font-medium">{meaning.animal}</dd>
             </div>
             <div className="flex items-center gap-1">
-              <dt className="text-muted-foreground/70">시간</dt>
+              <dt className="text-stone-500 dark:text-amber-100/50">시간</dt>
               <dd className="font-medium tabular-nums">{meaning.timeRange}</dd>
             </div>
           </>
         ) : (
           <div className="col-span-2 flex items-center gap-1">
-            <dt className="text-muted-foreground/70">상징</dt>
+            <dt className="text-stone-500 dark:text-amber-100/50">상징</dt>
             <dd className="font-medium">{meaning.symbol}</dd>
           </div>
         )}
       </dl>
 
-      <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
+      <p className="mt-2 text-[11px] leading-relaxed text-stone-600 dark:text-amber-100/65">
         {meaning.description}
       </p>
     </div>
@@ -289,8 +309,8 @@ function CharPopover({
 
 function CharEmpty() {
   return (
-    <div className="flex aspect-square w-full max-w-[56px] mx-auto items-center justify-center rounded-2xl border border-dashed border-border/40 bg-card/20">
-      <span className="text-xs text-muted-foreground">·</span>
+    <div className="mx-auto flex aspect-square w-full max-w-[62px] items-center justify-center rounded-xl border border-dashed border-amber-300/45 bg-white/25 dark:border-amber-200/15 dark:bg-white/[0.03]">
+      <span className="text-xs text-stone-400 dark:text-amber-100/35">·</span>
     </div>
   );
 }
