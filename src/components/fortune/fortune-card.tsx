@@ -1,4 +1,3 @@
-import { Sparkles } from "lucide-react";
 
 import {
   Card,
@@ -39,13 +38,11 @@ export function FortuneCard({ fortune }: FortuneCardProps) {
           {fortune.content}
         </p>
 
-        <div className="grid grid-cols-1 gap-3 border-t border-border/40 pt-4 text-sm sm:grid-cols-3">
-          <LuckyItem
-            icon={<Sparkles className="h-4 w-4" aria-hidden />}
-            label="행운의 색"
-            value={fortune.luckyColor ?? "—"}
-          />
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-border/40 pt-3 text-xs text-muted-foreground">
+          <LuckyItem label="행운의 색" value={fortune.luckyColor ?? "—"} />
+          <span className="text-border/60">·</span>
           <LuckyItem label="행운의 수" value={String(fortune.luckyNumber ?? "—")} />
+          <span className="text-border/60">·</span>
           <LuckyItem label="행운의 방향" value={fortune.luckyDirection ?? "—"} />
         </div>
 
@@ -81,22 +78,11 @@ function ScoreBadge({ score }: { score: number }) {
   );
 }
 
-function LuckyItem({
-  icon,
-  label,
-  value,
-}: {
-  icon?: React.ReactNode;
-  label: string;
-  value: string;
-}) {
+function LuckyItem({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-border/45 bg-card/35 px-3 py-3 text-center shadow-sm">
-      <span className="flex items-center gap-1 text-xs text-muted-foreground">
-        {icon}
-        {label}
-      </span>
-      <span className="mt-1 block font-mystic font-medium">{value}</span>
-    </div>
+    <span className="flex items-center gap-1.5">
+      <span className="text-muted-foreground/70">{label}</span>
+      <span className="font-mystic font-semibold text-foreground/90">{value}</span>
+    </span>
   );
 }
