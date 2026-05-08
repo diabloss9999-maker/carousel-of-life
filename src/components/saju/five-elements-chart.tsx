@@ -17,7 +17,7 @@ const ELEMENTS = [
   { key: "fire"  as const, ko: "불",   hanja: "火", bar: "bg-gradient-to-r from-rose-400 to-red-600",     dot: "bg-red-500",     text: "text-red-600"     },
   { key: "earth" as const, ko: "흙",   hanja: "土", bar: "bg-gradient-to-r from-amber-400 to-orange-500", dot: "bg-amber-500",   text: "text-amber-700"   },
   { key: "metal" as const, ko: "쇠",   hanja: "金", bar: "bg-gradient-to-r from-zinc-300 to-zinc-500",    dot: "bg-zinc-400",    text: "text-zinc-600"    },
-  { key: "water" as const, ko: "물",   hanja: "水", bar: "bg-gradient-to-r from-sky-400 to-blue-600",     dot: "bg-blue-600",    text: "text-blue-700 dark:text-blue-400"    },
+  { key: "water" as const, ko: "물",   hanja: "水", bar: "bg-gradient-to-r from-sky-400 to-blue-600",     dot: "bg-blue-600",    text: "text-sky-400"    },
 ];
 
 export function FiveElementsChart({ elements }: FiveElementsChartProps) {
