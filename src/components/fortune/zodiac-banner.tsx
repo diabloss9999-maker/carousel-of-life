@@ -44,11 +44,19 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
     const cz = getChineseZodiac(birthDate);
     return (
       <div className="flex flex-col items-center gap-3">
-        <div className="flex h-36 w-36 sm:h-44 sm:w-44 items-center justify-center rounded-2xl border border-border/40 bg-card/60 backdrop-blur shadow-xl">
-          <span className="text-7xl sm:text-8xl">{cz.emoji}</span>
+        <div className="relative w-36 sm:w-44 aspect-[3/4] overflow-hidden rounded-2xl shadow-xl">
+          <Image
+            src={`/chinese-zodiac/${cz.id}.png`}
+            alt={cz.ko}
+            fill
+            className="object-cover"
+            priority
+          />
         </div>
         <div className="text-center space-y-0.5">
-          <p className="font-mystic text-lg font-semibold">{cz.ko}</p>
+          <p className="font-mystic text-lg font-semibold">
+            {cz.emoji} {cz.ko}
+          </p>
         </div>
       </div>
     );
