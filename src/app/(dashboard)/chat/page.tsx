@@ -8,7 +8,7 @@ import {
 import { QuotaBar } from "@/components/fortune/quota-bar";
 import { CharacterSelect } from "@/components/chat/character-select";
 import { requireProfile } from "@/lib/auth/get-user";
-import { listSessions } from "@/lib/chat/service";
+import { listTodaySessions } from "@/lib/chat/service";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { formatKoreanDate } from "@/lib/utils";
@@ -23,7 +23,7 @@ export default async function ChatPage() {
   const { profile } = await requireProfile();
 
   const [sessions, usage, subscribed] = await Promise.all([
-    listSessions(profile.userId, 30),
+    listTodaySessions(profile.userId),
     getTodayUsage(profile.userId),
     hasActiveSubscription(profile.userId),
   ]);
@@ -53,11 +53,11 @@ export default async function ChatPage() {
         </CardContent>
       </Card>
 
-      {/* 지난 대화 목록 */}
+      {/* 오늘의 대화 목록 */}
       {sessions.length > 0 && (
         <section className="space-y-3">
           <h2 className="font-mystic text-xl font-semibold tracking-tight">
-            지난 대화
+            오늘의 대화
           </h2>
           <ul className="space-y-2">
             {sessions.map((s) => {

@@ -7,7 +7,7 @@
  */
 import "server-only";
 
-import { and, asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq, gte } from "drizzle-orm";
 
 import { db } from "@/db";
 import {
@@ -60,6 +60,20 @@ export async function listSessions(
     .where(eq(chatSessions.userId, userId))
     .orderBy(desc(chatSessions.lastMessageAt))
     .limit(limit);
+}
+
+/**
+ * 오늘(KST 기준) 생성된 채팅 세션만 반환.
+ */
+export async function listTodaySessions(userId: string): Promise<ChatSession[]> {
+  const todayKst = new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Seoul" });
+  const todayStartUtc = new Date(`${todayKst}T00:00:00+09:00`);
+
+  return db
+    .select()
+    .from(chatSessions)
+    .where(and(eq(chatSessions.userId, userId), gte(chatSessions.createdAt, todayStartUtc)))
+    .orderBy(desc(chatSessions.lastMessageAt));
 }
 
 /**
