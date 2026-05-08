@@ -82,17 +82,17 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {/* 카드 뒷면 3장 미리보기 — 왼쪽 단일 카드와 높이 맞춤 */}
+        {/* 카드 뒷면 3장 미리보기 — 왼쪽 단일 카드와 크기·위치 맞춤 */}
         <div className="flex justify-center mb-4">
           {[
-            { rotate: -8, translateY: 8 },
-            { rotate: 0,  translateY: 0 },
-            { rotate: 8,  translateY: 8 },
+            { rotate: -10, translateY: 10 },
+            { rotate: 0,   translateY: 0  },
+            { rotate: 10,  translateY: 10 },
           ].map(({ rotate, translateY }, i) => (
             <div
               key={i}
               className={cn(
-                "w-28 sm:w-36 -ml-8 first:ml-0 transition-opacity duration-500",
+                "w-36 sm:w-44 -ml-14 first:ml-0 transition-opacity duration-500",
                 isPending && "opacity-60",
                 i === 1 ? "z-10" : "z-0",
               )}
