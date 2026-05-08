@@ -55,7 +55,7 @@ export const FORTUNE_CATEGORIES = [
   { id: "health",  label: "건강",        longLabel: "건강 운" },
   { id: "study",   label: "학업",        longLabel: "학업·시험 운" },
   { id: "zodiac",  label: "별자리",      longLabel: "별자리 운세" },
-  { id: "chinese_zodiac", label: "12간지", longLabel: "12간지 띠 운세" },
+  { id: "chinese_zodiac", label: "십이간지", longLabel: "십이간지 띠 운세" },
 ] as const;
 
 export type FortuneCategoryId = (typeof FORTUNE_CATEGORIES)[number]["id"];
