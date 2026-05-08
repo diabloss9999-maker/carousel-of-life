@@ -254,3 +254,38 @@ body[data-time="day"] .dark .app-surface {
     }
   }
 }
+
+@layer utilities {
+  /* =========================================================
+     Safe Area Insets
+     iPhone Dynamic Island / Galaxy 펀치홀 / 홈 인디케이터 대응
+     ========================================================= */
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .pl-safe {
+    padding-left: env(safe-area-inset-left, 0px);
+  }
+  .pr-safe {
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  /* 기존 패딩에 safe area를 추가 (max 사용으로 최솟값 보장) */
+  .px-safe-4 {
+    padding-left: max(1rem, env(safe-area-inset-left, 1rem));
+    padding-right: max(1rem, env(safe-area-inset-right, 1rem));
+  }
+  .px-safe-6 {
+    padding-left: max(1.5rem, env(safe-area-inset-left, 1.5rem));
+    padding-right: max(1.5rem, env(safe-area-inset-right, 1.5rem));
+  }
+
+  /* 터치 타깃 최솟값 44px (Apple HIG / Material Design 기준) */
+  .min-touch {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
