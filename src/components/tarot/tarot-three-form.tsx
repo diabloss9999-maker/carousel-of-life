@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useActionState, useState } from "react";
 import { Loader2, Lock, Sparkles } from "lucide-react";
@@ -81,6 +82,28 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
+        {/* 카드 뒷면 3장 미리보기 */}
+        <div className="flex justify-center gap-2 mb-4">
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className={cn(
+                "w-24 sm:w-28 transition-opacity duration-500",
+                isPending && "opacity-60",
+              )}
+              style={{ rotate: `${(i - 1) * 5}deg` }}
+            >
+              <Image
+                src="/tarot/card_back.png"
+                alt="타로 카드 뒷면"
+                width={448}
+                height={672}
+                className="w-full rounded-xl shadow-lg"
+              />
+            </div>
+          ))}
+        </div>
+
         <form action={formAction} className="space-y-4">
           <div className="space-y-1.5">
             <Label htmlFor="three-question">

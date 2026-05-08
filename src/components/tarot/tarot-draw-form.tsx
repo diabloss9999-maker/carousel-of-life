@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useActionState, useState } from "react";
 import { Loader2, Sparkles } from "lucide-react";
@@ -46,6 +47,19 @@ export function TarotDrawForm() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* 카드 뒷면 미리보기 */}
+        <div className="flex justify-center">
+          <div className={cn("w-36 sm:w-44 transition-opacity duration-500", isPending && "opacity-60")}>
+            <Image
+              src="/tarot/card_back.png"
+              alt="타로 카드 뒷면"
+              width={448}
+              height={672}
+              className="w-full rounded-xl shadow-lg"
+            />
+          </div>
+        </div>
+
         <form action={formAction} className="space-y-4">
           <div className="space-y-1.5">
             <Label htmlFor="question">
