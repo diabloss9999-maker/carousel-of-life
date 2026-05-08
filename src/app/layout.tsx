@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import Image from "next/image";
 import { Toaster } from "sonner";
 
 import { ThemeProvider } from "@/components/theme-provider";
+import { TimeAwareBg } from "@/components/layout/time-aware-bg";
 import { defaultMetadata } from "@/config/site";
 
 import "./globals.css";
@@ -39,15 +39,9 @@ export default function RootLayout({
         />
       </head>
       <body className="relative min-h-full text-foreground">
-        {/* 모바일 배경 */}
-        <div aria-hidden className="pointer-events-none fixed inset-0 -z-20 sm:hidden">
-          <Image src="/mystic-bg-mobile.png" alt="" fill priority sizes="100vw" className="object-cover object-center" />
-        </div>
-        {/* 데스크톱 배경 */}
-        <div aria-hidden className="pointer-events-none fixed inset-0 -z-20 hidden sm:block">
-          <Image src="/mystic-bg-wide.png" alt="" fill priority sizes="100vw" className="object-cover object-center" />
-        </div>
-        {/* 가독성 오버레이 — 밝은 배경에 맞게 최소화 */}
+        {/* KST 시간대 배경 — 06~20시 낮, 21~05시 밤 */}
+        <TimeAwareBg />
+        {/* 가독성 오버레이 */}
         <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 bg-white/10" />
 
         <ThemeProvider

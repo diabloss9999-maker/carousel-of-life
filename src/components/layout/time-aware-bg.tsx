@@ -1,0 +1,91 @@
+"use client";
+
+/**
+ * KST 시간에 따라 배경 이미지를 자동으로 전환하는 컴포넌트.
+ *
+ * 06:00 ~ 20:59 → 천국의 회전목마 (밝은 낮 배경)
+ * 21:00 ~ 05:59 → 밤 회전목마 (어두운 밤 배경)
+ */
+
+import Image from "next/image";
+import { useEffect, useState } from "react";
+
+function getKstHour(): number {
+  return new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }),
+  ).getHours();
+}
+
+function isNightTime(hour: number): boolean {
+  return hour >= 21 || hour < 6;
+}
+
+export function TimeAwareBg() {
+  // SSR 기본값: 낮 (깜빡임 최소화)
+  const [night, setNight] = useState(false);
+
+  useEffect(() => {
+    const hour = getKstHour();
+    setNight(isNightTime(hour));
+
+    // 자정·새벽 6시·밤 9시에 자동 전환하도록 1분마다 체크
+    const timer = setInterval(() => {
+      const h = getKstHour();
+      setNight(isNightTime(h));
+    }, 60_000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const wideSrc   = night ? "/mystic-bg-night.png"        : "/mystic-bg-wide.png";
+  const mobileSrc = night ? "/mystic-bg-night-mobile.png" : "/mystic-bg-mobile.png";
+
+  return (
+    <>
+      {/* 모바일 배경 */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 -z-20 sm:hidden">
+        <Image
+          key={mobileSrc}
+          src={mobileSrc}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center transition-opacity duration-700"
+        />
+      </div>
+      {/* 데스크톱 배경 */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 -z-20 hidden sm:block">
+        <Image
+          key={wideSrc}
+          src={wideSrc}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center transition-opacity duration-700"
+        />
+      </div>
+    </>
+  );
+}
+
+/**
+ * 헤더 배경 src를 시간대에 맞게 반환하는 훅.
+ * dashboard layout 헤더에서 사용.
+ */
+export function useHeaderBg(): string {
+  const [src, setSrc] = useState("/header-bg.png");
+
+  useEffect(() => {
+    const update = () => {
+      const h = getKstHour();
+      setSrc(isNightTime(h) ? "/header-bg-night.png" : "/header-bg.png");
+    };
+    update();
+    const timer = setInterval(update, 60_000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return src;
+}

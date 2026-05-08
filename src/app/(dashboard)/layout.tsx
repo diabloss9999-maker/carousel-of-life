@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { LogOut } from "lucide-react";
 
+import { TimeAwareHeader } from "@/components/layout/time-aware-header";
+
 import { Button } from "@/components/ui/button";
 import { mainNav } from "@/config/navigation";
 import { ROUTES } from "@/lib/constants";
@@ -17,7 +19,7 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-40 border-b border-border/45 bg-background/72 backdrop-blur-xl">
+      <TimeAwareHeader className="sticky top-0 z-40 border-b border-black/10 shadow-sm">
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
           <Link
             href={ROUTES.today}
@@ -56,7 +58,7 @@ export default async function DashboardLayout({
             </Button>
           </form>
         </div>
-      </header>
+      </TimeAwareHeader>
 
       <main className="flex-1">
         <div className="mx-auto w-full max-w-6xl px-4 py-7 sm:px-6 md:py-10">
