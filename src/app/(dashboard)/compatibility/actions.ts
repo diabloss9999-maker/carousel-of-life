@@ -181,10 +181,12 @@ export async function savePartnerAction(
       gender: parsed.data.gender,
       mbti: parsed.data.mbti?.toUpperCase() || null,
     });
-  } catch {
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    const isDuplicate = msg.includes("unique") || msg.includes("duplicate") || msg.includes("23505");
     return {
       kind: "error",
-      message: "이미 같은 이름의 상대가 저장돼 있어.",
+      message: isDuplicate ? "이미 같은 이름의 상대가 저장돼 있어." : `저장 실패: ${msg}`,
     };
   }
 
