@@ -87,7 +87,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
         />
       )}
 
-      <FortuneTrendCard trend={trend} />
+      {category === "general" && <FortuneTrendCard trend={trend} />}
     </div>
   );
 }
