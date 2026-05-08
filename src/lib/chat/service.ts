@@ -19,6 +19,11 @@ import {
 } from "@/db/schema";
 import { MYSTIC_PERSONA } from "@/lib/ai/personas";
 import { buildChatContext } from "@/lib/ai/prompts";
+import {
+  buildCharacterSystemPrompt,
+  DEFAULT_CHARACTER,
+  type CharacterId,
+} from "@/lib/chat/characters";
 import { ensureSajuCalculated } from "@/lib/saju/calculate";
 import { FREE_DAILY_LIMITS } from "@/lib/constants";
 import { checkAndIncrementQuota } from "@/lib/usage/quota";
@@ -29,12 +34,14 @@ import { checkAndIncrementQuota } from "@/lib/usage/quota";
 export async function createSession(opts: {
   userId: string;
   title?: string;
+  character?: string;
 }): Promise<ChatSession> {
   const [row] = await db
     .insert(chatSessions)
     .values({
       userId: opts.userId,
       title: opts.title ?? "새로운 문답",
+      character: opts.character ?? DEFAULT_CHARACTER,
     })
     .returning();
   return row;
@@ -231,9 +238,12 @@ export async function prepareSendMessage(opts: {
   const isFirstTurn =
     history.filter((m) => m.role === "user").length === 1; // 방금 저장한 것 포함
 
+  // 캐릭터별 시스템 프롬프트 — 캐릭터가 있으면 캐릭터 프롬프트, 없으면 기본 페르소나.
+  const characterId = (session.character ?? DEFAULT_CHARACTER) as CharacterId;
+  const userCtx = buildChatContext(profile);
   const systemPrompt = isFirstTurn
-    ? `${MYSTIC_PERSONA}\n\n${buildChatContext(profile)}`
-    : MYSTIC_PERSONA;
+    ? buildCharacterSystemPrompt(characterId, userCtx)
+    : buildCharacterSystemPrompt(characterId, "");
 
   // 첫 턴이면 자동으로 제목도 짧게.
   if (isFirstTurn) {
