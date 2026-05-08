@@ -108,7 +108,7 @@ export function CardOrientationBadge({
         "inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium shadow-sm",
         isReversed
           ? "border-destructive/40 bg-destructive/10 text-destructive"
-          : "border-accent/40 bg-accent/15 text-accent-foreground",
+          : "border-primary/60 bg-primary text-primary-foreground",
       )}
     >
       {isReversed ? "거꾸로 선 카드" : "바로 선 카드"}
