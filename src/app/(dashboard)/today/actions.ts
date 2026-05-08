@@ -16,6 +16,8 @@ const categorySchema = z.enum([
   "career",
   "health",
   "study",
+  "zodiac",
+  "chinese_zodiac",
 ]);
 
 export interface FortuneActionState {
