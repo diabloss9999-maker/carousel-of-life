@@ -114,7 +114,7 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
   }, []);
 
   return (
-    <Card className="relative overflow-visible border-transparent bg-transparent shadow-none">
+    <Card className="relative overflow-visible border-white/20 bg-white/10 shadow-none backdrop-blur-md">
       <CardHeader className="relative pb-4">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1.5">

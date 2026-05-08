@@ -27,7 +27,7 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
   const weakest = sorted[sorted.length - 1];
 
   return (
-    <div className="space-y-4 rounded-2xl bg-black/30 backdrop-blur-sm px-5 py-4 border border-white/10">
+    <div className="space-y-4 rounded-2xl bg-white/10 backdrop-blur-md px-5 py-4 border border-white/20">
       {/* 타이틀 */}
       <div className="flex items-center justify-between">
         <div>
