@@ -108,11 +108,7 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
   }, []);
 
   return (
-    <Card className="relative overflow-visible border-amber-200/70 bg-[linear-gradient(135deg,oklch(0.98_0.018_88/0.92),oklch(0.91_0.045_82/0.78)),radial-gradient(circle_at_top_left,oklch(0.88_0.09_95/0.34),transparent_34%),radial-gradient(circle_at_bottom_right,oklch(0.72_0.11_35/0.22),transparent_38%)] shadow-[0_24px_70px_oklch(0.16_0.05_55/0.18)] backdrop-blur dark:border-amber-300/20 dark:bg-[linear-gradient(135deg,oklch(0.22_0.035_55/0.82),oklch(0.14_0.025_55/0.92)),radial-gradient(circle_at_top_left,oklch(0.68_0.11_88/0.22),transparent_36%),radial-gradient(circle_at_bottom_right,oklch(0.50_0.10_25/0.18),transparent_40%)]">
-      <div
-        className="pointer-events-none absolute inset-0 rounded-xl opacity-45 [background-image:linear-gradient(90deg,oklch(0.50_0.04_80/0.08)_1px,transparent_1px),linear-gradient(0deg,oklch(0.50_0.04_80/0.08)_1px,transparent_1px)] [background-size:18px_18px]"
-        aria-hidden
-      />
+    <Card className="relative overflow-visible border-transparent bg-transparent shadow-none">
       <CardHeader className="relative pb-4">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1.5">
