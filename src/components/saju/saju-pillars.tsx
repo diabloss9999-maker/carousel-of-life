@@ -245,16 +245,24 @@ function Char({ value, kind, id, active, onToggle }: CharProps) {
             </div>
           </div>
         ) : (
-          /* 천간 — 기존 칩 스타일 */
+          /* 천간 — 천간 카드 이미지 */
           <div className={cn(
-            "mx-auto flex aspect-square w-full max-w-[62px] flex-col items-center justify-center rounded-xl border shadow-lg ring-1 ring-white/35",
-            active && "border-amber-300 ring-2 ring-amber-400/70 shadow-xl",
-            tone,
+            "relative w-full aspect-[2/3] overflow-hidden rounded-xl border-2 shadow-lg transition-all",
+            active ? "border-amber-400 shadow-xl ring-2 ring-amber-400/60" : "border-white/30 shadow-md",
           )}>
-            <span className="font-mystic text-2xl font-semibold leading-none sm:text-3xl">
-              {value}
-            </span>
-            {ko ? (
+            <Image
+              src={`/cheongan/${value}.png`}
+              alt={ko || value}
+              fill
+              className="object-cover"
+              sizes="62px"
+            />
+            {/* 한자 오버레이 */}
+            <div className="absolute bottom-0 inset-x-0 bg-black/45 backdrop-blur-[2px] py-1 text-center">
+              <span className="font-mystic text-base font-bold text-white leading-none">{value}</span>
+            </div>
+            {/* 더미 닫기 태그 맞춤용 */}
+            {false && ko ? (
               <span className="mt-1 text-[10px] font-medium opacity-75">{ko}</span>
             ) : null}
           </div>
