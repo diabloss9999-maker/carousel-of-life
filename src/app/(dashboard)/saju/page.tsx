@@ -19,6 +19,7 @@ import {
   SajuPillars,
   type SajuPillarsValue,
 } from "@/components/saju/saju-pillars";
+import { SajuZodiacCards } from "@/components/saju/saju-zodiac-cards";
 import { requireProfile } from "@/lib/auth/get-user";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { asSajuDeepReading } from "@/lib/saju/deep-reading";
@@ -95,6 +96,7 @@ export default async function SajuPage() {
       {pillars && elements ? (
         <>
           <SajuPillars pillars={pillars} />
+          <SajuZodiacCards pillars={pillars} />
           <FiveElementsChart elements={elements} />
 
           {/* 심층 분석 영역 */}
