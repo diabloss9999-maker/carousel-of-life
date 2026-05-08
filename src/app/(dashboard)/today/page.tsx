@@ -6,6 +6,7 @@ import { FortuneCard } from "@/components/fortune/fortune-card";
 import { FortuneTrendCard } from "@/components/fortune/fortune-trend-card";
 import { GenerateFortuneForm } from "@/components/fortune/generate-fortune-form";
 import { QuotaBar } from "@/components/fortune/quota-bar";
+import { ZodiacBanner } from "@/components/fortune/zodiac-banner";
 import { requireProfile } from "@/lib/auth/get-user";
 import {
   FORTUNE_CATEGORIES,
@@ -77,6 +78,11 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
       />
 
       <CategoryTabs current={category} />
+
+      {/* 별자리·12간지 카드 배너 */}
+      {(category === "zodiac" || category === "chinese_zodiac") && (
+        <ZodiacBanner category={category} birthDate={profile.birthDate ?? null} />
+      )}
 
       {fortune ? (
         <FortuneCard fortune={fortune} />

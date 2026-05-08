@@ -48,12 +48,14 @@ export const AI_LIMITS = {
 
 /** 운세 카테고리. 라벨은 짧고 친근하게. */
 export const FORTUNE_CATEGORIES = [
-  { id: "general", label: "오늘 전반", longLabel: "오늘의 종합 운" },
-  { id: "love", label: "사랑", longLabel: "애정·연애 운" },
-  { id: "money", label: "돈", longLabel: "금전·재물 운" },
-  { id: "career", label: "일", longLabel: "직장·취업 운" },
-  { id: "health", label: "건강", longLabel: "건강 운" },
-  { id: "study", label: "공부", longLabel: "학업·시험 운" },
+  { id: "general", label: "오늘의 운세", longLabel: "오늘의 종합 운" },
+  { id: "love",    label: "사랑",        longLabel: "애정·연애 운" },
+  { id: "money",   label: "재산",        longLabel: "금전·재물 운" },
+  { id: "career",  label: "직장",        longLabel: "직장·취업 운" },
+  { id: "health",  label: "건강",        longLabel: "건강 운" },
+  { id: "study",   label: "학업",        longLabel: "학업·시험 운" },
+  { id: "zodiac",  label: "별자리",      longLabel: "별자리 운세" },
+  { id: "chinese_zodiac", label: "12간지", longLabel: "12간지 띠 운세" },
 ] as const;
 
 export type FortuneCategoryId = (typeof FORTUNE_CATEGORIES)[number]["id"];

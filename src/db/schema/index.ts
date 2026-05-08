@@ -53,6 +53,8 @@ export const fortuneCategoryEnum = pgEnum("fortune_category", [
   "career",
   "health",
   "study",
+  "zodiac",
+  "chinese_zodiac",
 ]);
 
 export const tarotSpreadEnum = pgEnum("tarot_spread", [

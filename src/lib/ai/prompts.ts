@@ -45,15 +45,19 @@ export type FortuneCategory =
   | "money"
   | "career"
   | "health"
-  | "study";
+  | "study"
+  | "zodiac"
+  | "chinese_zodiac";
 
 const FORTUNE_LABEL: Record<FortuneCategory, string> = {
   general: "오늘의 종합운",
   love: "애정운",
-  money: "금전운",
+  money: "재산·금전운",
   career: "직장·취업운",
   health: "건강운",
   study: "학업운",
+  zodiac: "별자리 운세",
+  chinese_zodiac: "12간지 띠 운세",
 };
 
 /**
@@ -69,6 +73,12 @@ export function buildDailyFortunePrompt(opts: {
   const ctx = buildUserContext({ profile: opts.profile });
   const label = FORTUNE_LABEL[opts.category];
 
+  // 별자리·12간지는 별도 기반으로 풀이
+  const isZodiac = opts.category === "zodiac" || opts.category === "chinese_zodiac";
+  const basis = isZodiac
+    ? `${label} 기반으로 풀이해주세요. 사주 대신 ${label}의 특성과 오늘의 기운을 접목해 풀이하세요.`
+    : `질문자의 사주와 ${opts.fortuneDate} 의 일진을 살펴 ${label}을(를) 풀이해주세요.`;
+
   return `[질문자 정보]
 ${ctx}
 
@@ -77,13 +87,13 @@ ${ctx}
 - 카테고리: ${label}
 
 [지시]
-질문자의 사주와 ${opts.fortuneDate} 의 일진을 살펴 ${label}을(를) 풀이해주세요.
+${basis}
 다음 JSON 스키마를 정확히 따라 단 하나의 JSON 객체로만 응답하세요. 추가 설명·markdown·코드펜스 없이 JSON 만 출력합니다.
 
 {
-  "score": 1-100 사이 정수 (운세 점수. 일진·사주 기운에 따라 솔직하게 산정. 좋은 날 75-90, 보통 45-74, 힘든 날 20-44. 매번 70점대만 주지 말고 실제 기운에 맞게 다양하게),
+  "score": 1-100 사이 정수 (운세 점수. 솔직하게 산정. 좋은 날 75-90, 보통 45-74, 힘든 날 20-44. 다양하게),
   "title": "20자 이내 한 줄 헤드라인 (반말 친구 톤)",
-  "content": "6-8문장의 본문 풀이. 모든 문장이 접속사·이어주는 말로 자연스럽게 이어지는 흐름. 사주 정보를 매번 반복 설명하지 말 것. 이름 호명은 처음에 한 번 정도만. 친한 친구가 옆에서 차근차근 설명해주는 톤. 추상적 표현보다 구체적인 상황·행동을 짚어줄 것.",
+  "content": "6-8문장의 본문 풀이. 자연스럽게 이어지는 흐름. 이름 호명은 처음에 한 번만. 친한 친구 톤. 구체적인 상황·행동을 짚어줄 것.",
   "luckyColor": "행운의 색 (한글 1-3 단어)",
   "luckyNumber": 1-99 사이 정수,
   "luckyDirection": "방향 (예: '동쪽', '북서쪽')"
