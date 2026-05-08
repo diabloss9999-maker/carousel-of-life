@@ -12,7 +12,6 @@ import {
   addPartner,
   deletePartner,
   getPartner,
-  RELATIONSHIP_OPTIONS,
 } from "@/lib/compatibility/partners";
 import { generateJson } from "@/lib/ai/generate";
 import { buildTwoPersonCompatPrompt } from "@/lib/ai/prompts";
@@ -90,14 +89,6 @@ export async function submitCompatibilityAction(
     };
   }
 
-  const savePartner = formData.get("savePartner") === "on";
-  const relationshipRaw = (formData.get("relationship") ?? "친구").toString();
-  const relationship = (RELATIONSHIP_OPTIONS as readonly string[]).includes(
-    relationshipRaw,
-  )
-    ? relationshipRaw
-    : "친구";
-
   let result;
   try {
     result = await createCompatibility({
@@ -119,20 +110,6 @@ export async function submitCompatibilityAction(
   }
 
   if (result.ok) {
-    if (savePartner) {
-      try {
-        await addPartner(profile.userId, {
-          name: parsed.data.name,
-          relationship,
-          birthDate: parsed.data.birthDate,
-          calendarSystem: parsed.data.calendarSystem,
-          gender: parsed.data.gender,
-          mbti: parsed.data.mbti?.toUpperCase() || null,
-        });
-      } catch {
-        // 동일 이름의 상대가 이미 저장돼 있으면 무시.
-      }
-    }
     revalidatePath(COMPATIBILITY_ROUTE);
     return { kind: "idle" };
   }
