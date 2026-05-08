@@ -226,14 +226,12 @@ export async function getRecentTarotReadings(
 export async function getTodayTarotReadings(
   userId: string,
 ): Promise<TarotReading[]> {
-  // KST 오늘 시작 시각 (UTC 기준)
-  const nowKst = new Date(
-    new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }),
-  );
-  const todayStartKst = new Date(nowKst);
-  todayStartKst.setHours(0, 0, 0, 0);
-  // KST → UTC (KST = UTC+9)
-  const todayStartUtc = new Date(todayStartKst.getTime() - 9 * 60 * 60 * 1000);
+  // KST 오늘 날짜 문자열 (예: "2026-05-09")
+  const todayKstStr = new Date().toLocaleDateString("sv-SE", {
+    timeZone: "Asia/Seoul",
+  });
+  // KST 자정 = "2026-05-09T00:00:00+09:00" → UTC로 변환
+  const todayStartUtc = new Date(`${todayKstStr}T00:00:00+09:00`);
 
   return db.query.tarotReadings.findMany({
     where: (t, { eq, gte, and }) =>
