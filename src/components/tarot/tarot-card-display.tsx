@@ -107,7 +107,7 @@ export function CardOrientationBadge({
       className={cn(
         "inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium shadow-sm",
         isReversed
-          ? "border-destructive/40 bg-destructive/10 text-destructive"
+          ? "border-destructive bg-destructive text-white"
           : "border-primary/60 bg-primary text-primary-foreground",
       )}
     >
