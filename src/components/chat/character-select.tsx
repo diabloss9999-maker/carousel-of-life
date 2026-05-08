@@ -58,13 +58,14 @@ export function CharacterSelect() {
                   : "border-border/40 bg-card/50 backdrop-blur",
               )}
             >
-              {/* 캐릭터 이미지 */}
-              <div className="relative w-full aspect-[2/3] overflow-hidden rounded-xl shadow-sm">
+              {/* 캐릭터 이미지 — 원본 비율 전체 표시 */}
+              <div className="relative w-full rounded-xl shadow-sm overflow-hidden">
                 <Image
                   src={char.imageSrc}
                   alt={char.name}
-                  fill
-                  className="object-contain transition-transform group-hover:scale-105"
+                  width={1024}
+                  height={1536}
+                  className="w-full h-auto transition-transform group-hover:scale-105"
                   sizes="(max-width: 640px) 33vw, 200px"
                 />
                 {isLoading && (
