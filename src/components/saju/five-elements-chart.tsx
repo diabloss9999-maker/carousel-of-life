@@ -1,10 +1,3 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 export interface FiveElementsValue {
@@ -19,230 +12,87 @@ interface FiveElementsChartProps {
   elements: FiveElementsValue;
 }
 
-const ELEMENTS: Array<{
-  key: keyof FiveElementsValue;
-  ko: string;
-  hanja: string;
-  /** stacked bar 칸 배경색 */
-  barColor: string;
-  /** 라벨 도트 색 */
-  dotColor: string;
-  /** 라벨 텍스트 색 */
-  textColor: string;
-  /** 부드러운 패널 배경 */
-  panelColor: string;
-}> = [
-  {
-    key: "wood",
-    ko: "나무",
-    hanja: "木",
-    barColor:
-      "bg-gradient-to-br from-emerald-200 via-emerald-400 to-emerald-700",
-    dotColor: "bg-emerald-500",
-    textColor: "text-emerald-700 dark:text-emerald-200",
-    panelColor:
-      "border-emerald-200/60 bg-emerald-50/65 dark:border-emerald-200/15 dark:bg-emerald-500/10",
-  },
-  {
-    key: "fire",
-    ko: "불",
-    hanja: "火",
-    barColor: "bg-gradient-to-br from-rose-200 via-red-400 to-red-700",
-    dotColor: "bg-red-500",
-    textColor: "text-red-700 dark:text-red-200",
-    panelColor:
-      "border-red-200/60 bg-red-50/65 dark:border-red-200/15 dark:bg-red-500/10",
-  },
-  {
-    key: "earth",
-    ko: "흙",
-    hanja: "土",
-    barColor: "bg-gradient-to-br from-amber-100 via-yellow-500 to-orange-700",
-    dotColor: "bg-amber-500",
-    textColor: "text-amber-700 dark:text-amber-200",
-    panelColor:
-      "border-amber-200/70 bg-amber-50/70 dark:border-amber-200/15 dark:bg-amber-400/10",
-  },
-  {
-    key: "metal",
-    ko: "쇠",
-    hanja: "金",
-    barColor: "bg-gradient-to-br from-zinc-50 via-zinc-300 to-zinc-600",
-    dotColor: "bg-zinc-500",
-    textColor: "text-zinc-700 dark:text-zinc-100",
-    panelColor:
-      "border-zinc-200/70 bg-zinc-50/70 dark:border-zinc-200/15 dark:bg-zinc-300/10",
-  },
-  {
-    key: "water",
-    ko: "물",
-    hanja: "水",
-    barColor: "bg-gradient-to-br from-sky-200 via-blue-500 to-blue-800",
-    dotColor: "bg-blue-600",
-    textColor: "text-blue-700 dark:text-sky-200",
-    panelColor:
-      "border-sky-200/70 bg-sky-50/70 dark:border-sky-200/15 dark:bg-blue-500/10",
-  },
+const ELEMENTS = [
+  { key: "wood"  as const, ko: "나무", hanja: "木", bar: "bg-gradient-to-r from-emerald-400 to-emerald-600", dot: "bg-emerald-500", text: "text-emerald-700" },
+  { key: "fire"  as const, ko: "불",   hanja: "火", bar: "bg-gradient-to-r from-rose-400 to-red-600",     dot: "bg-red-500",     text: "text-red-600"     },
+  { key: "earth" as const, ko: "흙",   hanja: "土", bar: "bg-gradient-to-r from-amber-400 to-orange-500", dot: "bg-amber-500",   text: "text-amber-700"   },
+  { key: "metal" as const, ko: "쇠",   hanja: "金", bar: "bg-gradient-to-r from-zinc-300 to-zinc-500",    dot: "bg-zinc-400",    text: "text-zinc-600"    },
+  { key: "water" as const, ko: "물",   hanja: "水", bar: "bg-gradient-to-r from-sky-400 to-blue-600",     dot: "bg-blue-500",    text: "text-blue-600"    },
 ];
 
 export function FiveElementsChart({ elements }: FiveElementsChartProps) {
-  const total =
-    elements.wood +
-    elements.fire +
-    elements.earth +
-    elements.metal +
-    elements.water;
-
-  const sorted = [...ELEMENTS].sort(
-    (a, b) => elements[b.key] - elements[a.key],
-  );
+  const total = ELEMENTS.reduce((s, e) => s + elements[e.key], 0) || 1;
+  const sorted = [...ELEMENTS].sort((a, b) => elements[b.key] - elements[a.key]);
   const strongest = sorted[0];
   const weakest = sorted[sorted.length - 1];
 
-  // 한 줄에 펼치기 위한 슬롯 배열. 각 칸 = 사주 1글자.
-  const slots: Array<(typeof ELEMENTS)[number]> = [];
-  for (const el of ELEMENTS) {
-    const count = elements[el.key];
-    for (let i = 0; i < count; i++) slots.push(el);
-  }
-
   return (
-    <Card className="relative overflow-hidden border-transparent bg-transparent shadow-none">
-      <CardHeader className="relative pb-4">
-        <div className="flex items-start justify-between gap-4">
-          <div className="space-y-1.5">
-            <CardTitle className="font-mystic text-xl text-amber-950 dark:text-amber-50">
-              오행 분포
-            </CardTitle>
-            <CardDescription className="text-xs text-stone-600 dark:text-amber-100/65">
-              사주 {total} 글자가 어떤 기운으로 채워졌는지 한눈에.
-            </CardDescription>
-          </div>
-          <div className="hidden rounded-full border border-amber-300/60 bg-amber-50/70 px-3 py-1 text-[10px] font-medium text-amber-900 shadow-inner shadow-white/50 dark:border-amber-200/15 dark:bg-amber-200/10 dark:text-amber-100/80 sm:block">
-            五行
-          </div>
+    <div className="space-y-4">
+      {/* 타이틀 */}
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="font-mystic text-xl font-semibold text-foreground/90">오행 분포</p>
+          <p className="text-xs text-muted-foreground mt-0.5">사주 {total}글자의 기운 분포</p>
         </div>
-      </CardHeader>
-      <CardContent className="relative space-y-5">
-        <div className="space-y-3 rounded-xl border border-amber-200/60 bg-white/40 p-3 shadow-[inset_0_1px_0_rgb(255_255_255/0.55),0_12px_30px_oklch(0.18_0.04_55/0.08)] dark:border-amber-200/10 dark:bg-white/[0.045]">
-          <div className="grid grid-cols-6 gap-1.5 sm:grid-cols-8">
-            {slots.map((el, i) => (
-              <div
-                key={i}
-                className={cn(
-                  "h-12 rounded-lg border border-white/45 shadow-[inset_0_1px_0_rgb(255_255_255/0.45),0_8px_18px_rgb(0_0_0/0.10)] transition-all hover:-translate-y-0.5 sm:h-14",
-                  el.barColor,
+        <span className="text-[11px] text-muted-foreground/60 font-medium">五行</span>
+      </div>
+
+      {/* 가로 바 차트 */}
+      <div className="space-y-2.5">
+        {ELEMENTS.map((el) => {
+          const count = elements[el.key];
+          const pct = Math.round((count / total) * 100);
+          return (
+            <div key={el.key} className="flex items-center gap-3">
+              {/* 이름 */}
+              <div className="w-10 flex-shrink-0 text-right">
+                <span className={cn("text-xs font-semibold", count === 0 ? "text-muted-foreground/40" : el.text)}>
+                  {el.ko}
+                </span>
+              </div>
+              {/* 바 */}
+              <div className="flex-1 h-4 rounded-full bg-black/8 overflow-hidden">
+                {count > 0 && (
+                  <div
+                    className={cn("h-full rounded-full transition-all", el.bar)}
+                    style={{ width: `${pct}%` }}
+                  />
                 )}
-                aria-label={`${el.ko} (${el.hanja})`}
-                title={`${el.ko} (${el.hanja})`}
-              />
-            ))}
-          </div>
+              </div>
+              {/* 숫자 */}
+              <div className="w-6 flex-shrink-0 text-center">
+                <span className={cn("font-mystic text-sm font-bold tabular-nums", count === 0 ? "text-muted-foreground/30" : el.text)}>
+                  {count}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
-            {ELEMENTS.map((el) => {
-              const count = elements[el.key];
-              return (
-                <div
-                  key={el.key}
-                  className={cn(
-                    "flex items-center justify-between gap-2 rounded-lg border px-2.5 py-2 text-xs transition-opacity",
-                    el.panelColor,
-                    count === 0 && "opacity-35",
-                  )}
-                >
-                  <span className="flex min-w-0 items-center gap-1.5">
-                    <span
-                      className={cn(
-                        "h-2.5 w-2.5 flex-shrink-0 rounded-full shadow-sm",
-                        el.dotColor,
-                      )}
-                      aria-hidden
-                    />
-                    <span className="truncate text-stone-600 dark:text-amber-100/65">
-                      {el.ko}
-                    </span>
-                  </span>
-                  <span
-                    className={cn(
-                      "font-mystic text-sm font-semibold tabular-nums",
-                      el.textColor,
-                    )}
-                  >
-                    {count}
-                  </span>
-                </div>
-              );
-            })}
+      {/* 강한/약한 기운 */}
+      <div className="flex gap-3 pt-1">
+        <div className="flex-1 rounded-xl bg-white/30 dark:bg-white/5 backdrop-blur border border-white/40 dark:border-white/10 px-4 py-3">
+          <p className="text-[10px] text-muted-foreground/70 mb-1">강한 기운</p>
+          <div className="flex items-center gap-1.5">
+            <span className={cn("h-2.5 w-2.5 rounded-full flex-shrink-0", strongest.dot)} />
+            <span className={cn("font-mystic font-semibold text-sm", strongest.text)}>
+              {strongest.ko}
+            </span>
+            <span className="text-xs text-muted-foreground/50 ml-0.5">{strongest.hanja}</span>
           </div>
         </div>
-
-        <div className="grid grid-cols-1 gap-3 border-t border-amber-200/55 pt-4 dark:border-amber-200/10 sm:grid-cols-2">
-          <Insight
-            title="강한 기운"
-            hanja={strongest.hanja}
-            value={strongest.ko}
-            textColor={strongest.textColor}
-            dotColor={strongest.dotColor}
-            panelColor={strongest.panelColor}
-          />
-          <Insight
-            title="약한 기운"
-            hanja={weakest.hanja}
-            value={weakest.ko}
-            textColor={weakest.textColor}
-            dotColor={weakest.dotColor}
-            panelColor={weakest.panelColor}
-            muted
-          />
+        <div className="flex-1 rounded-xl bg-white/30 dark:bg-white/5 backdrop-blur border border-white/40 dark:border-white/10 px-4 py-3">
+          <p className="text-[10px] text-muted-foreground/70 mb-1">약한 기운</p>
+          <div className="flex items-center gap-1.5">
+            <span className={cn("h-2.5 w-2.5 rounded-full flex-shrink-0", weakest.dot)} />
+            <span className="font-mystic font-semibold text-sm text-muted-foreground/70">
+              {weakest.ko}
+            </span>
+            <span className="text-xs text-muted-foreground/40 ml-0.5">{weakest.hanja}</span>
+          </div>
         </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-function Insight({
-  title,
-  hanja,
-  value,
-  textColor,
-  dotColor,
-  panelColor,
-  muted = false,
-}: {
-  title: string;
-  hanja: string;
-  value: string;
-  textColor: string;
-  dotColor: string;
-  panelColor: string;
-  muted?: boolean;
-}) {
-  return (
-    <div
-      className={cn(
-        "rounded-xl border px-3 py-3 shadow-[inset_0_1px_0_rgb(255_255_255/0.45),0_10px_24px_rgb(0_0_0/0.06)]",
-        panelColor,
-        muted && "opacity-80",
-      )}
-    >
-      <p className="text-[11px] font-medium text-stone-500 dark:text-amber-100/50">
-        {title}
-      </p>
-      <p
-        className={cn(
-          "mt-1 flex items-center gap-2 font-medium",
-          textColor,
-        )}
-      >
-        <span
-          className={cn("h-2.5 w-2.5 flex-shrink-0 rounded-full", dotColor)}
-          aria-hidden
-        />
-        <span className="font-mystic text-lg">
-          {value} <span className="text-xs opacity-60">{hanja}</span>
-        </span>
-      </p>
+      </div>
     </div>
   );
 }
