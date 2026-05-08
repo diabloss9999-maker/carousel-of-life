@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import { CategoryTabs } from "@/components/fortune/category-tabs";
 import { FortuneCard } from "@/components/fortune/fortune-card";
-import { FortuneTrendCard } from "@/components/fortune/fortune-trend-card";
+
 import { GenerateFortuneForm } from "@/components/fortune/generate-fortune-form";
 import { QuotaBar } from "@/components/fortune/quota-bar";
 import { ZodiacBanner } from "@/components/fortune/zodiac-banner";
@@ -14,7 +14,7 @@ import {
   type FortuneCategoryId,
 } from "@/lib/constants";
 import { getDailyFortune } from "@/lib/fortunes/service";
-import { getFortuneTrend } from "@/lib/fortunes/trend";
+
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { formatKoreanDate } from "@/lib/utils";
@@ -48,11 +48,10 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
 
   const { profile } = await requireProfile();
 
-  const [fortune, usage, subscribed, trend] = await Promise.all([
+  const [fortune, usage, subscribed] = await Promise.all([
     getDailyFortune(profile.userId, category),
     getTodayUsage(profile.userId),
     hasActiveSubscription(profile.userId),
-    getFortuneTrend(profile.userId, 14),
   ]);
 
   const today = formatKoreanDate(new Date());
@@ -93,7 +92,6 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
         />
       )}
 
-      {category === "general" && <FortuneTrendCard trend={trend} />}
     </div>
   );
 }

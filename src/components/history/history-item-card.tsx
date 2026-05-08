@@ -37,7 +37,7 @@ function FortuneRow({
             <span className="text-xs uppercase tracking-wide text-muted-foreground">
               {label} · {formatKoreanDate(new Date(item.createdAt))}
             </span>
-            <ScoreBadge score={item.score} />
+            
           </div>
           <p className="font-mystic font-medium leading-snug">{item.title}</p>
           <p className="text-sm text-muted-foreground line-clamp-2">
@@ -108,7 +108,7 @@ function CompatibilityRow({
             <span className="text-xs uppercase tracking-wide text-muted-foreground">
               궁합 · {formatKoreanDate(new Date(item.createdAt))}
             </span>
-            <ScoreBadge score={item.score} />
+            
           </div>
           <p className="font-mystic font-medium leading-snug">
             {item.partnerName}님과의 궁합

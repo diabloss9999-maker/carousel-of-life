@@ -7,7 +7,6 @@ import {
 import { ShareButton } from "@/components/shared/share-button";
 import type { DailyFortune } from "@/db/schema";
 import { FORTUNE_CATEGORIES, type FortuneCategoryId } from "@/lib/constants";
-import { cn } from "@/lib/utils";
 
 interface FortuneCardProps {
   fortune: DailyFortune;
@@ -23,12 +22,9 @@ export function FortuneCard({ fortune }: FortuneCardProps) {
   return (
     <Card className="app-surface">
       <CardHeader className="space-y-3">
-        <div className="flex items-center justify-between">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground">
-            {label}
-          </span>
-          <ScoreBadge score={fortune.score} />
-        </div>
+        <span className="text-xs uppercase tracking-wider text-muted-foreground">
+          {label}
+        </span>
         <h2 className="font-mystic text-2xl font-semibold leading-snug tracking-tight">
           {fortune.title}
         </h2>
@@ -49,32 +45,11 @@ export function FortuneCard({ fortune }: FortuneCardProps) {
         <div className="flex justify-end">
           <ShareButton
             title={`오늘의 ${label}: ${fortune.title}`}
-            text={`[${label}] ${fortune.score}점\n${fortune.title}\n\n${fortune.content}\n\n행운: ${fortune.luckyColor ?? "—"} / ${fortune.luckyNumber ?? "—"} / ${fortune.luckyDirection ?? "—"}`}
+            text={`[${label}] ${fortune.title}\n\n${fortune.content}\n\n행운: ${fortune.luckyColor ?? "—"} / ${fortune.luckyNumber ?? "—"} / ${fortune.luckyDirection ?? "—"}`}
           />
         </div>
       </CardContent>
     </Card>
-  );
-}
-
-function ScoreBadge({ score }: { score: number }) {
-  const tone =
-    score >= 80
-      ? "border-accent/40 bg-accent/15 text-accent"
-      : score >= 50
-        ? "border-primary/40 bg-primary/15 text-primary"
-        : "border-destructive/40 bg-destructive/10 text-destructive";
-
-  return (
-    <span
-      className={cn(
-        "rounded-full border px-3 py-0.5 font-mystic text-sm font-medium",
-        tone,
-      )}
-      aria-label={`운세 점수 ${score}점`}
-    >
-      {score}점
-    </span>
   );
 }
 
