@@ -24,8 +24,6 @@ const VIEW_W = 320;
 const VIEW_H = 80;
 const PAD_X = 4;
 const PAD_Y = 8;
-const LABEL_H = 24; // x축 날짜 라벨 영역 높이 (45도 회전 텍스트)
-const TOTAL_H = VIEW_H + LABEL_H;
 
 export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
   if (trend.recorded === 0) {
@@ -124,7 +122,7 @@ export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
       </CardHeader>
       <CardContent className="space-y-3">
         <svg
-          viewBox={`0 0 ${VIEW_W} ${TOTAL_H}`}
+          viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
           className="w-full"
           role="img"
           aria-label={`최근 ${n}일 운세 점수 추이 그래프`}
@@ -192,30 +190,29 @@ export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
             );
           })}
 
-          {/* x축 날짜 라벨 — 전체 14일 45도 회전 표시 */}
+        </svg>
+
+        {/* x축 날짜 라벨 — HTML로 폰트 크기 정확하게 제어 */}
+        <div className="flex justify-between px-0.5 -mt-0.5">
           {points.map((p, i) => {
-            const x = PAD_X + i * xStep;
-            const y = VIEW_H + 4;
             const [, mm, dd] = p.date.split("-");
             const label = `${Number(mm)}/${Number(dd)}`;
             const isLast = i === n - 1;
             return (
-              <text
-                key={`lbl-${p.date}`}
-                x={x}
-                y={y}
-                textAnchor="end"
-                fontSize="8"
-                fill="currentColor"
-                opacity={isLast ? 0.75 : 0.4}
-                fontFamily="var(--font-sans)"
-                transform={`rotate(-45, ${x}, ${y})`}
+              <span
+                key={p.date}
+                className={cn(
+                  "text-[9px] tabular-nums leading-none",
+                  isLast
+                    ? "text-foreground/70 font-medium"
+                    : "text-muted-foreground/40",
+                )}
               >
                 {label}
-              </text>
+              </span>
             );
           })}
-        </svg>
+        </div>
 
         <dl className="grid grid-cols-3 gap-2 text-center">
           <Stat label="평균" value={trend.average} />
