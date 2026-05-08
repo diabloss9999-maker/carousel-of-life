@@ -218,6 +218,8 @@ function Char({ value, kind, id, active, onToggle }: CharProps) {
   const zodiacInfo = zodiacId
     ? CHINESE_ZODIAC_LIST.find((c) => c.id === zodiacId)
     : null;
+  // 천간 이미지 — 매핑에 없으면 null (폴백 칩 사용)
+  const stemImgId = kind === "stem" ? (STEM_TO_IMG[value] ?? null) : null;
 
   return (
     <div className="relative w-full">
@@ -232,45 +234,21 @@ function Char({ value, kind, id, active, onToggle }: CharProps) {
           active && "scale-[1.04]",
         )}
       >
+        {/* 지지 — 십이간지 이미지 */}
         {zodiacId && zodiacInfo ? (
-          /* 지지 — 십이간지 카드 이미지 */
-          <div className={cn(
-            "relative w-full aspect-[2/3] overflow-hidden rounded-xl border-2 shadow-lg transition-all",
-            active ? "border-amber-400 shadow-xl ring-2 ring-amber-400/60" : "border-white/30 shadow-md",
-          )}>
-            <Image
-              src={`/chinese-zodiac/${zodiacId}.png`}
-              alt={zodiacInfo.ko}
-              fill
-              className="object-cover"
-              sizes="62px"
-            />
-            {/* 한자 오버레이 */}
-            <div className="absolute bottom-0 inset-x-0 bg-black/45 backdrop-blur-[2px] py-1 text-center">
-              <span className="font-mystic text-base font-bold text-white leading-none">{value}</span>
-            </div>
-          </div>
+          <CardImg src={`/chinese-zodiac/${zodiacId}.png`} alt={zodiacInfo.ko} char={value} active={active} />
+        ) : stemImgId ? (
+          /* 천간 — 천간 이미지 (매핑 있을 때만) */
+          <CardImg src={`/cheongan/${stemImgId}.png`} alt={ko || value} char={value} active={active} />
         ) : (
-          /* 천간 — 천간 카드 이미지 */
+          /* 폴백 칩 (매핑 없는 글자) */
           <div className={cn(
-            "relative w-full aspect-[2/3] overflow-hidden rounded-xl border-2 shadow-lg transition-all",
-            active ? "border-amber-400 shadow-xl ring-2 ring-amber-400/60" : "border-white/30 shadow-md",
+            "mx-auto flex aspect-square w-full max-w-[62px] flex-col items-center justify-center rounded-xl border shadow-lg ring-1 ring-white/35",
+            active && "border-amber-300 ring-2 ring-amber-400/70 shadow-xl",
+            tone,
           )}>
-            <Image
-              src={`/cheongan/${STEM_TO_IMG[value] ?? value}.png`}
-              alt={ko || value}
-              fill
-              className="object-cover"
-              sizes="62px"
-            />
-            {/* 한자 오버레이 */}
-            <div className="absolute bottom-0 inset-x-0 bg-black/45 backdrop-blur-[2px] py-1 text-center">
-              <span className="font-mystic text-base font-bold text-white leading-none">{value}</span>
-            </div>
-            {/* 더미 닫기 태그 맞춤용 */}
-            {false && ko ? (
-              <span className="mt-1 text-[10px] font-medium opacity-75">{ko}</span>
-            ) : null}
+            <span className="font-mystic text-2xl font-semibold leading-none sm:text-3xl">{value}</span>
+            {ko ? <span className="mt-1 text-[10px] font-medium opacity-75">{ko}</span> : null}
           </div>
         )}
       </button>
@@ -364,6 +342,20 @@ function CharPopover({
       <p className="mt-2 text-[11px] leading-relaxed text-stone-600 dark:text-amber-100/65">
         {meaning.description}
       </p>
+    </div>
+  );
+}
+
+function CardImg({ src, alt, char, active }: { src: string; alt: string; char: string; active: boolean }) {
+  return (
+    <div className={cn(
+      "relative w-full aspect-[2/3] overflow-hidden rounded-xl border-2 shadow-lg transition-all",
+      active ? "border-amber-400 shadow-xl ring-2 ring-amber-400/60" : "border-white/30 shadow-md",
+    )}>
+      <Image src={src} alt={alt} fill className="object-cover" sizes="62px" />
+      <div className="absolute bottom-0 inset-x-0 bg-black/45 backdrop-blur-[2px] py-1 text-center">
+        <span className="font-mystic text-base font-bold text-white leading-none">{char}</span>
+      </div>
     </div>
   );
 }
