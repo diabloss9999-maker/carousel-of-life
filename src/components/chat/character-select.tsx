@@ -59,12 +59,12 @@ export function CharacterSelect() {
               )}
             >
               {/* 캐릭터 이미지 */}
-              <div className="relative w-full aspect-[3/4] overflow-hidden rounded-xl shadow-sm">
+              <div className="relative w-full aspect-[2/3] overflow-hidden rounded-xl shadow-sm">
                 <Image
                   src={char.imageSrc}
                   alt={char.name}
                   fill
-                  className="object-cover object-top transition-transform group-hover:scale-105"
+                  className="object-contain transition-transform group-hover:scale-105"
                   sizes="(max-width: 640px) 33vw, 200px"
                 />
                 {isLoading && (
