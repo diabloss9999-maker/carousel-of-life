@@ -243,19 +243,14 @@ function Char({ value, kind, id, active, onToggle }: CharProps) {
         ) : stemImgId ? (
           /* 천간 — 천간 이미지 */
           <CardImg src={`/cheongan/${stemImgId}.png`} alt={ko || value} char={value} active={active} />
-        ) : stemZodiacId && stemZodiacInfo ? (
-          /* 천간 자리에 지지 글자 → 십이간지 이미지로 대체 */
-          <CardImg src={`/chinese-zodiac/${stemZodiacId}.png`} alt={stemZodiacInfo.ko} char={value} active={active} />
         ) : (
-          /* 폴백 칩 (매핑 없는 글자) */
-          <div className={cn(
-            "mx-auto flex aspect-square w-full max-w-[62px] flex-col items-center justify-center rounded-xl border shadow-lg ring-1 ring-white/35",
-            active && "border-amber-300 ring-2 ring-amber-400/70 shadow-xl",
-            tone,
-          )}>
-            <span className="font-mystic text-2xl font-semibold leading-none sm:text-3xl">{value}</span>
-            {ko ? <span className="mt-1 text-[10px] font-medium opacity-75">{ko}</span> : null}
-          </div>
+          /* 천간 자리에 지지 글자 → 십이간지 이미지 */
+          <CardImg
+            src={`/chinese-zodiac/${stemZodiacId ?? BRANCH_TO_ZODIAC[value]}.png`}
+            alt={stemZodiacInfo?.ko ?? value}
+            char={value}
+            active={active}
+          />
         )}
       </button>
 
