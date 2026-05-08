@@ -114,7 +114,7 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
         <form action={formAction} className="space-y-4">
           <div className="space-y-1.5">
             <Label htmlFor="three-question">
-              물어볼 것{" "}
+              질문{" "}
               <span className="text-muted-foreground text-xs">(선택)</span>
             </Label>
             <Input
