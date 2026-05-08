@@ -30,7 +30,7 @@ export default async function DashboardLayout({
 
           <nav className="hidden items-center gap-1 rounded-full border border-border/55 bg-card/50 p-1 shadow-sm backdrop-blur md:flex">
             {mainNav
-              .filter((item) => item.href !== ROUTES.settings)
+              .filter((item) => item.authOnly)
               .map((item) => {
                 const Icon = item.icon;
                 return (
