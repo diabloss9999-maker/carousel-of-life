@@ -82,16 +82,23 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {/* 카드 뒷면 3장 미리보기 */}
-        <div className="flex justify-center gap-2 mb-4">
-          {[0, 1, 2].map((i) => (
+        {/* 카드 뒷면 3장 미리보기 — 왼쪽 단일 카드와 높이 맞춤 */}
+        <div className="flex justify-center mb-4">
+          {[
+            { rotate: -8, translateY: 8 },
+            { rotate: 0,  translateY: 0 },
+            { rotate: 8,  translateY: 8 },
+          ].map(({ rotate, translateY }, i) => (
             <div
               key={i}
               className={cn(
-                "w-24 sm:w-28 transition-opacity duration-500",
+                "w-28 sm:w-36 -ml-8 first:ml-0 transition-opacity duration-500",
                 isPending && "opacity-60",
+                i === 1 ? "z-10" : "z-0",
               )}
-              style={{ rotate: `${(i - 1) * 5}deg` }}
+              style={{
+                transform: `rotate(${rotate}deg) translateY(${translateY}px)`,
+              }}
             >
               <Image
                 src="/tarot/card_back.png"
