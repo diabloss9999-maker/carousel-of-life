@@ -7,6 +7,7 @@
  * 마지막 문항 제출 후 결과 카드를 렌더.
  */
 
+import Image from "next/image";
 import { useState, useTransition } from "react";
 import { ChevronLeft } from "lucide-react";
 
@@ -255,17 +256,26 @@ function ResultCard({
   return (
     <div className="space-y-5">
       {/* 유형 헤더 */}
-      <div className="rounded-2xl border border-primary/30 bg-primary/5 p-6 text-center space-y-3">
-        <p className="text-5xl">{info.emoji}</p>
+      <div className="flex flex-col items-center gap-4 text-center">
+        {/* MBTI 카드 이미지 */}
+        <div className="relative w-44 sm:w-52 aspect-[2/3] overflow-hidden rounded-2xl shadow-xl">
+          <Image
+            src={`/mbti/${info.type}.png`}
+            alt={info.type}
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
         <div className="space-y-1">
-          <p className="font-mystic text-4xl font-bold tracking-widest text-primary">
+          <p className="font-mystic text-3xl font-bold tracking-widest text-primary">
             {info.type}
           </p>
           <p className="font-mystic text-lg font-medium">{info.nickname}</p>
+          <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
+            {info.summary}
+          </p>
         </div>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          {info.summary}
-        </p>
       </div>
 
       {/* 축별 퍼센트 바 */}
@@ -339,19 +349,24 @@ function ResultCard({
       </div>
 
       {/* 잘 맞는 유형 */}
-      <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
-        <h3 className="font-mystic font-semibold text-sm">💞 잘 맞는 유형</h3>
-        <div className="flex gap-2 flex-wrap">
+      <div className="space-y-2">
+        <h3 className="font-mystic font-semibold text-sm text-center">💞 잘 맞는 유형</h3>
+        <div className="flex justify-center gap-4">
           {info.compatibleWith.map((t) => {
             const ti = TYPE_INFO[t];
             return (
-              <div
-                key={t}
-                className="flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1"
-              >
-                <span className="text-base">{ti.emoji}</span>
-                <span className="text-xs font-mystic font-semibold text-primary">{t}</span>
-                <span className="text-xs text-muted-foreground">{ti.nickname}</span>
+              <div key={t} className="flex flex-col items-center gap-1.5">
+                <div className="relative w-24 sm:w-28 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-primary/40">
+                  <Image
+                    src={`/mbti/${t}.png`}
+                    alt={t}
+                    fill
+                    className="object-cover"
+                    sizes="112px"
+                  />
+                </div>
+                <p className="font-mystic text-xs font-bold text-primary">{t}</p>
+                <p className="text-[10px] text-muted-foreground text-center leading-tight">{ti.nickname}</p>
               </div>
             );
           })}
