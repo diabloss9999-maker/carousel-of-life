@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
+﻿import type { Metadata, Route } from "next";
 import Link from "next/link";
-import { Crown, User } from "lucide-react";
+import { Archive, Crown, User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -98,7 +98,7 @@ export default async function SettingsPage() {
       </Card>
 
       {/* 기본 정보 카드 */}
-      <Card className="border-border/40 bg-card/50 backdrop-blur">
+      <Card className="app-surface">
         <CardHeader className="pb-3">
           <CardTitle className="font-mystic flex items-center gap-2 text-lg">
             <User className="h-5 w-5 text-primary" aria-hidden />
@@ -128,6 +128,24 @@ export default async function SettingsPage() {
           />
           <Row label="MBTI" value={profile.mbti ?? "—"} />
           <Row label="출생지" value={profile.birthPlace ?? "—"} />
+        </CardContent>
+      </Card>
+
+      {/* 기록 카드 */}
+      <Card className="border-border/40 bg-card/50 backdrop-blur">
+        <CardHeader className="pb-3">
+          <CardTitle className="font-mystic flex items-center gap-2 text-lg">
+            <Archive className="h-5 w-5 text-primary" aria-hidden />
+            풀이 기록
+          </CardTitle>
+          <CardDescription className="text-xs">
+            지난 운세·타로·궁합 풀이를 한 곳에서 돌아봐.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button asChild variant="outline" size="sm" className="w-full">
+            <Link href={ROUTES.history as Route}>기록 보기</Link>
+          </Button>
         </CardContent>
       </Card>
 

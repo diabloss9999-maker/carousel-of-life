@@ -8,7 +8,6 @@ import {
   Sparkles,
   Compass,
   Heart,
-  Archive,
   Brain,
   Settings,
   type LucideIcon,
@@ -34,5 +33,4 @@ export const mainNav: NavItem[] = [
   { href: ROUTES.compatibility, label: "궁합", icon: Heart, authOnly: true },
   { href: ROUTES.personality as Route, label: "유형", icon: Brain, authOnly: true },
   { href: ROUTES.settings, label: "설정", icon: Settings, authOnly: true },
-  { href: ROUTES.history as Route, label: "기록", icon: Archive, authOnly: true },
 ];
