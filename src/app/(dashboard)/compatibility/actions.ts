@@ -234,8 +234,15 @@ export async function compatForPartnerAction(
     return { kind: "error", message: "상대 정보를 찾지 못했어." };
   }
 
-  const { profile } = await requireProfile();
-  const partner = await getPartner(profile.userId, partnerId);
+  let profile, partner;
+  try {
+    const profileData = await requireProfile();
+    profile = profileData.profile;
+    partner = await getPartner(profile.userId, partnerId);
+  } catch (e) {
+    return { kind: "error", message: "인증 오류: " + (e instanceof Error ? e.message : String(e)) };
+  }
+
   if (!partner) {
     return { kind: "error", message: "저장된 상대를 찾지 못했어." };
   }
@@ -339,10 +346,10 @@ export async function twoPersonCompatAction(
     };
   }
 
-  // 로그인된 사용자만 사용 가능 (남용 방지).
-  await requireProfile();
-
   try {
+    // 로그인된 사용자만 사용 가능 (남용 방지).
+    await requireProfile();
+
     const output = await generateJson({
       schema: compatibilityAiSchema,
       userPrompt: buildTwoPersonCompatPrompt({
