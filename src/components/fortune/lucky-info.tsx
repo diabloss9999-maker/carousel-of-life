@@ -153,7 +153,7 @@ interface LuckyTileProps {
 
 function LuckyTile({ label, children }: LuckyTileProps) {
   return (
-    <div className="flex flex-col items-center justify-between gap-2 rounded-lg border border-border/40 bg-background/40 p-3 text-center sm:p-4">
+    <div className="flex flex-col items-center justify-between gap-2 p-3 text-center sm:p-4">
       <div className="flex flex-1 flex-col items-center justify-center gap-1.5">
         {children}
       </div>
