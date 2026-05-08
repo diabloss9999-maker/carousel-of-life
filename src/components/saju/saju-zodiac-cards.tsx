@@ -74,7 +74,7 @@ export function SajuZodiacCards({ pillars }: SajuZodiacCardsProps) {
                 {branch}
               </p>
               <p className="text-[11px] text-muted-foreground">
-                {info.emoji} {info.ko}
+                {info.ko}
               </p>
             </div>
           </div>
