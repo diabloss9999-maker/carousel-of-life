@@ -21,7 +21,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
     const z = getZodiacSign(birthDate);
     return (
       <div className="flex flex-col items-center gap-3">
-        <div className="relative w-36 sm:w-44 aspect-[3/4] overflow-hidden rounded-2xl shadow-xl">
+        <div className="relative w-36 sm:w-44 aspect-[2/3] overflow-hidden rounded-2xl shadow-xl">
           <Image
             src={`/zodiac/${z.id}.png`}
             alt={z.ko}
@@ -44,7 +44,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
     const cz = getChineseZodiac(birthDate);
     return (
       <div className="flex flex-col items-center gap-3">
-        <div className="relative w-36 sm:w-44 aspect-[3/4] overflow-hidden rounded-2xl shadow-xl">
+        <div className="relative w-36 sm:w-44 aspect-[2/3] overflow-hidden rounded-2xl shadow-xl">
           <Image
             src={`/chinese-zodiac/${cz.id}.png`}
             alt={cz.ko}
