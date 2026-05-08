@@ -46,7 +46,7 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
             <div key={el.key} className="flex items-center gap-3">
               {/* 이름 */}
               <div className="w-10 flex-shrink-0 text-right">
-                <span className={cn("text-xs font-semibold", count === 0 ? "text-muted-foreground/40" : el.text)}>
+                <span className={cn("text-xs font-semibold", el.text, count === 0 && "opacity-40")}>
                   {el.ko}
                 </span>
               </div>
@@ -61,7 +61,7 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
               </div>
               {/* 숫자 */}
               <div className="w-6 flex-shrink-0 text-center">
-                <span className={cn("font-mystic text-sm font-bold tabular-nums", count === 0 ? "text-muted-foreground/30" : el.text)}>
+                <span className={cn("font-mystic text-sm font-bold tabular-nums", el.text, count === 0 && "opacity-40")}>
                   {count}
                 </span>
               </div>
