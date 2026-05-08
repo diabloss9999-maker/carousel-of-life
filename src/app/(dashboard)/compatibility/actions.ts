@@ -161,25 +161,25 @@ export async function savePartnerAction(
   _prev: SavePartnerActionState,
   formData: FormData,
 ): Promise<SavePartnerActionState> {
-  const parsed = newPartnerSchema.safeParse({
-    name: formData.get("name"),
-    relationship: formData.get("relationship") ?? "친구",
-    birthDate: formData.get("birthDate"),
-    calendarSystem: formData.get("calendarSystem"),
-    gender: formData.get("gender"),
-    mbti: formData.get("mbti") ?? "",
-  });
-
-  if (!parsed.success) {
-    return {
-      kind: "error",
-      message: parsed.error.issues[0]?.message ?? "입력값이 올바르지 않아.",
-    };
-  }
-
-  const { profile } = await requireProfile();
-
   try {
+    const parsed = newPartnerSchema.safeParse({
+      name: formData.get("name"),
+      relationship: formData.get("relationship") ?? "친구",
+      birthDate: formData.get("birthDate"),
+      calendarSystem: formData.get("calendarSystem"),
+      gender: formData.get("gender"),
+      mbti: formData.get("mbti") ?? "",
+    });
+
+    if (!parsed.success) {
+      return {
+        kind: "error",
+        message: parsed.error.issues[0]?.message ?? "입력값이 올바르지 않아.",
+      };
+    }
+
+    const { profile } = await requireProfile();
+
     await addPartner(profile.userId, {
       name: parsed.data.name,
       relationship: parsed.data.relationship,
