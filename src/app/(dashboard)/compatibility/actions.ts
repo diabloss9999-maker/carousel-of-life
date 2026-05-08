@@ -79,7 +79,17 @@ export async function submitCompatibilityAction(
     };
   }
 
-  const { profile } = await requireProfile();
+  let profile;
+  try {
+    const profileData = await requireProfile();
+    profile = profileData.profile;
+  } catch (e) {
+    return {
+      kind: "error",
+      message: "인증 오류: " + (e instanceof Error ? e.message : "다시 로그인해 줘."),
+    };
+  }
+
   const savePartner = formData.get("savePartner") === "on";
   const relationshipRaw = (formData.get("relationship") ?? "친구").toString();
   const relationship = (RELATIONSHIP_OPTIONS as readonly string[]).includes(
@@ -88,17 +98,25 @@ export async function submitCompatibilityAction(
     ? relationshipRaw
     : "친구";
 
-  const result = await createCompatibility({
-    profile,
-    partner: {
-      name: parsed.data.name,
-      birthDate: parsed.data.birthDate,
-      birthTime: parsed.data.birthTime || null,
-      calendarSystem: parsed.data.calendarSystem,
-      gender: parsed.data.gender,
-      mbti: parsed.data.mbti?.toUpperCase() || null,
-    },
-  });
+  let result;
+  try {
+    result = await createCompatibility({
+      profile,
+      partner: {
+        name: parsed.data.name,
+        birthDate: parsed.data.birthDate,
+        birthTime: parsed.data.birthTime || null,
+        calendarSystem: parsed.data.calendarSystem,
+        gender: parsed.data.gender,
+        mbti: parsed.data.mbti?.toUpperCase() || null,
+      },
+    });
+  } catch (e) {
+    return {
+      kind: "error",
+      message: "궁합을 풀이하는 중 오류가 생겼어: " + (e instanceof Error ? e.message : "알 수 없는 원인"),
+    };
+  }
 
   if (result.ok) {
     if (savePartner) {
@@ -247,17 +265,25 @@ export async function compatForPartnerAction(
     return { kind: "error", message: "저장된 상대를 찾지 못했어." };
   }
 
-  const result = await createCompatibility({
-    profile,
-    partner: {
-      name: partner.name,
-      birthDate: partner.birthDate,
-      birthTime: null,
-      calendarSystem: partner.calendarSystem,
-      gender: partner.gender,
-      mbti: partner.mbti,
-    },
-  });
+  let result;
+  try {
+    result = await createCompatibility({
+      profile,
+      partner: {
+        name: partner.name,
+        birthDate: partner.birthDate,
+        birthTime: null,
+        calendarSystem: partner.calendarSystem,
+        gender: partner.gender,
+        mbti: partner.mbti,
+      },
+    });
+  } catch (e) {
+    return {
+      kind: "error",
+      message: "궁합을 풀이하는 중 오류가 생겼어: " + (e instanceof Error ? e.message : "알 수 없는 원인"),
+    };
+  }
 
   if (result.ok) {
     revalidatePath(COMPATIBILITY_ROUTE);

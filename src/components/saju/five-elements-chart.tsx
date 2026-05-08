@@ -1,3 +1,4 @@
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 export interface FiveElementsValue {
@@ -27,7 +28,8 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
   const weakest = sorted[sorted.length - 1];
 
   return (
-    <div className="space-y-4 rounded-2xl bg-white/10 backdrop-blur-md px-5 py-4 border border-white/20">
+    <Card className="border-white/20 bg-white/10 shadow-none backdrop-blur-md">
+      <CardContent className="pt-5 space-y-4">
       {/* 타이틀 */}
       <div className="flex items-center justify-between">
         <div>
@@ -93,6 +95,7 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
           </div>
         </div>
       </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

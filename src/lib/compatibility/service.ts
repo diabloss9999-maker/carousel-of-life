@@ -82,23 +82,36 @@ export async function createCompatibility(opts: {
   partner: PartnerInfo;
 }): Promise<CompatibilityResult> {
   // 1) 한도 (구독자는 무제한).
-  const subscribed = await hasActiveSubscription(opts.profile.userId);
+  let subscribed = false;
+  try {
+    subscribed = await hasActiveSubscription(opts.profile.userId);
+  } catch {
+    // 구독 상태 확인 실패 시 비구독자로 간주
+    subscribed = false;
+  }
 
   if (!subscribed) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const [{ value: todayCount } = { value: 0 }] = await db
-      .select({ value: count() })
-      .from(compatibilityReadings)
-      .where(
-        and(
-          eq(compatibilityReadings.userId, opts.profile.userId),
-          gte(compatibilityReadings.createdAt, today),
-        ),
-      );
+    let todayCount = 0;
+    try {
+      const [row] = await db
+        .select({ value: count() })
+        .from(compatibilityReadings)
+        .where(
+          and(
+            eq(compatibilityReadings.userId, opts.profile.userId),
+            gte(compatibilityReadings.createdAt, today),
+          ),
+        );
+      todayCount = Number(row?.value ?? 0);
+    } catch {
+      // 카운트 조회 실패 시 한도 초과로 간주하지 않고 진행
+      todayCount = 0;
+    }
 
-    if (Number(todayCount) >= FREE_DAILY_COMPATIBILITY) {
+    if (todayCount >= FREE_DAILY_COMPATIBILITY) {
       return {
         ok: false,
         reason: "quota_exceeded",
