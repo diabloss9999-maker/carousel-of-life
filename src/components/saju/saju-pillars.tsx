@@ -19,6 +19,12 @@ import {
 import { CHINESE_ZODIAC_LIST } from "@/lib/fortunes/zodiac";
 import { cn } from "@/lib/utils";
 
+/** 천간 한자 → 영문 파일명 */
+const STEM_TO_IMG: Record<string, string> = {
+  甲: "gap", 乙: "eul", 丙: "byung", 丁: "jeong", 戊: "mu",
+  己: "gi",  庚: "gyeong", 辛: "sin", 壬: "im",  癸: "gye",
+};
+
 /** 지지 한자 → 십이간지 이미지 ID */
 const BRANCH_TO_ZODIAC: Record<string, string> = {
   子: "rat",   丑: "ox",      寅: "tiger",  卯: "rabbit",
@@ -251,7 +257,7 @@ function Char({ value, kind, id, active, onToggle }: CharProps) {
             active ? "border-amber-400 shadow-xl ring-2 ring-amber-400/60" : "border-white/30 shadow-md",
           )}>
             <Image
-              src={`/cheongan/${value}.png`}
+              src={`/cheongan/${STEM_TO_IMG[value] ?? value}.png`}
               alt={ko || value}
               fill
               className="object-cover"
