@@ -24,6 +24,8 @@ const VIEW_W = 320;
 const VIEW_H = 80;
 const PAD_X = 4;
 const PAD_Y = 8;
+const LABEL_H = 18; // x축 날짜 라벨 영역 높이
+const TOTAL_H = VIEW_H + LABEL_H;
 
 export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
   if (trend.recorded === 0) {
@@ -122,7 +124,7 @@ export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
       </CardHeader>
       <CardContent className="space-y-3">
         <svg
-          viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
+          viewBox={`0 0 ${VIEW_W} ${TOTAL_H}`}
           className="w-full"
           role="img"
           aria-label={`최근 ${n}일 운세 점수 추이 그래프`}
@@ -187,6 +189,30 @@ export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
                 />
                 <title>{`${p.date}: ${p.score}점`}</title>
               </g>
+            );
+          })}
+
+          {/* x축 날짜 라벨 — 첫날·중간·마지막날만 표시 */}
+          {points.map((p, i) => {
+            // 14개 중 첫날(0), 7일째(6), 마지막날(13)만
+            const showIdx = [0, Math.floor((n - 1) / 2), n - 1];
+            if (!showIdx.includes(i)) return null;
+            const x = PAD_X + i * xStep;
+            const [, mm, dd] = p.date.split("-");
+            const label = `${Number(mm)}/${Number(dd)}`;
+            return (
+              <text
+                key={`lbl-${p.date}`}
+                x={x}
+                y={VIEW_H + LABEL_H - 2}
+                textAnchor="middle"
+                fontSize="9"
+                fill="currentColor"
+                opacity="0.45"
+                fontFamily="var(--font-sans)"
+              >
+                {label}
+              </text>
             );
           })}
         </svg>
