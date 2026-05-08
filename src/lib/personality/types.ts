@@ -13,6 +13,8 @@ export interface TypeInfo {
   cautions: string[];      // 주의점 2가지
   /** 이 유형과 잘 맞는 유형. */
   compatibleWith: PersonalityType[];
+  /** 주의가 필요한 유형. */
+  incompatibleWith: PersonalityType[];
 }
 
 export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
@@ -23,6 +25,7 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     strengths: ["강한 책임감과 성실함", "세심하고 체계적인 계획력", "변함없는 신뢰와 일관성"],
     cautions: ["변화에 좀 더 유연하게 대응하기", "감정 표현을 늘려 관계 깊이 더하기"],
     compatibleWith: ["ESFP", "ESTP"],
+    incompatibleWith: ["ENFP", "ENTP"],
   },
   ISFJ: {
     type: "ISFJ", nickname: "따뜻한 수호자", emoji: "🌷",
@@ -31,6 +34,7 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     strengths: ["세심하고 깊은 배려심", "꼼꼼하고 책임감 있는 실행력", "변함없는 헌신과 충직함"],
     cautions: ["자신의 감정과 욕구도 소중히 돌보기", "원치 않을 때 거절하는 연습하기"],
     compatibleWith: ["ESFP", "ESTP"],
+    incompatibleWith: ["ENFP", "ENTP"],
   },
   INFJ: {
     type: "INFJ", nickname: "영감의 예언자", emoji: "🔮",
@@ -39,6 +43,7 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     strengths: ["남다른 직관력과 통찰력", "강한 공감과 이해 능력", "명확하고 굳은 비전"],
     cautions: ["완벽주의를 조금 내려놓기", "자신을 너무 혹사시키는 번아웃 주의"],
     compatibleWith: ["ENFP", "ENTP"],
+    incompatibleWith: ["ESTP", "ESFP"],
   },
   INTJ: {
     type: "INTJ", nickname: "전략가", emoji: "♟️",
@@ -47,6 +52,7 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     strengths: ["장기적이고 탁월한 전략 수립", "독립적이고 창의적인 사고", "높은 목표 의식과 추진력"],
     cautions: ["상황에 따라 유연성을 발휘하기", "감정적 교류와 소통 늘리기"],
     compatibleWith: ["ENFP", "ENTP"],
+    incompatibleWith: ["ESFP", "ESTP"],
   },
   ISTP: {
     type: "ISTP", nickname: "만능 재주꾼", emoji: "🔧",
@@ -55,6 +61,7 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     strengths: ["탁월한 문제 해결력과 손재주", "위기 상황에서도 침착한 대처", "편견 없는 실용적 사고"],
     cautions: ["장기적 계획을 세우는 습관 기르기", "감정을 솔직하게 표현하기"],
     compatibleWith: ["ESFJ", "ESTJ"],
+    incompatibleWith: ["ENFJ", "ESFJ"],
   },
   ISFP: {
     type: "ISFP", nickname: "자유로운 예술가", emoji: "🎨",
@@ -63,6 +70,7 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     strengths: ["풍부하고 섬세한 감수성", "편견 없이 열린 따뜻한 마음", "자연스럽고 진심 어린 친절"],
     cautions: ["미래를 위한 장기적 계획도 필요해", "자신의 의견을 좀 더 적극적으로 표현하기"],
     compatibleWith: ["ESFJ", "ENFJ"],
+    incompatibleWith: ["ENTJ", "ESTJ"],
   },
   INFP: {
     type: "INFP", nickname: "이상주의 몽상가", emoji: "🌙",
@@ -71,6 +79,7 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     strengths: ["깊고 섬세한 공감력", "독창적이고 창의적인 사고", "타협하지 않는 강한 가치관"],
     cautions: ["현실과의 균형을 맞추기", "감정 과몰입으로 인한 소진 주의"],
     compatibleWith: ["ENFJ", "ENTJ"],
+    incompatibleWith: ["ESTJ", "ENTJ"],
   },
   INTP: {
     type: "INTP", nickname: "논리적 사색가", emoji: "🔭",
@@ -79,6 +88,7 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     strengths: ["날카롭고 깊은 분석력", "기존 틀을 깨는 독창적 사고", "감정에 흔들리지 않는 객관적 판단"],
     cautions: ["생각에서 실행으로 옮기는 연습", "대인 관계와 소통도 챙기기"],
     compatibleWith: ["ENTJ", "ESTJ"],
+    incompatibleWith: ["ESFJ", "ESTJ"],
   },
   ESTP: {
     type: "ESTP", nickname: "대담한 사업가", emoji: "⚡",
@@ -87,6 +97,7 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     strengths: ["즉각적이고 과감한 실행력", "위기 상황에서 빛나는 대처 능력", "사람을 사로잡는 설득력"],
     cautions: ["장기적 계획과 미래 준비도 필요해", "충동적인 행동을 한번쯤 점검하기"],
     compatibleWith: ["ISFJ", "ISTJ"],
+    incompatibleWith: ["INFJ", "INTJ"],
   },
   ESFP: {
     type: "ESFP", nickname: "자유로운 연예인", emoji: "🎉",
@@ -95,6 +106,7 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     strengths: ["넘치는 긍정 에너지와 활력", "뛰어난 사교성과 공감 능력", "현재 순간을 충분히 즐기는 능력"],
     cautions: ["미래를 위한 장기적 계획 세우기", "가끔은 진지하고 깊은 대화도 필요해"],
     compatibleWith: ["ISFJ", "ISTJ"],
+    incompatibleWith: ["INTJ", "INFJ"],
   },
   ENFP: {
     type: "ENFP", nickname: "열정적 활동가", emoji: "✨",
@@ -103,6 +115,7 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     strengths: ["넘치는 창의력과 상상력", "깊은 공감과 따뜻한 연결 능력", "새로운 것에 대한 끝없는 호기심"],
     cautions: ["한 가지에 집중하는 연습하기", "시작한 일을 끝까지 마무리하기"],
     compatibleWith: ["INFJ", "INTJ"],
+    incompatibleWith: ["ISTJ", "ISFJ"],
   },
   ENTP: {
     type: "ENTP", nickname: "논쟁을 즐기는 발명가", emoji: "💡",
@@ -111,6 +124,7 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     strengths: ["빠른 통찰력과 지적 유연성", "복잡한 문제를 새롭게 해결하는 창의력", "어떤 상황에도 당당한 토론 능력"],
     cautions: ["시작한 일을 끝내는 습관 기르기", "토론할 때 상대방 감정도 살피기"],
     compatibleWith: ["INFJ", "INTJ"],
+    incompatibleWith: ["ISTJ", "ISFJ"],
   },
   ESTJ: {
     type: "ESTJ", nickname: "엄격한 관리자", emoji: "📋",
@@ -119,6 +133,7 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     strengths: ["탁월한 조직력과 실행력", "명확한 의사결정과 리더십", "높은 책임감과 헌신"],
     cautions: ["상황에 따른 유연성 발휘하기", "다양한 방식과 의견도 인정하기"],
     compatibleWith: ["ISFP", "ISTP"],
+    incompatibleWith: ["INFP", "INTP"],
   },
   ESFJ: {
     type: "ESFJ", nickname: "사교적 외교관", emoji: "🤝",
@@ -127,6 +142,7 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     strengths: ["뛰어난 공감과 세심한 배려심", "강한 협동력과 팀워크", "현실적이고 꼼꼼한 실행력"],
     cautions: ["자신의 욕구와 감정도 우선시하기", "타인의 평가에 덜 의존하는 연습하기"],
     compatibleWith: ["ISFP", "ISTP"],
+    incompatibleWith: ["INTP", "INTJ"],
   },
   ENFJ: {
     type: "ENFJ", nickname: "정의로운 사회운동가", emoji: "🌟",
@@ -135,6 +151,7 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     strengths: ["타고난 카리스마와 리더십", "깊은 공감과 영감을 주는 소통 능력", "사람과 공동체를 하나로 묶는 힘"],
     cautions: ["자신의 에너지와 감정도 챙기기", "타인에게 과도하게 의존하지 않도록 주의"],
     compatibleWith: ["INFP", "ISFP"],
+    incompatibleWith: ["ISTP", "ISTJ"],
   },
   ENTJ: {
     type: "ENTJ", nickname: "대담한 지도자", emoji: "👑",
@@ -143,5 +160,6 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     strengths: ["강력한 추진력과 결단력", "장기적 전략과 뛰어난 기획력", "명확하고 감동적인 비전 제시"],
     cautions: ["함께하는 사람들의 감정도 살피기", "목표만큼이나 과정의 속도 조절하기"],
     compatibleWith: ["INFP", "INTP"],
+    incompatibleWith: ["INFP", "ISFP"],
   },
 };

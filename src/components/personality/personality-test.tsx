@@ -348,28 +348,44 @@ function ResultCard({
         </ul>
       </div>
 
-      {/* 잘 맞는 유형 */}
-      <div className="space-y-2">
-        <h3 className="font-mystic font-semibold text-sm text-center">💞 잘 맞는 유형</h3>
-        <div className="flex justify-center gap-4">
-          {info.compatibleWith.map((t) => {
-            const ti = TYPE_INFO[t];
-            return (
-              <div key={t} className="flex flex-col items-center gap-1.5">
-                <div className="relative w-24 sm:w-28 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-primary/40">
-                  <Image
-                    src={`/mbti/${t}.png`}
-                    alt={t}
-                    fill
-                    className="object-cover"
-                    sizes="112px"
-                  />
+      {/* 잘 맞는 / 주의 유형 — 2열 */}
+      <div className="grid grid-cols-2 gap-3">
+        {/* 잘 맞는 유형 */}
+        <div className="space-y-2">
+          <h3 className="font-mystic font-semibold text-sm text-center">💞 잘 맞는</h3>
+          <div className="flex justify-center gap-2">
+            {info.compatibleWith.map((t) => {
+              const ti = TYPE_INFO[t];
+              return (
+                <div key={t} className="flex flex-col items-center gap-1">
+                  <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-primary/40">
+                    <Image src={`/mbti/${t}.png`} alt={t} fill className="object-cover" sizes="96px" />
+                  </div>
+                  <p className="font-mystic text-[11px] font-bold text-primary">{t}</p>
+                  <p className="text-[10px] text-muted-foreground text-center leading-tight">{ti.nickname}</p>
                 </div>
-                <p className="font-mystic text-xs font-bold text-primary">{t}</p>
-                <p className="text-[10px] text-muted-foreground text-center leading-tight">{ti.nickname}</p>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 주의가 필요한 유형 */}
+        <div className="space-y-2">
+          <h3 className="font-mystic font-semibold text-sm text-center">⚠️ 주의</h3>
+          <div className="flex justify-center gap-2">
+            {info.incompatibleWith.map((t) => {
+              const ti = TYPE_INFO[t];
+              return (
+                <div key={t} className="flex flex-col items-center gap-1">
+                  <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-destructive/40 grayscale-[30%]">
+                    <Image src={`/mbti/${t}.png`} alt={t} fill className="object-cover" sizes="96px" />
+                  </div>
+                  <p className="font-mystic text-[11px] font-bold text-destructive">{t}</p>
+                  <p className="text-[10px] text-muted-foreground text-center leading-tight">{ti.nickname}</p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
