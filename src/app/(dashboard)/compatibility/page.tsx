@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { Users } from "lucide-react";
 
-import { AddPartnerForm } from "@/components/compatibility/add-partner-form";
 import { CompatibilityCard } from "@/components/compatibility/compatibility-card";
 import { CompatibilityForm } from "@/components/compatibility/compatibility-form";
 import { CompatibilityHub } from "@/components/compatibility/compatibility-hub";
 import { MbtiCompatPanel } from "@/components/compatibility/mbti-compat-panel";
 import { SavedPartnerCard } from "@/components/compatibility/saved-partner-card";
+import { TwoPersonCompat } from "@/components/compatibility/two-person-compat";
 import { ZodiacCompatPanel } from "@/components/compatibility/zodiac-compat-panel";
 import {
   Card,
@@ -66,8 +66,7 @@ export default async function CompatibilityPage() {
               아직 저장된 상대가 없어.
             </p>
             <p className="text-sm text-muted-foreground">
-              아래에서 새 상대를 추가하거나, &quot;새 궁합&quot; 탭에서
-              궁합을 보면서 저장할 수도 있어.
+              &quot;새 궁합&quot; 탭에서 궁합을 보면서 함께 저장할 수 있어.
             </p>
           </CardContent>
         </Card>
@@ -80,7 +79,6 @@ export default async function CompatibilityPage() {
           />
         ))
       )}
-      <AddPartnerForm />
     </div>
   );
 
@@ -116,6 +114,7 @@ export default async function CompatibilityPage() {
       <CompatibilityHub
         saved={savedPanel}
         newReading={newPanel}
+        twoPerson={<TwoPersonCompat />}
         zodiac={<ZodiacCompatPanel myZodiac={myZodiac.id} />}
         mbti={<MbtiCompatPanel myMbti={myMbti} />}
       />

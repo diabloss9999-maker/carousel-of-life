@@ -222,6 +222,61 @@ ${partnerLines.join("\n")}
 }
 
 /**
+ * 타인 간 궁합 프롬프트.
+ *
+ * 사용자 본인이 아닌 두 사람(A, B)의 궁합을 분석한다.
+ * 결혼 적합성·친구·비즈니스 파트너 등 다양한 관계 검토용.
+ */
+export interface TwoPersonInfo {
+  name: string;
+  birthDate: string;
+  calendarSystem: "solar" | "lunar";
+  gender: "male" | "female" | "other";
+  mbti: string | null;
+}
+
+export function buildTwoPersonCompatPrompt(opts: {
+  personA: TwoPersonInfo;
+  personB: TwoPersonInfo;
+  relationKind?: string;
+}): string {
+  const formatPerson = (p: TwoPersonInfo): string => {
+    const lines: string[] = [];
+    lines.push(`이름: ${p.name}`);
+    lines.push(
+      `생년월일: ${p.birthDate} (${p.calendarSystem === "lunar" ? "음력" : "양력"})`,
+    );
+    lines.push(
+      `성별: ${p.gender === "male" ? "남성" : p.gender === "female" ? "여성" : "기타"}`,
+    );
+    if (p.mbti) lines.push(`MBTI: ${p.mbti}`);
+    return lines.join("\n");
+  };
+
+  const relationLine = opts.relationKind
+    ? `\n[관심 관계 종류]\n${opts.relationKind}\n`
+    : "";
+
+  return `[첫 번째 사람]
+${formatPerson(opts.personA)}
+
+[두 번째 사람]
+${formatPerson(opts.personB)}
+${relationLine}
+[지시]
+두 사람의 사주·기운·별자리·MBTI(있다면)를 종합해 궁합을 풀이해주세요.
+질문자가 아닌 제3자 두 명 사이의 관계 분석이라는 점을 잊지 마세요.
+연인·결혼 적합성, 친구로서의 결, 비즈니스 파트너로서의 합 등 여러 관점을 균형 있게 다뤄주세요.
+다음 JSON 스키마를 정확히 따라 단 하나의 JSON 객체로만 응답하세요. 추가 설명·markdown·코드펜스 없이 JSON 만 출력합니다.
+
+{
+  "score": 1-100 사이 정수 (두 사람의 궁합 점수),
+  "summary": "한 줄 요약 (30자 이내, 반말 친구 톤)",
+  "detail": "6-8문장의 풀이. 두 사람의 기운이 어떻게 어울리는지, 잘 맞는 부분과 조심할 부분, 관계를 부드럽게 만들 작은 팁까지. 친한 친구가 차근차근 설명해주는 톤. 반말, 쉬운 단어로."
+}`;
+}
+
+/**
  * 사주 심층 분석 프롬프트 (프리미엄 전용).
  *
  * 한 번 생성되면 영구 캐시되어 사용자 평생 활용.

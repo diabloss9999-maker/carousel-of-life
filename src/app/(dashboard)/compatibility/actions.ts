@@ -14,6 +14,13 @@ import {
   getPartner,
   RELATIONSHIP_OPTIONS,
 } from "@/lib/compatibility/partners";
+import { generateJson } from "@/lib/ai/generate";
+import { buildTwoPersonCompatPrompt } from "@/lib/ai/prompts";
+import {
+  compatibilityAiSchema,
+  type CompatibilityAiOutput,
+} from "@/lib/ai/types";
+import { AI_LIMITS, AI_MODELS } from "@/lib/constants";
 
 const MBTI_PATTERN = /^[EI][NS][TF][JP]$/i;
 const COMPATIBILITY_ROUTE = "/compatibility";
@@ -259,4 +266,121 @@ export async function compatForPartnerAction(
   }
 
   return { kind: "error", message: result.message };
+}
+
+/**
+ * 타인 간 궁합 — 두 사람(A, B) 입력 후 AI 풀이.
+ * DB에 저장하지 않고 결과만 상태로 반환 (즉석 분석).
+ */
+const twoPersonSchema = z.object({
+  aName: z.string().min(1, "첫 번째 사람의 이름을 알려줘.").max(40),
+  aBirthDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "첫 번째 사람의 생년월일 형식이 올바르지 않아."),
+  aCalendarSystem: z.enum(["solar", "lunar"]),
+  aGender: z.enum(["male", "female", "other"]),
+  aMbti: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .regex(MBTI_PATTERN, "첫 번째 사람의 MBTI 네 글자를 정확히 적어줘.")
+    .optional()
+    .or(z.literal("")),
+  bName: z.string().min(1, "두 번째 사람의 이름을 알려줘.").max(40),
+  bBirthDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "두 번째 사람의 생년월일 형식이 올바르지 않아."),
+  bCalendarSystem: z.enum(["solar", "lunar"]),
+  bGender: z.enum(["male", "female", "other"]),
+  bMbti: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .regex(MBTI_PATTERN, "두 번째 사람의 MBTI 네 글자를 정확히 적어줘.")
+    .optional()
+    .or(z.literal("")),
+});
+
+export interface TwoPersonCompatState {
+  kind: "idle" | "error" | "success";
+  message?: string;
+  result?: {
+    aName: string;
+    bName: string;
+    aBirthDate: string;
+    bBirthDate: string;
+    output: CompatibilityAiOutput;
+  };
+}
+
+export const twoPersonCompatIdleState: TwoPersonCompatState = { kind: "idle" };
+
+export async function twoPersonCompatAction(
+  _prev: TwoPersonCompatState,
+  formData: FormData,
+): Promise<TwoPersonCompatState> {
+  const parsed = twoPersonSchema.safeParse({
+    aName: formData.get("aName"),
+    aBirthDate: formData.get("aBirthDate"),
+    aCalendarSystem: formData.get("aCalendarSystem"),
+    aGender: formData.get("aGender"),
+    aMbti: formData.get("aMbti") ?? "",
+    bName: formData.get("bName"),
+    bBirthDate: formData.get("bBirthDate"),
+    bCalendarSystem: formData.get("bCalendarSystem"),
+    bGender: formData.get("bGender"),
+    bMbti: formData.get("bMbti") ?? "",
+  });
+
+  if (!parsed.success) {
+    return {
+      kind: "error",
+      message: parsed.error.issues[0]?.message ?? "입력값이 올바르지 않아.",
+    };
+  }
+
+  // 로그인된 사용자만 사용 가능 (남용 방지).
+  await requireProfile();
+
+  try {
+    const output = await generateJson({
+      schema: compatibilityAiSchema,
+      userPrompt: buildTwoPersonCompatPrompt({
+        personA: {
+          name: parsed.data.aName,
+          birthDate: parsed.data.aBirthDate,
+          calendarSystem: parsed.data.aCalendarSystem,
+          gender: parsed.data.aGender,
+          mbti: parsed.data.aMbti?.toUpperCase() || null,
+        },
+        personB: {
+          name: parsed.data.bName,
+          birthDate: parsed.data.bBirthDate,
+          calendarSystem: parsed.data.bCalendarSystem,
+          gender: parsed.data.bGender,
+          mbti: parsed.data.bMbti?.toUpperCase() || null,
+        },
+      }),
+      model: AI_MODELS.premium,
+      maxTokens: AI_LIMITS.fortuneMaxTokens,
+    });
+
+    return {
+      kind: "success",
+      result: {
+        aName: parsed.data.aName,
+        bName: parsed.data.bName,
+        aBirthDate: parsed.data.aBirthDate,
+        bBirthDate: parsed.data.bBirthDate,
+        output,
+      },
+    };
+  } catch (e) {
+    return {
+      kind: "error",
+      message:
+        "두 사람의 기운을 읽지 못했어요: " +
+        (e instanceof Error ? e.message : "알 수 없는 원인"),
+    };
+  }
 }
