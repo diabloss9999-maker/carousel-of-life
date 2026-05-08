@@ -144,22 +144,32 @@ export async function createCompatibility(opts: {
   }
 
   // 4) DB 저장.
-  const [row] = await db
-    .insert(compatibilityReadings)
-    .values({
-      userId: profile.userId,
-      partnerName: opts.partner.name,
-      partnerBirthDate: opts.partner.birthDate,
-      partnerBirthTime: opts.partner.birthTime,
-      partnerCalendarSystem: opts.partner.calendarSystem,
-      partnerGender: opts.partner.gender,
-      partnerMbti: opts.partner.mbti,
-      score: aiOutput.score,
-      summary: aiOutput.summary,
-      detail: aiOutput.detail,
-      model: AI_MODELS.premium,
-    })
-    .returning();
+  let row;
+  try {
+    const [inserted] = await db
+      .insert(compatibilityReadings)
+      .values({
+        userId: profile.userId,
+        partnerName: opts.partner.name,
+        partnerBirthDate: opts.partner.birthDate,
+        partnerBirthTime: opts.partner.birthTime,
+        partnerCalendarSystem: opts.partner.calendarSystem,
+        partnerGender: opts.partner.gender,
+        partnerMbti: opts.partner.mbti,
+        score: aiOutput.score,
+        summary: aiOutput.summary,
+        detail: aiOutput.detail,
+        model: AI_MODELS.premium,
+      })
+      .returning();
+    row = inserted;
+  } catch (e) {
+    return {
+      ok: false,
+      reason: "ai_failed",
+      message: "결과를 저장하지 못했어요: " + (e instanceof Error ? e.message : String(e)),
+    };
+  }
 
   return { ok: true, reading: row };
 }
