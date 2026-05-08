@@ -25,13 +25,18 @@ export function TimeAwareBg() {
   const [night, setNight] = useState(false);
 
   useEffect(() => {
-    const hour = getKstHour();
-    setNight(isNightTime(hour));
+    const applyTime = (isNight: boolean) => {
+      setNight(isNight);
+      if (typeof document !== "undefined") {
+        document.body.dataset.time = isNight ? "night" : "day";
+      }
+    };
+
+    applyTime(isNightTime(getKstHour()));
 
     // 자정·새벽 6시·밤 9시에 자동 전환하도록 1분마다 체크
     const timer = setInterval(() => {
-      const h = getKstHour();
-      setNight(isNightTime(h));
+      applyTime(isNightTime(getKstHour()));
     }, 60_000);
 
     return () => clearInterval(timer);

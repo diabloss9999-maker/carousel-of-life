@@ -87,6 +87,24 @@
   --chart-5: oklch(0.58 0.16 145);
 }
 
+/* 낮 배경 — 어두운 텍스트 (밝은 크림/골드 톤 위) */
+body[data-time="day"] {
+  --foreground: oklch(0.18 0.04 55);
+  --card-foreground: oklch(0.18 0.04 55);
+  --muted-foreground: oklch(0.35 0.06 60);
+  --popover-foreground: oklch(0.18 0.04 55);
+}
+
+/* 밤 배경 — 밝은 텍스트 (어두운 골드/브라운 톤 위) */
+body[data-time="night"] {
+  --foreground: oklch(0.93 0.015 85);
+  --card-foreground: oklch(0.93 0.015 85);
+  --muted-foreground: oklch(0.72 0.08 80);
+  --popover-foreground: oklch(0.93 0.015 85);
+  --card: oklch(0.12 0.025 55 / 0.75);
+  --border: oklch(0.36 0.05 70);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
