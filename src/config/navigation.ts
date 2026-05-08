@@ -27,12 +27,12 @@ export interface NavItem {
 }
 
 export const mainNav: NavItem[] = [
-  { href: ROUTES.today, label: "오늘", icon: Home, authOnly: true },
+  { href: ROUTES.today, label: "운세", icon: Home, authOnly: true },
   { href: ROUTES.chat, label: "주술사", icon: MessageCircle, authOnly: true },
   { href: ROUTES.tarot, label: "타로", icon: Sparkles, authOnly: true },
   { href: ROUTES.saju, label: "사주", icon: Compass, authOnly: true },
   { href: ROUTES.compatibility, label: "궁합", icon: Heart, authOnly: true },
-  { href: ROUTES.history as Route, label: "기록", icon: Archive, authOnly: true },
   { href: ROUTES.personality as Route, label: "유형", icon: Brain, authOnly: true },
   { href: ROUTES.settings, label: "설정", icon: Settings, authOnly: true },
+  { href: ROUTES.history as Route, label: "기록", icon: Archive, authOnly: true },
 ];
