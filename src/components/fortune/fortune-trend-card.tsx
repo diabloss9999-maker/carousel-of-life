@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 운세 점수 추이 카드 — 최근 N일 종합운 점수 sparkline.
  *
  * 빈 날(아직 풀이를 안 본 날)은 점선/투명 점으로 표시한다.
@@ -105,7 +105,7 @@ export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
           : "변동 없음";
 
   return (
-    <Card className="border-border/40 bg-card/50 backdrop-blur">
+    <Card className="app-surface">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between gap-3">
           <div className="space-y-1">
@@ -132,12 +132,12 @@ export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
             <linearGradient id="fortuneGradient" x1="0" y1="0" x2="0" y2="1">
               <stop
                 offset="0%"
-                stopColor="oklch(0.78 0.18 290)"
+                stopColor="oklch(0.76 0.14 80)"
                 stopOpacity="0.55"
               />
               <stop
                 offset="100%"
-                stopColor="oklch(0.78 0.18 290)"
+                stopColor="oklch(0.76 0.14 80)"
                 stopOpacity="0.05"
               />
             </linearGradient>
@@ -163,7 +163,7 @@ export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
           <path
             d={path}
             fill="none"
-            stroke="oklch(0.78 0.18 290)"
+            stroke="oklch(0.76 0.14 80)"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -181,7 +181,7 @@ export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
                   cx={x}
                   cy={y}
                   r={isLast ? 4 : 2.4}
-                  fill="oklch(0.78 0.18 290)"
+                  fill="oklch(0.76 0.14 80)"
                   stroke="var(--card)"
                   strokeWidth={isLast ? 2 : 1}
                 />
