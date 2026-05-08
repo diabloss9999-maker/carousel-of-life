@@ -44,7 +44,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
           {/* 잘 맞는 별자리 */}
           <div className="space-y-2">
             <p className="text-xs font-semibold text-center text-foreground/60 tracking-wide">✨ 잘 맞는</p>
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex justify-center gap-2">
               {z.compatible.map((name) => {
                 const id = ZODIAC_NAME_TO_ID[name];
                 return (
@@ -62,7 +62,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
           {/* 주의가 필요한 별자리 */}
           <div className="space-y-2">
             <p className="text-xs font-semibold text-center text-foreground/60 tracking-wide">⚠️ 주의</p>
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex justify-center gap-2">
               {z.incompatible.map((name) => {
                 const id = ZODIAC_NAME_TO_ID[name];
                 return (
@@ -100,7 +100,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
         <div className="w-full grid grid-cols-2 gap-3">
           <div className="space-y-2">
             <p className="text-xs font-semibold text-center text-foreground/60 tracking-wide">✨ 잘 맞는</p>
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex justify-center gap-2">
               {cz.compatible.map((name) => {
                 const id = CZ_NAME_TO_ID[name];
                 return (
@@ -117,7 +117,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
 
           <div className="space-y-2">
             <p className="text-xs font-semibold text-center text-foreground/60 tracking-wide">⚠️ 주의</p>
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex justify-center gap-2">
               {cz.incompatible.map((name) => {
                 const id = CZ_NAME_TO_ID[name];
                 return (
