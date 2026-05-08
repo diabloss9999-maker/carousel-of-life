@@ -372,7 +372,7 @@ export async function twoPersonCompatAction(
         },
       }),
       model: AI_MODELS.premium,
-      maxTokens: AI_LIMITS.fortuneMaxTokens,
+      maxTokens: AI_LIMITS.compatibilityMaxTokens,
     });
 
     return {
