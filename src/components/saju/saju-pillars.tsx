@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 import {
@@ -15,7 +16,15 @@ import {
   lookupChar,
   type ElementKey,
 } from "@/lib/saju/meanings";
+import { CHINESE_ZODIAC_LIST } from "@/lib/fortunes/zodiac";
 import { cn } from "@/lib/utils";
+
+/** 지지 한자 → 십이간지 이미지 ID */
+const BRANCH_TO_ZODIAC: Record<string, string> = {
+  子: "rat",   丑: "ox",      寅: "tiger",  卯: "rabbit",
+  辰: "dragon", 巳: "snake",  午: "horse",  未: "goat",
+  申: "monkey", 酉: "rooster", 戌: "dog",   亥: "pig",
+};
 
 export interface PillarValue {
   stem: string;
@@ -203,6 +212,10 @@ function Char({ value, kind, id, active, onToggle }: CharProps) {
     kind === "stem" ? STEM_TO_ELEMENT[value] : BRANCH_TO_ELEMENT[value];
   const tone = element ? ELEMENT_TONE[element] : "bg-muted/40 text-foreground";
   const ko = lookup?.meaning.ko ?? "";
+  const zodiacId = kind === "branch" ? BRANCH_TO_ZODIAC[value] : null;
+  const zodiacInfo = zodiacId
+    ? CHINESE_ZODIAC_LIST.find((c) => c.id === zodiacId)
+    : null;
 
   return (
     <div className="relative w-full">
@@ -212,19 +225,44 @@ function Char({ value, kind, id, active, onToggle }: CharProps) {
         aria-controls={`${id}-popover`}
         onClick={onToggle}
         className={cn(
-          "mx-auto flex aspect-square w-full max-w-[62px] flex-col items-center justify-center rounded-xl border transition-all",
-          "shadow-lg ring-1 ring-white/35 hover:-translate-y-0.5 hover:scale-[1.03] hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70",
-          active &&
-            "scale-[1.04] border-amber-300 ring-2 ring-amber-400/70 shadow-xl",
-          tone,
+          "mx-auto w-full max-w-[62px] flex flex-col items-center transition-all focus-visible:outline-none",
+          "hover:-translate-y-0.5 hover:scale-[1.03]",
+          active && "scale-[1.04]",
         )}
       >
-        <span className="font-mystic text-2xl font-semibold leading-none sm:text-3xl">
-          {value}
-        </span>
-        {ko ? (
-          <span className="mt-1 text-[10px] font-medium opacity-75">{ko}</span>
-        ) : null}
+        {zodiacId && zodiacInfo ? (
+          /* 지지 — 십이간지 카드 이미지 */
+          <div className={cn(
+            "relative w-full aspect-[2/3] overflow-hidden rounded-xl border-2 shadow-lg transition-all",
+            active ? "border-amber-400 shadow-xl ring-2 ring-amber-400/60" : "border-white/30 shadow-md",
+          )}>
+            <Image
+              src={`/chinese-zodiac/${zodiacId}.png`}
+              alt={zodiacInfo.ko}
+              fill
+              className="object-cover"
+              sizes="62px"
+            />
+            {/* 한자 오버레이 */}
+            <div className="absolute bottom-0 inset-x-0 bg-black/45 backdrop-blur-[2px] py-1 text-center">
+              <span className="font-mystic text-base font-bold text-white leading-none">{value}</span>
+            </div>
+          </div>
+        ) : (
+          /* 천간 — 기존 칩 스타일 */
+          <div className={cn(
+            "mx-auto flex aspect-square w-full max-w-[62px] flex-col items-center justify-center rounded-xl border shadow-lg ring-1 ring-white/35",
+            active && "border-amber-300 ring-2 ring-amber-400/70 shadow-xl",
+            tone,
+          )}>
+            <span className="font-mystic text-2xl font-semibold leading-none sm:text-3xl">
+              {value}
+            </span>
+            {ko ? (
+              <span className="mt-1 text-[10px] font-medium opacity-75">{ko}</span>
+            ) : null}
+          </div>
+        )}
       </button>
 
       {active && lookup ? (
