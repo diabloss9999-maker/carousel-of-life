@@ -42,6 +42,11 @@ export const AI_LIMITS = {
   sajuDeepMaxTokens: 4500,
   fortuneMaxTokens: 2200, // 6-8문장 본문 + 메타 필드
   tarotMaxTokens: 2000,
+  /**
+   * 궁합 풀이 — Vercel Hobby 30s 타임아웃 내에 완료하기 위해
+   * 1 500 토큰으로 제한. Sonnet 기준 약 10~15s 소요.
+   */
+  compatibilityMaxTokens: 1500,
   chatMaxTokens: 1024,
   systemPromptCacheTtl: 60 * 60, // 1 시간 (초 단위)
 } as const;

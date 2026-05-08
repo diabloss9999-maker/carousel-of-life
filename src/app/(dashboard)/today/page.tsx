@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+
+/** Vercel Hobby 최대 허용치(30s) — AI 운세 생성 타임아웃 방지. */
+export const maxDuration = 30;
 import { redirect } from "next/navigation";
 
 import { CategoryTabs } from "@/components/fortune/category-tabs";

@@ -144,7 +144,7 @@ export async function createCompatibility(opts: {
         partner: opts.partner,
       }),
       model: AI_MODELS.premium,
-      maxTokens: AI_LIMITS.fortuneMaxTokens,
+      maxTokens: AI_LIMITS.compatibilityMaxTokens,
     });
   } catch (e) {
     return {

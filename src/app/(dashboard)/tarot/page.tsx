@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 
+/** Vercel Hobby 최대 허용치(30s) — AI 타로 풀이 타임아웃 방지. */
+export const maxDuration = 30;
+
 import { TarotDrawForm } from "@/components/tarot/tarot-draw-form";
 import { TarotReadingCard } from "@/components/tarot/tarot-reading-card";
 import { TarotThreeForm } from "@/components/tarot/tarot-three-form";

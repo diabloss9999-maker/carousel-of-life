@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+
+/** Vercel Hobby 최대 허용치(30s) — AI 궁합 풀이 타임아웃 방지. */
+export const maxDuration = 30;
 import { Users } from "lucide-react";
 
 import { CompatibilityCard } from "@/components/compatibility/compatibility-card";
