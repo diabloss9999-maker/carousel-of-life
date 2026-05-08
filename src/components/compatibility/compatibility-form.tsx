@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { ROUTES } from "@/lib/constants";
+import { RELATIONSHIP_OPTIONS } from "@/lib/compatibility/constants";
 import {
   submitCompatibilityAction,
   type CompatibilityActionState,
@@ -131,6 +132,41 @@ export function CompatibilityForm() {
               className="uppercase"
               disabled={isPending}
             />
+          </div>
+
+          <div className="rounded-xl border border-border/60 bg-card/40 p-3">
+            <label className="flex items-start gap-2 text-sm">
+              <input
+                type="checkbox"
+                name="savePartner"
+                className="mt-1 h-4 w-4 accent-primary"
+                disabled={isPending}
+                defaultChecked
+              />
+              <div className="flex-1 space-y-2">
+                <span className="font-medium">관계 허브에 저장</span>
+                <p className="text-xs text-muted-foreground">
+                  다음에 또 보고 싶으면 저장해 둘게.
+                </p>
+                <div className="space-y-1">
+                  <Label htmlFor="relationship" className="text-xs">
+                    관계
+                  </Label>
+                  <Select
+                    id="relationship"
+                    name="relationship"
+                    defaultValue="친구"
+                    disabled={isPending}
+                  >
+                    {RELATIONSHIP_OPTIONS.map((rel) => (
+                      <option key={rel} value={rel}>
+                        {rel}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+              </div>
+            </label>
           </div>
 
           {state.kind === "error" ? (

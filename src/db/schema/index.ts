@@ -229,6 +229,39 @@ export type NewCompatibilityReading =
   typeof compatibilityReadings.$inferInsert;
 
 // =============================================================================
+// saved_partners - 저장된 관계 상대 (관계 허브)
+// =============================================================================
+
+export const savedPartners = pgTable(
+  "saved_partners",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    /** 연인, 친구, 가족, 직장동료 등 자유 텍스트 (기본값: 친구). */
+    relationship: text("relationship").default("친구"),
+    birthDate: date("birth_date").notNull(),
+    calendarSystem: calendarSystemEnum("calendar_system")
+      .notNull()
+      .default("solar"),
+    gender: genderEnum("gender").notNull(),
+    mbti: text("mbti"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    index("saved_partners_user_idx").on(t.userId),
+    unique("saved_partners_user_name_uniq").on(t.userId, t.name),
+  ],
+);
+
+export type SavedPartner = typeof savedPartners.$inferSelect;
+export type NewSavedPartner = typeof savedPartners.$inferInsert;
+
+// =============================================================================
 // chat_sessions - AI 도사님과의 대화 세션
 // =============================================================================
 
@@ -429,6 +462,7 @@ export const allTables = {
   purchases,
   usageQuotas,
   webhookEvents,
+  savedPartners,
 } as const;
 
 // `sql` re-export — RLS 마이그레이션에서 raw SQL 작성 시 활용.

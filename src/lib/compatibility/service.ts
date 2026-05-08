@@ -6,7 +6,7 @@
  */
 import "server-only";
 
-import { and, count, eq, gte } from "drizzle-orm";
+import { and, count, desc, eq, gte } from "drizzle-orm";
 
 import { db } from "@/db";
 import {
@@ -42,8 +42,36 @@ export async function getRecentCompatibility(
     .select()
     .from(compatibilityReadings)
     .where(eq(compatibilityReadings.userId, userId))
-    .orderBy(compatibilityReadings.createdAt)
+    .orderBy(desc(compatibilityReadings.createdAt))
     .limit(limit);
+}
+
+/**
+ * 특정 상대(이름·생년월일 일치)와의 오늘자 가장 최근 풀이를 반환.
+ * 없으면 null.
+ */
+export async function getTodayCompatibilityForPartner(opts: {
+  userId: string;
+  partnerName: string;
+  partnerBirthDate: string;
+}): Promise<CompatibilityReading | null> {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const rows = await db
+    .select()
+    .from(compatibilityReadings)
+    .where(
+      and(
+        eq(compatibilityReadings.userId, opts.userId),
+        eq(compatibilityReadings.partnerName, opts.partnerName),
+        eq(compatibilityReadings.partnerBirthDate, opts.partnerBirthDate),
+        gte(compatibilityReadings.createdAt, today),
+      ),
+    )
+    .orderBy(desc(compatibilityReadings.createdAt))
+    .limit(1);
+  return rows[0] ?? null;
 }
 
 /**
