@@ -11,7 +11,7 @@ export function CategoryTabs({ current }: CategoryTabsProps) {
   return (
     <nav
       aria-label="운세 카테고리"
-      className="flex flex-wrap gap-2 border-b border-border/40 pb-2"
+      className="flex flex-wrap gap-2 rounded-xl border border-border/45 bg-card/35 p-1.5 shadow-sm backdrop-blur"
     >
       {FORTUNE_CATEGORIES.map((cat) => {
         const isActive = cat.id === current;
@@ -20,10 +20,10 @@ export function CategoryTabs({ current }: CategoryTabsProps) {
             key={cat.id}
             href={{ pathname: "/today", query: { category: cat.id } }}
             className={cn(
-              "rounded-md px-3 py-1.5 text-sm transition-colors",
+              "rounded-full px-3.5 py-2 text-sm transition-all",
               isActive
-                ? "bg-primary/15 text-primary font-medium"
-                : "text-muted-foreground hover:bg-accent/10 hover:text-foreground",
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "text-muted-foreground hover:bg-card/70 hover:text-foreground",
             )}
             aria-current={isActive ? "page" : undefined}
           >

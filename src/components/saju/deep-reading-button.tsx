@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useState, useTransition } from "react";
@@ -40,7 +40,7 @@ export function DeepReadingButton({ locked }: DeepReadingButtonProps) {
 
   if (locked) {
     return (
-      <Card className="border-accent/30 bg-card/60 backdrop-blur ring-1 ring-accent/15">
+      <Card className="app-surface ring-1 ring-accent/15">
         <CardHeader>
           <div className="flex items-center gap-2">
             <Lock className="h-5 w-5 text-accent" aria-hidden />
@@ -75,7 +75,7 @@ export function DeepReadingButton({ locked }: DeepReadingButtonProps) {
   }
 
   return (
-    <Card className="border-accent/30 bg-card/60 backdrop-blur ring-1 ring-accent/15">
+    <Card className="app-surface ring-1 ring-accent/15">
       <CardHeader>
         <div className="flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-accent" aria-hidden />

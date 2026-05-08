@@ -143,7 +143,7 @@ export function ChatWindow({ sessionId, initialMessages }: ChatWindowProps) {
   const charsLeft = MAX_MESSAGE_LENGTH - input.length;
 
   return (
-    <div className="flex h-[calc(100vh-12rem)] flex-col gap-4">
+    <div className="flex h-[calc(100vh-11rem)] flex-col gap-4">
       <div className="flex items-center justify-end">
         <Button
           variant="ghost"
@@ -157,7 +157,7 @@ export function ChatWindow({ sessionId, initialMessages }: ChatWindowProps) {
 
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto space-y-4 rounded-lg border border-border/40 bg-card/20 p-4 backdrop-blur"
+        className="app-surface flex-1 space-y-4 overflow-y-auto rounded-xl p-4"
       >
         {messages.length === 0 ? (
           <div className="flex h-full items-center justify-center text-center text-sm text-muted-foreground">
@@ -182,7 +182,7 @@ export function ChatWindow({ sessionId, initialMessages }: ChatWindowProps) {
       {error ? (
         <div
           className={cn(
-            "flex flex-col gap-2 rounded-md border px-3 py-2 text-sm",
+            "flex flex-col gap-2 rounded-xl border px-3 py-2 text-sm",
             "border-destructive/40 bg-destructive/10 text-destructive",
           )}
         >
@@ -196,14 +196,14 @@ export function ChatWindow({ sessionId, initialMessages }: ChatWindowProps) {
       ) : null}
 
       <form onSubmit={handleSend} className="flex flex-col gap-1.5">
-        <div className="flex gap-2">
+        <div className="flex gap-2 rounded-xl border border-border/45 bg-card/35 p-1.5 shadow-sm backdrop-blur">
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="궁금한 걸 물어봐 (100자 이내)"
             disabled={isStreaming}
             maxLength={MAX_MESSAGE_LENGTH}
-            className="flex-1"
+            className="flex-1 border-transparent bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
           />
           <Button
             type="submit"

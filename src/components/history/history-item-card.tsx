@@ -1,4 +1,4 @@
-import { Heart, Sparkles, Sun } from "lucide-react";
+﻿import { Heart, Sparkles, Sun } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import type { HistoryItem } from "@/lib/history/service";
@@ -29,7 +29,7 @@ function FortuneRow({
 }) {
   const label = CATEGORY_LABEL[item.category as FortuneCategoryId] ?? "운세";
   return (
-    <Card className="border-border/40 bg-card/50 backdrop-blur">
+    <Card className="app-surface">
       <CardContent className="p-4 flex items-start gap-4">
         <BadgeIcon icon={<Sun className="h-4 w-4" />} tone="primary" />
         <div className="flex-1 min-w-0 space-y-1.5">
@@ -72,7 +72,7 @@ function TarotRow({
   }
 
   return (
-    <Card className="border-border/40 bg-card/50 backdrop-blur">
+    <Card className="app-surface">
       <CardContent className="p-4 flex items-start gap-4">
         <BadgeIcon icon={<Sparkles className="h-4 w-4" />} tone="accent" />
         <div className="flex-1 min-w-0 space-y-1.5">
@@ -100,7 +100,7 @@ function CompatibilityRow({
   item: Extract<HistoryItem, { kind: "compatibility" }>["data"];
 }) {
   return (
-    <Card className="border-border/40 bg-card/50 backdrop-blur">
+    <Card className="app-surface">
       <CardContent className="p-4 flex items-start gap-4">
         <BadgeIcon icon={<Heart className="h-4 w-4" />} tone="primary" />
         <div className="flex-1 min-w-0 space-y-1.5">

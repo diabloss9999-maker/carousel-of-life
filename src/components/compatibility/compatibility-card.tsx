@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+﻿import { Heart } from "lucide-react";
 
 import {
   Card,
@@ -14,7 +14,7 @@ interface CompatibilityCardProps {
 
 export function CompatibilityCard({ reading }: CompatibilityCardProps) {
   return (
-    <Card className="border-border/40 bg-card/50 backdrop-blur">
+    <Card className="app-surface">
       <CardHeader className="space-y-3 pb-3">
         <div className="flex items-center justify-between">
           <span className="text-xs text-muted-foreground">

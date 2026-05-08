@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 
 import {
   Card,
@@ -29,7 +29,7 @@ export default async function PersonalityPage() {
         </p>
       </header>
 
-      <Card className="border-border/40 bg-card/50 backdrop-blur">
+      <Card className="app-surface">
         <CardHeader className="pb-2">
           <CardTitle className="font-mystic text-lg">나는 어떤 유형?</CardTitle>
           <CardDescription className="text-xs">

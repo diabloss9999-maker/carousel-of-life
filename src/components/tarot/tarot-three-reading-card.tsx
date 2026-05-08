@@ -50,7 +50,7 @@ export function TarotThreeReadingCard({ reading }: TarotThreeReadingCardProps) {
   }
 
   return (
-    <Card className="border-accent/30 bg-card/60 backdrop-blur ring-1 ring-accent/15">
+    <Card className="app-surface ring-1 ring-accent/15">
       <CardHeader className="space-y-3">
         <p className="text-xs uppercase tracking-wider text-muted-foreground">
           {formatKoreanDate(new Date(reading.createdAt))} · 3장 스프레드
@@ -100,7 +100,7 @@ export function TarotThreeReadingCard({ reading }: TarotThreeReadingCardProps) {
         </div>
 
         {/* 종합 풀이 */}
-        <div className="rounded-2xl border border-accent/30 bg-accent/10 p-5 space-y-2">
+        <div className="space-y-2 rounded-xl border border-accent/25 bg-accent/10 p-5 shadow-sm">
           <div className="flex items-center gap-1.5 text-sm font-medium text-accent">
             <Sparkles className="h-4 w-4" aria-hidden />
             <span className="font-mystic">종합 풀이</span>

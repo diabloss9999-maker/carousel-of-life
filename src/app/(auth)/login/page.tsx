@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 
 import {
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <Card className="border-border/60 bg-card/60 backdrop-blur">
+    <Card className="app-surface">
       <CardHeader className="space-y-2 text-center">
         <CardTitle className="font-mystic text-2xl">로그인</CardTitle>
         <CardDescription>

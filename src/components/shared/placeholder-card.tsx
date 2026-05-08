@@ -1,4 +1,4 @@
-import { Sparkles } from "lucide-react";
+﻿import { Sparkles } from "lucide-react";
 
 import {
   Card,
@@ -20,7 +20,7 @@ export function PlaceholderCard({
   step = "다음 단계",
 }: PlaceholderCardProps) {
   return (
-    <Card className="border-border/60 bg-card/60 backdrop-blur">
+    <Card className="app-surface">
       <CardHeader>
         <CardTitle className="font-mystic flex items-center gap-2 text-xl">
           <Sparkles className="h-5 w-5 text-accent" aria-hidden />

@@ -40,7 +40,7 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
 
   if (!subscribed) {
     return (
-      <Card className="border-accent/30 bg-card/60 backdrop-blur ring-1 ring-accent/15">
+      <Card className="app-surface ring-1 ring-accent/15">
         <CardHeader>
           <CardTitle className="font-mystic flex items-center gap-2 text-xl">
             <Lock className="h-5 w-5 text-accent" aria-hidden />
@@ -69,7 +69,7 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
   }
 
   return (
-    <Card className="border-accent/30 bg-card/60 backdrop-blur ring-1 ring-accent/15">
+    <Card className="app-surface ring-1 ring-accent/15">
       <CardHeader>
         <CardTitle className="font-mystic flex items-center gap-2 text-xl">
           <Sparkles className="h-5 w-5 text-accent" aria-hidden />

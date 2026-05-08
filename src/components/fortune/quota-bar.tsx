@@ -21,7 +21,7 @@ export function QuotaBar({
 }: QuotaBarProps) {
   if (subscribed) {
     return (
-      <div className="rounded-2xl border border-accent/30 bg-card/50 p-4 backdrop-blur ring-1 ring-accent/20">
+      <div className="app-surface rounded-xl p-4 ring-1 ring-accent/15">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-3">
             <Crown className="h-5 w-5 text-accent" aria-hidden />
@@ -45,7 +45,7 @@ export function QuotaBar({
   }
 
   return (
-    <div className="rounded-2xl border border-border/40 bg-card/40 p-4 backdrop-blur">
+    <div className="app-surface rounded-xl p-4">
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div className="grid grid-cols-3 gap-4 sm:gap-6 text-sm flex-1 min-w-0">
           <Item
@@ -82,7 +82,7 @@ function Item({
           {used}/{max}
         </span>
       </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+      <div className="h-2 overflow-hidden rounded-full bg-muted/75">
         <div
           className={cn(
             "h-full rounded-full transition-all",

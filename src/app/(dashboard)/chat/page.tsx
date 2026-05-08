@@ -1,4 +1,4 @@
-import type { Metadata, Route } from "next";
+﻿import type { Metadata, Route } from "next";
 import Link from "next/link";
 import { MessageCircle, Plus } from "lucide-react";
 
@@ -53,7 +53,7 @@ export default async function ChatPage() {
       />
 
       {sessions.length === 0 ? (
-        <Card className="border-border/60 bg-card/60 backdrop-blur">
+        <Card className="app-surface">
           <CardHeader>
             <CardTitle className="font-mystic flex items-center gap-2 text-xl">
               <MessageCircle className="h-5 w-5 text-accent" aria-hidden />

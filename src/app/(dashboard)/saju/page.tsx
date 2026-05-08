@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 
 import {
   Card,
@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { CalculateSajuButton } from "@/components/saju/calculate-saju-button";
+import { ResetSajuButton } from "@/components/saju/reset-saju-button";
 import { DeepReadingButton } from "@/components/saju/deep-reading-button";
 import { DeepReadingCard } from "@/components/saju/deep-reading-card";
 import {
@@ -103,7 +104,7 @@ export default async function SajuPage() {
             <DeepReadingButton locked={!subscribed} />
           )}
 
-          <Card className="border-border/40 bg-card/40 backdrop-blur">
+          <Card className="app-surface">
             <CardHeader>
               <CardTitle className="font-mystic text-lg">
                 기억해두면 좋은 것
@@ -113,10 +114,13 @@ export default async function SajuPage() {
                 기운은 보충하면서 살면 결이 한결 부드러워져요.
               </CardDescription>
             </CardHeader>
+            <CardContent>
+              <ResetSajuButton />
+            </CardContent>
           </Card>
         </>
       ) : (
-        <Card className="border-border/60 bg-card/60 backdrop-blur">
+        <Card className="app-surface">
           <CardHeader>
             <CardTitle className="font-mystic text-xl">
               사주를 아직 보지 않았어

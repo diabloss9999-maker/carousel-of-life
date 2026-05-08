@@ -5,9 +5,13 @@
  */
 import { revalidatePath } from "next/cache";
 
+import { eq } from "drizzle-orm";
+
+import { db } from "@/db";
+import { profiles } from "@/db/schema";
 import { requireProfile } from "@/lib/auth/get-user";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
-import { ensureSajuCalculated } from "@/lib/saju/calculate";
+import { calculateSaju } from "@/lib/saju/calculate";
 import { getOrCreateDeepReading } from "@/lib/saju/deep-reading";
 
 export interface CalculateSajuState {
@@ -18,7 +22,11 @@ export interface CalculateSajuState {
 export async function calculateSajuAction(): Promise<CalculateSajuState> {
   try {
     const { profile } = await requireProfile();
-    await ensureSajuCalculated(profile);
+    const saju = await calculateSaju(profile);
+    await db
+      .update(profiles)
+      .set({ sajuPillars: saju.pillars, fiveElements: saju.fiveElements })
+      .where(eq(profiles.userId, profile.userId));
     revalidatePath("/saju");
     return { kind: "idle" };
   } catch (e) {
@@ -26,6 +34,35 @@ export async function calculateSajuAction(): Promise<CalculateSajuState> {
       kind: "error",
       message:
         "사주를 계산하지 못했어: " +
+        (e instanceof Error ? e.message : "알 수 없는 원인"),
+    };
+  }
+}
+
+/**
+ * 사주 캐시를 초기화하고 재계산한다.
+ */
+export async function resetSajuAction(): Promise<CalculateSajuState> {
+  try {
+    const { profile } = await requireProfile();
+    // 기존 캐시 초기화
+    await db
+      .update(profiles)
+      .set({ sajuPillars: null, fiveElements: null, sajuDeepReading: null })
+      .where(eq(profiles.userId, profile.userId));
+    // 재계산
+    const saju = await calculateSaju(profile);
+    await db
+      .update(profiles)
+      .set({ sajuPillars: saju.pillars, fiveElements: saju.fiveElements })
+      .where(eq(profiles.userId, profile.userId));
+    revalidatePath("/saju");
+    return { kind: "idle" };
+  } catch (e) {
+    return {
+      kind: "error",
+      message:
+        "재계산에 실패했어: " +
         (e instanceof Error ? e.message : "알 수 없는 원인"),
     };
   }

@@ -27,8 +27,8 @@ export function MessageBubble({
         className={cn(
           "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border",
           isAssistant
-            ? "border-accent/40 bg-accent/15 text-accent"
-            : "border-primary/40 bg-primary/15 text-primary",
+            ? "border-accent/35 bg-accent/12 text-accent"
+            : "border-primary/35 bg-primary/12 text-primary",
         )}
         aria-hidden
       >
@@ -41,10 +41,10 @@ export function MessageBubble({
 
       <div
         className={cn(
-          "max-w-[85%] rounded-2xl px-4 py-3",
+          "max-w-[85%] rounded-xl px-4 py-3 shadow-sm",
           isAssistant
-            ? "bg-card/60 backdrop-blur border border-border/40 rounded-tl-sm"
-            : "bg-primary/15 border border-primary/30 rounded-tr-sm",
+            ? "border border-border/45 bg-card/62 backdrop-blur rounded-tl-sm"
+            : "border border-primary/25 bg-primary/14 rounded-tr-sm",
         )}
       >
         <p

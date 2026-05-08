@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useActionState } from "react";
@@ -31,7 +31,7 @@ export function CompatibilityForm() {
   );
 
   return (
-    <Card className="border-border/40 bg-card/50 backdrop-blur">
+    <Card className="app-surface">
       <CardHeader>
         <CardTitle className="font-mystic flex items-center gap-2 text-lg">
           <Heart className="h-5 w-5 text-accent" aria-hidden />

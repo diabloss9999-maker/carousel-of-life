@@ -37,7 +37,7 @@ export function TarotReadingCard({ reading }: TarotReadingCardProps) {
   const card = cards[0];
 
   return (
-    <Card className="border-border/60 bg-card/60 backdrop-blur">
+    <Card className="app-surface">
       <CardHeader className="space-y-3">
         <p className="text-xs uppercase tracking-wider text-muted-foreground">
           {formatKoreanDate(new Date(reading.createdAt))}

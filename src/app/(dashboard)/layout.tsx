@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LogOut } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { mainNav } from "@/config/navigation";
@@ -16,26 +17,16 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header
-        className="sticky top-0 z-40 border-b border-[oklch(0.76_0.14_80)]/30 shadow-md"
-        style={{
-          backgroundImage: "url(/header-bg.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="relative mx-auto flex h-16 w-full max-w-5xl items-center justify-between gap-2 pl-20 pr-2 sm:h-20 sm:pl-28 sm:pr-28 md:pl-32 md:pr-32">
-          {/* 로고 — 검정 */}
+      <header className="sticky top-0 z-40 border-b border-border/45 bg-background/72 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
           <Link
             href={ROUTES.today}
-            className="font-mystic text-base font-semibold tracking-tight whitespace-nowrap sm:text-lg md:text-xl transition-opacity hover:opacity-70 text-black"
+            className="font-mystic whitespace-nowrap text-lg font-semibold tracking-tight text-foreground transition-opacity hover:opacity-75"
           >
             {siteConfig.name}
           </Link>
 
-          {/* 데스크톱 네비 */}
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav className="hidden items-center gap-1 rounded-full border border-border/55 bg-card/50 p-1 shadow-sm backdrop-blur md:flex">
             {mainNav
               .filter((item) => item.href !== ROUTES.settings)
               .map((item) => {
@@ -44,7 +35,7 @@ export default async function DashboardLayout({
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-all text-black hover:bg-black/10"
+                    className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:bg-primary/12 hover:text-foreground"
                   >
                     <Icon className="h-4 w-4" aria-hidden />
                     {item.label}
@@ -53,34 +44,27 @@ export default async function DashboardLayout({
               })}
           </nav>
 
-          {/* 로그아웃 */}
           <form action={signOutAction}>
             <Button
               type="submit"
               variant="ghost"
               size="sm"
-              className="rounded-full border border-black/30 bg-black/10 text-black hover:bg-black/20 backdrop-blur-sm shadow-sm text-sm font-medium transition-all"
+              className="rounded-full border border-border/55 bg-card/45 px-3 text-muted-foreground shadow-sm backdrop-blur hover:bg-card/70 hover:text-foreground"
             >
-              로그아웃
+              <LogOut className="h-4 w-4" aria-hidden />
+              <span className="hidden sm:inline">로그아웃</span>
             </Button>
           </form>
         </div>
       </header>
 
       <main className="flex-1">
-        <div className="mx-auto w-full max-w-5xl px-6 py-8 md:py-12">
+        <div className="mx-auto w-full max-w-6xl px-4 py-7 sm:px-6 md:py-10">
           {children}
         </div>
       </main>
 
-      {/* 모바일 하단 네비 */}
-      <nav
-        className="sticky bottom-0 z-30 border-t backdrop-blur-md md:hidden"
-        style={{
-          background: "oklch(0.12 0.03 55 / 0.93)",
-          borderColor: "oklch(0.76 0.14 80 / 0.30)",
-        }}
-      >
+      <nav className="sticky bottom-0 z-30 border-t border-border/45 bg-background/82 backdrop-blur-xl md:hidden">
         <div className="mx-auto flex max-w-5xl items-stretch justify-around">
           {mainNav.map((item) => {
             const Icon = item.icon;
@@ -88,7 +72,7 @@ export default async function DashboardLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex flex-1 flex-col items-center gap-0.5 px-2 py-2 text-xs transition-colors text-black/80 hover:text-black"
+                className="flex flex-1 flex-col items-center gap-0.5 px-2 py-2.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
               >
                 <Icon className="h-5 w-5" aria-hidden />
                 <span>{item.label}</span>

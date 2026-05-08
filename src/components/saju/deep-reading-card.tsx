@@ -1,4 +1,4 @@
-import {
+﻿import {
   Brain,
   Briefcase,
   Heart,
@@ -83,7 +83,7 @@ const SECTIONS: Array<{
 export function DeepReadingCard({ reading }: DeepReadingCardProps) {
   return (
     <div className="space-y-4">
-      <Card className="border-accent/30 bg-card/60 backdrop-blur ring-1 ring-accent/15">
+      <Card className="app-surface ring-1 ring-accent/15">
         <CardHeader>
           <div className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-accent" aria-hidden />
@@ -100,7 +100,7 @@ export function DeepReadingCard({ reading }: DeepReadingCardProps) {
         return (
           <Card
             key={s.key}
-            className="border-border/40 bg-card/50 backdrop-blur"
+            className="app-surface"
           >
             <CardHeader className="pb-3">
               <CardTitle className="font-mystic flex items-center gap-2 text-lg">

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import {
@@ -26,7 +26,7 @@ export default async function OnboardingPage() {
 
   return (
     <div className="mx-auto w-full max-w-xl">
-      <Card className="border-border/60 bg-card/60 backdrop-blur">
+      <Card className="app-surface">
         <CardHeader className="space-y-2 text-center">
           <CardTitle className="font-mystic text-2xl">
             당신을 알려주세요

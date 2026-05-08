@@ -48,7 +48,7 @@ export function TarotCardDisplay({
           alt={nameKo}
           width={448}
           height={672}
-          className="w-full rounded-xl shadow-lg shadow-primary/10"
+          className="w-full rounded-xl border border-white/20 shadow-[0_22px_60px_rgb(0_0_0/0.22)]"
           onError={() => setImgError(true)}
           sizes="(max-width: 640px) 176px, 224px"
           priority={false}
@@ -72,10 +72,10 @@ function FallbackCard({
     <div
       className={cn(
         "aspect-[2/3] w-full",
-        "rounded-xl border-2 border-accent/40",
-        "bg-gradient-to-br from-card via-card to-primary/10",
+        "rounded-xl border border-accent/35",
+        "bg-gradient-to-br from-card/95 via-card/80 to-primary/12",
         "flex flex-col items-center justify-between p-4 sm:p-6",
-        "shadow-lg shadow-primary/10",
+        "shadow-[0_22px_60px_rgb(0_0_0/0.16)] backdrop-blur",
       )}
     >
       <Sparkles className="h-5 w-5 text-accent self-start" aria-hidden />
@@ -105,7 +105,7 @@ export function CardOrientationBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full border px-3 py-0.5 text-xs font-medium",
+        "inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium shadow-sm",
         isReversed
           ? "border-destructive/40 bg-destructive/10 text-destructive"
           : "border-accent/40 bg-accent/15 text-accent-foreground",

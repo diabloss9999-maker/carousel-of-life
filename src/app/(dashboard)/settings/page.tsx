@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { CancelSubscriptionButton } from "@/components/subscription/cancel-subscription-button";
+import { ProfileEditForm } from "@/components/settings/profile-edit-form";
 import { ROUTES } from "@/lib/constants";
 import { requireProfile } from "@/lib/auth/get-user";
 import {
@@ -128,6 +129,13 @@ export default async function SettingsPage() {
           />
           <Row label="MBTI" value={profile.mbti ?? "—"} />
           <Row label="출생지" value={profile.birthPlace ?? "—"} />
+          <div className="pt-2">
+            <ProfileEditForm
+              displayName={profile.displayName ?? ""}
+              mbti={profile.mbti ?? null}
+              birthPlace={profile.birthPlace ?? null}
+            />
+          </div>
         </CardContent>
       </Card>
 

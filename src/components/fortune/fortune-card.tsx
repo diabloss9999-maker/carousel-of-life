@@ -22,7 +22,7 @@ export function FortuneCard({ fortune }: FortuneCardProps) {
   const label = CATEGORY_LABEL[fortune.category as FortuneCategoryId] ?? "운세";
 
   return (
-    <Card className="border-border/60 bg-card/60 backdrop-blur">
+    <Card className="app-surface">
       <CardHeader className="space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-xs uppercase tracking-wider text-muted-foreground">
@@ -39,7 +39,7 @@ export function FortuneCard({ fortune }: FortuneCardProps) {
           {fortune.content}
         </p>
 
-        <div className="grid grid-cols-3 gap-3 border-t border-border/40 pt-4 text-sm">
+        <div className="grid grid-cols-1 gap-3 border-t border-border/40 pt-4 text-sm sm:grid-cols-3">
           <LuckyItem
             icon={<Sparkles className="h-4 w-4" aria-hidden />}
             label="행운의 색"
@@ -91,12 +91,12 @@ function LuckyItem({
   value: string;
 }) {
   return (
-    <div className="flex flex-col items-center gap-1 text-center">
+    <div className="rounded-xl border border-border/45 bg-card/35 px-3 py-3 text-center shadow-sm">
       <span className="flex items-center gap-1 text-xs text-muted-foreground">
         {icon}
         {label}
       </span>
-      <span className="font-mystic font-medium">{value}</span>
+      <span className="mt-1 block font-mystic font-medium">{value}</span>
     </div>
   );
 }

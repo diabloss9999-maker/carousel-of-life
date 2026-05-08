@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { Check } from "lucide-react";
 
@@ -38,7 +38,7 @@ export default async function PricingPage() {
       </header>
 
       <div className="grid gap-6 sm:grid-cols-2">
-        <Card className="border-border/60 bg-card/40">
+        <Card className="app-surface">
           <CardHeader>
             <CardTitle className="font-mystic text-2xl">무료</CardTitle>
             <CardDescription>매일 가벼운 풀이를 받아보세요.</CardDescription>
@@ -62,7 +62,7 @@ export default async function PricingPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-primary/40 bg-card/60 backdrop-blur ring-1 ring-primary/20">
+        <Card className="app-surface ring-1 ring-primary/20">
           <CardHeader>
             <CardTitle className="font-mystic text-2xl">프리미엄</CardTitle>
             <CardDescription>

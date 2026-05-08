@@ -1,4 +1,4 @@
-import type { Metadata, Route } from "next";
+﻿import type { Metadata, Route } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Archive } from "lucide-react";
@@ -109,7 +109,7 @@ export default async function HistoryPage({ searchParams }: HistoryPageProps) {
           })}
         </div>
       ) : (
-        <Card className="border-border/40 bg-card/50 backdrop-blur">
+        <Card className="app-surface">
           <CardHeader>
             <CardTitle className="font-mystic flex items-center gap-2 text-lg">
               <Archive className="h-5 w-5 text-muted-foreground" aria-hidden />

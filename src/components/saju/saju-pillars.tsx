@@ -228,7 +228,11 @@ function Char({ value, kind, id, active, onToggle }: CharProps) {
       </button>
 
       {active && lookup ? (
-        <CharPopover id={`${id}-popover`} lookup={lookup} />
+        <CharPopover
+          id={`${id}-popover`}
+          lookup={lookup}
+          placement={kind === "branch" ? "top" : "bottom"}
+        />
       ) : null}
     </div>
   );
@@ -237,26 +241,35 @@ function Char({ value, kind, id, active, onToggle }: CharProps) {
 function CharPopover({
   id,
   lookup,
+  placement,
 }: {
   id: string;
   lookup: NonNullable<ReturnType<typeof lookupChar>>;
+  placement: "top" | "bottom";
 }) {
   const { kind, meaning } = lookup;
   const elementLabel = ELEMENT_LABEL[meaning.element];
   const polarityLabel = POLARITY_LABEL[meaning.polarity];
+  const opensAbove = placement === "top";
 
   return (
     <div
       id={id}
       role="dialog"
       className={cn(
-        "absolute left-1/2 top-full z-30 mt-2 w-56 -translate-x-1/2",
+        "absolute left-1/2 z-30 w-56 -translate-x-1/2",
+        opensAbove ? "bottom-full mb-2" : "top-full mt-2",
         "rounded-xl border border-amber-200/70 bg-amber-50/95 p-3 text-left text-xs text-stone-800",
         "shadow-2xl shadow-stone-950/15 backdrop-blur-md dark:border-amber-200/15 dark:bg-stone-950/95 dark:text-amber-50",
       )}
     >
       <span
-        className="absolute -top-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 border-l border-t border-amber-200/70 bg-amber-50/95 dark:border-amber-200/15 dark:bg-stone-950/95"
+        className={cn(
+          "absolute left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 border-amber-200/70 bg-amber-50/95 dark:border-amber-200/15 dark:bg-stone-950/95",
+          opensAbove
+            ? "-bottom-1.5 border-b border-r"
+            : "-top-1.5 border-l border-t",
+        )}
         aria-hidden
       />
 
