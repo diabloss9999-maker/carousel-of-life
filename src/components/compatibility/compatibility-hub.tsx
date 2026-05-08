@@ -1,21 +1,19 @@
 "use client";
 
 /**
- * 궁합 허브 — 5개의 탭을 한 화면에서 전환한다.
- *  1) 저장된 상대
- *  2) 새 궁합 보기 (나 + 상대)
- *  3) 타인 간 궁합 (제3자 두 명)
- *  4) 별자리 궁합
- *  5) MBTI 궁합
+ * 궁합 허브 — 4개의 탭을 한 화면에서 전환한다.
+ *  1) 새 궁합 보기 (나 + 상대)
+ *  2) 타인 간 궁합 (제3자 두 명)
+ *  3) 별자리 궁합
+ *  4) MBTI 궁합
  */
 import { useState } from "react";
 import type { ReactNode } from "react";
-import { BookHeart, Heart, Sparkles, Users, UsersRound } from "lucide-react";
+import { BookHeart, Heart, Sparkles, UsersRound } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 const TAB_DEFS = [
-  { id: "saved", label: "저장된 상대", icon: Users },
   { id: "new", label: "새 궁합", icon: Heart },
   { id: "twoPerson", label: "타인 간 궁합", icon: UsersRound },
   { id: "zodiac", label: "별자리 궁합", icon: Sparkles },
@@ -25,7 +23,6 @@ const TAB_DEFS = [
 export type CompatibilityTabId = (typeof TAB_DEFS)[number]["id"];
 
 interface CompatibilityHubProps {
-  saved: ReactNode;
   newReading: ReactNode;
   twoPerson: ReactNode;
   zodiac: ReactNode;
@@ -34,12 +31,11 @@ interface CompatibilityHubProps {
 }
 
 export function CompatibilityHub({
-  saved,
   newReading,
   twoPerson,
   zodiac,
   mbti,
-  defaultTab = "saved",
+  defaultTab = "new",
 }: CompatibilityHubProps) {
   const [active, setActive] = useState<CompatibilityTabId>(defaultTab);
 
@@ -75,7 +71,6 @@ export function CompatibilityHub({
       </div>
 
       <div role="tabpanel">
-        {active === "saved" && saved}
         {active === "new" && newReading}
         {active === "twoPerson" && twoPerson}
         {active === "zodiac" && zodiac}
