@@ -6,7 +6,7 @@ import { TarotThreeForm } from "@/components/tarot/tarot-three-form";
 import { TarotThreeReadingCard } from "@/components/tarot/tarot-three-reading-card";
 import { requireProfile } from "@/lib/auth/get-user";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
-import { getRecentTarotReadings } from "@/lib/tarot/service";
+import { getTodayTarotReadings } from "@/lib/tarot/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { QuotaBar } from "@/components/fortune/quota-bar";
 
@@ -19,7 +19,7 @@ export default async function TarotPage() {
   const { profile } = await requireProfile();
 
   const [readings, usage, subscribed] = await Promise.all([
-    getRecentTarotReadings(profile.userId, 5),
+    getTodayTarotReadings(profile.userId),
     getTodayUsage(profile.userId),
     hasActiveSubscription(profile.userId),
   ]);
@@ -50,7 +50,7 @@ export default async function TarotPage() {
       {readings.length > 0 ? (
         <section className="space-y-4">
           <h2 className="font-mystic text-2xl font-semibold tracking-tight">
-            최근에 본 카드
+            오늘 본 카드
           </h2>
           <div className="space-y-6">
             {readings.map((reading) =>

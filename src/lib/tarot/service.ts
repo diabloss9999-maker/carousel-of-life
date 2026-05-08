@@ -221,6 +221,28 @@ export async function getRecentTarotReadings(
 }
 
 /**
+ * 오늘(KST 기준) 뽑은 타로 카드만 반환.
+ */
+export async function getTodayTarotReadings(
+  userId: string,
+): Promise<TarotReading[]> {
+  // KST 오늘 시작 시각 (UTC 기준)
+  const nowKst = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }),
+  );
+  const todayStartKst = new Date(nowKst);
+  todayStartKst.setHours(0, 0, 0, 0);
+  // KST → UTC (KST = UTC+9)
+  const todayStartUtc = new Date(todayStartKst.getTime() - 9 * 60 * 60 * 1000);
+
+  return db.query.tarotReadings.findMany({
+    where: (t, { eq, gte, and }) =>
+      and(eq(t.userId, userId), gte(t.createdAt, todayStartUtc)),
+    orderBy: (t, { desc }) => desc(t.createdAt),
+  });
+}
+
+/**
  * three 스프레드 readings 의 interpretation 을 파싱한다.
  */
 export interface ParsedThreeInterpretation {
