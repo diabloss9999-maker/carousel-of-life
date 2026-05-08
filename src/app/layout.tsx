@@ -47,8 +47,8 @@ export default function RootLayout({
         <div aria-hidden className="pointer-events-none fixed inset-0 -z-20 hidden sm:block">
           <Image src="/mystic-bg-wide.png" alt="" fill priority sizes="100vw" className="object-cover object-center" />
         </div>
-        {/* 가독성 오버레이 */}
-        <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 bg-background/40 backdrop-blur-[1px]" />
+        {/* 가독성 오버레이 — 밝은 배경에 맞게 최소화 */}
+        <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 bg-white/10" />
 
         <ThemeProvider
           attribute="class"

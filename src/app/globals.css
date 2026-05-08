@@ -51,40 +51,40 @@
 }
 
 .dark {
-  /* 다크 모드: 밤하늘 + 골드 별빛 + 따뜻한 화이트 텍스트 */
-  --background: oklch(0.18 0.026 58);       /* 깊은 골드빛 어둠 */
-  --foreground: oklch(0.96 0.018 85);        /* 따뜻한 크림 화이트 */
+  /* 밝은 크림+골드 배경에 어울리는 팔레트 — 텍스트는 어둡게, 카드는 반투명 */
+  --background: oklch(0.94 0.012 85);        /* 크림 (오버레이용) */
+  --foreground: oklch(0.18 0.04 55);         /* 진한 갈색 — 밝은 배경에 선명 */
 
-  --card: oklch(0.24 0.030 58);
-  --card-foreground: oklch(0.96 0.018 85);
+  --card: oklch(0.97 0.010 85 / 0.82);       /* 반투명 크림 카드 */
+  --card-foreground: oklch(0.18 0.04 55);
 
-  --popover: oklch(0.20 0.028 58);
-  --popover-foreground: oklch(0.96 0.018 85);
+  --popover: oklch(0.98 0.008 85 / 0.96);
+  --popover-foreground: oklch(0.18 0.04 55);
 
-  --primary: oklch(0.76 0.14 80);            /* 선명한 골드 */
-  --primary-foreground: oklch(0.12 0.03 55);
+  --primary: oklch(0.55 0.14 72);            /* 깊은 골드 */
+  --primary-foreground: oklch(0.98 0.005 85);
 
-  --secondary: oklch(0.28 0.035 62);
-  --secondary-foreground: oklch(0.92 0.016 85);
+  --secondary: oklch(0.88 0.022 80);
+  --secondary-foreground: oklch(0.22 0.05 55);
 
-  --muted: oklch(0.29 0.030 60);
-  --muted-foreground: oklch(0.74 0.055 78);   /* 연골드 뮤트 */
+  --muted: oklch(0.88 0.016 80);
+  --muted-foreground: oklch(0.42 0.06 62);
 
-  --accent: oklch(0.82 0.14 82);             /* 밝은 황금 강조 */
-  --accent-foreground: oklch(0.12 0.03 55);
+  --accent: oklch(0.58 0.14 72);             /* 골드 강조 */
+  --accent-foreground: oklch(0.98 0.005 85);
 
-  --destructive: oklch(0.62 0.22 25);
+  --destructive: oklch(0.55 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
 
-  --border: oklch(0.36 0.040 70);             /* 골드빛 테두리 */
-  --input: oklch(0.36 0.040 70);
-  --ring: oklch(0.76 0.14 80);
+  --border: oklch(0.72 0.07 72 / 0.55);
+  --input: oklch(0.72 0.07 72 / 0.55);
+  --ring: oklch(0.55 0.14 72);
 
-  --chart-1: oklch(0.76 0.14 80);
-  --chart-2: oklch(0.82 0.14 82);
-  --chart-3: oklch(0.65 0.2 25);
-  --chart-4: oklch(0.65 0.18 200);
-  --chart-5: oklch(0.72 0.18 145);
+  --chart-1: oklch(0.55 0.14 72);
+  --chart-2: oklch(0.62 0.14 78);
+  --chart-3: oklch(0.55 0.20 25);
+  --chart-4: oklch(0.55 0.16 200);
+  --chart-5: oklch(0.58 0.16 145);
 }
 
 @theme inline {
