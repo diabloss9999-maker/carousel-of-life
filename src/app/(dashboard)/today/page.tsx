@@ -6,7 +6,9 @@ import { FortuneCard } from "@/components/fortune/fortune-card";
 
 import { GenerateFortuneForm } from "@/components/fortune/generate-fortune-form";
 import { QuotaBar } from "@/components/fortune/quota-bar";
+import { TodaySummary } from "@/components/fortune/today-summary";
 import { ZodiacBanner } from "@/components/fortune/zodiac-banner";
+import type { DailyFortune } from "@/db/schema";
 import { requireProfile } from "@/lib/auth/get-user";
 import {
   FORTUNE_CATEGORIES,
@@ -54,6 +56,27 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
     hasActiveSubscription(profile.userId),
   ]);
 
+  // general 탭에서만 다른 카테고리들의 오늘 운세를 병렬 조회한다.
+  const SUMMARY_CATEGORIES: FortuneCategoryId[] = [
+    "love",
+    "money",
+    "career",
+    "health",
+    "study",
+  ];
+  let summaryFortunes: Partial<Record<FortuneCategoryId, DailyFortune | null>> = {};
+  if (category === "general") {
+    const results = await Promise.all(
+      SUMMARY_CATEGORIES.map((c) => getDailyFortune(profile.userId, c)),
+    );
+    summaryFortunes = SUMMARY_CATEGORIES.reduce<
+      Partial<Record<FortuneCategoryId, DailyFortune | null>>
+    >((acc, c, i) => {
+      acc[c] = results[i];
+      return acc;
+    }, {});
+  }
+
   const today = formatKoreanDate(new Date());
 
   return (
@@ -90,6 +113,10 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           category={category}
           categoryLabel={CATEGORY_LONG_LABEL[category]}
         />
+      )}
+
+      {category === "general" && fortune && (
+        <TodaySummary fortunes={summaryFortunes} />
       )}
 
     </div>
