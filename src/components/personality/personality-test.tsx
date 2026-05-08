@@ -52,7 +52,14 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
       setAxes(calcResult.axes);
       startTransition(async () => {
         const result = await savePersonalityResult(next as Choice[]);
-        setResultType(result.type);
+        if ("error" in result) {
+          // 에러 시 결과 표시는 하되 저장은 실패 (로컬 계산값 사용)
+          const calcResult = calcPersonalityResult(next as Choice[]);
+          setAxes(calcResult.axes);
+          setResultType(calcResult.type);
+        } else {
+          setResultType(result.type);
+        }
       });
     }
   }
