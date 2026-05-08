@@ -36,7 +36,8 @@ export function TarotCardDisplay({
   return (
     <div
       className={cn(
-        "relative mx-auto w-44 sm:w-56",
+        /* aspect-[2/3] 고정 비율 — 이미지 해상도 차이 무관하게 항상 같은 크기 */
+        "relative mx-auto aspect-[2/3] w-44 sm:w-56",
         isReversed && "rotate-180",
         className,
       )}
@@ -46,9 +47,8 @@ export function TarotCardDisplay({
         <Image
           src={src}
           alt={nameKo}
-          width={448}
-          height={672}
-          className="w-full rounded-xl border border-white/20 shadow-[0_22px_60px_rgb(0_0_0/0.22)]"
+          fill
+          className="object-cover rounded-xl border border-white/20 shadow-[0_22px_60px_rgb(0_0_0/0.22)]"
           onError={() => setImgError(true)}
           sizes="(max-width: 640px) 176px, 224px"
           priority={false}

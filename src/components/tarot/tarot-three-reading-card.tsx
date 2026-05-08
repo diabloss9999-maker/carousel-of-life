@@ -66,19 +66,26 @@ export function TarotThreeReadingCard({ reading }: TarotThreeReadingCardProps) {
       </CardHeader>
       <CardContent className="space-y-8">
         {/* 3장 카드 + 각 위치 풀이 */}
+        {/* 라벨 행 */}
+        <div className="grid gap-6 md:grid-cols-3">
+          {POSITIONS.map((pos) => {
+            const Icon = pos.icon;
+            return (
+              <div key={pos.key} className="flex items-center justify-center gap-1.5 text-sm font-medium text-accent">
+                <Icon className="h-4 w-4" aria-hidden />
+                <span className="font-mystic">{pos.label}</span>
+                <span className="text-xs text-muted-foreground/70 font-normal">{pos.desc}</span>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* 카드 이미지 행 — 동일 높이 고정 */}
         <div className="grid gap-6 md:grid-cols-3">
           {POSITIONS.map((pos, i) => {
             const card = cards[i];
-            const Icon = pos.icon;
             return (
-              <div key={pos.key} className="flex flex-col items-center gap-3">
-                <div className="flex items-center gap-1.5 text-sm font-medium text-accent">
-                  <Icon className="h-4 w-4" aria-hidden />
-                  <span className="font-mystic">{pos.label}</span>
-                  <span className="text-xs text-muted-foreground/70 font-normal">
-                    {pos.desc}
-                  </span>
-                </div>
+              <div key={pos.key} className="flex flex-col items-center gap-2">
                 <TarotCardDisplay
                   id={card.id}
                   nameKo={card.nameKo}
@@ -87,16 +94,21 @@ export function TarotThreeReadingCard({ reading }: TarotThreeReadingCardProps) {
                   className="w-32 sm:w-36"
                 />
                 <CardOrientationBadge isReversed={card.isReversed} />
-                <p
-                  className={cn(
-                    "font-mystic whitespace-pre-line leading-relaxed text-sm text-foreground/85",
-                  )}
-                >
-                  {parsed[pos.key]}
-                </p>
               </div>
             );
           })}
+        </div>
+
+        {/* 텍스트 행 — 같은 위치에서 시작 */}
+        <div className="grid gap-6 md:grid-cols-3">
+          {POSITIONS.map((pos) => (
+            <p
+              key={pos.key}
+              className="font-mystic whitespace-pre-line leading-relaxed text-sm text-foreground/85"
+            >
+              {parsed[pos.key]}
+            </p>
+          ))}
         </div>
 
         {/* 종합 풀이 */}
