@@ -24,7 +24,7 @@ const VIEW_W = 320;
 const VIEW_H = 80;
 const PAD_X = 4;
 const PAD_Y = 8;
-const LABEL_H = 18; // x축 날짜 라벨 영역 높이
+const LABEL_H = 24; // x축 날짜 라벨 영역 높이 (45도 회전 텍스트)
 const TOTAL_H = VIEW_H + LABEL_H;
 
 export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
@@ -192,24 +192,24 @@ export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
             );
           })}
 
-          {/* x축 날짜 라벨 — 첫날·중간·마지막날만 표시 */}
+          {/* x축 날짜 라벨 — 전체 14일 45도 회전 표시 */}
           {points.map((p, i) => {
-            // 14개 중 첫날(0), 7일째(6), 마지막날(13)만
-            const showIdx = [0, Math.floor((n - 1) / 2), n - 1];
-            if (!showIdx.includes(i)) return null;
             const x = PAD_X + i * xStep;
+            const y = VIEW_H + 4;
             const [, mm, dd] = p.date.split("-");
             const label = `${Number(mm)}/${Number(dd)}`;
+            const isLast = i === n - 1;
             return (
               <text
                 key={`lbl-${p.date}`}
                 x={x}
-                y={VIEW_H + LABEL_H - 2}
-                textAnchor="middle"
-                fontSize="9"
+                y={y}
+                textAnchor="end"
+                fontSize="8"
                 fill="currentColor"
-                opacity="0.45"
+                opacity={isLast ? 0.75 : 0.4}
                 fontFamily="var(--font-sans)"
+                transform={`rotate(-45, ${x}, ${y})`}
               >
                 {label}
               </text>
