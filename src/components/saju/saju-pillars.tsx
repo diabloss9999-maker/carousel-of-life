@@ -218,8 +218,11 @@ function Char({ value, kind, id, active, onToggle }: CharProps) {
   const zodiacInfo = zodiacId
     ? CHINESE_ZODIAC_LIST.find((c) => c.id === zodiacId)
     : null;
-  // 천간 이미지 — 매핑에 없으면 null (폴백 칩 사용)
+  // 천간 이미지 — 없으면 십이간지 이미지로 폴백
   const stemImgId = kind === "stem" ? (STEM_TO_IMG[value] ?? null) : null;
+  // 십이간지 폴백 — 천간 자리에 지지 글자가 온 경우
+  const stemZodiacId = kind === "stem" && !stemImgId ? (BRANCH_TO_ZODIAC[value] ?? null) : null;
+  const stemZodiacInfo = stemZodiacId ? CHINESE_ZODIAC_LIST.find((c) => c.id === stemZodiacId) : null;
 
   return (
     <div className="relative w-full">
@@ -238,8 +241,11 @@ function Char({ value, kind, id, active, onToggle }: CharProps) {
         {zodiacId && zodiacInfo ? (
           <CardImg src={`/chinese-zodiac/${zodiacId}.png`} alt={zodiacInfo.ko} char={value} active={active} />
         ) : stemImgId ? (
-          /* 천간 — 천간 이미지 (매핑 있을 때만) */
+          /* 천간 — 천간 이미지 */
           <CardImg src={`/cheongan/${stemImgId}.png`} alt={ko || value} char={value} active={active} />
+        ) : stemZodiacId && stemZodiacInfo ? (
+          /* 천간 자리에 지지 글자 → 십이간지 이미지로 대체 */
+          <CardImg src={`/chinese-zodiac/${stemZodiacId}.png`} alt={stemZodiacInfo.ko} char={value} active={active} />
         ) : (
           /* 폴백 칩 (매핑 없는 글자) */
           <div className={cn(
