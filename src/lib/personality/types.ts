@@ -15,6 +15,10 @@ export interface TypeInfo {
   compatibleWith: PersonalityType[];
   /** 주의가 필요한 유형. */
   incompatibleWith: PersonalityType[];
+  /** 카드 이미지 직업/역할 설명. */
+  imageRole: string;
+  /** 잘 어울리는 직업군. */
+  suitableJobs: string[];
 }
 
 export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
@@ -26,6 +30,8 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     cautions: ["변화에 좀 더 유연하게 대응하기", "감정 표현을 늘려 관계 깊이 더하기"],
     compatibleWith: ["ESFP", "ESTP"],
     incompatibleWith: ["ENFP", "ENTP"],
+    imageRole: "별의 지도를 보는 군사 전략가",
+    suitableJobs: ["전략 컨설턴트", "연구원", "시스템 분석가", "건축가", "투자 분석가"],
   },
   ISFJ: {
     type: "ISFJ", nickname: "따뜻한 수호자", emoji: "🌷",
@@ -35,6 +41,8 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     cautions: ["자신의 감정과 욕구도 소중히 돌보기", "원치 않을 때 거절하는 연습하기"],
     compatibleWith: ["ESFP", "ESTP"],
     incompatibleWith: ["ENFP", "ENTP"],
+    imageRole: "성소의 수호자 / 치유사",
+    suitableJobs: ["간호사", "사회복지사", "초등교사", "비서", "행정 지원"],
   },
   INFJ: {
     type: "INFJ", nickname: "영감의 예언자", emoji: "🔮",
@@ -44,6 +52,8 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     cautions: ["완벽주의를 조금 내려놓기", "자신을 너무 혹사시키는 번아웃 주의"],
     compatibleWith: ["ENFP", "ENTP"],
     incompatibleWith: ["ESTP", "ESFP"],
+    imageRole: "영적 상담가 / 조용한 개혁가",
+    suitableJobs: ["심리 상담사", "작가", "사회복지사", "의사", "교육자"],
   },
   INTJ: {
     type: "INTJ", nickname: "전략가", emoji: "♟️",
@@ -53,6 +63,8 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     cautions: ["상황에 따라 유연성을 발휘하기", "감정적 교류와 소통 늘리기"],
     compatibleWith: ["ENFP", "ENTP"],
     incompatibleWith: ["ESFP", "ESTP"],
+    imageRole: "별의 지도를 보는 군사 전략가 / 체스형 전술가",
+    suitableJobs: ["전략 컨설턴트", "연구원", "시스템 분석가", "건축가", "투자 분석가"],
   },
   ISTP: {
     type: "ISTP", nickname: "만능 재주꾼", emoji: "🔧",
@@ -62,6 +74,8 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     cautions: ["장기적 계획을 세우는 습관 기르기", "감정을 솔직하게 표현하기"],
     compatibleWith: ["ESFJ", "ESTJ"],
     incompatibleWith: ["ENFJ", "ESFJ"],
+    imageRole: "장인 / 기계공 / 현장 해결사",
+    suitableJobs: ["엔지니어", "외과의", "파일럿", "기술자", "포렌식 전문가"],
   },
   ISFP: {
     type: "ISFP", nickname: "자유로운 예술가", emoji: "🎨",
@@ -71,6 +85,8 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     cautions: ["미래를 위한 장기적 계획도 필요해", "자신의 의견을 좀 더 적극적으로 표현하기"],
     compatibleWith: ["ESFJ", "ENFJ"],
     incompatibleWith: ["ENTJ", "ESTJ"],
+    imageRole: "화가 / 자연 공예가",
+    suitableJobs: ["예술가", "패션 디자이너", "사진작가", "셰프", "물리치료사"],
   },
   INFP: {
     type: "INFP", nickname: "이상주의 몽상가", emoji: "🌙",
@@ -80,6 +96,8 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     cautions: ["현실과의 균형을 맞추기", "감정 과몰입으로 인한 소진 주의"],
     compatibleWith: ["ENFJ", "ENTJ"],
     incompatibleWith: ["ESTJ", "ENTJ"],
+    imageRole: "시적 중재자 / 치유자 / 꿈 해석가",
+    suitableJobs: ["작가", "예술가", "상담사", "UX 디자이너", "심리학자"],
   },
   INTP: {
     type: "INTP", nickname: "논리적 사색가", emoji: "🔭",
@@ -89,6 +107,8 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     cautions: ["생각에서 실행으로 옮기는 연습", "대인 관계와 소통도 챙기기"],
     compatibleWith: ["ENTJ", "ESTJ"],
     incompatibleWith: ["ESFJ", "ESTJ"],
+    imageRole: "천문 관측소의 철학자 / 이론 학자",
+    suitableJobs: ["과학자", "철학자", "소프트웨어 개발자", "대학 교수", "데이터 분석가"],
   },
   ESTP: {
     type: "ESTP", nickname: "대담한 사업가", emoji: "⚡",
@@ -98,6 +118,8 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     cautions: ["장기적 계획과 미래 준비도 필요해", "충동적인 행동을 한번쯤 점검하기"],
     compatibleWith: ["ISFJ", "ISTJ"],
     incompatibleWith: ["INFJ", "INTJ"],
+    imageRole: "모험 상인 / 탐험가 / 거래가",
+    suitableJobs: ["영업직", "기업가", "스포츠 선수", "응급 구조사", "부동산 중개인"],
   },
   ESFP: {
     type: "ESFP", nickname: "자유로운 연예인", emoji: "🎉",
@@ -107,6 +129,8 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     cautions: ["미래를 위한 장기적 계획 세우기", "가끔은 진지하고 깊은 대화도 필요해"],
     compatibleWith: ["ISFJ", "ISTJ"],
     incompatibleWith: ["INTJ", "INFJ"],
+    imageRole: "축제 연예인 / 공연자",
+    suitableJobs: ["연예인", "이벤트 MC", "관광 가이드", "판매원", "유튜버"],
   },
   ENFP: {
     type: "ENFP", nickname: "열정적 활동가", emoji: "✨",
@@ -116,6 +140,8 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     cautions: ["한 가지에 집중하는 연습하기", "시작한 일을 끝까지 마무리하기"],
     compatibleWith: ["INFJ", "INTJ"],
     incompatibleWith: ["ISTJ", "ISFJ"],
+    imageRole: "축제 기획자 / 영감 주는 퍼포머",
+    suitableJobs: ["크리에이터", "마케터", "배우", "기자", "이벤트 기획자"],
   },
   ENTP: {
     type: "ENTP", nickname: "논쟁을 즐기는 발명가", emoji: "💡",
@@ -125,6 +151,8 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     cautions: ["시작한 일을 끝내는 습관 기르기", "토론할 때 상대방 감정도 살피기"],
     compatibleWith: ["INFJ", "INTJ"],
     incompatibleWith: ["ISTJ", "ISFJ"],
+    imageRole: "토론가 / 혁신가 / 발명가",
+    suitableJobs: ["창업가", "마케터", "변호사", "발명가", "광고 기획자"],
   },
   ESTJ: {
     type: "ESTJ", nickname: "엄격한 관리자", emoji: "📋",
@@ -134,6 +162,8 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     cautions: ["상황에 따른 유연성 발휘하기", "다양한 방식과 의견도 인정하기"],
     compatibleWith: ["ISFP", "ISTP"],
     incompatibleWith: ["INFP", "INTP"],
+    imageRole: "도시 행정관 / 법과 질서의 관리자",
+    suitableJobs: ["관리자", "판사", "경찰관", "금융 감독관", "군 장교"],
   },
   ESFJ: {
     type: "ESFJ", nickname: "사교적 외교관", emoji: "🤝",
@@ -143,6 +173,8 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     cautions: ["자신의 욕구와 감정도 우선시하기", "타인의 평가에 덜 의존하는 연습하기"],
     compatibleWith: ["ISFP", "ISTP"],
     incompatibleWith: ["INTP", "INTJ"],
+    imageRole: "궁정 외교관 / 연회 주최자",
+    suitableJobs: ["간호사", "교사", "영업 관리자", "HR 담당자", "이벤트 플래너"],
   },
   ENFJ: {
     type: "ENFJ", nickname: "정의로운 사회운동가", emoji: "🌟",
@@ -152,6 +184,8 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     cautions: ["자신의 에너지와 감정도 챙기기", "타인에게 과도하게 의존하지 않도록 주의"],
     compatibleWith: ["INFP", "ISFP"],
     incompatibleWith: ["ISTP", "ISTJ"],
+    imageRole: "공동체 지도자 / 인도자",
+    suitableJobs: ["교사", "코치", "HR 매니저", "사회운동가", "방송인"],
   },
   ENTJ: {
     type: "ENTJ", nickname: "대담한 지도자", emoji: "👑",
@@ -161,5 +195,7 @@ export const TYPE_INFO: Record<PersonalityType, TypeInfo> = {
     cautions: ["함께하는 사람들의 감정도 살피기", "목표만큼이나 과정의 속도 조절하기"],
     compatibleWith: ["INFP", "INTP"],
     incompatibleWith: ["INFP", "ISFP"],
+    imageRole: "제국의 지휘관 / 통치자",
+    suitableJobs: ["CEO", "경영 컨설턴트", "변호사", "정치인", "프로젝트 매니저"],
   },
 };

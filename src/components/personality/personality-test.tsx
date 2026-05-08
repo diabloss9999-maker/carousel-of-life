@@ -272,7 +272,8 @@ function ResultCard({
             {info.type}
           </p>
           <p className="font-mystic text-lg font-medium">{info.nickname}</p>
-          <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
+          <p className="text-xs text-muted-foreground/70 italic">{info.imageRole}</p>
+          <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mt-1">
             {info.summary}
           </p>
         </div>
@@ -313,6 +314,18 @@ function ResultCard({
           </div>
         </div>
       )}
+
+      {/* 어울리는 직업 */}
+      <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
+        <h3 className="font-mystic font-semibold text-sm">💼 어울리는 직업</h3>
+        <div className="flex flex-wrap gap-1.5">
+          {info.suitableJobs.map((job) => (
+            <span key={job} className="rounded-full bg-primary/10 border border-primary/25 px-2.5 py-0.5 text-xs text-primary font-medium">
+              {job}
+            </span>
+          ))}
+        </div>
+      </div>
 
       {/* 상세 설명 */}
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
