@@ -86,7 +86,7 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
           <p className="text-[10px] text-muted-foreground/70 mb-1">약한 기운</p>
           <div className="flex items-center gap-1.5">
             <span className={cn("h-2.5 w-2.5 rounded-full flex-shrink-0", weakest.dot)} />
-            <span className="font-mystic font-semibold text-sm text-muted-foreground/70">
+            <span className={cn("font-mystic font-semibold text-sm opacity-80", weakest.text)}>
               {weakest.ko}
             </span>
             <span className="text-xs text-muted-foreground/40 ml-0.5">{weakest.hanja}</span>
