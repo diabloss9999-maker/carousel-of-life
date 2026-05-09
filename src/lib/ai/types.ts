@@ -99,3 +99,31 @@ export type CareerReportOutput = z.infer<typeof careerReportSchema>;
  */
 export const careerTipsSchema = careerReportSchema;
 export type CareerTipsOutput = CareerReportOutput;
+
+/** 건강 — 오늘의 맨몸 운동 3가지 */
+export const healthWorkoutSchema = z.object({
+  workouts: z
+    .array(
+      z.object({
+        name: z.string(),
+        howTo: z.string(),
+        benefit: z.string(),
+        reps: z.string(),
+      }),
+    )
+    .min(1),
+});
+export type HealthWorkoutOutput = z.infer<typeof healthWorkoutSchema>;
+
+/** 학업 — 집중력 높이는 팁 3가지 */
+export const studyTipsSchema = z.object({
+  tips: z
+    .array(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+      }),
+    )
+    .min(1),
+});
+export type StudyTipsOutput = z.infer<typeof studyTipsSchema>;

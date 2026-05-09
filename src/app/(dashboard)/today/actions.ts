@@ -9,12 +9,20 @@ import { z } from "zod";
 import { and, eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { dailyCareerTips } from "@/db/schema";
+import {
+  dailyCareerTips,
+  dailyHealthWorkouts,
+  dailyStudyTips,
+} from "@/db/schema";
 import { requireProfile } from "@/lib/auth/get-user";
 import { generateJson } from "@/lib/ai/generate";
 import {
   careerReportSchema,
   type CareerReportOutput,
+  healthWorkoutSchema,
+  type HealthWorkoutOutput,
+  studyTipsSchema,
+  type StudyTipsOutput,
 } from "@/lib/ai/types";
 import { AI_MODELS } from "@/lib/constants";
 import { getOrCreateDailyFortune } from "@/lib/fortunes/service";
@@ -211,6 +219,196 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
     return {
       kind: "error",
       message: e instanceof Error ? e.message : "리포트를 불러오지 못했어.",
+    };
+  }
+}
+
+export interface HealthWorkoutState {
+  kind: "idle" | "success" | "error";
+  workouts?: HealthWorkoutOutput["workouts"];
+  message?: string;
+}
+
+/**
+ * 건강 운세 프리미엄 — 오늘의 맞춤 맨몸 운동 3가지를 AI 로 생성한다.
+ *
+ * - 프리미엄 구독자에게만 동작한다.
+ * - MBTI/생년월일/성별 기반 맞춤 추천.
+ * - 동일 일자 캐시 재사용.
+ */
+export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState> {
+  try {
+    const { profile } = await requireProfile();
+    const subscribed = await hasActiveSubscription(profile.userId);
+    if (!subscribed) {
+      return { kind: "error", message: "프리미엄 전용 기능이야." };
+    }
+
+    const today = todayKst();
+
+    const [cached] = await db
+      .select()
+      .from(dailyHealthWorkouts)
+      .where(
+        and(
+          eq(dailyHealthWorkouts.userId, profile.userId),
+          eq(dailyHealthWorkouts.workoutDate, today),
+        ),
+      )
+      .limit(1);
+
+    if (cached) {
+      const parsed = healthWorkoutSchema.safeParse(cached.workouts);
+      if (parsed.success) {
+        return { kind: "success", workouts: parsed.data.workouts };
+      }
+    }
+
+    const mbti = profile.mbti ?? "알 수 없음";
+    const userPrompt = `사용자 정보:
+- MBTI: ${mbti}
+- 생년월일: ${profile.birthDate}
+- 성별: ${profile.gender}
+
+이 사람에게 오늘 어울리는 맨몸 운동 3가지를 추천해줘.
+기구 없이 집에서도 바로 할 수 있는 운동으로만 추천해.
+
+반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:
+{
+  "workouts": [
+    {
+      "name": "운동 이름",
+      "howTo": "어떻게 하는지 2~3문장",
+      "benefit": "어디에 좋은지 1문장",
+      "reps": "권장 세트/횟수 예: 3세트 × 15회"
+    },
+    { ... },
+    { ... }
+  ]
+}`;
+
+    const result = await generateJson({
+      schema: healthWorkoutSchema,
+      userPrompt,
+      model: AI_MODELS.premium,
+      maxTokens: 1200,
+      systemSuffix:
+        "운동 추천 전용 모드입니다. 마크다운·설명 없이 JSON만 응답하세요.",
+    });
+
+    if (cached) {
+      await db
+        .update(dailyHealthWorkouts)
+        .set({ workouts: result })
+        .where(eq(dailyHealthWorkouts.id, cached.id));
+    } else {
+      await db
+        .insert(dailyHealthWorkouts)
+        .values({
+          userId: profile.userId,
+          workoutDate: today,
+          workouts: result,
+        })
+        .onConflictDoNothing();
+    }
+
+    return { kind: "success", workouts: result.workouts };
+  } catch (e) {
+    return {
+      kind: "error",
+      message: e instanceof Error ? e.message : "운동을 불러오지 못했어.",
+    };
+  }
+}
+
+export interface StudyTipsState {
+  kind: "idle" | "success" | "error";
+  tips?: StudyTipsOutput["tips"];
+  message?: string;
+}
+
+/**
+ * 학업 운세 프리미엄 — MBTI 맞춤 집중력 팁 3가지를 AI 로 생성한다.
+ *
+ * - 프리미엄 구독자에게만 동작한다.
+ * - 동일 일자 캐시 재사용.
+ */
+export async function generateStudyTipsAction(): Promise<StudyTipsState> {
+  try {
+    const { profile } = await requireProfile();
+    const subscribed = await hasActiveSubscription(profile.userId);
+    if (!subscribed) {
+      return { kind: "error", message: "프리미엄 전용 기능이야." };
+    }
+
+    const today = todayKst();
+
+    const [cached] = await db
+      .select()
+      .from(dailyStudyTips)
+      .where(
+        and(
+          eq(dailyStudyTips.userId, profile.userId),
+          eq(dailyStudyTips.tipDate, today),
+        ),
+      )
+      .limit(1);
+
+    if (cached) {
+      const parsed = studyTipsSchema.safeParse(cached.tips);
+      if (parsed.success) {
+        return { kind: "success", tips: parsed.data.tips };
+      }
+    }
+
+    const mbti = profile.mbti ?? "알 수 없음";
+    const userPrompt = `사용자 정보:
+- MBTI: ${mbti}
+- 생년월일: ${profile.birthDate}
+- 성별: ${profile.gender}
+
+이 사람의 MBTI 성격에 맞는 "집중력 높이는 공부 팁" 3가지를 알려줘.
+구체적이고 바로 실천 가능한 방법으로.
+
+반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:
+{
+  "tips": [
+    { "title": "팁 제목(10자 이내)", "description": "설명 2문장" },
+    { "title": "팁 제목(10자 이내)", "description": "설명 2문장" },
+    { "title": "팁 제목(10자 이내)", "description": "설명 2문장" }
+  ]
+}`;
+
+    const result = await generateJson({
+      schema: studyTipsSchema,
+      userPrompt,
+      model: AI_MODELS.premium,
+      maxTokens: 800,
+      systemSuffix:
+        "학습 팁 전용 모드입니다. 마크다운·설명 없이 JSON만 응답하세요.",
+    });
+
+    if (cached) {
+      await db
+        .update(dailyStudyTips)
+        .set({ tips: result })
+        .where(eq(dailyStudyTips.id, cached.id));
+    } else {
+      await db
+        .insert(dailyStudyTips)
+        .values({
+          userId: profile.userId,
+          tipDate: today,
+          tips: result,
+        })
+        .onConflictDoNothing();
+    }
+
+    return { kind: "success", tips: result.tips };
+  } catch (e) {
+    return {
+      kind: "error",
+      message: e instanceof Error ? e.message : "팁을 불러오지 못했어.",
     };
   }
 }

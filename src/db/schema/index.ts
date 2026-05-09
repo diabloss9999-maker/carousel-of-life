@@ -526,6 +526,52 @@ export const dailyCareerTips = pgTable(
 
 export type DailyCareerTip = typeof dailyCareerTips.$inferSelect;
 
+// =============================================================================
+// daily_health_workouts - 건강 운세 프리미엄 맨몸 운동 일일 캐시
+// =============================================================================
+
+export const dailyHealthWorkouts = pgTable(
+  "daily_health_workouts",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    workoutDate: date("workout_date").notNull(),
+    workouts: jsonb("workouts").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    unique("daily_health_workouts_user_date_uniq").on(t.userId, t.workoutDate),
+  ],
+);
+
+export type DailyHealthWorkout = typeof dailyHealthWorkouts.$inferSelect;
+
+// =============================================================================
+// daily_study_tips - 학업 운세 프리미엄 집중력 팁 일일 캐시
+// =============================================================================
+
+export const dailyStudyTips = pgTable(
+  "daily_study_tips",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    tipDate: date("tip_date").notNull(),
+    tips: jsonb("tips").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [unique("daily_study_tips_user_date_uniq").on(t.userId, t.tipDate)],
+);
+
+export type DailyStudyTip = typeof dailyStudyTips.$inferSelect;
+
 export const allTables = {
   profiles,
   dailyFortunes,
@@ -541,6 +587,8 @@ export const allTables = {
   collectionCards,
   gachaDaily,
   dailyCareerTips,
+  dailyHealthWorkouts,
+  dailyStudyTips,
 } as const;
 
 // `sql` re-export — RLS 마이그레이션에서 raw SQL 작성 시 활용.
