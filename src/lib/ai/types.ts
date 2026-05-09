@@ -62,55 +62,32 @@ export type SajuDeepAiOutput = z.infer<typeof sajuDeepAiSchema>;
  * - weeklyFlow: 이번 주 직장 흐름(월~금 5일)
  * - relationship: 관계 운(부탁하기 좋은 날 여부 + 상사/동료/돋보임 팁)
  */
+const numField = z.union([z.number(), z.string()]).transform(Number);
+
 export const careerReportSchema = z.object({
-  tips: z
-    .array(
-      z.object({
-        /** 팁 제목 (예: "긍정 에너지로 분위기 만들기"). */
-        title: z.string(),
-        /** 팁 설명 1~2문장. */
-        description: z.string(),
-      }),
-    )
-    .length(3),
+  tips: z.array(z.object({ title: z.string(), description: z.string() })).min(1),
   energy: z.object({
-    /** 집중력 (0~100). */
-    focus: z.number().int().min(0).max(100),
-    /** 대인관계 (0~100). */
-    relations: z.number().int().min(0).max(100),
-    /** 추진력 (0~100). */
-    drive: z.number().int().min(0).max(100),
-    /** 오늘 피해야 할 상황 1문장. */
+    focus: numField,
+    relations: numField,
+    drive: numField,
     avoid: z.string(),
   }),
   timing: z.object({
-    /** 오늘의 최적 업무 타이밍. */
-    period: z.enum(["morning", "afternoon"]),
-    /** 그렇게 판단한 이유 1문장. */
+    period: z.string(),
     periodDesc: z.string(),
-    /** 회의·협상 팁 1문장. */
     meetingTip: z.string(),
   }),
-  weeklyFlow: z
-    .array(
-      z.object({
-        /** 요일 라벨 ("월", "화", "수", "목", "금"). */
-        day: z.string(),
-        /** 한 줄 흐름 (15자 이내). */
-        forecast: z.string(),
-        /** 운 점수 (0~100). */
-        score: z.number().int().min(0).max(100),
-      }),
-    )
-    .length(5),
+  weeklyFlow: z.array(z.object({
+    day: z.string(),
+    forecast: z.string(),
+    score: numField,
+  })).min(1),
   relationship: z.object({
-    /** 부탁하기 좋은 날인지 여부. */
-    isGoodToAsk: z.boolean(),
-    /** 상사 관계 팁 1문장. */
+    isGoodToAsk: z.union([z.boolean(), z.string()]).transform((v) =>
+      typeof v === "boolean" ? v : v === "true",
+    ),
     bossAdvice: z.string(),
-    /** 동료 관계 팁 1문장. */
     colleagueTip: z.string(),
-    /** 오늘 눈에 띄는 방법 1문장. */
     standoutTip: z.string(),
   }),
 });
