@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { CategoryTabs } from "@/components/fortune/category-tabs";
 import { FortuneCard } from "@/components/fortune/fortune-card";
 import { LottoGenerator } from "@/components/fortune/lotto-generator";
+import { LoveCard } from "@/components/fortune/love-card";
 
 import { GenerateFortuneForm } from "@/components/fortune/generate-fortune-form";
 import { QuotaBar } from "@/components/fortune/quota-bar";
@@ -116,6 +117,9 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           {category === "money" && (
             <LottoGenerator fortune={fortune} subscribed={subscribed} />
           )}
+    {category === "love" && (
+      <LoveCard fortune={fortune} subscribed={subscribed} />
+    )}
         </div>
       ) : (
         <GenerateFortuneForm
