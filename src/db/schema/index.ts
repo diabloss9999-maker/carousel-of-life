@@ -448,6 +448,57 @@ export type WebhookEvent = typeof webhookEvents.$inferSelect;
 export type NewWebhookEvent = typeof webhookEvents.$inferInsert;
 
 // =============================================================================
+// collection_cards - 가챠로 획득한 카드 소장 기록
+// =============================================================================
+
+export const collectionCards = pgTable(
+  "collection_cards",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    /** 카드 카테고리: tarot | mbti | zodiac | chineseZodiac | cheongan | characters */
+    cardCategory: text("card_category").notNull(),
+    /** 카드 고유 ID (cards-data.ts 의 id 와 일치). */
+    cardId: text("card_id").notNull(),
+    obtainedAt: timestamp("obtained_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    unique("collection_cards_user_card_uniq").on(t.userId, t.cardId),
+    index("collection_cards_user_idx").on(t.userId),
+  ],
+);
+
+export type CollectionCard = typeof collectionCards.$inferSelect;
+export type NewCollectionCard = typeof collectionCards.$inferInsert;
+
+// =============================================================================
+// gacha_daily - 일일 가챠 뽑기 횟수 (KST 기준)
+// =============================================================================
+
+export const gachaDaily = pgTable(
+  "gacha_daily",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    /** KST 기준 날짜 (YYYY-MM-DD). */
+    pullDate: date("pull_date").notNull(),
+    pullCount: integer("pull_count").notNull().default(0),
+  },
+  (t) => [
+    unique("gacha_daily_user_date_uniq").on(t.userId, t.pullDate),
+  ],
+);
+
+export type GachaDaily = typeof gachaDaily.$inferSelect;
+export type NewGachaDaily = typeof gachaDaily.$inferInsert;
+
+// =============================================================================
 // 모든 테이블 export
 // =============================================================================
 
@@ -463,6 +514,8 @@ export const allTables = {
   usageQuotas,
   webhookEvents,
   savedPartners,
+  collectionCards,
+  gachaDaily,
 } as const;
 
 // `sql` re-export — RLS 마이그레이션에서 raw SQL 작성 시 활용.

@@ -3,38 +3,39 @@ import type { Metadata } from "next";
 import { CollectionView } from "@/components/collection/collection-view";
 import { TOTAL_CARDS } from "@/lib/collection/cards-data";
 import {
-  getDiscoveredCollection,
-  toPlain,
+  getOwnedCardIds,
+  getOwnedCount,
+  getTodayGachaStatus,
 } from "@/lib/collection/service";
 import { requireProfile } from "@/lib/auth/get-user";
+import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 
 export const metadata: Metadata = {
   title: "컬렉션",
   description:
-    "회전목마를 돌리며 발견한 카드들을 모아두는 나만의 도감.",
+    "매일 카드 뽑기로 모으는 나만의 카드 도감 — 131장 컬렉션.",
 };
 
 /**
  * 카드 컬렉션 페이지.
  *
- * - 130 장 중 사용자가 지금까지 발견한 카드들의 진행도와 그리드를 표시한다.
- * - 별도 DB 테이블 없이 기존 사용자 데이터에서 발견 여부를 계산한다.
+ * - 매일 가챠 (무료 1회 / 프리미엄 3회) 로 카드를 모은다.
+ * - 131 장 중 사용자가 소장한 카드의 진행도와 그리드를 표시한다.
  */
 export default async function CollectionPage() {
   const { profile } = await requireProfile();
+  const subscribed = await hasActiveSubscription(profile.userId);
 
-  const discovered = await getDiscoveredCollection(profile.userId, profile);
-  const ownedTotal =
-    discovered.tarot.size +
-    discovered.mbti.size +
-    discovered.zodiac.size +
-    discovered.chineseZodiac.size +
-    discovered.cheongan.size +
-    discovered.characters.size;
+  const [status, ownedSet, ownedCount] = await Promise.all([
+    getTodayGachaStatus(profile.userId, subscribed),
+    getOwnedCardIds(profile.userId),
+    getOwnedCount(profile.userId),
+  ]);
 
+  const ownedIds = Array.from(ownedSet);
   const percent = Math.min(
     100,
-    Math.round((ownedTotal / TOTAL_CARDS) * 100),
+    Math.round((ownedCount / TOTAL_CARDS) * 100),
   );
 
   return (
@@ -46,12 +47,12 @@ export default async function CollectionPage() {
               내 컬렉션
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              회전목마를 돌리며 만난 카드들이 이곳에 모입니다.
+              매일 카드를 뽑아 131장 도감을 모아봐.
             </p>
           </div>
           <div className="text-right">
             <p className="font-mystic text-2xl font-bold tabular-nums text-foreground sm:text-3xl">
-              {ownedTotal}
+              {ownedCount}
               <span className="text-base font-normal text-muted-foreground">
                 {" / "}
                 {TOTAL_CARDS}
@@ -61,7 +62,6 @@ export default async function CollectionPage() {
           </div>
         </div>
 
-        {/* 진행 바 */}
         <div
           className="h-2 w-full overflow-hidden rounded-full bg-muted/50"
           role="progressbar"
@@ -80,7 +80,11 @@ export default async function CollectionPage() {
         </p>
       </header>
 
-      <CollectionView discovered={toPlain(discovered)} />
+      <CollectionView
+        ownedIds={ownedIds}
+        gachaStatus={status}
+        subscribed={subscribed}
+      />
     </div>
   );
 }

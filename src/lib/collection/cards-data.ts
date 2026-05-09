@@ -34,6 +34,8 @@ export type CollectionRarity = "common" | "rare" | "legendary";
 export interface CollectionCardMeta {
   /** 카테고리 내부 고유 ID (발견 로직과 매칭되는 키). */
   id: string;
+  /** 카드 카테고리 — 가챠 결과 표시·필터링 시 카테고리별 처리에 사용. */
+  category: CollectionCategory;
   /** 한글 표시명. */
   nameKo: string;
   /** 영문명 (옵션). */
@@ -249,6 +251,7 @@ function toTarotMeta(card: TarotCard): CollectionCardMeta {
 
   return {
     id: card.id,
+    category: "tarot",
     nameKo: card.nameKo,
     nameEn: card.nameEn,
     imageSrc: `/tarot/${card.id}.png`,
@@ -265,6 +268,7 @@ export const MBTI_CARDS: CollectionCardMeta[] = MBTI_ORDER.map((type) => {
   const trait = MBTI_TRAITS[type];
   return {
     id: type,
+    category: "mbti",
     nameKo: `${type} · ${trait.nameKo}`,
     nameEn: type,
     imageSrc: `/mbti/${type}.png`,
@@ -276,6 +280,7 @@ export const MBTI_CARDS: CollectionCardMeta[] = MBTI_ORDER.map((type) => {
 /** 별자리 12장 메타데이터. */
 export const ZODIAC_CARDS: CollectionCardMeta[] = ZODIAC_LIST.map((z) => ({
   id: z.id,
+  category: "zodiac",
   nameKo: z.ko,
   nameEn: z.en,
   imageSrc: `/zodiac/${ZODIAC_FILENAME[z.id]}`,
@@ -287,6 +292,7 @@ export const ZODIAC_CARDS: CollectionCardMeta[] = ZODIAC_LIST.map((z) => ({
 export const CHINESE_ZODIAC_CARDS: CollectionCardMeta[] = CHINESE_ZODIAC_LIST.map(
   (c) => ({
     id: c.id,
+    category: "chineseZodiac",
     nameKo: c.ko,
     nameEn: c.id,
     imageSrc: `/chinese-zodiac/${c.id}.png`,
@@ -314,6 +320,7 @@ export const CHEONGAN_CARDS: CollectionCardMeta[] = CHEONGAN_ORDER.map(
     const meaning = STEMS[char];
     return {
       id,
+      category: "cheongan",
       nameKo: meaning ? `${char} · ${meaning.ko}` : char,
       nameEn: id,
       imageSrc: `/cheongan/${id}.png`,
@@ -329,6 +336,7 @@ export const CHEONGAN_CARDS: CollectionCardMeta[] = CHEONGAN_ORDER.map(
 export const CHARACTER_CARDS: CollectionCardMeta[] = [
   {
     id: "witch",
+    category: "characters",
     nameKo: "세라피나",
     nameEn: "Seraphina",
     imageSrc: "/characters/witch.png",
@@ -338,6 +346,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
   },
   {
     id: "child",
+    category: "characters",
     nameKo: "동자",
     nameEn: "Dongja",
     imageSrc: "/characters/child.png",
@@ -347,6 +356,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
   },
   {
     id: "sage",
+    category: "characters",
     nameKo: "현담",
     nameEn: "Hyeondam",
     imageSrc: "/characters/sage.png",

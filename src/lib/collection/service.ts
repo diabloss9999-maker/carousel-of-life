@@ -1,251 +1,238 @@
 /**
- * 컬렉션 발견 로직.
+ * 가챠 기반 카드 컬렉션 서비스.
  *
- * 별도 DB 테이블 없이 기존 사용자 데이터(profiles, tarotReadings, chatSessions)에서
- * "어떤 카드를 발견했는가"를 계산해 Set 으로 반환한다.
+ * - 무료: 일 1회 / 프리미엄: 일 3회 (KST 기준)
+ * - 131장 풀에서 균등 랜덤 (중복 가능, 중복은 카운트만 소모)
+ * - 새 카드면 collection_cards 에 저장, 일일 카운트는 gacha_daily 에 누적
  */
 import "server-only";
 
-import { eq } from "drizzle-orm";
+import { and, count, eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { chatSessions, tarotReadings, type Profile } from "@/db/schema";
-import { getZodiacSign } from "@/lib/fortunes/zodiac";
+import { collectionCards, gachaDaily } from "@/db/schema";
+import {
+  COLLECTION_BY_CATEGORY,
+  type CollectionCardMeta,
+  type CollectionCategory,
+} from "@/lib/collection/cards-data";
 
-/** 천간 한자 → 이미지 ID. */
-const STEM_TO_IMG: Record<string, string> = {
-  甲: "gap",
-  乙: "eul",
-  丙: "byung",
-  丁: "jeong",
-  戊: "mu",
-  己: "gi",
-  庚: "gyeong",
-  辛: "sin",
-  壬: "im",
-  癸: "gye",
-};
+/** 무료 사용자 일일 가챠 한도. */
+export const FREE_DAILY_GACHA = 1;
+/** 프리미엄 사용자 일일 가챠 한도. */
+export const PREMIUM_DAILY_GACHA = 3;
 
-/** 지지 한자 → 십이간지 ID. */
-const BRANCH_TO_ZODIAC: Record<string, string> = {
-  子: "rat",
-  丑: "ox",
-  寅: "tiger",
-  卯: "rabbit",
-  辰: "dragon",
-  巳: "snake",
-  午: "horse",
-  未: "goat",
-  申: "monkey",
-  酉: "rooster",
-  戌: "dog",
-  亥: "pig",
-};
+/** 전체 풀 카드 수 (런타임 검증용). */
+export const GACHA_POOL_SIZE = Object.values(COLLECTION_BY_CATEGORY).reduce(
+  (sum, cards) => sum + cards.length,
+  0,
+);
 
-/** 지원되는 캐릭터 ID 화이트리스트 (정적 카드 데이터와 일치). */
-const SUPPORTED_CHARACTER_IDS = new Set(["witch", "child", "sage"]);
-
-/** tarotReadings.cards jsonb 의 단일 항목 형태 가드. */
-interface TarotCardEntry {
-  cardId: string;
+/** 클라이언트로 직렬화 가능한 카드 단건 (category 포함). */
+export interface FlatCardDTO {
+  id: string;
+  category: CollectionCategory;
+  nameKo: string;
+  nameEn?: string;
+  imageSrc: string;
+  description: string;
+  rarity: CollectionCardMeta["rarity"];
 }
 
-function isCardEntry(v: unknown): v is TarotCardEntry {
-  if (!v || typeof v !== "object") return false;
-  const o = v as Record<string, unknown>;
-  return typeof o.cardId === "string";
+/** 가챠 성공 결과. */
+export interface GachaPullSuccess {
+  ok: true;
+  card: FlatCardDTO;
+  /** 이번 뽑기로 새로 획득한 카드인지. */
+  isNew: boolean;
+  /** 뽑기 후 남은 횟수. */
+  remaining: number;
+  /** 오늘의 한도. */
+  limit: number;
+  /** 갱신된 소장 카드 총 개수. */
+  ownedCount: number;
 }
 
-/**
- * 사용자가 지금까지 뽑은 모든 타로 카드 id 를 수집한다.
- */
-async function getDiscoveredTarotIds(userId: string): Promise<Set<string>> {
-  const rows = await db
-    .select({ cards: tarotReadings.cards })
-    .from(tarotReadings)
-    .where(eq(tarotReadings.userId, userId));
+/** 일일 한도 초과. */
+export interface GachaPullQuotaExceeded {
+  ok: false;
+  quotaExceeded: true;
+  remaining: 0;
+  limit: number;
+}
 
-  const found = new Set<string>();
-  for (const row of rows) {
-    const cards = row.cards;
-    if (!Array.isArray(cards)) continue;
-    for (const c of cards) {
-      if (isCardEntry(c)) {
-        found.add(c.cardId);
-      }
+export type GachaPullResult = GachaPullSuccess | GachaPullQuotaExceeded;
+
+/** 오늘 가챠 현황. */
+export interface GachaStatus {
+  used: number;
+  remaining: number;
+  limit: number;
+}
+
+/** KST 오늘 날짜를 YYYY-MM-DD 형식으로 반환한다. */
+function getTodayKst(): string {
+  const kstString = new Date().toLocaleString("en-US", {
+    timeZone: "Asia/Seoul",
+  });
+  const d = new Date(kstString);
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+/** 구독 여부에 따른 일일 한도. */
+function dailyLimit(isSubscribed: boolean): number {
+  return isSubscribed ? PREMIUM_DAILY_GACHA : FREE_DAILY_GACHA;
+}
+
+/** 모든 카드를 평면 배열로 변환 — 풀 캐싱. */
+let cachedPool: FlatCardDTO[] | null = null;
+function getCardPool(): FlatCardDTO[] {
+  if (cachedPool) return cachedPool;
+  const out: FlatCardDTO[] = [];
+  const cats = Object.keys(COLLECTION_BY_CATEGORY) as CollectionCategory[];
+  for (const cat of cats) {
+    for (const card of COLLECTION_BY_CATEGORY[cat]) {
+      out.push({
+        id: card.id,
+        category: cat,
+        nameKo: card.nameKo,
+        nameEn: card.nameEn,
+        imageSrc: card.imageSrc,
+        description: card.description,
+        rarity: card.rarity,
+      });
     }
   }
-  return found;
-}
-
-/**
- * MBTI 발견 — 프로필에 mbti 가 저장되어 있으면 해당 1개.
- */
-function getDiscoveredMbtiIds(profile: Profile): Set<string> {
-  const found = new Set<string>();
-  if (profile.mbti && /^[EI][SN][TF][JP]$/.test(profile.mbti)) {
-    found.add(profile.mbti.toUpperCase());
-  }
-  return found;
-}
-
-/**
- * 별자리 — 회원가입 시점에 birthDate 로 항상 1개가 결정된다.
- */
-function getDiscoveredZodiacIds(profile: Profile): Set<string> {
-  const found = new Set<string>();
-  if (profile.birthDate) {
-    const sign = getZodiacSign(profile.birthDate);
-    found.add(sign.id);
-  }
-  return found;
-}
-
-/** sajuPillars jsonb 단일 기둥 가드. */
-function pillarOf(v: unknown): { stem: string; branch: string } | null {
-  if (!v || typeof v !== "object") return null;
-  const o = v as Record<string, unknown>;
-  if (typeof o.stem === "string" && typeof o.branch === "string") {
-    return { stem: o.stem, branch: o.branch };
-  }
-  return null;
-}
-
-/** sajuPillars 에서 모든 기둥(year/month/day/hour) 을 추출. */
-function extractPillars(
-  pillars: unknown,
-): Array<{ stem: string; branch: string }> {
-  if (!pillars || typeof pillars !== "object") return [];
-  const o = pillars as Record<string, unknown>;
-  const out: Array<{ stem: string; branch: string }> = [];
-  for (const key of ["year", "month", "day", "hour"]) {
-    const p = pillarOf(o[key]);
-    if (p) out.push(p);
-  }
+  cachedPool = out;
   return out;
 }
 
 /**
- * 십이간지 — 사주 8자가 계산되어 있으면 지지(branch)에서 추출 + 생년에서도 1개.
+ * 사용자의 오늘 가챠 현황을 조회한다.
+ *
+ * @param userId - 사용자 ID
+ * @param isSubscribed - 활성 구독 여부
  */
-function getDiscoveredChineseZodiacIds(profile: Profile): Set<string> {
-  const found = new Set<string>();
-
-  // 지지 → 동물
-  for (const p of extractPillars(profile.sajuPillars)) {
-    const id = BRANCH_TO_ZODIAC[p.branch];
-    if (id) found.add(id);
-  }
-
-  // 생년 기반 폴백 — 사주 미계산 사용자도 1개는 보장.
-  if (profile.birthDate) {
-    const year = Number(profile.birthDate.split("-")[0]);
-    if (Number.isFinite(year)) {
-      const idx = ((year - 1900) % 12 + 12) % 12;
-      const order: string[] = [
-        "rat",
-        "ox",
-        "tiger",
-        "rabbit",
-        "dragon",
-        "snake",
-        "horse",
-        "goat",
-        "monkey",
-        "rooster",
-        "dog",
-        "pig",
-      ];
-      found.add(order[idx]);
-    }
-  }
-
-  return found;
-}
-
-/**
- * 천간 — 사주 8자가 계산되어 있으면 천간(stem) 에서 추출.
- */
-function getDiscoveredCheonganIds(profile: Profile): Set<string> {
-  const found = new Set<string>();
-  for (const p of extractPillars(profile.sajuPillars)) {
-    const id = STEM_TO_IMG[p.stem];
-    if (id) found.add(id);
-  }
-  return found;
-}
-
-/**
- * 주술사 — chatSessions.character 에 한 번이라도 등장한 캐릭터.
- */
-async function getDiscoveredCharacterIds(
+export async function getTodayGachaStatus(
   userId: string,
-): Promise<Set<string>> {
+  isSubscribed: boolean,
+): Promise<GachaStatus> {
+  const today = getTodayKst();
+  const limit = dailyLimit(isSubscribed);
+  const [row] = await db
+    .select({ pullCount: gachaDaily.pullCount })
+    .from(gachaDaily)
+    .where(and(eq(gachaDaily.userId, userId), eq(gachaDaily.pullDate, today)))
+    .limit(1);
+  const used = row?.pullCount ?? 0;
+  return {
+    used,
+    remaining: Math.max(0, limit - used),
+    limit,
+  };
+}
+
+/**
+ * 가챠 1회 실행.
+ *
+ * 1) 일일 한도 확인 → 초과면 quotaExceeded 반환
+ * 2) 131장 풀에서 균등 랜덤 카드 1장 선택
+ * 3) 신규 카드면 collection_cards INSERT (onConflictDoNothing)
+ * 4) gacha_daily upsert 로 카운트 +1
+ *
+ * @param userId - 사용자 ID
+ * @param isSubscribed - 활성 구독 여부
+ */
+export async function pullGacha(
+  userId: string,
+  isSubscribed: boolean,
+): Promise<GachaPullResult> {
+  const today = getTodayKst();
+  const limit = dailyLimit(isSubscribed);
+
+  // 1) 한도 확인
+  const [daily] = await db
+    .select()
+    .from(gachaDaily)
+    .where(and(eq(gachaDaily.userId, userId), eq(gachaDaily.pullDate, today)))
+    .limit(1);
+  const used = daily?.pullCount ?? 0;
+  if (used >= limit) {
+    return { ok: false, quotaExceeded: true, remaining: 0, limit };
+  }
+
+  // 2) 카드 추첨
+  const pool = getCardPool();
+  const card = pool[Math.floor(Math.random() * pool.length)];
+
+  // 3) 신규 여부
+  const [existing] = await db
+    .select({ id: collectionCards.id })
+    .from(collectionCards)
+    .where(
+      and(
+        eq(collectionCards.userId, userId),
+        eq(collectionCards.cardId, card.id),
+      ),
+    )
+    .limit(1);
+  const isNew = !existing;
+
+  if (isNew) {
+    await db
+      .insert(collectionCards)
+      .values({
+        userId,
+        cardCategory: card.category,
+        cardId: card.id,
+      })
+      .onConflictDoNothing();
+  }
+
+  // 4) 일일 카운트 갱신
+  if (daily) {
+    await db
+      .update(gachaDaily)
+      .set({ pullCount: daily.pullCount + 1 })
+      .where(eq(gachaDaily.id, daily.id));
+  } else {
+    await db.insert(gachaDaily).values({
+      userId,
+      pullDate: today,
+      pullCount: 1,
+    });
+  }
+
+  // 갱신된 소장 카드 수
+  const ownedCount = await getOwnedCount(userId);
+
+  return {
+    ok: true,
+    card,
+    isNew,
+    remaining: Math.max(0, limit - used - 1),
+    limit,
+    ownedCount,
+  };
+}
+
+/** 사용자가 소장한 모든 카드 ID Set. */
+export async function getOwnedCardIds(userId: string): Promise<Set<string>> {
   const rows = await db
-    .select({ character: chatSessions.character })
-    .from(chatSessions)
-    .where(eq(chatSessions.userId, userId));
-
-  const found = new Set<string>();
-  for (const row of rows) {
-    const c = row.character;
-    if (typeof c === "string" && SUPPORTED_CHARACTER_IDS.has(c)) {
-      found.add(c);
-    }
-  }
-  return found;
+    .select({ cardId: collectionCards.cardId })
+    .from(collectionCards)
+    .where(eq(collectionCards.userId, userId));
+  return new Set(rows.map((r) => r.cardId));
 }
 
-/** 카테고리별 발견된 ID 집합 — Server → Client 로 안전하게 직렬화하기 위해 string[] 로도 변환. */
-export interface DiscoveredCollection {
-  tarot: Set<string>;
-  mbti: Set<string>;
-  zodiac: Set<string>;
-  chineseZodiac: Set<string>;
-  cheongan: Set<string>;
-  characters: Set<string>;
-}
-
-/**
- * 사용자의 전체 발견 정보를 한 번에 조회한다.
- */
-export async function getDiscoveredCollection(
-  userId: string,
-  profile: Profile,
-): Promise<DiscoveredCollection> {
-  const [tarot, characters] = await Promise.all([
-    getDiscoveredTarotIds(userId),
-    getDiscoveredCharacterIds(userId),
-  ]);
-
-  return {
-    tarot,
-    mbti: getDiscoveredMbtiIds(profile),
-    zodiac: getDiscoveredZodiacIds(profile),
-    chineseZodiac: getDiscoveredChineseZodiacIds(profile),
-    cheongan: getDiscoveredCheonganIds(profile),
-    characters,
-  };
-}
-
-/** 카테고리별 발견 ID 를 직렬화 가능한 객체로 변환. */
-export interface DiscoveredCollectionPlain {
-  tarot: string[];
-  mbti: string[];
-  zodiac: string[];
-  chineseZodiac: string[];
-  cheongan: string[];
-  characters: string[];
-}
-
-/** Server Component → Client Component 전달용 직렬화. */
-export function toPlain(d: DiscoveredCollection): DiscoveredCollectionPlain {
-  return {
-    tarot: Array.from(d.tarot),
-    mbti: Array.from(d.mbti),
-    zodiac: Array.from(d.zodiac),
-    chineseZodiac: Array.from(d.chineseZodiac),
-    cheongan: Array.from(d.cheongan),
-    characters: Array.from(d.characters),
-  };
+/** 소장 카드 총 개수. */
+export async function getOwnedCount(userId: string): Promise<number> {
+  const [row] = await db
+    .select({ value: count() })
+    .from(collectionCards)
+    .where(eq(collectionCards.userId, userId));
+  return Number(row?.value ?? 0);
 }
