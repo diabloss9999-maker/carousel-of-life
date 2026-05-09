@@ -100,7 +100,7 @@ export type CareerReportOutput = z.infer<typeof careerReportSchema>;
 export const careerTipsSchema = careerReportSchema;
 export type CareerTipsOutput = CareerReportOutput;
 
-/** 건강 — 오늘의 맨몸 운동 3가지 */
+/** 건강 — 오늘의 맨몸 운동 3가지 + 동기부여 명언 */
 export const healthWorkoutSchema = z.object({
   workouts: z
     .array(
@@ -112,6 +112,10 @@ export const healthWorkoutSchema = z.object({
       }),
     )
     .min(1),
+  quote: z.object({
+    text: z.string(),
+    author: z.string(),
+  }),
 });
 export type HealthWorkoutOutput = z.infer<typeof healthWorkoutSchema>;
 

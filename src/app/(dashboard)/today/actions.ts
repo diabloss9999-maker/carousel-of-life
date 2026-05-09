@@ -226,6 +226,7 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
 export interface HealthWorkoutState {
   kind: "idle" | "success" | "error";
   workouts?: HealthWorkoutOutput["workouts"];
+  quote?: HealthWorkoutOutput["quote"];
   message?: string;
 }
 
@@ -284,7 +285,11 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
     },
     { ... },
     { ... }
-  ]
+  ],
+  "quote": {
+    "text": "운동하고 싶게 만드는 뼈때리는 동기부여 명언 (한국어로)",
+    "author": "명언 출처 인물명"
+  }
 }`;
 
     const result = await generateJson({
@@ -312,7 +317,7 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
         .onConflictDoNothing();
     }
 
-    return { kind: "success", workouts: result.workouts };
+    return { kind: "success", workouts: result.workouts, quote: result.quote };
   } catch (e) {
     return {
       kind: "error",
@@ -379,8 +384,8 @@ export async function generateStudyTipsAction(): Promise<StudyTipsState> {
     { "title": "팁 제목(10자 이내)", "description": "설명 2문장" }
   ],
   "quote": {
-    "text": "학습과 공부에 관한 유명한 명언 (한국어로)",
-    "author": "명언 출처 인물명"
+    "text": "철학자·수학자·과학자·기업 CEO 중 한 명의 학습과 성장에 관한 명언 (한국어로)",
+    "author": "명언 출처 인물명 (직함 포함, 예: 아인슈타인 / 스티브 잡스 / 소크라테스)"
   }
 }`;
 

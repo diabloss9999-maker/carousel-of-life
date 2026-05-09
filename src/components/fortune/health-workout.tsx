@@ -25,6 +25,7 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
   const [workouts, setWorkouts] = useState<
     HealthWorkoutOutput["workouts"] | null
   >(null);
+  const [quote, setQuote] = useState<HealthWorkoutOutput["quote"] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -34,6 +35,7 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
       const result = await generateHealthWorkoutAction();
       if (result.kind === "success" && result.workouts) {
         setWorkouts(result.workouts);
+        if (result.quote) setQuote(result.quote);
       } else {
         setError(result.message ?? "오류가 발생했어.");
       }
@@ -145,6 +147,17 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
             </p>
           </div>
         ))}
+
+        {quote && (
+          <div className="rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3">
+            <p className="font-mystic text-sm leading-relaxed text-foreground/85 italic">
+              &ldquo;{quote.text}&rdquo;
+            </p>
+            <p className="mt-1.5 text-right text-xs text-muted-foreground">
+              — {quote.author}
+            </p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
