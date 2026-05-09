@@ -19,6 +19,7 @@ import { API_ERROR_CODES } from "@/types/api";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 30;
 
 const bodySchema = z.object({
   content: z
