@@ -12,6 +12,7 @@ import { db } from "@/db";
 import {
   dailyCareerTips,
   dailyHealthWorkouts,
+  dailyLovePremium,
   dailyStudyTips,
 } from "@/db/schema";
 import { requireProfile } from "@/lib/auth/get-user";
@@ -21,6 +22,8 @@ import {
   type CareerReportOutput,
   healthWorkoutSchema,
   type HealthWorkoutOutput,
+  lovePremiumSchema,
+  type LovePremiumOutput,
   studyTipsSchema,
   type StudyTipsOutput,
 } from "@/lib/ai/types";
@@ -419,6 +422,101 @@ export async function generateStudyTipsAction(): Promise<StudyTipsState> {
     return {
       kind: "error",
       message: e instanceof Error ? e.message : "팁을 불러오지 못했어.",
+    };
+  }
+}
+
+export interface LovePremiumState {
+  kind: "idle" | "success" | "error";
+  data?: LovePremiumOutput;
+  message?: string;
+}
+
+/**
+ * 사랑 운세 프리미엄 — 오늘 전할 한마디 + MBTI 기반 매력 팁 3가지를 AI 로 생성한다.
+ *
+ * - 프리미엄 구독자에게만 동작한다.
+ * - 동일 일자 캐시 재사용.
+ */
+export async function generateLovePremiumAction(): Promise<LovePremiumState> {
+  try {
+    const { profile } = await requireProfile();
+    const subscribed = await hasActiveSubscription(profile.userId);
+    if (!subscribed) {
+      return { kind: "error", message: "프리미엄 전용 기능이야." };
+    }
+
+    const today = todayKst();
+
+    const [cached] = await db
+      .select()
+      .from(dailyLovePremium)
+      .where(
+        and(
+          eq(dailyLovePremium.userId, profile.userId),
+          eq(dailyLovePremium.premiumDate, today),
+        ),
+      )
+      .limit(1);
+
+    if (cached) {
+      const parsed = lovePremiumSchema.safeParse(cached.data);
+      if (parsed.success) {
+        return { kind: "success", data: parsed.data };
+      }
+    }
+
+    const mbti = profile.mbti ?? "알 수 없음";
+    const userPrompt = `사용자 정보:
+- MBTI: ${mbti}
+- 생년월일: ${profile.birthDate}
+- 성별: ${profile.gender}
+
+이 사람에게 맞는 사랑 운세 프리미엄 리포트를 작성해줘.
+
+반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:
+{
+  "message": {
+    "text": "연인이나 관심 있는 사람에게 오늘 전하면 좋을 달콤하고 진심 담긴 한마디 (1~2문장, 자연스러운 한국어)",
+    "situation": "이 말이 어울리는 상황 1문장 (예: 오늘 저녁 함께 식사할 때)"
+  },
+  "charmTips": [
+    { "title": "매력 팁 제목(10자 이내)", "description": "설명 2문장" },
+    { "title": "매력 팁 제목(10자 이내)", "description": "설명 2문장" },
+    { "title": "매력 팁 제목(10자 이내)", "description": "설명 2문장" }
+  ]
+}`;
+
+    const result = await generateJson({
+      schema: lovePremiumSchema,
+      userPrompt,
+      model: AI_MODELS.premium,
+      maxTokens: 1000,
+      systemSuffix:
+        "사랑 운세 리포트 전용 모드입니다. 마크다운·설명 없이 JSON만 응답하세요.",
+    });
+
+    if (cached) {
+      await db
+        .update(dailyLovePremium)
+        .set({ data: result })
+        .where(eq(dailyLovePremium.id, cached.id));
+    } else {
+      await db
+        .insert(dailyLovePremium)
+        .values({
+          userId: profile.userId,
+          premiumDate: today,
+          data: result,
+        })
+        .onConflictDoNothing();
+    }
+
+    return { kind: "success", data: result };
+  } catch (e) {
+    return {
+      kind: "error",
+      message: e instanceof Error ? e.message : "불러오지 못했어.",
     };
   }
 }

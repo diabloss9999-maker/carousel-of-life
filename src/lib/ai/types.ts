@@ -135,3 +135,20 @@ export const studyTipsSchema = z.object({
   }),
 });
 export type StudyTipsOutput = z.infer<typeof studyTipsSchema>;
+
+/** 사랑 프리미엄 — 오늘의 한마디 + 매력 팁 3가지 */
+export const lovePremiumSchema = z.object({
+  message: z.object({
+    text: z.string(),      // 연인/짝에게 전할 한마디 (1~2문장)
+    situation: z.string(), // 이 말이 어울리는 상황 1문장
+  }),
+  charmTips: z
+    .array(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+      }),
+    )
+    .min(1),
+});
+export type LovePremiumOutput = z.infer<typeof lovePremiumSchema>;
