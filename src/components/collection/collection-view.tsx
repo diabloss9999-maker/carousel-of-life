@@ -477,7 +477,7 @@ function CardCell({ card, owned, onClick }: CardCellProps) {
         aria-label="미소장 카드"
       >
         <Image
-          src="/tarot/card_back.png"
+          src="/collection/card_back.png"
           alt="미소장"
           fill
           className="object-cover"
