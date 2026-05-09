@@ -100,7 +100,16 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
 
 위 사용자에게 맞는 "직장에서 예쁨받는 방법" 3가지를 알려줘.
 각 팁은 짧은 제목(10자 내외)과 설명(2문장 이내)으로 구성해.
-구체적이고 실천 가능하게, 이 사람의 MBTI 성격에 맞게 작성해줘.`;
+구체적이고 실천 가능하게, 이 사람의 MBTI 성격에 맞게 작성해줘.
+
+반드시 아래 JSON 형식으로만 응답해. 설명이나 마크다운 없이 JSON만 출력해:
+{
+  "tips": [
+    { "title": "팁 제목", "description": "팁 설명 1~2문장" },
+    { "title": "팁 제목", "description": "팁 설명 1~2문장" },
+    { "title": "팁 제목", "description": "팁 설명 1~2문장" }
+  ]
+}`;
 
     const result = await generateJson({
       schema: careerTipsSchema,
