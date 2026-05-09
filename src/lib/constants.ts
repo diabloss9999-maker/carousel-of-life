@@ -13,7 +13,14 @@ export const FREE_DAILY_LIMITS = {
 
 /** 구독 정보. */
 export const SUBSCRIPTION = {
+  /** 현재 결제 금액 (5월 한정 특가). */
   monthlyPriceKRW: 4900,
+  /** 정가 (6월부터 적용). */
+  regularPriceKRW: 7900,
+  /** 할인율 (퍼센트). */
+  discountPct: Math.round((1 - 4900 / 7900) * 100),
+  /** 특가 종료 월 (0-based). 5 = 6월, 즉 5월 말까지 특가. */
+  saleEndMonth: 5,
   currency: "KRW",
   trialDays: 0,
 } as const;
