@@ -153,7 +153,7 @@ export function LoveCard({ fortune, subscribed }: LoveCardProps) {
               프리미엄 구독 시 오늘의 타로 카드와 사랑 조언을 확인할 수 있어요.
             </p>
             <Button asChild>
-              <Link href={ROUTES.SUBSCRIBE}>프리미엄 시작하기</Link>
+              <Link href={ROUTES.pricing}>프리미엄 시작하기</Link>
             </Button>
           </div>
         )}
