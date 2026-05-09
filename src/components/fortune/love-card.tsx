@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
@@ -94,7 +95,6 @@ export function LoveCard({ fortune, subscribed }: LoveCardProps) {
                   </div>
                 </div>
                 <div className="tc-face tc-back-face">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={tarotImg(tarot.id)} alt={tarot.name} className="tc-img" />
                   <div className="tc-name-bar">
                     <p className="text-white/70 text-xs">{ROMAN[tarot.id]}</p>
@@ -127,7 +127,7 @@ export function LoveCard({ fortune, subscribed }: LoveCardProps) {
               <div
                 className="tc-scene opacity-40 blur-sm"
                 style={{ height: "323px", width: "185px", background: "linear-gradient(145deg,#130a2e 0%,#0a0a20 50%,#130a2e 100%)", borderRadius: "0.75rem" }}
-              />
+              ></div>
               <div className="absolute inset-0 flex items-center justify-center">
                 <Lock className="h-10 w-10 text-muted-foreground" />
               </div>
