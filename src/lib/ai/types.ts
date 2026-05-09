@@ -53,7 +53,16 @@ export const sajuDeepAiSchema = z.object({
 
 export type SajuDeepAiOutput = z.infer<typeof sajuDeepAiSchema>;
 
-export const careerTipsSchema = z.object({
+/**
+ * 직장 운세 종합 리포트 스키마.
+ *
+ * - tips: 직장에서 예쁨받는 방법 3가지
+ * - energy: 오늘의 에너지 리포트(집중력/대인관계/추진력 + 피해야 할 것)
+ * - timing: 최적 업무 타이밍(오전/오후 + 회의 팁)
+ * - weeklyFlow: 이번 주 직장 흐름(월~금 5일)
+ * - relationship: 관계 운(부탁하기 좋은 날 여부 + 상사/동료/돋보임 팁)
+ */
+export const careerReportSchema = z.object({
   tips: z
     .array(
       z.object({
@@ -64,6 +73,52 @@ export const careerTipsSchema = z.object({
       }),
     )
     .length(3),
+  energy: z.object({
+    /** 집중력 (0~100). */
+    focus: z.number().int().min(0).max(100),
+    /** 대인관계 (0~100). */
+    relations: z.number().int().min(0).max(100),
+    /** 추진력 (0~100). */
+    drive: z.number().int().min(0).max(100),
+    /** 오늘 피해야 할 상황 1문장. */
+    avoid: z.string(),
+  }),
+  timing: z.object({
+    /** 오늘의 최적 업무 타이밍. */
+    period: z.enum(["morning", "afternoon"]),
+    /** 그렇게 판단한 이유 1문장. */
+    periodDesc: z.string(),
+    /** 회의·협상 팁 1문장. */
+    meetingTip: z.string(),
+  }),
+  weeklyFlow: z
+    .array(
+      z.object({
+        /** 요일 라벨 ("월", "화", "수", "목", "금"). */
+        day: z.string(),
+        /** 한 줄 흐름 (15자 이내). */
+        forecast: z.string(),
+        /** 운 점수 (0~100). */
+        score: z.number().int().min(0).max(100),
+      }),
+    )
+    .length(5),
+  relationship: z.object({
+    /** 부탁하기 좋은 날인지 여부. */
+    isGoodToAsk: z.boolean(),
+    /** 상사 관계 팁 1문장. */
+    bossAdvice: z.string(),
+    /** 동료 관계 팁 1문장. */
+    colleagueTip: z.string(),
+    /** 오늘 눈에 띄는 방법 1문장. */
+    standoutTip: z.string(),
+  }),
 });
 
-export type CareerTipsOutput = z.infer<typeof careerTipsSchema>;
+export type CareerReportOutput = z.infer<typeof careerReportSchema>;
+
+/**
+ * @deprecated `careerReportSchema` 로 이전됨. 호환을 위해 alias 로 유지.
+ */
+export const careerTipsSchema = careerReportSchema;
+export type CareerTipsOutput = CareerReportOutput;

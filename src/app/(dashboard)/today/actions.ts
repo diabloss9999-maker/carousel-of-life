@@ -13,8 +13,8 @@ import { dailyCareerTips } from "@/db/schema";
 import { requireProfile } from "@/lib/auth/get-user";
 import { generateJson } from "@/lib/ai/generate";
 import {
-  careerTipsSchema,
-  type CareerTipsOutput,
+  careerReportSchema,
+  type CareerReportOutput,
 } from "@/lib/ai/types";
 import { AI_MODELS } from "@/lib/constants";
 import { getOrCreateDailyFortune } from "@/lib/fortunes/service";
@@ -84,15 +84,23 @@ export async function generateFortuneAction(
 
 export interface CareerTipsState {
   kind: "idle" | "loading" | "success" | "error";
-  tips?: CareerTipsOutput["tips"];
+  report?: CareerReportOutput;
   message?: string;
 }
 
+/** KST 기준 한글 요일 ("월"~"일"). */
+function todayWeekdayKst(): string {
+  const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"] as const;
+  const d = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
+  return WEEKDAYS[d.getDay()];
+}
+
 /**
- * 직장 운세 프리미엄 전용 — "직장에서 예쁨받는 방법" 3가지 팁을 AI로 생성한다.
+ * 직장 운세 프리미엄 전용 — 4개 섹션 종합 리포트(에너지/타이밍/주간흐름/관계운) + 팁 3가지를 AI로 생성한다.
  *
  * - 프리미엄 구독자에게만 동작한다.
- * - 사용자 MBTI/생년월일/성별을 기반으로 개인화된 팁을 생성한다.
+ * - 사용자 MBTI/생년월일/성별을 기반으로 개인화된 리포트를 생성한다.
+ * - 동일 일자에 이미 생성된 리포트가 있으면 캐시를 재사용한다.
  */
 export async function generateCareerTipsAction(): Promise<CareerTipsState> {
   try {
@@ -103,8 +111,9 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
     }
 
     const today = todayKst();
+    const weekday = todayWeekdayKst();
 
-    // 오늘 이미 생성된 팁이 있으면 재사용
+    // 오늘 이미 생성된 리포트가 있으면 재사용
     const [cached] = await db
       .select()
       .from(dailyCareerTips)
@@ -117,53 +126,91 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
       .limit(1);
 
     if (cached) {
-      const tips = cached.tips as CareerTipsOutput["tips"];
-      return { kind: "success", tips };
+      // 신/구 스키마 모두 수용: 구버전 캐시(tips 배열만)는 무시하고 새로 생성하지 않고
+      // 안전하게 파싱 시도 후 실패 시 새로 생성한다.
+      const parsed = careerReportSchema.safeParse(cached.tips);
+      if (parsed.success) {
+        return { kind: "success", report: parsed.data };
+      }
+      // 구버전 캐시는 폐기하고 새로 생성
     }
 
-    // 없으면 AI 생성
+    // AI 생성
     const mbti = profile.mbti ?? "알 수 없음";
     const userPrompt = `사용자 정보:
 - MBTI: ${mbti}
 - 생년월일: ${profile.birthDate}
 - 성별: ${profile.gender}
+- 오늘 날짜: ${today} (${weekday}요일)
 
-위 사용자에게 맞는 "직장에서 예쁨받는 방법" 3가지를 알려줘.
-각 팁은 짧은 제목(10자 내외)과 설명(2문장 이내)으로 구성해.
-구체적이고 실천 가능하게, 이 사람의 MBTI 성격에 맞게 작성해줘.
+이 사용자의 오늘 직장 운세 종합 리포트를 작성해줘.
+구체적이고 실천 가능하게, 이 사람의 MBTI 성격과 오늘 요일을 반영해서 작성해.
 
-반드시 아래 JSON 형식으로만 응답해. 설명이나 마크다운 없이 JSON만 출력해:
+반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:
 {
   "tips": [
-    { "title": "팁 제목", "description": "팁 설명 1~2문장" },
-    { "title": "팁 제목", "description": "팁 설명 1~2문장" },
-    { "title": "팁 제목", "description": "팁 설명 1~2문장" }
-  ]
+    { "title": "팁 제목(10자 이내)", "description": "설명 2문장" },
+    { "title": "팁 제목(10자 이내)", "description": "설명 2문장" },
+    { "title": "팁 제목(10자 이내)", "description": "설명 2문장" }
+  ],
+  "energy": {
+    "focus": 0~100,
+    "relations": 0~100,
+    "drive": 0~100,
+    "avoid": "오늘 피해야 할 상황 1문장"
+  },
+  "timing": {
+    "period": "morning" 또는 "afternoon",
+    "periodDesc": "이유 1문장",
+    "meetingTip": "회의·협상 팁 1문장"
+  },
+  "weeklyFlow": [
+    { "day": "월", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 },
+    { "day": "화", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 },
+    { "day": "수", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 },
+    { "day": "목", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 },
+    { "day": "금", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 }
+  ],
+  "relationship": {
+    "isGoodToAsk": true 또는 false,
+    "bossAdvice": "상사 관계 팁 1문장",
+    "colleagueTip": "동료 관계 팁 1문장",
+    "standoutTip": "오늘 눈에 띄는 방법 1문장"
+  }
 }`;
 
     const result = await generateJson({
-      schema: careerTipsSchema,
+      schema: careerReportSchema,
       userPrompt,
       model: AI_MODELS.fast,
-      maxTokens: 600,
-      systemSuffix: "직장 팁 생성 전용 모드입니다. 산문·설명·마크다운은 일절 덧붙이지 말고 JSON만 응답하세요.",
+      maxTokens: 1200,
+      systemSuffix:
+        "직장 운세 리포트 생성 전용 모드입니다. 산문·설명·마크다운은 일절 덧붙이지 말고 JSON만 응답하세요.",
     });
 
-    // DB에 저장
-    await db
-      .insert(dailyCareerTips)
-      .values({
-        userId: profile.userId,
-        tipDate: today,
-        tips: result.tips,
-      })
-      .onConflictDoNothing();
+    // DB에 저장 (tips 컬럼에 전체 리포트 JSON 저장)
+    // 구버전 캐시(팁 3개만) 가 있을 수 있으므로 충돌 시 업데이트한다.
+    if (cached) {
+      await db
+        .update(dailyCareerTips)
+        .set({ tips: result })
+        .where(eq(dailyCareerTips.id, cached.id));
+    } else {
+      await db
+        .insert(dailyCareerTips)
+        .values({
+          userId: profile.userId,
+          tipDate: today,
+          tips: result,
+        })
+        .onConflictDoNothing();
+    }
 
-    return { kind: "success", tips: result.tips };
+    return { kind: "success", report: result };
   } catch (e) {
     return {
       kind: "error",
-      message: e instanceof Error ? e.message : "팁을 불러오지 못했어.",
+      message: e instanceof Error ? e.message : "리포트를 불러오지 못했어.",
     };
   }
 }
