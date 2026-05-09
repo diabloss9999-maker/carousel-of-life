@@ -1,7 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Crown, Lock, Sparkles } from "lucide-react";
 
@@ -73,7 +73,7 @@ function pickTarot(score: number, luckyNumber: number | null): TarotCard {
 export function LoveCard({ fortune, subscribed }: LoveCardProps) {
   const [revealed, setRevealed] = useState(false);
   const score = Number(fortune.score);
-  const luckyNum = fortune.luckyNumber !== undefined ? Number(fortune.luckyNumber) : null;
+  const luckyNum: number | null = fortune.luckyNumber != null ? Number(fortune.luckyNumber) : null;
   const tarot = pickTarot(score, luckyNum);
 
   return (
@@ -105,7 +105,14 @@ export function LoveCard({ fortune, subscribed }: LoveCardProps) {
                   </div>
                 </div>
                 <div className="tc-face tc-back-face">
-                  <img src={tarotImg(tarot.id)} alt={tarot.name} className="tc-img" />
+                  <Image
+                    src={tarotImg(tarot.id)}
+                    alt={tarot.name}
+                    width={185}
+                    height={323}
+                    unoptimized
+                    className="tc-img"
+                  />
                   <div className="tc-name-bar">
                     <p className="text-white/70 text-xs">{ROMAN[tarot.id] ?? ""}</p>
                     <p className="text-white font-bold text-sm">{tarot.name}</p>
