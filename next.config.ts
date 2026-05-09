@@ -15,6 +15,12 @@ const nextConfig: NextConfig = {
         hostname: "*.supabase.co",
         pathname: "/storage/v1/object/public/**",
       },
+      // Rider-Waite 타로 이미지 (퍼블릭 도메인, 1909년판).
+      {
+        protocol: "https",
+        hostname: "www.sacred-texts.com",
+        pathname: "/tarot/pkt/img/**",
+      },
     ],
   },
 
