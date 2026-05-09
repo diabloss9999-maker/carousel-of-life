@@ -6,6 +6,10 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
+import { and, eq } from "drizzle-orm";
+
+import { db } from "@/db";
+import { dailyCareerTips } from "@/db/schema";
 import { requireProfile } from "@/lib/auth/get-user";
 import { generateJson } from "@/lib/ai/generate";
 import {
@@ -15,6 +19,12 @@ import {
 import { AI_MODELS } from "@/lib/constants";
 import { getOrCreateDailyFortune } from "@/lib/fortunes/service";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+
+/** KST 오늘 날짜 YYYY-MM-DD */
+function todayKst(): string {
+  const d = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
 
 const categorySchema = z.enum([
   "general",
@@ -92,6 +102,26 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
       return { kind: "error", message: "프리미엄 전용 기능이야." };
     }
 
+    const today = todayKst();
+
+    // 오늘 이미 생성된 팁이 있으면 재사용
+    const [cached] = await db
+      .select()
+      .from(dailyCareerTips)
+      .where(
+        and(
+          eq(dailyCareerTips.userId, profile.userId),
+          eq(dailyCareerTips.tipDate, today),
+        ),
+      )
+      .limit(1);
+
+    if (cached) {
+      const tips = cached.tips as CareerTipsOutput["tips"];
+      return { kind: "success", tips };
+    }
+
+    // 없으면 AI 생성
     const mbti = profile.mbti ?? "알 수 없음";
     const userPrompt = `사용자 정보:
 - MBTI: ${mbti}
@@ -118,6 +148,16 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
       maxTokens: 600,
       systemSuffix: "직장 팁 생성 전용 모드입니다. 산문·설명·마크다운은 일절 덧붙이지 말고 JSON만 응답하세요.",
     });
+
+    // DB에 저장
+    await db
+      .insert(dailyCareerTips)
+      .values({
+        userId: profile.userId,
+        tipDate: today,
+        tips: result.tips,
+      })
+      .onConflictDoNothing();
 
     return { kind: "success", tips: result.tips };
   } catch (e) {
