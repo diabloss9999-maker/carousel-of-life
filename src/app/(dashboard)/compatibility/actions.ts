@@ -46,9 +46,6 @@ export interface CompatibilityActionState {
   quotaExceeded?: boolean;
 }
 
-export const compatibilityIdleState: CompatibilityActionState = {
-  kind: "idle",
-};
 
 /**
  * 새 궁합 풀이.
@@ -165,7 +162,6 @@ export interface TwoPersonCompatState {
   };
 }
 
-export const twoPersonCompatIdleState: TwoPersonCompatState = { kind: "idle" };
 
 export async function twoPersonCompatAction(
   _prev: TwoPersonCompatState,

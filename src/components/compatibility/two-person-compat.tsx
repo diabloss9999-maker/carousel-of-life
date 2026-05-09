@@ -23,9 +23,10 @@ import { Select } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import {
   twoPersonCompatAction,
-  twoPersonCompatIdleState,
   type TwoPersonCompatState,
 } from "@/app/(dashboard)/compatibility/actions";
+
+const twoPersonCompatIdleState: TwoPersonCompatState = { kind: "idle" };
 
 const TODAY_ISO = (): string => new Date().toISOString().slice(0, 10);
 
