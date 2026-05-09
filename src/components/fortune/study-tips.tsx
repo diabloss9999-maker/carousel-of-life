@@ -19,6 +19,7 @@ interface StudyTipsProps {
  */
 export function StudyTips({ subscribed }: StudyTipsProps) {
   const [tips, setTips] = useState<StudyTipsOutput["tips"] | null>(null);
+  const [quote, setQuote] = useState<StudyTipsOutput["quote"] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -28,6 +29,7 @@ export function StudyTips({ subscribed }: StudyTipsProps) {
       const result = await generateStudyTipsAction();
       if (result.kind === "success" && result.tips) {
         setTips(result.tips);
+        if (result.quote) setQuote(result.quote);
       } else {
         setError(result.message ?? "오류가 발생했어.");
       }
@@ -131,6 +133,17 @@ export function StudyTips({ subscribed }: StudyTipsProps) {
             </li>
           ))}
         </ol>
+
+        {quote && (
+          <div className="mt-5 rounded-xl border border-accent/20 bg-accent/5 px-4 py-3">
+            <p className="font-mystic text-sm leading-relaxed text-foreground/85 italic">
+              &ldquo;{quote.text}&rdquo;
+            </p>
+            <p className="mt-1.5 text-right text-xs text-muted-foreground">
+              — {quote.author}
+            </p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

@@ -324,6 +324,7 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
 export interface StudyTipsState {
   kind: "idle" | "success" | "error";
   tips?: StudyTipsOutput["tips"];
+  quote?: StudyTipsOutput["quote"];
   message?: string;
 }
 
@@ -376,7 +377,11 @@ export async function generateStudyTipsAction(): Promise<StudyTipsState> {
     { "title": "팁 제목(10자 이내)", "description": "설명 2문장" },
     { "title": "팁 제목(10자 이내)", "description": "설명 2문장" },
     { "title": "팁 제목(10자 이내)", "description": "설명 2문장" }
-  ]
+  ],
+  "quote": {
+    "text": "학습과 공부에 관한 유명한 명언 (한국어로)",
+    "author": "명언 출처 인물명"
+  }
 }`;
 
     const result = await generateJson({
@@ -404,7 +409,7 @@ export async function generateStudyTipsAction(): Promise<StudyTipsState> {
         .onConflictDoNothing();
     }
 
-    return { kind: "success", tips: result.tips };
+    return { kind: "success", tips: result.tips, quote: result.quote };
   } catch (e) {
     return {
       kind: "error",

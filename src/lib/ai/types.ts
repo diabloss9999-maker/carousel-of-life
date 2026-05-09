@@ -115,7 +115,7 @@ export const healthWorkoutSchema = z.object({
 });
 export type HealthWorkoutOutput = z.infer<typeof healthWorkoutSchema>;
 
-/** 학업 — 집중력 높이는 팁 3가지 */
+/** 학업 — 집중력 높이는 팁 3가지 + 오늘의 명언 */
 export const studyTipsSchema = z.object({
   tips: z
     .array(
@@ -125,5 +125,9 @@ export const studyTipsSchema = z.object({
       }),
     )
     .min(1),
+  quote: z.object({
+    text: z.string(),   // 명언 본문
+    author: z.string(), // 출처 (인물명)
+  }),
 });
 export type StudyTipsOutput = z.infer<typeof studyTipsSchema>;
