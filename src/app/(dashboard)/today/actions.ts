@@ -261,7 +261,7 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
     if (cached) {
       const parsed = healthWorkoutSchema.safeParse(cached.workouts);
       if (parsed.success) {
-        return { kind: "success", workouts: parsed.data.workouts };
+        return { kind: "success", workouts: parsed.data.workouts, quote: parsed.data.quote };
       }
     }
 
@@ -363,7 +363,7 @@ export async function generateStudyTipsAction(): Promise<StudyTipsState> {
     if (cached) {
       const parsed = studyTipsSchema.safeParse(cached.tips);
       if (parsed.success) {
-        return { kind: "success", tips: parsed.data.tips };
+        return { kind: "success", tips: parsed.data.tips, quote: parsed.data.quote };
       }
     }
 
