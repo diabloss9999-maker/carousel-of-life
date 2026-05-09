@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useActionState, useState } from "react";
+import { useScrollToResult } from "@/hooks/use-scroll-to-result";
 import { Loader2, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -33,6 +34,8 @@ export function TarotDrawForm() {
   );
   const [question, setQuestion] = useState("");
   const charsLeft = MAX_QUESTION_LENGTH - question.length;
+
+  useScrollToResult(isPending, "tarot-results");
 
   return (
     <Card className="app-surface">

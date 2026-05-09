@@ -51,7 +51,7 @@ export default async function TarotPage() {
       </div>
 
       {readings.length > 0 ? (
-        <section className="space-y-4">
+        <section id="tarot-results" className="space-y-4">
           <h2 className="font-mystic text-2xl font-semibold tracking-tight">
             오늘 본 카드
           </h2>

@@ -21,6 +21,12 @@ export function CalculateSajuButton() {
         return;
       }
       router.refresh();
+      // 페이지 업데이트 후 결과 영역으로 스크롤
+      setTimeout(() => {
+        document
+          .getElementById("saju-results")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 500);
     });
   }
 

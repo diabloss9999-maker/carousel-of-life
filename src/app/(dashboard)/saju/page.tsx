@@ -93,7 +93,7 @@ export default async function SajuPage() {
       </header>
 
       {pillars && elements ? (
-        <>
+        <div id="saju-results" className="contents">
           <SajuPillars pillars={pillars} />
           <FiveElementsChart elements={elements} />
 
@@ -118,7 +118,7 @@ export default async function SajuPage() {
               <ResetSajuButton />
             </CardContent>
           </Card>
-        </>
+        </div>
       ) : (
         <Card className="app-surface">
           <CardHeader>
