@@ -339,7 +339,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     category: "characters",
     nameKo: "루나",
     nameEn: "Luna",
-    imageSrc: "/characters/witch.png",
+    imageSrc: "/characters/witch_v2.png",
     description:
       "달빛 아래 수정구슬을 응시하며 운명을 읽는 달빛의 마녀. 어둠 속에서 가장 선명하게 진실을 본다.",
     rarity: "legendary",
@@ -349,7 +349,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     category: "characters",
     nameKo: "카엘",
     nameEn: "Kael",
-    imageSrc: "/characters/child.png",
+    imageSrc: "/characters/child_v2.png",
     description:
       "운명과의 계약서를 손에 쥔 악마 계약자. 냉정하고 정확하게 진실만을 말한다.",
     rarity: "legendary",
@@ -359,7 +359,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     category: "characters",
     nameKo: "라엘",
     nameEn: "Rael",
-    imageSrc: "/characters/sage.png",
+    imageSrc: "/characters/sage_v2.png",
     description:
       "하늘의 뜻을 전하는 천상의 대리인. 빛과 희망의 언어로 당신의 길을 밝혀준다.",
     rarity: "legendary",

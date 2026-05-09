@@ -29,7 +29,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     name: "카엘",
     title: "악마 계약자",
     description: "명계를 지배하는 악마 계약자. 라엘을 증오하지만 루나의 중재로 간신히 균형을 유지한다. 진실만을 말하고 거짓을 용납하지 않는다.",
-    imageSrc: "/characters/child.png",
+    imageSrc: "/characters/child_v2.png",
     placeholder: "카엘에게 물어봐...",
   },
   witch: {
@@ -37,7 +37,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     name: "루나",
     title: "달의 마녀",
     description: "세 세계의 중심에 선 달의 마녀. 카엘과 라엘이 충돌하면 한쪽이 사라지고 세계가 무너지기에, 그 사이에서 영원히 중재하는 숙명을 짊어졌다.",
-    imageSrc: "/characters/witch.png",
+    imageSrc: "/characters/witch_v2.png",
     placeholder: "루나에게 물어봐...",
   },
   sage: {
@@ -45,7 +45,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     name: "라엘",
     title: "천사 대리인",
     description: "천상계의 뜻을 전하는 천사 대리인. 카엘을 혐오하지만 루나 덕분에 공존한다. 빛과 희망으로 인간을 인도하는 것이 사명이다.",
-    imageSrc: "/characters/sage.png",
+    imageSrc: "/characters/sage_v2.png",
     placeholder: "라엘에게 물어봐...",
   },
 };
