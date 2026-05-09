@@ -94,15 +94,14 @@ export function LoveCard({ fortune, subscribed }: LoveCardProps) {
           <>
             <div className="tc-scene">
               <div className={revealed ? "tc-card flipped" : "tc-card"}>
-                <div className="tc-face" style={{ background: "linear-gradient(145deg,#130a2e 0%,#0a0a20 50%,#130a2e 100%)" }}>
-                  <div className="flex flex-col items-center justify-center h-full gap-3 px-4">
-                    <div className="grid grid-cols-4 gap-2 opacity-15">
-                      {Array.from({ length: 16 }).map((_, i) => (
-                        <span key={i} className="text-purple-300 text-lg">✶</span>
-                      ))}
-                    </div>
-                    <p className="text-white/60 text-sm text-center">카드를 뽑아봐요</p>
-                  </div>
+                <div className="tc-face overflow-hidden">
+                  <Image
+                    src="/collection/card_back.png"
+                    alt="카드 뒷면"
+                    fill
+                    className="object-cover"
+                    sizes="160px"
+                  />
                 </div>
                 <div className="tc-face tc-back-face">
                   <Image
