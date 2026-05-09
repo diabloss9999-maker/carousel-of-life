@@ -63,6 +63,11 @@ export const tarotSpreadEnum = pgEnum("tarot_spread", [
   "celtic",
 ]);
 
+export const lenormandSpreadEnum = pgEnum("lenormand_spread", [
+  "single",
+  "three",
+]);
+
 export const chatRoleEnum = pgEnum("chat_role", ["user", "assistant"]);
 
 export const subscriptionStatusEnum = pgEnum("subscription_status", [
@@ -190,6 +195,41 @@ export const tarotReadings = pgTable(
 
 export type TarotReading = typeof tarotReadings.$inferSelect;
 export type NewTarotReading = typeof tarotReadings.$inferInsert;
+
+// =============================================================================
+// lenormand_readings - 르노르망 카드 점술 결과
+// =============================================================================
+
+export const lenormandReadings = pgTable(
+  "lenormand_readings",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    spreadType: lenormandSpreadEnum("spread_type").notNull(),
+    /** 사용자가 던진 질문. nullable (그냥 뽑기). */
+    question: text("question"),
+    /**
+     * 뽑힌 카드 배열.
+     * 예: [{ id: 1, position: "single" }] 또는
+     *     [{ id: 5, position: "past" }, { id: 12, position: "present" }, { id: 31, position: "future" }]
+     */
+    cards: jsonb("cards").notNull(),
+    /** 르노르망 풀이 본문. */
+    interpretation: text("interpretation").notNull(),
+    model: text("model").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    index("lenormand_readings_user_created_idx").on(t.userId, t.createdAt),
+  ],
+);
+
+export type LenormandReading = typeof lenormandReadings.$inferSelect;
+export type NewLenormandReading = typeof lenormandReadings.$inferInsert;
 
 // =============================================================================
 // compatibility_readings - 궁합 결과
@@ -600,6 +640,7 @@ export const allTables = {
   profiles,
   dailyFortunes,
   tarotReadings,
+  lenormandReadings,
   compatibilityReadings,
   chatSessions,
   chatMessages,

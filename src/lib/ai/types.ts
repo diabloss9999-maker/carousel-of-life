@@ -33,6 +33,15 @@ export const tarotThreeAiSchema = z.object({
 
 export type TarotThreeAiOutput = z.infer<typeof tarotThreeAiSchema>;
 
+/** 르노르망 풀이 (단일·3장 공용) AI 응답 스키마. */
+export const lenormandSingleAiSchema = z.object({
+  interpretation: z.string().min(1).max(2000),
+  summary: z.string().min(1).max(80),
+  cardCombination: z.string().min(1).max(400),
+});
+
+export type LenormandSingleAiOutput = z.infer<typeof lenormandSingleAiSchema>;
+
 export const compatibilityAiSchema = z.object({
   score: z.number().int().min(1).max(100),
   summary: z.string().min(1).max(80),
