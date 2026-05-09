@@ -337,7 +337,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
   {
     id: "witch",
     category: "characters",
-    nameKo: "세라피나",
+    nameKo: "마리안느",
     nameEn: "Seraphina",
     imageSrc: "/characters/witch.png",
     description:
@@ -347,11 +347,11 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
   {
     id: "child",
     category: "characters",
-    nameKo: "동자",
+    nameKo: "동자신",
     nameEn: "Dongja",
     imageSrc: "/characters/child.png",
     description:
-      "하늘의 이치를 훤히 꿰뚫는 귀엽고 신통한 아기 동자. 말은 어리지만 보는 눈만큼은 날카롭고 정확하다.",
+      "하늘의 이치를 훤히 꿰뚫는 귀엽고 신통한 아기 동자신. 말은 어리지만 보는 눈만큼은 날카롭고 정확하다.",
     rarity: "legendary",
   },
   {
