@@ -6,8 +6,8 @@
 
 /** 무료 사용자 일일 한도. */
 export const FREE_DAILY_LIMITS = {
-  fortune: 2,
-  tarot: 2,
+  fortune: 3,
+  tarot: 3,
   chat: 3,
 } as const;
 

@@ -24,7 +24,7 @@ import { AI_LIMITS, AI_MODELS } from "@/lib/constants";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { ensureSajuCalculated } from "@/lib/saju/calculate";
 
-const FREE_DAILY_COMPATIBILITY = 1;
+const FREE_DAILY_COMPATIBILITY = 3;
 
 export type CompatibilityResult =
   | { ok: true; reading: CompatibilityReading }
