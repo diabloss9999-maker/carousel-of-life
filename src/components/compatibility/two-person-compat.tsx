@@ -20,6 +20,7 @@ import { FormMessage } from "@/components/ui/form-message";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
+import { useScrollToResult } from "@/hooks/use-scroll-to-result";
 import { cn } from "@/lib/utils";
 import {
   twoPersonCompatAction,
@@ -35,6 +36,8 @@ export function TwoPersonCompat() {
     twoPersonCompatAction,
     twoPersonCompatIdleState,
   );
+
+  useScrollToResult(isPending, "two-person-result", 200);
 
   return (
     <div className="space-y-6">
@@ -92,7 +95,9 @@ export function TwoPersonCompat() {
       </Card>
 
       {state.kind === "success" && state.result ? (
-        <TwoPersonResultCard result={state.result} />
+        <div id="two-person-result">
+          <TwoPersonResultCard result={state.result} />
+        </div>
       ) : null}
     </div>
   );

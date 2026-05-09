@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { FormMessage } from "@/components/ui/form-message";
+import { useScrollToResult } from "@/hooks/use-scroll-to-result";
 import { ROUTES } from "@/lib/constants";
 import {
   generateFortuneAction,
@@ -34,6 +35,8 @@ export function GenerateFortuneForm({
     generateFortuneAction,
     initial,
   );
+
+  useScrollToResult(isPending, "fortune-result");
 
   return (
     <Card className="app-surface">

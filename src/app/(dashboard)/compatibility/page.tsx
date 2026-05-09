@@ -36,7 +36,7 @@ export default async function CompatibilityPage() {
     <div className="space-y-6">
       <CompatibilityForm />
       {recentReadings.length > 0 ? (
-        <section className="space-y-4">
+        <section id="compat-result" className="space-y-4">
           <h2 className="font-mystic text-xl font-semibold tracking-tight">
             오늘의 궁합
           </h2>

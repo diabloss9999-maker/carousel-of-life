@@ -110,7 +110,9 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
       )}
 
       {fortune ? (
-        <FortuneCard fortune={fortune} />
+        <div id="fortune-result">
+          <FortuneCard fortune={fortune} />
+        </div>
       ) : (
         <GenerateFortuneForm
           category={category}

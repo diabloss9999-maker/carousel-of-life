@@ -35,6 +35,11 @@ export function DeepReadingButton({ locked }: DeepReadingButtonProps) {
         return;
       }
       router.refresh();
+      setTimeout(() => {
+        document
+          .getElementById("saju-deep-result")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 500);
     });
   }
 

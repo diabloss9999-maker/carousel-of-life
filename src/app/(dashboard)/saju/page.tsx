@@ -99,7 +99,9 @@ export default async function SajuPage() {
 
           {/* 심층 분석 영역 */}
           {deepReading ? (
-            <DeepReadingCard reading={deepReading} />
+            <div id="saju-deep-result">
+              <DeepReadingCard reading={deepReading} />
+            </div>
           ) : (
             <DeepReadingButton locked={!subscribed} />
           )}
