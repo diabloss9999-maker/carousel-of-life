@@ -473,15 +473,16 @@ function CardCell({ card, owned, onClick }: CardCellProps) {
   if (!owned) {
     return (
       <div
-        className={cn(
-          "relative aspect-[2/3] overflow-hidden rounded-xl border border-border/30",
-          "bg-gradient-to-br from-[oklch(0.30_0.06_290)] via-[oklch(0.22_0.07_280)] to-[oklch(0.16_0.05_270)] cursor-default",
-        )}
+        className="relative aspect-[2/3] overflow-hidden rounded-xl border border-border/30 cursor-default opacity-70"
         aria-label="미소장 카드"
       >
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="font-mystic text-4xl text-amber-200/60">?</span>
-        </div>
+        <Image
+          src="/tarot/card_back.png"
+          alt="미소장"
+          fill
+          className="object-cover"
+          sizes="120px"
+        />
       </div>
     );
   }
