@@ -103,10 +103,18 @@ export async function signupAction(
   });
 
   if (error) {
-    return {
-      kind: "error",
-      message: `가입에 실패했어요: ${error.message}`,
-    };
+    const msg = error.message;
+    const korean =
+      msg.includes("User already registered") || msg.includes("already registered")
+        ? "이미 가입된 이메일이야. 로그인을 시도해봐."
+        : msg.includes("Password should be")
+          ? "비밀번호는 여덟 자 이상이어야 해."
+          : msg.includes("Unable to validate email")
+            ? "이메일 형식이 올바르지 않아."
+            : msg.includes("rate limit") || msg.includes("too many")
+              ? "잠시 후 다시 시도해줘."
+              : `가입에 실패했어요: ${msg}`;
+    return { kind: "error", message: korean };
   }
 
   // 이메일 인증이 켜진 경우 session 이 비어있다.
