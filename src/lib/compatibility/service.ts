@@ -47,6 +47,33 @@ export async function getRecentCompatibility(
 }
 
 /**
+ * 오늘(KST 기준) 생성된 궁합 풀이 목록.
+ */
+export async function getTodayCompatibility(
+  userId: string,
+): Promise<CompatibilityReading[]> {
+  const todayKst = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }),
+  );
+  todayKst.setHours(0, 0, 0, 0);
+  const todayStartUtc = new Date(
+    todayKst.getTime() - todayKst.getTimezoneOffset() * 60000,
+  );
+
+  return db
+    .select()
+    .from(compatibilityReadings)
+    .where(
+      and(
+        eq(compatibilityReadings.userId, userId),
+        gte(compatibilityReadings.createdAt, todayStartUtc),
+      ),
+    )
+    .orderBy(desc(compatibilityReadings.createdAt))
+    .limit(20);
+}
+
+/**
  * 특정 상대(이름·생년월일 일치)와의 오늘자 가장 최근 풀이를 반환.
  * 없으면 null.
  */

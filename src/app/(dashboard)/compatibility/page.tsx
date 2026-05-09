@@ -10,7 +10,7 @@ import { MbtiCompatPanel } from "@/components/compatibility/mbti-compat-panel";
 import { TwoPersonCompat } from "@/components/compatibility/two-person-compat";
 import { ZodiacCompatPanel } from "@/components/compatibility/zodiac-compat-panel";
 import { requireProfile } from "@/lib/auth/get-user";
-import { getRecentCompatibility } from "@/lib/compatibility/service";
+import { getTodayCompatibility } from "@/lib/compatibility/service";
 import { getZodiacSign } from "@/lib/fortunes/zodiac";
 import type { PersonalityType } from "@/lib/personality/questions";
 
@@ -24,7 +24,7 @@ const MBTI_PATTERN = /^[EI][NS][TF][JP]$/;
 export default async function CompatibilityPage() {
   const { profile } = await requireProfile();
 
-  const recentReadings = await getRecentCompatibility(profile.userId, 5);
+  const recentReadings = await getTodayCompatibility(profile.userId);
 
   const myZodiac = getZodiacSign(profile.birthDate);
   const myMbti =
@@ -38,7 +38,7 @@ export default async function CompatibilityPage() {
       {recentReadings.length > 0 ? (
         <section className="space-y-4">
           <h2 className="font-mystic text-xl font-semibold tracking-tight">
-            지난 궁합
+            오늘의 궁합
           </h2>
           <div className="space-y-4">
             {recentReadings.map((r) => (
