@@ -52,3 +52,18 @@ export const sajuDeepAiSchema = z.object({
 });
 
 export type SajuDeepAiOutput = z.infer<typeof sajuDeepAiSchema>;
+
+export const careerTipsSchema = z.object({
+  tips: z
+    .array(
+      z.object({
+        /** 팁 제목 (예: "긍정 에너지로 분위기 만들기"). */
+        title: z.string(),
+        /** 팁 설명 1~2문장. */
+        description: z.string(),
+      }),
+    )
+    .length(3),
+});
+
+export type CareerTipsOutput = z.infer<typeof careerTipsSchema>;

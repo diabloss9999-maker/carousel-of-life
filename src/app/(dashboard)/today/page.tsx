@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 export const maxDuration = 30;
 import { redirect } from "next/navigation";
 
+import { CareerTips } from "@/components/fortune/career-tips";
 import { CategoryTabs } from "@/components/fortune/category-tabs";
 import { FortuneCard } from "@/components/fortune/fortune-card";
 import { LottoGenerator } from "@/components/fortune/lotto-generator";
@@ -120,6 +121,9 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
     {category === "love" && (
       <LoveCard fortune={fortune} subscribed={subscribed} />
     )}
+          {category === "career" && (
+            <CareerTips subscribed={subscribed} />
+          )}
         </div>
       ) : (
         <GenerateFortuneForm
