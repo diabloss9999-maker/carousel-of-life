@@ -116,6 +116,7 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
       userPrompt,
       model: AI_MODELS.fast,
       maxTokens: 600,
+      systemSuffix: "직장 팁 생성 전용 모드입니다. 산문·설명·마크다운은 일절 덧붙이지 말고 JSON만 응답하세요.",
     });
 
     return { kind: "success", tips: result.tips };
