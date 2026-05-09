@@ -10,14 +10,21 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { DailyFortune } from "@/db/schema";
 import { ROUTES } from "@/lib/constants";
 
-const ROMAN = ["0","I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI"];
+const ROMAN: string[] = ["0","I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI"];
 
 interface LoveCardProps {
   fortune: DailyFortune;
   subscribed: boolean;
 }
 
-const TAROT = [
+interface TarotCard {
+  id: number;
+  name: string;
+  meaning: string;
+  advice: string;
+}
+
+const TAROT: TarotCard[] = [
   { id: 0, name: "바보", meaning: "새로운 시작과 순수한 설렘", advice: "두려움 없이 감정에 솔직해져요. 지금은 뛰어들 때예요." },
   { id: 1, name: "마법사", meaning: "의지와 자신감으로 상대를 끌어당기는 힘", advice: "원하는 걸 분명히 표현하세요. 당신의 매력은 지금 정점이에요." },
   { id: 2, name: "여사제", meaning: "직관과 내면의 지혜", advice: "머리보다 마음의 소리를 믿어요. 서두르지 않아도 돼요." },
@@ -40,7 +47,7 @@ const TAROT = [
   { id: 19, name: "태양", meaning: "기쁨과 활력, 밝은 사랑", advice: "오늘은 사랑 운이 최고예요! 자신 있게 표현하면 좋은 결과가 있어요." },
   { id: 20, name: "심판", meaning: "부활과 새로운 각성", advice: "과거의 교훈을 받아들이고 새롭게 출발할 준비가 됐어요." },
   { id: 21, name: "세계", meaning: "완성과 충만함, 원하는 것의 실현", advice: "지금 이 순간을 온전히 즐겨요. 사랑이 완성에 가까워지고 있어요." },
-] as const;
+];
 
 const TC_STYLES = ".tc-scene{perspective:1100px;width:185px;margin:0 auto}.tc-card{width:185px;height:323px;position:relative;transform-style:preserve-3d;transition:transform 0.9s cubic-bezier(0.4,0.2,0.2,1)}.tc-card.flipped{transform:rotateY(180deg)}.tc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:0.75rem;overflow:hidden}.tc-back-face{transform:rotateY(180deg)}.tc-img{width:100%;height:100%;object-fit:cover;display:block}.tc-name-bar{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0) 100%);padding:1.5rem 0.75rem 0.6rem;text-align:center}";
 
@@ -48,23 +55,26 @@ function tarotImg(id: number): string {
   return "https://www.sacred-texts.com/tarot/pkt/img/ar" + String(id).padStart(2, "0") + ".jpg";
 }
 
-function makePrng(seed: number) {
-  let s = seed | 0;
-  return function () {
+function makePrng(seed: number): () => number {
+  let s = (seed | 0);
+  return function (): number {
     s = (Math.imul(1664525, s) + 1013904223) | 0;
-    return (s >>> 0) / 0xffffffff;
+    return (s >>> 0) / 4294967295;
   };
 }
 
-function pickTarot(score: number, luckyNumber: number | null) {
+function pickTarot(score: number, luckyNumber: number | null): TarotCard {
   const seed = score * 997 + (luckyNumber ?? 0) * 31 + 555;
   const rand = makePrng(seed);
-  return TAROT[Math.floor(rand() * TAROT.length)]!;
+  const idx = Math.floor(rand() * TAROT.length) % TAROT.length;
+  return TAROT[idx] as TarotCard;
 }
 
 export function LoveCard({ fortune, subscribed }: LoveCardProps) {
   const [revealed, setRevealed] = useState(false);
-  const tarot = pickTarot(fortune.score, fortune.luckyNumber);
+  const score = Number(fortune.score);
+  const luckyNum = fortune.luckyNumber !== undefined ? Number(fortune.luckyNumber) : null;
+  const tarot = pickTarot(score, luckyNum);
 
   return (
     <Card className="app-surface relative overflow-hidden">
@@ -97,7 +107,7 @@ export function LoveCard({ fortune, subscribed }: LoveCardProps) {
                 <div className="tc-face tc-back-face">
                   <img src={tarotImg(tarot.id)} alt={tarot.name} className="tc-img" />
                   <div className="tc-name-bar">
-                    <p className="text-white/70 text-xs">{ROMAN[tarot.id]}</p>
+                    <p className="text-white/70 text-xs">{ROMAN[tarot.id] ?? ""}</p>
                     <p className="text-white font-bold text-sm">{tarot.name}</p>
                   </div>
                 </div>
@@ -113,7 +123,7 @@ export function LoveCard({ fortune, subscribed }: LoveCardProps) {
                 <p className="font-semibold text-base">{tarot.meaning}</p>
                 <p className="text-sm text-muted-foreground">{tarot.advice}</p>
                 <p className="text-xs text-muted-foreground/60">
-                  사랑운 {fortune.score}점 기반 · 오늘 하루 고정된 카드예요
+                  사랑운 {score}점 기반 · 오늘 하루 고정된 카드예요
                 </p>
                 <Button variant="outline" size="sm" onClick={() => setRevealed(false)}>
                   다시 보기
@@ -125,7 +135,7 @@ export function LoveCard({ fortune, subscribed }: LoveCardProps) {
           <div className="flex flex-col items-center gap-4 py-6">
             <div className="relative">
               <div
-                className="tc-scene opacity-40 blur-sm"
+                className="opacity-40 blur-sm"
                 style={{ height: "323px", width: "185px", background: "linear-gradient(145deg,#130a2e 0%,#0a0a20 50%,#130a2e 100%)", borderRadius: "0.75rem" }}
               ></div>
               <div className="absolute inset-0 flex items-center justify-center">
