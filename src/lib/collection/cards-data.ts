@@ -337,31 +337,31 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
   {
     id: "witch",
     category: "characters",
-    nameKo: "마리안느",
-    nameEn: "Seraphina",
+    nameKo: "루나",
+    nameEn: "Luna",
     imageSrc: "/characters/witch.png",
     description:
-      "수정구슬과 타로카드로 별의 언어를 읽는 서양 점술사. 신비롭고 날카로운 직관으로 운명의 실마리를 건넨다.",
+      "달빛 아래 수정구슬을 응시하며 운명을 읽는 달빛의 마녀. 어둠 속에서 가장 선명하게 진실을 본다.",
     rarity: "legendary",
   },
   {
     id: "child",
     category: "characters",
-    nameKo: "동자신",
-    nameEn: "Dongja",
+    nameKo: "카엘",
+    nameEn: "Kael",
     imageSrc: "/characters/child.png",
     description:
-      "하늘의 이치를 훤히 꿰뚫는 귀엽고 신통한 아기 동자신. 말은 어리지만 보는 눈만큼은 날카롭고 정확하다.",
+      "운명과의 계약서를 손에 쥔 악마 계약자. 냉정하고 정확하게 진실만을 말한다.",
     rarity: "legendary",
   },
   {
     id: "sage",
     category: "characters",
-    nameKo: "진",
-    nameEn: "Hyeondam",
+    nameKo: "라엘",
+    nameEn: "Rael",
     imageSrc: "/characters/sage.png",
     description:
-      "천문과 역학에 통달한 동양의 청년 술사. 차분하고 지적인 언어로 운명의 결을 짚어준다.",
+      "하늘의 뜻을 전하는 천상의 대리인. 빛과 희망의 언어로 당신의 길을 밝혀준다.",
     rarity: "legendary",
   },
 ];
