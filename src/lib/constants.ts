@@ -94,6 +94,7 @@ export const ROUTES = {
   compatibility: "/compatibility",
   history: "/history",
   personality: "/personality",
+  collection: "/collection",
   settings: "/settings",
   pricing: "/pricing",
   authCallback: "/auth/callback",
