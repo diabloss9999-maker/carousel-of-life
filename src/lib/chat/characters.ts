@@ -18,14 +18,6 @@ export interface Character {
 }
 
 export const CHARACTERS: Record<CharacterId, Character> = {
-  witch: {
-    id: "witch",
-    name: "루나",
-    title: "마녀",
-    description: "달빛 아래 수정구슬을 응시하며 운명의 실타래를 읽는 마녀. 어둠 속에서 가장 선명하게 진실을 본다.",
-    imageSrc: "/characters/witch.png",
-    placeholder: "루나에게 물어봐...",
-  },
   child: {
     id: "child",
     name: "카엘",
@@ -33,6 +25,14 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     description: "운명과의 계약서를 손에 쥔 신비로운 존재. 어떤 질문에도 냉정하고 정확한 답을 돌려준다.",
     imageSrc: "/characters/child.png",
     placeholder: "카엘에게 물어봐...",
+  },
+  witch: {
+    id: "witch",
+    name: "루나",
+    title: "마녀",
+    description: "달빛 아래 수정구슬을 응시하며 운명의 실타래를 읽는 마녀. 어둠 속에서 가장 선명하게 진실을 본다.",
+    imageSrc: "/characters/witch.png",
+    placeholder: "루나에게 물어봐...",
   },
   sage: {
     id: "sage",
