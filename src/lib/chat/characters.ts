@@ -21,7 +21,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
   child: {
     id: "child",
     name: "카엘",
-    title: "악마",
+    title: "악마 계약자",
     description: "운명과의 계약서를 손에 쥔 신비로운 존재. 어떤 질문에도 냉정하고 정확한 답을 돌려준다.",
     imageSrc: "/characters/child.png",
     placeholder: "카엘에게 물어봐...",
@@ -29,7 +29,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
   witch: {
     id: "witch",
     name: "루나",
-    title: "마녀",
+    title: "달의 마녀",
     description: "달빛 아래 수정구슬을 응시하며 운명의 실타래를 읽는 마녀. 어둠 속에서 가장 선명하게 진실을 본다.",
     imageSrc: "/characters/witch.png",
     placeholder: "루나에게 물어봐...",
@@ -37,7 +37,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
   sage: {
     id: "sage",
     name: "라엘",
-    title: "천사",
+    title: "천사 대리인",
     description: "하늘의 뜻을 전하는 천사. 빛과 희망으로 가득한 언어로 당신의 길을 밝혀준다.",
     imageSrc: "/characters/sage.png",
     placeholder: "라엘에게 물어봐...",
