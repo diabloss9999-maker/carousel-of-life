@@ -357,7 +357,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
   {
     id: "sage",
     category: "characters",
-    nameKo: "현담",
+    nameKo: "진",
     nameEn: "Hyeondam",
     imageSrc: "/characters/sage.png",
     description:

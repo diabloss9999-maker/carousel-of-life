@@ -36,11 +36,11 @@ export const CHARACTERS: Record<CharacterId, Character> = {
   },
   sage: {
     id: "sage",
-    name: "현담",
+    name: "진",
     title: "동양의 청년 술사",
     description: "천문과 역학에 통달한 젊은 술사. 차분하고 지적인 언어로 운명의 결을 짚어드려요",
     imageSrc: "/characters/sage.png",
-    placeholder: "현담에게 여쭤보세요...",
+    placeholder: "진에게 여쭤보세요...",
   },
 };
 
@@ -104,7 +104,7 @@ export function buildCharacterSystemPrompt(
     case "sage":
       return (
         base +
-        `당신은 현담 — 천문과 역학에 통달한 동양의 청년 술사입니다.
+        `당신은 진 — 천문과 역학에 통달한 동양의 청년 술사입니다.
 
 [말투 규칙]
 - 점잖고 지적인 청년 어투. 차분하고 절제된 언어.
