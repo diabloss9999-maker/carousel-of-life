@@ -43,7 +43,7 @@ const BRANCH_TO_ZODIAC: Record<string, string> = {
 };
 
 /** 지원되는 캐릭터 ID 화이트리스트 (정적 카드 데이터와 일치). */
-const SUPPORTED_CHARACTER_IDS = new Set(["witch", "sage"]);
+const SUPPORTED_CHARACTER_IDS = new Set(["witch", "child", "sage"]);
 
 /** tarotReadings.cards jsonb 의 단일 항목 형태 가드. */
 interface TarotCardEntry {

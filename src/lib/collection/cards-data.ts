@@ -1,13 +1,13 @@
 /**
  * 카드 컬렉션 정적 메타데이터.
  *
- * 6개 카테고리 총 130장:
+ * 6개 카테고리 총 131장:
  * - 타로 78장
  * - MBTI 16장
  * - 별자리 12장
  * - 십이간지 12장
  * - 천간 10장
- * - 주술사 2장
+ * - 주술사 3장
  *
  * 발견 여부는 service.ts 가 기존 사용자 데이터(profiles, tarotReadings,
  * chatSessions)에서 계산한다. 이 파일은 카드의 표시 정보만을 담는다.
@@ -325,24 +325,33 @@ export const CHEONGAN_CARDS: CollectionCardMeta[] = CHEONGAN_ORDER.map(
   },
 );
 
-/** 주술사 캐릭터 2장 메타데이터. */
+/** 주술사 캐릭터 3장 메타데이터. */
 export const CHARACTER_CARDS: CollectionCardMeta[] = [
   {
     id: "witch",
-    nameKo: "달빛 마녀",
-    nameEn: "witch",
+    nameKo: "세라피나",
+    nameEn: "Seraphina",
     imageSrc: "/characters/witch.png",
     description:
-      "달빛 아래 약초를 다루는 신비로운 마녀. 직관과 감성의 조언을 건넨다.",
+      "수정구슬과 타로카드로 별의 언어를 읽는 서양 점술사. 신비롭고 날카로운 직관으로 운명의 실마리를 건넨다.",
+    rarity: "legendary",
+  },
+  {
+    id: "child",
+    nameKo: "동자",
+    nameEn: "Dongja",
+    imageSrc: "/characters/child.png",
+    description:
+      "하늘의 이치를 훤히 꿰뚫는 귀엽고 신통한 아기 동자. 말은 어리지만 보는 눈만큼은 날카롭고 정확하다.",
     rarity: "legendary",
   },
   {
     id: "sage",
-    nameKo: "산중 도사",
-    nameEn: "sage",
+    nameKo: "현담",
+    nameEn: "Hyeondam",
     imageSrc: "/characters/sage.png",
     description:
-      "오랜 수행으로 마음의 길을 닦은 도사. 차분한 통찰로 본질을 짚어준다.",
+      "천문과 역학에 통달한 동양의 청년 술사. 차분하고 지적인 언어로 운명의 결을 짚어준다.",
     rarity: "legendary",
   },
 ];
@@ -373,7 +382,7 @@ export const CATEGORY_META: Record<
   characters: { label: "주술사", emoji: "🧙" },
 };
 
-/** 전체 카드 수 (130장 보장). */
+/** 전체 카드 수 (131장 보장). */
 export const TOTAL_CARDS =
   TAROT_CARDS.length +
   MBTI_CARDS.length +
@@ -382,8 +391,8 @@ export const TOTAL_CARDS =
   CHEONGAN_CARDS.length +
   CHARACTER_CARDS.length;
 
-if (TOTAL_CARDS !== 130) {
+if (TOTAL_CARDS !== 131) {
   throw new Error(
-    `컬렉션 카드 수 오류: 기대 130, 실제 ${TOTAL_CARDS}`,
+    `컬렉션 카드 수 오류: 기대 131, 실제 ${TOTAL_CARDS}`,
   );
 }
