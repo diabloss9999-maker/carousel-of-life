@@ -114,7 +114,7 @@ export function OnboardingForm({
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="mbti">MBTI</Label>
+          <Label htmlFor="mbti">성격유형 (예: INFJ)</Label>
           <Input
             id="mbti"
             name="mbti"

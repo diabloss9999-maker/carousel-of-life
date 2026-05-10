@@ -16,7 +16,7 @@ import type { PersonalityType } from "@/lib/personality/questions";
 
 export const metadata: Metadata = {
   title: "궁합",
-  description: "사주·별자리·MBTI 로 보는 궁합 풀이.",
+  description: "사주·별자리·성격유형으로 보는 궁합 풀이.",
 };
 
 const MBTI_PATTERN = /^[EI][NS][TF][JP]$/;
@@ -57,7 +57,7 @@ export default async function CompatibilityPage() {
           궁합
         </h1>
         <p className="text-sm text-muted-foreground">
-          사주·별자리·MBTI 로 두 사람의 운명을 살펴봐.
+          사주·별자리·성격유형으로 두 사람의 운명을 살펴봐.
         </p>
       </header>
 

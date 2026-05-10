@@ -127,7 +127,7 @@ export default async function SettingsPage() {
                   : "기타"
             }
           />
-          <Row label="MBTI" value={profile.mbti ?? "—"} />
+          <Row label="성격유형" value={profile.mbti ?? "—"} />
           <Row label="출생지" value={profile.birthPlace ?? "—"} />
           <div className="pt-2">
             <ProfileEditForm
