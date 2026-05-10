@@ -168,7 +168,7 @@ export const iljinAiSchema = z.object({
   overallEnergy: z.string().min(1).max(20),
   mainMessage: z.string().min(1).max(400),
   advice: z.string().min(1).max(800),
-  luckyTime: z.string().min(1).max(80),
-  caution: z.string().min(1).max(200),
+  luckyTime: z.string().min(1).max(300),
+  caution: z.string().min(1).max(300),
 });
 export type IljinAiOutput = z.infer<typeof iljinAiSchema>;
