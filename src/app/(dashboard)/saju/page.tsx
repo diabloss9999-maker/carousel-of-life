@@ -11,6 +11,7 @@ import { CalculateSajuButton } from "@/components/saju/calculate-saju-button";
 import { ResetSajuButton } from "@/components/saju/reset-saju-button";
 import { DeepReadingButton } from "@/components/saju/deep-reading-button";
 import { DeepReadingCard } from "@/components/saju/deep-reading-card";
+import { IljinReading } from "@/components/saju/iljin-reading";
 import {
   FiveElementsChart,
   type FiveElementsValue,
@@ -94,6 +95,10 @@ export default async function SajuPage() {
 
       {pillars && elements ? (
         <div id="saju-results" className="contents">
+          <IljinReading
+            subscribed={subscribed}
+            hasSaju={!!(pillars && elements)}
+          />
           <SajuPillars pillars={pillars} />
           <FiveElementsChart elements={elements} />
 

@@ -636,6 +636,29 @@ export const dailyLovePremium = pgTable(
 
 export type DailyLovePremium = typeof dailyLovePremium.$inferSelect;
 
+// =============================================================================
+// daily_iljin - 오늘의 일진 × 내 사주 프리미엄 일일 캐시
+// =============================================================================
+
+export const dailyIljin = pgTable(
+  "daily_iljin",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    iljinDate: date("iljin_date").notNull(),
+    /** 오늘 일주 정보 + 충·합 분석 + AI 해석 결과 JSON. */
+    data: jsonb("data").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [unique("daily_iljin_user_date_uniq").on(t.userId, t.iljinDate)],
+);
+
+export type DailyIljin = typeof dailyIljin.$inferSelect;
+
 export const allTables = {
   profiles,
   dailyFortunes,
@@ -655,6 +678,7 @@ export const allTables = {
   dailyHealthWorkouts,
   dailyStudyTips,
   dailyLovePremium,
+  dailyIljin,
 } as const;
 
 // `sql` re-export — RLS 마이그레이션에서 raw SQL 작성 시 활용.

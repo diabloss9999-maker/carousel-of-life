@@ -161,3 +161,14 @@ export const lovePremiumSchema = z.object({
     .min(1),
 });
 export type LovePremiumOutput = z.infer<typeof lovePremiumSchema>;
+
+/** 오늘의 일진 × 내 사주 — AI 해석 결과 */
+export const iljinAiSchema = z.object({
+  todayPillar: z.string().min(1).max(20),
+  overallEnergy: z.string().min(1).max(20),
+  mainMessage: z.string().min(1).max(400),
+  advice: z.string().min(1).max(800),
+  luckyTime: z.string().min(1).max(80),
+  caution: z.string().min(1).max(200),
+});
+export type IljinAiOutput = z.infer<typeof iljinAiSchema>;

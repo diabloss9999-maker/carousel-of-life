@@ -5,14 +5,23 @@
  */
 import { revalidatePath } from "next/cache";
 
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
+import { z } from "zod";
 
 import { db } from "@/db";
-import { profiles } from "@/db/schema";
+import { dailyIljin, profiles } from "@/db/schema";
 import { requireProfile } from "@/lib/auth/get-user";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { calculateSaju } from "@/lib/saju/calculate";
 import { getOrCreateDeepReading } from "@/lib/saju/deep-reading";
+import { getDayPillar } from "@/lib/saju/iljin";
+import {
+  analyzeDayRelationship,
+  type RelationshipResult,
+} from "@/lib/saju/relationships";
+import { iljinAiSchema, type IljinAiOutput } from "@/lib/ai/types";
+import { generateJson } from "@/lib/ai/generate";
+import { AI_MODELS } from "@/lib/constants";
 
 export interface CalculateSajuState {
   kind: "idle" | "error";
@@ -103,4 +112,152 @@ export async function generateDeepReadingAction(): Promise<DeepReadingState> {
 
   revalidatePath("/saju");
   return { kind: "idle" };
+}
+
+// =============================================================================
+// 오늘의 일진 × 내 사주 (프리미엄)
+// =============================================================================
+
+export interface IljinState {
+  kind: "idle" | "success" | "error";
+  data?: IljinAiOutput;
+  relationships?: RelationshipResult[];
+  message?: string;
+}
+
+const iljinCacheSchema = z.object({
+  aiOutput: iljinAiSchema,
+  relationships: z.array(
+    z.object({
+      type: z.string(),
+      description: z.string(),
+      energy: z.string(),
+      detail: z.string(),
+    }),
+  ),
+});
+
+/**
+ * 오늘 일진(日柱)과 내 사주의 충·합 관계를 분석하고 AI 해석을 생성한다.
+ * 하루 1회 캐시.
+ */
+export async function generateIljinAction(): Promise<IljinState> {
+  try {
+    const { profile } = await requireProfile();
+
+    const subscribed = await hasActiveSubscription(profile.userId);
+    if (!subscribed) {
+      return { kind: "error", message: "프리미엄 전용 기능이야." };
+    }
+
+    if (!profile.sajuPillars) {
+      return { kind: "error", message: "먼저 사주를 계산해줘." };
+    }
+
+    // KST 기준 오늘 날짜 (YYYY-MM-DD)
+    const today = new Date().toLocaleDateString("sv-SE", {
+      timeZone: "Asia/Seoul",
+    });
+
+    // 캐시 조회
+    const [cached] = await db
+      .select()
+      .from(dailyIljin)
+      .where(
+        and(
+          eq(dailyIljin.userId, profile.userId),
+          eq(dailyIljin.iljinDate, today),
+        ),
+      )
+      .limit(1);
+
+    if (cached) {
+      const parsed = iljinCacheSchema.safeParse(cached.data);
+      if (parsed.success) {
+        return {
+          kind: "success",
+          data: parsed.data.aiOutput,
+          relationships: parsed.data.relationships as RelationshipResult[],
+        };
+      }
+    }
+
+    // 오늘 일주 계산
+    const todayPillar = getDayPillar(new Date());
+
+    // 사주 4기둥
+    const pillars = profile.sajuPillars as {
+      year: { stem: string; branch: string } | null;
+      month: { stem: string; branch: string } | null;
+      day: { stem: string; branch: string } | null;
+      hour: { stem: string; branch: string } | null;
+    };
+
+    // 충·합 분석
+    const relationships = analyzeDayRelationship(
+      todayPillar.stemIdx,
+      todayPillar.branchIdx,
+      pillars,
+    );
+
+    // AI 프롬프트
+    const relText = relationships
+      .map((r) => `${r.description}: ${r.detail}`)
+      .join("\n");
+
+    const userPrompt = `사용자 정보:
+- 일주(日柱): ${pillars.day?.stem ?? ""}${pillars.day?.branch ?? ""}
+- 전체 사주: 년${pillars.year?.stem ?? ""}${pillars.year?.branch ?? ""} 월${pillars.month?.stem ?? ""}${pillars.month?.branch ?? ""} 일${pillars.day?.stem ?? ""}${pillars.day?.branch ?? ""} 시${pillars.hour?.stem ?? ""}${pillars.hour?.branch ?? ""}
+
+오늘 일주: ${todayPillar.stemHanja}${todayPillar.branchHanja}일 (${todayPillar.stemKo}${todayPillar.branchKo})
+
+충·합 분석 결과:
+${relText}
+
+위 분석을 바탕으로 오늘 이 사람의 일진을 해석해줘.
+명리학자처럼 차분하고 구체적으로. 예언 투 금지, "~경향이 있다" 형태로.
+마크다운 없이 JSON만:
+{
+  "todayPillar": "${todayPillar.stemHanja}${todayPillar.branchHanja}일",
+  "overallEnergy": "긍정적" 또는 "중립" 또는 "주의 필요",
+  "mainMessage": "오늘 일진의 핵심 한두 문장",
+  "advice": "오늘 하루 어떻게 지내면 좋을지 구체적 조언 2~3문장",
+  "luckyTime": "어느 시간대가 좋은지",
+  "caution": "주의할 것 한 문장"
+}`;
+
+    const aiOutput = await generateJson({
+      schema: iljinAiSchema,
+      userPrompt,
+      model: AI_MODELS.premium,
+      maxTokens: 800,
+      systemSuffix:
+        "자평명리 전통 명리학자입니다. 마크다운 없이 JSON만 응답하세요.",
+    });
+
+    const saveData = { aiOutput, relationships };
+
+    if (cached) {
+      await db
+        .update(dailyIljin)
+        .set({ data: saveData })
+        .where(eq(dailyIljin.id, cached.id));
+    } else {
+      await db
+        .insert(dailyIljin)
+        .values({
+          userId: profile.userId,
+          iljinDate: today,
+          data: saveData,
+        })
+        .onConflictDoNothing();
+    }
+
+    return { kind: "success", data: aiOutput, relationships };
+  } catch (e) {
+    return {
+      kind: "error",
+      message: e instanceof Error ? e.message : "일진을 읽지 못했어.",
+    };
+  }
 }
