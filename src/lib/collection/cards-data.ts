@@ -17,6 +17,7 @@ import { TAROT_DECK, type TarotCard } from "@/lib/tarot/cards";
 import { ZODIAC_LIST } from "@/lib/fortunes/zodiac";
 import { CHINESE_ZODIAC_LIST } from "@/lib/fortunes/zodiac";
 import { STEMS } from "@/lib/saju/meanings";
+import { LENORMAND_DECK } from "@/lib/lenormand/cards";
 
 /** 카드 카테고리 식별자. */
 export type CollectionCategory =
@@ -25,7 +26,8 @@ export type CollectionCategory =
   | "zodiac"
   | "chineseZodiac"
   | "cheongan"
-  | "characters";
+  | "characters"
+  | "lenormand";
 
 /** 카드 희귀도 — UI 장식용. */
 export type CollectionRarity = "common" | "rare" | "legendary";
@@ -366,6 +368,18 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
   },
 ];
 
+/** 르노르망 36장 메타데이터 (ID 충돌 방지를 위해 len_ 접두어 사용). */
+export const LENORMAND_COLLECTION_CARDS: CollectionCardMeta[] =
+  LENORMAND_DECK.map((card) => ({
+    id: `len_${card.nameEn.toLowerCase().replace(/\s+/g, "_")}`,
+    category: "lenormand" as CollectionCategory,
+    nameKo: card.nameKo,
+    nameEn: card.nameEn,
+    imageSrc: card.imageSrc,
+    description: card.meaning,
+    rarity: "common" as CollectionRarity,
+  }));
+
 /** 카테고리별 메타데이터 묶음. */
 export const COLLECTION_BY_CATEGORY: Record<
   CollectionCategory,
@@ -377,6 +391,7 @@ export const COLLECTION_BY_CATEGORY: Record<
   chineseZodiac: CHINESE_ZODIAC_CARDS,
   cheongan: CHEONGAN_CARDS,
   characters: CHARACTER_CARDS,
+  lenormand: LENORMAND_COLLECTION_CARDS,
 };
 
 /** 카테고리 표시 정보. */
@@ -390,19 +405,21 @@ export const CATEGORY_META: Record<
   chineseZodiac: { label: "십이간지", emoji: "🐉" },
   cheongan: { label: "천간", emoji: "🌿" },
   characters: { label: "주술사", emoji: "🧙" },
+  lenormand: { label: "르노르망", emoji: "🌙" },
 };
 
-/** 전체 카드 수 (131장 보장). */
+/** 전체 카드 수 (167장 보장). */
 export const TOTAL_CARDS =
   TAROT_CARDS.length +
   MBTI_CARDS.length +
   ZODIAC_CARDS.length +
   CHINESE_ZODIAC_CARDS.length +
   CHEONGAN_CARDS.length +
-  CHARACTER_CARDS.length;
+  CHARACTER_CARDS.length +
+  LENORMAND_COLLECTION_CARDS.length;
 
-if (TOTAL_CARDS !== 131) {
+if (TOTAL_CARDS !== 167) {
   throw new Error(
-    `컬렉션 카드 수 오류: 기대 131, 실제 ${TOTAL_CARDS}`,
+    `컬렉션 카드 수 오류: 기대 167, 실제 ${TOTAL_CARDS}`,
   );
 }

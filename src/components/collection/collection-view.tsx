@@ -127,6 +127,7 @@ export function CollectionView({
       chineseZodiac: { owned: 0, total: 0 },
       cheongan: { owned: 0, total: 0 },
       characters: { owned: 0, total: 0 },
+      lenormand: { owned: 0, total: 0 },
     };
     for (const card of flatAll) {
       counts[card.category].total += 1;
