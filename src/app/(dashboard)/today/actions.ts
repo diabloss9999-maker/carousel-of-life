@@ -231,7 +231,8 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
 
 export interface HealthWorkoutState {
   kind: "idle" | "success" | "error";
-  workouts?: HealthWorkoutOutput["workouts"];
+  bodyworkouts?: HealthWorkoutOutput["bodyworkouts"];
+  gymWorkouts?: HealthWorkoutOutput["gymWorkouts"];
   quote?: HealthWorkoutOutput["quote"];
   message?: string;
 }
@@ -267,7 +268,7 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
     if (cached) {
       const parsed = healthWorkoutSchema.safeParse(cached.workouts);
       if (parsed.success) {
-        return { kind: "success", workouts: parsed.data.workouts, quote: parsed.data.quote };
+        return { kind: "success", bodyworkouts: parsed.data.bodyworkouts, gymWorkouts: parsed.data.gymWorkouts, quote: parsed.data.quote };
       }
     }
 
@@ -277,17 +278,27 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
 - 생년월일: ${profile.birthDate}
 - 성별: ${profile.gender}
 
-이 사람에게 오늘 어울리는 맨몸 운동 3가지를 추천해줘.
-기구 없이 집에서도 바로 할 수 있는 운동으로만 추천해.
+이 사람에게 오늘 어울리는 운동을 추천해줘.
+맨몸 운동 3가지(기구 없이 집에서 가능)와 기구 운동 3가지(헬스장 기구 사용) 각각 추천해.
 
 반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:
 {
-  "workouts": [
+  "bodyworkouts": [
     {
-      "name": "운동 이름",
+      "name": "맨몸 운동 이름",
       "howTo": "어떻게 하는지 2~3문장",
       "benefit": "어디에 좋은지 1문장",
       "reps": "권장 세트/횟수 예: 3세트 × 15회"
+    },
+    { ... },
+    { ... }
+  ],
+  "gymWorkouts": [
+    {
+      "name": "기구 운동 이름",
+      "howTo": "어떻게 하는지 2~3문장",
+      "benefit": "어디에 좋은지 1문장",
+      "reps": "권장 세트/횟수 예: 3세트 × 12회"
     },
     { ... },
     { ... }
@@ -323,7 +334,7 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
         .onConflictDoNothing();
     }
 
-    return { kind: "success", workouts: result.workouts, quote: result.quote };
+    return { kind: "success", bodyworkouts: result.bodyworkouts, gymWorkouts: result.gymWorkouts, quote: result.quote };
   } catch (e) {
     return {
       kind: "error",

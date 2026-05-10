@@ -109,18 +109,17 @@ export type CareerReportOutput = z.infer<typeof careerReportSchema>;
 export const careerTipsSchema = careerReportSchema;
 export type CareerTipsOutput = CareerReportOutput;
 
-/** 건강 — 오늘의 맨몸 운동 3가지 + 동기부여 명언 */
+const workoutItem = z.object({
+  name: z.string(),
+  howTo: z.string(),
+  benefit: z.string(),
+  reps: z.string(),
+});
+
+/** 건강 — 맨몸 운동 3가지 + 기구 운동 3가지 + 동기부여 명언 */
 export const healthWorkoutSchema = z.object({
-  workouts: z
-    .array(
-      z.object({
-        name: z.string(),
-        howTo: z.string(),
-        benefit: z.string(),
-        reps: z.string(),
-      }),
-    )
-    .min(1),
+  bodyworkouts: z.array(workoutItem).min(1),
+  gymWorkouts: z.array(workoutItem).min(1),
   quote: z.object({
     text: z.string(),
     author: z.string(),

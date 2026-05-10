@@ -22,9 +22,8 @@ interface HealthWorkoutProps {
  * - 프리미엄 + 생성됨: 운동 3가지 상세 표시.
  */
 export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
-  const [workouts, setWorkouts] = useState<
-    HealthWorkoutOutput["workouts"] | null
-  >(null);
+  const [bodyworkouts, setBodyWorkouts] = useState<HealthWorkoutOutput["bodyworkouts"] | null>(null);
+  const [gymWorkouts, setGymWorkouts] = useState<HealthWorkoutOutput["gymWorkouts"] | null>(null);
   const [quote, setQuote] = useState<HealthWorkoutOutput["quote"] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -33,8 +32,9 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
     setError(null);
     startTransition(async () => {
       const result = await generateHealthWorkoutAction();
-      if (result.kind === "success" && result.workouts) {
-        setWorkouts(result.workouts);
+      if (result.kind === "success" && result.bodyworkouts) {
+        setBodyWorkouts(result.bodyworkouts);
+        if (result.gymWorkouts) setGymWorkouts(result.gymWorkouts);
         if (result.quote) setQuote(result.quote);
       } else {
         setError(result.message ?? "오류가 발생했어.");
@@ -57,10 +57,10 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
         <CardContent className="space-y-3">
           <div className="space-y-2 select-none blur-[3px] pointer-events-none">
             {[
-              "맨몸 운동 3가지 추천",
+              "🏠 맨몸 운동 3가지 추천",
+              "🏋️ 기구 운동 3가지 추천",
               "각 운동 방법 상세 설명",
-              "어디에 좋은지 효과",
-              "권장 세트/횟수",
+              "어디에 좋은지 효과 + 권장 횟수",
             ].map((t) => (
               <div key={t} className="flex items-center gap-2">
                 <span className="h-4 w-4 rounded-full bg-accent/30 flex-shrink-0" />
@@ -79,7 +79,7 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
     );
   }
 
-  if (!workouts) {
+  if (!bodyworkouts) {
     return (
       <Card className="app-surface">
         <CardHeader>
@@ -116,6 +116,23 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
     );
   }
 
+  const WorkoutList = ({ list, label }: { list: HealthWorkoutOutput["bodyworkouts"]; label: string }) => (
+    <div className="space-y-3">
+      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">{label}</p>
+      {list.map((w, i) => (
+        <div key={i} className="space-y-2 rounded-xl border border-border/40 bg-card/40 p-4">
+          <div className="flex items-center gap-2">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/15 text-xs font-bold text-primary flex-shrink-0">{i + 1}</span>
+            <p className="font-mystic font-semibold text-sm">{w.name}</p>
+            <span className="ml-auto rounded-full bg-accent/15 px-2 py-0.5 text-[10px] text-accent font-medium">{w.reps}</span>
+          </div>
+          <p className="text-xs leading-relaxed text-muted-foreground">{w.howTo}</p>
+          <p className="text-xs text-primary/80 font-medium">✓ {w.benefit}</p>
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <Card className="app-surface">
       <CardHeader>
@@ -125,28 +142,8 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-5">
-        {workouts.map((w, i) => (
-          <div
-            key={i}
-            className="space-y-2 rounded-xl border border-border/40 bg-card/40 p-4"
-          >
-            <div className="flex items-center gap-2">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/15 text-xs font-bold text-primary flex-shrink-0">
-                {i + 1}
-              </span>
-              <p className="font-mystic font-semibold text-sm">{w.name}</p>
-              <span className="ml-auto rounded-full bg-accent/15 px-2 py-0.5 text-[10px] text-accent font-medium">
-                {w.reps}
-              </span>
-            </div>
-            <p className="text-xs leading-relaxed text-muted-foreground">
-              {w.howTo}
-            </p>
-            <p className="text-xs text-primary/80 font-medium">
-              ✓ {w.benefit}
-            </p>
-          </div>
-        ))}
+        {bodyworkouts && <WorkoutList list={bodyworkouts} label="🏠 맨몸 운동" />}
+        {gymWorkouts && <WorkoutList list={gymWorkouts} label="🏋️ 기구 운동" />}
 
         {quote && (
           <div className="rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3">
