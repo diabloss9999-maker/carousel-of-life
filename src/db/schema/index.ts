@@ -683,6 +683,62 @@ export const dailyGeneralPremium = pgTable(
 
 export type DailyGeneralPremium = typeof dailyGeneralPremium.$inferSelect;
 
+// =============================================================================
+// personality_triple_analysis - 사주 × 별자리 × 성격유형 통합 분석 (영구)
+// =============================================================================
+
+export const personalityTripleAnalysis = pgTable("personality_triple_analysis", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => authUsers.id, { onDelete: "cascade" })
+    .unique(),
+  data: jsonb("data").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export type PersonalityTripleAnalysis =
+  typeof personalityTripleAnalysis.$inferSelect;
+
+// =============================================================================
+// personality_stress_profile - 스트레스 유형 + 회복법 (영구)
+// =============================================================================
+
+export const personalityStressProfile = pgTable("personality_stress_profile", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => authUsers.id, { onDelete: "cascade" })
+    .unique(),
+  data: jsonb("data").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export type PersonalityStressProfile =
+  typeof personalityStressProfile.$inferSelect;
+
+// =============================================================================
+// personality_career_fit - 직업 적성 심층 리포트 (영구)
+// =============================================================================
+
+export const personalityCareerFit = pgTable("personality_career_fit", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => authUsers.id, { onDelete: "cascade" })
+    .unique(),
+  data: jsonb("data").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export type PersonalityCareerFit = typeof personalityCareerFit.$inferSelect;
+
 export const allTables = {
   profiles,
   dailyFortunes,
@@ -704,6 +760,9 @@ export const allTables = {
   dailyLovePremium,
   dailyIljin,
   dailyGeneralPremium,
+  personalityTripleAnalysis,
+  personalityStressProfile,
+  personalityCareerFit,
 } as const;
 
 // `sql` re-export — RLS 마이그레이션에서 raw SQL 작성 시 활용.

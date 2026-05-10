@@ -26,12 +26,19 @@ import {
   twoPersonCompatAction,
   type TwoPersonCompatState,
 } from "@/app/(dashboard)/compatibility/actions";
+import { CompatPurpose } from "@/components/compatibility/compat-purpose";
+import { CompatConflict } from "@/components/compatibility/compat-conflict";
+import { CompatToday } from "@/components/compatibility/compat-today";
 
 const twoPersonCompatIdleState: TwoPersonCompatState = { kind: "idle" };
 
 const TODAY_ISO = (): string => new Date().toISOString().slice(0, 10);
 
-export function TwoPersonCompat() {
+interface TwoPersonCompatProps {
+  subscribed: boolean;
+}
+
+export function TwoPersonCompat({ subscribed }: TwoPersonCompatProps) {
   const [state, formAction, isPending] = useActionState(
     twoPersonCompatAction,
     twoPersonCompatIdleState,
@@ -95,8 +102,36 @@ export function TwoPersonCompat() {
       </Card>
 
       {state.kind === "success" && state.result ? (
-        <div id="two-person-result">
+        <div id="two-person-result" className="space-y-6">
           <TwoPersonResultCard result={state.result} />
+          <CompatPurpose
+            subscribed={subscribed}
+            aName={state.result.aName}
+            aBirthDate={state.result.aBirthDate}
+            bName={state.result.bName}
+            bBirthDate={state.result.bBirthDate}
+            aMbti={state.result.aMbti}
+            bMbti={state.result.bMbti}
+          />
+          <CompatConflict
+            subscribed={subscribed}
+            aName={state.result.aName}
+            aBirthDate={state.result.aBirthDate}
+            aGender={state.result.aGender}
+            bName={state.result.bName}
+            bBirthDate={state.result.bBirthDate}
+            bGender={state.result.bGender}
+            aMbti={state.result.aMbti}
+            bMbti={state.result.bMbti}
+          />
+          <CompatToday
+            subscribed={subscribed}
+            aName={state.result.aName}
+            bName={state.result.bName}
+            compatScore={state.result.output.score}
+            aMbti={state.result.aMbti}
+            bMbti={state.result.bMbti}
+          />
         </div>
       ) : null}
     </div>

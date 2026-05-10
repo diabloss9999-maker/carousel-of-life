@@ -13,8 +13,15 @@ import { buildTwoPersonCompatPrompt } from "@/lib/ai/prompts";
 import {
   compatibilityAiSchema,
   type CompatibilityAiOutput,
+  compatPurposeSchema,
+  type CompatPurposeOutput,
+  compatConflictSchema,
+  type CompatConflictOutput,
+  compatTodaySchema,
+  type CompatTodayOutput,
 } from "@/lib/ai/types";
 import { AI_LIMITS, AI_MODELS } from "@/lib/constants";
+import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 
 const MBTI_PATTERN = /^[EI][NS][TF][JP]$/i;
 const COMPATIBILITY_ROUTE = "/compatibility";
@@ -158,6 +165,10 @@ export interface TwoPersonCompatState {
     bName: string;
     aBirthDate: string;
     bBirthDate: string;
+    aGender: string;
+    bGender: string;
+    aMbti?: string;
+    bMbti?: string;
     output: CompatibilityAiOutput;
   };
 }
@@ -219,6 +230,10 @@ export async function twoPersonCompatAction(
         bName: parsed.data.bName,
         aBirthDate: parsed.data.aBirthDate,
         bBirthDate: parsed.data.bBirthDate,
+        aGender: parsed.data.aGender,
+        bGender: parsed.data.bGender,
+        aMbti: parsed.data.aMbti?.toUpperCase() || undefined,
+        bMbti: parsed.data.bMbti?.toUpperCase() || undefined,
         output,
       },
     };
@@ -228,6 +243,242 @@ export async function twoPersonCompatAction(
       message:
         "두 사람의 기운을 읽지 못했어요: " +
         (e instanceof Error ? e.message : "알 수 없는 원인"),
+    };
+  }
+}
+
+// =============================================================================
+// 프리미엄 — 궁합 추가 분석 (캐시 없음, 매번 새로 생성)
+// =============================================================================
+
+const PREMIUM_ONLY_MESSAGE = "프리미엄 전용 기능이야.";
+
+/** 프리미엄 가드 — 통과 시 null, 실패 시 에러 메시지 반환. */
+async function ensurePremium(): Promise<string | null> {
+  try {
+    const { profile } = await requireProfile();
+    const subscribed = await hasActiveSubscription(profile.userId);
+    if (!subscribed) return PREMIUM_ONLY_MESSAGE;
+    return null;
+  } catch (e) {
+    return e instanceof Error ? e.message : "다시 로그인해 줘.";
+  }
+}
+
+/** 두 사람 정보를 사람이 읽을 수 있는 한국어 블록으로 변환. */
+function describePair(opts: {
+  aName: string;
+  aBirthDate: string;
+  aGender?: string;
+  bName: string;
+  bBirthDate: string;
+  bGender?: string;
+  aMbti?: string;
+  bMbti?: string;
+}): string {
+  const lines: string[] = [];
+  lines.push(`[A]`);
+  lines.push(`이름: ${opts.aName}`);
+  lines.push(`생년월일: ${opts.aBirthDate}`);
+  if (opts.aGender) lines.push(`성별: ${opts.aGender}`);
+  if (opts.aMbti) lines.push(`MBTI: ${opts.aMbti}`);
+  lines.push("");
+  lines.push(`[B]`);
+  lines.push(`이름: ${opts.bName}`);
+  lines.push(`생년월일: ${opts.bBirthDate}`);
+  if (opts.bGender) lines.push(`성별: ${opts.bGender}`);
+  if (opts.bMbti) lines.push(`MBTI: ${opts.bMbti}`);
+  return lines.join("\n");
+}
+
+export interface CompatPurposeState {
+  kind: "idle" | "success" | "error";
+  data?: CompatPurposeOutput;
+  message?: string;
+}
+
+/**
+ * 관계 목적별 궁합 점수 — 연애·결혼·비즈니스·친구 4가지 목적별 점수.
+ * 매번 즉시 생성(캐시 없음).
+ */
+export async function generateCompatPurposeAction(
+  aName: string,
+  aBirthDate: string,
+  bName: string,
+  bBirthDate: string,
+  aMbti?: string,
+  bMbti?: string,
+): Promise<CompatPurposeState> {
+  const guard = await ensurePremium();
+  if (guard) return { kind: "error", message: guard };
+
+  try {
+    const userPrompt = `${describePair({
+      aName,
+      aBirthDate,
+      bName,
+      bBirthDate,
+      aMbti,
+      bMbti,
+    })}
+
+[지시]
+두 사람이 각각 다른 관계 목적(연애·결혼·비즈니스·친구)에서 얼마나 잘 맞는지 0~100점으로 분석해줘.
+사주·별자리·MBTI(있다면)를 종합적으로 고려해.
+
+반드시 아래 JSON 형식으로만 응답해. 마크다운·설명 없이 JSON만:
+{
+  "romance": 0~100,
+  "marriage": 0~100,
+  "business": 0~100,
+  "friendship": 0~100,
+  "bestPurpose": "가장 잘 맞는 관계 1가지 (예: '연애', '결혼', '비즈니스', '친구')",
+  "worstPurpose": "가장 안 맞는 관계 1가지",
+  "summary": "두 사람 관계의 핵심을 한 문장으로"
+}`;
+
+    const data = await generateJson({
+      schema: compatPurposeSchema,
+      userPrompt,
+      model: AI_MODELS.premium,
+      maxTokens: 800,
+      systemSuffix: "마크다운 없이 JSON만 응답하세요.",
+    });
+
+    return { kind: "success", data };
+  } catch (e) {
+    return {
+      kind: "error",
+      message: e instanceof Error ? e.message : "분석에 실패했어.",
+    };
+  }
+}
+
+export interface CompatConflictState {
+  kind: "idle" | "success" | "error";
+  data?: CompatConflictOutput;
+  message?: string;
+}
+
+/**
+ * 갈등 패턴 + 화해법 — 두 사람이 어디서 충돌하는지 + 해결법.
+ * 매번 즉시 생성(캐시 없음).
+ */
+export async function generateCompatConflictAction(
+  aName: string,
+  aBirthDate: string,
+  aGender: string,
+  bName: string,
+  bBirthDate: string,
+  bGender: string,
+  aMbti?: string,
+  bMbti?: string,
+): Promise<CompatConflictState> {
+  const guard = await ensurePremium();
+  if (guard) return { kind: "error", message: guard };
+
+  try {
+    const userPrompt = `${describePair({
+      aName,
+      aBirthDate,
+      aGender,
+      bName,
+      bBirthDate,
+      bGender,
+      aMbti,
+      bMbti,
+    })}
+
+[지시]
+두 사람이 갈등할 때 어디서 부딪히는지 + 화해법을 분석해줘.
+
+반드시 아래 JSON 형식으로만 응답해. 마크다운·설명 없이 JSON만:
+{
+  "triggers": ["갈등 유발 상황 1", "갈등 유발 상황 2", "갈등 유발 상황 3"],
+  "pattern": "두 사람 사이에서 반복되는 갈등 패턴 1~2문장",
+  "resolution": "갈등을 풀 수 있는 화해·해결법 2~3문장",
+  "avoidTip": "갈등을 미리 예방하는 팁 1문장"
+}`;
+
+    const data = await generateJson({
+      schema: compatConflictSchema,
+      userPrompt,
+      model: AI_MODELS.premium,
+      maxTokens: 800,
+      systemSuffix: "마크다운 없이 JSON만 응답하세요.",
+    });
+
+    return { kind: "success", data };
+  } catch (e) {
+    return {
+      kind: "error",
+      message: e instanceof Error ? e.message : "분석에 실패했어.",
+    };
+  }
+}
+
+export interface CompatTodayState {
+  kind: "idle" | "success" | "error";
+  data?: CompatTodayOutput;
+  message?: string;
+}
+
+/**
+ * 오늘 이 사람에게 어떻게 — 오늘의 일진 × 두 사람 궁합 기반 즉시 조언.
+ * 매번 즉시 생성(캐시 없음, 매일 달라짐).
+ */
+export async function generateCompatTodayAction(
+  aName: string,
+  bName: string,
+  compatScore: number,
+  aMbti?: string,
+  bMbti?: string,
+): Promise<CompatTodayState> {
+  const guard = await ensurePremium();
+  if (guard) return { kind: "error", message: guard };
+
+  try {
+    const todayKst = (() => {
+      const d = new Date(
+        new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }),
+      );
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    })();
+
+    const mbtiLine: string[] = [];
+    if (aMbti) mbtiLine.push(`A MBTI: ${aMbti}`);
+    if (bMbti) mbtiLine.push(`B MBTI: ${bMbti}`);
+
+    const userPrompt = `[A] ${aName}
+[B] ${bName}
+두 사람의 종합 궁합 점수: ${compatScore}점
+${mbtiLine.join("\n")}
+오늘 날짜: ${todayKst}
+
+[지시]
+오늘의 일진과 두 사람의 궁합을 함께 살펴 ${aName}이(가) ${bName}에게 오늘 어떻게 접근하면 좋을지 조언해줘.
+
+반드시 아래 JSON 형식으로만 응답해. 마크다운·설명 없이 JSON만:
+{
+  "isGoodDay": true 또는 false (오늘 두 사람이 가까이 지내기 좋은 날인지),
+  "approach": "오늘 어떤 태도·접근으로 다가가면 좋은지 2~3문장",
+  "messageIdea": "오늘 ${bName}에게 보내기 좋은 메시지 톤·아이디어 1문장",
+  "caution": "오늘 ${bName}에게 절대 하지 말아야 할 행동·말 1문장"
+}`;
+
+    const data = await generateJson({
+      schema: compatTodaySchema,
+      userPrompt,
+      model: AI_MODELS.premium,
+      maxTokens: 800,
+      systemSuffix: "마크다운 없이 JSON만 응답하세요.",
+    });
+
+    return { kind: "success", data };
+  } catch (e) {
+    return {
+      kind: "error",
+      message: e instanceof Error ? e.message : "분석에 실패했어.",
     };
   }
 }

@@ -7,8 +7,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { CareerFit } from "@/components/personality/career-fit";
 import { PersonalityTest } from "@/components/personality/personality-test";
+import { StressProfile } from "@/components/personality/stress-profile";
+import { TripleAnalysis } from "@/components/personality/triple-analysis";
 import { requireProfile } from "@/lib/auth/get-user";
+import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 
 export const metadata: Metadata = {
   title: "성격 유형",
@@ -17,6 +21,7 @@ export const metadata: Metadata = {
 
 export default async function PersonalityPage() {
   const { profile } = await requireProfile();
+  const subscribed = await hasActiveSubscription(profile.userId);
 
   return (
     <div className="space-y-8">
@@ -42,6 +47,14 @@ export default async function PersonalityPage() {
           <PersonalityTest currentType={profile.mbti ?? null} />
         </CardContent>
       </Card>
+
+      {profile.mbti ? (
+        <div className="space-y-6">
+          <TripleAnalysis subscribed={subscribed} />
+          <StressProfile subscribed={subscribed} />
+          <CareerFit subscribed={subscribed} />
+        </div>
+      ) : null}
     </div>
   );
 }

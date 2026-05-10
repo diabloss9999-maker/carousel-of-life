@@ -12,6 +12,7 @@ import { ZodiacCompatPanel } from "@/components/compatibility/zodiac-compat-pane
 import { requireProfile } from "@/lib/auth/get-user";
 import { getTodayCompatibility } from "@/lib/compatibility/service";
 import { getZodiacSign } from "@/lib/fortunes/zodiac";
+import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import type { PersonalityType } from "@/lib/personality/questions";
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ const MBTI_PATTERN = /^[EI][NS][TF][JP]$/;
 
 export default async function CompatibilityPage() {
   const { profile } = await requireProfile();
+  const subscribed = await hasActiveSubscription(profile.userId);
 
   const recentReadings = await getTodayCompatibility(profile.userId);
 
@@ -63,7 +65,7 @@ export default async function CompatibilityPage() {
 
       <CompatibilityHub
         newReading={newPanel}
-        twoPerson={<TwoPersonCompat />}
+        twoPerson={<TwoPersonCompat subscribed={subscribed} />}
         zodiac={<ZodiacCompatPanel myZodiac={myZodiac.id} />}
         mbti={<MbtiCompatPanel myMbti={myMbti} />}
       />

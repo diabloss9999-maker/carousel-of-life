@@ -189,6 +189,66 @@ export type GeneralFortunePremiumOutput = z.infer<
   typeof generalFortunePremiumSchema
 >;
 
+/** 궁합 프리미엄 A — 관계 목적별 점수 (연애/결혼/비즈니스/친구) */
+export const compatPurposeSchema = z.object({
+  romance: numField,
+  marriage: numField,
+  business: numField,
+  friendship: numField,
+  bestPurpose: z.string(),
+  worstPurpose: z.string(),
+  summary: z.string(),
+});
+export type CompatPurposeOutput = z.infer<typeof compatPurposeSchema>;
+
+/** 궁합 프리미엄 B — 갈등 패턴 + 화해법 */
+export const compatConflictSchema = z.object({
+  triggers: z.array(z.string()).min(1),
+  pattern: z.string(),
+  resolution: z.string(),
+  avoidTip: z.string(),
+});
+export type CompatConflictOutput = z.infer<typeof compatConflictSchema>;
+
+/** 궁합 프리미엄 C — 오늘 이 사람에게 어떻게? */
+export const compatTodaySchema = z.object({
+  isGoodDay: z
+    .union([z.boolean(), z.string()])
+    .transform((v) => (typeof v === "boolean" ? v : v === "true")),
+  approach: z.string(),
+  messageIdea: z.string(),
+  caution: z.string(),
+});
+export type CompatTodayOutput = z.infer<typeof compatTodaySchema>;
+
+/** 유형 프리미엄 D — 사주 × 별자리 × 성격유형 통합 분석 */
+export const tripleAnalysisSchema = z.object({
+  convergence: z.string(),
+  contradiction: z.string(),
+  trueNature: z.string(),
+  uniqueStrength: z.string(),
+});
+export type TripleAnalysisOutput = z.infer<typeof tripleAnalysisSchema>;
+
+/** 유형 프리미엄 E — 스트레스 유형 + 회복법 */
+export const stressProfileSchema = z.object({
+  triggers: z.array(z.string()).min(1),
+  collapsePattern: z.string(),
+  recoveryTips: z.array(z.string()).min(1),
+  warningSign: z.string(),
+});
+export type StressProfileOutput = z.infer<typeof stressProfileSchema>;
+
+/** 유형 프리미엄 F — 직업 적성 심층 리포트 */
+export const careerFitSchema = z.object({
+  bestEnvironment: z.string(),
+  fitRoles: z.array(z.string()).min(1),
+  avoidEnvironments: z.string(),
+  workStyle: z.string(),
+  growthTip: z.string(),
+});
+export type CareerFitOutput = z.infer<typeof careerFitSchema>;
+
 /** 오늘의 일진 × 내 사주 — AI 해석 결과 */
 export const iljinAiSchema = z.object({
   todayPillar: z.string().min(1).max(20),
