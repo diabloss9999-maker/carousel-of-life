@@ -104,7 +104,7 @@ function RadarChart({
             key={r}
             d={pointsToPath(pts)}
             fill="none"
-            stroke="rgba(255,255,255,0.08)"
+            stroke="rgba(251,191,36,0.15)"
             strokeWidth={0.8}
           />
         );
@@ -120,17 +120,17 @@ function RadarChart({
             y1={CENTER_Y}
             x2={outer.x.toFixed(1)}
             y2={outer.y.toFixed(1)}
-            stroke="rgba(255,255,255,0.08)"
+            stroke="rgba(251,191,36,0.15)"
             strokeWidth={0.8}
           />
         );
       })}
 
-      {/* 데이터 폴리곤 */}
+      {/* 데이터 폴리곤 — 골드 반투명 */}
       <path
         d={dataPath}
-        fill="rgb(var(--color-primary) / 0.2)"
-        stroke="rgb(var(--color-primary))"
+        fill="rgba(251,191,36,0.25)"
+        stroke="rgba(251,191,36,0.9)"
         strokeWidth={1.5}
       />
 
@@ -141,7 +141,7 @@ function RadarChart({
           cx={p.x}
           cy={p.y}
           r={3}
-          fill="rgb(var(--color-primary))"
+          fill="rgba(251,191,36,1)"
         />
       ))}
 
@@ -159,7 +159,7 @@ function RadarChart({
             style={{
               fontSize: "9px",
               fontFamily: "var(--font-sans)",
-              fill: "var(--muted-foreground)",
+              fill: "rgba(251,191,36,0.85)",
             }}
           >
             {area.label} {score}
