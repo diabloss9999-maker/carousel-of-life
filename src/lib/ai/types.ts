@@ -162,6 +162,33 @@ export const lovePremiumSchema = z.object({
 });
 export type LovePremiumOutput = z.infer<typeof lovePremiumSchema>;
 
+/** 종합 운세 프리미엄 — 시간대별 운세 + 6영역 점수 + DO/DON'T */
+export const generalFortunePremiumSchema = z.object({
+  timeSlots: z
+    .array(
+      z.object({
+        label: z.string(), // "오전 (06~12시)"
+        keyword: z.string(), // "집중력"
+        advice: z.string(), // 한 문장
+        score: numField, // 0~100
+      }),
+    )
+    .min(1),
+  scores: z.object({
+    fortune: numField,
+    love: numField,
+    money: numField,
+    career: numField,
+    health: numField,
+    study: numField,
+  }),
+  doList: z.array(z.string()).min(1),
+  dontList: z.array(z.string()).min(1),
+});
+export type GeneralFortunePremiumOutput = z.infer<
+  typeof generalFortunePremiumSchema
+>;
+
 /** 오늘의 일진 × 내 사주 — AI 해석 결과 */
 export const iljinAiSchema = z.object({
   todayPillar: z.string().min(1).max(20),

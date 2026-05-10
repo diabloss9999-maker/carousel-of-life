@@ -11,6 +11,7 @@ import { and, eq } from "drizzle-orm";
 import { db } from "@/db";
 import {
   dailyCareerTips,
+  dailyGeneralPremium,
   dailyHealthWorkouts,
   dailyLovePremium,
   dailyStudyTips,
@@ -20,6 +21,8 @@ import { generateJson } from "@/lib/ai/generate";
 import {
   careerReportSchema,
   type CareerReportOutput,
+  generalFortunePremiumSchema,
+  type GeneralFortunePremiumOutput,
   healthWorkoutSchema,
   type HealthWorkoutOutput,
   lovePremiumSchema,
@@ -504,6 +507,108 @@ export async function generateLovePremiumAction(): Promise<LovePremiumState> {
     } else {
       await db
         .insert(dailyLovePremium)
+        .values({
+          userId: profile.userId,
+          premiumDate: today,
+          data: result,
+        })
+        .onConflictDoNothing();
+    }
+
+    return { kind: "success", data: result };
+  } catch (e) {
+    return {
+      kind: "error",
+      message: e instanceof Error ? e.message : "불러오지 못했어.",
+    };
+  }
+}
+
+
+export interface GeneralPremiumState {
+  kind: "idle" | "success" | "error";
+  data?: GeneralFortunePremiumOutput;
+  message?: string;
+}
+
+/**
+ * 종합 운세 프리미엄 — 시간대별 운세 + 6영역 점수(레이더 차트) + DO/DON'T 를 AI 로 생성한다.
+ *
+ * - 프리미엄 구독자에게만 동작한다.
+ * - 동일 일자 캐시 재사용.
+ */
+export async function generateGeneralPremiumAction(): Promise<GeneralPremiumState> {
+  try {
+    const { profile } = await requireProfile();
+    const subscribed = await hasActiveSubscription(profile.userId);
+    if (!subscribed) {
+      return { kind: "error", message: "프리미엄 전용 기능이야." };
+    }
+
+    const today = todayKst();
+
+    const [cached] = await db
+      .select()
+      .from(dailyGeneralPremium)
+      .where(
+        and(
+          eq(dailyGeneralPremium.userId, profile.userId),
+          eq(dailyGeneralPremium.premiumDate, today),
+        ),
+      )
+      .limit(1);
+
+    if (cached) {
+      const parsed = generalFortunePremiumSchema.safeParse(cached.data);
+      if (parsed.success) {
+        return { kind: "success", data: parsed.data };
+      }
+    }
+
+    const mbti = profile.mbti ?? "알 수 없음";
+    const userPrompt = `사용자 정보:
+- MBTI: ${mbti}
+- 생년월일: ${profile.birthDate}
+- 성별: ${profile.gender}
+
+오늘 이 사람의 종합 운세 프리미엄 리포트를 작성해줘.
+
+반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:
+{
+  "timeSlots": [
+    { "label": "오전 (06~12시)", "keyword": "키워드 2자", "advice": "이 시간대 조언 1문장", "score": 0~100 },
+    { "label": "오후 (12~18시)", "keyword": "키워드 2자", "advice": "이 시간대 조언 1문장", "score": 0~100 },
+    { "label": "저녁 (18~24시)", "keyword": "키워드 2자", "advice": "이 시간대 조언 1문장", "score": 0~100 }
+  ],
+  "scores": {
+    "fortune": 0~100,
+    "love": 0~100,
+    "money": 0~100,
+    "career": 0~100,
+    "health": 0~100,
+    "study": 0~100
+  },
+  "doList": ["오늘 해야 할 것 1", "오늘 해야 할 것 2", "오늘 해야 할 것 3"],
+  "dontList": ["오늘 피해야 할 것 1", "오늘 피해야 할 것 2", "오늘 피해야 할 것 3"]
+}`;
+
+    const result = await generateJson({
+      schema: generalFortunePremiumSchema,
+      userPrompt,
+      model: AI_MODELS.premium,
+      maxTokens: 1000,
+      systemSuffix:
+        "종합 운세 리포트 전용 모드입니다. 마크다운 없이 JSON만 응답하세요.",
+    });
+
+    if (cached) {
+      await db
+        .update(dailyGeneralPremium)
+        .set({ data: result })
+        .where(eq(dailyGeneralPremium.id, cached.id));
+    } else {
+      await db
+        .insert(dailyGeneralPremium)
         .values({
           userId: profile.userId,
           premiumDate: today,

@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { CareerTips } from "@/components/fortune/career-tips";
 import { CategoryTabs } from "@/components/fortune/category-tabs";
 import { FortuneCard } from "@/components/fortune/fortune-card";
+import { GeneralPremium } from "@/components/fortune/general-premium";
 import { HealthWorkout } from "@/components/fortune/health-workout";
 import { LottoGenerator } from "@/components/fortune/lotto-generator";
 import { LoveCard } from "@/components/fortune/love-card";
@@ -131,6 +132,9 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           )}
           {category === "study" && (
             <StudyTips subscribed={subscribed} />
+          )}
+          {category === "general" && (
+            <GeneralPremium subscribed={subscribed} />
           )}
         </div>
       ) : (
