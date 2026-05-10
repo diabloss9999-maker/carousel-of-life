@@ -170,8 +170,8 @@ export async function createCompatibility(opts: {
         profile,
         partner: opts.partner,
       }),
-      model: AI_MODELS.premium,
-      maxTokens: AI_LIMITS.compatibilityMaxTokens,
+      model: AI_MODELS.fast,
+      maxTokens: 900,
     });
   } catch (e) {
     return {
