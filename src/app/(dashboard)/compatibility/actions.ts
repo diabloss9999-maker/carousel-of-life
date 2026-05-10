@@ -48,7 +48,7 @@ const partnerSchema = z.object({
 });
 
 export interface CompatibilityActionState {
-  kind: "idle" | "error";
+  kind: "idle" | "done" | "error";
   message?: string;
   quotaExceeded?: boolean;
 }
@@ -110,7 +110,7 @@ export async function submitCompatibilityAction(
 
   if (result.ok) {
     revalidatePath(COMPATIBILITY_ROUTE);
-    return { kind: "idle" };
+    return { kind: "done" };
   }
 
   if (result.reason === "quota_exceeded") {

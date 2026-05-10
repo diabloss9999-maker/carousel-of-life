@@ -31,7 +31,7 @@ export function CompatibilityForm() {
     initial,
   );
 
-  useScrollToResult(isPending, "compat-result");
+  useScrollToResult(isPending, "compat-result", 800);
 
   return (
     <Card className="app-surface">
@@ -147,6 +147,12 @@ export function CompatibilityForm() {
                 </Button>
               ) : null}
             </div>
+          ) : null}
+
+          {state.kind === "done" ? (
+            <p className="text-xs text-center text-emerald-500 font-medium">
+              ✓ 완료! 아래 오늘의 궁합을 확인해줘.
+            </p>
           ) : null}
 
           <Button
