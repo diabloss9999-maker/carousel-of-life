@@ -102,28 +102,15 @@ function GaugeRing({ pct, stroke, glow, isStrongest, isEmpty, hanja, textClass }
           r={R}
           fill="none"
           stroke={stroke}
-          strokeWidth={isStrongest ? 6.5 : 5}
+          strokeWidth={5}
           strokeLinecap="round"
           strokeDasharray={CIRC}
           strokeDashoffset={offset}
           style={{
             filter: isStrongest
-              ? `drop-shadow(0 0 8px ${glow}) drop-shadow(0 0 3px ${glow})`
+              ? `drop-shadow(0 0 6px ${glow})`
               : undefined,
           }}
-        />
-      )}
-      {/* 가장 강한 기운: 골드 점선 외곽 */}
-      {isStrongest && (
-        <circle
-          cx={CX}
-          cy={CY}
-          r={R + 5}
-          fill="none"
-          stroke="rgba(251,191,36,0.5)"
-          strokeWidth={1.2}
-          strokeDasharray="4 3"
-          style={{ filter: "drop-shadow(0 0 4px rgba(251,191,36,0.6))" }}
         />
       )}
       {/* 한자 (rotate 보정) */}
