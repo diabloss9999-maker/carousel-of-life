@@ -1,8 +1,4 @@
-/**
- * 르노르망 결과 카드 — 한 번의 점술 결과를 표시.
- *
- * 이미지는 추후 추가 예정. 지금은 카드 번호+이름 플레이스홀더로 표시.
- */
+import Image from "next/image";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { LenormandReading } from "@/db/schema";
 import { LENORMAND_BY_ID } from "@/lib/lenormand/cards";
@@ -52,16 +48,14 @@ export function LenormandReadingCard({ reading }: Props) {
                 key={`${entry.position}-${entry.id}`}
                 className="flex flex-col items-center gap-1"
               >
-                <div className="relative aspect-[2/3] w-20 overflow-hidden rounded-xl border border-border/40 bg-gradient-to-br from-amber-950/80 to-stone-950/90 sm:w-24">
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 p-2">
-                    <p className="font-mystic text-2xl text-amber-400/80">✦</p>
-                    <p className="font-mystic text-center text-xs leading-tight text-amber-200/90">
-                      {card.nameKo}
-                    </p>
-                    <p className="text-[10px] text-amber-400/50">
-                      No.{card.id}
-                    </p>
-                  </div>
+                <div className="relative aspect-[2/3] w-20 overflow-hidden rounded-xl border border-border/40 sm:w-24">
+                  <Image
+                    src={card.imageSrc}
+                    alt={card.nameKo}
+                    fill
+                    className="object-cover"
+                    sizes="96px"
+                  />
                 </div>
                 <p className="text-[10px] text-muted-foreground">
                   {POSITION_LABEL[entry.position] ?? entry.position}

@@ -7,6 +7,7 @@
  * - 질문은 선택 입력.
  * - 이미지는 추후 추가 예정 — 지금은 플레이스홀더.
  */
+import Image from "next/image";
 import Link from "next/link";
 import { useActionState, useState } from "react";
 import { Loader2, Sparkles } from "lucide-react";
@@ -57,18 +58,18 @@ export function LenormandDrawForm() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* 카드 플레이스홀더 — 이미지 추가 시 교체 */}
         <div className="flex justify-center">
-          <div
-            className={cn(
-              "flex aspect-[2/3] w-36 items-center justify-center rounded-xl border-2 border-border/40 bg-gradient-to-br from-amber-950/80 to-stone-950/90 transition-opacity sm:w-44",
-              isPending && "opacity-60",
-            )}
-          >
-            <div className="space-y-1 text-center">
-              <p className="font-mystic text-4xl text-amber-400/80">✦</p>
-              <p className="text-xs text-amber-200/50">Lenormand</p>
-            </div>
+          <div className={cn(
+            "relative aspect-[2/3] w-36 overflow-hidden rounded-xl transition-opacity sm:w-44",
+            isPending && "opacity-60"
+          )}>
+            <Image
+              src="/collection/card_back.png"
+              alt="르노르망 카드 뒷면"
+              fill
+              className="object-cover"
+              sizes="176px"
+            />
           </div>
         </div>
 
