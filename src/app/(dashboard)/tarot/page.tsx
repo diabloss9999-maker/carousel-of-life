@@ -104,7 +104,7 @@ export default async function TarotPage() {
               </p>
             </div>
 
-            <LenormandDrawForm />
+            <LenormandDrawForm subscribed={subscribed} />
 
             {lenormandReadings.length > 0 ? (
               <section id="lenormand-results" className="space-y-4">

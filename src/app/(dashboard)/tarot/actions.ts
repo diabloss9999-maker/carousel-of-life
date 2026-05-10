@@ -119,33 +119,50 @@ export async function drawThreeTarotAction(
 // =============================================================================
 
 const lenormandSchema = z.object({
-  spread: z.enum(["single", "three"]).default("single"),
+  spread: z
+    .enum(["single", "three", "nine", "grand_tableau"])
+    .default("single"),
   question: z
     .string()
     .trim()
     .max(100, "질문은 100자 이내로 짧게 부탁해.")
     .optional()
     .or(z.literal("")),
+  gender: z.enum(["male", "female"]).optional(),
 });
 
 export interface LenormandDrawState {
   kind: "idle" | "error";
   message?: string;
   quotaExceeded?: boolean;
+  premiumOnly?: boolean;
 }
 
 export async function drawLenormandAction(
   _prev: LenormandDrawState,
   formData: FormData,
 ): Promise<LenormandDrawState> {
+  const rawGender = formData.get("gender");
   const parsed = lenormandSchema.safeParse({
     spread: formData.get("spread") ?? "single",
     question: formData.get("question") ?? "",
+    gender:
+      typeof rawGender === "string" && rawGender.length > 0
+        ? rawGender
+        : undefined,
   });
   if (!parsed.success) {
     return {
       kind: "error",
       message: parsed.error.issues[0]?.message ?? "입력값이 올바르지 않아요.",
+    };
+  }
+
+  // 그랑 타블로는 gender 가 필수.
+  if (parsed.data.spread === "grand_tableau" && !parsed.data.gender) {
+    return {
+      kind: "error",
+      message: "그랑 타블로는 시그니피케이터 성별을 선택해야 해요.",
     };
   }
 
@@ -158,6 +175,7 @@ export async function drawLenormandAction(
       spreadType: parsed.data.spread,
       question: parsed.data.question?.trim() || null,
       isSubscribed,
+      gender: parsed.data.gender,
     });
 
     if (result.ok) {
@@ -170,6 +188,17 @@ export async function drawLenormandAction(
         quotaExceeded: true,
         message: `오늘의 무료 르노르망 한도(${result.max}회)를 모두 사용했어. 프리미엄 구독을 하면 한도 없이 받을 수 있어.`,
       };
+    }
+    if (result.reason === "premium_only") {
+      return {
+        kind: "error",
+        premiumOnly: true,
+        message:
+          "이 스프레드는 프리미엄 구독자 전용이에요. 구독하면 9장·그랑 타블로를 자유롭게 뽑을 수 있어요.",
+      };
+    }
+    if (result.reason === "invalid_input") {
+      return { kind: "error", message: result.message };
     }
     return { kind: "error", message: result.message };
   } catch (e) {

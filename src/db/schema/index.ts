@@ -66,6 +66,8 @@ export const tarotSpreadEnum = pgEnum("tarot_spread", [
 export const lenormandSpreadEnum = pgEnum("lenormand_spread", [
   "single",
   "three",
+  "nine",
+  "grand_tableau",
 ]);
 
 export const chatRoleEnum = pgEnum("chat_role", ["user", "assistant"]);
@@ -219,6 +221,10 @@ export const lenormandReadings = pgTable(
     /** 르노르망 풀이 본문. */
     interpretation: text("interpretation").notNull(),
     model: text("model").notNull(),
+    /** 그랑 타블로용 시그니피케이터 성별 (`male` | `female`). */
+    gender: text("gender").$type<"male" | "female" | null>(),
+    /** 그랑 타블로의 시그니피케이터(신사/숙녀) 위치 (0~35). */
+    significatorPosition: integer("significator_position"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),

@@ -8,7 +8,11 @@ import "server-only";
 
 import { LENORMAND_DECK, type LenormandCard } from "@/lib/lenormand/cards";
 
-export type LenormandSpread = "single" | "three";
+export type LenormandSpread =
+  | "single"
+  | "three"
+  | "nine"
+  | "grand_tableau";
 
 export interface DrawnLenormand {
   spread: LenormandSpread;
@@ -54,4 +58,36 @@ export function drawLenormand(count: number, seed: number): LenormandCard[] {
   }
 
   return drawn;
+}
+
+/**
+ * 매 호출마다 새 시드를 생성한다.
+ *
+ * 시간(ns 정밀도) + 32-bit 난수 XOR 로 충돌 가능성을 최소화한다.
+ */
+function freshSeed(): number {
+  const ts = Date.now();
+  const rnd = Math.floor(Math.random() * 0xffffffff);
+  return (ts ^ rnd) | 0;
+}
+
+/**
+ * 9장 (3×3 박스) 르노르망 스프레드.
+ *
+ * 위치 의미:
+ * - [0][1][2] : 상단 — 과거/배경
+ * - [3][4][5] : 중단 — 현재/핵심 (4번이 중심 카드)
+ * - [6][7][8] : 하단 — 미래/결과
+ */
+export function drawNineCards(): LenormandCard[] {
+  return drawLenormand(9, freshSeed());
+}
+
+/**
+ * 그랑 타블로 (Grand Tableau) — 36장 전체 스프레드.
+ *
+ * 일반적으로 8×4 그리드(32장) + 하단 영혼 카드 4장으로 배치한다.
+ */
+export function drawGrandTableau(): LenormandCard[] {
+  return drawLenormand(36, freshSeed());
 }

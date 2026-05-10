@@ -3,14 +3,16 @@
 /**
  * 르노르망 카드 뽑기 폼.
  *
- * - 단일(1장) / 3장 스프레드 선택 가능.
- * - 질문은 선택 입력.
- * - 이미지는 추후 추가 예정 — 지금은 플레이스홀더.
+ * 지원 스프레드:
+ * - single        : 한 장 — 오늘의 메시지
+ * - three         : 세 장 — 과거·현재·미래
+ * - nine          : 아홉 장 — 3×3 종합 (프리미엄)
+ * - grand_tableau : 36장 그랑 타블로 (프리미엄)
  */
 import Image from "next/image";
 import Link from "next/link";
 import { useActionState, useState } from "react";
-import { Loader2, Sparkles } from "lucide-react";
+import { Loader2, Lock, Sparkles } from "lucide-react";
 
 import {
   drawLenormandAction,
@@ -35,15 +37,26 @@ import { cn } from "@/lib/utils";
 const initial: LenormandDrawState = { kind: "idle" };
 const MAX_QUESTION_LENGTH = 100;
 
-export function LenormandDrawForm() {
+type SpreadValue = "single" | "three" | "nine" | "grand_tableau";
+
+interface Props {
+  /** 활성 구독자 여부 — 9장/그랑타블로는 구독자만 사용 가능. */
+  subscribed: boolean;
+}
+
+export function LenormandDrawForm({ subscribed }: Props) {
   const [state, formAction, isPending] = useActionState(
     drawLenormandAction,
     initial,
   );
   const [question, setQuestion] = useState("");
+  const [spread, setSpread] = useState<SpreadValue>("single");
   const charsLeft = MAX_QUESTION_LENGTH - question.length;
 
   useScrollToResult(isPending, "lenormand-results");
+
+  const isPremiumSpread = spread === "nine" || spread === "grand_tableau";
+  const blockedByPremium = isPremiumSpread && !subscribed;
 
   return (
     <Card className="app-surface">
@@ -59,10 +72,12 @@ export function LenormandDrawForm() {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex justify-center">
-          <div className={cn(
-            "relative aspect-[2/3] w-36 overflow-hidden rounded-xl transition-opacity sm:w-44",
-            isPending && "opacity-60"
-          )}>
+          <div
+            className={cn(
+              "relative aspect-[2/3] w-36 overflow-hidden rounded-xl transition-opacity sm:w-44",
+              isPending && "opacity-60",
+            )}
+          >
             <Image
               src="/collection/card_back.png"
               alt="르노르망 카드 뒷면"
@@ -113,17 +128,69 @@ export function LenormandDrawForm() {
             <Select
               id="len-spread"
               name="spread"
-              defaultValue="single"
+              value={spread}
+              onChange={(e) => setSpread(e.target.value as SpreadValue)}
               disabled={isPending}
             >
               <option value="single">한 장 — 오늘의 메시지</option>
               <option value="three">세 장 — 과거·현재·미래</option>
+              <option value="nine">
+                아홉 장 — 3×3 종합 스프레드 (프리미엄)
+              </option>
+              <option value="grand_tableau">
+                그랑 타블로 — 36장 전체 (프리미엄)
+              </option>
             </Select>
           </div>
 
+          {spread === "grand_tableau" ? (
+            <div className="space-y-2">
+              <Label>성별 (시그니피케이터)</Label>
+              <div className="flex gap-4">
+                <label className="flex cursor-pointer items-center gap-2">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="male"
+                    defaultChecked
+                    disabled={isPending || blockedByPremium}
+                    className="accent-accent"
+                  />
+                  <span className="text-sm">남성 (신사 카드)</span>
+                </label>
+                <label className="flex cursor-pointer items-center gap-2">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="female"
+                    disabled={isPending || blockedByPremium}
+                    className="accent-accent"
+                  />
+                  <span className="text-sm">여성 (숙녀 카드)</span>
+                </label>
+              </div>
+              <p className="text-muted-foreground text-xs">
+                질문자 본인을 상징할 카드를 골라요. 28번 신사 또는 29번 숙녀
+                카드를 기준점으로 삼습니다.
+              </p>
+            </div>
+          ) : null}
+
+          {blockedByPremium ? (
+            <div className="rounded-lg border border-amber-400/30 bg-amber-50/5 p-3">
+              <p className="text-xs leading-relaxed text-amber-300/90">
+                <Lock className="mr-1 inline-block h-3.5 w-3.5" aria-hidden />
+                이 스프레드는 프리미엄 구독자 전용이에요.
+              </p>
+              <Button asChild className="mt-2 w-full" variant="outline" size="sm">
+                <Link href={ROUTES.pricing}>프리미엄 구독하기</Link>
+              </Button>
+            </div>
+          ) : null}
+
           <Button
             type="submit"
-            disabled={isPending}
+            disabled={isPending || blockedByPremium}
             size="lg"
             className="w-full"
           >
@@ -146,7 +213,7 @@ export function LenormandDrawForm() {
             <FormMessage
               state={{ kind: "error", message: state.message ?? "" }}
             />
-            {state.quotaExceeded ? (
+            {state.quotaExceeded || state.premiumOnly ? (
               <Button asChild className="w-full" variant="outline">
                 <Link href={ROUTES.pricing}>프리미엄 구독하기</Link>
               </Button>

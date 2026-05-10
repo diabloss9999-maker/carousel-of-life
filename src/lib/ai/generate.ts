@@ -60,3 +60,45 @@ export async function generateJson<TSchema extends z.ZodTypeAny>(
   const json = extractJson(textBlock.text);
   return opts.schema.parse(json);
 }
+
+interface GenerateMarkdownOptions {
+  /** 사용자 프롬프트. */
+  userPrompt: string;
+  /** 모델 ID. */
+  model: string;
+  /** 응답 최대 토큰. */
+  maxTokens: number;
+  /** 시스템 프롬프트 추가 부분 (`MYSTIC_PERSONA` 뒤에 붙는다). */
+  systemSuffix?: string;
+}
+
+/**
+ * 마크다운/일반 텍스트 응답을 생성한다 (JSON 파싱 없음).
+ *
+ * 9장·그랑 타블로처럼 구조화된 산문이 필요한 경우 사용.
+ *
+ * @throws AI 응답에서 텍스트 블록을 찾지 못한 경우.
+ */
+export async function generateMarkdown(
+  opts: GenerateMarkdownOptions,
+): Promise<string> {
+  const anthropic = getAnthropic();
+
+  const system = opts.systemSuffix
+    ? `${MYSTIC_PERSONA}\n\n${opts.systemSuffix}`
+    : MYSTIC_PERSONA;
+
+  const response = await anthropic.messages.create({
+    model: opts.model,
+    max_tokens: opts.maxTokens,
+    system,
+    messages: [{ role: "user", content: opts.userPrompt }],
+  });
+
+  const textBlock = response.content.find((b) => b.type === "text");
+  if (!textBlock || textBlock.type !== "text") {
+    throw new Error("AI 응답에서 텍스트 블록을 찾지 못하였노라.");
+  }
+
+  return textBlock.text.trim();
+}
