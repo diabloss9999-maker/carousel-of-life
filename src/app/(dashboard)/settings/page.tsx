@@ -1,6 +1,6 @@
 ﻿import type { Metadata, Route } from "next";
 import Link from "next/link";
-import { Archive, Crown, User } from "lucide-react";
+import { Archive, Crown, MessageCircleHeart, User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -153,6 +153,31 @@ export default async function SettingsPage() {
         <CardContent>
           <Button asChild variant="outline" size="sm" className="w-full">
             <Link href={ROUTES.history as Route}>기록 보기</Link>
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* 운영자에게 정보 공유 */}
+      <Card className="border-border/40 bg-card/50 backdrop-blur">
+        <CardHeader className="pb-3">
+          <CardTitle className="font-mystic flex items-center gap-2 text-lg">
+            <MessageCircleHeart className="h-5 w-5 text-primary" aria-hidden />
+            운영자에게 의견 보내기
+          </CardTitle>
+          <CardDescription className="text-xs">
+            불편한 점, 바라는 기능, 솔직한 피드백 — 뭐든 환영해.
+            카카오 오픈채팅방에서 자유롭게 이야기해줘.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button asChild className="w-full" variant="outline" size="sm">
+            <a
+              href="https://invite.kakao.com/tc/W5meqEedOZ"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              💬 오픈채팅방 참여하기
+            </a>
           </Button>
         </CardContent>
       </Card>
