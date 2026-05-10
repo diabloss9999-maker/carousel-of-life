@@ -75,13 +75,16 @@ export function CharacterSelect() {
                 )}
               </div>
 
-              {/* 이름·직함 */}
+              {/* 이름·직함·설명 */}
               <div className="space-y-0.5">
                 <p className="font-mystic font-semibold text-sm leading-tight">
                   {char.name}
                 </p>
                 <p className="text-[11px] text-muted-foreground leading-tight">
                   {char.title}
+                </p>
+                <p className="text-[10px] text-muted-foreground/70 leading-tight line-clamp-2">
+                  {char.description}
                 </p>
               </div>
             </button>
