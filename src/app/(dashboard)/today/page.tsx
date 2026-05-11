@@ -11,6 +11,7 @@ import { GeneralPremium } from "@/components/fortune/general-premium";
 import { HealthWorkout } from "@/components/fortune/health-workout";
 import { LottoGenerator } from "@/components/fortune/lotto-generator";
 import { LoveCard } from "@/components/fortune/love-card";
+import { PremiumFortuneGate } from "@/components/fortune/premium-fortune-gate";
 import { StudyTips } from "@/components/fortune/study-tips";
 
 import { GenerateFortuneForm } from "@/components/fortune/generate-fortune-form";
@@ -88,6 +89,10 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
 
   const today = formatKoreanDate(new Date());
 
+  /** 별자리·십이간지는 비구독자에게 잠금 UI 표시. */
+  const isPremiumCategory =
+    category === "zodiac" || category === "chinese_zodiac";
+
   return (
     <div className="space-y-8">
       <header className="space-y-2">
@@ -108,46 +113,52 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
         subscribed={subscribed}
       />
 
-      <CategoryTabs current={category} />
+      <CategoryTabs current={category} subscribed={subscribed} />
 
-      {/* 별자리·12간지 카드 배너 */}
-      {(category === "zodiac" || category === "chinese_zodiac") && (
-        <ZodiacBanner category={category} birthDate={profile.birthDate ?? null} />
-      )}
-
-      {fortune ? (
-        <div id="fortune-result" className="space-y-6">
-          <FortuneCard fortune={fortune} />
-          {category === "money" && (
-            <LottoGenerator fortune={fortune} subscribed={subscribed} />
-          )}
-    {category === "love" && (
-      <LoveCard fortune={fortune} subscribed={subscribed} />
-    )}
-          {category === "career" && (
-            <CareerTips subscribed={subscribed} />
-          )}
-          {category === "health" && (
-            <HealthWorkout subscribed={subscribed} />
-          )}
-          {category === "study" && (
-            <StudyTips subscribed={subscribed} />
-          )}
-          {category === "general" && (
-            <GeneralPremium subscribed={subscribed} />
-          )}
-        </div>
+      {/* 별자리·십이간지 — 비구독자: 프리미엄 잠금 */}
+      {isPremiumCategory && !subscribed ? (
+        <PremiumFortuneGate category={category} />
       ) : (
-        <GenerateFortuneForm
-          category={category}
-          categoryLabel={CATEGORY_LONG_LABEL[category]}
-        />
-      )}
+        <>
+          {/* 별자리·12간지 카드 배너 */}
+          {isPremiumCategory && (
+            <ZodiacBanner category={category} birthDate={profile.birthDate ?? null} />
+          )}
 
-      {category === "general" && fortune && (
-        <TodaySummary fortunes={summaryFortunes} />
-      )}
+          {fortune ? (
+            <div id="fortune-result" className="space-y-6">
+              <FortuneCard fortune={fortune} />
+              {category === "money" && (
+                <LottoGenerator fortune={fortune} subscribed={subscribed} />
+              )}
+              {category === "love" && (
+                <LoveCard fortune={fortune} subscribed={subscribed} />
+              )}
+              {category === "career" && (
+                <CareerTips subscribed={subscribed} />
+              )}
+              {category === "health" && (
+                <HealthWorkout subscribed={subscribed} />
+              )}
+              {category === "study" && (
+                <StudyTips subscribed={subscribed} />
+              )}
+              {category === "general" && (
+                <GeneralPremium subscribed={subscribed} />
+              )}
+            </div>
+          ) : (
+            <GenerateFortuneForm
+              category={category}
+              categoryLabel={CATEGORY_LONG_LABEL[category]}
+            />
+          )}
 
+          {category === "general" && fortune && (
+            <TodaySummary fortunes={summaryFortunes} />
+          )}
+        </>
+      )}
     </div>
   );
 }

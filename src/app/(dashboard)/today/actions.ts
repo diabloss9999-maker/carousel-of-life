@@ -51,11 +51,16 @@ const categorySchema = z.enum([
   "chinese_zodiac",
 ]);
 
+/** 별자리·십이간지는 프리미엄 전용 카테고리. */
+const PREMIUM_FORTUNE_CATEGORIES = new Set(["zodiac", "chinese_zodiac"]);
+
 export interface FortuneActionState {
   kind: "idle" | "error";
   message?: string;
   /** 한도 초과 여부 (결제 CTA 노출용). */
   quotaExceeded?: boolean;
+  /** 프리미엄 전용 카테고리 시도 여부. */
+  premiumOnly?: boolean;
 }
 
 export async function generateFortuneAction(
@@ -71,6 +76,18 @@ export async function generateFortuneAction(
   }
 
   const { profile } = await requireProfile();
+
+  // 별자리·십이간지 프리미엄 게이트.
+  if (PREMIUM_FORTUNE_CATEGORIES.has(parsed.data)) {
+    const subscribed = await hasActiveSubscription(profile.userId);
+    if (!subscribed) {
+      return {
+        kind: "error",
+        premiumOnly: true,
+        message: "별자리·십이간지 운세는 프리미엄 전용이에요.",
+      };
+    }
+  }
 
   const result = await getOrCreateDailyFortune({
     profile,
