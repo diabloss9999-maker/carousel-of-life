@@ -7,6 +7,7 @@ import {
   CardOrientationBadge,
   TarotCardDisplay,
 } from "@/components/tarot/tarot-card-display";
+import { SaveImageButton } from "@/components/shared/save-image-button";
 import { ShareButton } from "@/components/shared/share-button";
 import type { TarotReading } from "@/db/schema";
 import { formatKoreanDate } from "@/lib/utils";
@@ -65,7 +66,17 @@ export function TarotReadingCard({ reading }: TarotReadingCardProps) {
           <p className="font-mystic whitespace-pre-line leading-relaxed text-foreground/90">
             {reading.interpretation}
           </p>
-          <div className="flex justify-end">
+          <div className="flex items-center justify-end gap-2">
+            <SaveImageButton
+              imageUrl={`/api/share/tarot?${new URLSearchParams({
+                card:     card?.nameKo ?? "타로",
+                reversed: String(card?.isReversed ?? false),
+                summary:  reading.interpretation.slice(0, 60),
+                spread:   "한 장",
+                date:     new Date(reading.createdAt).toLocaleDateString("ko-KR"),
+              })}`}
+              filename={`인생의회전목마_타로_${card?.nameKo ?? ""}`}
+            />
             <ShareButton
               title={`타로 한 장: ${card?.nameKo ?? ""}`}
               text={`[타로] ${card?.nameKo ?? ""} (${card?.isReversed ? "거꾸로" : "바로 선"})${reading.question ? `\n\nQ. ${reading.question}` : ""}\n\n${reading.interpretation}`}

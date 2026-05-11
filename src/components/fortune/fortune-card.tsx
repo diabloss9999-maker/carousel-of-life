@@ -5,6 +5,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { LuckyInfo } from "@/components/fortune/lucky-info";
+import { SaveImageButton } from "@/components/shared/save-image-button";
 import { ShareButton } from "@/components/shared/share-button";
 import type { DailyFortune } from "@/db/schema";
 import { FORTUNE_CATEGORIES, type FortuneCategoryId } from "@/lib/constants";
@@ -19,6 +20,22 @@ const CATEGORY_LABEL: Record<FortuneCategoryId, string> = Object.fromEntries(
 
 export function FortuneCard({ fortune }: FortuneCardProps) {
   const label = CATEGORY_LABEL[fortune.category as FortuneCategoryId] ?? "운세";
+
+  /** 공유 이미지 API URL 생성 */
+  function buildShareImageUrl(): string {
+    const base = "/api/share/fortune";
+    const params = new URLSearchParams({
+      title:     fortune.title,
+      score:     String(fortune.score ?? 70),
+      category:  label,
+      content:   fortune.content.slice(0, 80),
+      ...(fortune.luckyColor     && { color:     fortune.luckyColor }),
+      ...(fortune.luckyNumber    && { number:    String(fortune.luckyNumber) }),
+      ...(fortune.luckyDirection && { direction: fortune.luckyDirection }),
+      date: new Date(fortune.createdAt).toLocaleDateString("ko-KR"),
+    });
+    return `${base}?${params.toString()}`;
+  }
 
   return (
     <Card className="app-surface">
@@ -41,7 +58,11 @@ export function FortuneCard({ fortune }: FortuneCardProps) {
           direction={fortune.luckyDirection ?? null}
         />
 
-        <div className="flex justify-end">
+        <div className="flex items-center justify-end gap-2">
+          <SaveImageButton
+            imageUrl={buildShareImageUrl()}
+            filename={`인생의회전목마_${label}_${new Date(fortune.createdAt).toLocaleDateString("ko-KR").replace(/\./g, "").replace(/\s/g, "")}`}
+          />
           <ShareButton
             title={`오늘의 ${label}: ${fortune.title}`}
             text={`[${label}] ${fortune.title}\n\n${fortune.content}\n\n행운: ${fortune.luckyColor ?? "—"} / ${fortune.luckyNumber ?? "—"} / ${fortune.luckyDirection ?? "—"}`}
@@ -51,4 +72,3 @@ export function FortuneCard({ fortune }: FortuneCardProps) {
     </Card>
   );
 }
-
