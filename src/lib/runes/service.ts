@@ -48,10 +48,10 @@ const RUNE_DEFS = `1.Fehu(페후)-풍요·재물·번영 / 2.Uruz(우루즈)-힘
 
 /** 스프레드별 max_tokens. */
 const MAX_TOKENS: Record<RuneSpreadType, number> = {
-  single: 1200,
-  three: 2000,
-  five: 2800,
-  nine: 4000,
+  single: 800,
+  three: 1200,
+  five: 1500,
+  nine: 2000,
 };
 
 /** 스프레드별 카드 수. */
@@ -215,7 +215,7 @@ ${spreadInstruction}
   try {
     interpretation = await generateMarkdown({
       userPrompt,
-      model: AI_MODELS.premium,
+      model: AI_MODELS.fast,
       maxTokens: MAX_TOKENS[opts.spreadType],
       systemSuffix:
         "당신은 숙련된 엘더 푸타르크 룬 리더입니다. 룬 의미는 제공된 정의만 사용합니다. JSON 으로 응답하지 말고 지정된 마크다운 헤딩 구조로만 응답하세요.",

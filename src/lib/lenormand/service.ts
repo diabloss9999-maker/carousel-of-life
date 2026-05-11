@@ -294,8 +294,8 @@ JSON 금지. 아래 마크다운 헤딩으로 구조화해서 응답:
   try {
     interpretation = await generateMarkdown({
       userPrompt,
-      model: AI_MODELS.premium,
-      maxTokens: 2800,
+      model: AI_MODELS.fast,
+      maxTokens: 1500,
       systemSuffix:
         "당신은 숙련된 르노르망 카드 리더입니다. 카드 의미는 제공된 정의만 사용합니다. JSON 으로 응답하지 말고 지정된 마크다운 헤딩 구조로만 응답하세요.",
     });
@@ -449,8 +449,8 @@ JSON 금지. 아래 마크다운 헤딩으로 구조화해서 응답:
   try {
     interpretation = await generateMarkdown({
       userPrompt,
-      model: AI_MODELS.premium,
-      maxTokens: 4000,
+      model: AI_MODELS.fast,
+      maxTokens: 2000,
       systemSuffix:
         "당신은 숙련된 르노르망 카드 리더입니다. 카드 의미는 제공된 정의만 사용합니다. JSON 으로 응답하지 말고 지정된 마크다운 헤딩 구조로만 응답하세요.",
     });
