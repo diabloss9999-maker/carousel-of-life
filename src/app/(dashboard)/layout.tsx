@@ -28,7 +28,16 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex min-h-screen flex-col">
-      <TimeAwareHeader className="sticky top-0 z-40 border-b border-black/10 pt-safe shadow-sm">
+      <TimeAwareHeader
+        className="sticky top-0 z-40 pt-safe"
+        style={{
+          background: `url("/nav/desktop_nav_bg.svg") center / 100% 64px no-repeat,
+                       linear-gradient(to bottom, rgba(251,247,239,.9), rgba(251,247,239,.82))`,
+          boxShadow: "0 10px 28px rgba(43,33,56,.08)",
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
+        } as React.CSSProperties}
+      >
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
           <Link
             href={ROUTES.today}

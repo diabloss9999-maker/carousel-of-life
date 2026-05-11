@@ -9,9 +9,10 @@ import { useHeaderBg } from "./time-aware-bg";
 interface TimeAwareHeaderProps {
   children: React.ReactNode;
   className?: string;
+  style?: React.CSSProperties;
 }
 
-export function TimeAwareHeader({ children, className }: TimeAwareHeaderProps) {
+export function TimeAwareHeader({ children, className, style }: TimeAwareHeaderProps) {
   const headerBg = useHeaderBg();
 
   return (
@@ -22,6 +23,7 @@ export function TimeAwareHeader({ children, className }: TimeAwareHeaderProps) {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+        ...style,
       }}
     >
       {children}

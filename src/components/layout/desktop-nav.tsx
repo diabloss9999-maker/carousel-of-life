@@ -6,16 +6,15 @@ import { usePathname } from "next/navigation";
 import { mainNav, type NavItem } from "@/config/navigation";
 import { cn } from "@/lib/utils";
 
-/**
- * 데스크톱 상단 네비게이션 바 (md 이상에서만 표시).
- * 커스텀 SVG 아이콘 (iconSrc) 우선, 없으면 Lucide 폴백.
- */
+const NAV_ACTIVE = "#2b2138";
+const NAV_MUTED  = "#706579";
+
 export function DesktopNav() {
   const pathname = usePathname();
 
   return (
     <nav
-      className="hidden items-center gap-1 rounded-full border border-border/55 bg-card/50 p-1 shadow-sm backdrop-blur md:flex"
+      className="hidden items-center gap-1 md:flex"
       aria-label="상단 메뉴"
     >
       {mainNav
@@ -31,11 +30,17 @@ export function DesktopNav() {
               href={item.href}
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-all",
-                isActive
-                  ? "bg-primary/15 text-primary shadow-inner"
-                  : "text-muted-foreground hover:bg-primary/12 hover:text-foreground",
+                "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold transition-all",
               )}
+              style={
+                isActive
+                  ? {
+                      background: NAV_ACTIVE,
+                      color: "#ffffff",
+                      boxShadow: "0 6px 16px rgba(43,33,56,.18)",
+                    }
+                  : { color: NAV_MUTED }
+              }
             >
               <NavIcon item={item} size={16} />
               {item.label}
@@ -46,7 +51,6 @@ export function DesktopNav() {
   );
 }
 
-/** 커스텀 SVG 아이콘 (mask-image) 또는 Lucide 폴백. */
 function NavIcon({ item, size }: { item: NavItem; size: number }) {
   if (item.iconSrc) {
     return (
