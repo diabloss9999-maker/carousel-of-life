@@ -413,16 +413,16 @@ export const COLLECTION_BY_CATEGORY: Record<
 /** 카테고리 표시 정보. */
 export const CATEGORY_META: Record<
   CollectionCategory,
-  { label: string; emoji: string }
+  { label: string; emoji: string; cardBackSrc: string }
 > = {
-  tarot: { label: "타로", emoji: "🔮" },
-  mbti: { label: "MBTI", emoji: "🧠" },
-  zodiac: { label: "별자리", emoji: "✨" },
-  chineseZodiac: { label: "십이간지", emoji: "🐉" },
-  cheongan: { label: "천간", emoji: "🌿" },
-  characters: { label: "주술사", emoji: "🧙" },
-  lenormand: { label: "르노르망", emoji: "🌙" },
-  runes: { label: "룬", emoji: "ᚠ" },
+  tarot:         { label: "타로",    emoji: "🔮", cardBackSrc: "/collection/card_back_tarot.png" },
+  mbti:          { label: "MBTI",   emoji: "🧠", cardBackSrc: "/collection/card_back_mbti.png" },
+  zodiac:        { label: "별자리",  emoji: "✨", cardBackSrc: "/collection/card_back_zodiac.png" },
+  chineseZodiac: { label: "십이간지",emoji: "🐉", cardBackSrc: "/collection/card_back_chinese_zodiac.png" },
+  cheongan:      { label: "천간",    emoji: "🌿", cardBackSrc: "/collection/card_back_cheongan.png" },
+  characters:    { label: "주술사",  emoji: "🧙", cardBackSrc: "/collection/card_back_characters.png" },
+  lenormand:     { label: "르노르망",emoji: "🌙", cardBackSrc: "/collection/card_back_lenormand.png" },
+  runes:         { label: "룬",      emoji: "ᚠ", cardBackSrc: "/collection/card_back_runes.png" },
 };
 
 /** 전체 카드 수 (191장 보장 — 르노르망 36 + 룬 24 포함). */

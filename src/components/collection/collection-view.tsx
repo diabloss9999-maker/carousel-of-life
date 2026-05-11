@@ -476,6 +476,8 @@ interface CardCellProps {
 }
 
 function CardCell({ card, owned, onClick }: CardCellProps) {
+  const backSrc = CATEGORY_META[card.category].cardBackSrc;
+
   if (!owned) {
     return (
       <div
@@ -483,7 +485,7 @@ function CardCell({ card, owned, onClick }: CardCellProps) {
         aria-label="미소장 카드"
       >
         <Image
-          src="/collection/card_back.png"
+          src={backSrc}
           alt="미소장"
           fill
           className="object-cover"
