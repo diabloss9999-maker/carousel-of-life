@@ -82,9 +82,8 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                         alt={char.name}
                         width={1024}
                         height={1536}
-                        quality={90}
+                        unoptimized
                         className="w-full h-auto transition-transform group-hover:scale-105"
-                        sizes="(max-width: 640px) 45vw, (max-width: 1024px) 25vw, 300px"
                       />
                       {isLoading && (
                         <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-xl">
