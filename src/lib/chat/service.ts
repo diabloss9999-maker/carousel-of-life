@@ -258,34 +258,59 @@ export async function prepareSendMessage(opts: {
 
   const characterId = (session.character ?? DEFAULT_CHARACTER) as CharacterId;
 
-  // 첫 턴에만 전체 컨텍스트 로드 (사주심층·성격유형·오늘운세)
+  // 첫 턴에만 전체 컨텍스트 로드 — 실패해도 기본 컨텍스트로 폴백
   let userCtx = "";
   if (isFirstTurn) {
-    const today = getTodayInSeoul();
-    const [tripleRow, stressRow, careerRow, fortuneRow] = await Promise.all([
-      db.select().from(personalityTripleAnalysis)
-        .where(eq(personalityTripleAnalysis.userId, profile.userId)).limit(1),
-      db.select().from(personalityStressProfile)
-        .where(eq(personalityStressProfile.userId, profile.userId)).limit(1),
-      db.select().from(personalityCareerFit)
-        .where(eq(personalityCareerFit.userId, profile.userId)).limit(1),
-      db.select().from(dailyFortunes)
-        .where(and(
-          eq(dailyFortunes.userId, profile.userId),
-          eq(dailyFortunes.fortuneDate, today),
-          eq(dailyFortunes.category, "general"),
-        )).limit(1),
-    ]);
+    try {
+      const today = getTodayInSeoul();
+      const results = await Promise.allSettled([
+        db.select().from(personalityTripleAnalysis)
+          .where(eq(personalityTripleAnalysis.userId, profile.userId)).limit(1),
+        db.select().from(personalityStressProfile)
+          .where(eq(personalityStressProfile.userId, profile.userId)).limit(1),
+        db.select().from(personalityCareerFit)
+          .where(eq(personalityCareerFit.userId, profile.userId)).limit(1),
+        db.select().from(dailyFortunes)
+          .where(and(
+            eq(dailyFortunes.userId, profile.userId),
+            eq(dailyFortunes.fortuneDate, today),
+            eq(dailyFortunes.category, "general"),
+          )).limit(1),
+      ]);
 
-    const enrichment: ChatEnrichment = {
-      sajuDeep:           profile.sajuDeepReading as Record<string, string> | null,
-      personalityTriple:  tripleRow[0]?.data as Record<string, unknown> | null,
-      personalityStress:  stressRow[0]?.data as Record<string, unknown> | null,
-      personalityCareer:  careerRow[0]?.data as Record<string, unknown> | null,
-      todayFortune:       fortuneRow[0]?.content ?? null,
-    };
+      const get = <T>(r: PromiseSettledResult<T[]>): T | null =>
+        r.status === "fulfilled" ? (r.value[0] ?? null) : null;
 
-    userCtx = buildChatContext(profile, enrichment);
+      // 사주 심층 분석 — 핵심 필드만 짧게 (토큰 절약)
+      const rawSaju = profile.sajuDeepReading as Record<string, string> | null;
+      const sajuDeep = rawSaju
+        ? {
+            personality: rawSaju.personality?.slice(0, 200) ?? null,
+            strengths:   rawSaju.strengths?.slice(0, 150) ?? null,
+            cautions:    rawSaju.cautions?.slice(0, 150) ?? null,
+            loveStyle:   rawSaju.loveStyle?.slice(0, 150) ?? null,
+            lifeFlow:    rawSaju.lifeFlow?.slice(0, 200) ?? null,
+          }
+        : null;
+
+      const tripleData = get(results[0] as PromiseSettledResult<typeof personalityTripleAnalysis.$inferSelect[]>);
+      const stressData = get(results[1] as PromiseSettledResult<typeof personalityStressProfile.$inferSelect[]>);
+      const careerData = get(results[2] as PromiseSettledResult<typeof personalityCareerFit.$inferSelect[]>);
+      const fortuneData = get(results[3] as PromiseSettledResult<typeof dailyFortunes.$inferSelect[]>);
+
+      const enrichment: ChatEnrichment = {
+        sajuDeep:          sajuDeep,
+        personalityTriple: tripleData?.data as Record<string, unknown> | null,
+        personalityStress: stressData?.data as Record<string, unknown> | null,
+        personalityCareer: careerData?.data as Record<string, unknown> | null,
+        todayFortune:      fortuneData?.content?.slice(0, 150) ?? null,
+      };
+
+      userCtx = buildChatContext(profile, enrichment);
+    } catch {
+      // enrichment 실패 시 기본 컨텍스트만 사용
+      userCtx = buildChatContext(profile, {});
+    }
   }
 
   const systemPrompt = isFirstTurn
