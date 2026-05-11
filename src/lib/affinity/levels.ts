@@ -21,7 +21,7 @@ export const LEVEL_LABELS: Record<CharacterId, string[]> = {
   // 동양
   shaman:    ["첫 울림",    "신령의 눈짓", "방울의 화답", "인연의 실",  "신과 인간 사이"],
   taoist:    ["일면지교",   "천기의 단서", "도의 흐름",   "운명의 독해", "천기통달"],
-  dokkaebi:  ["대가 이전",  "빚의 시작",   "원혼의 끈",   "귀왕의 인정", "대가 없는 인연"],
+  dokkaebi:  ["관심 없음",  "좀 봐줄 만해", "마음에 들어", "탐나는 존재", "내 것"],
 };
 
 export function calcLevel(characterId: CharacterId, points: number): AffinityLevel {
