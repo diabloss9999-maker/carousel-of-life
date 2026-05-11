@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { mainNav } from "@/config/navigation";
+import { mainNav, type NavItem } from "@/config/navigation";
 import { cn } from "@/lib/utils";
 
 /**
  * 데스크톱 상단 네비게이션 바 (md 이상에서만 표시).
- * 현재 경로에 따라 활성 항목에 강조 스타일을 적용한다.
+ * 커스텀 SVG 아이콘 (iconSrc) 우선, 없으면 Lucide 폴백.
  */
 export function DesktopNav() {
   const pathname = usePathname();
@@ -21,7 +21,6 @@ export function DesktopNav() {
       {mainNav
         .filter((item) => item.authOnly)
         .map((item) => {
-          const Icon = item.icon;
           const isActive =
             pathname === item.href ||
             (item.href !== "/" && pathname.startsWith(item.href));
@@ -38,11 +37,39 @@ export function DesktopNav() {
                   : "text-muted-foreground hover:bg-primary/12 hover:text-foreground",
               )}
             >
-              <Icon className="h-4 w-4 flex-shrink-0" aria-hidden />
+              <NavIcon item={item} size={16} />
               {item.label}
             </Link>
           );
         })}
     </nav>
   );
+}
+
+/** 커스텀 SVG 아이콘 (mask-image) 또는 Lucide 폴백. */
+function NavIcon({ item, size }: { item: NavItem; size: number }) {
+  if (item.iconSrc) {
+    return (
+      <span
+        aria-hidden
+        style={{
+          display: "block",
+          width: size,
+          height: size,
+          flexShrink: 0,
+          backgroundColor: "currentColor",
+          maskImage: `url(${item.iconSrc})`,
+          maskSize: "contain",
+          maskRepeat: "no-repeat",
+          maskPosition: "center",
+          WebkitMaskImage: `url(${item.iconSrc})`,
+          WebkitMaskSize: "contain",
+          WebkitMaskRepeat: "no-repeat",
+          WebkitMaskPosition: "center",
+        }}
+      />
+    );
+  }
+  const Icon = item.icon;
+  return <Icon className="h-4 w-4 flex-shrink-0" aria-hidden />;
 }
