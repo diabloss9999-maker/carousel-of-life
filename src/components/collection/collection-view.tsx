@@ -219,6 +219,7 @@ export function CollectionView({
         pulled={pulled}
         remaining={remaining}
         limit={limit}
+        bonusCredits={gachaStatus.bonusCredits}
         isPending={isPending}
         subscribed={subscribed}
         onPull={handlePull}
@@ -295,6 +296,7 @@ interface GachaPanelProps {
   pulled: PullDisplayState | null;
   remaining: number;
   limit: number;
+  bonusCredits: number;
   isPending: boolean;
   subscribed: boolean;
   onPull: () => void;
@@ -305,16 +307,20 @@ function GachaPanel({
   pulled,
   remaining,
   limit,
+  bonusCredits,
   isPending,
   subscribed,
   onPull,
 }: GachaPanelProps) {
-  const exhausted = remaining <= 0;
+  const canUseBonus = remaining <= 0 && bonusCredits > 0;
+  const exhausted = remaining <= 0 && bonusCredits <= 0;
   const buttonLabel = isPending
     ? "뽑는 중..."
     : exhausted
       ? "오늘 뽑기 완료"
-      : `카드 뽑기 (${remaining}/${limit})`;
+      : canUseBonus
+        ? `보너스 뽑기 (${bonusCredits}회 남음)`
+        : `카드 뽑기 (${remaining}/${limit})`;
 
   return (
     <div className="app-surface space-y-5 rounded-2xl border border-border/60 p-5 shadow-sm sm:p-7">

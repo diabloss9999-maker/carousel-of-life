@@ -586,6 +586,35 @@ export type GachaDaily = typeof gachaDaily.$inferSelect;
 export type NewGachaDaily = typeof gachaDaily.$inferInsert;
 
 // =============================================================================
+// streaks - 출석 스트릭 + 마일스톤 보너스 가챠
+// =============================================================================
+
+export const streaks = pgTable("streaks", {
+  userId: uuid("user_id")
+    .primaryKey()
+    .references(() => authUsers.id, { onDelete: "cascade" }),
+  /** 현재 연속 출석일 수. */
+  currentStreak: integer("current_streak").notNull().default(0),
+  /** 역대 최고 연속 출석일 수. */
+  longestStreak: integer("longest_streak").notNull().default(0),
+  /** 마지막 출석 체크인 날짜 (KST YYYY-MM-DD). */
+  lastCheckIn: date("last_check_in"),
+  /** 마일스톤 보너스로 쌓인 추가 가챠 크레딧 (사용 전까지 누적). */
+  bonusGachaCredits: integer("bonus_gacha_credits").notNull().default(0),
+  /** 총 누적 출석일 수. */
+  totalCheckIns: integer("total_check_ins").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export type Streak = typeof streaks.$inferSelect;
+export type NewStreak = typeof streaks.$inferInsert;
+
+// =============================================================================
 // 모든 테이블 export
 // =============================================================================
 

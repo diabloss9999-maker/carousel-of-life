@@ -11,6 +11,7 @@ import { and, count, eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { collectionCards, gachaDaily } from "@/db/schema";
+import { consumeBonusGacha, getStreak } from "@/lib/streak/service";
 import {
   COLLECTION_BY_CATEGORY,
   type CollectionCardMeta,
@@ -68,6 +69,8 @@ export interface GachaStatus {
   used: number;
   remaining: number;
   limit: number;
+  /** 스트릭 마일스톤 보너스 크레딧. */
+  bonusCredits: number;
 }
 
 /** KST 오늘 날짜를 YYYY-MM-DD 형식으로 반환한다. */
@@ -122,16 +125,21 @@ export async function getTodayGachaStatus(
 ): Promise<GachaStatus> {
   const today = getTodayKst();
   const limit = dailyLimit(isSubscribed);
-  const [row] = await db
-    .select({ pullCount: gachaDaily.pullCount })
-    .from(gachaDaily)
-    .where(and(eq(gachaDaily.userId, userId), eq(gachaDaily.pullDate, today)))
-    .limit(1);
+  const [row, streak] = await Promise.all([
+    db
+      .select({ pullCount: gachaDaily.pullCount })
+      .from(gachaDaily)
+      .where(and(eq(gachaDaily.userId, userId), eq(gachaDaily.pullDate, today)))
+      .limit(1)
+      .then((r) => r[0]),
+    getStreak(userId),
+  ]);
   const used = row?.pullCount ?? 0;
   return {
     used,
     remaining: Math.max(0, limit - used),
     limit,
+    bonusCredits: streak?.bonusGachaCredits ?? 0,
   };
 }
 
@@ -153,15 +161,21 @@ export async function pullGacha(
   const today = getTodayKst();
   const limit = dailyLimit(isSubscribed);
 
-  // 1) 한도 확인
+  // 1) 한도 확인 (기본 한도 초과 시 보너스 크레딧으로 대체)
   const [daily] = await db
     .select()
     .from(gachaDaily)
     .where(and(eq(gachaDaily.userId, userId), eq(gachaDaily.pullDate, today)))
     .limit(1);
   const used = daily?.pullCount ?? 0;
+
   if (used >= limit) {
-    return { ok: false, quotaExceeded: true, remaining: 0, limit };
+    // 보너스 가챠 크레딧 소비 시도
+    const consumed = await consumeBonusGacha(userId);
+    if (!consumed) {
+      return { ok: false, quotaExceeded: true, remaining: 0, limit };
+    }
+    // 보너스로 진행 — 일일 카운트는 올리지 않음 (별도 크레딧 차감)
   }
 
   // 2) 카드 추첨

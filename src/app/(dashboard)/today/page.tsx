@@ -18,6 +18,7 @@ import { GenerateFortuneForm } from "@/components/fortune/generate-fortune-form"
 import { QuotaBar } from "@/components/fortune/quota-bar";
 import { TodaySummary } from "@/components/fortune/today-summary";
 import { ZodiacBanner } from "@/components/fortune/zodiac-banner";
+import { StreakBadge } from "@/components/streak/streak-badge";
 import type { DailyFortune } from "@/db/schema";
 import { requireProfile } from "@/lib/auth/get-user";
 import {
@@ -26,8 +27,8 @@ import {
   type FortuneCategoryId,
 } from "@/lib/constants";
 import { getDailyFortune } from "@/lib/fortunes/service";
-
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import { checkInStreak } from "@/lib/streak/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { formatKoreanDate } from "@/lib/utils";
 
@@ -60,10 +61,11 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
 
   const { profile } = await requireProfile();
 
-  const [fortune, usage, subscribed] = await Promise.all([
+  const [fortune, usage, subscribed, streakResult] = await Promise.all([
     getDailyFortune(profile.userId, category),
     getTodayUsage(profile.userId),
     hasActiveSubscription(profile.userId),
+    checkInStreak(profile.userId),
   ]);
 
   // general 탭에서만 다른 카테고리들의 오늘 운세를 병렬 조회한다.
@@ -95,8 +97,11 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
 
   return (
     <div className="space-y-8">
-      <header className="space-y-2">
-        <p className="text-sm text-muted-foreground">{today}</p>
+      <header className="space-y-3">
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-sm text-muted-foreground">{today}</p>
+          <StreakBadge checkIn={streakResult} />
+        </div>
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
           오늘의 운세
         </h1>
