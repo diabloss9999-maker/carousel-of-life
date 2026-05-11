@@ -10,6 +10,10 @@ import { requireProfile } from "@/lib/auth/get-user";
 import { createLenormandReading } from "@/lib/lenormand/service";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import {
+  createRuneReading,
+  type RuneSpreadType,
+} from "@/lib/runes/service";
+import {
   createSingleTarot,
   createThreeCardTarot,
 } from "@/lib/tarot/service";
@@ -205,6 +209,84 @@ export async function drawLenormandAction(
     return {
       kind: "error",
       message: e instanceof Error ? e.message : "오류가 발생했어.",
+    };
+  }
+}
+
+// =============================================================================
+// 엘더 푸타르크 룬 점술
+// =============================================================================
+
+const runeSchema = z.object({
+  spread: z.enum(["single", "three", "five", "nine"]).default("single"),
+  question: z
+    .string()
+    .trim()
+    .max(100, "질문은 100자 이내로 짧게 부탁해.")
+    .optional()
+    .or(z.literal("")),
+  reversedEnabled: z.boolean().default(true),
+});
+
+export interface RuneDrawState {
+  kind: "idle" | "error";
+  message?: string;
+  quotaExceeded?: boolean;
+  premiumOnly?: boolean;
+}
+
+export async function drawRuneAction(
+  _prev: RuneDrawState,
+  formData: FormData,
+): Promise<RuneDrawState> {
+  const parsed = runeSchema.safeParse({
+    spread: formData.get("spread") ?? "single",
+    question: formData.get("question") ?? "",
+    reversedEnabled: formData.get("reversedEnabled") === "on",
+  });
+  if (!parsed.success) {
+    return {
+      kind: "error",
+      message: parsed.error.issues[0]?.message ?? "입력값이 올바르지 않아요.",
+    };
+  }
+
+  try {
+    const { profile } = await requireProfile();
+    const isSubscribed = await hasActiveSubscription(profile.userId);
+
+    const result = await createRuneReading({
+      profile,
+      spreadType: parsed.data.spread as RuneSpreadType,
+      question: parsed.data.question?.trim() || null,
+      isSubscribed,
+      reversedEnabled: parsed.data.reversedEnabled,
+    });
+
+    if (result.ok) {
+      revalidatePath("/tarot");
+      return { kind: "idle" };
+    }
+    if (result.reason === "quota_exceeded") {
+      return {
+        kind: "error",
+        quotaExceeded: true,
+        message: `오늘의 무료 룬 한도(${result.max}회)를 모두 사용했어. 프리미엄 구독을 하면 한도 없이 던질 수 있어.`,
+      };
+    }
+    if (result.reason === "premium_only") {
+      return {
+        kind: "error",
+        premiumOnly: true,
+        message:
+          "이 스프레드는 프리미엄 구독자 전용이에요. 구독하면 5개·9개 스프레드를 자유롭게 던질 수 있어요.",
+      };
+    }
+    return { kind: "error", message: result.message };
+  } catch (e) {
+    return {
+      kind: "error",
+      message: e instanceof Error ? e.message : "룬을 던지지 못했어.",
     };
   }
 }

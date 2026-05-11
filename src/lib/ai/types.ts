@@ -42,6 +42,13 @@ export const lenormandSingleAiSchema = z.object({
 
 export type LenormandSingleAiOutput = z.infer<typeof lenormandSingleAiSchema>;
 
+/** 룬 풀이 AI 응답 스키마 (마크다운 본문 1필드). */
+export const runeAiSchema = z.object({
+  interpretation: z.string().min(1).max(5000),
+});
+
+export type RuneAiOutput = z.infer<typeof runeAiSchema>;
+
 export const compatibilityAiSchema = z.object({
   score: z.number().int().min(1).max(100),
   summary: z.string().min(1).max(80),

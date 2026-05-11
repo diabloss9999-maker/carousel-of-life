@@ -70,6 +70,13 @@ export const lenormandSpreadEnum = pgEnum("lenormand_spread", [
   "grand_tableau",
 ]);
 
+export const runeSpreadEnum = pgEnum("rune_spread", [
+  "single",
+  "three",
+  "five",
+  "nine",
+]);
+
 export const chatRoleEnum = pgEnum("chat_role", ["user", "assistant"]);
 
 export const subscriptionStatusEnum = pgEnum("subscription_status", [
@@ -236,6 +243,40 @@ export const lenormandReadings = pgTable(
 
 export type LenormandReading = typeof lenormandReadings.$inferSelect;
 export type NewLenormandReading = typeof lenormandReadings.$inferInsert;
+
+// =============================================================================
+// rune_readings - 엘더 푸타르크 룬 점술 결과
+// =============================================================================
+
+export const runeReadings = pgTable(
+  "rune_readings",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    spreadType: runeSpreadEnum("spread_type").notNull(),
+    /** 사용자가 던진 질문. nullable (그냥 뽑기). */
+    question: text("question"),
+    /**
+     * 뽑힌 룬 배열.
+     * 예: [{ runeId: 1, isReversed: false, position: "single" }, ...]
+     */
+    runes: jsonb("runes").notNull(),
+    /** 역방향 사용 여부 (사용자 설정값 보존). */
+    reversedEnabled: boolean("reversed_enabled").notNull().default(true),
+    /** 룬 풀이 본문 (마크다운). */
+    interpretation: text("interpretation").notNull(),
+    model: text("model").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("rune_readings_user_created_idx").on(t.userId, t.createdAt)],
+);
+
+export type RuneReading = typeof runeReadings.$inferSelect;
+export type NewRuneReading = typeof runeReadings.$inferInsert;
 
 // =============================================================================
 // compatibility_readings - 궁합 결과
@@ -750,6 +791,7 @@ export const allTables = {
   dailyFortunes,
   tarotReadings,
   lenormandReadings,
+  runeReadings,
   compatibilityReadings,
   chatSessions,
   chatMessages,

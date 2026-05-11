@@ -128,6 +128,7 @@ export function CollectionView({
       cheongan: { owned: 0, total: 0 },
       characters: { owned: 0, total: 0 },
       lenormand: { owned: 0, total: 0 },
+      runes: { owned: 0, total: 0 },
     };
     for (const card of flatAll) {
       counts[card.category].total += 1;

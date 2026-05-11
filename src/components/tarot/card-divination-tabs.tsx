@@ -1,9 +1,9 @@
 "use client";
 
 /**
- * 카드 점술 탭 — 타로 / 르노르망 등 여러 점술 시스템을 한 페이지에서 전환.
+ * 카드 점술 탭 — 타로 / 르노르망 / 룬 등 여러 점술 시스템을 한 페이지에서 전환.
  *
- * 추후 룬, 오라클 등 새로운 시스템을 추가하기 쉽도록 설계.
+ * 추후 오라클 등 새로운 시스템을 추가하기 쉽도록 설계.
  */
 import { useState } from "react";
 import type { ReactNode } from "react";
@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 const TABS = [
   { id: "tarot", label: "🃏 타로" },
   { id: "lenormand", label: "🌙 르노르망" },
+  { id: "runes", label: "ᚠ 룬" },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];
@@ -20,9 +21,14 @@ type TabId = (typeof TABS)[number]["id"];
 interface Props {
   tarotPanel: ReactNode;
   lenormandPanel: ReactNode;
+  runesPanel: ReactNode;
 }
 
-export function CardDivinationTabs({ tarotPanel, lenormandPanel }: Props) {
+export function CardDivinationTabs({
+  tarotPanel,
+  lenormandPanel,
+  runesPanel,
+}: Props) {
   const [active, setActive] = useState<TabId>("tarot");
 
   return (
@@ -56,6 +62,7 @@ export function CardDivinationTabs({ tarotPanel, lenormandPanel }: Props) {
       <div role="tabpanel">
         {active === "tarot" ? tarotPanel : null}
         {active === "lenormand" ? lenormandPanel : null}
+        {active === "runes" ? runesPanel : null}
       </div>
     </div>
   );

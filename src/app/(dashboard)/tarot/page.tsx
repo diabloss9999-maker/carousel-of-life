@@ -5,6 +5,8 @@ export const maxDuration = 30;
 
 import { LenormandDrawForm } from "@/components/lenormand/lenormand-draw-form";
 import { LenormandReadingCard } from "@/components/lenormand/lenormand-reading-card";
+import { RuneDrawForm } from "@/components/runes/rune-draw-form";
+import { RuneReadingCard } from "@/components/runes/rune-reading-card";
 import { CardDivinationTabs } from "@/components/tarot/card-divination-tabs";
 import { TarotDrawForm } from "@/components/tarot/tarot-draw-form";
 import { TarotReadingCard } from "@/components/tarot/tarot-reading-card";
@@ -14,6 +16,7 @@ import { QuotaBar } from "@/components/fortune/quota-bar";
 import { requireProfile } from "@/lib/auth/get-user";
 import { getTodayLenormandReadings } from "@/lib/lenormand/service";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import { getTodayRuneReadings } from "@/lib/runes/service";
 import { getTodayTarotReadings } from "@/lib/tarot/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 
@@ -25,12 +28,14 @@ export const metadata: Metadata = {
 export default async function TarotPage() {
   const { profile } = await requireProfile();
 
-  const [readings, usage, subscribed, lenormandReadings] = await Promise.all([
-    getTodayTarotReadings(profile.userId),
-    getTodayUsage(profile.userId),
-    hasActiveSubscription(profile.userId),
-    getTodayLenormandReadings(profile.userId),
-  ]);
+  const [readings, usage, subscribed, lenormandReadings, runeReadings] =
+    await Promise.all([
+      getTodayTarotReadings(profile.userId),
+      getTodayUsage(profile.userId),
+      hasActiveSubscription(profile.userId),
+      getTodayLenormandReadings(profile.userId),
+      getTodayRuneReadings(profile.userId),
+    ]);
 
   return (
     <div className="space-y-8">
@@ -117,6 +122,40 @@ export default async function TarotPage() {
                       key={reading.id}
                       reading={reading}
                     />
+                  ))}
+                </div>
+              </section>
+            ) : null}
+          </div>
+        }
+        runesPanel={
+          <div className="space-y-6">
+            {/* 룬 유래 */}
+            <div className="rounded-2xl border border-amber-200/20 bg-amber-50/5 px-5 py-4 space-y-2 backdrop-blur-sm">
+              <p className="font-mystic text-sm font-semibold text-amber-300/90">
+                ᚠ 룬의 기원
+              </p>
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                엘더 푸타르크(Elder Futhark)는 가장 오래된 룬 문자 체계로,
+                북유럽 게르만 민족이 기원후 150~800년 사이에 사용했습니다.
+                24개의 룬은 단순한 문자가 아니라 각각 우주적 힘과 신성한 원리를
+                상징합니다. 바이킹 전사들은 룬을 방패에 새겨 보호를 구했고,
+                시인들은 오딘이 세계수 이그드라실에 거꾸로 매달려 9일 동안 희생
+                끝에 룬의 지혜를 얻었다고 노래했습니다. 현재는 북유럽 신비주의
+                전통에서 점술·명상·자기 탐구의 도구로 사용됩니다.
+              </p>
+            </div>
+
+            <RuneDrawForm subscribed={subscribed} />
+
+            {runeReadings.length > 0 ? (
+              <section id="rune-results" className="space-y-4">
+                <h2 className="font-mystic text-2xl font-semibold tracking-tight">
+                  오늘 던진 룬
+                </h2>
+                <div className="space-y-4">
+                  {runeReadings.map((reading) => (
+                    <RuneReadingCard key={reading.id} reading={reading} />
                   ))}
                 </div>
               </section>
