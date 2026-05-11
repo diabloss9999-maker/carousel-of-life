@@ -2,7 +2,7 @@
  * 새 채팅 세션 생성 API.
  *
  * POST /api/chat/sessions
- *   body: { character?: "witch" | "child" | "sage" }
+ *   body: { character?: CharacterId }
  *  → { sessionId } 반환
  */
 import { NextResponse, type NextRequest } from "next/server";
@@ -14,7 +14,9 @@ import { DEFAULT_CHARACTER } from "@/lib/chat/characters";
 import { API_ERROR_CODES } from "@/types/api";
 
 const bodySchema = z.object({
-  character: z.enum(["witch", "child", "sage"]).optional(),
+  character: z
+    .enum(["witch", "child", "sage", "shaman", "taoist", "dokkaebi"])
+    .optional(),
 });
 
 export async function POST(request: NextRequest) {
