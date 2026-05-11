@@ -1,10 +1,8 @@
 /**
  * 채팅 메시지에서 점술 요청을 감지하고 카드를 추첨한다.
  */
-import { drawRunes, RUNE_SPREAD_POSITIONS } from "@/lib/runes/draw";
+import { drawRunes } from "@/lib/runes/draw";
 import { drawLenormand } from "@/lib/lenormand/draw";
-import { RUNE_BY_ID } from "@/lib/runes/cards";
-import { LENORMAND_BY_ID } from "@/lib/lenormand/cards";
 import { TAROT_DECK } from "@/lib/tarot/cards";
 
 export type ReadingType = "tarot1" | "tarot3" | "rune1" | "lenormand1" | null;
@@ -87,7 +85,6 @@ export function detectAndDraw(message: string): ReadingResult | null {
       const drawn = drawRunes(1, true);
       const r = drawn[0];
       if (!r) return null;
-      const runeInfo = RUNE_BY_ID[r.rune.id];
       return {
         type,
         cards: [{
@@ -109,7 +106,6 @@ export function detectAndDraw(message: string): ReadingResult | null {
       const drawn = drawLenormand(1, Date.now());
       const c = drawn[0];
       if (!c) return null;
-      const info = LENORMAND_BY_ID[c.id];
       return {
         type,
         cards: [{

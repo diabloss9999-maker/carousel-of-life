@@ -21,16 +21,18 @@ export default function GlobalErrorBoundary({
   }, [error]);
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background px-6">
+    <main className="flex min-h-screen items-center justify-center px-6"
+      style={{ background: "linear-gradient(160deg,#1a1025 0%,#0d0818 60%)" }}
+    >
       <div className="flex max-w-md flex-col items-center gap-6 text-center">
-        <h1 className="font-mystic text-3xl font-semibold tracking-tight">
+        <h1 className="font-mystic text-3xl font-semibold tracking-tight text-foreground">
           별의 흐름이 잠시 흐려졌어요
         </h1>
         <p className="text-sm text-muted-foreground">
           예기치 못한 오류가 발생했어요. 다시 시도해주세요.
         </p>
         {error.digest ? (
-          <code className="rounded-md bg-muted px-3 py-1 text-xs text-muted-foreground">
+          <code className="rounded-md bg-muted/30 px-3 py-1 text-xs text-muted-foreground">
             {error.digest}
           </code>
         ) : null}
