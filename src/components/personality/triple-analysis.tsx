@@ -67,9 +67,9 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="blur-[3px] select-none pointer-events-none space-y-2">
-            <p className="text-sm">🌀 세 시스템의 공통점</p>
-            <p className="text-sm">⚡ 모순되는 측면</p>
-            <p className="text-sm">🔮 통합 본성 + 독특한 강점</p>
+            <p className="text-sm">세 시스템의 공통점</p>
+            <p className="text-sm">모순되는 측면</p>
+            <p className="text-sm">통합 본성 + 독특한 강점</p>
           </div>
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
@@ -94,14 +94,14 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
         <CardContent className="space-y-4">
           <div className="rounded-xl border border-accent/25 bg-accent/5 p-4 space-y-1.5">
             <p className="text-xs font-semibold text-accent uppercase tracking-wide">
-              🌀 세 시스템의 공통점
+              세 시스템의 공통점
             </p>
             <p className="font-mystic leading-relaxed">{data.convergence}</p>
           </div>
 
           <div className="rounded-xl border border-primary/25 bg-primary/5 p-4 space-y-1.5">
             <p className="text-xs font-semibold text-primary uppercase tracking-wide">
-              ⚡ 서로 모순되는 측면
+              서로 모순되는 측면
             </p>
             <p className="font-mystic leading-relaxed">{data.contradiction}</p>
           </div>
@@ -109,13 +109,13 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
           <div className="rounded-xl border border-border/60 bg-card/40 p-4 space-y-3">
             <div className="space-y-1.5">
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                🔮 진짜 본성
+                진짜 본성
               </p>
               <p className="font-mystic leading-relaxed">{data.trueNature}</p>
             </div>
             <div className="border-t border-border/40 pt-3 space-y-1.5">
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                ✨ 이 조합만의 독특한 강점
+                이 조합만의 독특한 강점
               </p>
               <p className="font-mystic leading-relaxed">
                 {data.uniqueStrength}

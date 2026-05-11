@@ -9,9 +9,9 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 const TABS = [
-  { id: "tarot",     label: "🃏 타로" },
-  { id: "lenormand", label: "🌙 르노르망" },
-  { id: "runes",     label: "ᚠ 룬" },
+  { id: "tarot",     label: "타로" },
+  { id: "lenormand", label: "르노르망" },
+  { id: "runes",     label: "룬" },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];

@@ -73,9 +73,9 @@ export function CareerFit({ subscribed }: CareerFitProps) {
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="blur-[3px] select-none pointer-events-none space-y-2">
-            <p className="text-sm">☀️ 빛나는 업무 환경</p>
-            <p className="text-sm">💼 잘 맞는 직군 5가지</p>
-            <p className="text-sm">🚀 성장 팁</p>
+            <p className="text-sm">빛나는 업무 환경</p>
+            <p className="text-sm">잘 맞는 직군 5가지</p>
+            <p className="text-sm">성장 팁</p>
           </div>
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
@@ -109,7 +109,7 @@ export function CareerFit({ subscribed }: CareerFitProps) {
 
           <div className="space-y-2">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-              💼 잘 맞는 직군
+              잘 맞는 직군
             </p>
             <div className="flex flex-wrap gap-2">
               {data.fitRoles.map((role, i) => (
@@ -137,7 +137,7 @@ export function CareerFit({ subscribed }: CareerFitProps) {
 
           <div className="rounded-xl border border-border/60 bg-card/40 p-4 space-y-1.5">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-              🧭 나의 업무 스타일
+              나의 업무 스타일
             </p>
             <p className="font-mystic leading-relaxed">{data.workStyle}</p>
           </div>

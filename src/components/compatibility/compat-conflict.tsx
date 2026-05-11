@@ -78,9 +78,9 @@ export function CompatConflict(props: CompatConflictProps) {
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="blur-[3px] select-none pointer-events-none space-y-2">
-            <p className="text-sm">⚠️ 갈등 유발 상황 3가지</p>
-            <p className="text-sm">🔁 반복되는 갈등 패턴</p>
-            <p className="text-sm">🤝 화해·해결법</p>
+            <p className="text-sm">갈등 유발 상황 3가지</p>
+            <p className="text-sm">반복되는 갈등 패턴</p>
+            <p className="text-sm">화해·해결법</p>
           </div>
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
@@ -121,7 +121,7 @@ export function CompatConflict(props: CompatConflictProps) {
 
           <div className="rounded-xl border border-border/60 bg-card/40 p-4 space-y-1.5">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-              🔁 반복되는 갈등 패턴
+              반복되는 갈등 패턴
             </p>
             <p className="font-mystic leading-relaxed text-foreground/90">
               {data.pattern}
@@ -130,7 +130,7 @@ export function CompatConflict(props: CompatConflictProps) {
 
           <div className="rounded-xl border border-accent/25 bg-accent/5 p-4 space-y-1.5">
             <p className="text-xs font-semibold text-accent uppercase tracking-wide">
-              🤝 화해·해결법
+              화해·해결법
             </p>
             <p className="font-mystic leading-relaxed">{data.resolution}</p>
           </div>

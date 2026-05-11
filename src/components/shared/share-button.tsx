@@ -134,7 +134,7 @@ export function ShareButton({
             onClick={handleKakaoChat}
             className="flex w-full items-center gap-2.5 px-4 py-3 text-sm text-left hover:bg-accent/50 transition-colors border-b border-border/40"
           >
-            <span className="text-base leading-none">💬</span>
+            <span className="text-base leading-none" />
             <div>
               <p className="font-medium text-xs">카카오 오픈채팅에 공유</p>
               <p className="text-[10px] text-muted-foreground mt-0.5">텍스트 복사 후 채팅방 오픈</p>

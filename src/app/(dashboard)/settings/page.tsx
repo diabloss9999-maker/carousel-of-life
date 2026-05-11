@@ -176,7 +176,7 @@ export default async function SettingsPage() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              💬 오픈채팅방 참여하기
+              오픈채팅방 참여하기
             </a>
           </Button>
         </CardContent>

@@ -59,8 +59,8 @@ export function LoveCard({ subscribed }: LoveCardProps) {
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="blur-[3px] select-none pointer-events-none space-y-2">
-            <p className="text-sm">💌 오늘 전할 한마디</p>
-            <p className="text-sm">✨ 나를 더 매력적으로 만드는 팁 3가지</p>
+            <p className="text-sm">오늘 전할 한마디</p>
+            <p className="text-sm">나를 더 매력적으로 만드는 팁 3가지</p>
           </div>
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
@@ -87,20 +87,20 @@ export function LoveCard({ subscribed }: LoveCardProps) {
           {/* 오늘의 한마디 */}
           <div className="rounded-xl border border-accent/25 bg-accent/5 p-4 space-y-2">
             <p className="text-xs font-semibold text-accent uppercase tracking-wide">
-              💌 오늘 전할 한마디
+              오늘 전할 한마디
             </p>
             <p className="font-mystic text-base leading-relaxed">
               {data.message.text}
             </p>
             <p className="text-xs text-muted-foreground">
-              📍 {data.message.situation}
+              {data.message.situation}
             </p>
           </div>
 
           {/* 매력 팁 3가지 */}
           <div className="space-y-3">
             <p className="text-xs font-semibold text-primary uppercase tracking-wide">
-              ✨ 오늘의 매력 팁
+              오늘의 매력 팁
             </p>
             <ol className="space-y-3">
               {data.charmTips.map((tip, i) => (

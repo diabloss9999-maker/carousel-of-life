@@ -86,7 +86,7 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
   if (!started) {
     return (
       <div className="flex flex-col items-center gap-6 py-8 text-center">
-        <div className="text-5xl">🌌</div>
+        <div className="h-12" />
         <div className="space-y-2">
           <h2 className="font-mystic text-2xl font-semibold">
             나는 어떤 유형일까?
@@ -99,15 +99,12 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
         </div>
         <div className="grid grid-cols-3 gap-3 text-xs text-muted-foreground">
           <div className="rounded-xl border border-border/40 bg-card/50 p-3 space-y-1">
-            <p className="text-lg">⏱️</p>
             <p>약 3~5분</p>
           </div>
           <div className="rounded-xl border border-border/40 bg-card/50 p-3 space-y-1">
-            <p className="text-lg">📝</p>
             <p>20문항</p>
           </div>
           <div className="rounded-xl border border-border/40 bg-card/50 p-3 space-y-1">
-            <p className="text-lg">🔮</p>
             <p>16가지 유형</p>
           </div>
         </div>
@@ -122,7 +119,7 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
   if (isPending) {
     return (
       <div className="flex flex-col items-center gap-4 py-16 text-center">
-        <div className="text-4xl animate-pulse">🔮</div>
+        <div className="h-10 animate-pulse" />
         <p className="font-mystic text-lg">유형을 분석하고 있어…</p>
       </div>
     );
@@ -289,7 +286,7 @@ function ResultCard({
       {/* 축별 퍼센트 바 */}
       {axes && (
         <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
-          <h3 className="font-mystic font-semibold text-sm">📊 성향 강도</h3>
+          <h3 className="font-mystic font-semibold text-sm">성향 강도</h3>
           <div className="space-y-3">
             {AXIS_CONFIG.map(({ axis, labelA, labelB }) => {
               const ax = axes[axis];
@@ -324,7 +321,7 @@ function ResultCard({
 
       {/* 어울리는 직업 */}
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
-        <h3 className="font-mystic font-semibold text-sm">💼 어울리는 직업</h3>
+        <h3 className="font-mystic font-semibold text-sm">어울리는 직업</h3>
         <div className="flex flex-wrap gap-1.5">
           {info.suitableJobs.map((job) => (
             <span key={job} className="rounded-full bg-primary/10 border border-primary/25 px-2.5 py-0.5 text-xs text-primary font-medium">
@@ -336,7 +333,7 @@ function ResultCard({
 
       {/* 상세 설명 */}
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
-        <h3 className="font-mystic font-semibold text-sm">🔍 나는 이런 사람이야</h3>
+        <h3 className="font-mystic font-semibold text-sm">나는 이런 사람이야</h3>
         <p className="text-sm text-muted-foreground leading-relaxed">
           {info.description}
         </p>
@@ -344,7 +341,7 @@ function ResultCard({
 
       {/* 강점 */}
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
-        <h3 className="font-mystic font-semibold text-sm text-accent">✨ 강점</h3>
+        <h3 className="font-mystic font-semibold text-sm text-accent">강점</h3>
         <ul className="space-y-1.5">
           {info.strengths.map((s) => (
             <li key={s} className="flex items-center gap-2 text-sm">
@@ -357,7 +354,7 @@ function ResultCard({
 
       {/* 주의점 */}
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
-        <h3 className="font-mystic font-semibold text-sm text-muted-foreground">💡 이런 점 주의해</h3>
+        <h3 className="font-mystic font-semibold text-sm text-muted-foreground">이런 점 주의해</h3>
         <ul className="space-y-1.5">
           {info.cautions.map((c) => (
             <li key={c} className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -391,7 +388,7 @@ function ResultCard({
 
         {/* 주의가 필요한 유형 */}
         <div className="space-y-2">
-          <h3 className="font-mystic font-semibold text-sm text-center">⚠️ 주의</h3>
+          <h3 className="font-mystic font-semibold text-sm text-center">주의</h3>
           <div className="flex justify-center gap-2">
             {info.incompatibleWith.map((t) => {
               const ti = TYPE_INFO[t];

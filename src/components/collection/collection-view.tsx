@@ -202,7 +202,7 @@ export function CollectionView({
           next.add(result.card.id);
           return next;
         });
-        toast.success(`✨ 새 카드 획득 — ${result.card.nameKo}`);
+        toast.success(`새 카드 획득 — ${result.card.nameKo}`);
       } else {
         toast(`이미 소장 중인 카드 — ${result.card.nameKo}`);
       }
@@ -252,7 +252,7 @@ export function CollectionView({
                 key={cat}
                 active={tab === cat}
                 onClick={() => setTab(cat)}
-                label={`${meta.emoji} ${meta.label}`}
+                label={meta.label}
                 owned={c.owned}
                 total={c.total}
               />
@@ -393,7 +393,7 @@ function GachaPanel({
         {pulled ? (
           pulled.isNew ? (
             <p className="text-sm font-semibold text-primary">
-              ✨ 새로운 카드를 소장하게 됐어!
+              새로운 카드를 소장하게 됐어!
             </p>
           ) : (
             <p className="text-sm text-muted-foreground">

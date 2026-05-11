@@ -57,8 +57,8 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
         <CardContent className="space-y-3">
           <div className="space-y-2 select-none blur-[3px] pointer-events-none">
             {[
-              "🏠 맨몸 운동 3가지 추천",
-              "🏋️ 기구 운동 3가지 추천",
+              "맨몸 운동 3가지 추천",
+              "기구 운동 3가지 추천",
               "각 운동 방법 상세 설명",
               "어디에 좋은지 효과 + 권장 횟수",
             ].map((t) => (
@@ -142,8 +142,8 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-5">
-        {bodyworkouts && <WorkoutList list={bodyworkouts} label="🏠 맨몸 운동" />}
-        {gymWorkouts && <WorkoutList list={gymWorkouts} label="🏋️ 기구 운동" />}
+        {bodyworkouts && <WorkoutList list={bodyworkouts} label="맨몸 운동" />}
+        {gymWorkouts && <WorkoutList list={gymWorkouts} label="기구 운동" />}
 
         {quote && (
           <div className="rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3">

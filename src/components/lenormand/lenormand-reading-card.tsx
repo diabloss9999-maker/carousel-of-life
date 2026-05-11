@@ -38,7 +38,7 @@ const POSITION_LABEL: Record<string, string> = {
  * 9장(3×3) 카드 위치 라벨.
  */
 function nineLabel(idx: number): string {
-  if (idx === 4) return "✦ 핵심";
+  if (idx === 4) return "핵심";
   if (idx < 3) return "과거";
   if (idx < 6) return "현재";
   return "미래";

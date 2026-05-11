@@ -72,9 +72,9 @@ export function StressProfile({ subscribed }: StressProfileProps) {
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="blur-[3px] select-none pointer-events-none space-y-2">
-            <p className="text-sm">⚠️ 스트레스 유발 상황 3가지</p>
-            <p className="text-sm">💥 무너질 때의 패턴</p>
-            <p className="text-sm">💚 빠른 회복법 3가지</p>
+            <p className="text-sm">스트레스 유발 상황 3가지</p>
+            <p className="text-sm">무너질 때의 패턴</p>
+            <p className="text-sm">빠른 회복법 3가지</p>
           </div>
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
@@ -115,7 +115,7 @@ export function StressProfile({ subscribed }: StressProfileProps) {
 
           <div className="rounded-xl border border-border/60 bg-card/40 p-4 space-y-1.5">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-              💥 무너질 때 나타나는 패턴
+              무너질 때 나타나는 패턴
             </p>
             <p className="font-mystic leading-relaxed">
               {data.collapsePattern}
@@ -124,7 +124,7 @@ export function StressProfile({ subscribed }: StressProfileProps) {
 
           <div className="rounded-xl border border-accent/25 bg-accent/5 p-4 space-y-2">
             <p className="text-xs font-semibold text-accent uppercase tracking-wide">
-              💚 빠른 회복법
+              빠른 회복법
             </p>
             <ol className="space-y-2">
               {data.recoveryTips.map((tip, i) => (

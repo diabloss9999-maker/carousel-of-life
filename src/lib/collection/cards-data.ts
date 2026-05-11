@@ -415,14 +415,14 @@ export const CATEGORY_META: Record<
   CollectionCategory,
   { label: string; emoji: string; cardBackSrc: string }
 > = {
-  tarot:         { label: "타로",    emoji: "🔮", cardBackSrc: "/collection/card_back_tarot.png" },
-  mbti:          { label: "MBTI",   emoji: "🧠", cardBackSrc: "/collection/card_back_mbti.png" },
-  zodiac:        { label: "별자리",  emoji: "✨", cardBackSrc: "/collection/card_back_zodiac.png" },
-  chineseZodiac: { label: "십이간지",emoji: "🐉", cardBackSrc: "/collection/card_back_chinese_zodiac.png" },
-  cheongan:      { label: "천간",    emoji: "🌿", cardBackSrc: "/collection/card_back_cheongan.png" },
-  characters:    { label: "주술사",  emoji: "🧙", cardBackSrc: "/collection/card_back_characters.png" },
-  lenormand:     { label: "르노르망",emoji: "🌙", cardBackSrc: "/collection/card_back_lenormand.png" },
-  runes:         { label: "룬",      emoji: "ᚠ", cardBackSrc: "/collection/card_back_runes.png" },
+  tarot:         { label: "타로",    emoji: "", cardBackSrc: "/collection/card_back_tarot.png" },
+  mbti:          { label: "MBTI",   emoji: "", cardBackSrc: "/collection/card_back_mbti.png" },
+  zodiac:        { label: "별자리",  emoji: "", cardBackSrc: "/collection/card_back_zodiac.png" },
+  chineseZodiac: { label: "십이간지",emoji: "", cardBackSrc: "/collection/card_back_chinese_zodiac.png" },
+  cheongan:      { label: "천간",    emoji: "", cardBackSrc: "/collection/card_back_cheongan.png" },
+  characters:    { label: "주술사",  emoji: "", cardBackSrc: "/collection/card_back_characters.png" },
+  lenormand:     { label: "르노르망",emoji: "", cardBackSrc: "/collection/card_back_lenormand.png" },
+  runes:         { label: "룬",      emoji: "", cardBackSrc: "/collection/card_back_runes.png" },
 };
 
 /** 전체 카드 수 (191장 보장 — 르노르망 36 + 룬 24 포함). */

@@ -77,10 +77,10 @@ export function CompatPurpose(props: CompatPurposeProps) {
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="blur-[3px] select-none pointer-events-none space-y-2">
-            <p className="text-sm">💕 연애 86점</p>
-            <p className="text-sm">💍 결혼 72점</p>
-            <p className="text-sm">💼 비즈니스 64점</p>
-            <p className="text-sm">🤝 친구 90점</p>
+            <p className="text-sm">연애 86점</p>
+            <p className="text-sm">결혼 72점</p>
+            <p className="text-sm">비즈니스 64점</p>
+            <p className="text-sm">친구 90점</p>
           </div>
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
@@ -123,7 +123,7 @@ export function CompatPurpose(props: CompatPurposeProps) {
           <div className="grid gap-2 sm:grid-cols-2">
             <div className="rounded-xl border border-accent/25 bg-accent/5 p-3">
               <p className="text-xs font-semibold text-accent uppercase tracking-wide">
-                ✨ 가장 잘 맞는 관계
+                가장 잘 맞는 관계
               </p>
               <p className="mt-1 font-mystic text-sm font-semibold">
                 {data.bestPurpose}
@@ -131,7 +131,7 @@ export function CompatPurpose(props: CompatPurposeProps) {
             </div>
             <div className="rounded-xl border border-destructive/25 bg-destructive/5 p-3">
               <p className="text-xs font-semibold text-destructive uppercase tracking-wide">
-                ⚠️ 가장 안 맞는 관계
+                가장 안 맞는 관계
               </p>
               <p className="mt-1 font-mystic text-sm font-semibold">
                 {data.worstPurpose}

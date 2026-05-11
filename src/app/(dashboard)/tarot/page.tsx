@@ -60,7 +60,7 @@ export default async function TarotPage() {
           <div className="space-y-6">
             {/* 타로 유래 */}
             <div className="rounded-2xl border border-amber-200/20 bg-amber-50/5 px-5 py-4 space-y-2 backdrop-blur-sm">
-              <p className="font-mystic text-sm font-semibold text-amber-300/90">🃏 타로의 기원</p>
+              <p className="font-mystic text-sm font-semibold text-amber-300/90">타로의 기원</p>
               <p className="text-xs leading-relaxed text-muted-foreground">
                 15세기 이탈리아 귀족들의 카드 게임 「트리온피」에서 시작된 타로는, 18세기 유럽 신비주의자들에 의해 점술 도구로 재탄생했습니다.
                 1910년 아서 에드워드 웨이트와 화가 파멜라 콜먼 스미스가 완성한 라이더-웨이트 덱이 오늘날 타로의 표준이 되었습니다.

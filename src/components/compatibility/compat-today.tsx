@@ -74,9 +74,9 @@ export function CompatToday(props: CompatTodayProps) {
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="blur-[3px] select-none pointer-events-none space-y-2">
-            <p className="text-sm">📅 오늘 가까이 지내기 좋은 날</p>
-            <p className="text-sm">💬 오늘 보내기 좋은 메시지 톤</p>
-            <p className="text-sm">⚠️ 오늘 하지 말아야 할 것</p>
+            <p className="text-sm">오늘 가까이 지내기 좋은 날</p>
+            <p className="text-sm">오늘 보내기 좋은 메시지 톤</p>
+            <p className="text-sm">오늘 하지 말아야 할 것</p>
           </div>
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
@@ -120,7 +120,7 @@ export function CompatToday(props: CompatTodayProps) {
 
           <div className="rounded-xl border border-border/60 bg-card/40 p-4 space-y-1.5">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-              ✨ 오늘의 접근법
+              오늘의 접근법
             </p>
             <p className="font-mystic leading-relaxed">{data.approach}</p>
           </div>
