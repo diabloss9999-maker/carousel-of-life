@@ -13,17 +13,22 @@ import { db } from "@/db";
 import {
   chatMessages,
   chatSessions,
+  dailyFortunes,
+  personalityCareerFit,
+  personalityStressProfile,
+  personalityTripleAnalysis,
   type ChatMessage,
   type ChatSession,
   type Profile,
 } from "@/db/schema";
-import { buildChatContext } from "@/lib/ai/prompts";
+import { buildChatContext, type ChatEnrichment } from "@/lib/ai/prompts";
 import {
   buildCharacterSystemPrompt,
   DEFAULT_CHARACTER,
   type CharacterId,
 } from "@/lib/chat/characters";
 import { ensureSajuCalculated } from "@/lib/saju/calculate";
+import { getTodayInSeoul } from "@/lib/usage/quota";
 import { FREE_DAILY_LIMITS } from "@/lib/constants";
 import { checkAndIncrementQuota } from "@/lib/usage/quota";
 
@@ -251,9 +256,38 @@ export async function prepareSendMessage(opts: {
   const isFirstTurn =
     history.filter((m) => m.role === "user").length === 1; // 방금 저장한 것 포함
 
-  // 캐릭터별 시스템 프롬프트 — 캐릭터가 있으면 캐릭터 프롬프트, 없으면 기본 페르소나.
   const characterId = (session.character ?? DEFAULT_CHARACTER) as CharacterId;
-  const userCtx = buildChatContext(profile);
+
+  // 첫 턴에만 전체 컨텍스트 로드 (사주심층·성격유형·오늘운세)
+  let userCtx = "";
+  if (isFirstTurn) {
+    const today = getTodayInSeoul();
+    const [tripleRow, stressRow, careerRow, fortuneRow] = await Promise.all([
+      db.select().from(personalityTripleAnalysis)
+        .where(eq(personalityTripleAnalysis.userId, profile.userId)).limit(1),
+      db.select().from(personalityStressProfile)
+        .where(eq(personalityStressProfile.userId, profile.userId)).limit(1),
+      db.select().from(personalityCareerFit)
+        .where(eq(personalityCareerFit.userId, profile.userId)).limit(1),
+      db.select().from(dailyFortunes)
+        .where(and(
+          eq(dailyFortunes.userId, profile.userId),
+          eq(dailyFortunes.fortuneDate, today),
+          eq(dailyFortunes.category, "general"),
+        )).limit(1),
+    ]);
+
+    const enrichment: ChatEnrichment = {
+      sajuDeep:           profile.sajuDeepReading as Record<string, string> | null,
+      personalityTriple:  tripleRow[0]?.data as Record<string, unknown> | null,
+      personalityStress:  stressRow[0]?.data as Record<string, unknown> | null,
+      personalityCareer:  careerRow[0]?.data as Record<string, unknown> | null,
+      todayFortune:       fortuneRow[0]?.content ?? null,
+    };
+
+    userCtx = buildChatContext(profile, enrichment);
+  }
+
   const systemPrompt = isFirstTurn
     ? buildCharacterSystemPrompt(characterId, userCtx)
     : buildCharacterSystemPrompt(characterId, "");

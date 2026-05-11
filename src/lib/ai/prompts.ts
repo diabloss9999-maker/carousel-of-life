@@ -388,15 +388,85 @@ ${ctx}
 }`;
 }
 
+export interface ChatEnrichment {
+  /** profile.sajuDeepReading 원본 */
+  sajuDeep?: Record<string, string> | null;
+  /** personality_triple_analysis.data */
+  personalityTriple?: Record<string, unknown> | null;
+  /** personality_stress_profile.data */
+  personalityStress?: Record<string, unknown> | null;
+  /** personality_career_fit.data */
+  personalityCareer?: Record<string, unknown> | null;
+  /** 오늘의 종합 운세 content */
+  todayFortune?: string | null;
+}
+
 /**
- * AI 도사 대화에 매번 함께 전달되는 사용자 컨텍스트.
+ * AI 주술사 채팅 첫 턴에 전달되는 풍부한 사용자 컨텍스트.
+ * 알고 있는 모든 정보를 주술사에게 넘긴다.
  */
 export function buildChatContext(
   profile: BuildContextOptions["profile"],
+  enrichment: ChatEnrichment = {},
 ): string {
-  return `[질문자 정보]
-${buildUserContext({ profile })}
+  const lines: string[] = [];
 
-이 사용자의 사주와 컨텍스트를 기억하고 답해주세요.
-짧게 질문하더라도 답을 길게 늘어놓지 말고, 운명의 핵심만 간결히 전합니다.`;
+  lines.push("[질문자 기본 정보]");
+  lines.push(buildUserContext({ profile }));
+
+  // 사주 심층 분석
+  if (enrichment.sajuDeep) {
+    const d = enrichment.sajuDeep;
+    lines.push("\n[사주 심층 분석 — 이미 알고 있는 정보]");
+    if (d.personality)  lines.push(`성격: ${d.personality}`);
+    if (d.strengths)    lines.push(`강점: ${d.strengths}`);
+    if (d.cautions)     lines.push(`주의: ${d.cautions}`);
+    if (d.loveStyle)    lines.push(`연애 스타일: ${d.loveStyle}`);
+    if (d.careerFit)    lines.push(`직업 적성: ${d.careerFit}`);
+    if (d.healthCare)   lines.push(`건강: ${d.healthCare}`);
+    if (d.lifeFlow)     lines.push(`인생 흐름: ${d.lifeFlow}`);
+  }
+
+  // 성격유형 통합 분석
+  if (enrichment.personalityTriple) {
+    const d = enrichment.personalityTriple as Record<string, string>;
+    lines.push("\n[사주×별자리×성격유형 통합 분석]");
+    if (d.convergence)    lines.push(`공통점: ${d.convergence}`);
+    if (d.contradiction)  lines.push(`모순: ${d.contradiction}`);
+    if (d.trueNature)     lines.push(`진짜 본성: ${d.trueNature}`);
+    if (d.uniqueStrength) lines.push(`독특한 강점: ${d.uniqueStrength}`);
+  }
+
+  // 스트레스 프로파일
+  if (enrichment.personalityStress) {
+    const d = enrichment.personalityStress as Record<string, unknown>;
+    lines.push("\n[스트레스 유형]");
+    if (Array.isArray(d.triggers) && d.triggers.length)
+      lines.push(`스트레스 유발: ${(d.triggers as string[]).join(", ")}`);
+    if (typeof d.collapsePattern === "string")
+      lines.push(`무너질 때 패턴: ${d.collapsePattern}`);
+  }
+
+  // 직업 적성
+  if (enrichment.personalityCareer) {
+    const d = enrichment.personalityCareer as Record<string, unknown>;
+    lines.push("\n[직업 적성]");
+    if (typeof d.bestEnvironment === "string")
+      lines.push(`잘 맞는 환경: ${d.bestEnvironment}`);
+    if (Array.isArray(d.fitRoles) && d.fitRoles.length)
+      lines.push(`잘 맞는 직군: ${(d.fitRoles as string[]).join(", ")}`);
+    if (typeof d.workStyle === "string")
+      lines.push(`업무 스타일: ${d.workStyle}`);
+  }
+
+  // 오늘의 운세
+  if (enrichment.todayFortune) {
+    lines.push("\n[오늘 받은 종합 운세]");
+    lines.push(enrichment.todayFortune.slice(0, 200));
+  }
+
+  lines.push("\n[지시]");
+  lines.push("위 정보를 바탕으로 대화해. 질문에 직접 답하되 너무 길게 늘어놓지 마. 모든 맥락을 이미 알고 있는 사이처럼 자연스럽게.");
+
+  return lines.join("\n");
 }
