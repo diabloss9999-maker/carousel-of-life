@@ -91,10 +91,10 @@ export async function POST(
   const currentPoints = affinityRow?.points ?? 0;
   const affinityCtx = affinityContext(characterId, currentPoints);
 
-  // 점술 요청 감지 + 카드 추첨 (실패해도 대화는 계속)
+  // 점술 요청 감지 + 카드 추첨 (이세계만 카드, 동양은 null)
   let reading = null;
   try {
-    reading = detectAndDraw(parsed.data.content);
+    reading = detectAndDraw(parsed.data.content, characterId);
   } catch { /* 카드 추첨 실패 시 무시하고 일반 대화로 진행 */ }
 
   const messages = prepared.messages;
