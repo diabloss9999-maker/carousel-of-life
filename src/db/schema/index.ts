@@ -615,6 +615,37 @@ export type Streak = typeof streaks.$inferSelect;
 export type NewStreak = typeof streaks.$inferInsert;
 
 // =============================================================================
+// daily_questions - 캐릭터가 매일 먼저 건네는 개인화 질문
+// =============================================================================
+
+export const dailyQuestions = pgTable(
+  "daily_questions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    /** KST 기준 날짜 (YYYY-MM-DD). */
+    questionDate: date("question_date").notNull(),
+    /** 질문을 건네는 캐릭터 ID (witch | child | sage). */
+    characterId: text("character_id").notNull(),
+    /** AI 가 생성한 오늘의 질문 본문. */
+    question: text("question").notNull(),
+    model: text("model"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    unique("daily_questions_user_date_uniq").on(t.userId, t.questionDate),
+    index("daily_questions_user_date_idx").on(t.userId, t.questionDate),
+  ],
+);
+
+export type DailyQuestion = typeof dailyQuestions.$inferSelect;
+export type NewDailyQuestion = typeof dailyQuestions.$inferInsert;
+
+// =============================================================================
 // 모든 테이블 export
 // =============================================================================
 
