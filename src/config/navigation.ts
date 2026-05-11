@@ -33,6 +33,6 @@ export const mainNav: NavItem[] = [
   { href: ROUTES.saju, label: "사주", icon: Compass, authOnly: true },
   { href: ROUTES.compatibility, label: "궁합", icon: Heart, authOnly: true },
   { href: ROUTES.personality as Route, label: "유형", icon: Brain, authOnly: true },
-  { href: ROUTES.collection as Route, label: "도감", icon: Library, authOnly: true },
+  { href: ROUTES.collection as Route, label: "컬렉션", icon: Library, authOnly: true },
   { href: ROUTES.settings, label: "설정", icon: Settings, authOnly: true },
 ];
