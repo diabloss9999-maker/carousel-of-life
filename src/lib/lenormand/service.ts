@@ -20,6 +20,8 @@ import {
   type LenormandReading,
   type Profile,
 } from "@/db/schema";
+import { CHARACTER_CARD_VOICE, CHARACTER_PROSE_VOICE } from "@/lib/ai/character-voice";
+import { getTodayCharacter } from "@/lib/daily-question/rotation";
 import { generateJson, generateMarkdown } from "@/lib/ai/generate";
 import { buildUserContext } from "@/lib/ai/prompts";
 import { lenormandSingleAiSchema } from "@/lib/ai/types";
@@ -176,8 +178,7 @@ ${spreadInstruction}
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.fortuneMaxTokens,
-      systemSuffix:
-        "당신은 숙련된 르노르망 카드 리더입니다. 카드 의미는 제공된 정의만 사용하세요. 사람이 자연스럽게 이야기하듯 대화체로 작성하고, 이모지·##·**·* 등 마크다운 기호와 빈 줄 삽입을 금지합니다. JSON으로만 응답하세요.",
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
     });
   } catch (e) {
     return {
@@ -281,8 +282,7 @@ ${CARD_DEFS}
       userPrompt,
       model: AI_MODELS.fast,
       maxTokens: 1500,
-      systemSuffix:
-        "당신은 숙련된 르노르망 카드 리더입니다. 카드 의미는 제공된 정의만 사용합니다. 사람이 자연스럽게 이야기하듯 대화체로 작성하세요. 이모지·##·**·* 등 마크다운 기호 사용 금지. 빈 줄 삽입 금지. 줄바꿈은 문단 전환 시 한 번만.",
+      systemSuffix: CHARACTER_PROSE_VOICE[getTodayCharacter()],
     });
   } catch (e) {
     return {
@@ -416,8 +416,7 @@ ${CARD_DEFS}
       userPrompt,
       model: AI_MODELS.fast,
       maxTokens: 2000,
-      systemSuffix:
-        "당신은 숙련된 르노르망 카드 리더입니다. 카드 의미는 제공된 정의만 사용합니다. 사람이 자연스럽게 이야기하듯 대화체로 작성하세요. 이모지·##·**·* 등 마크다운 기호 사용 금지. 빈 줄 삽입 금지. 줄바꿈은 문단 전환 시 한 번만.",
+      systemSuffix: CHARACTER_PROSE_VOICE[getTodayCharacter()],
     });
   } catch (e) {
     return {

@@ -3,6 +3,8 @@ import Image from "next/image";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { RuneReading } from "@/db/schema";
 import { RUNE_BY_ID } from "@/lib/runes/cards";
+import { CHARACTERS } from "@/lib/chat/characters";
+import { getTodayCharacter } from "@/lib/daily-question/rotation";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -84,12 +86,26 @@ export function RuneReadingCard({ reading }: Props) {
   const runes = (Array.isArray(reading.runes) ? reading.runes : []).filter(
     isRuneEntry,
   );
-
   const spreadType = reading.spreadType;
+  const readDate = reading.createdAt instanceof Date
+    ? reading.createdAt.toISOString().slice(0, 10)
+    : String(reading.createdAt).slice(0, 10);
+  const charId = getTodayCharacter(readDate);
+  const character = CHARACTERS[charId];
 
   return (
     <Card className="app-surface">
       <CardHeader className="space-y-3 pb-3">
+        {/* 캐릭터 배지 */}
+        <div className="flex items-center gap-2">
+          <div className="relative h-10 w-7 overflow-hidden rounded-lg shadow-sm flex-shrink-0">
+            <Image src={character.imageSrc} alt={character.name} fill className="object-cover object-top" sizes="28px" />
+          </div>
+          <div>
+            <p className="font-mystic text-xs font-semibold text-foreground/80">{character.name}</p>
+            <p className="text-[10px] text-muted-foreground">{character.title}</p>
+          </div>
+        </div>
         {spreadType === "single" ? (
           <div className="flex justify-center">
             {runes[0] ? <RuneCell entry={runes[0]} size="lg" /> : null}

@@ -31,6 +31,8 @@ import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { ensureSajuCalculated } from "@/lib/saju/calculate";
 import { drawCards, type DrawnCard } from "@/lib/tarot/draw";
 import { checkAndIncrementQuota } from "@/lib/usage/quota";
+import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
+import { getTodayCharacter } from "@/lib/daily-question/rotation";
 
 export type TarotResult =
   | {
@@ -90,7 +92,7 @@ export async function createSingleTarot(opts: {
       }),
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.tarotMaxTokens,
-      systemSuffix: "당신은 라이더-웨이트 전통의 숙련된 타로 리더입니다. 카드 의미는 제공된 정의만 사용하고, 마크다운 없이 JSON으로만 응답하세요.",
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
     });
   } catch (e) {
     return {
@@ -166,7 +168,7 @@ export async function createThreeCardTarot(opts: {
       }),
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.tarotMaxTokens * 2,
-      systemSuffix: "당신은 라이더-웨이트 전통의 숙련된 타로 리더입니다. 카드 의미는 제공된 정의만 사용하고, 마크다운 없이 JSON으로만 응답하세요.",
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
     });
   } catch (e) {
     return {

@@ -20,6 +20,8 @@ import {
   type Profile,
   type RuneReading,
 } from "@/db/schema";
+import { CHARACTER_PROSE_VOICE } from "@/lib/ai/character-voice";
+import { getTodayCharacter } from "@/lib/daily-question/rotation";
 import { generateMarkdown } from "@/lib/ai/generate";
 import { buildUserContext } from "@/lib/ai/prompts";
 import { AI_MODELS } from "@/lib/constants";
@@ -217,8 +219,7 @@ ${spreadInstruction}
       userPrompt,
       model: AI_MODELS.fast,
       maxTokens: MAX_TOKENS[opts.spreadType],
-      systemSuffix:
-        "당신은 숙련된 엘더 푸타르크 룬 리더입니다. 룬 의미는 제공된 정의만 사용합니다. 사람이 자연스럽게 이야기하듯 대화체로 작성하세요. 이모지·##·**·* 등 마크다운 기호 사용 금지. 빈 줄 삽입 금지. 줄바꿈은 문단 전환 시 한 번만.",
+      systemSuffix: CHARACTER_PROSE_VOICE[getTodayCharacter()],
     });
   } catch (e) {
     return {

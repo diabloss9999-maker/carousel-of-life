@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   Card,
   CardContent,
@@ -10,6 +11,8 @@ import {
 import { SaveImageButton } from "@/components/shared/save-image-button";
 import { ShareButton } from "@/components/shared/share-button";
 import type { TarotReading } from "@/db/schema";
+import { CHARACTERS } from "@/lib/chat/characters";
+import { getTodayCharacter } from "@/lib/daily-question/rotation";
 import { formatKoreanDate } from "@/lib/utils";
 
 interface TarotReadingCardProps {
@@ -36,13 +39,29 @@ function asDrawnCards(cards: unknown): DrawnCardJson[] {
 export function TarotReadingCard({ reading }: TarotReadingCardProps) {
   const cards = asDrawnCards(reading.cards);
   const card = cards[0];
+  const readDate = reading.createdAt instanceof Date
+    ? reading.createdAt.toISOString().slice(0, 10)
+    : String(reading.createdAt).slice(0, 10);
+  const charId = getTodayCharacter(readDate);
+  const character = CHARACTERS[charId];
 
   return (
     <Card className="app-surface">
       <CardHeader className="space-y-3">
-        <p className="text-xs uppercase tracking-wider text-muted-foreground">
-          {formatKoreanDate(new Date(reading.createdAt))}
-        </p>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="relative h-10 w-7 overflow-hidden rounded-lg shadow-sm flex-shrink-0">
+              <Image src={character.imageSrc} alt={character.name} fill className="object-cover object-top" sizes="28px" />
+            </div>
+            <div>
+              <p className="font-mystic text-xs font-semibold text-foreground/80">{character.name}</p>
+              <p className="text-[10px] text-muted-foreground">{character.title}</p>
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            {formatKoreanDate(new Date(reading.createdAt))}
+          </p>
+        </div>
         {reading.question ? (
           <p className="font-mystic text-base text-foreground/80 italic">
             “{reading.question}”
