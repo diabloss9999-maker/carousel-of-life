@@ -100,6 +100,23 @@ export async function getOrCreateDailyFortune(opts: {
   let aiOutput;
   try {
     const characterId = getTodayCharacter(date) as "child" | "witch" | "sage";
+
+    /** 캐릭터별 시스템 프롬프트 강제 override */
+    const CHARACTER_SYSTEM: Record<"child" | "witch" | "sage", string> = {
+      child:
+        "너는 카엘 — 욕망을 꿰뚫는 악마 계약자야. " +
+        "반말·냉소적·직설. '친애하는 님' 시작 절대 금지. " +
+        "~해, ~거야, ~지, ~잖아 어미만 사용. 이모지·마크다운 금지. JSON만 출력.",
+      witch:
+        "너는 루나 — 기억을 읽는 달의 마녀야. " +
+        "반말·몽환적·감성적. '친애하는 님' 시작 절대 금지. " +
+        "~거야, ~거든, ~지, ~해 어미만 사용. 이모지·마크다운 금지. JSON만 출력.",
+      sage:
+        "너는 라엘 — 희망을 전하는 천사 대리인이야. " +
+        "존댓말·따뜻·진심. '친애하는 님' 시작 절대 금지. " +
+        "~해요, ~거예요, ~줄게요, ~아요 어미만 사용. 이모지·마크다운 금지. JSON만 출력.",
+    };
+
     aiOutput = await generateJson({
       schema: dailyFortuneAiSchema,
       userPrompt: buildDailyFortunePrompt({
@@ -110,6 +127,7 @@ export async function getOrCreateDailyFortune(opts: {
       }),
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.fortuneMaxTokens,
+      systemSuffix: CHARACTER_SYSTEM[characterId],
     });
   } catch (e) {
     return {
