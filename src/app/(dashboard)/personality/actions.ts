@@ -19,6 +19,8 @@ import {
 } from "@/db/schema";
 import { requireProfile } from "@/lib/auth/get-user";
 import { generateJson } from "@/lib/ai/generate";
+import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
+import { getTodayCharacter } from "@/lib/daily-question/rotation";
 import {
   careerFitSchema,
   type CareerFitOutput,
@@ -99,7 +101,7 @@ export async function generateTripleAnalysisAction(): Promise<TripleAnalysisStat
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 800,
-      systemSuffix: "마크다운 없이 JSON만 응답하세요.",
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
     });
 
     if (cached) {
@@ -181,7 +183,7 @@ ${profile.mbti} 유형이 스트레스를 받을 때 어떻게 무너지는지 +
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 800,
-      systemSuffix: "마크다운 없이 JSON만 응답하세요.",
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
     });
 
     if (cached) {
@@ -264,7 +266,7 @@ ${profile.mbti} 유형 기반으로 어떤 업무 환경·직군이 잘 맞는�
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 800,
-      systemSuffix: "마크다운 없이 JSON만 응답하세요.",
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
     });
 
     if (cached) {

@@ -1,4 +1,5 @@
-﻿import {
+﻿import Image from "next/image";
+import {
   Brain,
   Briefcase,
   Heart,
@@ -17,6 +18,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { SajuDeepReading } from "@/lib/saju/deep-reading";
+import { CHARACTERS } from "@/lib/chat/characters";
+import { getTodayCharacter } from "@/lib/daily-question/rotation";
 
 interface DeepReadingCardProps {
   reading: SajuDeepReading;
@@ -81,13 +84,27 @@ const SECTIONS: Array<{
 ];
 
 export function DeepReadingCard({ reading }: DeepReadingCardProps) {
+  const charId = getTodayCharacter();
+  const character = CHARACTERS[charId];
+
   return (
     <div className="space-y-4">
       <Card className="app-surface ring-1 ring-accent/15">
         <CardHeader>
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-accent" aria-hidden />
-            <CardTitle className="font-mystic text-xl">심층 분석</CardTitle>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-accent" aria-hidden />
+              <CardTitle className="font-mystic text-xl">심층 분석</CardTitle>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="relative h-10 w-7 overflow-hidden rounded-lg shadow-sm flex-shrink-0">
+                <Image src={character.imageSrc} alt={character.name} fill className="object-cover object-top" sizes="28px" />
+              </div>
+              <div>
+                <p className="font-mystic text-xs font-semibold text-foreground/80">{character.name}</p>
+                <p className="text-[10px] text-muted-foreground">{character.title}</p>
+              </div>
+            </div>
           </div>
           <CardDescription>
             한 번 적힌 풀이는 평생 곁에 있어. 마음에 담아두고 가끔 다시 펼쳐봐.

@@ -5,6 +5,7 @@
  *
  * 한 번 생성되면 영구 저장되어 동일 결과를 평생 보여준다.
  */
+import Image from "next/image";
 import { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
 import { Layers, Loader2, Lock, Sparkles } from "lucide-react";
@@ -17,6 +18,8 @@ import {
   type TripleAnalysisState,
 } from "@/app/(dashboard)/personality/actions";
 import type { TripleAnalysisOutput } from "@/lib/ai/types";
+import { CHARACTERS } from "@/lib/chat/characters";
+import { getTodayCharacter } from "@/lib/daily-question/rotation";
 
 interface TripleAnalysisProps {
   subscribed: boolean;
@@ -83,13 +86,23 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
   }
 
   if (data) {
+    const charId = getTodayCharacter();
+    const character = CHARACTERS[charId];
     return (
       <Card className="app-surface">
         <CardHeader>
-          <CardTitle className="font-mystic flex items-center gap-2 text-base">
-            <Layers className="h-4 w-4 text-accent" />
-            사주 × 별자리 × 성격유형 통합 분석
-          </CardTitle>
+          <div className="flex items-center justify-between gap-2">
+            <CardTitle className="font-mystic flex items-center gap-2 text-base">
+              <Layers className="h-4 w-4 text-accent" />
+              사주 × 별자리 × 성격유형 통합 분석
+            </CardTitle>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <div className="relative h-9 w-6 overflow-hidden rounded-lg shadow-sm">
+                <Image src={character.imageSrc} alt={character.name} fill className="object-cover object-top" sizes="24px" />
+              </div>
+              <p className="font-mystic text-[10px] font-semibold text-foreground/70">{character.name}</p>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="rounded-xl border border-accent/25 bg-accent/5 p-4 space-y-1.5">
