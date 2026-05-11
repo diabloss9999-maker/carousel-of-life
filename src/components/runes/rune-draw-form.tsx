@@ -79,7 +79,7 @@ export function RuneDrawForm({ subscribed }: Props) {
             )}
           >
             <Image
-              src="/collection/card_back.png"
+              src="/collection/card_back_runes.png"
               alt="룬 뒷면"
               fill
               className="object-cover"

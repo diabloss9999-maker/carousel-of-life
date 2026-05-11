@@ -79,7 +79,7 @@ export function LenormandDrawForm({ subscribed }: Props) {
             )}
           >
             <Image
-              src="/collection/card_back.png"
+              src="/collection/card_back_lenormand.png"
               alt="르노르망 카드 뒷면"
               fill
               className="object-cover"
