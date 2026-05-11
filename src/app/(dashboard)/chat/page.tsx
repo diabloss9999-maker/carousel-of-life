@@ -10,6 +10,7 @@ import { CharacterSelect } from "@/components/chat/character-select";
 import { requireProfile } from "@/lib/auth/get-user";
 import { listTodaySessions } from "@/lib/chat/service";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import { getAllAffinities } from "@/lib/affinity/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { formatKoreanDate } from "@/lib/utils";
 import { CHARACTERS } from "@/lib/chat/characters";
@@ -22,11 +23,16 @@ export const metadata: Metadata = {
 export default async function ChatPage() {
   const { profile } = await requireProfile();
 
-  const [sessions, usage, subscribed] = await Promise.all([
+  const [sessions, usage, subscribed, affinityRows] = await Promise.all([
     listTodaySessions(profile.userId),
     getTodayUsage(profile.userId),
     hasActiveSubscription(profile.userId),
+    getAllAffinities(profile.userId),
   ]);
+
+  const affinities = Object.fromEntries(
+    affinityRows.map((a) => [a.characterId, a.points]),
+  );
 
   return (
     <div className="space-y-8">
@@ -49,7 +55,7 @@ export default async function ChatPage() {
       {/* 캐릭터 선택 카드 */}
       <Card className="app-surface">
         <CardContent className="pt-5">
-          <CharacterSelect />
+          <CharacterSelect affinities={affinities} />
         </CardContent>
       </Card>
 

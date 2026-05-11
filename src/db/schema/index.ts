@@ -646,6 +646,37 @@ export type DailyQuestion = typeof dailyQuestions.$inferSelect;
 export type NewDailyQuestion = typeof dailyQuestions.$inferInsert;
 
 // =============================================================================
+// character_affinities - 캐릭터별 친밀도 포인트
+// =============================================================================
+
+export const characterAffinities = pgTable(
+  "character_affinities",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    /** witch | child | sage */
+    characterId: text("character_id").notNull(),
+    /** 누적 대화 포인트. */
+    points: integer("points").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    unique("character_affinities_user_char_uniq").on(t.userId, t.characterId),
+    index("character_affinities_user_idx").on(t.userId),
+  ],
+);
+
+export type CharacterAffinity = typeof characterAffinities.$inferSelect;
+export type NewCharacterAffinity = typeof characterAffinities.$inferInsert;
+
+// =============================================================================
 // 모든 테이블 export
 // =============================================================================
 

@@ -15,6 +15,12 @@ import {
   saveAssistantMessage,
 } from "@/lib/chat/service";
 import { AI_LIMITS, AI_MODELS } from "@/lib/constants";
+import {
+  addAffinityPoint,
+  affinityContext,
+  getAffinity,
+} from "@/lib/affinity/service";
+import type { CharacterId } from "@/lib/chat/characters";
 import { API_ERROR_CODES } from "@/types/api";
 
 export const runtime = "nodejs";
@@ -75,21 +81,41 @@ export async function POST(
     );
   }
 
+  // 친밀도 포인트 가산 + 프롬프트 맥락 주입
+  const characterId = (prepared.systemPrompt.includes("카엘")
+    ? "child"
+    : prepared.systemPrompt.includes("루나")
+      ? "witch"
+      : "sage") as CharacterId;
+
+  const [affinityRow] = await Promise.all([
+    getAffinity(profile.userId, characterId),
+  ]);
+  const currentPoints = affinityRow?.points ?? 0;
+  const affinityCtx = affinityContext(characterId, currentPoints);
+
+  // 시스템 프롬프트 뒤에 친밀도 맥락 추가
+  const enrichedSystem = prepared.systemPrompt + affinityCtx;
+
   const stream = streamChat({
     model: AI_MODELS.chat,
     maxTokens: AI_LIMITS.chatMaxTokens,
-    system: prepared.systemPrompt,
+    system: enrichedSystem,
     messages: prepared.messages,
     onComplete: async ({ fullText, inputTokens, outputTokens }) => {
       if (fullText.trim().length === 0) return;
-      await saveAssistantMessage({
-        sessionId,
-        userId: prepared.profile.userId,
-        content: fullText,
-        inputTokens,
-        outputTokens,
-        model: AI_MODELS.chat,
-      });
+      await Promise.all([
+        saveAssistantMessage({
+          sessionId,
+          userId: prepared.profile.userId,
+          content: fullText,
+          inputTokens,
+          outputTokens,
+          model: AI_MODELS.chat,
+        }),
+        // AI 응답 완료 시 친밀도 +1
+        addAffinityPoint(prepared.profile.userId, characterId),
+      ]);
     },
   });
 

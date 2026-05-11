@@ -6,11 +6,13 @@ import { ArrowLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ChatWindow, type InitialMessage } from "@/components/chat/chat-window";
+import { AffinityBar } from "@/components/affinity/affinity-bar";
 import { requireProfile } from "@/lib/auth/get-user";
 import {
   getSessionForUser,
   getSessionMessages,
 } from "@/lib/chat/service";
+import { getAffinity } from "@/lib/affinity/service";
 import { CHARACTERS, type CharacterId } from "@/lib/chat/characters";
 import { ROUTES } from "@/lib/constants";
 
@@ -35,15 +37,21 @@ export default async function ChatSessionPage({
   });
   if (!session) notFound();
 
-  const messages = await getSessionMessages(sessionId);
+  const charId = (session.character ?? "witch") as CharacterId;
+  const character = CHARACTERS[charId] ?? CHARACTERS.witch;
+
+  const [messages, affinityRow] = await Promise.all([
+    getSessionMessages(sessionId),
+    getAffinity(profile.userId, charId),
+  ]);
+
   const initial: InitialMessage[] = messages.map((m) => ({
     id: m.id,
     role: m.role as "user" | "assistant",
     content: m.content,
   }));
 
-  const charId = (session.character ?? "witch") as CharacterId;
-  const character = CHARACTERS[charId] ?? CHARACTERS.witch;
+  const affinityPoints = affinityRow?.points ?? 0;
 
   return (
     <div className="space-y-4">
@@ -92,9 +100,10 @@ export default async function ChatSessionPage({
               priority
             />
           </div>
-          <div className="text-center space-y-0.5 shrink-0">
+          <div className="text-center space-y-2 shrink-0 w-full">
             <p className="font-mystic font-bold text-sm text-foreground/90">{character.name}</p>
             <p className="text-[10px] text-muted-foreground">{character.title}</p>
+            <AffinityBar characterId={charId} points={affinityPoints} compact />
           </div>
         </div>
 

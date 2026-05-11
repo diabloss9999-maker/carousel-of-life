@@ -10,10 +10,15 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { Loader2 } from "lucide-react";
 
+import { AffinityBar } from "@/components/affinity/affinity-bar";
 import { CHARACTERS, type CharacterId } from "@/lib/chat/characters";
 import { cn } from "@/lib/utils";
 
-export function CharacterSelect() {
+interface CharacterSelectProps {
+  affinities?: Record<string, number>; // characterId → points
+}
+
+export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
   const router = useRouter();
   const [selected, setSelected] = useState<CharacterId | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -76,7 +81,7 @@ export function CharacterSelect() {
               </div>
 
               {/* 이름·직함·설명 */}
-              <div className="space-y-0.5 w-full">
+              <div className="space-y-1.5 w-full">
                 <p className="font-mystic font-semibold text-xs sm:text-sm leading-tight">
                   {char.name}
                 </p>
@@ -86,6 +91,12 @@ export function CharacterSelect() {
                 <p className="hidden sm:block text-[10px] text-muted-foreground/70 leading-tight line-clamp-2">
                   {char.description}
                 </p>
+                {/* 친밀도 바 */}
+                <AffinityBar
+                  characterId={char.id}
+                  points={affinities[char.id] ?? 0}
+                  compact
+                />
               </div>
             </button>
           );
