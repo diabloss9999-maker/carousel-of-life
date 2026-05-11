@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 /** Vercel Hobby 최대 허용치(30s) — AI 궁합 풀이 타임아웃 방지. */
 export const maxDuration = 30;
 
+import { ChineseZodiacCompatPanel } from "@/components/compatibility/chinese-zodiac-compat-panel";
 import { CompatibilityCard } from "@/components/compatibility/compatibility-card";
 import { CompatibilityForm } from "@/components/compatibility/compatibility-form";
 import { CompatibilityHub } from "@/components/compatibility/compatibility-hub";
@@ -11,13 +12,13 @@ import { TwoPersonCompat } from "@/components/compatibility/two-person-compat";
 import { ZodiacCompatPanel } from "@/components/compatibility/zodiac-compat-panel";
 import { requireProfile } from "@/lib/auth/get-user";
 import { getTodayCompatibility } from "@/lib/compatibility/service";
-import { getZodiacSign } from "@/lib/fortunes/zodiac";
+import { getChineseZodiac, getZodiacSign } from "@/lib/fortunes/zodiac";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import type { PersonalityType } from "@/lib/personality/questions";
 
 export const metadata: Metadata = {
   title: "궁합",
-  description: "사주·별자리·성격유형으로 보는 궁합 풀이.",
+  description: "사주·별자리·띠·성격유형으로 보는 궁합 풀이.",
 };
 
 const MBTI_PATTERN = /^[EI][NS][TF][JP]$/;
@@ -29,6 +30,7 @@ export default async function CompatibilityPage() {
   const recentReadings = await getTodayCompatibility(profile.userId);
 
   const myZodiac = getZodiacSign(profile.birthDate);
+  const myChineseZodiac = getChineseZodiac(profile.birthDate);
   const myMbti =
     profile.mbti && MBTI_PATTERN.test(profile.mbti.toUpperCase())
       ? (profile.mbti.toUpperCase() as PersonalityType)
@@ -59,7 +61,7 @@ export default async function CompatibilityPage() {
           궁합
         </h1>
         <p className="text-sm text-muted-foreground">
-          사주·별자리·성격유형으로 두 사람의 운명을 살펴봐.
+          사주·별자리·띠·성격유형으로 두 사람의 운명을 살펴봐.
         </p>
       </header>
 
@@ -67,6 +69,9 @@ export default async function CompatibilityPage() {
         newReading={newPanel}
         twoPerson={<TwoPersonCompat subscribed={subscribed} />}
         zodiac={<ZodiacCompatPanel myZodiac={myZodiac.id} />}
+        chineseZodiac={
+          <ChineseZodiacCompatPanel myChineseZodiac={myChineseZodiac.id} />
+        }
         mbti={<MbtiCompatPanel myMbti={myMbti} />}
       />
     </div>

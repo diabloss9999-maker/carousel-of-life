@@ -44,7 +44,7 @@ export function MbtiCompatPanel({ myMbti }: MbtiCompatPanelProps) {
       <CardHeader>
         <CardTitle className="font-mystic flex items-center gap-2 text-lg">
           <BookHeart className="h-5 w-5 text-accent" aria-hidden />
-          MBTI 궁합
+          성격유형 궁합
         </CardTitle>
         <CardDescription className="text-xs">
           {myMbti
