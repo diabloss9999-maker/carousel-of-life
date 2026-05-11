@@ -68,6 +68,8 @@ const CATEGORY_ORDER: CollectionCategory[] = [
   "chineseZodiac",
   "cheongan",
   "characters",
+  "lenormand",
+  "runes",
 ];
 
 /** 카테고리 + 카드 메타 결합 — 정렬된 평면 리스트. */
@@ -144,7 +146,9 @@ export function CollectionView({
     tabCounts.zodiac.owned +
     tabCounts.chineseZodiac.owned +
     tabCounts.cheongan.owned +
-    tabCounts.characters.owned;
+    tabCounts.characters.owned +
+    tabCounts.lenormand.owned +
+    tabCounts.runes.owned;
 
   // ESC 모달 닫기
   useEffect(() => {
