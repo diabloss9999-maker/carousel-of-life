@@ -17,7 +17,6 @@ import {
   type ChatSession,
   type Profile,
 } from "@/db/schema";
-import { MYSTIC_PERSONA } from "@/lib/ai/personas";
 import { buildChatContext } from "@/lib/ai/prompts";
 import {
   buildCharacterSystemPrompt,
