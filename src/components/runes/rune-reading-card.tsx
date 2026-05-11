@@ -40,10 +40,10 @@ function RuneCell({
 
   const widthClass =
     size === "lg"
-      ? "w-32 sm:w-40"
+      ? "w-44 sm:w-56"
       : size === "sm"
-        ? "w-full"
-        : "w-20 sm:w-24";
+        ? "w-24 sm:w-28"
+        : "w-44 sm:w-56";
 
   return (
     <div
@@ -63,7 +63,7 @@ function RuneCell({
           alt={`${rune.name} (${rune.nameKo})`}
           fill
           className={cn("object-cover", entry.isReversed && "rotate-180")}
-          sizes="(max-width: 640px) 30vw, 160px"
+          sizes="(max-width: 640px) 176px, 224px"
         />
       </div>
       <p className="text-center text-[9px] text-muted-foreground">

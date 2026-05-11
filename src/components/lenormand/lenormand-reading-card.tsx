@@ -56,33 +56,35 @@ export function LenormandReadingCard({ reading }: Props) {
       <CardHeader className="space-y-3 pb-3">
         {/* 카드 레이아웃 — 스프레드별 분기 */}
         {spreadType === "nine" ? (
-          <div className="grid grid-cols-3 gap-2 place-items-center">
-            {cards.map((entry, i) => {
-              const card = LENORMAND_BY_ID[entry.id];
-              if (!card) return null;
-              const isCenter = i === 4;
-              return (
-                <div
-                  key={`nine-${i}-${entry.id}`}
-                  className={cn(
-                    "flex flex-col items-center gap-0.5 rounded-lg p-0.5",
-                    isCenter && "ring-2 ring-amber-400/60",
-                  )}
-                >
-                  <div className="relative w-24 aspect-[2/3] overflow-hidden rounded-xl border border-border/40">
-                    <Image
-                      src={card.imageSrc}
-                      alt={card.nameKo}
-                      fill
-                      className="object-cover"
-                      sizes="96px"
-                    />
+          <div className="overflow-x-auto">
+            <div className="grid grid-cols-3 gap-2 w-fit mx-auto">
+              {cards.map((entry, i) => {
+                const card = LENORMAND_BY_ID[entry.id];
+                if (!card) return null;
+                const isCenter = i === 4;
+                return (
+                  <div
+                    key={`nine-${i}-${entry.id}`}
+                    className={cn(
+                      "flex flex-col items-center gap-1 rounded-xl p-0.5",
+                      isCenter && "ring-2 ring-amber-400/60",
+                    )}
+                  >
+                    <div className="relative w-24 sm:w-28 aspect-[2/3] overflow-hidden rounded-xl border border-border/40">
+                      <Image
+                        src={card.imageSrc}
+                        alt={card.nameKo}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width:640px) 96px, 112px"
+                      />
+                    </div>
+                    <p className="text-center text-[10px] text-muted-foreground">{nineLabel(i)}</p>
+                    <p className="text-center text-[10px] font-medium text-foreground/80">{card.nameKo}</p>
                   </div>
-                  <p className="text-center text-[9px] text-muted-foreground leading-none">{nineLabel(i)}</p>
-                  <p className="text-center text-[9px] font-medium text-foreground/80 leading-none">{card.nameKo}</p>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         ) : spreadType === "grand_tableau" ? (
           <div className="space-y-3">
@@ -164,16 +166,16 @@ export function LenormandReadingCard({ reading }: Props) {
                   key={`${entry.position}-${entry.id}`}
                   className="flex flex-col items-center gap-1"
                 >
-                  <div className="relative w-24 aspect-[2/3] overflow-hidden rounded-xl border border-border/40">
+                  <div className="relative w-44 sm:w-56 aspect-[2/3] overflow-hidden rounded-xl border border-border/40">
                     <Image
                       src={card.imageSrc}
                       alt={card.nameKo}
                       fill
                       className="object-cover"
-                      sizes="96px"
+                      sizes="(max-width:640px) 176px, 224px"
                     />
                   </div>
-                  <p className="text-[10px] text-muted-foreground">
+                  <p className="text-[11px] text-muted-foreground">
                     {POSITION_LABEL[entry.position] ?? entry.position}
                   </p>
                 </div>
