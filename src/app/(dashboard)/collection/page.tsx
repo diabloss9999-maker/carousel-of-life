@@ -13,7 +13,7 @@ import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 export const metadata: Metadata = {
   title: "컬렉션",
   description:
-    "매일 카드 뽑기로 모으는 나만의 카드 도감 — 191장 컬렉션.",
+    "매일 카드 뽑기로 모으는 나만의 카드 도감 — 194장 컬렉션.",
 };
 
 /**
@@ -47,7 +47,7 @@ export default async function CollectionPage() {
               내 컬렉션
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              매일 카드를 뽑아 191장 도감을 모아봐.
+              매일 카드를 뽑아 194장 도감을 모아봐.
             </p>
           </div>
           <div className="text-right">

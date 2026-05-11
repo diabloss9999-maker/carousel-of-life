@@ -336,8 +336,9 @@ export const CHEONGAN_CARDS: CollectionCardMeta[] = CHEONGAN_ORDER.map(
   },
 );
 
-/** 주술사 캐릭터 3장 메타데이터. */
+/** 주술사 캐릭터 6장 메타데이터 — 이세계 3 + 동양 3. */
 export const CHARACTER_CARDS: CollectionCardMeta[] = [
+  // 이세계
   {
     id: "witch",
     category: "characters",
@@ -366,6 +367,37 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     imageSrc: "/characters/sage_v2.png",
     description:
       "하늘의 뜻을 전하는 천상의 대리인. 빛과 희망의 언어로 당신의 길을 밝혀준다.",
+    rarity: "legendary",
+  },
+  // 동양 — 《월식경》
+  {
+    id: "shaman",
+    category: "characters",
+    nameKo: "소령",
+    nameEn: "Soryeong",
+    imageSrc: "/characters/shaman_v1.png",
+    description:
+      "한 번 죽었다 신들에게 되살린 접신의 무녀. 인간도 신도 아닌 경계의 존재로, 신령의 목소리를 모두 들을 수 있다.",
+    rarity: "legendary",
+  },
+  {
+    id: "taoist",
+    category: "characters",
+    nameKo: "현도",
+    nameEn: "Hyundo",
+    imageSrc: "/characters/taoist_v1.png",
+    description:
+      "500년 전 금기를 써서 시간에서 지워진 도사. 천기역전을 쓸 때마다 소령과 귀염의 기억이 사라진다.",
+    rarity: "legendary",
+  },
+  {
+    id: "dokkaebi",
+    category: "characters",
+    nameKo: "귀염",
+    nameEn: "Gwieyeom",
+    imageSrc: "/characters/dokkaebi_v1.png",
+    description:
+      "소령을 살리기 위해 스스로 귀왕이 된 도깨비. 진짜 이름을 잃었고, 그 사실을 소령은 모른다.",
     rarity: "legendary",
   },
 ];
@@ -425,7 +457,7 @@ export const CATEGORY_META: Record<
   runes:         { label: "룬",      emoji: "", cardBackSrc: "/collection/card_back_runes.png" },
 };
 
-/** 전체 카드 수 (191장 보장 — 르노르망 36 + 룬 24 포함). */
+/** 전체 카드 수 (194장 — 이세계 3 + 동양 3 주술사 추가). */
 export const TOTAL_CARDS =
   TAROT_CARDS.length +
   MBTI_CARDS.length +
@@ -436,8 +468,8 @@ export const TOTAL_CARDS =
   LENORMAND_COLLECTION_CARDS.length +
   RUNE_COLLECTION_CARDS.length;
 
-if (TOTAL_CARDS !== 191) {
+if (TOTAL_CARDS !== 194) {
   throw new Error(
-    `컬렉션 카드 수 오류: 기대 191, 실제 ${TOTAL_CARDS}`,
+    `컬렉션 카드 수 오류: 기대 194, 실제 ${TOTAL_CARDS}`,
   );
 }
