@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { MessageBubble } from "@/components/chat/message-bubble";
 import { ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import type { CharacterId } from "@/lib/chat/characters";
 
 /** 한 메시지 최대 글자 수. 서버 zod schema 와 동기화 유지. */
 const MAX_MESSAGE_LENGTH = 100;
@@ -23,6 +24,8 @@ export interface InitialMessage {
 interface ChatWindowProps {
   sessionId: string;
   initialMessages: InitialMessage[];
+  characterId?: CharacterId;
+  onDeleteRequest?: () => void;
 }
 
 interface DisplayMessage {
@@ -32,7 +35,42 @@ interface DisplayMessage {
   isStreaming?: boolean;
 }
 
-export function ChatWindow({ sessionId, initialMessages }: ChatWindowProps) {
+/** 캐릭터별 채팅창 색상 테마. */
+const CHARACTER_THEME: Record<
+  CharacterId,
+  { surface: string; ring: string; input: string; send: string }
+> = {
+  child: {
+    // 카엘 — 붉은색
+    surface: "bg-red-950/25 border border-red-800/30",
+    ring:    "ring-red-700/40",
+    input:   "border-red-800/30 bg-red-950/20 focus-visible:ring-red-700/40",
+    send:    "bg-red-700 hover:bg-red-600 text-white",
+  },
+  witch: {
+    // 루나 — 푸른색
+    surface: "bg-blue-950/25 border border-blue-800/30",
+    ring:    "ring-blue-700/40",
+    input:   "border-blue-800/30 bg-blue-950/20 focus-visible:ring-blue-700/40",
+    send:    "bg-blue-700 hover:bg-blue-600 text-white",
+  },
+  sage: {
+    // 라엘 — 황금색
+    surface: "bg-amber-950/20 border border-amber-700/30",
+    ring:    "ring-amber-600/40",
+    input:   "border-amber-700/30 bg-amber-950/15 focus-visible:ring-amber-600/40",
+    send:    "bg-amber-600 hover:bg-amber-500 text-white",
+  },
+};
+
+const DEFAULT_THEME = CHARACTER_THEME.witch;
+
+export function ChatWindow({
+  sessionId,
+  initialMessages,
+  characterId,
+  onDeleteRequest,
+}: ChatWindowProps) {
   const router = useRouter();
   const [messages, setMessages] = useState<DisplayMessage[]>(initialMessages);
   const [input, setInput] = useState("");
@@ -40,6 +78,8 @@ export function ChatWindow({ sessionId, initialMessages }: ChatWindowProps) {
   const [isPending, startTransition] = useTransition();
   const [isStreaming, setIsStreaming] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const theme = characterId ? (CHARACTER_THEME[characterId] ?? DEFAULT_THEME) : DEFAULT_THEME;
 
   // 새 메시지 또는 청크가 들어올 때 스크롤 맨 아래로.
   useEffect(() => {
@@ -85,9 +125,6 @@ export function ChatWindow({ sessionId, initialMessages }: ChatWindowProps) {
         setMessages((prev) =>
           prev.filter((m) => m.id !== assistantId && m.id !== userId),
         );
-        if (res.status === 429) {
-          // 한도 초과 — error 표시 그대로 두고 끝.
-        }
         return;
       }
 
@@ -115,7 +152,6 @@ export function ChatWindow({ sessionId, initialMessages }: ChatWindowProps) {
         ),
       );
 
-      // 메시지 저장 후 사용량 표시 갱신을 위해 페이지 데이터 refetch.
       startTransition(() => {
         router.refresh();
       });
@@ -130,6 +166,10 @@ export function ChatWindow({ sessionId, initialMessages }: ChatWindowProps) {
   }
 
   async function handleDelete() {
+    if (onDeleteRequest) {
+      onDeleteRequest();
+      return;
+    }
     if (!confirm("이 대화를 삭제할까요? 되돌릴 수 없어요.")) return;
     const res = await fetch(`/api/chat/sessions/${sessionId}`, {
       method: "DELETE",
@@ -143,7 +183,8 @@ export function ChatWindow({ sessionId, initialMessages }: ChatWindowProps) {
   const charsLeft = MAX_MESSAGE_LENGTH - input.length;
 
   return (
-    <div className="flex h-[calc(100vh-11rem)] flex-col gap-4">
+    <div className="flex h-[calc(100vh-11rem)] flex-col gap-3">
+      {/* 삭제 버튼 */}
       <div className="flex items-center justify-end">
         <Button
           variant="ghost"
@@ -155,9 +196,13 @@ export function ChatWindow({ sessionId, initialMessages }: ChatWindowProps) {
         </Button>
       </div>
 
+      {/* 메시지 영역 */}
       <div
         ref={scrollRef}
-        className="app-surface flex-1 space-y-4 overflow-y-auto rounded-xl p-4"
+        className={cn(
+          "flex-1 space-y-4 overflow-y-auto rounded-xl p-4 backdrop-blur-sm",
+          theme.surface,
+        )}
       >
         {messages.length === 0 ? (
           <div className="flex h-full items-center justify-center text-center text-sm text-muted-foreground">
@@ -195,8 +240,14 @@ export function ChatWindow({ sessionId, initialMessages }: ChatWindowProps) {
         </div>
       ) : null}
 
+      {/* 입력창 */}
       <form onSubmit={handleSend} className="flex flex-col gap-1.5">
-        <div className="flex gap-2 rounded-xl border border-border/45 bg-card/35 p-1.5 shadow-sm backdrop-blur">
+        <div
+          className={cn(
+            "flex gap-2 rounded-xl border p-1.5 shadow-sm backdrop-blur",
+            theme.input,
+          )}
+        >
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -209,6 +260,7 @@ export function ChatWindow({ sessionId, initialMessages }: ChatWindowProps) {
             type="submit"
             disabled={isStreaming || isPending || input.trim().length === 0}
             size="lg"
+            className={theme.send}
           >
             {isStreaming ? (
               <Loader2 className="h-4 w-4 animate-spin" aria-hidden />

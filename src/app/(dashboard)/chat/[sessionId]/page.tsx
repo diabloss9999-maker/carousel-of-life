@@ -47,21 +47,40 @@ export default async function ChatSessionPage({
 
   return (
     <div className="space-y-4">
-      {/* 뒤로가기 + 제목 */}
-      <header className="space-y-1">
-        <Button asChild variant="ghost" size="sm" className="-ml-2">
-          <Link href={ROUTES.chat}>
-            <ArrowLeft className="h-4 w-4" aria-hidden /> 지난 대화
-          </Link>
-        </Button>
-        <h1 className="font-mystic text-2xl font-semibold tracking-tight">
-          {session.title}
-        </h1>
+      {/* 헤더: 뒤로가기 + 제목 */}
+      <header className="flex items-center justify-between gap-2">
+        <div className="space-y-0.5">
+          <Button asChild variant="ghost" size="sm" className="-ml-2">
+            <Link href={ROUTES.chat}>
+              <ArrowLeft className="h-4 w-4" aria-hidden /> 지난 대화
+            </Link>
+          </Button>
+          <h1 className="font-mystic text-2xl font-semibold tracking-tight">
+            {session.title}
+          </h1>
+        </div>
       </header>
 
-      {/* 좌측 캐릭터 이미지 + 우측 대화창 */}
+      {/* 모바일: 캐릭터 컴팩트 뱃지 */}
+      <div className="flex md:hidden items-center gap-2">
+        <div className="relative w-8 h-12 overflow-hidden rounded-lg flex-shrink-0 ring-1 ring-amber-200/20">
+          <Image
+            src={character.imageSrc}
+            alt={character.name}
+            fill
+            className="object-cover"
+            sizes="32px"
+          />
+        </div>
+        <div>
+          <p className="font-mystic font-bold text-sm">{character.name}</p>
+          <p className="text-[10px] text-muted-foreground">{character.title}</p>
+        </div>
+      </div>
+
+      {/* 데스크톱: 좌측 캐릭터 이미지 + 우측 대화창 */}
       <div className="flex gap-4 items-start">
-        {/* 캐릭터 이미지 — 데스크톱에서만 좌측 고정 표시 */}
+        {/* 캐릭터 이미지 — 데스크톱 전용, sticky */}
         <div className="hidden md:flex flex-col items-center gap-3 sticky top-20 flex-shrink-0 w-40">
           <div className="relative w-full aspect-[2/3] overflow-hidden rounded-2xl shadow-xl ring-1 ring-amber-200/20">
             <Image
@@ -79,26 +98,13 @@ export default async function ChatSessionPage({
           </div>
         </div>
 
-        {/* 모바일: 상단에 캐릭터 컴팩트 뱃지 */}
-        <div className="flex md:hidden items-center gap-2 w-full mb-1">
-          <div className="relative w-8 h-12 overflow-hidden rounded-lg flex-shrink-0 ring-1 ring-amber-200/20">
-            <Image
-              src={character.imageSrc}
-              alt={character.name}
-              fill
-              className="object-cover"
-              sizes="32px"
-            />
-          </div>
-          <div>
-            <p className="font-mystic font-bold text-sm">{character.name}</p>
-            <p className="text-[10px] text-muted-foreground">{character.title}</p>
-          </div>
-        </div>
-
         {/* 대화창 */}
         <div className="flex-1 min-w-0">
-          <ChatWindow sessionId={sessionId} initialMessages={initial} />
+          <ChatWindow
+            sessionId={sessionId}
+            initialMessages={initial}
+            characterId={charId}
+          />
         </div>
       </div>
     </div>
