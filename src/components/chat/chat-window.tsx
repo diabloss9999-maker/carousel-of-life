@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader2, Send, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { MessageBubble, type DrawnCardMeta } from "@/components/chat/message-bubble";
 import { ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -64,8 +63,28 @@ export function ChatWindow({
   const [isPending, startTransition] = useTransition();
   const [isStreaming, setIsStreaming] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const theme = characterId ? (CHARACTER_THEME[characterId] ?? DEFAULT_THEME) : DEFAULT_THEME;
+
+  /** textarea 높이 자동 조절 */
+  const adjustHeight = useCallback(() => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
+  }, []);
+
+  /** Enter = 전송 / Shift+Enter = 줄바꿈 */
+  function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      if (input.trim() && !isStreaming) {
+        const form = e.currentTarget.closest("form");
+        form?.requestSubmit();
+      }
+    }
+  }
 
   // 새 메시지 또는 청크가 들어올 때 스크롤 맨 아래로.
   useEffect(() => {
@@ -86,6 +105,11 @@ export function ChatWindow({
 
     setError(null);
     setInput("");
+    // 높이 리셋 + 재포커스
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.focus();
+    }
 
     const userId = crypto.randomUUID();
     const assistantId = crypto.randomUUID();
@@ -255,13 +279,18 @@ export function ChatWindow({
             theme.input,
           )}
         >
-          <Input
+          <textarea
+            ref={textareaRef}
             value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="궁금한 걸 물어봐 (100자 이내)"
+            onChange={(e) => { setInput(e.target.value); adjustHeight(); }}
+            onKeyDown={handleKeyDown}
+            placeholder="궁금한 걸 물어봐 (Enter 전송 · Shift+Enter 줄바꿈)"
             disabled={isStreaming}
             maxLength={MAX_MESSAGE_LENGTH}
-            className="flex-1 border-transparent bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+            rows={1}
+            autoFocus
+            className="flex-1 resize-none bg-transparent text-sm outline-none placeholder:text-muted-foreground/60 py-2 px-1 leading-relaxed"
+            style={{ minHeight: "36px", maxHeight: "120px" }}
           />
           <Button
             type="submit"
