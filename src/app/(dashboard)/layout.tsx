@@ -32,10 +32,10 @@ export default async function DashboardLayout({
         className="sticky top-0 z-40 pt-safe"
         style={{
           background: `url("/nav/desktop_nav_bg.svg") center / 100% 64px no-repeat,
-                       linear-gradient(to bottom, rgba(251,247,239,.9), rgba(251,247,239,.82))`,
-          boxShadow: "0 10px 28px rgba(43,33,56,.08)",
-          backdropFilter: "blur(18px)",
-          WebkitBackdropFilter: "blur(18px)",
+                       linear-gradient(to bottom, rgba(255,252,247,.92), rgba(255,252,247,.84))`,
+          boxShadow: "0 8px 22px rgba(36,29,47,.07)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
         } as React.CSSProperties}
       >
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">

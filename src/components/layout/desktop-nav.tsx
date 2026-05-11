@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 import { mainNav, type NavItem } from "@/config/navigation";
 import { cn } from "@/lib/utils";
 
-const NAV_ACTIVE = "#2b2138";
-const NAV_MUTED  = "#706579";
+const NAV_ACTIVE = "#241d2f";
+const NAV_MUTED  = "#756d7c";
 
 export function DesktopNav() {
   const pathname = usePathname();
@@ -37,7 +37,7 @@ export function DesktopNav() {
                   ? {
                       background: NAV_ACTIVE,
                       color: "#ffffff",
-                      boxShadow: "0 6px 16px rgba(43,33,56,.18)",
+                      boxShadow: "0 5px 14px rgba(36,29,47,.14)",
                     }
                   : { color: NAV_MUTED }
               }
