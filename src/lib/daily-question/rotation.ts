@@ -4,7 +4,7 @@
  */
 import type { CharacterId } from "@/lib/chat/characters";
 
-const CHARACTER_ROTATION: CharacterId[] = ["child", "witch", "sage"];
+const CHARACTER_ROTATION: CharacterId[] = ["child", "witch", "sage", "shaman", "taoist", "dokkaebi"];
 
 function dayOfYear(dateStr: string): number {
   const d = new Date(dateStr);

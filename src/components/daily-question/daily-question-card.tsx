@@ -22,21 +22,12 @@ interface DailyQuestionCardProps {
 
 /** 캐릭터별 테마 색상. */
 const CHARACTER_THEME: Record<CharacterId, { border: string; bg: string; button: string }> = {
-  child: {
-    border: "border-red-800/30",
-    bg:     "bg-red-950/15",
-    button: "bg-red-700 hover:bg-red-600 text-white",
-  },
-  witch: {
-    border: "border-blue-800/30",
-    bg:     "bg-blue-950/15",
-    button: "bg-blue-700 hover:bg-blue-600 text-white",
-  },
-  sage: {
-    border: "border-amber-700/30",
-    bg:     "bg-amber-950/10",
-    button: "bg-amber-600 hover:bg-amber-500 text-white",
-  },
+  child:    { border: "border-red-800/30",    bg: "bg-red-950/15",    button: "bg-red-700 hover:bg-red-600 text-white" },
+  witch:    { border: "border-blue-800/30",   bg: "bg-blue-950/15",   button: "bg-blue-700 hover:bg-blue-600 text-white" },
+  sage:     { border: "border-amber-700/30",  bg: "bg-amber-950/10",  button: "bg-amber-600 hover:bg-amber-500 text-white" },
+  shaman:   { border: "border-rose-700/30",   bg: "bg-rose-950/10",   button: "bg-rose-700 hover:bg-rose-600 text-white" },
+  taoist:   { border: "border-cyan-800/30",   bg: "bg-cyan-950/10",   button: "bg-cyan-700 hover:bg-cyan-600 text-white" },
+  dokkaebi: { border: "border-purple-800/30", bg: "bg-purple-950/15", button: "bg-purple-700 hover:bg-purple-600 text-white" },
 };
 
 export function DailyQuestionCard({ characterId, question }: DailyQuestionCardProps) {

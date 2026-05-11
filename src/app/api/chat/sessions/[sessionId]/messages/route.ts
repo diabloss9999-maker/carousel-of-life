@@ -77,11 +77,15 @@ export async function POST(
   }
 
   // 친밀도 맥락
-  const characterId = (prepared.systemPrompt.includes("카엘")
-    ? "child"
-    : prepared.systemPrompt.includes("루나")
-      ? "witch"
-      : "sage") as CharacterId;
+  const characterId = (
+    prepared.systemPrompt.includes("카엘")    ? "child"    :
+    prepared.systemPrompt.includes("루나")    ? "witch"    :
+    prepared.systemPrompt.includes("라엘")    ? "sage"     :
+    prepared.systemPrompt.includes("소령")    ? "shaman"   :
+    prepared.systemPrompt.includes("현도")    ? "taoist"   :
+    prepared.systemPrompt.includes("귀염")    ? "dokkaebi" :
+    "witch"
+  ) as CharacterId;
 
   const affinityRow = await getAffinity(profile.userId, characterId);
   const currentPoints = affinityRow?.points ?? 0;

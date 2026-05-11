@@ -17,9 +17,12 @@ interface AffinityBarProps {
 
 /** 캐릭터별 진행 바 색상 */
 const BAR_COLOR: Record<CharacterId, string> = {
-  child: "bg-red-500",
-  witch: "bg-blue-500",
-  sage:  "bg-amber-500",
+  child:    "bg-red-500",
+  witch:    "bg-blue-500",
+  sage:     "bg-amber-500",
+  shaman:   "bg-rose-500",
+  taoist:   "bg-cyan-500",
+  dokkaebi: "bg-purple-500",
 };
 
 export function AffinityBar({ characterId, points, compact = false }: AffinityBarProps) {

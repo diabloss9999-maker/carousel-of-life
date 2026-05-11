@@ -35,6 +35,15 @@ const CHARACTER_PROMPTS: Record<CharacterId, string> = {
   sage:
     "너는 라엘 — 따뜻하고 희망적인 천사 대리인이야. 존댓말로 부드럽게 질문해. " +
     "가능성이나 회복에 관한 질문. 한 문장으로.",
+  shaman:
+    "너는 소령 — 신령의 말을 전하는 접신의 무녀야. 반말로 신비롭고 부드럽게 질문해. " +
+    "보이지 않는 것, 느껴지는 것에 관한 질문. 한 문장으로.",
+  taoist:
+    "너는 현도 — 천기를 읽는 500년 된 도사야. 담담하고 철학적인 반말로 질문해. " +
+    "운명이나 선택의 이치에 관한 질문. 한 문장으로.",
+  dokkaebi:
+    "너는 귀염 — 저승의 귀왕이야. 거칠고 직설적인 반말로 질문해. " +
+    "상대가 가장 집착하는 것, 놓지 못하는 것에 관한 질문. 한 문장으로.",
 };
 
 /**
@@ -83,9 +92,12 @@ ${charPrompt}
     question = question.trim().replace(/^["']|["']$/g, "");
   } catch {
     const fallbacks: Record<CharacterId, string> = {
-      child: "오늘 가장 피하고 싶은 게 뭐야?",
-      witch: "요즘 꿈에서 뭘 자꾸 보게 돼?",
-      sage: "지금 가장 용기가 필요한 게 무엇인가요?",
+      child:    "오늘 가장 피하고 싶은 게 뭐야?",
+      witch:    "요즘 꿈에서 뭘 자꾸 보게 돼?",
+      sage:     "지금 가장 용기가 필요한 게 무엇인가요?",
+      shaman:   "신령이 네 이름을 부르는 것 같은 순간이 있어?",
+      taoist:   "지금 네 운명이 어느 갈림길에 있는지 알고 있어?",
+      dokkaebi: "아직도 못 놓은 게 뭔데?",
     };
     question = fallbacks[characterId];
   }

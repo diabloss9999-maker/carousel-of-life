@@ -14,9 +14,14 @@ export interface AffinityLevel {
 const AFFINITY_THRESHOLDS = [0, 10, 30, 60, 100] as const;
 
 export const LEVEL_LABELS: Record<CharacterId, string[]> = {
-  child: ["계약 이전", "관심의 시작", "균열의 접점", "피의 계약", "하나의 운명"],
-  witch: ["달빛 아래", "기억의 흔적", "감정의 파도", "달과 인연",  "기억의 연"],
-  sage:  ["첫 인사",   "빛의 인도",   "하늘의 신뢰", "천상의 언약", "하늘의 약속"],
+  // 이세계
+  child:     ["계약 이전",  "관심의 시작", "균열의 접점", "피의 계약",  "하나의 운명"],
+  witch:     ["달빛 아래",  "기억의 흔적", "감정의 파도", "달과 인연",  "기억의 연"],
+  sage:      ["첫 인사",    "빛의 인도",   "하늘의 신뢰", "천상의 언약", "하늘의 약속"],
+  // 동양
+  shaman:    ["첫 울림",    "신령의 눈짓", "방울의 화답", "인연의 실",  "신과 인간 사이"],
+  taoist:    ["일면지교",   "천기의 단서", "도의 흐름",   "운명의 독해", "천기통달"],
+  dokkaebi:  ["대가 이전",  "빚의 시작",   "원혼의 끈",   "귀왕의 인정", "대가 없는 인연"],
 };
 
 export function calcLevel(characterId: CharacterId, points: number): AffinityLevel {
