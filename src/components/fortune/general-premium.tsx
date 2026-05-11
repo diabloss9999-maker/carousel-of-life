@@ -333,7 +333,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
               <p className="text-xs font-semibold text-emerald-400">
-                ✓ 오늘 해야 할 것
+                오늘 해야 할 것
               </p>
               {data.doList.map((item, i) => (
                 <div key={i} className="flex items-start gap-1.5">
@@ -348,7 +348,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
             </div>
             <div className="space-y-2">
               <p className="text-xs font-semibold text-red-400">
-                ✕ 오늘 피해야 할 것
+                오늘 피해야 할 것
               </p>
               {data.dontList.map((item, i) => (
                 <div key={i} className="flex items-start gap-1.5">

@@ -241,7 +241,7 @@ async function processNine(opts: {
   const cardLines = drawnCards
     .map((c, i) => {
       const role =
-        i === 4 ? "★중심" : i < 3 ? "상단/과거" : i < 6 ? "중단/현재" : "하단/미래";
+        i === 4 ? "중심" : i < 3 ? "상단/과거" : i < 6 ? "중단/현재" : "하단/미래";
       return `[${i}] ${c.id}번 ${c.nameKo} — ${c.keywords.slice(0, 3).join("·")} (${role})`;
     })
     .join("\n");
@@ -363,7 +363,7 @@ async function processGrandTableau(opts: {
       .slice(r * 8, r * 8 + 8)
       .map((c, idx) => {
         const pos = r * 8 + idx;
-        const marker = pos === analysis.significatorPos ? "★" : " ";
+        const marker = pos === analysis.significatorPos ? "[시그]" : "";
         return `${marker}[${pos}] ${c.id}.${c.nameKo}`;
       })
       .join(" | ");
