@@ -77,14 +77,7 @@ export default function HomePage() {
       />
 
       <section className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-start gap-7 px-6 pt-20 pb-40 text-center sm:justify-center sm:pt-12 sm:pb-12">
-        <div className="flex items-center gap-2 rounded-full border border-white/40 bg-white/25 px-4 py-1.5 text-xs tracking-wide text-foreground backdrop-blur-md shadow-sm">
-          <Sparkles className="h-3.5 w-3.5 text-accent" aria-hidden />
-          <span className="font-medium drop-shadow-sm">
-            별의 흐름을 읽는 신비한 주술사
-          </span>
-        </div>
-
-        <h1 className="font-mystic text-balance text-5xl font-semibold leading-tight tracking-tight text-foreground sm:text-6xl drop-shadow-[0_2px_8px_rgba(60,30,100,0.3)]">
+<h1 className="font-mystic text-balance text-5xl font-semibold leading-tight tracking-tight text-foreground sm:text-6xl drop-shadow-[0_2px_8px_rgba(60,30,100,0.3)]">
           {siteConfig.name}
         </h1>
 
