@@ -1,16 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="64" viewBox="0 0 1440 64" fill="none" preserveAspectRatio="none">
-  <rect width="1440" height="64" fill="#FBF7EF" fill-opacity=".9"/>
-  <rect y="63" width="1440" height="1" fill="#2B2138" fill-opacity=".1"/>
-  <rect width="1440" height="1.5" fill="#D6B56D" fill-opacity=".45"/>
-  <path d="M0 0H1440V31C1244.5 21.5 1002 17 720 17C438 17 195.5 21.5 0 31V0Z" fill="url(#desktopGlow)" fill-opacity=".64"/>
-  <circle cx="152" cy="31" r="1.5" fill="#D6B56D" fill-opacity=".36"/>
-  <circle cx="1290" cy="30" r="1.5" fill="#D6B56D" fill-opacity=".32"/>
-  <path d="M718 8c5.2 6.5 5.2 12.5 0 19 8.7-1.8 13-5 13-9.5S726.7 9.8 718 8Z" fill="#2B2138" fill-opacity=".04"/>
+  <rect width="1440" height="64" fill="#FFFCF7" fill-opacity=".92"/>
+  <rect y="63" width="1440" height="1" fill="#241D2F" fill-opacity=".08"/>
+  <rect width="1440" height="1" fill="#FFFFFF" fill-opacity=".72"/>
+  <path d="M0 34C210 27.3 450 24 720 24C990 24 1230 27.3 1440 34V64H0V34Z" fill="url(#softShade)" fill-opacity=".36"/>
   <defs>
-    <linearGradient id="desktopGlow" x1="720" y1="0" x2="720" y2="38" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#FFFFFF"/>
-      <stop offset=".62" stop-color="#F4E4BE"/>
-      <stop offset="1" stop-color="#FBF7EF" stop-opacity="0"/>
+    <linearGradient id="softShade" x1="720" y1="24" x2="720" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="1" stop-color="#F3EADD"/>
     </linearGradient>
   </defs>
 </svg>
