@@ -97,6 +97,7 @@ export default async function ChatSessionPage({
               fill
               className="object-cover object-top"
               sizes="160px"
+              quality={90}
               priority
             />
           </div>

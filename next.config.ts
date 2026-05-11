@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
   typedRoutes: true,
 
   images: {
+    /** 기본 품질 90 — 캐릭터·카드 이미지 품질 확보 */
+    qualities: [75, 90, 95],
     remotePatterns: [
       // Supabase Storage 에 업로드된 이미지(타로카드, 사용자 아바타 등) 허용.
       {
