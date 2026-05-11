@@ -56,7 +56,7 @@ export function LenormandReadingCard({ reading }: Props) {
       <CardHeader className="space-y-3 pb-3">
         {/* 카드 레이아웃 — 스프레드별 분기 */}
         {spreadType === "nine" ? (
-          <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
+          <div className="grid grid-cols-3 gap-1">
             {cards.map((entry, i) => {
               const card = LENORMAND_BY_ID[entry.id];
               if (!card) return null;
@@ -65,23 +65,23 @@ export function LenormandReadingCard({ reading }: Props) {
                 <div
                   key={`nine-${i}-${entry.id}`}
                   className={cn(
-                    "flex flex-col items-center gap-1 rounded-xl p-0.5",
+                    "flex flex-col items-center gap-0.5 rounded-lg p-0.5",
                     isCenter && "ring-2 ring-amber-400/60",
                   )}
                 >
-                  <div className="relative aspect-[2/3] w-full overflow-hidden rounded-lg border border-border/40">
+                  <div className="relative w-full overflow-hidden rounded-md border border-border/40" style={{ aspectRatio: "2/3", maxHeight: "18vw" }}>
                     <Image
                       src={card.imageSrc}
                       alt={card.nameKo}
                       fill
                       className="object-cover"
-                      sizes="(max-width: 640px) 30vw, 160px"
+                      sizes="(max-width: 640px) 30vw, 120px"
                     />
                   </div>
-                  <p className="text-center text-[9px] text-muted-foreground">
+                  <p className="text-center text-[8px] text-muted-foreground leading-none">
                     {nineLabel(i)}
                   </p>
-                  <p className="text-center text-[9px] font-medium text-foreground/80">
+                  <p className="text-center text-[8px] font-medium text-foreground/80 leading-none">
                     {card.nameKo}
                   </p>
                 </div>
