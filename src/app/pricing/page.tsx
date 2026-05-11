@@ -102,11 +102,21 @@ export default async function PricingPage() {
             </div>
 
             <ul className="space-y-2 text-sm">
+              {/* 운세 */}
               <Bullet>오늘의 운세 무제한</Bullet>
-              <Bullet>타로 풀카드 스프레드 (켈틱 크로스 등)</Bullet>
-              <Bullet>주술사 문답 무제한</Bullet>
+              <Bullet>별자리·십이간지 운세</Bullet>
+              <Bullet>직장·건강·학업·사랑·종합 심층 리포트</Bullet>
+              {/* 카드 점술 */}
+              <Bullet>타로 풀카드 스프레드 (켈틱 크로스)</Bullet>
+              <Bullet>르노르망 9장·그랑 타블로</Bullet>
+              <Bullet>룬 5장·9장 스프레드</Bullet>
+              {/* 궁합 */}
               <Bullet>궁합 풀이 무제한</Bullet>
-              <Bullet>월간·연간 운세 리포트</Bullet>
+              <Bullet>타인 간 궁합 분석</Bullet>
+              {/* 기타 */}
+              <Bullet>사주 심층 분석 (평생 보관)</Bullet>
+              <Bullet>주술사 문답 무제한</Bullet>
+              <Bullet>카드 가챠 매일 3장</Bullet>
             </ul>
 
             {subscribed ? (
