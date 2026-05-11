@@ -56,7 +56,7 @@ export function LenormandReadingCard({ reading }: Props) {
       <CardHeader className="space-y-3 pb-3">
         {/* 카드 레이아웃 — 스프레드별 분기 */}
         {spreadType === "nine" ? (
-          <div className="grid grid-cols-3 gap-1">
+          <div className="grid grid-cols-3 gap-2 place-items-center">
             {cards.map((entry, i) => {
               const card = LENORMAND_BY_ID[entry.id];
               if (!card) return null;
@@ -69,21 +69,17 @@ export function LenormandReadingCard({ reading }: Props) {
                     isCenter && "ring-2 ring-amber-400/60",
                   )}
                 >
-                  <div className="relative w-full overflow-hidden rounded-md border border-border/40" style={{ aspectRatio: "2/3", maxHeight: "18vw" }}>
+                  <div className="relative w-24 aspect-[2/3] overflow-hidden rounded-xl border border-border/40">
                     <Image
                       src={card.imageSrc}
                       alt={card.nameKo}
                       fill
                       className="object-cover"
-                      sizes="(max-width: 640px) 30vw, 120px"
+                      sizes="96px"
                     />
                   </div>
-                  <p className="text-center text-[8px] text-muted-foreground leading-none">
-                    {nineLabel(i)}
-                  </p>
-                  <p className="text-center text-[8px] font-medium text-foreground/80 leading-none">
-                    {card.nameKo}
-                  </p>
+                  <p className="text-center text-[9px] text-muted-foreground leading-none">{nineLabel(i)}</p>
+                  <p className="text-center text-[9px] font-medium text-foreground/80 leading-none">{card.nameKo}</p>
                 </div>
               );
             })}
@@ -168,13 +164,13 @@ export function LenormandReadingCard({ reading }: Props) {
                   key={`${entry.position}-${entry.id}`}
                   className="flex flex-col items-center gap-1"
                 >
-                  <div className="relative aspect-[2/3] w-20 overflow-hidden rounded-xl border border-border/40 sm:w-24">
+                  <div className="relative w-24 aspect-[2/3] overflow-hidden rounded-xl border border-border/40">
                     <Image
                       src={card.imageSrc}
                       alt={card.nameKo}
                       fill
                       className="object-cover"
-                      sizes="(max-width: 640px) 80px, 96px"
+                      sizes="96px"
                     />
                   </div>
                   <p className="text-[10px] text-muted-foreground">
