@@ -481,7 +481,7 @@ function CardCell({ card, owned, onClick }: CardCellProps) {
   if (!owned) {
     return (
       <div
-        className="relative aspect-[2/3] overflow-hidden rounded-xl border border-border/30 cursor-default opacity-70"
+        className="relative aspect-[2/3] overflow-hidden rounded-xl border border-border/30 cursor-default"
         aria-label="미소장 카드"
       >
         <Image
