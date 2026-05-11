@@ -90,17 +90,14 @@ export async function POST(
   // 점술 요청 감지 + 카드 추첨
   const reading = detectAndDraw(parsed.data.content);
 
-  // 메시지 배열 — 카드 결과가 있으면 마지막 user 메시지에 카드 정보 삽입
-  let messages = prepared.messages;
-  if (reading) {
-    messages = messages.map((m, i) =>
-      i === messages.length - 1 && m.role === "user"
-        ? { ...m, content: `${m.content}\n\n${reading.promptText}` }
-        : m,
-    );
-  }
+  const messages = prepared.messages;
 
-  const enrichedSystem = prepared.systemPrompt + affinityCtx;
+  // 카드가 뽑혔으면 시스템 프롬프트에 주입 (유저 메시지보다 강하게 적용)
+  const cardSystemInject = reading
+    ? `\n\n[카드 읽기 — 지금 즉시 실행]\n${reading.promptText}`
+    : "";
+
+  const enrichedSystem = prepared.systemPrompt + affinityCtx + cardSystemInject;
 
   const aiStream = streamChat({
     model: AI_MODELS.chat,
