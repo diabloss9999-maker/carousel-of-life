@@ -80,10 +80,11 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                       <Image
                         src={char.imageSrc}
                         alt={char.name}
-                        width={1024}
-                        height={1536}
-                        unoptimized
+                        width={600}
+                        height={900}
+                        quality={90}
                         className="w-full h-auto transition-transform group-hover:scale-105"
+                        sizes="(max-width: 640px) 40vw, (max-width: 1024px) 22vw, 260px"
                       />
                       {isLoading && (
                         <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-xl">
