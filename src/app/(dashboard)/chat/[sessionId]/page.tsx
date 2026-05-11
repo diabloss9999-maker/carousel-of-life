@@ -78,28 +78,28 @@ export default async function ChatSessionPage({
         </div>
       </div>
 
-      {/* 데스크톱: 좌측 캐릭터 이미지 + 우측 대화창 */}
-      <div className="flex gap-4 items-start">
+      {/* 데스크톱: 좌측 캐릭터 이미지 + 우측 대화창 — 같은 높이 */}
+      <div className="flex gap-4 h-[calc(100vh-13rem)]">
         {/* 캐릭터 이미지 — 데스크톱 전용, sticky */}
-        <div className="hidden md:flex flex-col items-center gap-3 sticky top-20 flex-shrink-0 w-40">
-          <div className="relative w-full aspect-[2/3] overflow-hidden rounded-2xl shadow-xl ring-1 ring-amber-200/20">
+        <div className="hidden md:flex flex-col items-center gap-2 sticky top-20 flex-shrink-0 w-40 h-full">
+          <div className="relative w-full flex-1 overflow-hidden rounded-2xl shadow-xl ring-1 ring-amber-200/20">
             <Image
               src={character.imageSrc}
               alt={character.name}
               fill
-              className="object-cover"
+              className="object-cover object-top"
               sizes="160px"
               priority
             />
           </div>
-          <div className="text-center space-y-0.5">
+          <div className="text-center space-y-0.5 shrink-0">
             <p className="font-mystic font-bold text-sm text-foreground/90">{character.name}</p>
             <p className="text-[10px] text-muted-foreground">{character.title}</p>
           </div>
         </div>
 
         {/* 대화창 */}
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 h-full">
           <ChatWindow
             sessionId={sessionId}
             initialMessages={initial}

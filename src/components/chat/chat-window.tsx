@@ -183,7 +183,7 @@ export function ChatWindow({
   const charsLeft = MAX_MESSAGE_LENGTH - input.length;
 
   return (
-    <div className="flex h-[calc(100vh-11rem)] flex-col gap-3">
+    <div className="flex h-full flex-col gap-3">
       {/* 삭제 버튼 */}
       <div className="flex items-center justify-end">
         <Button
