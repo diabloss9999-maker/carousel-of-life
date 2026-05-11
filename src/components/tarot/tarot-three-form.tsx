@@ -95,7 +95,7 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
             <div
               key={i}
               className={cn(
-                "w-36 sm:w-44 -ml-14 first:ml-0 transition-opacity duration-500",
+                "w-24 sm:w-36 md:w-44 -ml-8 sm:-ml-12 first:ml-0 transition-opacity duration-500",
                 isPending && "opacity-60",
                 i === 1 ? "z-10" : "z-0",
               )}

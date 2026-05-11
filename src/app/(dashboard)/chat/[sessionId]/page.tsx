@@ -62,24 +62,24 @@ export default async function ChatSessionPage({
       </header>
 
       {/* 모바일: 캐릭터 컴팩트 뱃지 */}
-      <div className="flex md:hidden items-center gap-2">
-        <div className="relative w-8 h-12 overflow-hidden rounded-lg flex-shrink-0 ring-1 ring-amber-200/20">
+      <div className="flex md:hidden items-center gap-3 rounded-xl border border-border/30 bg-card/30 px-3 py-2 backdrop-blur">
+        <div className="relative w-10 h-14 overflow-hidden rounded-lg flex-shrink-0 ring-1 ring-border/40">
           <Image
             src={character.imageSrc}
             alt={character.name}
             fill
-            className="object-cover"
-            sizes="32px"
+            className="object-cover object-top"
+            sizes="40px"
           />
         </div>
         <div>
           <p className="font-mystic font-bold text-sm">{character.name}</p>
-          <p className="text-[10px] text-muted-foreground">{character.title}</p>
+          <p className="text-xs text-muted-foreground">{character.title}</p>
         </div>
       </div>
 
-      {/* 데스크톱: 좌측 캐릭터 이미지 + 우측 대화창 — 같은 높이 */}
-      <div className="flex gap-4 h-[calc(100vh-13rem)]">
+      {/* 데스크톱: 좌측 캐릭터 이미지 + 우측 대화창 — 같은 높이 / 모바일: 전체 차지 */}
+      <div className="flex gap-4 h-[calc(100vh-16rem)] md:h-[calc(100vh-13rem)]">
         {/* 캐릭터 이미지 — 데스크톱 전용, sticky */}
         <div className="hidden md:flex flex-col items-center gap-2 sticky top-20 flex-shrink-0 w-40 h-full">
           <div className="relative w-full flex-1 overflow-hidden rounded-2xl shadow-xl ring-1 ring-amber-200/20">

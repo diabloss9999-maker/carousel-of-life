@@ -40,7 +40,7 @@ export function CharacterSelect() {
       <p className="text-sm text-muted-foreground text-center">
         어떤 주술사와 대화할까?
       </p>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-2 sm:gap-4">
         {list.map((char) => {
           const isLoading = isPending && selected === char.id;
           return (
@@ -50,7 +50,7 @@ export function CharacterSelect() {
               onClick={() => handleSelect(char.id)}
               disabled={isPending}
               className={cn(
-                "group relative flex flex-col items-center gap-3 rounded-2xl border p-4 text-center transition-all",
+                "group relative flex flex-col items-center gap-2 rounded-2xl border p-2 sm:p-4 text-center transition-all",
                 "hover:border-primary/50 hover:bg-primary/5 hover:shadow-md",
                 "disabled:opacity-60 disabled:cursor-not-allowed",
                 selected === char.id
@@ -58,7 +58,7 @@ export function CharacterSelect() {
                   : "border-border/40 bg-card/50 backdrop-blur",
               )}
             >
-              {/* 캐릭터 이미지 — 원본 비율 전체 표시 */}
+              {/* 캐릭터 이미지 */}
               <div className="relative w-full rounded-xl shadow-sm overflow-hidden">
                 <Image
                   src={char.imageSrc}
@@ -66,24 +66,24 @@ export function CharacterSelect() {
                   width={1024}
                   height={1536}
                   className="w-full h-auto transition-transform group-hover:scale-105"
-                  sizes="(max-width: 640px) 33vw, 200px"
+                  sizes="(max-width: 640px) 30vw, 200px"
                 />
                 {isLoading && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-xl">
-                    <Loader2 className="h-8 w-8 text-white animate-spin" />
+                    <Loader2 className="h-6 w-6 sm:h-8 sm:w-8 text-white animate-spin" />
                   </div>
                 )}
               </div>
 
               {/* 이름·직함·설명 */}
-              <div className="space-y-0.5">
-                <p className="font-mystic font-semibold text-sm leading-tight">
+              <div className="space-y-0.5 w-full">
+                <p className="font-mystic font-semibold text-xs sm:text-sm leading-tight">
                   {char.name}
                 </p>
-                <p className="text-[11px] text-muted-foreground leading-tight">
+                <p className="text-[10px] sm:text-xs text-muted-foreground leading-tight">
                   {char.title}
                 </p>
-                <p className="text-[10px] text-muted-foreground/70 leading-tight line-clamp-2">
+                <p className="hidden sm:block text-[10px] text-muted-foreground/70 leading-tight line-clamp-2">
                   {char.description}
                 </p>
               </div>

@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 /**
  * 모바일 하단 네비게이션 바.
  *
- * - 현재 경로에 따라 활성 상태 표시
+ * - 8개 항목을 가로 스크롤로 표시 (스크롤바 숨김)
  * - Safe Area Inset (iPhone 홈 인디케이터 / Galaxy 제스처 바) 대응
  * - 터치 타깃 44px 이상 보장
  */
@@ -18,10 +18,15 @@ export function MobileNav() {
 
   return (
     <nav
-      className="sticky bottom-0 z-30 border-t border-border/45 bg-background/85 backdrop-blur-xl md:hidden"
+      className="sticky bottom-0 z-30 border-t border-border/45 bg-background/90 backdrop-blur-xl md:hidden"
       aria-label="하단 메뉴"
     >
-      <div className="mx-auto flex max-w-5xl items-stretch justify-around pb-safe">
+      <div
+        className={cn(
+          "flex items-stretch pb-safe",
+          "overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+        )}
+      >
         {mainNav.map((item) => {
           const Icon = item.icon;
           const isActive =
@@ -34,9 +39,9 @@ export function MobileNav() {
               href={item.href}
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "flex flex-1 flex-col items-center justify-center gap-[3px]",
-                "min-h-[44px] px-1 py-2 text-[10px] font-medium leading-none",
-                "transition-colors duration-150",
+                "flex min-w-[56px] flex-1 flex-col items-center justify-center gap-[3px]",
+                "min-h-[52px] px-1 py-2 text-[10px] font-medium leading-none",
+                "transition-colors duration-150 shrink-0",
                 isActive
                   ? "text-primary"
                   : "text-muted-foreground hover:text-foreground",
@@ -48,9 +53,11 @@ export function MobileNav() {
                   isActive && "bg-primary/12 scale-105",
                 )}
               >
-                <Icon className="h-[18px] w-[18px]" aria-hidden />
+                <Icon className="h-5 w-5" aria-hidden />
               </span>
-              <span className="truncate leading-none">{item.label}</span>
+              <span className="max-w-[52px] truncate leading-none text-center">
+                {item.label}
+              </span>
             </Link>
           );
         })}
