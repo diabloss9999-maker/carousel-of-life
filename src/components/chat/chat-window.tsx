@@ -7,7 +7,7 @@ import { Loader2, Send, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MessageBubble } from "@/components/chat/message-bubble";
+import { MessageBubble, type DrawnCardMeta } from "@/components/chat/message-bubble";
 import { ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import type { CharacterId } from "@/lib/chat/characters";
@@ -33,6 +33,7 @@ interface DisplayMessage {
   role: "user" | "assistant";
   content: string;
   isStreaming?: boolean;
+  cards?: DrawnCardMeta[];
 }
 
 /** 캐릭터별 채팅창 색상 테마. */
@@ -136,13 +137,33 @@ export function ChatWindow({
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let acc = "";
+      let cardsExtracted = false;
+      let drawnCards: DrawnCardMeta[] | undefined;
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         acc += decoder.decode(value, { stream: true });
+
+        // 첫 줄 "CARDS:{json}\n" 파싱
+        if (!cardsExtracted && acc.startsWith("CARDS:")) {
+          const newlineIdx = acc.indexOf("\n");
+          if (newlineIdx !== -1) {
+            try {
+              const jsonStr = acc.slice("CARDS:".length, newlineIdx);
+              drawnCards = JSON.parse(jsonStr) as DrawnCardMeta[];
+            } catch { /* ignore */ }
+            acc = acc.slice(newlineIdx + 1);
+            cardsExtracted = true;
+          }
+        }
+
         setMessages((prev) =>
-          prev.map((m) => (m.id === assistantId ? { ...m, content: acc } : m)),
+          prev.map((m) =>
+            m.id === assistantId
+              ? { ...m, content: acc, cards: drawnCards }
+              : m,
+          ),
         );
       }
 
@@ -219,6 +240,7 @@ export function ChatWindow({
               role={m.role}
               content={m.content}
               isStreaming={m.isStreaming}
+              cards={m.cards}
             />
           ))
         )}

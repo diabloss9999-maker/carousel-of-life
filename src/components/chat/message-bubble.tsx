@@ -1,45 +1,53 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Sparkles, User } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
+export interface DrawnCardMeta {
+  id: string;
+  nameKo: string;
+  nameEn?: string;
+  imageSrc: string;
+  isReversed?: boolean;
+  position?: string;
+}
+
 interface MessageBubbleProps {
   role: "user" | "assistant";
   content: string;
-  /** 스트리밍 중인 메시지 표시. */
   isStreaming?: boolean;
+  /** 점술 요청 시 뽑힌 카드 메타데이터 */
+  cards?: DrawnCardMeta[];
 }
 
 /** 마크다운 기호 및 과도한 빈 줄 제거. */
 function cleanContent(text: string): string {
   return text
-    .replace(/\*\*(.*?)\*\*/g, "$1")   // **볼드** → 텍스트만
-    .replace(/\*(.*?)\*/g, "$1")         // *이탤릭* → 텍스트만
-    .replace(/^#{1,6}\s+/gm, "")        // # 헤딩 제거
-    .replace(/^---+$/gm, "")            // --- 구분선 제거
-    .replace(/^>\s*/gm, "")             // > 인용 제거
-    .replace(/\n{3,}/g, "\n")           // 3줄 이상 연속 빈줄 → 1줄
-    .replace(/\n{2}/g, "\n")            // 빈 줄(이중 줄바꿈) → 1줄
+    .replace(/\*\*(.*?)\*\*/g, "$1")
+    .replace(/\*(.*?)\*/g, "$1")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/^---+$/gm, "")
+    .replace(/^>\s*/gm, "")
+    .replace(/\n{3,}/g, "\n")
+    .replace(/\n{2}/g, "\n")
     .trim();
 }
 
-/** 글자 하나씩 나오는 타자 효과 훅. */
 function useTypewriter(target: string, isStreaming: boolean) {
   const [displayed, setDisplayed] = useState(target);
 
   useEffect(() => {
-    // 스트리밍 완료 → 전체 즉시 표시
     if (!isStreaming) {
       setDisplayed(target);
       return;
     }
-    // 타겟보다 짧으면 한 글자씩 추가
     if (displayed.length < target.length) {
       const timer = setTimeout(() => {
         setDisplayed(target.slice(0, displayed.length + 1));
-      }, 18); // 글자당 18ms ≈ 55자/초
+      }, 18);
       return () => clearTimeout(timer);
     }
   }, [target, displayed, isStreaming]);
@@ -47,23 +55,14 @@ function useTypewriter(target: string, isStreaming: boolean) {
   return displayed;
 }
 
-export function MessageBubble({
-  role,
-  content,
-  isStreaming,
-}: MessageBubbleProps) {
+export function MessageBubble({ role, content, isStreaming, cards }: MessageBubbleProps) {
   const isAssistant = role === "assistant";
   const cleaned = cleanContent(content);
   const displayed = useTypewriter(cleaned, !!isStreaming);
   const isCursorVisible = isStreaming && displayed.length >= cleaned.length;
 
   return (
-    <div
-      className={cn(
-        "flex gap-3",
-        isAssistant ? "flex-row" : "flex-row-reverse",
-      )}
-    >
+    <div className={cn("flex gap-3", isAssistant ? "flex-row" : "flex-row-reverse")}>
       <div
         className={cn(
           "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border",
@@ -73,27 +72,52 @@ export function MessageBubble({
         )}
         aria-hidden
       >
-        {isAssistant ? (
-          <Sparkles className="h-4 w-4" />
-        ) : (
-          <User className="h-4 w-4" />
-        )}
+        {isAssistant ? <Sparkles className="h-4 w-4" /> : <User className="h-4 w-4" />}
       </div>
 
-      <div
-        className={cn(
-          "max-w-[85%] rounded-xl px-4 py-3 shadow-sm",
-          isAssistant
-            ? "border border-border/45 bg-card/62 backdrop-blur rounded-tl-sm"
-            : "border border-primary/25 bg-primary/14 rounded-tr-sm",
+      <div className="max-w-[85%] space-y-3">
+        {/* 카드 이미지 — 점술 요청 시 */}
+        {cards && cards.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {cards.map((card, i) => (
+              <div key={`${card.id}-${i}`} className="flex flex-col items-center gap-1">
+                {card.position && (
+                  <p className="text-[10px] text-muted-foreground">{card.position}</p>
+                )}
+                <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-lg ring-1 ring-border/40">
+                  <Image
+                    src={card.imageSrc}
+                    alt={card.nameKo}
+                    fill
+                    className={cn("object-cover", card.isReversed && "rotate-180")}
+                    sizes="96px"
+                  />
+                </div>
+                <p className="text-[10px] text-center text-foreground/70 font-medium">
+                  {card.nameKo}
+                  {card.isReversed ? " ⤵" : ""}
+                </p>
+              </div>
+            ))}
+          </div>
         )}
-      >
-        <p className="font-mystic whitespace-pre-line leading-relaxed text-foreground/90">
-          {displayed || (isStreaming ? "" : "...")}
-          {isCursorVisible && (
-            <span className="inline-block w-0.5 h-[1em] ml-0.5 bg-accent align-middle animate-pulse" />
+
+        {/* 텍스트 버블 */}
+        <div
+          className={cn(
+            "rounded-xl px-4 py-3 shadow-sm",
+            isAssistant
+              ? "border border-border/45 bg-card/62 backdrop-blur rounded-tl-sm"
+              : "border border-primary/25 bg-primary/14 rounded-tr-sm",
           )}
-        </p>
+        >
+          <p className="font-mystic whitespace-pre-line leading-relaxed text-foreground/90">
+            {displayed || (isStreaming ? "" : "...")}
+            {isCursorVisible && (
+              <span className="inline-block w-0.5 h-[1em] ml-0.5 bg-accent align-middle animate-pulse" />
+            )}
+          </p>
+        </div>
       </div>
     </div>
   );

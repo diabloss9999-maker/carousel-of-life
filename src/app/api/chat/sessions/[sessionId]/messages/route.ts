@@ -4,6 +4,7 @@
  * POST /api/chat/sessions/[sessionId]/messages
  *   body: { content: string }
  *   → text/plain stream
+ *   첫 줄이 "CARDS:{json}\n" 이면 카드 메타데이터 (점술 요청 시)
  */
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
@@ -20,6 +21,7 @@ import {
   affinityContext,
   getAffinity,
 } from "@/lib/affinity/service";
+import { detectAndDraw } from "@/lib/chat/reading-detector";
 import type { CharacterId } from "@/lib/chat/characters";
 import { API_ERROR_CODES } from "@/types/api";
 
@@ -65,43 +67,46 @@ export async function POST(
 
   if (!prepared.ok) {
     if (prepared.reason === "quota_exceeded") {
-      return jsonError(
-        429,
-        API_ERROR_CODES.QUOTA_EXCEEDED,
-        `오늘의 문답 한도(${prepared.max}회)를 모두 사용했어요.`,
-      );
+      return jsonError(429, API_ERROR_CODES.QUOTA_EXCEEDED,
+        `오늘의 문답 한도(${prepared.max}회)를 모두 사용했어요.`);
     }
     if (prepared.reason === "session_not_found") {
       return jsonError(404, API_ERROR_CODES.NOT_FOUND, prepared.message);
     }
-    return jsonError(
-      500,
-      API_ERROR_CODES.PROVIDER_ERROR,
-      prepared.message,
-    );
+    return jsonError(500, API_ERROR_CODES.PROVIDER_ERROR, prepared.message);
   }
 
-  // 친밀도 포인트 가산 + 프롬프트 맥락 주입
+  // 친밀도 맥락
   const characterId = (prepared.systemPrompt.includes("카엘")
     ? "child"
     : prepared.systemPrompt.includes("루나")
       ? "witch"
       : "sage") as CharacterId;
 
-  const [affinityRow] = await Promise.all([
-    getAffinity(profile.userId, characterId),
-  ]);
+  const affinityRow = await getAffinity(profile.userId, characterId);
   const currentPoints = affinityRow?.points ?? 0;
   const affinityCtx = affinityContext(characterId, currentPoints);
 
-  // 시스템 프롬프트 뒤에 친밀도 맥락 추가
+  // 점술 요청 감지 + 카드 추첨
+  const reading = detectAndDraw(parsed.data.content);
+
+  // 메시지 배열 — 카드 결과가 있으면 마지막 user 메시지에 카드 정보 삽입
+  let messages = prepared.messages;
+  if (reading) {
+    messages = messages.map((m, i) =>
+      i === messages.length - 1 && m.role === "user"
+        ? { ...m, content: `${m.content}\n\n${reading.promptText}` }
+        : m,
+    );
+  }
+
   const enrichedSystem = prepared.systemPrompt + affinityCtx;
 
-  const stream = streamChat({
+  const aiStream = streamChat({
     model: AI_MODELS.chat,
-    maxTokens: AI_LIMITS.chatMaxTokens,
+    maxTokens: reading ? 1200 : AI_LIMITS.chatMaxTokens,
     system: enrichedSystem,
-    messages: prepared.messages,
+    messages,
     onComplete: async ({ fullText, inputTokens, outputTokens }) => {
       if (fullText.trim().length === 0) return;
       await Promise.all([
@@ -113,17 +118,43 @@ export async function POST(
           outputTokens,
           model: AI_MODELS.chat,
         }),
-        // AI 응답 완료 시 친밀도 +1
         addAffinityPoint(prepared.profile.userId, characterId),
       ]);
     },
   });
 
-  return new Response(stream, {
+  // 카드가 있으면 스트림 앞에 CARDS: 이벤트 삽입
+  const finalStream = reading
+    ? prependCardEvent(reading.cards, aiStream)
+    : aiStream;
+
+  return new Response(finalStream, {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
       "Cache-Control": "no-store, no-cache, must-revalidate",
-      "X-Accel-Buffering": "no", // nginx 등 프록시 버퍼링 방지
+      "X-Accel-Buffering": "no",
+    },
+  });
+}
+
+/** AI 스트림 앞에 "CARDS:{json}\n" 이벤트를 붙인다. */
+function prependCardEvent(
+  cards: { id: string; nameKo: string; nameEn?: string; imageSrc: string; isReversed?: boolean; position?: string }[],
+  aiStream: ReadableStream<Uint8Array>,
+): ReadableStream<Uint8Array> {
+  const encoder = new TextEncoder();
+  const cardLine = `CARDS:${JSON.stringify(cards)}\n`;
+
+  return new ReadableStream({
+    async start(controller) {
+      controller.enqueue(encoder.encode(cardLine));
+      const reader = aiStream.getReader();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        controller.enqueue(value);
+      }
+      controller.close();
     },
   });
 }
