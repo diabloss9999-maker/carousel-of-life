@@ -16,26 +16,12 @@ import { generateMarkdown } from "@/lib/ai/generate";
 import { buildUserContext } from "@/lib/ai/prompts";
 import { AI_MODELS } from "@/lib/constants";
 import type { CharacterId } from "@/lib/chat/characters";
+import { getTodayCharacter } from "@/lib/daily-question/rotation";
+export { getTodayCharacter };
 
 /** KST 오늘 날짜 YYYY-MM-DD */
 function todayKst(): string {
   return new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Seoul" });
-}
-
-/** 날짜 문자열에서 day-of-year 계산 (캐릭터 순환용). */
-function dayOfYear(dateStr: string): number {
-  const d = new Date(dateStr);
-  const start = new Date(d.getFullYear(), 0, 0);
-  return Math.floor((d.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
-}
-
-/** 오늘의 캐릭터 — 날짜 기반 순환. */
-const CHARACTER_ROTATION: CharacterId[] = ["child", "witch", "sage"];
-
-export function getTodayCharacter(dateStr?: string): CharacterId {
-  const date = dateStr ?? todayKst();
-  const idx = dayOfYear(date) % CHARACTER_ROTATION.length;
-  return CHARACTER_ROTATION[idx];
 }
 
 /** 캐릭터별 질문 생성 프롬프트. */

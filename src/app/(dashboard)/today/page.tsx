@@ -18,7 +18,6 @@ import { GenerateFortuneForm } from "@/components/fortune/generate-fortune-form"
 import { QuotaBar } from "@/components/fortune/quota-bar";
 import { TodaySummary } from "@/components/fortune/today-summary";
 import { ZodiacBanner } from "@/components/fortune/zodiac-banner";
-import { DailyQuestionCard } from "@/components/daily-question/daily-question-card";
 import { StreakBadge } from "@/components/streak/streak-badge";
 import type { DailyFortune } from "@/db/schema";
 import { requireProfile } from "@/lib/auth/get-user";
@@ -27,7 +26,6 @@ import {
   ROUTES,
   type FortuneCategoryId,
 } from "@/lib/constants";
-import { getOrCreateDailyQuestion } from "@/lib/daily-question/service";
 import { getDailyFortune } from "@/lib/fortunes/service";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { checkInStreak } from "@/lib/streak/service";
@@ -63,12 +61,11 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
 
   const { profile } = await requireProfile();
 
-  const [fortune, usage, subscribed, streakResult, dailyQuestion] = await Promise.all([
+  const [fortune, usage, subscribed, streakResult] = await Promise.all([
     getDailyFortune(profile.userId, category),
     getTodayUsage(profile.userId),
     hasActiveSubscription(profile.userId),
     checkInStreak(profile.userId),
-    category === "general" ? getOrCreateDailyQuestion(profile) : Promise.resolve(null),
   ]);
 
   // general 탭에서만 다른 카테고리들의 오늘 운세를 병렬 조회한다.
@@ -106,11 +103,11 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           <StreakBadge checkIn={streakResult} />
         </div>
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
-          오늘의 운세
+          오늘의 흐름
         </h1>
         <p className="text-muted-foreground">
-          {profile.displayName ? `${profile.displayName}님, ` : ""}
-          오늘 어떤 기운이 흐르는지 살펴볼게요.
+          {profile.displayName ? `${profile.displayName}의 ` : ""}
+          오늘 별의 기운이 무엇을 말하는지 읽어줄게.
         </p>
       </header>
 
@@ -120,14 +117,6 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
         chatCount={usage.chatCount}
         subscribed={subscribed}
       />
-
-      {/* 오늘의 질문 — general 탭에서만 표시 */}
-      {dailyQuestion && (
-        <DailyQuestionCard
-          characterId={dailyQuestion.characterId as "child" | "witch" | "sage"}
-          question={dailyQuestion.question}
-        />
-      )}
 
       <CategoryTabs current={category} subscribed={subscribed} />
 

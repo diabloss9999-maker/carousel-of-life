@@ -16,6 +16,7 @@ import {
   buildDailyFortunePrompt,
   type FortuneCategory,
 } from "@/lib/ai/prompts";
+import { getTodayCharacter } from "@/lib/daily-question/rotation";
 import { dailyFortuneAiSchema } from "@/lib/ai/types";
 import {
   AI_LIMITS,
@@ -98,12 +99,14 @@ export async function getOrCreateDailyFortune(opts: {
   // 4) AI 운세 풀이.
   let aiOutput;
   try {
+    const characterId = getTodayCharacter(date) as "child" | "witch" | "sage";
     aiOutput = await generateJson({
       schema: dailyFortuneAiSchema,
       userPrompt: buildDailyFortunePrompt({
         profile,
         category: opts.category,
         fortuneDate: date,
+        characterId,
       }),
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.fortuneMaxTokens,

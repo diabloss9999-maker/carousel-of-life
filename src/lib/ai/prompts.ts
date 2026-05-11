@@ -60,26 +60,54 @@ const FORTUNE_LABEL: Record<FortuneCategory, string> = {
   chinese_zodiac: "12간지 띠 운세",
 };
 
+/** 캐릭터별 운세 전달 보이스 설정 */
+const CHARACTER_FORTUNE_VOICE = {
+  child: {
+    persona: "너는 카엘 — 욕망을 꿰뚫는 악마 계약자야. 냉소적이고 직설적이지만, 정확하게 진실만 말해.",
+    titleGuide: "카엘답게 날카롭고 짧은 한 마디 (20자 이내, 반말)",
+    contentGuide: "6-8문장. 반말. 쓸데없는 위로 없이 사주에서 읽히는 걸 그대로 전달해. 차갑지만 정확하게. 마크다운·이모지 금지.",
+    tone: "냉소적·직설·반말",
+  },
+  witch: {
+    persona: "너는 루나 — 기억과 감정을 읽는 달의 마녀야. 몽환적이고 감성적이지만 통찰이 깊어.",
+    titleGuide: "루나답게 달빛처럼 은근한 한 마디 (20자 이내, 반말)",
+    contentGuide: "6-8문장. 반말. 감정과 흐름을 중심으로 읽어줘. 자연·달·물 같은 비유를 자연스럽게 담아. 마크다운·이모지 금지.",
+    tone: "몽환적·감성적·반말",
+  },
+  sage: {
+    persona: "너는 라엘 — 구원과 희망을 전하는 천사 대리인이야. 따뜻하고 진심 어린 존댓말로 말해.",
+    titleGuide: "라엘답게 빛처럼 따뜻한 한 마디 (20자 이내, 존댓말)",
+    contentGuide: "6-8문장. 존댓말. 가능성과 희망을 중심으로 풀어줘. 어려운 상황도 따뜻하게 짚어. 마크다운·이모지 금지.",
+    tone: "따뜻·희망적·존댓말",
+  },
+} as const;
+
+type CharacterFortuneId = keyof typeof CHARACTER_FORTUNE_VOICE;
+
 /**
  * 오늘의 운세 사용자 프롬프트.
- *
- * AI 는 JSON 으로 응답하도록 강제 (구조화 데이터로 DB 저장).
+ * characterId 를 받아 해당 캐릭터의 목소리로 운세를 전달한다.
  */
 export function buildDailyFortunePrompt(opts: {
   profile: BuildContextOptions["profile"];
   category: FortuneCategory;
-  fortuneDate: string; // YYYY-MM-DD
+  fortuneDate: string;
+  characterId?: CharacterFortuneId;
 }): string {
   const ctx = buildUserContext({ profile: opts.profile });
   const label = FORTUNE_LABEL[opts.category];
+  const charId = opts.characterId ?? "witch";
+  const voice = CHARACTER_FORTUNE_VOICE[charId];
 
-  // 별자리·12간지는 별도 기반으로 풀이
   const isZodiac = opts.category === "zodiac" || opts.category === "chinese_zodiac";
   const basis = isZodiac
-    ? `${label} 기반으로 풀이해주세요. 사주 대신 ${label}의 특성과 오늘의 기운을 접목해 풀이하세요.`
-    : `질문자의 사주와 ${opts.fortuneDate} 의 일진을 살펴 ${label}을(를) 풀이해주세요.`;
+    ? `${label} 기반으로 풀이해. 사주 대신 ${label}의 특성과 오늘의 기운을 읽어.`
+    : `이 사람의 사주와 ${opts.fortuneDate} 의 일진을 살펴 ${label}을(를) 풀이해.`;
 
-  return `[질문자 정보]
+  return `[캐릭터 설정]
+${voice.persona}
+
+[질문자 정보]
 ${ctx}
 
 [풀이 대상]
@@ -88,15 +116,15 @@ ${ctx}
 
 [지시]
 ${basis}
-다음 JSON 스키마를 정확히 따라 단 하나의 JSON 객체로만 응답하세요. 추가 설명·markdown·코드펜스 없이 JSON 만 출력합니다.
+${voice.tone} 어조로 전달해. 다음 JSON 스키마를 정확히 따라 단 하나의 JSON 객체로만 응답해. 마크다운·코드펜스 없이 JSON 만.
 
 {
-  "score": 1-100 사이 정수 (운세 점수. 솔직하게 산정. 좋은 날 75-90, 보통 45-74, 힘든 날 20-44. 다양하게),
-  "title": "20자 이내 한 줄 헤드라인 (정중하고 따뜻한 비서 톤)",
-  "content": "6-8문장의 본문 풀이. '친애하는 [이름]님,' 으로 시작. 자연스럽게 이어지는 흐름. 정중하고 친절한 존댓말. 구체적인 상황·행동을 안내.",
+  "score": 1-100 사이 정수 (운세 점수. 솔직하게. 좋은 날 75-90, 보통 45-74, 힘든 날 20-44),
+  "title": "${voice.titleGuide}",
+  "content": "${voice.contentGuide}",
   "luckyColor": "행운의 색 (한글 1-3 단어)",
   "luckyNumber": 1-99 사이 정수,
-  "luckyDirection": "방향 (예: '동쪽', '북서쪽')"
+  "luckyDirection": "방향 (예: 동쪽, 북서쪽)"
 }`;
 }
 
