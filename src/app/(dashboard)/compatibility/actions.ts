@@ -22,6 +22,8 @@ import {
 } from "@/lib/ai/types";
 import { AI_LIMITS, AI_MODELS } from "@/lib/constants";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
+import { getTodayCharacter } from "@/lib/daily-question/rotation";
 
 const MBTI_PATTERN = /^[EI][NS][TF][JP]$/i;
 const COMPATIBILITY_ROUTE = "/compatibility";
@@ -342,7 +344,7 @@ export async function generateCompatPurposeAction(
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 800,
-      systemSuffix: "마크다운 없이 JSON만 응답하세요.",
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
     });
 
     return { kind: "success", data };
@@ -405,7 +407,7 @@ export async function generateCompatConflictAction(
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 800,
-      systemSuffix: "마크다운 없이 JSON만 응답하세요.",
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
     });
 
     return { kind: "success", data };
@@ -471,7 +473,7 @@ ${mbtiLine.join("\n")}
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 800,
-      systemSuffix: "마크다운 없이 JSON만 응답하세요.",
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
     });
 
     return { kind: "success", data };

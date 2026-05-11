@@ -33,6 +33,8 @@ import {
 import { AI_MODELS } from "@/lib/constants";
 import { getOrCreateDailyFortune } from "@/lib/fortunes/service";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
+import { getTodayCharacter } from "@/lib/daily-question/rotation";
 
 /** KST 오늘 날짜 YYYY-MM-DD */
 function todayKst(): string {
@@ -215,8 +217,7 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 1500,
-      systemSuffix:
-        "직장 운세 리포트 생성 전용 모드입니다. 산문·설명·마크다운은 일절 덧붙이지 말고 JSON만 응답하세요.",
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
     });
 
     // DB에 저장 (tips 컬럼에 전체 리포트 JSON 저장)
@@ -331,8 +332,7 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 1200,
-      systemSuffix:
-        "운동 추천 전용 모드입니다. 마크다운·설명 없이 JSON만 응답하세요.",
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
     });
 
     if (cached) {
@@ -428,8 +428,7 @@ export async function generateStudyTipsAction(): Promise<StudyTipsState> {
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 800,
-      systemSuffix:
-        "학습 팁 전용 모드입니다. 마크다운·설명 없이 JSON만 응답하세요.",
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
     });
 
     if (cached) {
@@ -523,8 +522,7 @@ export async function generateLovePremiumAction(): Promise<LovePremiumState> {
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 1000,
-      systemSuffix:
-        "사랑 운세 리포트 전용 모드입니다. 마크다운·설명 없이 JSON만 응답하세요.",
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
     });
 
     if (cached) {
@@ -625,8 +623,7 @@ export async function generateGeneralPremiumAction(): Promise<GeneralPremiumStat
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 1000,
-      systemSuffix:
-        "종합 운세 리포트 전용 모드입니다. 마크다운 없이 JSON만 응답하세요.",
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
     });
 
     if (cached) {
