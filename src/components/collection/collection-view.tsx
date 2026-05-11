@@ -63,13 +63,13 @@ const RARITY_LABEL: Record<CollectionRarity, string> = {
 /** 카테고리 표시 순서. */
 const CATEGORY_ORDER: CollectionCategory[] = [
   "tarot",
-  "mbti",
-  "zodiac",
-  "chineseZodiac",
-  "cheongan",
-  "characters",
   "lenormand",
   "runes",
+  "chineseZodiac",
+  "zodiac",
+  "cheongan",
+  "characters",
+  "mbti",
 ];
 
 /** 카테고리 + 카드 메타 결합 — 정렬된 평면 리스트. */
