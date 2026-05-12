@@ -110,6 +110,7 @@ body.ritual-day {
   --col-faint: rgba(0, 0, 0, 0.32);
   --ritual-text: rgba(0, 0, 0, 0.88);
   --ritual-muted: rgba(0, 0, 0, 0.55);
+  color: rgba(0, 0, 0, 0.88) !important;
   background: url("/backgrounds/day.png") center / cover no-repeat fixed;
 }
 
@@ -128,6 +129,7 @@ body.ritual-night {
   --col-faint: rgba(255, 255, 255, 0.36);
   --ritual-text: rgba(255, 255, 255, 0.92);
   --ritual-muted: rgba(255, 255, 255, 0.62);
+  color: rgba(255, 255, 255, 0.92) !important;
   background: url("/backgrounds/night.png") center / cover no-repeat fixed;
 }
 
@@ -205,7 +207,7 @@ body.ritual-night {
 
   body {
     background: transparent;
-    color: var(--foreground);
+    color: var(--foreground) !important;
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
