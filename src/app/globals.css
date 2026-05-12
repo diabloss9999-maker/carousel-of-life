@@ -550,3 +550,48 @@ body.ritual-night .ritual-chat-textarea {
   .tarot-card-fan.shuffling,
   .tarot-card-fan.selected { animation: none; }
 }
+
+/* =============================================================================
+   균열 연출 시스템 — Fracture System
+   ============================================================================= */
+
+/* 미세한 흔들림 — 카드/버튼 1개에만 적용 */
+.fracture-soft {
+  animation: fracture-soft 0.28s ease-in-out 1 !important;
+}
+
+@keyframes fracture-soft {
+  0%   { transform: translate3d(0,0,0); filter: none; }
+  35%  { transform: translate3d(-0.6px,0.3px,0); filter: blur(0.08px); }
+  70%  { transform: translate3d(0.7px,-0.2px,0); }
+  100% { transform: translate3d(0,0,0); filter: none; }
+}
+
+/* 숨겨진 문장 출현 */
+@keyframes fracture-whisper-in {
+  0%   { opacity: 0; }
+  20%  { opacity: 1; }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* 밤 모드 — html.night */
+html.night .app-surface {
+  background: rgba(255,255,255,0.07) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.16),
+    0 8px 32px rgba(0,0,0,0.28) !important;
+}
+
+html.night body[data-time="night"] {
+  background-image: url("/backgrounds/night.png");
+}
+
+/* 접근성 */
+@media (prefers-reduced-motion: reduce) {
+  .fracture-soft { animation: none !important; }
+  @keyframes fracture-whisper-in {
+    0%, 100% { opacity: 0; }
+    30%, 70% { opacity: 0.8; }
+  }
+}

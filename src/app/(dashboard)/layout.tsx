@@ -5,6 +5,7 @@ import { TimeAwareHeader } from "@/components/layout/time-aware-header";
 import { DesktopNav } from "@/components/layout/desktop-nav";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { RitualBody } from "@/components/crack/ritual-body";
+import { FractureWhisper } from "@/components/fracture/fracture-whisper";
 
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
@@ -72,6 +73,7 @@ export default async function DashboardLayout({
       </main>
 
       <MobileNav />
+      <FractureWhisper />
     </div>
   );
 }

@@ -10,6 +10,8 @@ import { MessageBubble, type DrawnCardMeta } from "@/components/chat/message-bub
 import { ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import type { CharacterId } from "@/lib/chat/characters";
+import { useFractureSystem } from "@/hooks/use-fracture-system";
+import { getPlaceholder } from "@/lib/fracture/fracture-events";
 
 /** 한 메시지 최대 글자 수. 서버 zod schema 와 동기화 유지. */
 const MAX_MESSAGE_LENGTH = 100;
@@ -66,6 +68,9 @@ export function ChatWindow({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const theme = characterId ? (CHARACTER_THEME[characterId] ?? DEFAULT_THEME) : DEFAULT_THEME;
+
+  const { state: fractureState, isNight } = useFractureSystem();
+  const placeholder = getPlaceholder(fractureState, isNight);
 
   /** textarea 높이 자동 조절 */
   const adjustHeight = useCallback(() => {
@@ -292,7 +297,7 @@ export function ChatWindow({
             value={input}
             onChange={(e) => { setInput(e.target.value); adjustHeight(); }}
             onKeyDown={handleKeyDown}
-            placeholder="지금 떠오른 것을 조용히 남기세요"
+            placeholder={placeholder}
             disabled={isStreaming}
             maxLength={MAX_MESSAGE_LENGTH}
             rows={1}

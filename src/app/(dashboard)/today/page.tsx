@@ -130,7 +130,10 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           <StreakBadge checkIn={streakResult} />
         </div>
         <div>
-          <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
+          <h1
+            data-fracture="today-title"
+            className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl"
+          >
             오늘의 흐름
           </h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
