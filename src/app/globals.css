@@ -407,3 +407,105 @@ body.ritual-night {
     animation: none !important;
   }
 }
+
+/* =============================================================================
+   Chat Ritual UI — 채팅 전용 의식형 UI
+   ============================================================================= */
+
+:root {
+  --col-bg: #080710;
+  --col-ink: rgba(246,239,220,0.94);
+  --col-muted: rgba(246,239,220,0.55);
+  --col-faint: rgba(246,239,220,0.28);
+  --col-line: rgba(233,221,190,0.14);
+  --col-line-strong: rgba(233,221,190,0.30);
+  --col-gold: #bfa66a;
+  --col-violet: #8f79c9;
+  --col-teal: #7aa9a1;
+  --col-fracture: #c96b73;
+  --glass-deep: rgba(9,8,17,0.68);
+  --glass-soft: rgba(23,20,35,0.58);
+}
+
+/* 존재(AI) 말풍선 */
+.ritual-message {
+  position: relative;
+  max-width: min(680px, 86%);
+  padding: 16px 18px;
+  border-radius: 24px;
+  line-height: 1.72;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--col-line);
+  box-shadow:
+    0 16px 44px rgba(0,0,0,0.24),
+    inset 0 1px 0 rgba(255,255,255,0.045);
+}
+
+.ritual-message p { margin: 0; }
+
+/* 존재 응답 */
+.ritual-message.oracle {
+  margin-right: auto;
+  color: var(--col-ink);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(143,121,201,0.18), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.052), rgba(255,255,255,0.018)),
+    rgba(18,16,31,0.64);
+  border-top-left-radius: 8px;
+}
+
+/* 관측자(사용자) */
+.ritual-message.observer {
+  margin-left: auto;
+  color: rgba(255,248,229,0.95);
+  background:
+    radial-gradient(circle at 80% 0%, rgba(191,166,106,0.16), transparent 34%),
+    linear-gradient(180deg, rgba(191,166,106,0.12), rgba(255,255,255,0.018)),
+    rgba(32,27,40,0.66);
+  border-top-right-radius: 8px;
+  border-color: rgba(191,166,106,0.20);
+}
+
+/* 균열 메시지 — Lv3+ 시 적용 */
+.ritual-message.fracture {
+  border-color: rgba(201,107,115,0.25);
+  background:
+    linear-gradient(120deg, rgba(201,107,115,0.13), transparent 42%),
+    rgba(16,13,24,0.70);
+  animation: ritual-chat-fracture 8.5s infinite;
+}
+
+@keyframes ritual-chat-fracture {
+  0%, 94%, 100% { transform: translate3d(0,0,0); filter: none; }
+  95% { transform: translate3d(-0.6px,0.3px,0); filter: blur(0.12px); }
+  96% { transform: translate3d(0.8px,-0.2px,0); }
+  97% { transform: translate3d(0,0,0); filter: none; }
+}
+
+/* 상태 배지 */
+.ritual-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(122,169,161,0.22);
+  background: rgba(122,169,161,0.08);
+  color: rgba(246,239,220,0.72);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+.ritual-status-badge::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 999px;
+  background: var(--col-teal);
+  box-shadow: 0 0 12px rgba(122,169,161,0.58);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ritual-message.fracture { animation: none; }
+}

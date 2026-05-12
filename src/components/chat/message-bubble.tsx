@@ -62,17 +62,18 @@ export function MessageBubble({ role, content, isStreaming, cards }: MessageBubb
   const isCursorVisible = isStreaming && displayed.length >= cleaned.length;
 
   return (
-    <div className={cn("flex gap-3", isAssistant ? "flex-row" : "flex-row-reverse")}>
+    <div className={cn("flex gap-2", isAssistant ? "flex-row" : "flex-row-reverse")}>
+      {/* 아이콘 */}
       <div
         className={cn(
-          "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border",
+          "flex h-7 w-7 shrink-0 items-center justify-center rounded-full border mt-1",
           isAssistant
-            ? "border-accent/35 bg-accent/12 text-accent"
-            : "border-primary/35 bg-primary/12 text-primary",
+            ? "border-accent/30 bg-accent/10 text-accent"
+            : "border-primary/30 bg-primary/10 text-primary",
         )}
         aria-hidden
       >
-        {isAssistant ? <Sparkles className="h-4 w-4" /> : <User className="h-4 w-4" />}
+        {isAssistant ? <Sparkles className="h-3.5 w-3.5" /> : <User className="h-3.5 w-3.5" />}
       </div>
 
       <div className="max-w-[85%] space-y-3">
@@ -102,16 +103,9 @@ export function MessageBubble({ role, content, isStreaming, cards }: MessageBubb
           </div>
         )}
 
-        {/* 텍스트 버블 */}
-        <div
-          className={cn(
-            "rounded-xl px-4 py-3 shadow-sm",
-            isAssistant
-              ? "border border-border/45 bg-card/62 backdrop-blur rounded-tl-sm"
-              : "border border-primary/25 bg-primary/14 rounded-tr-sm",
-          )}
-        >
-          <p className="font-mystic whitespace-pre-line leading-relaxed text-foreground/90">
+        {/* 텍스트 버블 — ritual 스타일 */}
+        <div className={cn("ritual-message", isAssistant ? "oracle" : "observer")}>
+          <p className="font-mystic whitespace-pre-line leading-relaxed">
             {displayed || (isStreaming ? "" : "...")}
             {isCursorVisible && (
               <span className="inline-block w-0.5 h-[1em] ml-0.5 bg-accent align-middle animate-pulse" />

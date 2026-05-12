@@ -60,13 +60,14 @@ export default async function ChatSessionPage({
         <div className="space-y-0.5">
           <Button asChild variant="ghost" size="sm" className="-ml-2">
             <Link href={ROUTES.chat}>
-              <ArrowLeft className="h-4 w-4" aria-hidden /> 지난 대화
+              <ArrowLeft className="h-4 w-4" aria-hidden /> 조우 목록
             </Link>
           </Button>
           <h1 className="font-mystic text-2xl font-semibold tracking-tight">
             {session.title}
           </h1>
         </div>
+        <span className="ritual-status-badge shrink-0">신호 안정</span>
       </header>
 
       {/* 모바일: 캐릭터 컴팩트 뱃지 */}

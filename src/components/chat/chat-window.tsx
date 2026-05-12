@@ -272,39 +272,62 @@ export function ChatWindow({
         </div>
       ) : null}
 
-      {/* 입력창 */}
+      {/* 입력창 — ritual 스타일 */}
       <form onSubmit={handleSend} className="flex flex-col gap-1.5">
         <div
-          className={cn(
-            "flex gap-2 rounded-xl border p-1.5 shadow-sm backdrop-blur",
-            theme.input,
-          )}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr auto",
+            gap: "10px",
+            padding: "10px",
+            borderRadius: "26px",
+            border: "1px solid rgba(233,221,190,0.13)",
+            background: "linear-gradient(180deg, rgba(8,7,16,0.72), rgba(8,7,16,0.58))",
+            backdropFilter: "blur(18px)",
+            boxShadow: "0 20px 70px rgba(0,0,0,0.38)",
+          }}
         >
           <textarea
             ref={textareaRef}
             value={input}
             onChange={(e) => { setInput(e.target.value); adjustHeight(); }}
             onKeyDown={handleKeyDown}
-            placeholder="궁금한 걸 물어봐 (Enter 전송 · Shift+Enter 줄바꿈)"
+            placeholder="지금 떠오른 것을 조용히 남기세요"
             disabled={isStreaming}
             maxLength={MAX_MESSAGE_LENGTH}
             rows={1}
             autoFocus
-            className="flex-1 resize-none bg-transparent text-sm outline-none placeholder:text-muted-foreground/60 py-2 px-1 leading-relaxed"
-            style={{ minHeight: "36px", maxHeight: "120px" }}
+            className="resize-none outline-none leading-relaxed text-sm py-3 px-4 rounded-[20px]"
+            style={{
+              minHeight: "48px",
+              maxHeight: "120px",
+              background: "radial-gradient(circle at 0% 0%, rgba(143,121,201,0.10), transparent 38%), rgba(255,255,255,0.032)",
+              border: "1px solid rgba(233,221,190,0.10)",
+              color: "rgba(246,239,220,0.94)",
+            }}
           />
-          <Button
+          <button
             type="submit"
             disabled={isStreaming || isPending || input.trim().length === 0}
-            size="lg"
-            className={theme.send}
+            aria-label="신호 보내기"
+            style={{
+              minWidth: "52px",
+              height: "52px",
+              borderRadius: "20px",
+              border: "1px solid rgba(191,166,106,0.26)",
+              background: "radial-gradient(circle at 50% 30%, rgba(191,166,106,0.20), transparent 36%), rgba(18,16,31,0.72)",
+              color: "rgba(246,239,220,0.94)",
+              cursor: "pointer",
+              display: "grid",
+              placeItems: "center",
+              fontSize: "18px",
+              opacity: (isStreaming || input.trim().length === 0) ? 0.4 : 1,
+            }}
           >
             {isStreaming ? (
-              <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-            ) : (
-              <Send className="h-4 w-4" aria-hidden />
-            )}
-          </Button>
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : "✦"}
+          </button>
         </div>
         <div className="flex items-center justify-end px-1">
           <span
