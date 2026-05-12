@@ -344,7 +344,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     category: "characters",
     nameKo: "루나",
     nameEn: "Luna",
-    imageSrc: "/characters/witch_night.png",
+    imageSrc: "/characters/witch_night_v2.png",
     description:
       "달빛 아래 수정구슬을 응시하며 운명을 읽는 달빛의 마녀. 어둠 속에서 가장 선명하게 진실을 본다.",
     rarity: "legendary",
@@ -395,7 +395,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     category: "characters",
     nameKo: "귀염",
     nameEn: "Gwieyeom",
-    imageSrc: "/characters/dokkaebi_night.png",
+    imageSrc: "/characters/dokkaebi_night_v2.png",
     description:
       "소령을 살리기 위해 스스로 귀왕이 된 도깨비. 진짜 이름을 잃었고, 그 사실을 소령은 모른다.",
     rarity: "legendary",

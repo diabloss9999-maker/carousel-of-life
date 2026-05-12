@@ -32,7 +32,7 @@ const STEPS = [
     accent: "text-violet-400",
     characters: [
       { name: "카엘", hook: "욕망을 꿰뚫는 악마", img: "/characters/child_v2.png", color: "ring-red-800/50" },
-      { name: "루나", hook: "기억을 읽는 마녀",   img: "/characters/witch_night.png", color: "ring-blue-800/50" },
+      { name: "루나", hook: "기억을 읽는 마녀",   img: "/characters/witch_night_v2.png", color: "ring-blue-800/50" },
       { name: "라엘", hook: "희망을 전하는 천사", img: "/characters/sage_v2.png",  color: "ring-amber-700/50" },
     ],
   },
@@ -46,7 +46,7 @@ const STEPS = [
     characters: [
       { name: "소령", hook: "신령의 목소리를 전하는 무녀", img: "/characters/shaman_v1.png",   color: "ring-rose-800/50" },
       { name: "현도", hook: "운명을 읽는 500년의 도사",    img: "/characters/taoist_v1.png",   color: "ring-cyan-800/50" },
-      { name: "귀염", hook: "저승을 다스리는 도깨비왕",    img: "/characters/dokkaebi_night.png", color: "ring-purple-800/50" },
+      { name: "귀염", hook: "저승을 다스리는 도깨비왕",    img: "/characters/dokkaebi_night_v2.png", color: "ring-purple-800/50" },
     ],
   },
   {
