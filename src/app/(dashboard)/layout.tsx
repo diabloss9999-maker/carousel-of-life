@@ -29,18 +29,18 @@ export default async function DashboardLayout({
       <TimeAwareHeader
         className="sticky top-0 z-40 pt-safe ritual-chat-menu"
         style={{
-          background: `linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.10))`,
-          boxShadow: "0 8px 32px rgba(0,0,0,0.16)",
+          background: `var(--header-bg)`,
+          boxShadow: "var(--header-shadow)",
           backdropFilter: "blur(24px)",
           WebkitBackdropFilter: "blur(24px)",
-          borderBottom: "1px solid rgba(255,255,255,0.22)",
+          borderBottom: "1px solid var(--header-border)",
         } as React.CSSProperties}
       >
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
           <Link
             href={ROUTES.today}
             className="font-mystic whitespace-nowrap text-lg font-semibold tracking-tight transition-opacity hover:opacity-75"
-            style={{ color: "rgba(246,239,220,0.92)", letterSpacing: "0.04em" }}
+            style={{ color: "var(--ritual-text)", letterSpacing: "0.04em" }}
           >
             {siteConfig.name}
           </Link>
@@ -54,9 +54,9 @@ export default async function DashboardLayout({
               size="sm"
               className="rounded-full px-3"
               style={{
-                border: "1px solid rgba(233,221,190,0.16)",
-                color: "rgba(246,239,220,0.60)",
-                background: "rgba(255,255,255,0.04)",
+                border: "1px solid var(--ritual-line)",
+                color: "var(--ritual-muted)",
+                background: "rgba(255,255,255,0.12)",
               }}
             >
               <LogOut className="h-4 w-4" aria-hidden />

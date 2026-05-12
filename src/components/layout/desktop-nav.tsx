@@ -5,10 +5,10 @@ import { usePathname } from "next/navigation";
 
 import { mainNav, type NavItem } from "@/config/navigation";
 
-/** ritual 다크 글래스 네비 색상 */
-const NAV_ACTIVE_BG  = "rgba(233,221,190,0.10)";
-const NAV_ACTIVE_CLR = "rgba(246,239,220,0.96)";
-const NAV_MUTED      = "rgba(246,239,220,0.78)";
+/** Light Ritual 네비 색상 */
+const NAV_ACTIVE_BG  = "rgba(116,86,64,0.10)";
+const NAV_ACTIVE_CLR = "var(--nav-active)";
+const NAV_MUTED      = "var(--nav-muted)";
 
 export function DesktopNav() {
   const pathname = usePathname();
@@ -19,8 +19,8 @@ export function DesktopNav() {
       style={{
         padding: "6px",
         borderRadius: "999px",
-        border: "1px solid rgba(255,255,255,0.22)",
-        background: "rgba(255,255,255,0.10)",
+        border: "1px solid var(--header-border)",
+        background: "rgba(255,255,255,0.22)",
       }}
       aria-label="상단 메뉴"
     >
