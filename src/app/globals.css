@@ -644,3 +644,41 @@ body.ritual-dawn {
   .entity-mood-unstable .app-surface { animation: none !important; }
   .memory-faded { filter: none; }
 }
+
+/* ===== 세계 노화 (오래된 기록) ===== */
+.old-memory {
+  opacity: 0.62;
+  filter: saturate(0.78);
+  transition: opacity 0.3s, filter 0.3s;
+}
+.old-memory:hover {
+  opacity: 0.85;
+  filter: saturate(0.9);
+}
+
+.ancient-record {
+  filter: blur(0.25px);
+  opacity: 0.5;
+  letter-spacing: 0.04em;
+}
+
+/* ===== 존재 상태 광원 미세 ===== */
+body.presence-luna .app-surface {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    0 8px 32px rgba(140,120,200,0.18) !important;
+}
+body.presence-rael .app-surface {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    0 8px 32px rgba(220,210,255,0.12) !important;
+}
+body.presence-gael .app-surface {
+  box-shadow:
+    inset 0 1px 0 rgba(255,210,180,0.20),
+    0 8px 32px rgba(180,120,80,0.16) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .old-memory { transition: none; }
+}

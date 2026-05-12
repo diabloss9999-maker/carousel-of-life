@@ -1,21 +1,48 @@
 "use client";
 
 /**
- * body에 낮/밤 배경 + 균열 클래스를 자동 적용하는 클라이언트 컴포넌트.
- * 시간 기반 (07~18시 = 낮, 그 외 = 밤).
- * 균열 수치 3+ 이면 fracture-high 클래스를 추가한다.
+ * body에 낮/밤 배경 + 균열 클래스 + dominant 존재 광원 클래스를
+ * 자동 적용하는 클라이언트 컴포넌트.
+ *
+ * - 시간 기반 (07~18시 = 낮, 그 외 = 밤).
+ * - 균열 수치 3+ 이면 fracture-high 클래스를 추가.
+ * - dominant entity (luna/rael/gael) 가 있으면 presence-* 클래스를 추가.
  */
 import { useEffect } from "react";
+
 import type { CrackLevel } from "@/lib/crack/service";
+import { loadEntityMemory } from "@/lib/entity/entity-memory";
+import { loadFractureState } from "@/lib/fracture/fracture-state";
+import { computeEntityRelation } from "@/lib/systems/entity-relations";
 
 interface RitualBodyProps {
   crackLevel: CrackLevel;
 }
 
+const PRESENCE_CLASSES = [
+  "presence-luna",
+  "presence-rael",
+  "presence-gael",
+] as const;
+
 function getKstHour(): number {
   return new Date(
     new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }),
   ).getHours();
+}
+
+function applyPresenceClass(body: HTMLElement): void {
+  try {
+    const memory = loadEntityMemory();
+    const fracture = loadFractureState();
+    const relation = computeEntityRelation(memory, fracture);
+    body.classList.remove(...PRESENCE_CLASSES);
+    if (relation.dominant) {
+      body.classList.add(`presence-${relation.dominant}`);
+    }
+  } catch {
+    /* localStorage 접근 실패 등은 조용히 무시 */
+  }
 }
 
 function applyTimeClass(body: HTMLElement, crackLevel: CrackLevel) {
@@ -43,6 +70,8 @@ function applyTimeClass(body: HTMLElement, crackLevel: CrackLevel) {
   } else {
     body.classList.remove("fracture-high");
   }
+
+  applyPresenceClass(body);
 }
 
 export function RitualBody({ crackLevel }: RitualBodyProps) {
@@ -57,6 +86,7 @@ export function RitualBody({ crackLevel }: RitualBodyProps) {
 
     return () => {
       clearInterval(timer);
+      body.classList.remove(...PRESENCE_CLASSES);
     };
   }, [crackLevel]);
 

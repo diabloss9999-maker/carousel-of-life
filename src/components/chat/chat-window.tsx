@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { CHARACTERS, type CharacterId } from "@/lib/chat/characters";
 import { useFractureSystem } from "@/hooks/use-fracture-system";
 import { getPlaceholder } from "@/lib/fracture/fracture-events";
+import { recordEcho } from "@/lib/systems/long-term-memory";
 
 /** 한 메시지 최대 글자 수. 서버 zod schema 와 동기화 유지. */
 const MAX_MESSAGE_LENGTH = 100;
@@ -122,6 +123,9 @@ export function ChatWindow({
       textareaRef.current.style.height = "auto";
       textareaRef.current.focus();
     }
+
+    // 사용자 메시지를 장기 기억(echo)에 기록 — 감정 키워드 포함 시에만 저장됨
+    recordEcho(trimmed);
 
     const userId = crypto.randomUUID();
     const assistantId = crypto.randomUUID();

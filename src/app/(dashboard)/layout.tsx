@@ -12,6 +12,9 @@ import { SessionFade } from "@/components/world/session-fade";
 import { LongAbsenceGreeting } from "@/components/world/long-absence-greeting";
 import { EntityConversation } from "@/components/world/entity-conversation";
 import { HiddenPresence } from "@/components/world/hidden-presence";
+import { MemoryEcho } from "@/components/world/memory-echo";
+import { ObservationFailureNote } from "@/components/world/observation-failure-note";
+import { EntityInterference } from "@/components/world/entity-interference";
 
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
@@ -90,6 +93,9 @@ export default async function DashboardLayout({
       <LongAbsenceGreeting />
       <EntityConversation />
       <HiddenPresence />
+      <MemoryEcho />
+      <ObservationFailureNote />
+      <EntityInterference />
       <SessionFade />
     </div>
   );

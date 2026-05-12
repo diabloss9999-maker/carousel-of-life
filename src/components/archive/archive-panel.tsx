@@ -12,6 +12,12 @@ import { useEntityMemory } from "@/hooks/use-entity-memory";
 import { CHARACTERS, type CharacterId } from "@/lib/chat/characters";
 import type { CharacterAffinity } from "@/db/schema";
 import type { CrackLevel } from "@/lib/crack/service";
+import { PersonalizedObservation } from "@/components/world/personalized-observation";
+
+/** 오래된 기록으로 분류할 visitCount 기준. */
+const OLD_MEMORY_THRESHOLD = 15;
+/** 더 깊은 균열 관측 카드에 흐릿함을 부여할 기준. */
+const ANCIENT_FRACTURE_THRESHOLD = 5;
 
 interface ArchivePanelProps {
   affinities: CharacterAffinity[];
@@ -50,11 +56,22 @@ function pickClosestEntity(
 interface ArchiveCardProps {
   title: string;
   body: string;
+  /** 노화된 기록(흐릿함) 표현. */
+  aged?: boolean;
+  /** 매우 오래된 기록(균열 등). */
+  ancient?: boolean;
 }
 
-function ArchiveCard({ title, body }: ArchiveCardProps) {
+function ArchiveCard({ title, body, aged, ancient }: ArchiveCardProps) {
+  const classes = [
+    "app-surface rounded-xl p-4 space-y-1.5",
+    aged ? "old-memory" : "",
+    ancient ? "ancient-record" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
   return (
-    <div className="app-surface rounded-xl p-4 space-y-1.5">
+    <div className={classes}>
       <p className="text-[10px] uppercase tracking-widest text-muted-foreground/70">
         {title}
       </p>
@@ -66,6 +83,8 @@ function ArchiveCard({ title, body }: ArchiveCardProps) {
 export function ArchivePanel({ affinities, crackLevel }: ArchivePanelProps) {
   const { memory, isDawn } = useEntityMemory();
   const closest = pickClosestEntity(affinities);
+  const aged = memory.visitCount >= OLD_MEMORY_THRESHOLD;
+  const ancient = memory.fractureEventsWitnessed >= ANCIENT_FRACTURE_THRESHOLD;
 
   return (
     <div className="space-y-6">
@@ -78,9 +97,12 @@ export function ArchivePanel({ affinities, crackLevel }: ArchivePanelProps) {
         </p>
       ) : null}
 
+      <PersonalizedObservation />
+
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <ArchiveCard
           title="관측"
+          aged={aged}
           body={
             memory.visitCount <= 1
               ? "경계가 당신을 처음으로 인식했습니다."
@@ -90,6 +112,7 @@ export function ArchivePanel({ affinities, crackLevel }: ArchivePanelProps) {
 
         <ArchiveCard
           title="야간 관측"
+          aged={aged}
           body={
             memory.nightVisitCount === 0
               ? "아직 밤에 머문 흔적은 없습니다."
@@ -99,6 +122,7 @@ export function ArchivePanel({ affinities, crackLevel }: ArchivePanelProps) {
 
         <ArchiveCard
           title="새벽의 기록"
+          aged={aged}
           body={
             memory.dawnVisitCount === 0
               ? "새벽의 경계에서 마주친 적은 없습니다."
@@ -108,6 +132,7 @@ export function ArchivePanel({ affinities, crackLevel }: ArchivePanelProps) {
 
         <ArchiveCard
           title="균열 목격"
+          ancient={ancient}
           body={
             memory.fractureEventsWitnessed === 0
               ? "아직 균열을 목격한 적이 없습니다."
