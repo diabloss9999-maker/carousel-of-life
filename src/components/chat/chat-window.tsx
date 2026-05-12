@@ -94,6 +94,13 @@ export function ChatWindow({
     });
   }, [messages]);
 
+  // 스트리밍 완료 시 입력창 자동 포커스
+  useEffect(() => {
+    if (!isStreaming) {
+      textareaRef.current?.focus();
+    }
+  }, [isStreaming]);
+
   async function handleSend(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const trimmed = input.trim();
