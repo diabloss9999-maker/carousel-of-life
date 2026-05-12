@@ -9,6 +9,7 @@ import { and, eq, inArray, gt, or, isNull } from "drizzle-orm";
 
 import { db } from "@/db";
 import { subscriptions, type Subscription } from "@/db/schema";
+import { serverEnv } from "@/lib/env";
 
 /**
  * 사용자가 활성 구독을 갖고 있는지.
@@ -67,7 +68,7 @@ export async function getSubscriptionTier(
 
   if (!row) return "free";
 
-  const proVariantId = process.env.LEMONSQUEEZY_PRO_VARIANT_ID;
+  const proVariantId = serverEnv.LEMONSQUEEZY_PRO_VARIANT_ID;
   if (proVariantId && row.lsVariantId === proVariantId) return "pro";
 
   return "lite";

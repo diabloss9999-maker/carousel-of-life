@@ -20,6 +20,7 @@ import {
   type CollectionRarity,
 } from "@/lib/collection/cards-data";
 import type { FlatCardDTO, GachaStatus } from "@/lib/collection/service";
+import { GACHA_DAILY_LIMITS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 import { pullGachaAction } from "@/app/(dashboard)/collection/actions";
@@ -443,7 +444,7 @@ function GachaPanel({
         </Button>
         {!subscribed && exhausted ? (
           <p className="text-[11px] text-muted-foreground">
-            라이트로 업그레이드하면 매일 3번 뽑을 수 있어.
+            라이트로 업그레이드하면 매일 {GACHA_DAILY_LIMITS.lite}번 뽑을 수 있어.
           </p>
         ) : null}
       </div>

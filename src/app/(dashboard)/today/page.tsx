@@ -15,6 +15,7 @@ import { PremiumFortuneGate } from "@/components/fortune/premium-fortune-gate";
 import { StudyTips } from "@/components/fortune/study-tips";
 
 import Link from "next/link";
+import type { Route } from "next";
 import { BookMarked, Globe2, Flame } from "lucide-react";
 import { GenerateFortuneForm } from "@/components/fortune/generate-fortune-form";
 import { QuotaBar } from "@/components/fortune/quota-bar";
@@ -149,7 +150,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
       {/* 보관 · 세계 · 연속 흐름 — 메뉴바 대체 진입 카드 */}
       <div className="grid grid-cols-3 gap-3">
         <Link
-          href={ROUTES.archive as never}
+          href={ROUTES.archive as Route}
           className="app-surface rounded-xl p-3 sm:p-4 flex flex-col items-start gap-1.5 transition-transform hover:-translate-y-0.5"
         >
           <BookMarked className="h-4 w-4 text-accent" aria-hidden />
@@ -157,7 +158,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           <span className="text-[10px] text-muted-foreground leading-tight">존재의 기록</span>
         </Link>
         <Link
-          href={ROUTES.world as never}
+          href={ROUTES.world as Route}
           className="app-surface rounded-xl p-3 sm:p-4 flex flex-col items-start gap-1.5 transition-transform hover:-translate-y-0.5"
         >
           <Globe2 className="h-4 w-4 text-accent" aria-hidden />
