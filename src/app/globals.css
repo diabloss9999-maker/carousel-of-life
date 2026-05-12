@@ -50,126 +50,83 @@
   /* 둥글둥글한 디자인을 위한 큰 radius. */
   --radius: 0.875rem;
 
-  /* Light Ritual 공통 토큰 */
-  --nav-active: rgba(48,39,55,0.92);
-  --nav-muted: rgba(48,39,55,0.64);
-  --header-bg: linear-gradient(180deg, rgba(255,255,255,0.56), rgba(255,250,240,0.78));
-  --header-border: rgba(116,86,64,0.16);
-  --header-shadow: 0 8px 32px rgba(102,80,62,0.10);
+  /* White Glass 공통 토큰 */
+  --nav-active: rgba(246,239,220,0.96);
+  --nav-muted: rgba(246,239,220,0.72);
+  --header-bg: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.10));
+  --header-border: rgba(255,255,255,0.22);
+  --header-shadow: 0 8px 32px rgba(0,0,0,0.16);
 }
 
 .dark {
-  /* Light Ritual Day — .dark는 항상 적용되므로 낮 기본값으로 설정 */
+  /* White Glass — 다크 배경 위 흰 반투명 블러 */
   --background: transparent;
-  --foreground: rgba(48, 39, 55, 0.92);
+  --foreground: rgba(246, 239, 220, 0.92);
 
-  --card: rgba(255, 250, 240, 0.68);
-  --card-foreground: rgba(48, 39, 55, 0.92);
+  --card: rgba(255, 255, 255, 0.10);
+  --card-foreground: rgba(246, 239, 220, 0.92);
 
-  --popover: rgba(255, 248, 235, 0.88);
-  --popover-foreground: rgba(48, 39, 55, 0.92);
+  --popover: rgba(255, 255, 255, 0.14);
+  --popover-foreground: rgba(246, 239, 220, 0.92);
 
-  --primary: oklch(0.66 0.12 74);
-  --primary-foreground: oklch(0.99 0.006 88);
+  --primary: oklch(0.72 0.12 82);
+  --primary-foreground: oklch(0.10 0.02 280);
 
-  --secondary: rgba(255,255,255,0.38);
-  --secondary-foreground: rgba(48, 39, 55, 0.88);
+  --secondary: rgba(255, 255, 255, 0.12);
+  --secondary-foreground: rgba(246, 239, 220, 0.88);
 
-  --muted: rgba(255,255,255,0.30);
-  --muted-foreground: rgba(48, 39, 55, 0.64);
+  --muted: rgba(255, 255, 255, 0.10);
+  --muted-foreground: rgba(246, 239, 220, 0.72);
 
-  --accent: oklch(0.64 0.12 305);
-  --accent-foreground: rgba(48, 39, 55, 0.92);
+  --accent: oklch(0.68 0.12 78);
+  --accent-foreground: oklch(0.10 0.02 280);
 
   --destructive: oklch(0.55 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
 
-  --border: rgba(116, 86, 64, 0.16);
-  --input: rgba(255, 255, 255, 0.38);
-  --ring: oklch(0.66 0.12 74);
+  --border: rgba(255, 255, 255, 0.22);
+  --input: rgba(255, 255, 255, 0.16);
+  --ring: oklch(0.68 0.12 78);
 
-  --chart-1: oklch(0.62 0.13 74);
-  --chart-2: oklch(0.60 0.14 305);
-  --chart-3: oklch(0.60 0.16 20);
-  --chart-4: oklch(0.60 0.10 192);
-  --chart-5: oklch(0.62 0.13 145);
+  --chart-1: oklch(0.55 0.14 72);
+  --chart-2: oklch(0.62 0.14 78);
+  --chart-3: oklch(0.55 0.20 25);
+  --chart-4: oklch(0.55 0.16 200);
+  --chart-5: oklch(0.58 0.16 145);
 }
 
-/* 낮 — Light Ritual 베이지/크림/연보라 그라디언트 */
+/* 낮 배경 */
 body[data-time="day"],
 body.ritual-day {
-  --nav-active: rgba(48,39,55,0.92);
-  --nav-muted: rgba(48,39,55,0.64);
-  --header-bg: linear-gradient(180deg, rgba(255,255,255,0.56), rgba(255,250,240,0.78));
-  --header-border: rgba(116,86,64,0.16);
-  --header-shadow: 0 8px 32px rgba(102,80,62,0.10);
   background:
-    radial-gradient(circle at 50% 8%, rgba(255,255,245,0.86), transparent 32%),
-    radial-gradient(circle at 13% 84%, rgba(127,167,157,0.16), transparent 30%),
-    radial-gradient(circle at 86% 72%, rgba(185,143,75,0.15), transparent 26%),
-    linear-gradient(180deg, #f4ead8, #e8d9c3 54%, #cfc1dc);
+    radial-gradient(circle at 50% 8%, rgba(143,121,201,0.18), transparent 34%),
+    radial-gradient(circle at 13% 84%, rgba(122,169,161,0.10), transparent 30%),
+    radial-gradient(circle at 86% 72%, rgba(191,166,106,0.08), transparent 26%),
+    linear-gradient(180deg, #0d0b18, #08070f 72%);
   background-attachment: fixed;
-  color: rgba(48,39,55,0.92);
 }
 
-/* 밤 — Light Ritual 다크 변형 */
+/* 밤 배경 */
 body[data-time="night"],
 body.ritual-night {
-  --foreground: rgba(248, 241, 221, 0.94);
-  --card: rgba(16, 14, 28, 0.66);
-  --card-foreground: rgba(248, 241, 221, 0.94);
-  --popover: rgba(7, 7, 17, 0.82);
-  --popover-foreground: rgba(248, 241, 221, 0.94);
-  --muted-foreground: rgba(248, 241, 221, 0.62);
-  --border: rgba(233, 221, 190, 0.14);
-  --input: rgba(233, 221, 190, 0.12);
-  --nav-active: rgba(246,239,220,0.96);
-  --nav-muted: rgba(246,239,220,0.72);
-  --header-bg: linear-gradient(180deg, rgba(8,7,16,0.82), rgba(8,7,16,0.54));
-  --header-border: rgba(233,221,190,0.14);
-  --header-shadow: 0 8px 32px rgba(0,0,0,0.28);
   background:
     radial-gradient(circle at 50% 8%, rgba(143,121,201,0.23), transparent 34%),
     radial-gradient(circle at 12% 86%, rgba(122,169,161,0.10), transparent 30%),
     radial-gradient(circle at 92% 72%, rgba(191,166,106,0.08), transparent 26%),
     linear-gradient(180deg, #080710, #05050b 72%);
   background-attachment: fixed;
-  color: rgba(248,241,221,0.94);
 }
 
-/* Light Ritual — 낮 카드 (기본값) */
+/* White Glass 카드 */
 .app-surface {
-  border: 1px solid rgba(116,86,64,0.16) !important;
-  background:
-    radial-gradient(circle at 16% 0%, rgba(255,255,255,0.58), transparent 32%),
-    linear-gradient(180deg, rgba(255,255,255,0.34), rgba(255,255,255,0.10)),
-    rgba(255,250,240,0.68) !important;
+  border: 1px solid rgba(255,255,255,0.22) !important;
+  background: rgba(255,255,255,0.10) !important;
   box-shadow:
-    0 14px 44px rgba(102,80,62,0.12),
-    inset 0 1px 0 rgba(255,255,255,0.42) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  color: rgba(48,39,55,0.92) !important;
-}
-
-/* 밤 카드 */
-body[data-time="night"] .app-surface,
-body.ritual-night .app-surface,
-body[data-time="night"] .dark .app-surface {
-  border: 1px solid rgba(233,221,190,0.14) !important;
-  background:
-    radial-gradient(circle at 16% 0%, rgba(143,121,201,0.16), transparent 32%),
-    linear-gradient(180deg, rgba(255,255,255,0.052), rgba(255,255,255,0.018)),
-    rgba(16,14,28,0.66) !important;
-  box-shadow:
-    0 30px 90px rgba(0,0,0,0.42),
-    inset 0 1px 0 rgba(255,255,255,0.05) !important;
-  color: rgba(248,241,221,0.94) !important;
-}
-
-.dark .app-surface {
-  /* dark 클래스만으로는 낮/밤 구분 안 함 — body[data-time]이 결정 */
-  border-color: rgba(116,86,64,0.16);
+    inset 0 1px 0 rgba(255,255,255,0.24),
+    0 8px 32px rgba(0,0,0,0.18) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  color: rgba(246,239,220,0.92) !important;
 }
 
 @theme inline {
@@ -374,30 +331,18 @@ body[data-time="night"] .dark .app-surface {
    ============================================================================= */
 
 :root {
-  /* 낮 기본 토큰 */
-  --ritual-bg: #f4ead8;
-  --ritual-panel: rgba(255,250,240,0.68);
-  --ritual-panel-deep: rgba(255,248,235,0.88);
-  --ritual-line: rgba(116,86,64,0.16);
-  --ritual-line-strong: rgba(116,86,64,0.28);
-  --ritual-text: rgba(48,39,55,0.92);
-  --ritual-muted: rgba(48,39,55,0.60);
-  --ritual-gold: #b98f4b;
-  --ritual-violet: #9b82c8;
-  --ritual-teal: #7fa79d;
+  --ritual-bg: #080710;
+  --ritual-panel: rgba(255,255,255,0.10);
+  --ritual-panel-deep: rgba(255,255,255,0.16);
+  --ritual-line: rgba(255,255,255,0.22);
+  --ritual-line-strong: rgba(255,255,255,0.36);
+  --ritual-text: rgba(246,239,220,0.92);
+  --ritual-muted: rgba(246,239,220,0.62);
+  --ritual-gold: #bfa66a;
+  --ritual-violet: #8f79c9;
+  --ritual-teal: #7aa9a1;
   --ritual-danger: #c96b73;
   --ritual-radius: 18px;
-}
-
-body[data-time="night"],
-body.ritual-night {
-  --ritual-bg: #080710;
-  --ritual-panel: rgba(16,14,28,0.66);
-  --ritual-panel-deep: rgba(7,7,17,0.82);
-  --ritual-line: rgba(233,221,190,0.14);
-  --ritual-line-strong: rgba(233,221,190,0.30);
-  --ritual-text: rgba(248,241,221,0.94);
-  --ritual-muted: rgba(248,241,221,0.58);
 }
 
 /* 균열 수치가 높을 때 — body.fracture-high 로 활성화 */
@@ -426,30 +371,18 @@ body.ritual-night {
    ============================================================================= */
 
 :root {
-  --col-bg: #f4ead8;
-  --col-ink: rgba(48,39,55,0.92);
-  --col-muted: rgba(48,39,55,0.64);
-  --col-faint: rgba(48,39,55,0.36);
-  --col-line: rgba(116,86,64,0.16);
-  --col-line-strong: rgba(116,86,64,0.28);
-  --col-gold: #b98f4b;
-  --col-violet: #9b82c8;
-  --col-teal: #7fa79d;
-  --col-fracture: #c96b73;
-  --glass-deep: rgba(255,250,240,0.82);
-  --glass-soft: rgba(255,248,235,0.62);
-}
-
-body[data-time="night"],
-body.ritual-night {
   --col-bg: #080710;
-  --col-ink: rgba(248,241,221,0.94);
-  --col-muted: rgba(248,241,221,0.62);
-  --col-faint: rgba(248,241,221,0.34);
-  --col-line: rgba(233,221,190,0.14);
-  --col-line-strong: rgba(233,221,190,0.30);
-  --glass-deep: rgba(9,8,17,0.68);
-  --glass-soft: rgba(23,20,35,0.58);
+  --col-ink: rgba(246,239,220,0.94);
+  --col-muted: rgba(246,239,220,0.62);
+  --col-faint: rgba(246,239,220,0.34);
+  --col-line: rgba(255,255,255,0.18);
+  --col-line-strong: rgba(255,255,255,0.32);
+  --col-gold: #bfa66a;
+  --col-violet: #8f79c9;
+  --col-teal: #7aa9a1;
+  --col-fracture: #c96b73;
+  --glass-deep: rgba(255,255,255,0.14);
+  --glass-soft: rgba(255,255,255,0.08);
 }
 
 /* 말풍선 공통 */
@@ -464,60 +397,33 @@ body.ritual-night {
   backdrop-filter: blur(12px);
   border: 1px solid var(--col-line);
   box-shadow:
-    0 8px 24px rgba(102,80,62,0.10),
-    inset 0 1px 0 rgba(255,255,255,0.30);
+    0 16px 44px rgba(0,0,0,0.24),
+    inset 0 1px 0 rgba(255,255,255,0.14);
 }
 
 .ritual-message p { margin: 0; }
 
-/* 낮 — 존재(AI) 응답 */
+/* 존재(AI) 응답 */
 .ritual-message.oracle {
   margin-right: auto;
   color: var(--col-ink);
   background:
-    radial-gradient(circle at 18% 0%, rgba(255,255,255,0.52), transparent 34%),
-    linear-gradient(180deg, rgba(255,255,255,0.34), rgba(255,255,255,0.10)),
-    rgba(255,248,235,0.58);
+    radial-gradient(circle at 18% 0%, rgba(143,121,201,0.18), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04)),
+    rgba(255,255,255,0.08);
   border-top-left-radius: 8px;
 }
 
-/* 낮 — 관측자(사용자) */
+/* 관측자(사용자) */
 .ritual-message.observer {
   margin-left: auto;
   color: var(--col-ink);
   background:
-    radial-gradient(circle at 80% 0%, rgba(185,143,75,0.16), transparent 34%),
-    linear-gradient(180deg, rgba(255,255,255,0.30), rgba(255,255,255,0.08)),
-    rgba(255,255,255,0.42);
-  border-top-right-radius: 8px;
-  border-color: rgba(185,143,75,0.24);
-}
-
-/* 밤 모드 override */
-body[data-time="night"] .ritual-message,
-body.ritual-night .ritual-message {
-  box-shadow:
-    0 16px 44px rgba(0,0,0,0.24),
-    inset 0 1px 0 rgba(255,255,255,0.045);
-}
-
-body[data-time="night"] .ritual-message.oracle,
-body.ritual-night .ritual-message.oracle {
-  color: rgba(248,241,221,0.94);
-  background:
-    radial-gradient(circle at 18% 0%, rgba(143,121,201,0.18), transparent 34%),
-    linear-gradient(180deg, rgba(255,255,255,0.052), rgba(255,255,255,0.018)),
-    rgba(18,16,31,0.64);
-}
-
-body[data-time="night"] .ritual-message.observer,
-body.ritual-night .ritual-message.observer {
-  color: rgba(255,248,229,0.95);
-  background:
     radial-gradient(circle at 80% 0%, rgba(191,166,106,0.16), transparent 34%),
-    linear-gradient(180deg, rgba(191,166,106,0.12), rgba(255,255,255,0.018)),
-    rgba(32,27,40,0.66);
-  border-color: rgba(191,166,106,0.20);
+    linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04)),
+    rgba(255,255,255,0.10);
+  border-top-right-radius: 8px;
+  border-color: rgba(255,255,255,0.28);
 }
 
 /* 균열 메시지 — Lv3+ 시 적용 */
@@ -544,24 +450,18 @@ body.ritual-night .ritual-message.observer {
   min-height: 28px;
   padding: 0 10px;
   border-radius: 999px;
-  border: 1px solid rgba(127,167,157,0.26);
-  background: rgba(127,167,157,0.12);
-  color: rgba(48,39,55,0.72);
+  border: 1px solid rgba(122,169,161,0.28);
+  background: rgba(255,255,255,0.08);
+  color: rgba(246,239,220,0.72);
   font-size: 11px;
   letter-spacing: 0.08em;
-}
-body[data-time="night"] .ritual-status-badge,
-body.ritual-night .ritual-status-badge {
-  border-color: rgba(122,169,161,0.22);
-  background: rgba(122,169,161,0.08);
-  color: rgba(246,239,220,0.72);
 }
 .ritual-status-badge::before {
   content: "";
   width: 6px; height: 6px;
   border-radius: 999px;
   background: var(--col-teal);
-  box-shadow: 0 0 12px rgba(127,167,157,0.52);
+  box-shadow: 0 0 12px rgba(122,169,161,0.52);
 }
 
 @media (prefers-reduced-motion: reduce) {

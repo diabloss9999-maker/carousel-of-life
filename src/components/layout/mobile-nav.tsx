@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils";
 
 const NAV_ACTIVE   = "var(--nav-active)";
 const NAV_MUTED    = "var(--nav-muted)";
-const NAV_SURFACE  = "rgba(255,250,240,0.88)";
-const NAV_SURFACE2 = "rgba(255,248,235,0.72)";
+const NAV_SURFACE  = "rgba(255,255,255,0.16)";
+const NAV_SURFACE2 = "rgba(255,255,255,0.08)";
 
 export function MobileNav() {
   const pathname = usePathname();
