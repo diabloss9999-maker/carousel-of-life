@@ -52,7 +52,7 @@ export function GenerateFortuneForm({
 
   return (
     <div className="overflow-hidden rounded-2xl border border-border/20"
-      style={{ background: "linear-gradient(135deg, #0a0812 0%, #120e1e 100%)" }}
+      style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(16px)" }}
     >
       <div className="flex gap-0">
         {/* 캐릭터 이미지 */}
@@ -67,7 +67,7 @@ export function GenerateFortuneForm({
             style={{ minHeight: "160px", maxHeight: "200px" }}
             sizes="128px"
           />
-          <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-r from-transparent to-[#0a0812]" />
+          <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-r from-transparent to-white/8" />
         </div>
 
         {/* 콘텐츠 */}

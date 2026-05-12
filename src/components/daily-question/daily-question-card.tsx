@@ -73,7 +73,7 @@ export function DailyQuestionCard({ characterId, question }: DailyQuestionCardPr
         theme.glow,
         "shadow-lg",
       )}
-      style={{ background: "linear-gradient(135deg, #0a0812 0%, #100c1a 100%)" }}
+      style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(16px)" }}
     >
       {/* 배경 글로우 */}
       <div
@@ -105,7 +105,7 @@ export function DailyQuestionCard({ characterId, question }: DailyQuestionCardPr
             sizes="(max-width: 640px) 112px, 144px"
           />
           {/* 우측 페이드 */}
-          <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-r from-transparent to-[#0a0812]" />
+          <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-r from-transparent to-white/8" />
         </div>
 
         {/* 우측 내용 */}

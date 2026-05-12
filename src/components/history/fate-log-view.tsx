@@ -66,8 +66,8 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
     <div className="space-y-6">
       {/* 내 서사 — 요약 카드 */}
       <div
-        className="rounded-2xl border border-white/8 p-5 space-y-5"
-        style={{ background: "linear-gradient(135deg, #0a0812, #120e1e)" }}
+        className="rounded-2xl border border-white/15 p-5 space-y-5"
+        style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(16px)" }}
       >
         <p className="text-[10px] uppercase tracking-widest text-muted-foreground/70">나의 서사</p>
 
