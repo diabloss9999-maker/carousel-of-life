@@ -206,6 +206,8 @@ export interface PrepareSendResult {
   /** Anthropic API 에 그대로 넘길 messages 배열. */
   messages: { role: "user" | "assistant"; content: string }[];
   userMessageId: string;
+  /** 세션에 저장된 캐릭터 ID — systemPrompt 파싱 대신 사용. */
+  characterId: CharacterId;
 }
 
 export interface PrepareSendQuotaError {
@@ -390,6 +392,7 @@ export async function prepareSendMessage(opts: {
     systemPrompt,
     messages: apiMessages,
     userMessageId: savedUserMessage.id,
+    characterId,
   };
 }
 

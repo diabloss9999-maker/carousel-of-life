@@ -81,16 +81,8 @@ export async function POST(
     return jsonError(500, API_ERROR_CODES.PROVIDER_ERROR, prepared.message);
   }
 
-  // 친밀도 맥락
-  const characterId = (
-    prepared.systemPrompt.includes("카엘")    ? "child"    :
-    prepared.systemPrompt.includes("루나")    ? "witch"    :
-    prepared.systemPrompt.includes("라엘")    ? "sage"     :
-    prepared.systemPrompt.includes("소령")    ? "shaman"   :
-    prepared.systemPrompt.includes("현도")    ? "taoist"   :
-    prepared.systemPrompt.includes("귀염")    ? "dokkaebi" :
-    "witch"
-  ) as CharacterId;
+  // 친밀도 맥락 — 세션의 실제 character 사용 (시스템 프롬프트 내 다른 캐릭터 이름 언급 때문에 잘못 매칭되는 버그 방지)
+  const characterId: CharacterId = prepared.characterId;
 
   const [affinityRow, crackData] = await Promise.all([
     getAffinity(profile.userId, characterId),
