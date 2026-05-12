@@ -37,11 +37,10 @@ export function SessionDrawer({ sessions }: SessionDrawerProps) {
         type="button"
         onClick={() => setOpen((v) => !v)}
         className={cn(
-          "w-full flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 backdrop-blur transition-all",
-          open
-            ? "border-border/40 bg-card/50 rounded-b-none border-b-0"
-            : "border-border/30 bg-card/25 hover:bg-card/40",
+          "w-full flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 transition-all",
+          open ? "rounded-b-none border-b-0 border-white/20" : "border-white/15 hover:border-white/25",
         )}
+        style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(16px)" }}
       >
         <div className="flex items-center gap-2.5">
           <MessageCircle className="h-4 w-4 text-muted-foreground/60" aria-hidden />
@@ -67,7 +66,7 @@ export function SessionDrawer({ sessions }: SessionDrawerProps) {
           open ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0",
         )}
       >
-        <div className="rounded-b-2xl border border-t-0 border-border/40 bg-card/40 backdrop-blur divide-y divide-border/20">
+        <div className="rounded-b-2xl border border-t-0 border-white/15 divide-y divide-white/10" style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(16px)" }}>
           {sessions.map((s) => {
             const charId = (s.character ?? "witch") as keyof typeof CHARACTERS;
             const char = CHARACTERS[charId];

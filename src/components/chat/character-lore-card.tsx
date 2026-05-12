@@ -101,8 +101,8 @@ export function CharacterLoreCard() {
             className={cn(
               "rounded-2xl border overflow-hidden transition-all",
               section.border,
-              "bg-card/20 backdrop-blur",
             )}
+            style={{ background: "rgba(255,255,255,0.07)", backdropFilter: "blur(16px)" }}
           >
             {/* 헤더 */}
             <button
