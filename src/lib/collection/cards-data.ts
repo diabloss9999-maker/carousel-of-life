@@ -344,7 +344,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     category: "characters",
     nameKo: "루나",
     nameEn: "Luna",
-    imageSrc: "/characters/witch_v2.png",
+    imageSrc: "/characters/witch_night.png",
     description:
       "달빛 아래 수정구슬을 응시하며 운명을 읽는 달빛의 마녀. 어둠 속에서 가장 선명하게 진실을 본다.",
     rarity: "legendary",
