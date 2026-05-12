@@ -59,9 +59,9 @@ export default async function ChatPage() {
         </CardContent>
       </Card>
 
-      <SessionDrawer sessions={sessions} />
-
       <CharacterLoreCard />
+
+      <SessionDrawer sessions={sessions} />
     </div>
   );
 }
