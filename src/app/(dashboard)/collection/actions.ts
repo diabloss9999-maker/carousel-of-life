@@ -9,7 +9,6 @@ import { revalidatePath } from "next/cache";
 
 import { requireProfile } from "@/lib/auth/get-user";
 import { pullGacha, type GachaPullResult } from "@/lib/collection/service";
-import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 
 /** 가챠 액션 결과 타입 — 성공 결과 또는 에러 메시지. */
 export type PullGachaActionResult =
@@ -20,14 +19,13 @@ export type PullGachaActionResult =
  * 카드 1장 가챠 뽑기.
  *
  * - 인증 + 프로필 필수
- * - 구독 상태로 일일 한도 결정
+ * - 구독 티어로 일일 한도 결정 (free=1, lite=3, pro=5)
  * - 결과 후 컬렉션 페이지 캐시 무효화
  */
 export async function pullGachaAction(): Promise<PullGachaActionResult> {
   try {
     const { profile } = await requireProfile();
-    const subscribed = await hasActiveSubscription(profile.userId);
-    const result = await pullGacha(profile.userId, subscribed);
+    const result = await pullGacha(profile.userId);
     if (result.ok) {
       revalidatePath("/collection");
     }

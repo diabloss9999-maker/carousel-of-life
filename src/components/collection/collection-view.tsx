@@ -31,6 +31,7 @@ type TabId = "all" | CollectionCategory;
 interface PullDisplayState {
   card: FlatCardDTO;
   isNew: boolean;
+  chatBonus: number;
 }
 
 interface CollectionViewProps {
@@ -193,18 +194,24 @@ export function CollectionView({
         return;
       }
 
-      setPulled({ card: result.card, isNew: result.isNew });
+      setPulled({
+        card: result.card,
+        isNew: result.isNew,
+        chatBonus: result.chatBonus,
+      });
       setRemaining(result.remaining);
       setLimit(result.limit);
+      const bonusSuffix =
+        result.chatBonus > 0 ? ` (+${result.chatBonus} 문답 보너스)` : "";
       if (result.isNew) {
         setOwnedSet((prev) => {
           const next = new Set(prev);
           next.add(result.card.id);
           return next;
         });
-        toast.success(`새 카드 획득 — ${result.card.nameKo}`);
+        toast.success(`새 카드 획득 — ${result.card.nameKo}${bonusSuffix}`);
       } else {
-        toast(`이미 소장 중인 카드 — ${result.card.nameKo}`);
+        toast(`이미 소장 중인 카드 — ${result.card.nameKo}${bonusSuffix}`);
       }
 
       // 살짝 딜레이 후 플립
@@ -330,8 +337,8 @@ function GachaPanel({
         </h2>
         <p className="text-xs text-muted-foreground sm:text-sm">
           {subscribed
-            ? "프리미엄 회원은 매일 3장의 카드를 뽑을 수 있어."
-            : "무료 회원은 매일 1장, 프리미엄은 매일 3장을 뽑을 수 있어."}
+            ? "구독자는 매일 더 많은 카드를 뽑을 수 있어 (라이트 3장 / 프로 5장)."
+            : "무료 1장 / 라이트 3장 / 프로 5장. 희귀·전설 카드는 문답 보너스도 함께 줘."}
         </p>
       </div>
 
@@ -397,15 +404,22 @@ function GachaPanel({
       {/* 결과 메시지 영역 (높이 고정으로 레이아웃 안정화) */}
       <div className="flex min-h-[40px] flex-col items-center justify-center text-center">
         {pulled ? (
-          pulled.isNew ? (
-            <p className="text-sm font-semibold text-primary">
-              새로운 카드를 소장하게 됐어!
-            </p>
-          ) : (
-            <p className="text-sm text-muted-foreground">
-              이미 소장 중인 카드야 — 뽑기 횟수만 1 차감됐어.
-            </p>
-          )
+          <>
+            {pulled.isNew ? (
+              <p className="text-sm font-semibold text-primary">
+                새로운 카드를 소장하게 됐어!
+              </p>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                이미 소장 중인 카드야 — 뽑기 횟수만 1 차감됐어.
+              </p>
+            )}
+            {pulled.chatBonus > 0 ? (
+              <p className="font-mystic text-sm text-accent">
+                +{pulled.chatBonus} 문답 보너스 획득!
+              </p>
+            ) : null}
+          </>
         ) : (
           <p className="text-xs text-muted-foreground">
             카드를 뽑으면 결과가 여기에 나타나.

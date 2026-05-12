@@ -1,27 +1,28 @@
 /**
  * 가챠 기반 카드 컬렉션 서비스.
  *
- * - 무료: 일 1회 / 프리미엄: 일 3회 (KST 기준)
+ * - 일일 한도: free=1, lite=3, pro=5 (KST 기준)
  * - 131장 풀에서 균등 랜덤 (중복 가능, 중복은 카운트만 소모)
+ * - 등급별 문답 보너스: common=0, rare=2, legendary=5
  * - 새 카드면 collection_cards 에 저장, 일일 카운트는 gacha_daily 에 누적
  */
 import "server-only";
 
-import { and, count, eq } from "drizzle-orm";
+import { and, count, eq, sql } from "drizzle-orm";
 
 import { db } from "@/db";
-import { collectionCards, gachaDaily } from "@/db/schema";
+import { collectionCards, gachaDaily, usageQuotas } from "@/db/schema";
+import { GACHA_DAILY_LIMITS, GACHA_RARITY_BONUS } from "@/lib/constants";
 import { consumeBonusGacha, getStreak } from "@/lib/streak/service";
 import {
   COLLECTION_BY_CATEGORY,
   type CollectionCardMeta,
   type CollectionCategory,
 } from "@/lib/collection/cards-data";
-
-/** 무료 사용자 일일 가챠 한도. */
-export const FREE_DAILY_GACHA = 1;
-/** 프리미엄 사용자 일일 가챠 한도. */
-export const PREMIUM_DAILY_GACHA = 3;
+import {
+  getSubscriptionTier,
+  type SubscriptionTier,
+} from "@/lib/payment/subscription-state";
 
 /** 전체 풀 카드 수 (런타임 검증용). */
 export const GACHA_POOL_SIZE = Object.values(COLLECTION_BY_CATEGORY).reduce(
@@ -52,6 +53,8 @@ export interface GachaPullSuccess {
   limit: number;
   /** 갱신된 소장 카드 총 개수. */
   ownedCount: number;
+  /** 이번 뽑기로 얻은 문답 보너스 수. 0 이면 보너스 없음. */
+  chatBonus: number;
 }
 
 /** 일일 한도 초과. */
@@ -85,9 +88,9 @@ function getTodayKst(): string {
   return `${yyyy}-${mm}-${dd}`;
 }
 
-/** 구독 여부에 따른 일일 한도. */
-function dailyLimit(isSubscribed: boolean): number {
-  return isSubscribed ? PREMIUM_DAILY_GACHA : FREE_DAILY_GACHA;
+/** 구독 티어별 일일 한도. */
+function dailyLimitForTier(tier: SubscriptionTier): number {
+  return GACHA_DAILY_LIMITS[tier];
 }
 
 /** 모든 카드를 평면 배열로 변환 — 풀 캐싱. */
@@ -117,14 +120,13 @@ function getCardPool(): FlatCardDTO[] {
  * 사용자의 오늘 가챠 현황을 조회한다.
  *
  * @param userId - 사용자 ID
- * @param isSubscribed - 활성 구독 여부
  */
 export async function getTodayGachaStatus(
   userId: string,
-  isSubscribed: boolean,
 ): Promise<GachaStatus> {
   const today = getTodayKst();
-  const limit = dailyLimit(isSubscribed);
+  const tier = await getSubscriptionTier(userId);
+  const limit = dailyLimitForTier(tier);
   const [row, streak] = await Promise.all([
     db
       .select({ pullCount: gachaDaily.pullCount })
@@ -144,22 +146,49 @@ export async function getTodayGachaStatus(
 }
 
 /**
+ * 등급별 문답 보너스를 즉시 적용한다.
+ *
+ * 오늘 usageQuotas 행이 있으면 chatCount 를 보너스만큼 차감(GREATEST 0),
+ * 없으면 무시 (어차피 0 이므로 한도 차감 효과가 없음).
+ *
+ * @param userId - 사용자 ID
+ * @param today - YYYY-MM-DD (KST)
+ * @param bonus - 추가 보너스 수
+ */
+async function applyChatBonus(
+  userId: string,
+  today: string,
+  bonus: number,
+): Promise<void> {
+  if (bonus <= 0) return;
+  await db
+    .update(usageQuotas)
+    .set({
+      chatCount: sql`GREATEST(0, ${usageQuotas.chatCount} - ${bonus})`,
+    })
+    .where(
+      and(
+        eq(usageQuotas.userId, userId),
+        eq(usageQuotas.usageDate, today),
+      ),
+    );
+}
+
+/**
  * 가챠 1회 실행.
  *
- * 1) 일일 한도 확인 → 초과면 quotaExceeded 반환
+ * 1) 일일 한도 확인 → 초과면 quotaExceeded 반환 (보너스 크레딧 우선 소비 시도)
  * 2) 131장 풀에서 균등 랜덤 카드 1장 선택
  * 3) 신규 카드면 collection_cards INSERT (onConflictDoNothing)
  * 4) gacha_daily upsert 로 카운트 +1
+ * 5) 카드 등급별 문답 보너스 즉시 적용
  *
  * @param userId - 사용자 ID
- * @param isSubscribed - 활성 구독 여부
  */
-export async function pullGacha(
-  userId: string,
-  isSubscribed: boolean,
-): Promise<GachaPullResult> {
+export async function pullGacha(userId: string): Promise<GachaPullResult> {
   const today = getTodayKst();
-  const limit = dailyLimit(isSubscribed);
+  const tier = await getSubscriptionTier(userId);
+  const limit = dailyLimitForTier(tier);
 
   // 1) 한도 확인 (기본 한도 초과 시 보너스 크레딧으로 대체)
   const [daily] = await db
@@ -169,12 +198,14 @@ export async function pullGacha(
     .limit(1);
   const used = daily?.pullCount ?? 0;
 
+  let usedBonusCredit = false;
   if (used >= limit) {
     // 보너스 가챠 크레딧 소비 시도
     const consumed = await consumeBonusGacha(userId);
     if (!consumed) {
       return { ok: false, quotaExceeded: true, remaining: 0, limit };
     }
+    usedBonusCredit = true;
     // 보너스로 진행 — 일일 카운트는 올리지 않음 (별도 크레딧 차감)
   }
 
@@ -206,30 +237,38 @@ export async function pullGacha(
       .onConflictDoNothing();
   }
 
-  // 4) 일일 카운트 갱신
-  if (daily) {
-    await db
-      .update(gachaDaily)
-      .set({ pullCount: daily.pullCount + 1 })
-      .where(eq(gachaDaily.id, daily.id));
-  } else {
-    await db.insert(gachaDaily).values({
-      userId,
-      pullDate: today,
-      pullCount: 1,
-    });
+  // 4) 일일 카운트 갱신 (보너스 크레딧으로 진행한 경우는 제외)
+  if (!usedBonusCredit) {
+    if (daily) {
+      await db
+        .update(gachaDaily)
+        .set({ pullCount: daily.pullCount + 1 })
+        .where(eq(gachaDaily.id, daily.id));
+    } else {
+      await db.insert(gachaDaily).values({
+        userId,
+        pullDate: today,
+        pullCount: 1,
+      });
+    }
   }
+
+  // 5) 등급별 문답 보너스 적용
+  const chatBonus = GACHA_RARITY_BONUS[card.rarity] ?? 0;
+  await applyChatBonus(userId, today, chatBonus);
 
   // 갱신된 소장 카드 수
   const ownedCount = await getOwnedCount(userId);
 
+  const newUsed = usedBonusCredit ? used : used + 1;
   return {
     ok: true,
     card,
     isNew,
-    remaining: Math.max(0, limit - used - 1),
+    remaining: Math.max(0, limit - newUsed),
     limit,
     ownedCount,
+    chatBonus,
   };
 }
 

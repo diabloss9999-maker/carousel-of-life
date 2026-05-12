@@ -27,7 +27,7 @@ export default async function CollectionPage() {
   const subscribed = await hasActiveSubscription(profile.userId);
 
   const [status, ownedSet, ownedCount] = await Promise.all([
-    getTodayGachaStatus(profile.userId, subscribed),
+    getTodayGachaStatus(profile.userId),
     getOwnedCardIds(profile.userId),
     getOwnedCount(profile.userId),
   ]);

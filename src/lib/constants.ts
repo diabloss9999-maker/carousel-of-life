@@ -25,6 +25,20 @@ export const PRO_DAILY_LIMITS = {
   chat: 120,
 } as const;
 
+/** 가챠 일일 한도 (티어별). */
+export const GACHA_DAILY_LIMITS = {
+  free: 1,
+  lite: 3,
+  pro: 5,
+} as const;
+
+/** 등급별 문답 보너스 (가챠로 얻은 카드의 rarity 별 추가 chat 횟수). */
+export const GACHA_RARITY_BONUS: Record<string, number> = {
+  common: 0,
+  rare: 2,
+  legendary: 5,
+};
+
 /** 구독 플랜 정보. */
 export const SUBSCRIPTION = {
   lite: {
