@@ -110,12 +110,7 @@ body.ritual-day {
   --col-faint: rgba(0, 0, 0, 0.32);
   --ritual-text: rgba(0, 0, 0, 0.88);
   --ritual-muted: rgba(0, 0, 0, 0.55);
-  background:
-    radial-gradient(circle at 50% 8%, rgba(143,121,201,0.18), transparent 34%),
-    radial-gradient(circle at 13% 84%, rgba(122,169,161,0.10), transparent 30%),
-    radial-gradient(circle at 86% 72%, rgba(191,166,106,0.08), transparent 26%),
-    linear-gradient(180deg, #0d0b18, #08070f 72%);
-  background-attachment: fixed;
+  background: url("/backgrounds/day.png") center / cover no-repeat fixed;
 }
 
 /* 밤 배경 — 흰색 텍스트 */
@@ -133,12 +128,7 @@ body.ritual-night {
   --col-faint: rgba(255, 255, 255, 0.36);
   --ritual-text: rgba(255, 255, 255, 0.92);
   --ritual-muted: rgba(255, 255, 255, 0.62);
-  background:
-    radial-gradient(circle at 50% 8%, rgba(143,121,201,0.23), transparent 34%),
-    radial-gradient(circle at 12% 86%, rgba(122,169,161,0.10), transparent 30%),
-    radial-gradient(circle at 92% 72%, rgba(191,166,106,0.08), transparent 26%),
-    linear-gradient(180deg, #080710, #05050b 72%);
-  background-attachment: fixed;
+  background: url("/backgrounds/night.png") center / cover no-repeat fixed;
 }
 
 /* White Glass 카드 — v3 */

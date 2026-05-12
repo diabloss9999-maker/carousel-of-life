@@ -19,10 +19,11 @@ export function RitualBody({ crackLevel }: RitualBodyProps) {
       new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }),
     ).getHours();
 
-    // 낮/밤 배경
-    const isDay = hour >= 7 && hour < 18;
+    // 낮(07:00~18:59) / 밤(19:00~06:59)
+    const isDay = hour >= 7 && hour < 19;
     body.classList.remove("ritual-day", "ritual-night");
     body.classList.add(isDay ? "ritual-day" : "ritual-night");
+    body.setAttribute("data-time", isDay ? "day" : "night");
 
     // 균열 클래스
     if (crackLevel >= 3) {
@@ -33,6 +34,7 @@ export function RitualBody({ crackLevel }: RitualBodyProps) {
 
     return () => {
       body.classList.remove("ritual-day", "ritual-night", "fracture-high");
+      body.removeAttribute("data-time");
     };
   }, [crackLevel]);
 
