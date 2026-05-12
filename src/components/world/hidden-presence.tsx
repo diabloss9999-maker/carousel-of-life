@@ -129,24 +129,24 @@ export function HiddenPresence() {
           userSelect: "none",
         }}
       >
-        {/* 희미한 카드 이미지 */}
+        {/* 희미한 카드 이미지 — 모바일은 viewport 비율, 데스크톱은 최대 360px */}
         <div
           style={{
             position: "relative",
-            width: "160px",
-            height: "240px",
-            opacity: 0.72,
-            filter: "blur(0.4px) brightness(0.92)",
-            borderRadius: "14px",
+            width: "min(360px, 75vw)",
+            aspectRatio: "2 / 3",
+            opacity: 0.78,
+            filter: "blur(0.3px) brightness(0.94)",
+            borderRadius: "18px",
             overflow: "hidden",
-            boxShadow: "0 24px 60px rgba(0,0,0,0.42), inset 0 0 30px rgba(0,0,0,0.32)",
+            boxShadow: "0 30px 80px rgba(0,0,0,0.48), inset 0 0 40px rgba(0,0,0,0.32)",
           }}
         >
           <Image
             src={entity.imageSrc}
             alt=""
             fill
-            sizes="160px"
+            sizes="(max-width: 480px) 75vw, 360px"
             style={{ objectFit: "cover" }}
             aria-hidden
           />
@@ -163,11 +163,11 @@ export function HiddenPresence() {
         <p
           style={{
             fontFamily: "var(--font-serif)",
-            fontSize: "13px",
+            fontSize: "15px",
             letterSpacing: "0.18em",
-            color: "rgba(220,200,210,0.62)",
+            color: "rgba(220,200,210,0.72)",
             textAlign: "center",
-            maxWidth: "min(86vw, 460px)",
+            maxWidth: "min(86vw, 520px)",
             lineHeight: 1.7,
             margin: 0,
             textShadow: "0 0 12px rgba(0,0,0,0.5)",
@@ -179,9 +179,9 @@ export function HiddenPresence() {
         <p
           style={{
             fontFamily: "var(--font-serif)",
-            fontSize: "10px",
-            letterSpacing: "0.32em",
-            color: "rgba(180,160,180,0.28)",
+            fontSize: "12px",
+            letterSpacing: "0.34em",
+            color: "rgba(180,160,180,0.32)",
             margin: 0,
           }}
         >
