@@ -178,6 +178,7 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
 
 이 사용자의 오늘 직장 운세 종합 리포트를 작성해줘.
 구체적이고 실천 가능하게, 이 사람의 MBTI 성격과 오늘 요일을 반영해서 작성해.
+모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
 
 반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:
 {
@@ -298,6 +299,7 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
 
 이 사람에게 오늘 어울리는 운동을 추천해줘.
 맨몸 운동 3가지(기구 없이 집에서 가능)와 기구 운동 3가지(헬스장 기구 사용) 각각 추천해.
+모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
 
 반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:
 {
@@ -409,6 +411,7 @@ export async function generateStudyTipsAction(): Promise<StudyTipsState> {
 
 이 사람의 MBTI 성격에 맞는 "집중력 높이는 공부 팁" 3가지를 알려줘.
 구체적이고 바로 실천 가능한 방법으로.
+모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
 
 반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:
 {
@@ -503,6 +506,7 @@ export async function generateLovePremiumAction(): Promise<LovePremiumState> {
 - 성별: ${profile.gender}
 
 이 사람에게 맞는 사랑 운세 프리미엄 리포트를 작성해줘.
+모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
 
 반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:
 {
@@ -598,6 +602,7 @@ export async function generateGeneralPremiumAction(): Promise<GeneralPremiumStat
 - 성별: ${profile.gender}
 
 오늘 이 사람의 종합 운세 프리미엄 리포트를 작성해줘.
+모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
 
 반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:
 {
