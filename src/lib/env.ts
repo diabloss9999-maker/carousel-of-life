@@ -28,6 +28,7 @@ const serverSchema = z.object({
   LEMONSQUEEZY_SUBSCRIPTION_VARIANT_ID: emptyToUndef(
     z.string().min(1).optional(),
   ),
+  LEMONSQUEEZY_PRO_VARIANT_ID: emptyToUndef(z.string().min(1).optional()),
   KAKAO_CLIENT_ID: emptyToUndef(z.string().min(1).optional()),
   KAKAO_CLIENT_SECRET: emptyToUndef(z.string().min(1).optional()),
   NODE_ENV: z

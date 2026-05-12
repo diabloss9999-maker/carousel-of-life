@@ -75,22 +75,3 @@ export function TimeAwareBg() {
   );
 }
 
-/**
- * 헤더 배경 src를 시간대에 맞게 반환하는 훅.
- * dashboard layout 헤더에서 사용.
- */
-export function useHeaderBg(): string {
-  const [src, setSrc] = useState("/header-bg.png");
-
-  useEffect(() => {
-    const update = () => {
-      const h = getKstHour();
-      setSrc(isNightTime(h) ? "/header-bg-night.png" : "/header-bg.png");
-    };
-    update();
-    const timer = setInterval(update, 60_000);
-    return () => clearInterval(timer);
-  }, []);
-
-  return src;
-}

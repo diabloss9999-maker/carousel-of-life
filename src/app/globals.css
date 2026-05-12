@@ -228,25 +228,6 @@ body.ritual-night {
     background: oklch(0.82 0.13 82 / 0.35);
   }
 
-  /* 회전목마처럼 천천히 도는 애니메이션 */
-  @keyframes carousel-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  .animate-carousel {
-    animation: carousel-spin 60s linear infinite;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .animate-carousel {
-      animation: none;
-    }
-  }
 }
 
 @layer utilities {
