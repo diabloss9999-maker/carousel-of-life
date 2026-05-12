@@ -5,6 +5,7 @@
  * 마일스톤 달성 시 축하 메시지를 보여준다.
  */
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { Flame, Gift } from "lucide-react";
 import { toast } from "sonner";
 
@@ -53,24 +54,19 @@ export function StreakBadge({ checkIn }: StreakBadgeProps) {
 
   return (
     <div className="flex items-center gap-3">
-      {/* 연속 출석 */}
-      <div
+      {/* 연속 출석 — 클릭 시 운명 로그로 이동 */}
+      <Link
+        href="/history"
         className={cn(
-          "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold",
+          "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold transition-opacity hover:opacity-80",
           isHot
             ? "bg-orange-500/15 text-orange-500 dark:text-orange-400"
             : "bg-muted/50 text-muted-foreground",
         )}
       >
-        <Flame
-          className={cn(
-            "h-4 w-4",
-            isHot && "animate-pulse",
-          )}
-          aria-hidden
-        />
+        <Flame className={cn("h-4 w-4", isHot && "animate-pulse")} aria-hidden />
         <span>{currentStreak}일 연속</span>
-      </div>
+      </Link>
 
       {/* 보너스 가챠 크레딧 */}
       {bonusGachaCredits > 0 && (
