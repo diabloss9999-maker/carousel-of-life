@@ -14,7 +14,13 @@ export type WorldDominantMood =
   | "warm"
   | "fractured";
 
-export type WorldActiveEntity = "luna" | "rael" | "gael";
+export type WorldActiveEntity =
+  | "luna"     // 루나 (witch)
+  | "rael"     // 라엘 (sage)
+  | "gael"     // 카엘 (child) — 내부 키는 gael 유지
+  | "soryeong" // 소령 (shaman)
+  | "hyundo"   // 현도 (taoist)
+  | "gwiyeom"; // 귀염 (dokkaebi)
 
 export interface WorldState {
   dominantMood: WorldDominantMood;
@@ -33,11 +39,14 @@ const MOOD_POOL: readonly WorldDominantMood[] = [
   "fractured",
 ] as const;
 
-/** 전체 후보 존재. */
+/** 전체 후보 존재 — 이세계 3명 + 동양 3명. */
 const ENTITY_POOL: readonly WorldActiveEntity[] = [
   "luna",
   "rael",
   "gael",
+  "soryeong",
+  "hyundo",
+  "gwiyeom",
 ] as const;
 
 /** mood 별 한 줄 노트 후보. */
@@ -60,7 +69,8 @@ const GLOBAL_NOTES: Record<WorldDominantMood, readonly string[]> = {
   ],
   fractured: [
     "균열이 잦은 날입니다.",
-    "오늘은 가엘이 자주 깨어 있습니다.",
+    "오늘은 카엘이 자주 깨어 있습니다.",
+    "오늘은 귀염이 자주 깨어 있습니다.",
   ],
 };
 
@@ -86,7 +96,10 @@ export const MOOD_NARRATIVE: Record<WorldDominantMood, string> = {
 export const ENTITY_LABEL: Record<WorldActiveEntity, string> = {
   luna: "루나",
   rael: "라엘",
-  gael: "가엘",
+  gael: "카엘",
+  soryeong: "소령",
+  hyundo: "현도",
+  gwiyeom: "귀염",
 };
 
 /**
