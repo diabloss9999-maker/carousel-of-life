@@ -1,0 +1,110 @@
+"use client";
+
+/**
+ * 오늘의 대화 목록 — 슬라이드 드로어.
+ * 기본은 숨겨져 있고, 버튼을 눌러야 열린다.
+ */
+import { useState } from "react";
+import type { Route } from "next";
+import Link from "next/link";
+import Image from "next/image";
+import { ChevronUp, MessageCircle, X } from "lucide-react";
+
+import { CHARACTERS } from "@/lib/chat/characters";
+import { formatKoreanDate } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+
+interface SessionItem {
+  id: string;
+  title: string;
+  character: string | null;
+  lastMessageAt: Date | string;
+}
+
+interface SessionDrawerProps {
+  sessions: SessionItem[];
+}
+
+export function SessionDrawer({ sessions }: SessionDrawerProps) {
+  const [open, setOpen] = useState(false);
+
+  if (sessions.length === 0) return null;
+
+  return (
+    <div className="relative">
+      {/* 토글 버튼 */}
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className={cn(
+          "w-full flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 backdrop-blur transition-all",
+          open
+            ? "border-border/40 bg-card/50 rounded-b-none border-b-0"
+            : "border-border/30 bg-card/25 hover:bg-card/40",
+        )}
+      >
+        <div className="flex items-center gap-2.5">
+          <MessageCircle className="h-4 w-4 text-muted-foreground/60" aria-hidden />
+          <span className="font-mystic text-sm text-muted-foreground/70">
+            오늘의 조우 기록
+          </span>
+          <span className="rounded-full bg-muted/40 px-2 py-0.5 text-[10px] text-muted-foreground/50 tabular-nums">
+            {sessions.length}
+          </span>
+        </div>
+        <ChevronUp
+          className={cn(
+            "h-4 w-4 text-muted-foreground/40 transition-transform duration-300",
+            !open && "rotate-180",
+          )}
+        />
+      </button>
+
+      {/* 슬라이드 패널 */}
+      <div
+        className={cn(
+          "overflow-hidden transition-all duration-300 ease-in-out",
+          open ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0",
+        )}
+      >
+        <div className="rounded-b-2xl border border-t-0 border-border/40 bg-card/40 backdrop-blur divide-y divide-border/20">
+          {sessions.map((s) => {
+            const charId = (s.character ?? "witch") as keyof typeof CHARACTERS;
+            const char = CHARACTERS[charId];
+
+            return (
+              <Link
+                key={s.id}
+                href={`/chat/${s.id}` as Route}
+                className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors"
+                onClick={() => setOpen(false)}
+              >
+                {/* 캐릭터 미니 초상화 */}
+                {char && (
+                  <div className="relative h-10 w-7 flex-shrink-0 overflow-hidden rounded-lg">
+                    <Image
+                      src={char.imageSrc}
+                      alt={char.name}
+                      fill
+                      className="object-cover object-top"
+                      sizes="28px"
+                    />
+                  </div>
+                )}
+
+                <div className="flex-1 min-w-0 space-y-0.5">
+                  <p className="font-mystic text-sm font-medium truncate text-foreground/85">
+                    {s.title}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground/50">
+                    {char?.name ?? ""} · {formatKoreanDate(new Date(s.lastMessageAt))}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
