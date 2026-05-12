@@ -23,6 +23,8 @@ import {
 } from "@/db/schema";
 import { buildChatContext, type ChatEnrichment } from "@/lib/ai/prompts";
 import { getRecentMoods, buildMoodContext } from "@/lib/mood/service";
+import { buildObservationContext, getCurrentHourKst } from "@/lib/observe/service";
+import { getStreak } from "@/lib/streak/service";
 import {
   buildCharacterSystemPrompt,
   DEFAULT_CHARACTER,
@@ -278,6 +280,7 @@ export async function prepareSendMessage(opts: {
             eq(dailyFortunes.category, "general"),
           )).limit(1),
         getRecentMoods(profile.userId, 7),
+        getStreak(profile.userId),
       ]);
 
       const get = <T>(r: PromiseSettledResult<T[]>): T | null =>
@@ -302,7 +305,23 @@ export async function prepareSendMessage(opts: {
       const careerData  = get(results[2] as PromiseSettledResult<typeof personalityCareerFit.$inferSelect[]>);
       const fortuneData = get(results[3] as PromiseSettledResult<typeof dailyFortunes.$inferSelect[]>);
       const moodData    = getAll(results[4] as PromiseSettledResult<import("@/db/schema").MoodEntry[]>);
+      const streakResult = results[5] as PromiseSettledResult<import("@/db/schema").Streak | null>;
+      const streak = streakResult.status === "fulfilled" ? streakResult.value : null;
       const moodCtx     = buildMoodContext(moodData);
+
+      // 관측 메시지 — 사용자 행동 패턴을 캐릭터에게 암시적으로 전달
+      const todayStr = getTodayInSeoul();
+      const lastCheckIn = streak?.lastCheckIn ?? null;
+      const wasReset = lastCheckIn !== null && lastCheckIn !== todayStr &&
+        Math.round((new Date(todayStr).getTime() - new Date(lastCheckIn).getTime()) / 86400000) > 1;
+
+      const observationCtx = buildObservationContext({
+        characterId,
+        hourKst: getCurrentHourKst(),
+        recentMoods: moodData,
+        currentStreak: streak?.currentStreak ?? 0,
+        wasReset,
+      });
 
       const enrichment: ChatEnrichment = {
         sajuDeep:          sajuDeep,
@@ -311,6 +330,7 @@ export async function prepareSendMessage(opts: {
         personalityCareer: careerData?.data as Record<string, unknown> | null,
         todayFortune:      fortuneData?.content?.slice(0, 150) ?? null,
         moodHistory:       moodCtx || null,
+        observation:       observationCtx || null,
       };
 
       userCtx = buildChatContext(profile, enrichment);

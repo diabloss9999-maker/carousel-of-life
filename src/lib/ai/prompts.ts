@@ -396,6 +396,8 @@ export interface ChatEnrichment {
   todayFortune?: string | null;
   /** 최근 7일 감정 기록 요약 */
   moodHistory?: string | null;
+  /** 관측 메시지 — 캐릭터에게만 전달되는 행동 패턴 암시 */
+  observation?: string | null;
 }
 
 /**
@@ -465,6 +467,11 @@ export function buildChatContext(
   // 감정 기록
   if (enrichment.moodHistory) {
     lines.push(enrichment.moodHistory);
+  }
+
+  // 관측 메시지 (캐릭터에게만, 직접 드러내지 말 것)
+  if (enrichment.observation) {
+    lines.push(enrichment.observation);
   }
 
   lines.push("\n[지시]");
