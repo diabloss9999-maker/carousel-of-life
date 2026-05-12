@@ -86,7 +86,7 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
   return (
     <div className="space-y-8">
       <p className="text-center text-sm text-muted-foreground">
-        오늘 어떤 주술사와 이야기할까?
+        오늘은 누구와 이야기할까?
       </p>
 
       {CATEGORY_ORDER.map((category) => {
