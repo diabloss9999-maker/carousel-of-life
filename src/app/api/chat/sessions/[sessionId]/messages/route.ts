@@ -125,7 +125,8 @@ export async function POST(
   const enrichedSystem = prepared.systemPrompt + affinityCtx + crackCtx + hiddenEvent.eventContext + cardSystemInject;
 
   const aiStream = streamChat({
-    model: AI_MODELS.chat,
+    // 카드 점술 해석은 Sonnet, 일반 대화는 Haiku (비용 최적화)
+    model: reading ? AI_MODELS.premium : AI_MODELS.chat,
     maxTokens: reading ? 1200 : AI_LIMITS.chatMaxTokens,
     system: enrichedSystem,
     messages,
