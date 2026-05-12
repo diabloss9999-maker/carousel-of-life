@@ -29,12 +29,12 @@ export interface NavItem {
 }
 
 export const mainNav: NavItem[] = [
-  { href: ROUTES.today,                   label: "운세",   icon: Home,          iconSrc: "/nav/nav_fortune.svg",     authOnly: true },
-  { href: ROUTES.chat,                    label: "주술사", icon: MessageCircle, iconSrc: "/nav/nav_chat.svg",        authOnly: true },
-  { href: ROUTES.tarot,                   label: "타로",   icon: Sparkles,      iconSrc: "/nav/nav_tarot.svg",       authOnly: true },
-  { href: ROUTES.saju,                    label: "사주",   icon: Compass,       iconSrc: "/nav/nav_saju.svg",        authOnly: true },
-  { href: ROUTES.compatibility,           label: "궁합",   icon: Heart,         iconSrc: "/nav/nav_compat.svg",      authOnly: true },
-  { href: ROUTES.personality as Route,    label: "유형",   icon: Brain,         iconSrc: "/nav/nav_personality.svg", authOnly: true },
-  { href: ROUTES.collection as Route,     label: "컬렉션", icon: Library,       iconSrc: "/nav/nav_collection.svg",  authOnly: true },
-  { href: ROUTES.settings,                label: "설정",   icon: Settings,      iconSrc: "/nav/nav_settings.svg",    authOnly: true },
+  { href: ROUTES.today,                   label: "흐름",   icon: Home,          iconSrc: "/nav/nav_fortune.svg",     authOnly: true },
+  { href: ROUTES.chat,                    label: "조우",   icon: MessageCircle, iconSrc: "/nav/nav_chat.svg",        authOnly: true },
+  { href: ROUTES.tarot,                   label: "계시",   icon: Sparkles,      iconSrc: "/nav/nav_tarot.svg",       authOnly: true },
+  { href: ROUTES.saju,                    label: "팔자",   icon: Compass,       iconSrc: "/nav/nav_saju.svg",        authOnly: true },
+  { href: ROUTES.compatibility,           label: "인연",   icon: Heart,         iconSrc: "/nav/nav_compat.svg",      authOnly: true },
+  { href: ROUTES.personality as Route,    label: "본성",   icon: Brain,         iconSrc: "/nav/nav_personality.svg", authOnly: true },
+  { href: ROUTES.collection as Route,     label: "기억",   icon: Library,       iconSrc: "/nav/nav_collection.svg",  authOnly: true },
+  { href: ROUTES.settings,                label: "기록",   icon: Settings,      iconSrc: "/nav/nav_settings.svg",    authOnly: true },
 ];

@@ -50,6 +50,9 @@ const CRACK_LABEL: Record<CrackLevel, string> = {
 const MOOD_SYMBOL: Record<string, string> = {
   great: "✦", good: "○", neutral: "—", tough: "△", hard: "▼",
 };
+const MOOD_LABEL: Record<string, string> = {
+  great: "최고야", good: "좋아", neutral: "그냥", tough: "힘드네", hard: "힘들어",
+};
 
 function formatDate(date: Date): string {
   const d = new Date(date);
@@ -61,39 +64,68 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
 
   return (
     <div className="space-y-6">
-      {/* 요약 카드 */}
+      {/* 내 서사 — 요약 카드 */}
       <div
-        className="rounded-2xl border border-white/8 p-5 space-y-4"
+        className="rounded-2xl border border-white/8 p-5 space-y-5"
         style={{ background: "linear-gradient(135deg, #0a0812, #120e1e)" }}
       >
-        <p className="text-[10px] uppercase tracking-widest text-muted-foreground/40">경계 현황</p>
+        <p className="text-[10px] uppercase tracking-widest text-muted-foreground/40">나의 서사</p>
 
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <StatCell
-            label="균열 상태"
-            value={CRACK_LABEL[crackLevel]}
+        {/* 핵심 숫자 — 가장 크게 */}
+        <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
+          <StatCell label="균열 상태" value={CRACK_LABEL[crackLevel]}
             dim={crackLevel === 0}
             accent={crackLevel >= 3 ? "text-red-400" : crackLevel >= 2 ? "text-amber-400" : undefined}
           />
-          <StatCell label="총 기록" value={`${summary.totalEntries}건`} />
+          {summary.narrative.totalDaysVisited > 0 && (
+            <StatCell label="기록한 날" value={`${summary.narrative.totalDaysVisited}일`} />
+          )}
+          {summary.narrative.totalCardsDrawn > 0 && (
+            <StatCell label="뽑은 카드" value={`${summary.narrative.totalCardsDrawn}장`} />
+          )}
           {summary.mostCalledCharacter && (
-            <StatCell label="가장 많이 부른 주술사" value={summary.mostCalledCharacter} />
+            <StatCell
+              label="가장 많이 만난"
+              value={`${summary.mostCalledCharacter} ${summary.mostCalledCharacterCount > 0 ? `(${summary.mostCalledCharacterCount}회)` : ""}`}
+            />
           )}
           {summary.dominantMood && (
             <StatCell
-              label="최근 지배적 감정"
-              value={`${MOOD_SYMBOL[summary.dominantMood] ?? "·"} ${summary.dominantMood}`}
+              label="지배적 감정"
+              value={`${MOOD_SYMBOL[summary.dominantMood] ?? "·"} ${MOOD_LABEL[summary.dominantMood] ?? summary.dominantMood}`}
             />
           )}
         </div>
+
+        {/* 반복 패턴 */}
+        {summary.narrative.repeatedCard && (
+          <div className="rounded-xl border border-white/5 bg-white/3 px-4 py-3">
+            <p className="text-[10px] text-muted-foreground/40 tracking-widest mb-1">반복 감지</p>
+            <p className="text-sm text-muted-foreground/70 font-mystic italic">
+              '{summary.narrative.repeatedCard}' 카드가 {summary.narrative.repeatedCardCount}번 등장했어.
+            </p>
+          </div>
+        )}
+
+        {/* 캐릭터 조우 현황 */}
+        {summary.narrative.characterCounts.length > 0 && (
+          <div className="space-y-2 border-t border-white/5 pt-4">
+            <p className="text-[10px] text-muted-foreground/40 tracking-widest">조우 기록</p>
+            <div className="flex flex-wrap gap-2">
+              {summary.narrative.characterCounts.map(({ name, count: cnt }) => (
+                <span key={name} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-muted-foreground/60">
+                  {name} {cnt}회
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
 
         {summary.patterns.length > 0 && (
           <div className="border-t border-white/5 pt-3 space-y-1">
             <p className="text-[10px] text-muted-foreground/40 tracking-widest">패턴 감지</p>
             {summary.patterns.map((p, i) => (
-              <p key={i} className="text-xs text-muted-foreground/70 font-mystic italic">
-                {p}
-              </p>
+              <p key={i} className="text-xs text-muted-foreground/70 font-mystic italic">{p}</p>
             ))}
           </div>
         )}

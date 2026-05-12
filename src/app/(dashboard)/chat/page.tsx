@@ -17,7 +17,7 @@ import { CHARACTERS } from "@/lib/chat/characters";
 import { CharacterLoreCard } from "@/components/chat/character-lore-card";
 
 export const metadata: Metadata = {
-  title: "주술사 문답",
+  title: "존재와의 조우",
   description: "사주를 아는 친구에게 궁금한 걸 물어봐요.",
 };
 
@@ -39,7 +39,7 @@ export default async function ChatPage() {
     <div className="space-y-8">
       <header className="space-y-2">
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
-          주술사 문답
+          존재와의 조우
         </h1>
         <p className="text-muted-foreground">
           여섯 주술사 중 한 명을 골라. 이세계든 동양이든, 그들은 이미 당신의 사주를 알고 있어.

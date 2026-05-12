@@ -33,6 +33,7 @@ import { getTodayMood } from "@/lib/mood/service";
 import { MoodCapture } from "@/components/mood/mood-capture";
 import { getCrackScore } from "@/lib/crack/service";
 import { getHomeHiddenText } from "@/lib/observe/hidden-events";
+import { CrackAtmosphere } from "@/components/crack/crack-atmosphere";
 import { checkInStreak } from "@/lib/streak/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { formatKoreanDate } from "@/lib/utils";
@@ -108,16 +109,11 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
       <header className="space-y-3">
         <div className="flex items-center justify-between gap-2">
           <div>
-            <p className="text-[10px] uppercase tracking-widest text-muted-foreground/50">
-              경계(境界) · {today}
-              {crackData.level >= 2 && (
-                <span className={
-                  crackData.level >= 4 ? " · ▓▓▓▓" :
-                  crackData.level === 3 ? " · ▓▓▓░" :
-                  " · ▓▓░░"
-                } />
-              )}
-            </p>
+            <CrackAtmosphere
+              crackLevel={crackData.level}
+              todayStr={today}
+              pageName="오늘의 흐름"
+            />
             {(() => {
               const hidden = getHomeHiddenText(crackData.level);
               return hidden ? (

@@ -11,7 +11,7 @@ import { requireProfile } from "@/lib/auth/get-user";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 
 export const metadata: Metadata = {
-  title: "컬렉션",
+  title: "기억 보관소",
   description:
     "매일 카드 뽑기로 모으는 나만의 카드 도감 — 194장 컬렉션.",
 };
@@ -44,10 +44,10 @@ export default async function CollectionPage() {
         <div className="flex items-end justify-between gap-4">
           <div>
             <h1 className="font-mystic text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-              내 컬렉션
+              기억 보관소
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              매일 카드를 뽑아 194장 도감을 모아봐.
+              기억의 조각들이 여기 쌓인다.
             </p>
           </div>
           <div className="text-right">

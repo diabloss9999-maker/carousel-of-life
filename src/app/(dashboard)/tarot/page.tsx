@@ -22,7 +22,7 @@ import { getTodayUsage } from "@/lib/usage/quota";
 
 export const metadata: Metadata = {
   title: "카드의 계시",
-  description: "타로·르노르망 카드를 뽑아 운명의 한 자락을 살펴봐요.",
+  description: "카드의 계시를 읽어.",
 };
 
 export default async function TarotPage() {

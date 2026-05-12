@@ -6,7 +6,8 @@
  */
 import "server-only";
 
-import { and, desc, eq, gte, sql } from "drizzle-orm";
+import { and, count, desc, eq, gte, sql } from "drizzle-orm";
+import { chatSessions } from "@/db/schema";
 
 import { db } from "@/db";
 import {
@@ -39,9 +40,22 @@ export interface FateSummary {
   currentStreak: number;
   dominantMood: string | null;
   mostCalledCharacter: string | null;
+  mostCalledCharacterCount: number;
   crackLevel: CrackLevel;
-  /** 반복 감지된 패턴 */
   patterns: string[];
+  /** 서사 통계 */
+  narrative: {
+    totalDaysVisited: number;
+    totalCardsDrawn: number;
+    totalMoodEntries: number;
+    /** 가장 자주 나온 타로 카드 */
+    repeatedCard: string | null;
+    repeatedCardCount: number;
+    /** 어두운 날 / 전체 기록 비율 */
+    darkDayRatio: number;
+    /** 각 캐릭터 대화 수 */
+    characterCounts: { name: string; count: number }[];
+  };
 }
 
 function todayMinus(days: number): Date {
@@ -218,34 +232,55 @@ export async function getFateSummary(
   userId: string,
   crackScore: number,
 ): Promise<FateSummary> {
-  const since = todayMinus(30);
+  const since30 = todayMinus(30);
 
-  const [moodRows, affinityRows, tarotRows] = await Promise.all([
-    db.select().from(moodEntries)
-      .where(and(eq(moodEntries.userId, userId), gte(moodEntries.createdAt, since)))
-      .orderBy(desc(moodEntries.createdAt)).limit(30),
-    db.select().from(characterAffinities)
-      .where(eq(characterAffinities.userId, userId)),
-    db.select().from(tarotReadings)
-      .where(and(eq(tarotReadings.userId, userId), gte(tarotReadings.createdAt, since)))
-      .limit(20),
-  ]);
+  const [moodRows, affinityRows, tarotRows, sessionRows, runeRows, lenormandRows] =
+    await Promise.all([
+      db.select().from(moodEntries)
+        .where(and(eq(moodEntries.userId, userId), gte(moodEntries.createdAt, since30)))
+        .orderBy(desc(moodEntries.createdAt)).limit(30),
+      db.select().from(characterAffinities)
+        .where(eq(characterAffinities.userId, userId)),
+      db.select().from(tarotReadings)
+        .where(and(eq(tarotReadings.userId, userId), gte(tarotReadings.createdAt, since30)))
+        .limit(30),
+      db.select({ character: chatSessions.character })
+        .from(chatSessions)
+        .where(and(eq(chatSessions.userId, userId), gte(chatSessions.createdAt, since30))),
+      db.select().from(runeReadings)
+        .where(and(eq(runeReadings.userId, userId), gte(runeReadings.createdAt, since30)))
+        .limit(20),
+      db.select().from(lenormandReadings)
+        .where(and(eq(lenormandReadings.userId, userId), gte(lenormandReadings.createdAt, since30)))
+        .limit(20),
+    ]);
 
   // 지배적 감정
   const moodCount: Record<string, number> = {};
   for (const m of moodRows) moodCount[m.mood] = (moodCount[m.mood] ?? 0) + 1;
   const dominantMood = Object.entries(moodCount).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
 
-  // 가장 많이 대화한 캐릭터
-  const mostAffinity = affinityRows.sort((a, b) => b.points - a.points)[0];
-  const mostCalledCharacter = mostAffinity
-    ? CHARACTERS[mostAffinity.characterId as keyof typeof CHARACTERS]?.name ?? null
+  // 가장 많이 대화한 캐릭터 (세션 기반)
+  const sessionCharCount: Record<string, number> = {};
+  for (const s of sessionRows) {
+    const ch = s.character ?? "witch";
+    sessionCharCount[ch] = (sessionCharCount[ch] ?? 0) + 1;
+  }
+  const sortedChars = Object.entries(sessionCharCount).sort((a, b) => b[1] - a[1]);
+  const topCharEntry = sortedChars[0];
+  const mostCalledCharacter = topCharEntry
+    ? CHARACTERS[topCharEntry[0] as keyof typeof CHARACTERS]?.name ?? null
     : null;
+  const mostCalledCharacterCount = topCharEntry?.[1] ?? 0;
+
+  // 캐릭터별 세션 수
+  const characterCounts = sortedChars.map(([id, cnt]) => ({
+    name: CHARACTERS[id as keyof typeof CHARACTERS]?.name ?? id,
+    count: cnt,
+  }));
 
   // 패턴 감지
   const patterns: string[] = [];
-
-  // 어두운 감정 반복
   const darkCount = moodRows.filter((m) => m.mood === "tough" || m.mood === "hard").length;
   if (darkCount >= 5) patterns.push(`30일 중 ${darkCount}일이 힘들었어.`);
 
@@ -257,17 +292,31 @@ export async function getFateSummary(
       if (c?.nameKo) cardNames[c.nameKo] = (cardNames[c.nameKo] ?? 0) + 1;
     }
   }
-  const repeatedCard = Object.entries(cardNames).find(([, count]) => count >= 3);
-  if (repeatedCard) patterns.push(`최근 '${repeatedCard[0]}' 카드가 ${repeatedCard[1]}번 나왔어.`);
+  const repeatedCardEntry = Object.entries(cardNames).sort((a, b) => b[1] - a[1])[0];
+  const repeatedCard = repeatedCardEntry && repeatedCardEntry[1] >= 3 ? repeatedCardEntry[0] : null;
+  const repeatedCardCount = repeatedCardEntry?.[1] ?? 0;
+  if (repeatedCard) patterns.push(`'${repeatedCard}' 카드가 최근 ${repeatedCardCount}번 나왔어.`);
 
-  const totalEntries = moodRows.length + tarotRows.length;
+  const totalCardsDrawn = tarotRows.length + runeRows.length + lenormandRows.length;
+  const totalDaysVisited = moodRows.length; // 감정 기록 = 방문 일수 근사
+  const darkDayRatio = moodRows.length > 0 ? darkCount / moodRows.length : 0;
 
   return {
-    totalEntries,
+    totalEntries: moodRows.length + tarotRows.length + runeRows.length,
     currentStreak: 0,
     dominantMood,
     mostCalledCharacter,
+    mostCalledCharacterCount,
     crackLevel: calcCrackLevel(crackScore),
     patterns,
+    narrative: {
+      totalDaysVisited,
+      totalCardsDrawn,
+      totalMoodEntries: moodRows.length,
+      repeatedCard,
+      repeatedCardCount,
+      darkDayRatio,
+      characterCounts,
+    },
   };
 }
