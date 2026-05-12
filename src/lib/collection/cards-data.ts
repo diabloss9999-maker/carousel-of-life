@@ -364,7 +364,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     category: "characters",
     nameKo: "라엘",
     nameEn: "Rael",
-    imageSrc: "/characters/sage_v2.png",
+    imageSrc: "/characters/sage_night_v2.png",
     description:
       "하늘의 뜻을 전하는 천상의 대리인. 빛과 희망의 언어로 당신의 길을 밝혀준다.",
     rarity: "legendary",

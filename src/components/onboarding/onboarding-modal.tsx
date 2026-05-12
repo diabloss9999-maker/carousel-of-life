@@ -33,7 +33,7 @@ const STEPS = [
     characters: [
       { name: "카엘", hook: "욕망을 꿰뚫는 악마", img: "/characters/child_v2.png", color: "ring-red-800/50" },
       { name: "루나", hook: "기억을 읽는 마녀",   img: "/characters/witch_night_v2.png", color: "ring-blue-800/50" },
-      { name: "라엘", hook: "희망을 전하는 천사", img: "/characters/sage_v2.png",  color: "ring-amber-700/50" },
+      { name: "라엘", hook: "희망을 전하는 천사", img: "/characters/sage_night_v2.png",  color: "ring-amber-700/50" },
     ],
   },
   {
