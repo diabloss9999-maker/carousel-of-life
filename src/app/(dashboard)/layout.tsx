@@ -29,11 +29,11 @@ export default async function DashboardLayout({
       <TimeAwareHeader
         className="sticky top-0 z-40 pt-safe ritual-chat-menu"
         style={{
-          background: `linear-gradient(180deg, rgba(8,7,16,0.88), rgba(8,7,16,0.68))`,
-          boxShadow: "0 14px 40px rgba(0,0,0,0.32)",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          borderBottom: "1px solid rgba(233,221,190,0.10)",
+          background: `linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.10))`,
+          boxShadow: "0 8px 32px rgba(0,0,0,0.16)",
+          backdropFilter: "blur(24px)",
+          WebkitBackdropFilter: "blur(24px)",
+          borderBottom: "1px solid rgba(255,255,255,0.22)",
         } as React.CSSProperties}
       >
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">

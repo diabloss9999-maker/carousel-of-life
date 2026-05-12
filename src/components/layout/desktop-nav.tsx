@@ -19,8 +19,8 @@ export function DesktopNav() {
       style={{
         padding: "6px",
         borderRadius: "999px",
-        border: "1px solid rgba(233,221,190,0.11)",
-        background: "rgba(255,255,255,0.025)",
+        border: "1px solid rgba(255,255,255,0.22)",
+        background: "rgba(255,255,255,0.10)",
       }}
       aria-label="상단 메뉴"
     >

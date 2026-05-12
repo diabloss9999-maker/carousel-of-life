@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils";
 
 const NAV_ACTIVE   = "rgba(246,239,220,0.96)";
 const NAV_MUTED    = "rgba(246,239,220,0.72)";
-const NAV_SURFACE  = "rgba(8,7,16,0.88)";
-const NAV_SURFACE2 = "rgba(8,7,16,0.72)";
+const NAV_SURFACE  = "rgba(255,255,255,0.16)";
+const NAV_SURFACE2 = "rgba(255,255,255,0.08)";
 
 export function MobileNav() {
   const pathname = usePathname();
@@ -19,13 +19,12 @@ export function MobileNav() {
       aria-label="하단 메뉴"
       className="sticky bottom-0 z-30 md:hidden"
       style={{
-        background: `url("/nav/mobile_nav_bg.svg") left bottom / 100% 72px no-repeat,
-                     linear-gradient(to top, ${NAV_SURFACE}, ${NAV_SURFACE2})`,
+        background: `linear-gradient(to top, ${NAV_SURFACE}, ${NAV_SURFACE2})`,
         borderRadius: "20px 20px 0 0",
-        borderTop: "1px solid rgba(233,221,190,0.10)",
-        boxShadow: "0 -14px 40px rgba(0,0,0,0.42)",
-        backdropFilter: "blur(16px)",
-        WebkitBackdropFilter: "blur(16px)",
+        borderTop: "1px solid rgba(255,255,255,0.22)",
+        boxShadow: "0 -8px 32px rgba(0,0,0,0.16)",
+        backdropFilter: "blur(24px)",
+        WebkitBackdropFilter: "blur(24px)",
         paddingBottom: "calc(8px + env(safe-area-inset-bottom, 0px))",
         paddingLeft: 8,
         paddingRight: 8,

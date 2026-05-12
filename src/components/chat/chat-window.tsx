@@ -281,10 +281,10 @@ export function ChatWindow({
             gap: "10px",
             padding: "10px",
             borderRadius: "26px",
-            border: "1px solid rgba(233,221,190,0.13)",
-            background: "linear-gradient(180deg, rgba(8,7,16,0.72), rgba(8,7,16,0.58))",
-            backdropFilter: "blur(18px)",
-            boxShadow: "0 20px 70px rgba(0,0,0,0.38)",
+            border: "1px solid rgba(255,255,255,0.22)",
+            background: "linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.08))",
+            backdropFilter: "blur(24px)",
+            boxShadow: "0 8px 40px rgba(0,0,0,0.18)",
           }}
         >
           <textarea

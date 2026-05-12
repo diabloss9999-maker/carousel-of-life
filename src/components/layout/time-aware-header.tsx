@@ -27,11 +27,11 @@ export function TimeAwareHeader({ children, className, style }: TimeAwareHeaderP
     <header
       className={className}
       style={{
-        background: "linear-gradient(180deg, rgba(8,7,16,0.90), rgba(8,7,16,0.72))",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(233,221,190,0.11)",
-        boxShadow: "0 14px 40px rgba(0,0,0,0.28)",
+        background: "linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.10))",
+        backdropFilter: "blur(24px)",
+        WebkitBackdropFilter: "blur(24px)",
+        borderBottom: "1px solid rgba(255,255,255,0.22)",
+        boxShadow: "0 8px 32px rgba(0,0,0,0.16)",
         ...style,
       }}
     >
