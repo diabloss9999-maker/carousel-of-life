@@ -20,6 +20,49 @@ interface CharacterSelectProps {
 
 const CATEGORY_ORDER: CharacterCategory[] = ["이세계", "동양"];
 
+/** 카테고리별 디자인 설정 */
+const CATEGORY_STYLE: Record<CharacterCategory, {
+  label: string;
+  sub: string;
+  border: string;
+  text: string;
+  dot: string;
+}> = {
+  이세계: {
+    label: "이세계",
+    sub: "ASTRA RIFT",
+    border: "border-violet-500/30",
+    text: "text-violet-400",
+    dot: "bg-violet-500",
+  },
+  동양: {
+    label: "동양",
+    sub: "月蝕鏡",
+    border: "border-emerald-500/30",
+    text: "text-emerald-400",
+    dot: "bg-emerald-500",
+  },
+};
+
+/** 캐릭터별 호버 강조 색 */
+const CHAR_ACCENT: Record<CharacterId, string> = {
+  child:    "hover:ring-red-700/50 hover:border-red-800/50",
+  witch:    "hover:ring-blue-700/50 hover:border-blue-800/50",
+  sage:     "hover:ring-amber-600/50 hover:border-amber-700/50",
+  shaman:   "hover:ring-rose-700/50 hover:border-rose-800/50",
+  taoist:   "hover:ring-cyan-700/50 hover:border-cyan-800/50",
+  dokkaebi: "hover:ring-purple-700/50 hover:border-purple-800/50",
+};
+
+const CHAR_SELECTED: Record<CharacterId, string> = {
+  child:    "ring-red-700/60 border-red-800/60 bg-red-950/20",
+  witch:    "ring-blue-700/60 border-blue-800/60 bg-blue-950/20",
+  sage:     "ring-amber-600/60 border-amber-700/60 bg-amber-950/15",
+  shaman:   "ring-rose-700/60 border-rose-800/60 bg-rose-950/20",
+  taoist:   "ring-cyan-700/60 border-cyan-800/60 bg-cyan-950/20",
+  dokkaebi: "ring-purple-700/60 border-purple-800/60 bg-purple-950/20",
+};
+
 export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
   const router = useRouter();
   const [selected, setSelected] = useState<CharacterId | null>(null);
@@ -41,26 +84,38 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
   }
 
   return (
-    <div className="space-y-6">
-      <p className="text-sm text-muted-foreground text-center">
-        어떤 주술사와 대화할까?
+    <div className="space-y-8">
+      <p className="text-center text-sm text-muted-foreground">
+        오늘 어떤 주술사와 이야기할까?
       </p>
 
       {CATEGORY_ORDER.map((category) => {
+        const style = CATEGORY_STYLE[category];
         const ids = CHARACTERS_BY_CATEGORY[category];
+
         return (
-          <div key={category} className="space-y-3">
+          <div key={category} className="space-y-4">
+            {/* 카테고리 헤더 */}
             <div className="flex items-center gap-3">
-              <span className="text-xs font-semibold text-muted-foreground tracking-widest uppercase">
-                {category}
-              </span>
-              <div className="flex-1 h-px bg-border/40" />
+              <div className={cn("h-2 w-2 rounded-full flex-shrink-0", style.dot)} />
+              <div className="flex items-baseline gap-2">
+                <span className={cn("font-mystic text-sm font-bold tracking-wider", style.text)}>
+                  {style.label}
+                </span>
+                <span className="text-[10px] tracking-widest text-muted-foreground/50 uppercase">
+                  {style.sub}
+                </span>
+              </div>
+              <div className={cn("flex-1 h-px", style.border, "border-t")} />
             </div>
 
-            <div className="grid grid-cols-3 gap-2 sm:gap-4">
+            {/* 캐릭터 카드 그리드 */}
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
               {ids.map((id) => {
                 const char = CHARACTERS[id];
                 const isLoading = isPending && selected === id;
+                const isSelected = selected === id;
+
                 return (
                   <button
                     key={id}
@@ -68,41 +123,50 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                     onClick={() => handleSelect(id)}
                     disabled={isPending}
                     className={cn(
-                      "group relative flex flex-col items-center gap-2 rounded-2xl border p-2 sm:p-4 text-center transition-all",
-                      "hover:border-primary/50 hover:bg-primary/5 hover:shadow-md",
+                      "group relative flex flex-col items-center gap-2 rounded-2xl border ring-1 ring-transparent p-2 sm:p-3 text-center transition-all duration-200",
                       "disabled:opacity-60 disabled:cursor-not-allowed",
-                      selected === id
-                        ? "border-primary/60 bg-primary/8 shadow-md"
-                        : "border-border/40 bg-card/50 backdrop-blur",
+                      isSelected
+                        ? CHAR_SELECTED[id]
+                        : cn("border-border/30 bg-card/30 backdrop-blur", CHAR_ACCENT[id]),
                     )}
                   >
-                    <div className="relative w-full rounded-xl shadow-sm overflow-hidden">
+                    {/* 캐릭터 이미지 */}
+                    <div className="relative w-full overflow-hidden rounded-xl shadow-md">
                       <Image
                         src={char.imageSrc}
                         alt={char.name}
                         width={600}
                         height={900}
                         quality={90}
-                        className="w-full h-auto transition-transform group-hover:scale-105"
-                        sizes="(max-width: 640px) 40vw, (max-width: 1024px) 22vw, 260px"
+                        className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
+                        sizes="(max-width: 640px) 30vw, 180px"
                       />
                       {isLoading && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-xl">
-                          <Loader2 className="h-6 w-6 sm:h-8 sm:w-8 text-white animate-spin" />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-xl">
+                          <Loader2 className="h-7 w-7 text-white animate-spin" />
                         </div>
                       )}
+                      {/* 전문 배지 */}
+                      <div className="absolute top-1.5 left-1.5">
+                        <span className="rounded-md bg-black/60 backdrop-blur-sm px-1.5 py-0.5 text-[8px] font-medium text-white/70 leading-none">
+                          {char.specialty}
+                        </span>
+                      </div>
                     </div>
 
-                    <div className="space-y-1.5 w-full">
-                      <p className="font-mystic font-semibold text-xs sm:text-sm leading-tight">
+                    {/* 이름 + 직함 */}
+                    <div className="w-full space-y-1">
+                      <p className="font-mystic font-bold text-sm leading-tight text-foreground/95">
                         {char.name}
                       </p>
-                      <p className="text-[10px] sm:text-xs text-muted-foreground leading-tight">
+                      <p className="text-[10px] text-muted-foreground/70 leading-tight">
                         {char.title}
                       </p>
-                      <p className="hidden sm:block text-[10px] text-muted-foreground/70 leading-tight line-clamp-2">
-                        {char.description}
+                      {/* 훅 — 데스크탑에서만 */}
+                      <p className="hidden sm:block text-[11px] text-foreground/60 leading-snug font-mystic italic">
+                        "{char.hook}"
                       </p>
+                      {/* 친밀도 */}
                       <AffinityBar
                         characterId={id}
                         points={affinities[id] ?? 0}

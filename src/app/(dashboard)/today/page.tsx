@@ -18,6 +18,7 @@ import { GenerateFortuneForm } from "@/components/fortune/generate-fortune-form"
 import { QuotaBar } from "@/components/fortune/quota-bar";
 import { TodaySummary } from "@/components/fortune/today-summary";
 import { ZodiacBanner } from "@/components/fortune/zodiac-banner";
+import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
 import { StreakBadge } from "@/components/streak/streak-badge";
 import type { DailyFortune } from "@/db/schema";
 import { requireProfile } from "@/lib/auth/get-user";
@@ -97,6 +98,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
 
   return (
     <div className="space-y-8">
+      <OnboardingModal />
       <header className="space-y-3">
         <div className="flex items-center justify-between gap-2">
           <p className="text-sm text-muted-foreground">{today}</p>

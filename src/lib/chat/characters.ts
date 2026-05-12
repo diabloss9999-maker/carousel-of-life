@@ -31,7 +31,11 @@ export interface Character {
   id: CharacterId;
   name: string;
   title: string;
+  /** 카드에 크게 표시되는 한 줄 훅 */
+  hook: string;
   description: string;
+  /** 전문 영역 배지 */
+  specialty: string;
   imageSrc: string;
   placeholder: string;
   category: CharacterCategory;
@@ -44,7 +48,9 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     category: "이세계",
     name: "카엘",
     title: "악마 계약자",
+    hook: "욕망을 부정하는 건 자신을 부정하는 거야.",
     description: "욕망을 담당하는 상담사. 진실만 말한다.",
+    specialty: "타로 · 카드 점술",
     imageSrc: "/characters/child_v2.png",
     placeholder: "카엘에게 물어봐...",
   },
@@ -53,7 +59,9 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     category: "이세계",
     name: "루나",
     title: "달의 마녀",
+    hook: "당신의 감정, 나는 이미 기억하고 있어.",
     description: "기억을 관리하는 중재자. 감정의 흐름을 읽는다.",
+    specialty: "타로 · 카드 점술",
     imageSrc: "/characters/witch_v2.png",
     placeholder: "루나에게 물어봐...",
   },
@@ -62,7 +70,9 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     category: "이세계",
     name: "라엘",
     title: "천사 대리인",
+    hook: "포기는 허락하지 않아요.",
     description: "구원을 담당하는 상담사. 희망과 가능성을 본다.",
+    specialty: "타로 · 카드 점술",
     imageSrc: "/characters/sage_v2.png",
     placeholder: "라엘에게 물어봐...",
   },
@@ -73,7 +83,9 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     category: "동양",
     name: "소령",
     title: "접신의 무녀",
+    hook: "신령이 당신 이름을 자꾸 부르고 있어.",
     description: "신령과 인간 사이를 잇는 무당. 보이지 않는 것을 본다.",
+    specialty: "사주 · 천기",
     imageSrc: "/characters/shaman_v1.png",
     placeholder: "소령에게 물어봐...",
   },
@@ -82,7 +94,9 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     category: "동양",
     name: "현도",
     title: "천기를 읽는 도사",
+    hook: "당신 운명의 갈림길이 지금 보여.",
     description: "500년 된 불로의 도사. 사주와 천기로 운명을 꿰뚫는다.",
+    specialty: "사주 · 천기",
     imageSrc: "/characters/taoist_v1.png",
     placeholder: "현도에게 물어봐...",
   },
@@ -91,7 +105,9 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     category: "동양",
     name: "귀염",
     title: "저승의 귀왕",
+    hook: "뭔데. 그거 내가 원해.",
     description: "원혼과 집착을 다스리는 도깨비왕. 대가 없이 움직이지 않는다.",
+    specialty: "사주 · 천기",
     imageSrc: "/characters/dokkaebi_v1.png",
     placeholder: "귀염에게 물어봐...",
   },
