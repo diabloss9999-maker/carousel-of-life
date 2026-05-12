@@ -8,7 +8,7 @@ import { mainNav, type NavItem } from "@/config/navigation";
 /** ritual 다크 글래스 네비 색상 */
 const NAV_ACTIVE_BG  = "rgba(233,221,190,0.10)";
 const NAV_ACTIVE_CLR = "rgba(246,239,220,0.96)";
-const NAV_MUTED      = "rgba(246,239,220,0.50)";
+const NAV_MUTED      = "rgba(246,239,220,0.78)";
 
 export function DesktopNav() {
   const pathname = usePathname();

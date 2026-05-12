@@ -29,8 +29,7 @@ export default async function DashboardLayout({
       <TimeAwareHeader
         className="sticky top-0 z-40 pt-safe ritual-chat-menu"
         style={{
-          background: `url("/nav/desktop_nav_bg.svg") center / 100% 64px no-repeat,
-                       linear-gradient(180deg, rgba(8,7,16,0.88), rgba(8,7,16,0.68))`,
+          background: `linear-gradient(180deg, rgba(8,7,16,0.88), rgba(8,7,16,0.68))`,
           boxShadow: "0 14px 40px rgba(0,0,0,0.32)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
