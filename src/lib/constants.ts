@@ -122,6 +122,7 @@ export const ROUTES = {
   personality: "/personality",
   collection: "/collection",
   archive: "/archive",
+  world: "/world",
   settings: "/settings",
   pricing: "/pricing",
   authCallback: "/auth/callback",

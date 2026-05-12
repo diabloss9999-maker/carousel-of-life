@@ -556,6 +556,19 @@ body.ritual-night .ritual-chat-textarea {
   100% { opacity: 0; }
 }
 
+/* 세션 종료 / 존재 대화 등에 쓰는 부드러운 페이드-인 */
+@keyframes session-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes session-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+}
+
 /* 밤 모드 — html.night */
 html.night .app-surface {
   background: rgba(255,255,255,0.07) !important;

@@ -8,6 +8,10 @@ import { RitualBody } from "@/components/crack/ritual-body";
 import { FractureWhisper } from "@/components/fracture/fracture-whisper";
 import { DailyWhisper } from "@/components/world/daily-whisper";
 import { ContinuityNote } from "@/components/world/continuity-note";
+import { SessionFade } from "@/components/world/session-fade";
+import { LongAbsenceGreeting } from "@/components/world/long-absence-greeting";
+import { EntityConversation } from "@/components/world/entity-conversation";
+import { HiddenPresence } from "@/components/world/hidden-presence";
 
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
@@ -83,6 +87,10 @@ export default async function DashboardLayout({
       <FractureWhisper />
       <DailyWhisper />
       <ContinuityNote streakDays={streakDays} />
+      <LongAbsenceGreeting />
+      <EntityConversation />
+      <HiddenPresence />
+      <SessionFade />
     </div>
   );
 }
