@@ -53,13 +53,13 @@ export default async function ChatPage() {
         subscribed={subscribed}
       />
 
+      <CharacterLoreCard />
+
       <Card className="app-surface">
         <CardContent className="pt-5">
           <CharacterSelect affinities={affinities} />
         </CardContent>
       </Card>
-
-      <CharacterLoreCard />
 
       <SessionDrawer sessions={sessions} />
     </div>
