@@ -22,6 +22,7 @@ import {
   getAffinity,
 } from "@/lib/affinity/service";
 import { detectAndDraw } from "@/lib/chat/reading-detector";
+import { addCrack, reduceCrack, getCrackScore, CRACK_CONTEXT } from "@/lib/crack/service";
 import type { CharacterId } from "@/lib/chat/characters";
 import { API_ERROR_CODES } from "@/types/api";
 
@@ -87,9 +88,13 @@ export async function POST(
     "witch"
   ) as CharacterId;
 
-  const affinityRow = await getAffinity(profile.userId, characterId);
+  const [affinityRow, crackData] = await Promise.all([
+    getAffinity(profile.userId, characterId),
+    getCrackScore(profile.userId),
+  ]);
   const currentPoints = affinityRow?.points ?? 0;
   const affinityCtx = affinityContext(characterId, currentPoints);
+  const crackCtx = CRACK_CONTEXT[crackData.level];
 
   // 점술 요청 감지 + 카드 추첨 (이세계만 카드, 동양은 null)
   let reading = null;
@@ -104,7 +109,7 @@ export async function POST(
     ? `\n\n[카드 읽기 — 지금 즉시 실행]\n${reading.promptText}`
     : "";
 
-  const enrichedSystem = prepared.systemPrompt + affinityCtx + cardSystemInject;
+  const enrichedSystem = prepared.systemPrompt + affinityCtx + crackCtx + cardSystemInject;
 
   const aiStream = streamChat({
     model: AI_MODELS.chat,
@@ -123,6 +128,12 @@ export async function POST(
           model: AI_MODELS.chat,
         }),
         addAffinityPoint(prepared.profile.userId, characterId),
+        // 귀염 대화 → 균열 +1 / 라엘 대화 → 균열 -1
+        characterId === "dokkaebi"
+          ? addCrack(prepared.profile.userId, 1, "chat:dokkaebi")
+          : characterId === "sage"
+            ? reduceCrack(prepared.profile.userId, 1)
+            : Promise.resolve(undefined),
       ]);
     },
   });
