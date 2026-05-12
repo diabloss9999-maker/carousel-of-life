@@ -6,14 +6,13 @@
  * 채팅 중 아주 낮은 확률로, 현재 대화 중이 아닌 다른 존재의 한 마디가
  * 화면 구석에 희미하게 나타났다 사라진다.
  *
- * FractureWhisper 와 동일 구조 — 단, 문장은 존재(루나/라엘/카엘)별 라인 사용.
+ * FractureWhisper 와 동일 구조 — 단, 문장은 6명 존재별 라인 사용.
  */
 import { useEffect, useRef, useState } from "react";
 
 import { useFractureSystem } from "@/hooks/use-fracture-system";
 import type { CharacterId } from "@/lib/chat/characters";
-
-type EntityKey = "luna" | "rael" | "gael";
+import { characterToEntityKey, type EntityKey } from "@/lib/systems/entity-mood";
 
 interface WhisperMessage {
   id: number;
@@ -36,8 +35,8 @@ const WHISPER_POSITIONS: ReadonlyArray<{ x: number; y: number }> = [
 const ENTITY_LINES: Record<EntityKey, ReadonlyArray<string>> = {
   luna: [
     "그 말을 너무 믿지 마.",
-    "오늘은 내가 먼저 응답하고 싶었어.",
-    "당신은 같은 감정 근처를 맴돌고 있어.",
+    "당신은 같은 감정 근처를 맴돕니다.",
+    "오늘은 감정의 잔향이 길게 남아 있습니다.",
   ],
   rael: [
     "오늘의 빛은 비교적 안정적입니다.",
@@ -45,25 +44,36 @@ const ENTITY_LINES: Record<EntityKey, ReadonlyArray<string>> = {
     "당신이 다시 올 거라고 생각했습니다.",
   ],
   gael: [
-    "같은 질문이 반복되고 있어.",
-    "그 답을 이미 알고 있는 것 같은데.",
-    "여기는 처음이 아니잖아.",
+    "그 흐름은 이미 틀어졌어.",
+    "너는 답을 알고 있는데 반복하고 있다.",
+    "같은 질문이 반복되고 있습니다.",
+  ],
+  soryeong: [
+    "이와 비슷한 흐름이 이전에도 관측되었습니다.",
+    "기록은 반복될수록 선명해집니다.",
+    "이 문장은 오래전에도 남아 있었습니다.",
+  ],
+  hyundo: [
+    "그건 불안이라기보다 피로에 가깝습니다.",
+    "오늘은 너무 많은 의미를 찾지 않는 게 좋겠습니다.",
+    "지금은 해석보다 휴식이 필요해 보입니다.",
+  ],
+  gwiyeom: [
+    "오늘 세계 상태 이상함 ㅋㅋ",
+    "근데 너 좀 지쳐보이긴 함.",
+    "...농담 아닌데.",
+    "너 지난번에도 갑자기 새벽 3시에 왔잖아.",
   ],
 };
 
-/** 캐릭터 id → 존재 키 매핑. 동양 캐릭터는 매핑되지 않는다(null). */
-function characterToEntity(characterId: CharacterId): EntityKey | null {
-  switch (characterId) {
-    case "witch":
-      return "luna";
-    case "sage":
-      return "rael";
-    case "child":
-      return "gael";
-    default:
-      return null;
-  }
-}
+const ALL_ENTITIES: ReadonlyArray<EntityKey> = [
+  "luna",
+  "rael",
+  "gael",
+  "soryeong",
+  "hyundo",
+  "gwiyeom",
+];
 
 let _id = 0;
 
@@ -80,9 +90,9 @@ export function EntityWhisper({ characterId }: EntityWhisperProps) {
 
   useEffect(() => {
     const removalTimers = removalTimersRef.current;
-    const currentEntity = characterToEntity(characterId);
+    const currentEntity = characterToEntityKey(characterId);
 
-    const otherEntities: EntityKey[] = (["luna", "rael", "gael"] as const).filter(
+    const otherEntities: EntityKey[] = ALL_ENTITIES.filter(
       (e) => e !== currentEntity,
     );
 

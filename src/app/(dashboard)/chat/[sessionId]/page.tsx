@@ -16,6 +16,7 @@ import {
 import { getAffinity } from "@/lib/affinity/service";
 import { CHARACTERS, type CharacterId } from "@/lib/chat/characters";
 import { ROUTES } from "@/lib/constants";
+import { characterToEntityKey } from "@/lib/systems/entity-mood";
 
 export const metadata: Metadata = {
   title: "대화",
@@ -53,9 +54,10 @@ export default async function ChatSessionPage({
   }));
 
   const affinityPoints = affinityRow?.points ?? 0;
+  const entityKey = characterToEntityKey(charId);
 
   return (
-    <div className="space-y-4">
+    <div className={`entity-${entityKey} space-y-4`}>
       <EntityWhisper characterId={charId} />
       {/* 헤더: 뒤로가기 + 제목 */}
       <header className="flex items-center justify-between gap-2">

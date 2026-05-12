@@ -4,6 +4,7 @@
  * - 매일 / 시간대 / 균열 / 반복 질문 / 밤 방문 횟수에 따라
  *   각 존재의 "오늘 기분"이 미세하게 달라진다.
  * - 결과는 시스템 프롬프트의 톤 조정 컨텍스트와 CSS 클래스 힌트로 반환된다.
+ * - 6명 캐릭터 전체 지원: luna / rael / gael / soryeong / hyundo / gwiyeom.
  */
 
 export type EntityMood =
@@ -14,14 +15,22 @@ export type EntityMood =
   | "protective"
   | "silent";
 
+export type EntityKey =
+  | "luna"
+  | "rael"
+  | "gael"
+  | "soryeong"
+  | "hyundo"
+  | "gwiyeom";
+
 export interface EntityState {
-  id: "luna" | "rael" | "gael";
+  id: EntityKey;
   mood: EntityMood;
 }
 
 /** 존재 기분 계산. */
 export function computeEntityMood(opts: {
-  entityId: "luna" | "rael" | "gael";
+  entityId: EntityKey;
   seed: number;
   kstHour: number;
   fractureLevel: number;
@@ -59,6 +68,29 @@ export function computeEntityMood(opts: {
       if (repeatedQuestionCount >= 2) return "curious";
       return base < 2 ? "calm" : base < 4 ? "curious" : "distant";
     }
+    case "soryeong": {
+      // 소령 — 기록자. 오래된 기록 모드. fractureLevel 높으면 distant.
+      if (fractureLevel >= 4) return "distant";
+      if (isNight) return "calm";
+      return base < 3 ? "calm" : "curious";
+    }
+    case "hyundo": {
+      // 현도 — 현실적. 차분, 흔들림 적음.
+      if (fractureLevel >= 4) return "distant";
+      return base < 4 ? "calm" : "protective";
+    }
+    case "gwiyeom": {
+      // 귀염 — 예측불가. 자주 변동.
+      if (fractureLevel >= 4) return seed < 0.3 ? "silent" : "curious";
+      if (repeatedQuestionCount >= 3) return "distant";
+      return base < 1
+        ? "curious"
+        : base < 3
+          ? "calm"
+          : base < 5
+            ? "curious"
+            : "distant";
+    }
   }
 }
 
@@ -85,4 +117,52 @@ export const MOOD_CLASS: Record<EntityMood, string> = {
   unstable: "entity-mood-unstable",
   protective: "entity-mood-protective",
   silent: "entity-mood-silent",
+};
+
+/**
+ * CharacterId → entityKey 매핑 헬퍼.
+ *
+ * - witch    → luna
+ * - sage     → rael
+ * - child    → gael
+ * - shaman   → soryeong
+ * - taoist   → hyundo
+ * - dokkaebi → gwiyeom
+ */
+export function characterToEntityKey(characterId: string): EntityKey {
+  switch (characterId) {
+    case "witch":
+      return "luna";
+    case "sage":
+      return "rael";
+    case "child":
+      return "gael";
+    case "shaman":
+      return "soryeong";
+    case "taoist":
+      return "hyundo";
+    case "dokkaebi":
+      return "gwiyeom";
+    default:
+      return "luna";
+  }
+}
+
+/**
+ * 캐릭터별 침묵 가이드 — 시스템 프롬프트에 덧붙여,
+ * 답을 회피해야 할 때 어떻게 표현할지 캐릭터 성격에 맞게 안내한다.
+ */
+export const CHARACTER_SILENCE_HINT: Record<string, string> = {
+  witch:
+    "\n[침묵 가이드] 답을 회피해야 할 때는 '……' 만 쓰거나 한 줄 미만으로.",
+  sage:
+    "\n[침묵 가이드] 답을 회피해야 할 때는 '오늘은 조금 쉬어가도 괜찮습니다.' 처럼 부드럽게.",
+  child:
+    "\n[침묵 가이드] 답을 회피해야 할 때는 '답은 이미 나왔어.' 처럼 짧고 끊는 느낌.",
+  shaman:
+    "\n[침묵 가이드] 답을 회피해야 할 때는 '기록이 잠시 끊겼습니다.' 처럼 기록체로.",
+  taoist:
+    "\n[침묵 가이드] 답을 회피해야 할 때는 '지금은 해석보다 휴식이 필요해 보입니다.' 처럼 현실적으로.",
+  dokkaebi:
+    "\n[침묵 가이드] 답을 회피해야 할 때는 '나도 갑자기 할 말 없어짐.' 처럼 가볍게.",
 };

@@ -28,7 +28,12 @@ import { calcLevel } from "@/lib/affinity/levels";
 import type { CharacterId } from "@/lib/chat/characters";
 import { API_ERROR_CODES } from "@/types/api";
 import { getDailySeed, seedValue } from "@/lib/systems/daily-seed";
-import { computeEntityMood, MOOD_CONTEXT } from "@/lib/systems/entity-mood";
+import {
+  computeEntityMood,
+  MOOD_CONTEXT,
+  characterToEntityKey,
+  CHARACTER_SILENCE_HINT,
+} from "@/lib/systems/entity-mood";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -116,28 +121,39 @@ export async function POST(
     ? `\n\n[카드 읽기 — 지금 즉시 실행]\n${reading.promptText}`
     : "";
 
-  // 존재 기분(이세계 3존재만 적용)
-  let moodCtx = "";
-  if (characterId === "witch" || characterId === "sage" || characterId === "child") {
-    const dailySeed = getDailySeed();
-    const entityId =
-      characterId === "witch" ? "luna" : characterId === "sage" ? "rael" : "gael";
-    const seedIdx =
-      characterId === "witch" ? 10 : characterId === "sage" ? 11 : 12;
-    const mood = computeEntityMood({
-      entityId,
-      seed: seedValue(dailySeed, seedIdx),
-      kstHour: new Date(
-        new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }),
-      ).getHours(),
-      fractureLevel: crackData.level,
-      repeatedQuestionCount: 0,
-      nightVisitCount: 0,
-    });
-    moodCtx = MOOD_CONTEXT[mood];
-  }
+  // 존재 기분 — 6명 캐릭터 전체 적용
+  const dailySeed = getDailySeed();
+  const entityId = characterToEntityKey(characterId);
+  // 캐릭터별 고유 seed index (기존 witch=10/sage=11/child=12 유지, 동양은 13~15)
+  const ENTITY_SEED_INDEX: Record<typeof entityId, number> = {
+    luna: 10,
+    rael: 11,
+    gael: 12,
+    soryeong: 13,
+    hyundo: 14,
+    gwiyeom: 15,
+  };
+  const mood = computeEntityMood({
+    entityId,
+    seed: seedValue(dailySeed, ENTITY_SEED_INDEX[entityId]),
+    kstHour: new Date(
+      new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }),
+    ).getHours(),
+    fractureLevel: crackData.level,
+    repeatedQuestionCount: 0,
+    nightVisitCount: 0,
+  });
+  const moodCtx = MOOD_CONTEXT[mood];
+  const silenceHint = CHARACTER_SILENCE_HINT[characterId] ?? "";
 
-  const enrichedSystem = prepared.systemPrompt + affinityCtx + crackCtx + hiddenEvent.eventContext + cardSystemInject + moodCtx;
+  const enrichedSystem =
+    prepared.systemPrompt +
+    affinityCtx +
+    crackCtx +
+    hiddenEvent.eventContext +
+    cardSystemInject +
+    moodCtx +
+    silenceHint;
 
   const aiStream = streamChat({
     // 카드 점술 해석은 Sonnet, 일반 대화는 Haiku (비용 최적화)

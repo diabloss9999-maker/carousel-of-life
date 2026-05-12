@@ -593,15 +593,43 @@ body.ritual-dawn {
   filter: brightness(0.96) saturate(0.92);
 }
 
-/* ===== 존재 활성 테마 — 카드 border 미세 색감 ===== */
+/* ===== 존재 활성 테마 — 카드 border 미세 색감 (6명) ===== */
 .entity-luna .app-surface { border-color: rgba(180, 150, 230, 0.28) !important; }
 .entity-rael .app-surface { border-color: rgba(200, 220, 255, 0.26) !important; }
-.entity-gael .app-surface { border-color: rgba(220, 180, 100, 0.24) !important; }
+.entity-gael .app-surface {
+  border-color: rgba(220, 140, 100, 0.24) !important;
+}
+
+/* 소령 — 세피아 / 오래된 기록 분위기 */
+.entity-soryeong .app-surface {
+  border-color: rgba(190, 160, 110, 0.26) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 245, 220, 0.08), rgba(180, 140, 90, 0.06)),
+    rgba(255, 255, 255, 0.08) !important;
+}
+
+/* 현도 — 차가운 회색 / 차분 */
+.entity-hyundo .app-surface {
+  border-color: rgba(180, 200, 220, 0.24) !important;
+}
+
+/* 귀염 — 작은 sparkle / 미세한 튐 */
+.entity-gwiyeom .app-surface {
+  border-color: rgba(220, 180, 100, 0.22) !important;
+  animation: gwiyeom-bounce 8s infinite;
+}
+@keyframes gwiyeom-bounce {
+  0%, 92%, 100% { transform: translateY(0); }
+  94% { transform: translateY(-1px); }
+  96% { transform: translateY(0.5px); }
+  98% { transform: translateY(0); }
+}
 
 /* 접근성 */
 @media (prefers-reduced-motion: reduce) {
   .fracture-soft { animation: none !important; }
   body.ritual-dawn { filter: none; }
+  .entity-gwiyeom .app-surface { animation: none !important; }
   @keyframes fracture-whisper-in {
     0%, 100% { opacity: 0; }
     30%, 70% { opacity: 0.8; }
