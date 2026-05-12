@@ -15,6 +15,7 @@ import {
   SUBSCRIPTION,
   FREE_DAILY_LIMITS,
   LITE_DAILY_LIMITS,
+  PRO_DAILY_LIMITS,
 } from "@/lib/constants";
 import { getUser } from "@/lib/auth/get-user";
 import { getSubscriptionTier } from "@/lib/payment/subscription-state";
@@ -23,7 +24,7 @@ import { formatKRW } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "멤버십",
   description:
-    "무료 / 라이트 / 프로 멤버십을 비교해보세요. 라이트는 일일 한도를 크게 늘려주고, 프로는 모든 풀이를 무제한으로 제공해요.",
+    "무료 / 라이트 / 프로 멤버십을 비교해보세요. 라이트는 일일 한도를 크게 늘려주고, 프로는 운세50·타로50·문답100회를 제공해요.",
   alternates: { canonical: "/pricing" },
 };
 
@@ -144,13 +145,13 @@ export default async function PricingPage() {
               </span>
             </p>
             <ul className="space-y-2 text-sm">
-              <Bullet>오늘의 운세 무제한</Bullet>
-              <Bullet>타로 무제한 (켈틱 크로스 포함)</Bullet>
-              <Bullet>주술사 문답 무제한</Bullet>
+              <Bullet>오늘의 운세 일일 {PRO_DAILY_LIMITS.fortune}회</Bullet>
+              <Bullet>타로 일일 {PRO_DAILY_LIMITS.tarot}회 (켈틱 크로스 포함)</Bullet>
+              <Bullet>주술사 문답 일일 {PRO_DAILY_LIMITS.chat}회</Bullet>
               <Bullet>별자리·십이간지 운세</Bullet>
               <Bullet>르노르망 9장·그랑 타블로</Bullet>
               <Bullet>룬 5장·9장 스프레드</Bullet>
-              <Bullet>궁합 풀이 무제한</Bullet>
+              <Bullet>궁합 풀이</Bullet>
               <Bullet>사주 심층 분석 (평생 보관)</Bullet>
               <Bullet>카드 가챠 매일 3장</Bullet>
             </ul>

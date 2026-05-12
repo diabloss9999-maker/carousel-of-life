@@ -10,7 +10,7 @@ import { and, eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { usageQuotas } from "@/db/schema";
-import { LITE_DAILY_LIMITS } from "@/lib/constants";
+import { LITE_DAILY_LIMITS, PRO_DAILY_LIMITS } from "@/lib/constants";
 import { getSubscriptionTier } from "@/lib/payment/subscription-state";
 import { createClient } from "@/lib/supabase/server";
 
@@ -38,15 +38,14 @@ export async function checkAndIncrementQuota(opts: {
 
   let effectiveMax: number;
   if (tier === "pro") {
-    // 프로: 사실상 무제한.
-    effectiveMax = 1_000_000;
+    effectiveMax = PRO_DAILY_LIMITS[opts.kind];
   } else if (tier === "lite") {
     effectiveMax = LITE_DAILY_LIMITS[opts.kind];
   } else {
     effectiveMax = opts.max;
   }
 
-  const isUnlimited = tier === "pro";
+  const isUnlimited = false;
 
   const supabase = await createClient();
   const { data, error } = await supabase.rpc("increment_usage_quota", {

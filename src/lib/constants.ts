@@ -18,6 +18,13 @@ export const LITE_DAILY_LIMITS = {
   chat: 50,
 } as const;
 
+/** 프로 구독자 일일 한도 (₩9,900). */
+export const PRO_DAILY_LIMITS = {
+  fortune: 50,
+  tarot: 50,
+  chat: 100,
+} as const;
+
 /** 구독 플랜 정보. */
 export const SUBSCRIPTION = {
   lite: {
