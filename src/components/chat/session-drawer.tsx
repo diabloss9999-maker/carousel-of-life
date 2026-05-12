@@ -48,13 +48,13 @@ export function SessionDrawer({ sessions }: SessionDrawerProps) {
           <span className="font-mystic text-sm text-muted-foreground/70">
             오늘의 조우 기록
           </span>
-          <span className="rounded-full bg-muted/40 px-2 py-0.5 text-[10px] text-muted-foreground/50 tabular-nums">
+          <span className="rounded-full bg-muted/40 px-2 py-0.5 text-[10px] text-muted-foreground/80 tabular-nums">
             {sessions.length}
           </span>
         </div>
         <ChevronUp
           className={cn(
-            "h-4 w-4 text-muted-foreground/40 transition-transform duration-300",
+            "h-4 w-4 text-muted-foreground/70 transition-transform duration-300",
             !open && "rotate-180",
           )}
         />

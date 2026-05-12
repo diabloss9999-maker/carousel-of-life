@@ -7,7 +7,7 @@ import { mainNav, type NavItem } from "@/config/navigation";
 import { cn } from "@/lib/utils";
 
 const NAV_ACTIVE   = "rgba(246,239,220,0.96)";
-const NAV_MUTED    = "rgba(246,239,220,0.45)";
+const NAV_MUTED    = "rgba(246,239,220,0.72)";
 const NAV_SURFACE  = "rgba(8,7,16,0.88)";
 const NAV_SURFACE2 = "rgba(8,7,16,0.72)";
 
