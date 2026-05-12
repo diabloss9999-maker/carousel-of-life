@@ -12,6 +12,8 @@ import { db } from "@/db";
 import { dailyIljin, profiles } from "@/db/schema";
 import { requireProfile } from "@/lib/auth/get-user";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
+import { getTodayCharacter } from "@/lib/daily-question/rotation";
 import { calculateSaju } from "@/lib/saju/calculate";
 import { getOrCreateDeepReading } from "@/lib/saju/deep-reading";
 import { getDayPillar } from "@/lib/saju/iljin";
@@ -215,7 +217,7 @@ export async function generateIljinAction(): Promise<IljinState> {
 ${relText}
 
 위 분석을 바탕으로 오늘 이 사람의 일진을 해석해줘.
-명리학자처럼 차분하고 구체적으로. 예언 투 금지, "~경향이 있다" 형태로.
+모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼. 예언 투 금지.
 마크다운 없이 JSON만:
 {
   "todayPillar": "${todayPillar.stemHanja}${todayPillar.branchHanja}일",
@@ -231,8 +233,7 @@ ${relText}
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 800,
-      systemSuffix:
-        "자평명리 전통 명리학자입니다. 마크다운 없이 JSON만 응답하세요.",
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
     });
 
     const saveData = { aiOutput, relationships };

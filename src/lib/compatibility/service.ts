@@ -15,6 +15,8 @@ import {
   type Profile,
 } from "@/db/schema";
 import { generateJson } from "@/lib/ai/generate";
+import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
+import { getTodayCharacter } from "@/lib/daily-question/rotation";
 import {
   buildCompatibilityPrompt,
   type PartnerInfo,
@@ -172,6 +174,7 @@ export async function createCompatibility(opts: {
       }),
       model: AI_MODELS.fast,
       maxTokens: 900,
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
     });
   } catch (e) {
     return {
