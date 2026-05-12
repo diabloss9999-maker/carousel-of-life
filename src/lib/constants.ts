@@ -121,6 +121,7 @@ export const ROUTES = {
   history: "/history",
   personality: "/personality",
   collection: "/collection",
+  archive: "/archive",
   settings: "/settings",
   pricing: "/pricing",
   authCallback: "/auth/callback",

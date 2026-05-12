@@ -21,9 +21,11 @@ function getKstHour(): number {
 function applyTimeClass(body: HTMLElement, crackLevel: CrackLevel) {
   const hour = getKstHour();
   const isDay = hour >= 7 && hour < 19;
+  const isDawn = hour >= 2 && hour < 5;
 
   body.classList.remove("ritual-day", "ritual-night");
   body.classList.add(isDay ? "ritual-day" : "ritual-night");
+  body.classList.toggle("ritual-dawn", isDawn);
   body.setAttribute("data-time", isDay ? "day" : "night");
 
   // 인라인 style로 직접 지정 — CSS 클래스 캐스케이드 충돌 방지

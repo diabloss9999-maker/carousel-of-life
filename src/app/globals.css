@@ -568,9 +568,27 @@ html.night body[data-time="night"] {
   background-image: url("/backgrounds/night.png");
 }
 
+/* ===== 새벽 모드 (02~04시 KST) ===== */
+body.ritual-dawn .app-surface {
+  background: rgba(120, 100, 160, 0.08) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(180, 150, 230, 0.12),
+    0 8px 32px rgba(0, 0, 0, 0.22) !important;
+}
+
+body.ritual-dawn {
+  filter: brightness(0.96) saturate(0.92);
+}
+
+/* ===== 존재 활성 테마 — 카드 border 미세 색감 ===== */
+.entity-luna .app-surface { border-color: rgba(180, 150, 230, 0.28) !important; }
+.entity-rael .app-surface { border-color: rgba(200, 220, 255, 0.26) !important; }
+.entity-gael .app-surface { border-color: rgba(220, 180, 100, 0.24) !important; }
+
 /* 접근성 */
 @media (prefers-reduced-motion: reduce) {
   .fracture-soft { animation: none !important; }
+  body.ritual-dawn { filter: none; }
   @keyframes fracture-whisper-in {
     0%, 100% { opacity: 0; }
     30%, 70% { opacity: 0.8; }
