@@ -124,7 +124,7 @@ export function LoginForm() {
             중…
           </>
         ) : (
-          "로그인"
+          "관측 시작"
         )}
       </Button>
     </form>

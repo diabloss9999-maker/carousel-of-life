@@ -43,9 +43,13 @@ export default async function CollectionPage() {
       <header className="space-y-3">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <h1 className="font-mystic text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-              기억 보관소
-            </h1>
+            <div className="flex items-center gap-2 mb-0.5">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/icons/memory-vessel.svg" alt="" aria-hidden className="h-6 w-6 opacity-60" />
+              <h1 className="font-mystic text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+                기억 보관소
+              </h1>
+            </div>
             <p className="mt-1 text-sm text-muted-foreground">
               기억의 조각들이 여기 쌓인다.
             </p>
