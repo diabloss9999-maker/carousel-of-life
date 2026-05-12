@@ -1,17 +1,8 @@
 "use client";
 
-/**
- * 르노르망 카드 뽑기 폼.
- *
- * 지원 스프레드:
- * - single        : 한 장 — 오늘의 메시지
- * - three         : 세 장 — 과거·현재·미래
- * - nine          : 아홉 장 — 3×3 종합 (프리미엄)
- * - grand_tableau : 36장 그랑 타블로 (프리미엄)
- */
 import Image from "next/image";
 import Link from "next/link";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { Loader2, Lock, Sparkles } from "lucide-react";
 
 import {
@@ -36,11 +27,19 @@ import { cn } from "@/lib/utils";
 
 const initial: LenormandDrawState = { kind: "idle" };
 const MAX_QUESTION_LENGTH = 100;
+const FAN_CARD_COUNT = 5;
+const SELECTED_CARD_INDEX = 2;
+const SHUFFLE_DURATION_MS = 1050;
+const RISE_DURATION_MS = 450;
 
 type SpreadValue = "single" | "three" | "nine" | "grand_tableau";
+type AnimPhase = "idle" | "shuffling" | "selected" | "pending";
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 interface Props {
-  /** 활성 구독자 여부 — 9장/그랑타블로는 구독자만 사용 가능. */
   subscribed: boolean;
 }
 
@@ -51,12 +50,41 @@ export function LenormandDrawForm({ subscribed }: Props) {
   );
   const [question, setQuestion] = useState("");
   const [spread, setSpread] = useState<SpreadValue>("single");
+  const [phase, setPhase] = useState<AnimPhase>("idle");
+  const formRef = useRef<HTMLFormElement>(null);
   const charsLeft = MAX_QUESTION_LENGTH - question.length;
 
   useScrollToResult(isPending, "lenormand-results");
 
   const isPremiumSpread = spread === "nine" || spread === "grand_tableau";
   const blockedByPremium = isPremiumSpread && !subscribed;
+
+  useEffect(() => {
+    if (!isPending && phase === "pending") {
+      setPhase("idle");
+    }
+  }, [isPending, phase]);
+
+  async function handleDraw() {
+    if (phase !== "idle" || isPending || blockedByPremium) return;
+    setPhase("shuffling");
+    await sleep(SHUFFLE_DURATION_MS);
+    setPhase("selected");
+    await sleep(RISE_DURATION_MS);
+    setPhase("pending");
+    formRef.current?.requestSubmit();
+  }
+
+  const isBusy = phase !== "idle" || isPending;
+
+  const buttonLabel = (() => {
+    switch (phase) {
+      case "shuffling": return "섞는 중...";
+      case "selected":  return "선택됨";
+      case "pending":   return "카드를 고르는 중...";
+      default: return isPending ? "카드를 고르는 중..." : "카드 뽑기";
+    }
+  })();
 
   return (
     <Card className="app-surface">
@@ -67,28 +95,36 @@ export function LenormandDrawForm({ subscribed }: Props) {
         </CardTitle>
         <CardDescription>
           36장의 르노르망 카드로 구체적인 메시지를 받아봐.
-          {isPending ? " 카드를 고르는 중…" : ""}
+          {phase === "shuffling" ? " 카드를 섞고 있어요…" : ""}
+          {phase === "pending" || isPending ? " 카드를 고르는 중…" : ""}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex justify-center">
-          <div
-            className={cn(
-              "relative aspect-[2/3] w-36 overflow-hidden rounded-xl transition-opacity sm:w-44",
-              isPending && "opacity-60",
-            )}
-          >
-            <Image
-              src="/collection/card_back_lenormand.png"
-              alt="르노르망 카드 뒷면"
-              fill
-              className="object-cover"
-              sizes="176px"
-            />
-          </div>
+        {/* 부채꼴 카드 5장 */}
+        <div className="relative mx-auto h-[220px] w-full max-w-md">
+          {Array.from({ length: FAN_CARD_COUNT }).map((_, i) => (
+            <div
+              key={i}
+              className={cn(
+                "tarot-card-fan w-[72px] sm:w-[80px]",
+                phase === "shuffling" && "shuffling",
+                (phase === "selected" || phase === "pending") && i === SELECTED_CARD_INDEX && "selected",
+              )}
+              style={{ animationDelay: `${i * 0.04}s` }}
+            >
+              <Image
+                src="/collection/card_back_lenormand.png"
+                alt="르노르망 카드 뒷면"
+                width={144}
+                height={216}
+                className="w-full rounded-xl"
+                priority={i === SELECTED_CARD_INDEX}
+              />
+            </div>
+          ))}
         </div>
 
-        <form action={formAction} className="space-y-4">
+        <form ref={formRef} action={formAction} className="space-y-4">
           <div className="space-y-1.5">
             <Label htmlFor="len-question">
               질문{" "}
@@ -102,7 +138,7 @@ export function LenormandDrawForm({ subscribed }: Props) {
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="예: 지금 이 선택이 맞을까? (100자 이내)"
-              disabled={isPending}
+              disabled={isBusy}
             />
             <div className="flex items-center justify-between gap-2 px-1">
               <p className="text-muted-foreground text-xs">
@@ -130,16 +166,12 @@ export function LenormandDrawForm({ subscribed }: Props) {
               name="spread"
               value={spread}
               onChange={(e) => setSpread(e.target.value as SpreadValue)}
-              disabled={isPending}
+              disabled={isBusy}
             >
               <option value="single">한 장 — 오늘의 메시지</option>
               <option value="three">세 장 — 과거·현재·미래</option>
-              <option value="nine">
-                아홉 장 — 3×3 종합 스프레드 (프리미엄)
-              </option>
-              <option value="grand_tableau">
-                그랑 타블로 — 36장 전체 (프리미엄)
-              </option>
+              <option value="nine">아홉 장 — 3×3 종합 스프레드 (프리미엄)</option>
+              <option value="grand_tableau">그랑 타블로 — 36장 전체 (프리미엄)</option>
             </Select>
           </div>
 
@@ -153,7 +185,7 @@ export function LenormandDrawForm({ subscribed }: Props) {
                     name="gender"
                     value="male"
                     defaultChecked
-                    disabled={isPending || blockedByPremium}
+                    disabled={isBusy || blockedByPremium}
                     className="accent-accent"
                   />
                   <span className="text-sm">남성 (신사 카드)</span>
@@ -163,7 +195,7 @@ export function LenormandDrawForm({ subscribed }: Props) {
                     type="radio"
                     name="gender"
                     value="female"
-                    disabled={isPending || blockedByPremium}
+                    disabled={isBusy || blockedByPremium}
                     className="accent-accent"
                   />
                   <span className="text-sm">여성 (숙녀 카드)</span>
@@ -189,20 +221,21 @@ export function LenormandDrawForm({ subscribed }: Props) {
           ) : null}
 
           <Button
-            type="submit"
-            disabled={isPending || blockedByPremium}
+            type="button"
+            onClick={handleDraw}
+            disabled={isBusy || blockedByPremium}
             size="lg"
             className="w-full"
           >
-            {isPending ? (
+            {isBusy ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                카드를 고르는 중…
+                {buttonLabel}
               </>
             ) : (
               <>
                 <Sparkles className="h-4 w-4" aria-hidden />
-                카드 뽑기
+                {buttonLabel}
               </>
             )}
           </Button>
