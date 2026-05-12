@@ -25,9 +25,8 @@ export default async function DashboardLayout({
     <div className="flex min-h-screen flex-col">
       <RitualBody crackLevel={crackData.level} />
 
-      {/* 헤더 — ritual-chat-menu 다크 글래스 */}
       <TimeAwareHeader
-        className="sticky top-0 z-40 pt-safe ritual-chat-menu"
+        className="sticky top-0 z-40 pt-safe"
         style={{
           background: `var(--header-bg)`,
           boxShadow: "var(--header-shadow)",

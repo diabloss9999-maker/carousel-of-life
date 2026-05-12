@@ -2,7 +2,8 @@
 
 /* =============================================================================
    인생의 회전목마 - 디자인 토큰
-   진지한 주술사 컨셉: 깊은 자색 + 금색 별빛 + 한지/먹색
+   Light Ritual: 밝고 몽환적인 낮의 의식 공간 (기본)
+   밤/균열 모드에서만 어두운 톤으로 전환
 
    Pretendard 폰트는 layout.tsx 의 <link> 태그로 직접 로드한다.
    (CSS @import 순서 spec 위반을 피하기 위함.)
@@ -399,25 +400,6 @@ body.ritual-night {
   --ritual-muted: rgba(248,241,221,0.58);
 }
 
-/* body.ritual-day 는 body[data-time="day"] 와 동일하게 처리 */
-body.ritual-day {
-  background:
-    radial-gradient(circle at 50% 8%, rgba(255,255,245,0.86), transparent 32%),
-    radial-gradient(circle at 13% 84%, rgba(127,167,157,0.16), transparent 30%),
-    radial-gradient(circle at 86% 72%, rgba(185,143,75,0.15), transparent 26%),
-    linear-gradient(180deg, #f4ead8, #e8d9c3 54%, #cfc1dc);
-  background-attachment: fixed;
-}
-
-body.ritual-night {
-  background:
-    radial-gradient(circle at 50% 8%, rgba(143,121,201,0.23), transparent 34%),
-    radial-gradient(circle at 12% 86%, rgba(122,169,161,0.10), transparent 30%),
-    radial-gradient(circle at 92% 72%, rgba(191,166,106,0.08), transparent 26%),
-    linear-gradient(180deg, #080710, #05050b 72%);
-  background-attachment: fixed;
-}
-
 /* 균열 수치가 높을 때 — body.fracture-high 로 활성화 */
 @keyframes ritual-micro-glitch {
   0%, 93%, 100% { transform: translate3d(0,0,0); filter: none; }
@@ -433,8 +415,7 @@ body.ritual-night {
 
 /* 접근성 */
 @media (prefers-reduced-motion: reduce) {
-  .ritual-button,
-  .ritual-orb-button {
+  .ritual-button {
     transition: none;
     animation: none !important;
   }
