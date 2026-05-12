@@ -6,9 +6,9 @@
 
 /** 무료 사용자 일일 한도. */
 export const FREE_DAILY_LIMITS = {
-  fortune: 3,
-  tarot: 3,
-  chat: 10,
+  fortune: 2,
+  tarot: 1,
+  chat: 5,
 } as const;
 
 /** 라이트 구독자 일일 한도 (₩4,900). */
@@ -43,8 +43,8 @@ export const AI_MODELS = {
   fast: "claude-haiku-4-5-20251001",
   /** 메인 풀이 (운세, 타로, 궁합). */
   premium: "claude-sonnet-4-6",
-  /** 채팅 — 메인과 동일하지만 별도 키로 향후 교체 용이. */
-  chat: "claude-sonnet-4-6",
+  /** 채팅 — Haiku 사용으로 비용 절감 (Sonnet 대비 ~20배 저렴). */
+  chat: "claude-haiku-4-5-20251001",
 } as const;
 
 /** AI 응답 토큰 한도. */

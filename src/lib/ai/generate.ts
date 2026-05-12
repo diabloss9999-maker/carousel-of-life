@@ -30,7 +30,17 @@ export async function generateJson<TSchema extends z.ZodTypeAny>(
   const response = await anthropic.messages.create({
     model: opts.model,
     max_tokens: opts.maxTokens,
-    ...(opts.systemSuffix ? { system: opts.systemSuffix } : {}),
+    ...(opts.systemSuffix
+      ? {
+          system: [
+            {
+              type: "text" as const,
+              text: opts.systemSuffix,
+              cache_control: { type: "ephemeral" as const },
+            },
+          ],
+        }
+      : {}),
     messages: [{ role: "user", content: opts.userPrompt }],
   });
 
@@ -58,7 +68,17 @@ export async function generateMarkdown(
   const response = await anthropic.messages.create({
     model: opts.model,
     max_tokens: opts.maxTokens,
-    ...(opts.systemSuffix ? { system: opts.systemSuffix } : {}),
+    ...(opts.systemSuffix
+      ? {
+          system: [
+            {
+              type: "text" as const,
+              text: opts.systemSuffix,
+              cache_control: { type: "ephemeral" as const },
+            },
+          ],
+        }
+      : {}),
     messages: [{ role: "user", content: opts.userPrompt }],
   });
 

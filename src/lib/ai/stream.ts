@@ -41,7 +41,14 @@ export function streamChat(opts: StreamChatOptions): ReadableStream<Uint8Array> 
         const stream = anthropic.messages.stream({
           model: opts.model,
           max_tokens: opts.maxTokens,
-          system: opts.system,
+          // 시스템 프롬프트 캐싱 — 동일 캐릭터 반복 호출 시 입력 토큰 절감
+          system: [
+            {
+              type: "text" as const,
+              text: opts.system,
+              cache_control: { type: "ephemeral" as const },
+            },
+          ],
           messages: opts.messages,
         });
 
