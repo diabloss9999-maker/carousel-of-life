@@ -36,6 +36,43 @@ export async function hasActiveSubscription(userId: string): Promise<boolean> {
   return Boolean(row);
 }
 
+export type SubscriptionTier = "free" | "lite" | "pro";
+
+/**
+ * 사용자의 구독 티어를 반환한다.
+ *
+ * - pro: `LEMONSQUEEZY_PRO_VARIANT_ID` 환경변수와 구독 variant 일치
+ * - lite: 활성 구독이지만 pro 가 아닌 경우
+ * - free: 활성 구독 없음
+ */
+export async function getSubscriptionTier(
+  userId: string,
+): Promise<SubscriptionTier> {
+  const now = new Date();
+  const [row] = await db
+    .select({ lsVariantId: subscriptions.lsVariantId })
+    .from(subscriptions)
+    .where(
+      and(
+        eq(subscriptions.userId, userId),
+        inArray(subscriptions.status, ["active", "on_trial"]),
+        or(
+          isNull(subscriptions.currentPeriodEndsAt),
+          gt(subscriptions.currentPeriodEndsAt, now),
+        ),
+      ),
+    )
+    .orderBy(subscriptions.createdAt)
+    .limit(1);
+
+  if (!row) return "free";
+
+  const proVariantId = process.env.LEMONSQUEEZY_PRO_VARIANT_ID;
+  if (proVariantId && row.lsVariantId === proVariantId) return "pro";
+
+  return "lite";
+}
+
 /**
  * 사용자의 가장 최근 구독 row 를 반환 (없으면 null).
  */

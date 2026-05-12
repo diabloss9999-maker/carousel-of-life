@@ -1,34 +1,34 @@
 import Link from "next/link";
-import { Crown, Infinity as InfinityIcon } from "lucide-react";
+import { Crown, Infinity as InfinityIcon, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ROUTES, FREE_DAILY_LIMITS } from "@/lib/constants";
+import { ROUTES, FREE_DAILY_LIMITS, LITE_DAILY_LIMITS } from "@/lib/constants";
+
+export type QuotaTier = "free" | "lite" | "pro";
 
 interface QuotaBarProps {
   fortuneCount: number;
   tarotCount: number;
   chatCount: number;
-  /** 활성 구독자 여부. true 면 무제한 UI 로 변경. */
-  subscribed?: boolean;
+  /** 사용자의 구독 티어. 기본은 "free". */
+  tier?: QuotaTier;
 }
 
 export function QuotaBar({
   fortuneCount,
   tarotCount,
   chatCount,
-  subscribed = false,
+  tier = "free",
 }: QuotaBarProps) {
-  if (subscribed) {
+  if (tier === "pro") {
     return (
       <div className="app-surface rounded-xl p-4 ring-1 ring-accent/15">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-3">
             <Crown className="h-5 w-5 text-accent" aria-hidden />
             <div className="space-y-0.5">
-              <p className="font-mystic text-sm font-medium">
-                프리미엄 사용 중
-              </p>
+              <p className="font-mystic text-sm font-medium">프로 사용 중</p>
               <p className="text-xs text-muted-foreground">
                 운세·타로·문답 모두 무제한이야.
               </p>
@@ -39,6 +39,39 @@ export function QuotaBar({
             <UnlimitedItem label="타로" used={tarotCount} />
             <UnlimitedItem label="문답" used={chatCount} />
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (tier === "lite") {
+    return (
+      <div className="app-surface rounded-xl p-4 ring-1 ring-primary/15">
+        <div className="flex items-center justify-between gap-4 flex-wrap mb-3">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-primary" aria-hidden />
+            <p className="font-mystic text-sm font-medium">라이트 플랜</p>
+          </div>
+          <Button asChild size="sm" variant="ghost">
+            <Link href={ROUTES.pricing}>프로로 업그레이드</Link>
+          </Button>
+        </div>
+        <div className="grid grid-cols-3 gap-4 sm:gap-6 text-sm">
+          <Item
+            label="운세"
+            used={fortuneCount}
+            max={LITE_DAILY_LIMITS.fortune}
+          />
+          <Item
+            label="타로"
+            used={tarotCount}
+            max={LITE_DAILY_LIMITS.tarot}
+          />
+          <Item
+            label="문답"
+            used={chatCount}
+            max={LITE_DAILY_LIMITS.chat}
+          />
         </div>
       </div>
     );
@@ -57,7 +90,7 @@ export function QuotaBar({
           <Item label="문답" used={chatCount} max={FREE_DAILY_LIMITS.chat} />
         </div>
         <Button asChild size="sm" variant="ghost">
-          <Link href={ROUTES.pricing}>프리미엄으로</Link>
+          <Link href={ROUTES.pricing}>업그레이드</Link>
         </Button>
       </div>
     </div>

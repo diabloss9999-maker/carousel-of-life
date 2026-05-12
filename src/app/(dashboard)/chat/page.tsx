@@ -9,7 +9,7 @@ import { CharacterSelect } from "@/components/chat/character-select";
 import { SessionDrawer } from "@/components/chat/session-drawer";
 import { requireProfile } from "@/lib/auth/get-user";
 import { listTodaySessions } from "@/lib/chat/service";
-import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import { getSubscriptionTier } from "@/lib/payment/subscription-state";
 import { getAllAffinities } from "@/lib/affinity/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { CharacterLoreCard } from "@/components/chat/character-lore-card";
@@ -22,10 +22,10 @@ export const metadata: Metadata = {
 export default async function ChatPage() {
   const { profile } = await requireProfile();
 
-  const [sessions, usage, subscribed, affinityRows] = await Promise.all([
+  const [sessions, usage, tier, affinityRows] = await Promise.all([
     listTodaySessions(profile.userId),
     getTodayUsage(profile.userId),
-    hasActiveSubscription(profile.userId),
+    getSubscriptionTier(profile.userId),
     getAllAffinities(profile.userId),
   ]);
 
@@ -50,7 +50,7 @@ export default async function ChatPage() {
         fortuneCount={usage.fortuneCount}
         tarotCount={usage.tarotCount}
         chatCount={usage.chatCount}
-        subscribed={subscribed}
+        tier={tier}
       />
 
       <CharacterLoreCard />

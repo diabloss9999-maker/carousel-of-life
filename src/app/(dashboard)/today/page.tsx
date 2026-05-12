@@ -28,7 +28,10 @@ import {
   type FortuneCategoryId,
 } from "@/lib/constants";
 import { getDailyFortune } from "@/lib/fortunes/service";
-import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import {
+  getSubscriptionTier,
+  hasActiveSubscription,
+} from "@/lib/payment/subscription-state";
 import { getTodayMood } from "@/lib/mood/service";
 import { MoodCapture } from "@/components/mood/mood-capture";
 import { getCrackScore } from "@/lib/crack/service";
@@ -67,10 +70,11 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
 
   const { profile } = await requireProfile();
 
-  const [fortune, usage, subscribed, streakResult, todayMood, crackData] = await Promise.all([
+  const [fortune, usage, subscribed, tier, streakResult, todayMood, crackData] = await Promise.all([
     getDailyFortune(profile.userId, category),
     getTodayUsage(profile.userId),
     hasActiveSubscription(profile.userId),
+    getSubscriptionTier(profile.userId),
     checkInStreak(profile.userId),
     category === "general" ? getTodayMood(profile.userId) : Promise.resolve(null),
     getCrackScore(profile.userId),
@@ -141,7 +145,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
         fortuneCount={usage.fortuneCount}
         tarotCount={usage.tarotCount}
         chatCount={usage.chatCount}
-        subscribed={subscribed}
+        tier={tier}
       />
 
       <CategoryTabs current={category} subscribed={subscribed} />

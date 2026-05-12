@@ -6,23 +6,28 @@
 
 /** 무료 사용자 일일 한도. */
 export const FREE_DAILY_LIMITS = {
-  fortune: 3,
-  tarot: 3,
-  chat: 3,
+  fortune: 2,
+  tarot: 2,
+  chat: 10,
 } as const;
 
-/** 구독 정보. */
+/** 라이트 구독자 일일 한도 (₩4,900). */
+export const LITE_DAILY_LIMITS = {
+  fortune: 20,
+  tarot: 20,
+  chat: 50,
+} as const;
+
+/** 구독 플랜 정보. */
 export const SUBSCRIPTION = {
-  /** 현재 결제 금액 (5월 한정 특가). */
-  monthlyPriceKRW: 4900,
-  /** 정가 (6월부터 적용). */
-  regularPriceKRW: 7900,
-  /** 할인율 (퍼센트). */
-  discountPct: Math.round((1 - 4900 / 7900) * 100),
-  /** 특가 종료 월 (0-based). 5 = 6월, 즉 5월 말까지 특가. */
-  saleEndMonth: 5,
-  currency: "KRW",
-  trialDays: 0,
+  lite: {
+    monthlyPriceKRW: 4900,
+    label: "라이트",
+  },
+  pro: {
+    monthlyPriceKRW: 9900,
+    label: "프로",
+  },
 } as const;
 
 /** 단건 결제 상품. */

@@ -10,7 +10,8 @@ import { and, eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { usageQuotas } from "@/db/schema";
-import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import { LITE_DAILY_LIMITS } from "@/lib/constants";
+import { getSubscriptionTier } from "@/lib/payment/subscription-state";
 import { createClient } from "@/lib/supabase/server";
 
 export type QuotaKind = "fortune" | "tarot" | "chat";
@@ -33,10 +34,19 @@ export async function checkAndIncrementQuota(opts: {
   kind: QuotaKind;
   max: number;
 }): Promise<QuotaResult> {
-  const subscribed = await hasActiveSubscription(opts.userId);
+  const tier = await getSubscriptionTier(opts.userId);
 
-  // 구독자: 매우 큰 max 로 호출 → 사실상 무제한.
-  const effectiveMax = subscribed ? 1_000_000 : opts.max;
+  let effectiveMax: number;
+  if (tier === "pro") {
+    // 프로: 사실상 무제한.
+    effectiveMax = 1_000_000;
+  } else if (tier === "lite") {
+    effectiveMax = LITE_DAILY_LIMITS[opts.kind];
+  } else {
+    effectiveMax = opts.max;
+  }
+
+  const isUnlimited = tier === "pro";
 
   const supabase = await createClient();
   const { data, error } = await supabase.rpc("increment_usage_quota", {
@@ -54,17 +64,17 @@ export async function checkAndIncrementQuota(opts: {
   if (count === null) {
     return {
       ok: false,
-      count: opts.max,
-      max: opts.max,
-      unlimited: subscribed,
+      count: effectiveMax,
+      max: effectiveMax,
+      unlimited: isUnlimited,
     };
   }
 
   return {
     ok: true,
     count,
-    max: subscribed ? Infinity : opts.max,
-    unlimited: subscribed,
+    max: isUnlimited ? Infinity : effectiveMax,
+    unlimited: isUnlimited,
   };
 }
 

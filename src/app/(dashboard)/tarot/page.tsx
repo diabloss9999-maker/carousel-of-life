@@ -15,7 +15,10 @@ import { TarotThreeReadingCard } from "@/components/tarot/tarot-three-reading-ca
 import { QuotaBar } from "@/components/fortune/quota-bar";
 import { requireProfile } from "@/lib/auth/get-user";
 import { getTodayLenormandReadings } from "@/lib/lenormand/service";
-import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import {
+  getSubscriptionTier,
+  hasActiveSubscription,
+} from "@/lib/payment/subscription-state";
 import { getTodayRuneReadings } from "@/lib/runes/service";
 import { getTodayTarotReadings } from "@/lib/tarot/service";
 import { getTodayUsage } from "@/lib/usage/quota";
@@ -28,11 +31,12 @@ export const metadata: Metadata = {
 export default async function TarotPage() {
   const { profile } = await requireProfile();
 
-  const [readings, usage, subscribed, lenormandReadings, runeReadings] =
+  const [readings, usage, subscribed, tier, lenormandReadings, runeReadings] =
     await Promise.all([
       getTodayTarotReadings(profile.userId),
       getTodayUsage(profile.userId),
       hasActiveSubscription(profile.userId),
+      getSubscriptionTier(profile.userId),
       getTodayLenormandReadings(profile.userId),
       getTodayRuneReadings(profile.userId),
     ]);
@@ -52,7 +56,7 @@ export default async function TarotPage() {
         fortuneCount={usage.fortuneCount}
         tarotCount={usage.tarotCount}
         chatCount={usage.chatCount}
-        subscribed={subscribed}
+        tier={tier}
       />
 
       <CardDivinationTabs
