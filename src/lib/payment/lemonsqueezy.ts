@@ -99,6 +99,10 @@ export async function createSubscriptionCheckout(opts: {
 
 /**
  * 프로 구독 결제 페이지 URL 생성.
+ *
+ * LEMONSQUEEZY_PRO_VARIANT_ID 가 설정되어 있으면 그것을 사용하고,
+ * 비어 있으면 fallback 으로 기존 SUBSCRIPTION_VARIANT_ID 를 사용한다.
+ * custom_data 의 tier 필드로 프로 여부를 표시한다.
  */
 export async function createProSubscriptionCheckout(opts: {
   userId: string;
@@ -109,11 +113,13 @@ export async function createProSubscriptionCheckout(opts: {
   ensureSetup();
 
   const storeId = serverEnv.LEMONSQUEEZY_STORE_ID;
-  const variantId = serverEnv.LEMONSQUEEZY_PRO_VARIANT_ID;
+  const proVariant = serverEnv.LEMONSQUEEZY_PRO_VARIANT_ID;
+  const fallbackVariant = serverEnv.LEMONSQUEEZY_SUBSCRIPTION_VARIANT_ID;
+  const variantId = proVariant ?? fallbackVariant;
 
   if (!storeId || !variantId) {
     throw new Error(
-      "LEMONSQUEEZY_STORE_ID 또는 LEMONSQUEEZY_PRO_VARIANT_ID 가 비어있어요. Vercel 환경변수를 확인해주세요.",
+      "LEMONSQUEEZY_STORE_ID 또는 SUBSCRIPTION_VARIANT_ID 가 비어있어요. Vercel 환경변수를 확인해주세요.",
     );
   }
 
@@ -122,7 +128,7 @@ export async function createProSubscriptionCheckout(opts: {
     checkoutData: {
       email: opts.email,
       name: opts.displayName ?? undefined,
-      custom: { user_id: opts.userId },
+      custom: { user_id: opts.userId, tier: "pro" },
     },
     productOptions: {
       redirectUrl: opts.redirectAfter,
