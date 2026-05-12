@@ -42,6 +42,8 @@ export interface Character {
   imageSrcDay: string;
   placeholder: string;
   category: CharacterCategory;
+  /** API 오류 시 캐릭터 목소리로 보여줄 변명 메시지 */
+  errorExcuse: string;
 }
 
 export const CHARACTERS: Record<CharacterId, Character> = {
@@ -57,6 +59,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     imageSrc: "/characters/child_night.png",
     imageSrcDay: "/characters/child_day.png",
     placeholder: "카엘에게 물어봐...",
+    errorExcuse: "...급한 계약 건이 생겼어. 잠깐 자리 비울게. 나중에 와.",
   },
   witch: {
     id: "witch",
@@ -69,6 +72,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     imageSrc: "/characters/witch_night.png",
     imageSrcDay: "/characters/witch_day.png",
     placeholder: "루나에게 물어봐...",
+    errorExcuse: "...균열에서 신호가 들어왔어. 잠깐 다녀올게. 기다려줘.",
   },
   sage: {
     id: "sage",
@@ -81,6 +85,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     imageSrc: "/characters/sage_night.png",
     imageSrcDay: "/characters/sage_day.png",
     placeholder: "라엘에게 물어봐...",
+    errorExcuse: "미안해요. 급하게 처리해야 할 일이 생겼어요. 금방 돌아올게요.",
   },
 
   // ── 동양 ────────────────────────────────────────────────────
@@ -95,6 +100,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     imageSrc: "/characters/shaman_night.png",
     imageSrcDay: "/characters/shaman_day.png",
     placeholder: "소령에게 물어봐...",
+    errorExcuse: "...신령이 자꾸 불러. 잠깐 다녀올게. 가지 마.",
   },
   taoist: {
     id: "taoist",
@@ -107,6 +113,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     imageSrc: "/characters/taoist_night.png",
     imageSrcDay: "/characters/taoist_day.png",
     placeholder: "현도에게 물어봐...",
+    errorExcuse: "천기가 잠시 흐려졌다. 기다려. 곧 돌아오겠다.",
   },
   dokkaebi: {
     id: "dokkaebi",
@@ -119,6 +126,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     imageSrc: "/characters/dokkaebi_night.png",
     imageSrcDay: "/characters/dokkaebi_day.png",
     placeholder: "귀염에게 물어봐...",
+    errorExcuse: "...야. 나 잠깐 볼 일 있어. 기다려. 아니면 말고.",
   },
 };
 

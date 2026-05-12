@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { MessageBubble, type DrawnCardMeta } from "@/components/chat/message-bubble";
 import { ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import type { CharacterId } from "@/lib/chat/characters";
+import { CHARACTERS, type CharacterId } from "@/lib/chat/characters";
 import { useFractureSystem } from "@/hooks/use-fracture-system";
 import { getPlaceholder } from "@/lib/fracture/fracture-events";
 
@@ -142,16 +142,32 @@ export function ChatWindow({
 
       if (!res.ok) {
         const json = await res.json().catch(() => null);
-        const message = json?.error?.message ?? "응답을 받지 못했어요.";
-        setError(message);
-        setMessages((prev) =>
-          prev.filter((m) => m.id !== assistantId && m.id !== userId),
-        );
+        const isQuota = json?.error?.code === "quota_exceeded" || String(json?.error?.message ?? "").includes("한도");
+        // 한도 초과는 그대로, 그 외 오류는 캐릭터 변명으로 대체
+        if (isQuota) {
+          setError("quota");
+        } else {
+          const excuse = characterId ? (CHARACTERS[characterId]?.errorExcuse ?? "잠깐 자리를 비울게요.") : "잠깐 자리를 비울게요.";
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantId
+                ? { ...m, content: excuse, isStreaming: false }
+                : m,
+            ),
+          );
+        }
         return;
       }
 
       if (!res.body) {
-        setError("응답 본문이 비어있어요.");
+        const excuse = characterId ? (CHARACTERS[characterId]?.errorExcuse ?? "잠깐 자리를 비울게요.") : "잠깐 자리를 비울게요.";
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantId
+              ? { ...m, content: excuse, isStreaming: false }
+              : m,
+          ),
+        );
         return;
       }
 
@@ -197,10 +213,14 @@ export function ChatWindow({
       startTransition(() => {
         router.refresh();
       });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "네트워크 오류");
+    } catch {
+      const excuse = characterId ? (CHARACTERS[characterId]?.errorExcuse ?? "잠깐 자리를 비울게요.") : "잠깐 자리를 비울게요.";
       setMessages((prev) =>
-        prev.filter((m) => m.id !== assistantId && m.id !== userId),
+        prev.map((m) =>
+          m.id === assistantId
+            ? { ...m, content: excuse, isStreaming: false }
+            : m,
+        ),
       );
     } finally {
       setIsStreaming(false);
@@ -221,7 +241,7 @@ export function ChatWindow({
     }
   }
 
-  const isQuotaError = error?.includes("한도");
+  const isQuotaError = error === "quota";
   const charsLeft = MAX_MESSAGE_LENGTH - input.length;
 
   return (
@@ -261,19 +281,12 @@ export function ChatWindow({
         )}
       </div>
 
-      {error ? (
-        <div
-          className={cn(
-            "flex flex-col gap-2 rounded-xl border px-3 py-2 text-sm",
-            "border-destructive/40 bg-destructive/10 text-destructive",
-          )}
-        >
-          <span>{error}</span>
-          {isQuotaError ? (
-            <Button asChild size="sm" variant="outline">
-              <Link href={ROUTES.pricing}>프리미엄 구독하기</Link>
-            </Button>
-          ) : null}
+      {isQuotaError ? (
+        <div className="flex flex-col gap-2 rounded-xl border border-amber-400/30 bg-amber-50/5 px-3 py-2 text-sm text-amber-300/90">
+          <span>오늘 대화 한도를 모두 사용했어요.</span>
+          <Button asChild size="sm" variant="outline">
+            <Link href={ROUTES.pricing}>프리미엄으로 무제한 대화하기</Link>
+          </Button>
         </div>
       ) : null}
 
