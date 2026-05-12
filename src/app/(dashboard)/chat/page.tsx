@@ -13,6 +13,7 @@ import { getSubscriptionTier } from "@/lib/payment/subscription-state";
 import { getAllAffinities } from "@/lib/affinity/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { CharacterLoreCard } from "@/components/chat/character-lore-card";
+import { WelcomeGreeting } from "@/components/chat/welcome-greeting";
 
 export const metadata: Metadata = {
   title: "존재와의 조우",
@@ -35,6 +36,7 @@ export default async function ChatPage() {
 
   return (
     <div className="space-y-8">
+      <WelcomeGreeting />
       <header className="space-y-3">
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}

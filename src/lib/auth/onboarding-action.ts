@@ -109,5 +109,5 @@ export async function onboardingAction(
   }
 
   revalidatePath("/", "layout");
-  redirect(ROUTES.today);
+  redirect(ROUTES.chat);
 }

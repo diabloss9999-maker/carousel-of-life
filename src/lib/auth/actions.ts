@@ -68,7 +68,7 @@ export async function loginAction(
   }
 
   revalidatePath("/", "layout");
-  redirect(ROUTES.today);
+  redirect(ROUTES.chat);
 }
 
 /**

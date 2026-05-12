@@ -78,7 +78,7 @@ export async function updateSession(request: NextRequest) {
 
   if (isAuthOnly && user) {
     const url = request.nextUrl.clone();
-    url.pathname = ROUTES.today;
+    url.pathname = ROUTES.chat;
     return NextResponse.redirect(url);
   }
 
