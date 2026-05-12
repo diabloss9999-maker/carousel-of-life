@@ -163,7 +163,7 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                         {char.title}
                       </p>
                       {/* 훅 — 데스크탑에서만 */}
-                      <p className="hidden sm:block text-[11px] text-foreground/60 leading-snug font-mystic italic">
+                      <p className="hidden sm:block text-[11px] text-foreground/80 leading-snug font-mystic italic">
                         "{char.hook}"
                       </p>
                       {/* 친밀도 */}

@@ -114,7 +114,7 @@ export function CharacterLoreCard() {
                 <span className={cn("font-mystic font-bold text-base", section.accent)}>
                   {section.world}
                 </span>
-                <span className="ml-2 text-[10px] tracking-widest text-muted-foreground/40 uppercase">
+                <span className="ml-2 text-[10px] tracking-widest text-muted-foreground/70 uppercase">
                   {section.worldSub}
                 </span>
               </div>
@@ -149,7 +149,7 @@ export function CharacterLoreCard() {
 
                 {/* 인물 */}
                 <div className="space-y-2 border-t border-white/5 pt-4">
-                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground/30 mb-3">
+                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground/65 mb-3">
                     등장인물
                   </p>
                   {section.figures.map((f) => (

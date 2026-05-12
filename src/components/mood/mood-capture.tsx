@@ -73,8 +73,8 @@ export function MoodCapture({ todayMood, source = "fortune" }: MoodCaptureProps)
                 isSelected
                   ? "border-primary/40 bg-primary/10 text-primary"
                   : done
-                    ? "border-border/10 text-muted-foreground/20"
-                    : "border-border/20 text-muted-foreground/50 hover:border-border/40 hover:text-foreground/70",
+                    ? "border-border/20 text-muted-foreground/45"
+                    : "border-border/30 text-muted-foreground/75 hover:border-border/50 hover:text-foreground/90",
               )}
             >
               <span className="text-sm font-bold leading-none">{symbol}</span>

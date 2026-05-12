@@ -69,7 +69,7 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
         className="rounded-2xl border border-white/8 p-5 space-y-5"
         style={{ background: "linear-gradient(135deg, #0a0812, #120e1e)" }}
       >
-        <p className="text-[10px] uppercase tracking-widest text-muted-foreground/40">나의 서사</p>
+        <p className="text-[10px] uppercase tracking-widest text-muted-foreground/70">나의 서사</p>
 
         {/* 핵심 숫자 — 가장 크게 */}
         <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
@@ -100,7 +100,7 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
         {/* 반복 패턴 */}
         {summary.narrative.repeatedCard && (
           <div className="rounded-xl border border-white/5 bg-white/3 px-4 py-3">
-            <p className="text-[10px] text-muted-foreground/40 tracking-widest mb-1">반복 감지</p>
+            <p className="text-[10px] text-muted-foreground/70 tracking-widest mb-1">반복 감지</p>
             <p className="text-sm text-muted-foreground/70 font-mystic italic">
               '{summary.narrative.repeatedCard}' 카드가 {summary.narrative.repeatedCardCount}번 등장했어.
             </p>
@@ -110,10 +110,10 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
         {/* 캐릭터 조우 현황 */}
         {summary.narrative.characterCounts.length > 0 && (
           <div className="space-y-2 border-t border-white/5 pt-4">
-            <p className="text-[10px] text-muted-foreground/40 tracking-widest">조우 기록</p>
+            <p className="text-[10px] text-muted-foreground/70 tracking-widest">조우 기록</p>
             <div className="flex flex-wrap gap-2">
               {summary.narrative.characterCounts.map(({ name, count: cnt }) => (
-                <span key={name} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-muted-foreground/60">
+                <span key={name} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-muted-foreground/85">
                   {name} {cnt}회
                 </span>
               ))}
@@ -123,7 +123,7 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
 
         {summary.patterns.length > 0 && (
           <div className="border-t border-white/5 pt-3 space-y-1">
-            <p className="text-[10px] text-muted-foreground/40 tracking-widest">패턴 감지</p>
+            <p className="text-[10px] text-muted-foreground/70 tracking-widest">패턴 감지</p>
             {summary.patterns.map((p, i) => (
               <p key={i} className="text-xs text-muted-foreground/70 font-mystic italic">{p}</p>
             ))}
@@ -132,7 +132,7 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
 
         {/* 오늘의 경계 공유 버튼 */}
         <div className="border-t border-white/5 pt-3 flex items-center justify-between">
-          <p className="text-[10px] text-muted-foreground/30 tracking-widest">오늘의 경계 카드</p>
+          <p className="text-[10px] text-muted-foreground/65 tracking-widest">오늘의 경계 카드</p>
           <button
             type="button"
             onClick={async () => {
@@ -152,7 +152,7 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
               a.download = `경계카드_${today}.png`;
               a.click();
             }}
-            className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[10px] text-muted-foreground/50 hover:text-muted-foreground/80 transition-colors"
+            className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[10px] text-muted-foreground/75 hover:text-muted-foreground/95 transition-colors"
           >
             <Download className="h-3 w-3" />
             저장
@@ -163,8 +163,8 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
       {/* 타임라인 */}
       {entries.length === 0 ? (
         <div className="py-16 text-center space-y-2">
-          <p className="font-mystic text-muted-foreground/50 text-base">아직 흔적이 없어.</p>
-          <p className="text-xs text-muted-foreground/30">운세를 보거나 주술사와 대화하면 여기에 쌓여.</p>
+          <p className="font-mystic text-muted-foreground/80 text-base">아직 흔적이 없어.</p>
+          <p className="text-xs text-muted-foreground/65">운세를 보거나 주술사와 대화하면 여기에 쌓여.</p>
         </div>
       ) : (
         <div className="relative space-y-0">
@@ -196,12 +196,12 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
                     )}>
                       {entry.title}
                     </p>
-                    <span className="text-[10px] text-muted-foreground/30 flex-shrink-0 tabular-nums">
+                    <span className="text-[10px] text-muted-foreground/65 flex-shrink-0 tabular-nums">
                       {formatDate(entry.date)}
                     </span>
                   </div>
                   {entry.detail && (
-                    <p className="text-[11px] text-muted-foreground/40">{entry.detail}</p>
+                    <p className="text-[11px] text-muted-foreground/70">{entry.detail}</p>
                   )}
                   {isOpen && (
                     <p className="text-xs text-muted-foreground/60 font-mystic italic pt-1 border-t border-white/5 mt-1">
@@ -231,10 +231,10 @@ function StatCell({
 }) {
   return (
     <div className="space-y-1">
-      <p className="text-[9px] uppercase tracking-widest text-muted-foreground/40">{label}</p>
+      <p className="text-[9px] uppercase tracking-widest text-muted-foreground/70">{label}</p>
       <p className={cn(
         "font-mystic text-sm font-semibold",
-        accent ?? (dim ? "text-muted-foreground/40" : "text-foreground/80"),
+        accent ?? (dim ? "text-muted-foreground/65" : "text-foreground/90"),
       )}>
         {value}
       </p>

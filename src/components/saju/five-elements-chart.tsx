@@ -180,7 +180,7 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
                   <p
                     className={cn(
                       "font-mystic text-[11px] font-semibold leading-none",
-                      isEmpty ? "text-muted-foreground/30" : el.textClass,
+                      isEmpty ? "text-muted-foreground/60" : el.textClass,
                     )}
                   >
                     {el.ko}
@@ -188,7 +188,7 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
                   <p
                     className={cn(
                       "font-mystic text-base font-bold leading-tight mt-0.5",
-                      isEmpty ? "text-muted-foreground/25" : el.textClass,
+                      isEmpty ? "text-muted-foreground/60" : el.textClass,
                     )}
                   >
                     {count}
@@ -202,23 +202,23 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
         {/* 강한/약한 기운 */}
         <div className="flex gap-3">
           <div className="flex-1 rounded-xl bg-white/10 backdrop-blur border border-white/20 px-3 py-2.5">
-            <p className="text-[10px] text-muted-foreground/60 mb-1.5">강한 기운</p>
+            <p className="text-[10px] text-muted-foreground/80 mb-1.5">강한 기운</p>
             <div className="flex items-center gap-1.5">
               <span className={cn("h-2 w-2 rounded-full flex-shrink-0", strongest.dotClass)} />
               <span className={cn("font-mystic font-bold text-sm", strongest.textClass)}>
                 {strongest.ko}
               </span>
-              <span className="text-[10px] text-muted-foreground/40">{strongest.hanja}</span>
+              <span className="text-[10px] text-muted-foreground/70">{strongest.hanja}</span>
             </div>
           </div>
           <div className="flex-1 rounded-xl bg-white/10 backdrop-blur border border-white/20 px-3 py-2.5">
-            <p className="text-[10px] text-muted-foreground/60 mb-1.5">약한 기운</p>
+            <p className="text-[10px] text-muted-foreground/80 mb-1.5">약한 기운</p>
             <div className="flex items-center gap-1.5">
               <span className={cn("h-2 w-2 rounded-full flex-shrink-0 opacity-50", weakest.dotClass)} />
               <span className={cn("font-mystic font-semibold text-sm opacity-60", weakest.textClass)}>
                 {weakest.ko}
               </span>
-              <span className="text-[10px] text-muted-foreground/30">{weakest.hanja}</span>
+              <span className="text-[10px] text-muted-foreground/65">{weakest.hanja}</span>
             </div>
           </div>
         </div>

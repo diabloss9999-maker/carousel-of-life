@@ -117,7 +117,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
             {(() => {
               const hidden = getHomeHiddenText(crackData.level);
               return hidden ? (
-                <p className="text-[9px] text-muted-foreground/20 tracking-widest mt-0.5 font-mystic italic">
+                <p className="text-[9px] text-muted-foreground/50 tracking-widest mt-0.5 font-mystic italic">
                   {hidden}
                 </p>
               ) : null;

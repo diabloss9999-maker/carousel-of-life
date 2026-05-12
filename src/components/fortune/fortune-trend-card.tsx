@@ -152,7 +152,7 @@ export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
               key={p.date}
               className={cn(
                 "text-[8px] tabular-nums leading-none",
-                isLast ? "text-foreground/60 font-medium" : "text-muted-foreground/35",
+                isLast ? "text-foreground/80 font-medium" : "text-muted-foreground/65",
               )}
             >
               {`${Number(mm)}/${Number(dd)}`}

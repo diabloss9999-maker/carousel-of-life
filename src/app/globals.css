@@ -69,7 +69,7 @@
   --secondary-foreground: oklch(0.88 0.014 88);
 
   --muted: oklch(0.18 0.025 280 / 0.50);
-  --muted-foreground: oklch(0.65 0.018 82);    /* 뮤트 골드 */
+  --muted-foreground: oklch(0.82 0.018 82);    /* 뮤트 골드 */
 
   --accent: oklch(0.68 0.12 78);              /* 골드 강조 */
   --accent-foreground: oklch(0.10 0.02 280);
