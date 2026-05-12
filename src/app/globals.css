@@ -496,3 +496,57 @@ body.ritual-night .ritual-chat-textarea {
 @media (prefers-reduced-motion: reduce) {
   .ritual-message.fracture { animation: none; }
 }
+
+/* ===== 타로 셔플 애니메이션 ===== */
+
+/* 셔플 — 카드가 빠르게 뒤섞임 */
+@keyframes tarot-shuffle {
+  0%   { transform: rotate(var(--card-rot)) translateY(var(--card-ty)); }
+  25%  { transform: rotate(calc(var(--card-rot) + 18deg)) translateX(-18px) translateY(calc(var(--card-ty) - 8px)); }
+  50%  { transform: rotate(calc(var(--card-rot) - 12deg)) translateX(22px) translateY(calc(var(--card-ty) - 4px)); }
+  75%  { transform: rotate(calc(var(--card-rot) + 8deg)) translateX(-10px) translateY(calc(var(--card-ty) - 6px)); }
+  100% { transform: rotate(var(--card-rot)) translateY(var(--card-ty)); }
+}
+
+/* 선택된 카드가 위로 떠오름 */
+@keyframes tarot-rise {
+  from { transform: rotate(0deg) translateY(0) scale(1); }
+  to   { transform: rotate(0deg) translateY(-32px) scale(1.08); }
+}
+
+/* 글로우 펄스 */
+@keyframes tarot-glow-pulse {
+  0%, 100% { box-shadow: 0 0 18px rgba(191,166,106,0.35), 0 8px 32px rgba(0,0,0,0.22); }
+  50%       { box-shadow: 0 0 40px rgba(191,166,106,0.70), 0 12px 44px rgba(0,0,0,0.28); }
+}
+
+.tarot-card-fan {
+  position: absolute;
+  bottom: 0;
+  transform-origin: bottom center;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tarot-card-fan:nth-child(1) { --card-rot: -20deg; --card-ty: -8px; left: calc(50% - 180px); transform: rotate(-20deg) translateY(-8px); z-index: 1; }
+.tarot-card-fan:nth-child(2) { --card-rot: -10deg; --card-ty: -4px; left: calc(50% - 100px); transform: rotate(-10deg) translateY(-4px); z-index: 2; }
+.tarot-card-fan:nth-child(3) { --card-rot:   0deg; --card-ty:   0px; left: calc(50% - 40px);  transform: rotate(0deg)   translateY(0);    z-index: 3; }
+.tarot-card-fan:nth-child(4) { --card-rot:  10deg; --card-ty: -4px; left: calc(50% + 20px);  transform: rotate(10deg)  translateY(-4px); z-index: 2; }
+.tarot-card-fan:nth-child(5) { --card-rot:  20deg; --card-ty: -8px; left: calc(50% + 100px); transform: rotate(20deg)  translateY(-8px); z-index: 1; }
+
+.tarot-card-fan.shuffling {
+  animation: tarot-shuffle 0.35s ease-in-out 3 both;
+}
+
+.tarot-card-fan.selected {
+  animation: tarot-rise 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+             tarot-glow-pulse 1.8s ease-in-out infinite;
+  z-index: 10 !important;
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tarot-card-fan.shuffling,
+  .tarot-card-fan.selected { animation: none; }
+}
