@@ -98,6 +98,47 @@ export async function createSubscriptionCheckout(opts: {
 }
 
 /**
+ * 프로 구독 결제 페이지 URL 생성.
+ */
+export async function createProSubscriptionCheckout(opts: {
+  userId: string;
+  email: string;
+  displayName?: string | null;
+  redirectAfter?: string;
+}): Promise<string> {
+  ensureSetup();
+
+  const storeId = serverEnv.LEMONSQUEEZY_STORE_ID;
+  const variantId = serverEnv.LEMONSQUEEZY_PRO_VARIANT_ID;
+
+  if (!storeId || !variantId) {
+    throw new Error(
+      "LEMONSQUEEZY_STORE_ID 또는 LEMONSQUEEZY_PRO_VARIANT_ID 가 비어있어요. Vercel 환경변수를 확인해주세요.",
+    );
+  }
+
+  const result = await createCheckout(storeId, variantId, {
+    checkoutOptions: { embed: false, media: false, logo: true },
+    checkoutData: {
+      email: opts.email,
+      name: opts.displayName ?? undefined,
+      custom: { user_id: opts.userId },
+    },
+    productOptions: {
+      redirectUrl: opts.redirectAfter,
+      receiptThankYouNote: "프로 멤버가 되셨어요. 별의 흐름을 마음껏 탐험하세요.",
+    },
+  });
+
+  if (result.error) throw new Error(`Checkout 생성 실패: ${result.error.message}`);
+
+  const checkoutUrl = (result.data?.data as Checkout["data"] | undefined)?.attributes.url;
+  if (!checkoutUrl) throw new Error("Checkout URL 을 받지 못했어요.");
+
+  return checkoutUrl;
+}
+
+/**
  * 구독 정보 조회 (LS 서버에서 최신 상태).
  */
 export async function fetchSubscription(subscriptionId: string) {
