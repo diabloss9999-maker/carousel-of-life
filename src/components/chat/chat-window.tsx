@@ -297,13 +297,13 @@ export function ChatWindow({
             maxLength={MAX_MESSAGE_LENGTH}
             rows={1}
             autoFocus
-            className="resize-none outline-none leading-relaxed text-sm py-3 px-4 rounded-[20px]"
+            className="ritual-chat-textarea resize-none outline-none leading-relaxed text-sm py-3 px-4 rounded-[20px]"
             style={{
               minHeight: "48px",
               maxHeight: "120px",
-              background: "radial-gradient(circle at 0% 0%, rgba(143,121,201,0.10), transparent 38%), rgba(255,255,255,0.032)",
-              border: "1px solid rgba(233,221,190,0.10)",
-              color: "rgba(246,239,220,0.94)",
+              background: "rgba(0,0,0,0.04)",
+              border: "1px solid rgba(0,0,0,0.10)",
+              color: "rgba(0,0,0,0.82)",
             }}
           />
           <button
