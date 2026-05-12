@@ -9,7 +9,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 
 import { requireProfile } from "@/lib/auth/get-user";
-import { createSession } from "@/lib/chat/service";
+import { createSession, findOrCreateSessionForCharacter } from "@/lib/chat/service";
 import { DEFAULT_CHARACTER } from "@/lib/chat/characters";
 import { API_ERROR_CODES } from "@/types/api";
 
@@ -17,6 +17,8 @@ const bodySchema = z.object({
   character: z
     .enum(["witch", "child", "sage", "shaman", "taoist", "dokkaebi"])
     .optional(),
+  /** true이면 강제로 새 세션 생성. 기본은 false (기존 세션 이어가기). */
+  fresh: z.boolean().optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -24,18 +26,27 @@ export async function POST(request: NextRequest) {
     const { profile } = await requireProfile();
 
     let character = DEFAULT_CHARACTER;
+    let fresh = false;
     try {
       const body = await request.json();
       const parsed = bodySchema.safeParse(body);
-      if (parsed.success && parsed.data.character) {
-        character = parsed.data.character;
+      if (parsed.success) {
+        if (parsed.data.character) character = parsed.data.character;
+        if (parsed.data.fresh) fresh = true;
       }
     } catch {
-      // body 없으면 기본 캐릭터 사용
+      // body 없으면 기본값 사용
     }
 
-    const session = await createSession({ userId: profile.userId, character });
-    return NextResponse.json({ ok: true, data: { sessionId: session.id } });
+    // fresh=true면 새로 생성, 아니면 기존 세션 이어가기
+    const { session, resumed } = fresh
+      ? { session: await createSession({ userId: profile.userId, character }), resumed: false }
+      : await findOrCreateSessionForCharacter({ userId: profile.userId, character });
+
+    return NextResponse.json({
+      ok: true,
+      data: { sessionId: session.id, resumed },
+    });
   } catch (e) {
     return NextResponse.json(
       {

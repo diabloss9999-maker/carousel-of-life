@@ -55,6 +55,38 @@ export async function createSession(opts: {
 }
 
 /**
+ * 해당 캐릭터의 가장 최근 세션을 찾아 이어가거나, 없으면 새로 만든다.
+ *
+ * 동일 주술사를 다시 선택했을 때 이전 대화를 자연스럽게 이어가기 위함.
+ */
+export async function findOrCreateSessionForCharacter(opts: {
+  userId: string;
+  character: string;
+}): Promise<{ session: ChatSession; resumed: boolean }> {
+  const [recent] = await db
+    .select()
+    .from(chatSessions)
+    .where(
+      and(
+        eq(chatSessions.userId, opts.userId),
+        eq(chatSessions.character, opts.character),
+      ),
+    )
+    .orderBy(desc(chatSessions.createdAt))
+    .limit(1);
+
+  if (recent) {
+    return { session: recent, resumed: true };
+  }
+
+  const created = await createSession({
+    userId: opts.userId,
+    character: opts.character,
+  });
+  return { session: created, resumed: false };
+}
+
+/**
  * 사용자의 세션 목록 (최신순).
  */
 export async function listSessions(
