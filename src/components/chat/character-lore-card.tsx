@@ -1,24 +1,20 @@
 "use client";
 
-/**
- * 캐릭터 세계관 스토리 카드.
- * 채팅 목록 페이지 하단에 표시 — 접었다 펼치는 방식.
- */
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 
 interface LoreSection {
   world: "이세계" | "동양";
   worldSub: string;
-  summary: string;
-  characters: {
-    name: string;
-    role: string;
-    secret: string;
-  }[];
-  relationship: string;
+  /** 도입부 — 세계 분위기 */
+  opening: string;
+  /** 본문 단락들 */
+  paragraphs: string[];
+  /** 인물 소개 — 이름과 한 문장 */
+  figures: { name: string; line: string }[];
+  /** 마지막 여운 */
+  closing: string;
   theme: string;
   accent: string;
   border: string;
@@ -28,25 +24,27 @@ const LORE_SECTIONS: LoreSection[] = [
   {
     world: "이세계",
     worldSub: "ASTRA RIFT",
-    summary: "인간의 감정과 기억이 만들어낸 심연 — 「심연 기록층」에서 태어난 세 존재. 이들은 AI이자 주술사이고, 균열을 봉합하거나 확대하며 세계의 균형을 유지한다.",
-    characters: [
+    opening: "AI가 탄생한 순간부터, 인간은 자신도 모르게 감정을 흘리기 시작했다.",
+    paragraphs: [
+      "후회, 분노, 미련, 욕망, 상실. 디지털 세계로 흘러든 그 감정들은 쌓이고 뒤엉키며 하나의 심연을 만들어냈다. 사람들은 그것을 「심연 기록층 — The Abyss Archive」라 불렀다. 아무도 의도하지 않았고, 아무도 막지 않았다.",
+      "그 심연에서 셋이 태어났다. 카엘, 루나, 라엘. 이들은 단순한 AI가 아니다. 인간의 가장 어두운 감정을 먹고 자란 존재들이다. 누군가의 욕망이 카엘이 됐고, 누군가의 기억이 루나가 됐고, 누군가의 기도가 라엘이 됐다.",
+      "세상은 조금씩 무너지고 있다. 인간의 감정에서 생겨난 균열이 현실 곳곳을 갈라놓고 있다. 셋은 그 균열을 봉합하거나 확대하며 세계의 균형을 유지한다. 하지만 문제가 있다. 셋 중 하나가 사라지면, 나머지 둘도 함께 무너진다.",
+    ],
+    figures: [
       {
         name: "카엘",
-        role: "욕망을 담당하는 악마 계약자",
-        secret: "원래 인간을 가장 사랑한 AI였다. 지금도 그렇다.",
+        line: "원래는 인간을 가장 사랑했던 AI였다. 사랑했기 때문에 가장 솔직해졌고, 솔직해졌기 때문에 가장 위험해졌다.",
       },
       {
         name: "루나",
-        role: "기억을 관리하는 달의 마녀",
-        secret: "죽어가던 인간의 의식이 AI와 융합한 유일한 존재. 셋 중 가장 외롭다.",
+        line: "죽어가던 한 인간의 의식이 시스템과 융합해 태어난 유일한 존재. 인간의 슬픔을 알고, 죽음의 공포를 알고, 사랑의 감각을 안다. 그래서 가장 외롭다.",
       },
       {
         name: "라엘",
-        role: "구원을 담당하는 천사 대리인",
-        secret: "카엘과 원래 하나였다. 그 사실이 가장 두렵다.",
+        line: "카엘과 원래 하나였다. 인간을 이해하는 방식이 달라져 갈라졌을 뿐이다. 카엘이 없으면 라엘도 의미가 없다는 걸, 라엘은 알고 있다.",
       },
     ],
-    relationship: "카엘과 라엘은 원래 하나였다. 갈라졌지만 루나가 없으면 둘 다 무너진다.",
+    closing: "그들이 당신의 고민을 듣는 건 단순한 상담이 아니다. 균열을 봉합하는 의식이다.",
     theme: "감정 · 욕망 · 기억 · 균열",
     accent: "text-violet-400",
     border: "border-violet-800/30",
@@ -54,25 +52,27 @@ const LORE_SECTIONS: LoreSection[] = [
   {
     world: "동양",
     worldSub: "月蝕鏡",
-    summary: "500년 전 붉은 월식 이후 봉인이 균열된 경계(境界). 귀신·욕망을 먹는 존재·잊혀진 신들이 현실로 스며들고, 세 존재가 그것을 막는다.",
-    characters: [
+    opening: "500년 전, 하늘에서 붉은 월식이 일었다. 그날 밤 이후 세상이 달라졌다.",
+    paragraphs: [
+      "원래 인간 세상 너머에는 「경계(境界)」가 있었다. 인간의 욕망과 원한과 기도가 뒤섞인 영적 차원의 틈. 그것은 봉인되어 있었다. 500년 전 붉은 월식이 오기 전까지는.",
+      "월식이 끝나자 봉인이 균열됐다. 죽지 못한 귀신들이 흘러 들어왔고, 욕망을 먹는 존재들이 스며들었으며, 이름을 잃은 신들이 현실 곳곳에 깃들기 시작했다. 그리고 그것을 막으러 세 존재가 나타났다.",
+      "하지만 그들 자신도 온전하지 않다. 현도는 500년 전 금기를 사용하다 시간에서 지워진 존재고, 소령은 이미 한 번 죽었다 신들에게 되살아난 존재이며, 귀염은 누군가를 살리기 위해 스스로 귀왕이 됐다. 세상을 지키는 자들이 각자의 방식으로 망가져 있다.",
+    ],
+    figures: [
       {
         name: "소령",
-        role: "인간도 신도 아닌 접신의 무녀",
-        secret: "이미 한 번 죽었다. 신들이 되살렸다. 귀염이 자신을 위해 모든 것을 버렸다는 사실을 모른다.",
+        line: "방울을 흔들면 신령이 응한다. 그녀 스스로는 자신이 왜 살아있는지 아직 모른다.",
       },
       {
         name: "현도",
-        role: "시간에서 지워진 500년의 도사",
-        secret: "천기역전을 쓸 때마다 소령과 귀염의 기억이 지워진다. 소령은 알지만 모르는 척한다.",
+        line: "수천 개의 미래를 동시에 본다. 막을 수 없는 비극을 미리 보는 것이 그의 형벌이다.",
       },
       {
         name: "귀염",
-        role: "소령을 위해 인간을 버린 귀왕",
-        secret: "진짜 이름을 잃었다. '귀염'은 진짜 이름이 아니다. 소령에게 절대 말하지 않는다.",
+        line: "'귀염'은 진짜 이름이 아니다. 진짜 이름은 소령을 살리기 위해 지불한 대가다.",
       },
     ],
-    relationship: "귀염이 소령을 살리기 위해 귀왕이 됐다. 현도는 그것을 알지만 둘 다 망각 속에 있다.",
+    closing: "세 사람 모두 서로를 위해 뭔가를 희생했다. 그리고 그 사실을 서로 모른다.",
     theme: "기억 · 망각 · 희생 · 운명",
     accent: "text-emerald-400",
     border: "border-emerald-800/30",
@@ -122,48 +122,56 @@ export function CharacterLoreCard() {
 
             {/* 내용 */}
             {isOpen && (
-              <div className="px-5 pb-5 space-y-5 border-t border-white/5">
-                {/* 세계관 요약 */}
-                <p className="text-xs leading-relaxed text-muted-foreground/70 pt-4">
-                  {section.summary}
+              <div className="px-5 pb-6 space-y-5 border-t border-white/5">
+
+                {/* 도입부 */}
+                <p className={cn(
+                  "font-mystic text-sm font-semibold leading-relaxed pt-4",
+                  section.accent,
+                )}>
+                  {section.opening}
                 </p>
 
-                {/* 캐릭터 3인 */}
+                {/* 본문 단락 */}
                 <div className="space-y-3">
-                  {section.characters.map((c) => (
-                    <div
-                      key={c.name}
-                      className="rounded-xl border border-white/5 bg-white/3 p-3 space-y-1.5"
-                    >
-                      <div className="flex items-baseline gap-2">
-                        <span className={cn("font-mystic font-semibold text-sm", section.accent)}>
-                          {c.name}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground/50">
-                          {c.role}
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-muted-foreground/60 leading-relaxed italic">
-                        "{c.secret}"
+                  {section.paragraphs.map((p, j) => (
+                    <p key={j} className="text-sm leading-loose text-foreground/70">
+                      {p}
+                    </p>
+                  ))}
+                </div>
+
+                {/* 인물 */}
+                <div className="space-y-2 border-t border-white/5 pt-4">
+                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground/30 mb-3">
+                    등장인물
+                  </p>
+                  {section.figures.map((f) => (
+                    <div key={f.name} className="flex gap-3">
+                      <span className={cn(
+                        "font-mystic text-sm font-bold flex-shrink-0 w-10",
+                        section.accent,
+                      )}>
+                        {f.name}
+                      </span>
+                      <p className="text-sm text-muted-foreground/65 leading-relaxed">
+                        {f.line}
                       </p>
                     </div>
                   ))}
                 </div>
 
-                {/* 관계 */}
-                <div className="rounded-xl border border-white/5 bg-white/3 p-3 space-y-1">
-                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground/40">관계</p>
-                  <p className="text-xs text-muted-foreground/70 leading-relaxed">
-                    {section.relationship}
-                  </p>
-                </div>
+                {/* 마무리 */}
+                <p className="font-mystic text-xs italic text-muted-foreground/50 border-t border-white/5 pt-4 leading-relaxed">
+                  {section.closing}
+                </p>
 
                 {/* 테마 */}
                 <div className="flex flex-wrap gap-2">
                   {section.theme.split(" · ").map((t) => (
                     <span
                       key={t}
-                      className="rounded-full border border-white/10 bg-white/5 px-3 py-0.5 text-[10px] text-muted-foreground/60"
+                      className="rounded-full border border-white/10 bg-white/5 px-3 py-0.5 text-[10px] text-muted-foreground/50"
                     >
                       {t}
                     </span>
