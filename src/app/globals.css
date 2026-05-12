@@ -130,7 +130,7 @@ body.ritual-night {
   --ritual-text: rgba(255, 255, 255, 0.92);
   --ritual-muted: rgba(255, 255, 255, 0.62);
   color: rgba(255, 255, 255, 0.92) !important;
-  background: url("/backgrounds/night.png") center / cover no-repeat fixed;
+  background: url("/backgrounds/night.png") center / cover no-repeat fixed !important;
 }
 
 /* White Glass 카드 — v3 */

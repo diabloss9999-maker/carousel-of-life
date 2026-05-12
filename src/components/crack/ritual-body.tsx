@@ -45,8 +45,6 @@ export function RitualBody({ crackLevel }: RitualBodyProps) {
 
     return () => {
       clearInterval(timer);
-      body.classList.remove("ritual-day", "ritual-night", "fracture-high");
-      body.removeAttribute("data-time");
     };
   }, [crackLevel]);
 
