@@ -122,31 +122,32 @@ export function HiddenPresence() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "20px",
+          gap: "14px",
           opacity: fadingOut ? 0 : 1,
           transition: `opacity ${FADE_OUT_MS}ms ease-out`,
           animation: "session-fade-in 1.2s ease-out forwards",
           userSelect: "none",
         }}
       >
-        {/* 희미한 카드 이미지 — 모바일은 viewport 비율, 데스크톱은 최대 360px */}
+        {/* 희미한 카드 이미지 — 모바일·데스크톱 viewport 가득 차도록 */}
         <div
           style={{
             position: "relative",
-            width: "min(360px, 75vw)",
+            width: "min(520px, 86vw)",
             aspectRatio: "2 / 3",
-            opacity: 0.78,
-            filter: "blur(0.3px) brightness(0.94)",
-            borderRadius: "18px",
+            maxHeight: "78vh",
+            opacity: 0.82,
+            filter: "blur(0.3px) brightness(0.96)",
+            borderRadius: "22px",
             overflow: "hidden",
-            boxShadow: "0 30px 80px rgba(0,0,0,0.48), inset 0 0 40px rgba(0,0,0,0.32)",
+            boxShadow: "0 40px 120px rgba(0,0,0,0.55), inset 0 0 50px rgba(0,0,0,0.30)",
           }}
         >
           <Image
             src={entity.imageSrc}
             alt=""
             fill
-            sizes="(max-width: 480px) 75vw, 360px"
+            sizes="(max-width: 600px) 86vw, 520px"
             style={{ objectFit: "cover" }}
             aria-hidden
           />
