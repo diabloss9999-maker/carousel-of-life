@@ -173,7 +173,10 @@ export function CollectionView({
 
   /** 가챠 뽑기 핸들러. */
   function handlePull() {
-    if (isPending || remaining <= 0) return;
+    // 일일 한도 + 보너스 둘 다 0일 때만 차단
+    const bonusCredits = gachaStatus.bonusCredits;
+    if (isPending) return;
+    if (remaining <= 0 && bonusCredits <= 0) return;
 
     // 다시 뒷면으로 돌렸다가 뽑기 시작
     setFlipped(false);
