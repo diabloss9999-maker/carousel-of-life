@@ -50,33 +50,33 @@
   /* 둥글둥글한 디자인을 위한 큰 radius. */
   --radius: 0.875rem;
 
-  /* White Glass 공통 토큰 */
-  --nav-active: rgba(246,239,220,0.96);
-  --nav-muted: rgba(246,239,220,0.72);
+  /* White Glass 공통 토큰 — 낮: 검정, 밤: 흰색 (body[data-time]이 override) */
+  --nav-active: rgba(0,0,0,0.88);
+  --nav-muted: rgba(0,0,0,0.50);
   --header-bg: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.07));
   --header-border: rgba(255,255,255,0.22);
   --header-shadow: 0 8px 32px rgba(0,0,0,0.16);
 }
 
 .dark {
-  /* White Glass — 다크 배경 위 흰 반투명 블러 */
+  /* White Glass — 기본값 (낮: 검정 텍스트) */
   --background: transparent;
-  --foreground: rgba(246, 239, 220, 0.92);
+  --foreground: rgba(0, 0, 0, 0.88);
 
   --card: rgba(255, 255, 255, 0.10);
-  --card-foreground: rgba(246, 239, 220, 0.92);
+  --card-foreground: rgba(0, 0, 0, 0.88);
 
   --popover: rgba(255, 255, 255, 0.14);
-  --popover-foreground: rgba(246, 239, 220, 0.92);
+  --popover-foreground: rgba(0, 0, 0, 0.88);
 
   --primary: oklch(0.72 0.12 82);
   --primary-foreground: oklch(0.10 0.02 280);
 
   --secondary: rgba(255, 255, 255, 0.12);
-  --secondary-foreground: rgba(246, 239, 220, 0.88);
+  --secondary-foreground: rgba(0, 0, 0, 0.80);
 
   --muted: rgba(255, 255, 255, 0.10);
-  --muted-foreground: rgba(246, 239, 220, 0.72);
+  --muted-foreground: rgba(0, 0, 0, 0.55);
 
   --accent: oklch(0.68 0.12 78);
   --accent-foreground: oklch(0.10 0.02 280);
@@ -95,9 +95,21 @@
   --chart-5: oklch(0.58 0.16 145);
 }
 
-/* 낮 배경 */
+/* 낮 배경 — 검정 텍스트 */
 body[data-time="day"],
 body.ritual-day {
+  --foreground: rgba(0, 0, 0, 0.88);
+  --card-foreground: rgba(0, 0, 0, 0.88);
+  --popover-foreground: rgba(0, 0, 0, 0.88);
+  --muted-foreground: rgba(0, 0, 0, 0.55);
+  --secondary-foreground: rgba(0, 0, 0, 0.80);
+  --nav-active: rgba(0, 0, 0, 0.88);
+  --nav-muted: rgba(0, 0, 0, 0.50);
+  --col-ink: rgba(0, 0, 0, 0.88);
+  --col-muted: rgba(0, 0, 0, 0.55);
+  --col-faint: rgba(0, 0, 0, 0.32);
+  --ritual-text: rgba(0, 0, 0, 0.88);
+  --ritual-muted: rgba(0, 0, 0, 0.55);
   background:
     radial-gradient(circle at 50% 8%, rgba(143,121,201,0.18), transparent 34%),
     radial-gradient(circle at 13% 84%, rgba(122,169,161,0.10), transparent 30%),
@@ -106,9 +118,21 @@ body.ritual-day {
   background-attachment: fixed;
 }
 
-/* 밤 배경 */
+/* 밤 배경 — 흰색 텍스트 */
 body[data-time="night"],
 body.ritual-night {
+  --foreground: rgba(255, 255, 255, 0.92);
+  --card-foreground: rgba(255, 255, 255, 0.92);
+  --popover-foreground: rgba(255, 255, 255, 0.92);
+  --muted-foreground: rgba(255, 255, 255, 0.62);
+  --secondary-foreground: rgba(255, 255, 255, 0.80);
+  --nav-active: rgba(255, 255, 255, 0.92);
+  --nav-muted: rgba(255, 255, 255, 0.62);
+  --col-ink: rgba(255, 255, 255, 0.92);
+  --col-muted: rgba(255, 255, 255, 0.62);
+  --col-faint: rgba(255, 255, 255, 0.36);
+  --ritual-text: rgba(255, 255, 255, 0.92);
+  --ritual-muted: rgba(255, 255, 255, 0.62);
   background:
     radial-gradient(circle at 50% 8%, rgba(143,121,201,0.23), transparent 34%),
     radial-gradient(circle at 12% 86%, rgba(122,169,161,0.10), transparent 30%),
@@ -126,7 +150,7 @@ body.ritual-night {
     0 8px 32px rgba(0,0,0,0.22) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
-  color: rgba(246,239,220,0.92) !important;
+  color: var(--foreground) !important;
 }
 
 @theme inline {
@@ -336,8 +360,8 @@ body.ritual-night {
   --ritual-panel-deep: rgba(255,255,255,0.16);
   --ritual-line: rgba(255,255,255,0.22);
   --ritual-line-strong: rgba(255,255,255,0.36);
-  --ritual-text: rgba(246,239,220,0.92);
-  --ritual-muted: rgba(246,239,220,0.62);
+  --ritual-text: rgba(0,0,0,0.88);
+  --ritual-muted: rgba(0,0,0,0.55);
   --ritual-gold: #bfa66a;
   --ritual-violet: #8f79c9;
   --ritual-teal: #7aa9a1;
@@ -372,9 +396,9 @@ body.ritual-night {
 
 :root {
   --col-bg: #080710;
-  --col-ink: rgba(246,239,220,0.94);
-  --col-muted: rgba(246,239,220,0.62);
-  --col-faint: rgba(246,239,220,0.34);
+  --col-ink: rgba(0,0,0,0.88);
+  --col-muted: rgba(0,0,0,0.55);
+  --col-faint: rgba(0,0,0,0.32);
   --col-line: rgba(255,255,255,0.18);
   --col-line-strong: rgba(255,255,255,0.32);
   --col-gold: #bfa66a;
