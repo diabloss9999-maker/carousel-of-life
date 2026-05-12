@@ -10,8 +10,6 @@ import {
   Heart,
   Brain,
   Library,
-  BookMarked,
-  Globe2,
   Settings,
   type LucideIcon,
 } from "lucide-react";
@@ -38,7 +36,5 @@ export const mainNav: NavItem[] = [
   { href: ROUTES.compatibility,           label: "인연",   icon: Heart,         iconSrc: "/nav/nav_compat.svg",      authOnly: true },
   { href: ROUTES.personality as Route,    label: "본성",   icon: Brain,         iconSrc: "/nav/nav_personality.svg", authOnly: true },
   { href: ROUTES.collection as Route,     label: "기억",   icon: Library,       iconSrc: "/nav/nav_collection.svg",  authOnly: true },
-  { href: ROUTES.archive as Route,        label: "보관",   icon: BookMarked,                                         authOnly: true },
-  { href: ROUTES.world as Route,          label: "세계",   icon: Globe2,                                              authOnly: true },
   { href: ROUTES.settings,                label: "기록",   icon: Settings,      iconSrc: "/nav/nav_settings.svg",    authOnly: true },
 ];

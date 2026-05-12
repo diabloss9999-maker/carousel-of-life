@@ -14,6 +14,8 @@ import { LoveCard } from "@/components/fortune/love-card";
 import { PremiumFortuneGate } from "@/components/fortune/premium-fortune-gate";
 import { StudyTips } from "@/components/fortune/study-tips";
 
+import Link from "next/link";
+import { BookMarked, Globe2, Flame } from "lucide-react";
 import { GenerateFortuneForm } from "@/components/fortune/generate-fortune-form";
 import { QuotaBar } from "@/components/fortune/quota-bar";
 import { TodaySummary } from "@/components/fortune/today-summary";
@@ -143,6 +145,35 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           </p>
         </div>
       </header>
+
+      {/* 보관 · 세계 · 연속 흐름 — 메뉴바 대체 진입 카드 */}
+      <div className="grid grid-cols-3 gap-3">
+        <Link
+          href={ROUTES.archive as never}
+          className="app-surface rounded-xl p-3 sm:p-4 flex flex-col items-start gap-1.5 transition-transform hover:-translate-y-0.5"
+        >
+          <BookMarked className="h-4 w-4 text-accent" aria-hidden />
+          <span className="font-mystic text-sm font-semibold">보관</span>
+          <span className="text-[10px] text-muted-foreground leading-tight">존재의 기록</span>
+        </Link>
+        <Link
+          href={ROUTES.world as never}
+          className="app-surface rounded-xl p-3 sm:p-4 flex flex-col items-start gap-1.5 transition-transform hover:-translate-y-0.5"
+        >
+          <Globe2 className="h-4 w-4 text-accent" aria-hidden />
+          <span className="font-mystic text-sm font-semibold">세계</span>
+          <span className="text-[10px] text-muted-foreground leading-tight">오늘의 흐름</span>
+        </Link>
+        <div className="app-surface rounded-xl p-3 sm:p-4 flex flex-col items-start gap-1.5">
+          <Flame className="h-4 w-4 text-accent" aria-hidden />
+          <span className="font-mystic text-sm font-semibold tabular-nums">
+            {streakResult.currentStreak}일 연속
+          </span>
+          <span className="text-[10px] text-muted-foreground leading-tight">
+            {streakResult.currentStreak >= 3 ? "흐름이 이어지고 있어요" : "기록이 쌓이고 있어요"}
+          </span>
+        </div>
+      </div>
 
       <QuotaBar
         fortuneCount={usage.fortuneCount}
