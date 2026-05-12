@@ -129,18 +129,16 @@ export function HiddenPresence() {
           userSelect: "none",
         }}
       >
-        {/* 희미한 카드 이미지 — 모바일·데스크톱 viewport 가득 차도록 */}
+        {/* 카드 이미지 — 원본 화질 유지 */}
         <div
           style={{
             position: "relative",
             width: "min(520px, 86vw)",
             aspectRatio: "2 / 3",
             maxHeight: "78vh",
-            opacity: 0.82,
-            filter: "blur(0.3px) brightness(0.96)",
             borderRadius: "22px",
             overflow: "hidden",
-            boxShadow: "0 40px 120px rgba(0,0,0,0.55), inset 0 0 50px rgba(0,0,0,0.30)",
+            boxShadow: "0 40px 120px rgba(0,0,0,0.55)",
           }}
         >
           <Image
@@ -148,16 +146,9 @@ export function HiddenPresence() {
             alt=""
             fill
             sizes="(max-width: 600px) 86vw, 520px"
+            quality={95}
             style={{ objectFit: "cover" }}
             aria-hidden
-          />
-          {/* 카드 위 그라디언트 베일 */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background: "radial-gradient(circle at center, transparent 30%, rgba(8,7,16,0.55) 100%)",
-            }}
           />
         </div>
         {/* 한 줄 문장 */}
