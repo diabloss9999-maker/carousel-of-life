@@ -594,3 +594,40 @@ body.ritual-dawn {
     30%, 70% { opacity: 0.8; }
   }
 }
+
+/* ===== 기억 손실 연출 ===== */
+.memory-faded {
+  opacity: 0.42;
+  filter: blur(0.3px);
+  transition: opacity 0.3s, filter 0.3s;
+}
+.memory-faded:hover {
+  opacity: 0.72;
+  filter: none;
+}
+
+.memory-redacted {
+  color: transparent !important;
+  text-shadow: 0 0 7px rgba(80, 60, 80, 0.35);
+  user-select: none;
+}
+
+/* ===== 존재 기분 — 카드 테두리 미세 변화 ===== */
+.entity-mood-calm    .app-surface { border-color: rgba(255, 255, 255, 0.22) !important; }
+.entity-mood-distant .app-surface { border-color: rgba(180, 160, 220, 0.20) !important; }
+.entity-mood-curious .app-surface { border-color: rgba(200, 220, 255, 0.24) !important; }
+.entity-mood-unstable .app-surface {
+  border-color: rgba(220, 180, 100, 0.22) !important;
+  animation: fracture-soft 12s infinite;
+}
+.entity-mood-protective .app-surface { border-color: rgba(180, 220, 200, 0.22) !important; }
+.entity-mood-silent .app-surface {
+  border-color: rgba(120, 100, 160, 0.20) !important;
+  opacity: 0.96;
+}
+
+/* 접근성 */
+@media (prefers-reduced-motion: reduce) {
+  .entity-mood-unstable .app-surface { animation: none !important; }
+  .memory-faded { filter: none; }
+}

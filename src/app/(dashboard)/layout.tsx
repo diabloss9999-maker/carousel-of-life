@@ -6,6 +6,8 @@ import { DesktopNav } from "@/components/layout/desktop-nav";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { RitualBody } from "@/components/crack/ritual-body";
 import { FractureWhisper } from "@/components/fracture/fracture-whisper";
+import { DailyWhisper } from "@/components/world/daily-whisper";
+import { ContinuityNote } from "@/components/world/continuity-note";
 
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
@@ -13,6 +15,7 @@ import { siteConfig } from "@/config/site";
 import { signOutAction } from "@/lib/auth/actions";
 import { requireUser } from "@/lib/auth/get-user";
 import { getCrackScore } from "@/lib/crack/service";
+import { getStreak } from "@/lib/streak/service";
 
 export default async function DashboardLayout({
   children,
@@ -20,7 +23,11 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const user = await requireUser();
-  const crackData = await getCrackScore(user.id).catch(() => ({ level: 0 as const }));
+  const [crackData, streakRow] = await Promise.all([
+    getCrackScore(user.id).catch(() => ({ level: 0 as const })),
+    getStreak(user.id).catch(() => null),
+  ]);
+  const streakDays = streakRow?.currentStreak ?? 0;
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -74,6 +81,8 @@ export default async function DashboardLayout({
 
       <MobileNav />
       <FractureWhisper />
+      <DailyWhisper />
+      <ContinuityNote streakDays={streakDays} />
     </div>
   );
 }

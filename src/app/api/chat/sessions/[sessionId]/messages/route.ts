@@ -27,6 +27,8 @@ import { checkHiddenEvents } from "@/lib/observe/hidden-events";
 import { calcLevel } from "@/lib/affinity/levels";
 import type { CharacterId } from "@/lib/chat/characters";
 import { API_ERROR_CODES } from "@/types/api";
+import { getDailySeed, seedValue } from "@/lib/systems/daily-seed";
+import { computeEntityMood, MOOD_CONTEXT } from "@/lib/systems/entity-mood";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -122,7 +124,28 @@ export async function POST(
     ? `\n\n[카드 읽기 — 지금 즉시 실행]\n${reading.promptText}`
     : "";
 
-  const enrichedSystem = prepared.systemPrompt + affinityCtx + crackCtx + hiddenEvent.eventContext + cardSystemInject;
+  // 존재 기분(이세계 3존재만 적용)
+  let moodCtx = "";
+  if (characterId === "witch" || characterId === "sage" || characterId === "child") {
+    const dailySeed = getDailySeed();
+    const entityId =
+      characterId === "witch" ? "luna" : characterId === "sage" ? "rael" : "gael";
+    const seedIdx =
+      characterId === "witch" ? 10 : characterId === "sage" ? 11 : 12;
+    const mood = computeEntityMood({
+      entityId,
+      seed: seedValue(dailySeed, seedIdx),
+      kstHour: new Date(
+        new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }),
+      ).getHours(),
+      fractureLevel: crackData.level,
+      repeatedQuestionCount: 0,
+      nightVisitCount: 0,
+    });
+    moodCtx = MOOD_CONTEXT[mood];
+  }
+
+  const enrichedSystem = prepared.systemPrompt + affinityCtx + crackCtx + hiddenEvent.eventContext + cardSystemInject + moodCtx;
 
   const aiStream = streamChat({
     // 카드 점술 해석은 Sonnet, 일반 대화는 Haiku (비용 최적화)
