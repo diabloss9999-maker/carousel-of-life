@@ -4,17 +4,24 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { mainNav, type NavItem } from "@/config/navigation";
-import { cn } from "@/lib/utils";
 
-const NAV_ACTIVE = "#241d2f";
-const NAV_MUTED  = "#756d7c";
+/** ritual 다크 글래스 네비 색상 */
+const NAV_ACTIVE_BG  = "rgba(233,221,190,0.10)";
+const NAV_ACTIVE_CLR = "rgba(246,239,220,0.96)";
+const NAV_MUTED      = "rgba(246,239,220,0.50)";
 
 export function DesktopNav() {
   const pathname = usePathname();
 
   return (
     <nav
-      className="hidden items-center gap-1 md:flex"
+      className="hidden items-center gap-0.5 md:flex"
+      style={{
+        padding: "6px",
+        borderRadius: "999px",
+        border: "1px solid rgba(233,221,190,0.11)",
+        background: "rgba(255,255,255,0.025)",
+      }}
       aria-label="상단 메뉴"
     >
       {mainNav
@@ -29,20 +36,21 @@ export function DesktopNav() {
               key={item.href}
               href={item.href}
               aria-current={isActive ? "page" : undefined}
-              className={cn(
-                "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold transition-all",
-              )}
+              className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold transition-all"
               style={
                 isActive
                   ? {
-                      background: NAV_ACTIVE,
-                      color: "#ffffff",
-                      boxShadow: "0 5px 14px rgba(36,29,47,.14)",
+                      background: NAV_ACTIVE_BG,
+                      color: NAV_ACTIVE_CLR,
+                      letterSpacing: "0.045em",
                     }
-                  : { color: NAV_MUTED }
+                  : {
+                      color: NAV_MUTED,
+                      letterSpacing: "0.04em",
+                    }
               }
             >
-              <NavIcon item={item} size={16} />
+              <NavIcon item={item} size={15} />
               {item.label}
             </Link>
           );

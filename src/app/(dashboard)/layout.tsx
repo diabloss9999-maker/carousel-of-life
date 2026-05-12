@@ -23,23 +23,25 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex min-h-screen flex-col">
-      {/* 낮/밤 배경 + 균열 클래스 자동 적용 */}
       <RitualBody crackLevel={crackData.level} />
 
+      {/* 헤더 — ritual-chat-menu 다크 글래스 */}
       <TimeAwareHeader
-        className="sticky top-0 z-40 pt-safe"
+        className="sticky top-0 z-40 pt-safe ritual-chat-menu"
         style={{
           background: `url("/nav/desktop_nav_bg.svg") center / 100% 64px no-repeat,
-                       linear-gradient(to bottom, rgba(255,252,247,.92), rgba(255,252,247,.84))`,
-          boxShadow: "0 8px 22px rgba(36,29,47,.07)",
-          backdropFilter: "blur(16px)",
-          WebkitBackdropFilter: "blur(16px)",
+                       linear-gradient(180deg, rgba(8,7,16,0.88), rgba(8,7,16,0.68))`,
+          boxShadow: "0 14px 40px rgba(0,0,0,0.32)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          borderBottom: "1px solid rgba(233,221,190,0.10)",
         } as React.CSSProperties}
       >
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
           <Link
             href={ROUTES.today}
-            className="font-mystic whitespace-nowrap text-lg font-semibold tracking-tight text-foreground transition-opacity hover:opacity-75"
+            className="font-mystic whitespace-nowrap text-lg font-semibold tracking-tight transition-opacity hover:opacity-75"
+            style={{ color: "rgba(246,239,220,0.92)", letterSpacing: "0.04em" }}
           >
             {siteConfig.name}
           </Link>
@@ -51,7 +53,12 @@ export default async function DashboardLayout({
               type="submit"
               variant="ghost"
               size="sm"
-              className="rounded-full border border-border/55 bg-card/45 px-3 text-muted-foreground shadow-sm backdrop-blur hover:bg-card/70 hover:text-foreground"
+              className="rounded-full px-3"
+              style={{
+                border: "1px solid rgba(233,221,190,0.16)",
+                color: "rgba(246,239,220,0.60)",
+                background: "rgba(255,255,255,0.04)",
+              }}
             >
               <LogOut className="h-4 w-4" aria-hidden />
               <span className="hidden sm:inline">로그아웃</span>

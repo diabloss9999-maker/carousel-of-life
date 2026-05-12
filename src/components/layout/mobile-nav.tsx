@@ -6,10 +6,10 @@ import { usePathname } from "next/navigation";
 import { mainNav, type NavItem } from "@/config/navigation";
 import { cn } from "@/lib/utils";
 
-const NAV_ACTIVE   = "#241d2f";
-const NAV_MUTED    = "#756d7c";
-const NAV_SURFACE  = "rgba(255,252,247,.92)";
-const NAV_SURFACE2 = "rgba(255,252,247,.78)";
+const NAV_ACTIVE   = "rgba(246,239,220,0.96)";
+const NAV_MUTED    = "rgba(246,239,220,0.45)";
+const NAV_SURFACE  = "rgba(8,7,16,0.88)";
+const NAV_SURFACE2 = "rgba(8,7,16,0.72)";
 
 export function MobileNav() {
   const pathname = usePathname();
@@ -22,7 +22,8 @@ export function MobileNav() {
         background: `url("/nav/mobile_nav_bg.svg") left bottom / 100% 72px no-repeat,
                      linear-gradient(to top, ${NAV_SURFACE}, ${NAV_SURFACE2})`,
         borderRadius: "20px 20px 0 0",
-        boxShadow: "0 -10px 28px rgba(36,29,47,.1)",
+        borderTop: "1px solid rgba(233,221,190,0.10)",
+        boxShadow: "0 -14px 40px rgba(0,0,0,0.42)",
         backdropFilter: "blur(16px)",
         WebkitBackdropFilter: "blur(16px)",
         paddingBottom: "calc(8px + env(safe-area-inset-bottom, 0px))",
@@ -56,9 +57,9 @@ export function MobileNav() {
                 style={
                   isActive
                     ? {
-                        background: NAV_ACTIVE,
-                        boxShadow: "0 4px 12px rgba(36,29,47,.18)",
-                        color: "#ffffff",
+                        background: "rgba(233,221,190,0.12)",
+                        boxShadow: "0 0 18px rgba(191,166,106,0.15)",
+                        color: "rgba(246,239,220,0.96)",
                       }
                     : {}
                 }
