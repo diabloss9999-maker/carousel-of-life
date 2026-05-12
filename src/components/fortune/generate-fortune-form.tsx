@@ -25,14 +25,14 @@ const initial: FortuneActionState = { kind: "idle" };
 
 /** 카테고리별 세계관 문구 */
 const CATEGORY_COPY: Record<string, { line: string; sub: string }> = {
-  general:       { line: "오늘 하루 전체 흐름을 읽어줄게.",       sub: "사주와 일진을 함께 살펴볼게." },
-  love:          { line: "오늘 당신의 인연 기운이 궁금해.",        sub: "감정의 흐름이 보여." },
-  money:         { line: "오늘 재물의 흐름을 읽어줄게.",           sub: "돈의 기운도 사주에 담겨 있어." },
-  career:        { line: "오늘 일의 흐름이 어떤지 볼게.",          sub: "직장과 커리어의 기운을 읽어줄게." },
-  health:        { line: "오늘 몸과 마음의 기운을 볼게.",          sub: "건강의 흐름을 살펴볼게." },
-  study:         { line: "오늘 집중력과 학업 흐름을 읽어줄게.",    sub: "머리의 기운이 어떤지 볼게." },
-  zodiac:        { line: "별자리 기운으로 오늘을 읽어줄게.",       sub: "태어난 별자리가 전하는 메시지야." },
-  chinese_zodiac:{ line: "띠의 기운으로 오늘을 읽어줄게.",        sub: "12지신이 전하는 오늘의 흐름이야." },
+  general:       { line: "오늘 하루 전체 흐름을 읽어줄게.",         sub: "사주와 일진을 함께 살펴볼게." },
+  love:          { line: "인연의 잔향이 오늘 어떻게 흐르는지 봐.",  sub: "감정의 기운이 보여." },
+  money:         { line: "금빛 흐름이 오늘 어디로 향하는지 봐.",    sub: "재물의 기운을 읽어줄게." },
+  career:        { line: "사명의 자리에서 오늘 뭐가 보이는지 봐.",  sub: "일과 자리의 기운을 읽어줄게." },
+  health:        { line: "몸이 오늘 어떤 신호를 보내고 있어.",      sub: "몸의 기운을 살펴볼게." },
+  study:         { line: "지혜의 궤도가 오늘 어떻게 돌아.",         sub: "집중과 학업의 기운을 볼게." },
+  zodiac:        { line: "별이 오늘 어떤 기록을 남겼는지 봐.",      sub: "태어난 별자리가 전하는 메시지야." },
+  chinese_zodiac:{ line: "태어난 짐승의 기운이 오늘 어때.",         sub: "12지신이 전하는 오늘의 흐름이야." },
 };
 
 export function GenerateFortuneForm({

@@ -50,14 +50,14 @@ export type FortuneCategory =
   | "chinese_zodiac";
 
 const FORTUNE_LABEL: Record<FortuneCategory, string> = {
-  general: "오늘의 종합운",
-  love: "애정운",
-  money: "재산·금전운",
-  career: "직장·취업운",
-  health: "건강운",
-  study: "학업운",
-  zodiac: "별자리 운세",
-  chinese_zodiac: "12간지 띠 운세",
+  general:        "오늘의 흐름",
+  love:           "인연의 잔향",
+  money:          "금빛 흐름",
+  career:         "사명의 자리",
+  health:         "몸의 신호",
+  study:          "지혜의 궤도",
+  zodiac:         "별의 기록",
+  chinese_zodiac: "태어난 짐승",
 };
 
 /** 캐릭터별 운세 전달 보이스 설정 */
