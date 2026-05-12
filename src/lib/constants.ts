@@ -34,9 +34,9 @@ export const GACHA_DAILY_LIMITS = {
 
 /** 등급별 문답 보너스 (가챠로 얻은 카드의 rarity 별 추가 chat 횟수). */
 export const GACHA_RARITY_BONUS: Record<string, number> = {
-  common: 0,
-  rare: 2,
-  legendary: 5,
+  common: 1,
+  rare: 3,
+  legendary: 7,
 };
 
 /** 구독 플랜 정보. */
