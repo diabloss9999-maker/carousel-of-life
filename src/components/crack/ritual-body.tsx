@@ -12,27 +12,39 @@ interface RitualBodyProps {
   crackLevel: CrackLevel;
 }
 
+function getKstHour(): number {
+  return new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }),
+  ).getHours();
+}
+
+function applyTimeClass(body: HTMLElement, crackLevel: CrackLevel) {
+  const hour = getKstHour();
+  const isDay = hour >= 7 && hour < 19;
+
+  body.classList.remove("ritual-day", "ritual-night");
+  body.classList.add(isDay ? "ritual-day" : "ritual-night");
+  body.setAttribute("data-time", isDay ? "day" : "night");
+
+  if (crackLevel >= 3) {
+    body.classList.add("fracture-high");
+  } else {
+    body.classList.remove("fracture-high");
+  }
+}
+
 export function RitualBody({ crackLevel }: RitualBodyProps) {
   useEffect(() => {
     const body = document.body;
-    const hour = new Date(
-      new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }),
-    ).getHours();
 
-    // 낮(07:00~18:59) / 밤(19:00~06:59)
-    const isDay = hour >= 7 && hour < 19;
-    body.classList.remove("ritual-day", "ritual-night");
-    body.classList.add(isDay ? "ritual-day" : "ritual-night");
-    body.setAttribute("data-time", isDay ? "day" : "night");
+    // 즉시 적용
+    applyTimeClass(body, crackLevel);
 
-    // 균열 클래스
-    if (crackLevel >= 3) {
-      body.classList.add("fracture-high");
-    } else {
-      body.classList.remove("fracture-high");
-    }
+    // 매분 체크 — 낮/밤 경계를 놓치지 않도록
+    const timer = setInterval(() => applyTimeClass(body, crackLevel), 60_000);
 
     return () => {
+      clearInterval(timer);
       body.classList.remove("ritual-day", "ritual-night", "fracture-high");
       body.removeAttribute("data-time");
     };
