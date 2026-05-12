@@ -1,8 +1,7 @@
 "use client";
 
 /**
- * 공유 이미지 저장 버튼.
- * API 라우트에서 PNG를 받아 다운로드하거나 Web Share API로 공유한다.
+ * 이미지 저장 버튼 — 공유 다이얼로그 없이 바로 다운로드.
  */
 import { useState } from "react";
 import { Download, Loader2 } from "lucide-react";
@@ -11,9 +10,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface SaveImageButtonProps {
-  /** 이미지 생성 API URL (쿼리 파라미터 포함) */
   imageUrl: string;
-  /** 저장될 파일명 (확장자 제외) */
   filename?: string;
   className?: string;
 }
@@ -33,31 +30,16 @@ export function SaveImageButton({
       const res = await fetch(imageUrl);
       const blob = await res.blob();
 
-      // Web Share API (iOS Safari, Android Chrome) — 파일 공유
-      if (
-        typeof navigator !== "undefined" &&
-        "share" in navigator &&
-        "canShare" in navigator
-      ) {
-        const file = new File([blob], `${filename}.png`, { type: "image/png" });
-        if (navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            files: [file],
-            title: "인생의 회전목마",
-          });
-          setStatus("done");
-          setTimeout(() => setStatus("idle"), 2000);
-          return;
-        }
-      }
-
-      // 폴백: 다운로드
+      // 항상 직접 다운로드 (공유 다이얼로그 없음)
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
       a.download = `${filename}.png`;
+      document.body.appendChild(a);
       a.click();
+      document.body.removeChild(a);
       URL.revokeObjectURL(url);
+
       setStatus("done");
       setTimeout(() => setStatus("idle"), 2000);
     } catch {
