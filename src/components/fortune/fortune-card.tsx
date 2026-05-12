@@ -20,6 +20,7 @@ import { getTodayCharacter } from "@/lib/daily-question/rotation";
 
 interface FortuneCardProps {
   fortune: DailyFortune;
+  crackLevel?: number;
 }
 
 const CATEGORY_LABEL: Record<FortuneCategoryId, string> = Object.fromEntries(
@@ -33,7 +34,7 @@ const CHARACTER_BORDER: Record<string, string> = {
   sage:  "ring-amber-700/30",
 };
 
-export function FortuneCard({ fortune }: FortuneCardProps) {
+export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
   const label = CATEGORY_LABEL[fortune.category as FortuneCategoryId] ?? "운세";
 
   // 날짜 기반으로 오늘의 캐릭터 결정
@@ -50,7 +51,10 @@ export function FortuneCard({ fortune }: FortuneCardProps) {
       ...(fortune.luckyColor     && { color:     fortune.luckyColor }),
       ...(fortune.luckyNumber    && { number:    String(fortune.luckyNumber) }),
       ...(fortune.luckyDirection && { direction: fortune.luckyDirection }),
-      date: new Date(fortune.createdAt).toLocaleDateString("ko-KR"),
+      date:      new Date(fortune.createdAt).toLocaleDateString("ko-KR"),
+      char:      character.name,
+      charTitle: character.title,
+      crack:     String(crackLevel),
     });
     return `/api/share/fortune?${params}`;
   }

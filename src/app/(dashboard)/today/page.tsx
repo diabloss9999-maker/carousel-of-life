@@ -162,7 +162,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
 
           {fortune ? (
             <div id="fortune-result" className="space-y-6">
-              <FortuneCard fortune={fortune} />
+              <FortuneCard fortune={fortune} crackLevel={crackData.level} />
               {category === "general" && (
                 <MoodCapture todayMood={todayMood?.mood ?? null} source="fortune" />
               )}

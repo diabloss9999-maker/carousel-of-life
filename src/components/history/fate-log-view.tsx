@@ -5,6 +5,7 @@
  * 타임라인 형식으로 사용자의 흔적을 세계관 언어로 표현한다.
  */
 import { useState } from "react";
+import { Download } from "lucide-react";
 import type { FateLogEntry, FateSummary } from "@/lib/history/fate-log";
 import type { CrackLevel } from "@/lib/crack/service";
 import { cn } from "@/lib/utils";
@@ -96,6 +97,35 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
             ))}
           </div>
         )}
+
+        {/* 오늘의 경계 공유 버튼 */}
+        <div className="border-t border-white/5 pt-3 flex items-center justify-between">
+          <p className="text-[10px] text-muted-foreground/30 tracking-widest">오늘의 경계 카드</p>
+          <button
+            type="button"
+            onClick={async () => {
+              const today = new Date().toLocaleDateString("ko-KR");
+              const params = new URLSearchParams({
+                mood:  summary.dominantMood ?? "neutral",
+                char:  summary.mostCalledCharacter ?? "주술사",
+                crack: String(crackLevel),
+                date:  today,
+                ...(summary.patterns[0] ? { pattern: summary.patterns[0] } : {}),
+              });
+              const url = `/api/share/boundary?${params}`;
+              const res = await fetch(url);
+              const blob = await res.blob();
+              const a = document.createElement("a");
+              a.href = URL.createObjectURL(blob);
+              a.download = `경계카드_${today}.png`;
+              a.click();
+            }}
+            className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[10px] text-muted-foreground/50 hover:text-muted-foreground/80 transition-colors"
+          >
+            <Download className="h-3 w-3" />
+            저장
+          </button>
+        </div>
       </div>
 
       {/* 타임라인 */}
