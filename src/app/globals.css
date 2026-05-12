@@ -419,16 +419,16 @@ body.ritual-night .ritual-chat-textarea {
 /* 말풍선 공통 */
 .ritual-message {
   position: relative;
-  max-width: min(900px, 92%);
-  padding: 16px 18px;
+  width: 100%;
+  padding: 16px 20px;
   border-radius: 24px;
-  line-height: 1.72;
+  line-height: 1.80;
   font-size: 15px;
   letter-spacing: -0.01em;
   backdrop-filter: blur(12px);
   border: 1px solid var(--col-line);
   box-shadow:
-    0 16px 44px rgba(0,0,0,0.24),
+    0 8px 24px rgba(0,0,0,0.14),
     inset 0 1px 0 rgba(255,255,255,0.14);
 }
 
@@ -436,7 +436,6 @@ body.ritual-night .ritual-chat-textarea {
 
 /* 존재(AI) 응답 */
 .ritual-message.oracle {
-  margin-right: auto;
   color: var(--col-ink);
   background:
     radial-gradient(circle at 18% 0%, rgba(143,121,201,0.18), transparent 34%),
@@ -447,7 +446,6 @@ body.ritual-night .ritual-chat-textarea {
 
 /* 관측자(사용자) */
 .ritual-message.observer {
-  margin-left: auto;
   color: var(--col-ink);
   background:
     radial-gradient(circle at 80% 0%, rgba(191,166,106,0.16), transparent 34%),

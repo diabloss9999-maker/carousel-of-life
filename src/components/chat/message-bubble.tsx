@@ -76,7 +76,7 @@ export function MessageBubble({ role, content, isStreaming, cards }: MessageBubb
         {isAssistant ? <Sparkles className="h-3.5 w-3.5" /> : <User className="h-3.5 w-3.5" />}
       </div>
 
-      <div className="max-w-[85%] space-y-3">
+      <div className="flex-1 min-w-0 space-y-3">
         {/* 카드 이미지 — 점술 요청 시 */}
         {cards && cards.length > 0 && (
           <div className="flex flex-wrap gap-2">
