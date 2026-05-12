@@ -14,6 +14,7 @@ import { getAllAffinities } from "@/lib/affinity/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { formatKoreanDate } from "@/lib/utils";
 import { CHARACTERS } from "@/lib/chat/characters";
+import { CharacterLoreCard } from "@/components/chat/character-lore-card";
 
 export const metadata: Metadata = {
   title: "주술사 문답",
@@ -58,6 +59,9 @@ export default async function ChatPage() {
           <CharacterSelect affinities={affinities} />
         </CardContent>
       </Card>
+
+      {/* 세계관 이야기 */}
+      <CharacterLoreCard />
 
       {/* 오늘의 대화 목록 */}
       {sessions.length > 0 && (

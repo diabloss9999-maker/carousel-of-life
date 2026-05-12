@@ -101,16 +101,23 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
       <OnboardingModal />
       <header className="space-y-3">
         <div className="flex items-center justify-between gap-2">
-          <p className="text-sm text-muted-foreground">{today}</p>
+          <div>
+            <p className="text-[10px] uppercase tracking-widest text-muted-foreground/50">
+              경계(境界) · {today}
+            </p>
+          </div>
           <StreakBadge checkIn={streakResult} />
         </div>
-        <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
-          오늘의 흐름
-        </h1>
-        <p className="text-muted-foreground">
-          {profile.displayName ? `${profile.displayName}의 ` : ""}
-          오늘 별의 기운이 무엇을 말하는지 읽어줄게.
-        </p>
+        <div>
+          <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
+            오늘의 흐름
+          </h1>
+          <p className="mt-1.5 text-sm text-muted-foreground">
+            {profile.displayName
+              ? `${profile.displayName}의 별이 오늘 무엇을 말하는지 주술사가 읽어줄게.`
+              : "오늘 별의 기운이 무엇을 말하는지 주술사가 읽어줄게."}
+          </p>
+        </div>
       </header>
 
       <QuotaBar

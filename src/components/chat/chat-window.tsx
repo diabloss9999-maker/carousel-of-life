@@ -242,13 +242,7 @@ export function ChatWindow({
         )}
       >
         {messages.length === 0 ? (
-          <div className="flex h-full items-center justify-center text-center text-sm text-muted-foreground">
-            <p className="font-mystic">
-              궁금한 걸 물어봐.
-              <br />
-              사주를 보고 차근차근 답해줄게.
-            </p>
-          </div>
+          <EmptyState characterId={characterId} />
         ) : (
           messages.map((m) => (
             <MessageBubble
@@ -327,6 +321,35 @@ export function ChatWindow({
           </span>
         </div>
       </form>
+    </div>
+  );
+}
+
+// =============================================================================
+// 빈 화면 — 캐릭터별 세계관 첫 인사
+// =============================================================================
+
+const EMPTY_LINES: Record<string, { line1: string; line2: string }> = {
+  child:    { line1: "입을 열어.",              line2: "욕망이든 상처든, 어차피 다 보이거든." },
+  witch:    { line1: "달이 당신을 부르고 있어.", line2: "기억의 안개 속에서, 무엇이 보여?" },
+  sage:     { line1: "여기 있어요.",             line2: "어떤 이야기든 들을게요. 괜찮아요." },
+  shaman:   { line1: "신령이 말하기를…",         line2: "당신의 이름이 방울 소리에 섞여 들려." },
+  taoist:   { line1: "천기를 읽는 중.",          line2: "당신 앞에 어떤 갈림길이 있는지 보여." },
+  dokkaebi: { line1: "왜 왔어.",                 line2: "뭔가 원하는 게 있으니까 왔겠지." },
+};
+
+function EmptyState({ characterId }: { characterId?: string }) {
+  const key = characterId ?? "witch";
+  const lines = EMPTY_LINES[key] ?? EMPTY_LINES.witch;
+
+  return (
+    <div className="flex h-full flex-col items-center justify-center gap-2 text-center px-4">
+      <p className="font-mystic text-base font-semibold text-foreground/70">
+        {lines.line1}
+      </p>
+      <p className="text-xs text-muted-foreground/50 leading-relaxed">
+        {lines.line2}
+      </p>
     </div>
   );
 }
