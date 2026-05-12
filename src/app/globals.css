@@ -52,33 +52,34 @@
 
 .dark {
   /* 밝은 크림+골드 배경에 어울리는 팔레트 — 텍스트는 어둡게, 카드는 반투명 */
-  --background: oklch(0.94 0.012 85);        /* 크림 (오버레이용) */
-  --foreground: oklch(0.18 0.04 55);         /* 진한 갈색 — 밝은 배경에 선명 */
+  /* Ritual 다크 — 모든 배경 통일 */
+  --background: oklch(0.09 0.02 280 / 0.01);  /* 거의 투명 — body 배경 이미지 보임 */
+  --foreground: oklch(0.94 0.014 88);          /* 밝은 크림 텍스트 */
 
-  --card: oklch(0.97 0.010 85 / 0.90);       /* 크림 카드 (불투명도 높임) */
-  --card-foreground: oklch(0.15 0.04 55);   /* 진한 갈색 텍스트 */
+  --card: oklch(0.14 0.025 280 / 0.70);        /* 다크 글래스 카드 */
+  --card-foreground: oklch(0.94 0.014 88);     /* 밝은 텍스트 */
 
-  --popover: oklch(0.98 0.008 85 / 0.96);
-  --popover-foreground: oklch(0.18 0.04 55);
+  --popover: oklch(0.12 0.022 280 / 0.88);
+  --popover-foreground: oklch(0.94 0.014 88);
 
-  --primary: oklch(0.55 0.14 72);            /* 깊은 골드 */
-  --primary-foreground: oklch(0.98 0.005 85);
+  --primary: oklch(0.72 0.12 82);             /* 골드 */
+  --primary-foreground: oklch(0.10 0.02 280);
 
-  --secondary: oklch(0.88 0.022 80);
-  --secondary-foreground: oklch(0.22 0.05 55);
+  --secondary: oklch(0.20 0.030 280 / 0.60);
+  --secondary-foreground: oklch(0.88 0.014 88);
 
-  --muted: oklch(0.88 0.016 80);
-  --muted-foreground: oklch(0.35 0.06 60);  /* 더 진하게 — 밝은 배경에서 가독성 */
+  --muted: oklch(0.18 0.025 280 / 0.50);
+  --muted-foreground: oklch(0.65 0.018 82);    /* 뮤트 골드 */
 
-  --accent: oklch(0.58 0.14 72);             /* 골드 강조 */
-  --accent-foreground: oklch(0.98 0.005 85);
+  --accent: oklch(0.68 0.12 78);              /* 골드 강조 */
+  --accent-foreground: oklch(0.10 0.02 280);
 
   --destructive: oklch(0.55 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
 
-  --border: oklch(0.72 0.07 72 / 0.55);
-  --input: oklch(0.72 0.07 72 / 0.55);
-  --ring: oklch(0.55 0.14 72);
+  --border: rgba(233, 221, 190, 0.15);
+  --input: rgba(233, 221, 190, 0.12);
+  --ring: oklch(0.68 0.12 78);
 
   --chart-1: oklch(0.55 0.14 72);
   --chart-2: oklch(0.62 0.14 78);
@@ -107,26 +108,20 @@ body[data-time="night"] {
   --accent: oklch(0.82 0.14 82);
 }
 
-/* 밤 배경 — app-surface 카드 어둡게 */
+/* Ritual 다크 글래스 — 낮/밤 통일 */
 body[data-time="night"] .app-surface,
-body[data-time="night"] .dark .app-surface {
-  border-color: oklch(0.40 0.05 70 / 0.45);
-  background:
-    linear-gradient(145deg, oklch(0.18 0.030 55 / 0.82), oklch(0.12 0.022 55 / 0.90));
-  box-shadow:
-    inset 0 1px 0 oklch(1 0 0 / 0.08),
-    0 8px 32px oklch(0.05 0.02 55 / 0.35);
-}
-
-/* 낮 배경 — app-surface 밝은 크림 */
+body[data-time="night"] .dark .app-surface,
 body[data-time="day"] .app-surface,
 body[data-time="day"] .dark .app-surface {
-  border-color: oklch(0.76 0.07 82 / 0.28);
+  border-color: rgba(233, 221, 190, 0.13);
   background:
-    linear-gradient(145deg, oklch(0.96 0.014 85 / 0.88), oklch(0.90 0.025 80 / 0.72));
+    radial-gradient(circle at 18% 0%, rgba(143,121,201,0.10), transparent 38%),
+    linear-gradient(145deg, rgba(23,20,35,0.72), rgba(9,8,17,0.68));
   box-shadow:
-    inset 0 1px 0 oklch(1 0 0 / 0.55),
-    0 8px 32px oklch(0.45 0.08 60 / 0.14);
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 16px 44px rgba(0,0,0,0.28);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 @theme inline {
@@ -212,24 +207,26 @@ body[data-time="day"] .dark .app-surface {
     background: oklch(0.82 0.13 82 / 0.35);
   }
 
+  /* Ritual 다크 글래스 기본값 */
   .app-surface {
-    border: 1px solid oklch(0.76 0.07 82 / 0.28);
+    border: 1px solid rgba(233,221,190,0.13);
     background:
-      linear-gradient(145deg, oklch(1 0 0 / 0.72), oklch(0.92 0.035 86 / 0.50)),
-      radial-gradient(circle at top right, oklch(0.86 0.10 84 / 0.20), transparent 42%);
+      radial-gradient(circle at 18% 0%, rgba(143,121,201,0.10), transparent 38%),
+      linear-gradient(145deg, rgba(23,20,35,0.72), rgba(9,8,17,0.68));
     box-shadow:
-      inset 0 1px 0 oklch(1 0 0 / 0.42),
-      0 24px 70px oklch(0.16 0.05 55 / 0.14);
-    backdrop-filter: blur(18px);
+      inset 0 1px 0 rgba(255,255,255,0.06),
+      0 16px 44px rgba(0,0,0,0.28);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 
-  /* 밝은 낮 배경에서 다크 모드도 크림 카드 사용 */
   .dark .app-surface {
-    border-color: oklch(0.72 0.08 72 / 0.35);
+    border-color: rgba(233,221,190,0.13);
     background:
-      linear-gradient(145deg, oklch(0.96 0.014 85 / 0.88), oklch(0.90 0.025 80 / 0.72));
+      radial-gradient(circle at 18% 0%, rgba(143,121,201,0.12), transparent 38%),
+      linear-gradient(145deg, rgba(18,15,28,0.78), rgba(9,8,17,0.72));
     box-shadow:
-      inset 0 1px 0 oklch(1 0 0 / 0.55),
+      inset 0 1px 0 rgba(255,255,255,0.05),
       0 8px 32px oklch(0.45 0.08 60 / 0.14);
     backdrop-filter: blur(14px);
   }
