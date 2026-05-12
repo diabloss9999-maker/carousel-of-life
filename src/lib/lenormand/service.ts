@@ -4,11 +4,11 @@
  * 지원 스프레드:
  * - single        : 한 장 — 오늘의 메시지
  * - three         : 세 장 — 과거·현재·미래
- * - nine          : 아홉 장 — 3×3 종합 (프리미엄)
- * - grand_tableau : 36장 전체 — 그랑 타블로 (프리미엄)
+ * - nine          : 아홉 장 — 3×3 종합 (라이트)
+ * - grand_tableau : 36장 전체 — 그랑 타블로 (라이트)
  *
  * 무료 사용자는 일일 한도(`FREE_DAILY_LENORMAND`) 적용.
- * 9장·그랑타블로는 프리미엄 전용.
+ * 9장·그랑타블로는 라이트 전용.
  */
 import "server-only";
 
@@ -226,7 +226,7 @@ ${spreadInstruction}
 }
 
 /**
- * 9장(3×3) 스프레드 처리 — 프리미엄 전용.
+ * 9장(3×3) 스프레드 처리 — 라이트 전용.
  */
 async function processNine(opts: {
   profile: Profile;
@@ -323,7 +323,7 @@ ${CARD_DEFS}
 }
 
 /**
- * 그랑 타블로(36장) 처리 — 프리미엄 전용.
+ * 그랑 타블로(36장) 처리 — 라이트 전용.
  */
 async function processGrandTableau(opts: {
   profile: Profile;
@@ -462,7 +462,7 @@ ${CARD_DEFS}
  * 르노르망 점술 1회를 수행한다.
  *
  * - `single` / `three` : 무료 사용자도 일일 한도(`FREE_DAILY_LENORMAND`) 내 가능.
- * - `nine` / `grand_tableau` : 프리미엄 구독자 전용.
+ * - `nine` / `grand_tableau` : 라이트 구독자 전용.
  */
 export async function createLenormandReading(opts: {
   profile: Profile;
@@ -471,14 +471,14 @@ export async function createLenormandReading(opts: {
   isSubscribed: boolean;
   gender?: "male" | "female";
 }): Promise<LenormandResult> {
-  // 1. 프리미엄 게이트 (9장 / 그랑 타블로).
+  // 1. 라이트 게이트 (9장 / 그랑 타블로).
   const isPremiumSpread =
     opts.spreadType === "nine" || opts.spreadType === "grand_tableau";
   if (isPremiumSpread && !opts.isSubscribed) {
     return {
       ok: false,
       reason: "premium_only",
-      message: "이 스프레드는 프리미엄 구독자 전용이에요.",
+      message: "이 스프레드는 라이트 구독자 전용이에요.",
     };
   }
 

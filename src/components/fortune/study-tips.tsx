@@ -15,7 +15,7 @@ interface StudyTipsProps {
 }
 
 /**
- * 학업 운세 프리미엄 — MBTI 맞춤 집중력 높이는 공부 팁 3가지 카드.
+ * 학업 운세 라이트 — MBTI 맞춤 집중력 높이는 공부 팁 3가지 카드.
  */
 export function StudyTips({ subscribed }: StudyTipsProps) {
   const [tips, setTips] = useState<StudyTipsOutput["tips"] | null>(null);
@@ -44,7 +44,7 @@ export function StudyTips({ subscribed }: StudyTipsProps) {
             <Lock className="h-4 w-4 text-accent" aria-hidden />
             집중력 높이는 공부 팁
             <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
-              프리미엄
+              라이트
             </span>
           </CardTitle>
         </CardHeader>
@@ -64,7 +64,7 @@ export function StudyTips({ subscribed }: StudyTipsProps) {
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-3.5 w-3.5" aria-hidden />
-              프리미엄으로 확인하기
+              라이트로 확인하기
             </Link>
           </Button>
         </CardContent>

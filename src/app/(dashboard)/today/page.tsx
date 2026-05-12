@@ -153,7 +153,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
 
       <CategoryTabs current={category} subscribed={subscribed} />
 
-      {/* 별자리·십이간지 — 비구독자: 프리미엄 잠금 */}
+      {/* 별자리·십이간지 — 비구독자: 라이트 잠금 */}
       {isPremiumCategory && !subscribed ? (
         <PremiumFortuneGate category={category} />
       ) : (

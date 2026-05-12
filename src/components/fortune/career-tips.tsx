@@ -58,11 +58,11 @@ function Gauge({ value }: { value: number }) {
 }
 
 /**
- * 직장 운세 프리미엄 전용 — 4개 섹션 종합 리포트 카드.
+ * 직장 운세 라이트 전용 — 4개 섹션 종합 리포트 카드.
  *
- * - 비프리미엄 사용자: 흐릿한 미리보기 + 프리미엄 유도 CTA를 표시한다.
- * - 프리미엄 + 미생성: "리포트 받기" 버튼을 표시한다.
- * - 프리미엄 + 생성됨: 4개 섹션(에너지/타이밍/주간흐름/관계운) + 팁 3가지를 표시한다.
+ * - 비라이트 사용자: 흐릿한 미리보기 + 라이트 유도 CTA를 표시한다.
+ * - 라이트 + 미생성: "리포트 받기" 버튼을 표시한다.
+ * - 라이트 + 생성됨: 4개 섹션(에너지/타이밍/주간흐름/관계운) + 팁 3가지를 표시한다.
  */
 export function CareerTips({ subscribed }: CareerTipsProps) {
   const [report, setReport] = useState<CareerReportOutput | null>(null);
@@ -89,7 +89,7 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
             <Lock className="h-4 w-4 text-accent" aria-hidden />
             오늘의 직장 종합 리포트
             <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
-              프리미엄
+              라이트
             </span>
           </CardTitle>
         </CardHeader>
@@ -111,7 +111,7 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-3.5 w-3.5" aria-hidden />
-              프리미엄으로 확인하기
+              라이트로 확인하기
             </Link>
           </Button>
         </CardContent>

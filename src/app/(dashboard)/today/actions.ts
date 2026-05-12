@@ -53,7 +53,7 @@ const categorySchema = z.enum([
   "chinese_zodiac",
 ]);
 
-/** 별자리·십이간지는 프리미엄 전용 카테고리. */
+/** 별자리·십이간지는 라이트 전용 카테고리. */
 const PREMIUM_FORTUNE_CATEGORIES = new Set(["zodiac", "chinese_zodiac"]);
 
 export interface FortuneActionState {
@@ -61,7 +61,7 @@ export interface FortuneActionState {
   message?: string;
   /** 한도 초과 여부 (결제 CTA 노출용). */
   quotaExceeded?: boolean;
-  /** 프리미엄 전용 카테고리 시도 여부. */
+  /** 라이트 전용 카테고리 시도 여부. */
   premiumOnly?: boolean;
 }
 
@@ -79,14 +79,14 @@ export async function generateFortuneAction(
 
   const { profile } = await requireProfile();
 
-  // 별자리·십이간지 프리미엄 게이트.
+  // 별자리·십이간지 라이트 게이트.
   if (PREMIUM_FORTUNE_CATEGORIES.has(parsed.data)) {
     const subscribed = await hasActiveSubscription(profile.userId);
     if (!subscribed) {
       return {
         kind: "error",
         premiumOnly: true,
-        message: "별자리·십이간지 운세는 프리미엄 전용이에요.",
+        message: "별자리·십이간지 운세는 라이트 전용이에요.",
       };
     }
   }
@@ -105,7 +105,7 @@ export async function generateFortuneAction(
     return {
       kind: "error",
       quotaExceeded: true,
-      message: `오늘의 운세 한도(${result.max}회)를 모두 사용했어요. 프리미엄 구독을 하시면 한도 없이 받으실 수 있어요.`,
+      message: `오늘의 운세 한도(${result.max}회)를 모두 사용했어요. 라이트 구독을 하시면 한도 없이 받으실 수 있어요.`,
     };
   }
 
@@ -129,9 +129,9 @@ function todayWeekdayKst(): string {
 }
 
 /**
- * 직장 운세 프리미엄 전용 — 4개 섹션 종합 리포트(에너지/타이밍/주간흐름/관계운) + 팁 3가지를 AI로 생성한다.
+ * 직장 운세 라이트 전용 — 4개 섹션 종합 리포트(에너지/타이밍/주간흐름/관계운) + 팁 3가지를 AI로 생성한다.
  *
- * - 프리미엄 구독자에게만 동작한다.
+ * - 라이트 구독자에게만 동작한다.
  * - 사용자 MBTI/생년월일/성별을 기반으로 개인화된 리포트를 생성한다.
  * - 동일 일자에 이미 생성된 리포트가 있으면 캐시를 재사용한다.
  */
@@ -140,7 +140,7 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
     const { profile } = await requireProfile();
     const subscribed = await hasActiveSubscription(profile.userId);
     if (!subscribed) {
-      return { kind: "error", message: "프리미엄 전용 기능이야." };
+      return { kind: "error", message: "라이트 전용 기능이야." };
     }
 
     const today = todayKst();
@@ -257,9 +257,9 @@ export interface HealthWorkoutState {
 }
 
 /**
- * 건강 운세 프리미엄 — 오늘의 맞춤 맨몸 운동 3가지를 AI 로 생성한다.
+ * 건강 운세 라이트 — 오늘의 맞춤 맨몸 운동 3가지를 AI 로 생성한다.
  *
- * - 프리미엄 구독자에게만 동작한다.
+ * - 라이트 구독자에게만 동작한다.
  * - MBTI/생년월일/성별 기반 맞춤 추천.
  * - 동일 일자 캐시 재사용.
  */
@@ -268,7 +268,7 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
     const { profile } = await requireProfile();
     const subscribed = await hasActiveSubscription(profile.userId);
     if (!subscribed) {
-      return { kind: "error", message: "프리미엄 전용 기능이야." };
+      return { kind: "error", message: "라이트 전용 기능이야." };
     }
 
     const today = todayKst();
@@ -370,9 +370,9 @@ export interface StudyTipsState {
 }
 
 /**
- * 학업 운세 프리미엄 — MBTI 맞춤 집중력 팁 3가지를 AI 로 생성한다.
+ * 학업 운세 라이트 — MBTI 맞춤 집중력 팁 3가지를 AI 로 생성한다.
  *
- * - 프리미엄 구독자에게만 동작한다.
+ * - 라이트 구독자에게만 동작한다.
  * - 동일 일자 캐시 재사용.
  */
 export async function generateStudyTipsAction(): Promise<StudyTipsState> {
@@ -380,7 +380,7 @@ export async function generateStudyTipsAction(): Promise<StudyTipsState> {
     const { profile } = await requireProfile();
     const subscribed = await hasActiveSubscription(profile.userId);
     if (!subscribed) {
-      return { kind: "error", message: "프리미엄 전용 기능이야." };
+      return { kind: "error", message: "라이트 전용 기능이야." };
     }
 
     const today = todayKst();
@@ -466,9 +466,9 @@ export interface LovePremiumState {
 }
 
 /**
- * 사랑 운세 프리미엄 — 오늘 전할 한마디 + MBTI 기반 매력 팁 3가지를 AI 로 생성한다.
+ * 사랑 운세 라이트 — 오늘 전할 한마디 + MBTI 기반 매력 팁 3가지를 AI 로 생성한다.
  *
- * - 프리미엄 구독자에게만 동작한다.
+ * - 라이트 구독자에게만 동작한다.
  * - 동일 일자 캐시 재사용.
  */
 export async function generateLovePremiumAction(): Promise<LovePremiumState> {
@@ -476,7 +476,7 @@ export async function generateLovePremiumAction(): Promise<LovePremiumState> {
     const { profile } = await requireProfile();
     const subscribed = await hasActiveSubscription(profile.userId);
     if (!subscribed) {
-      return { kind: "error", message: "프리미엄 전용 기능이야." };
+      return { kind: "error", message: "라이트 전용 기능이야." };
     }
 
     const today = todayKst();
@@ -505,7 +505,7 @@ export async function generateLovePremiumAction(): Promise<LovePremiumState> {
 - 생년월일: ${profile.birthDate}
 - 성별: ${profile.gender}
 
-이 사람에게 맞는 사랑 운세 프리미엄 리포트를 작성해줘.
+이 사람에게 맞는 사랑 운세 라이트 리포트를 작성해줘.
 모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
 
 반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:
@@ -562,9 +562,9 @@ export interface GeneralPremiumState {
 }
 
 /**
- * 종합 운세 프리미엄 — 시간대별 운세 + 6영역 점수(레이더 차트) + DO/DON'T 를 AI 로 생성한다.
+ * 종합 운세 라이트 — 시간대별 운세 + 6영역 점수(레이더 차트) + DO/DON'T 를 AI 로 생성한다.
  *
- * - 프리미엄 구독자에게만 동작한다.
+ * - 라이트 구독자에게만 동작한다.
  * - 동일 일자 캐시 재사용.
  */
 export async function generateGeneralPremiumAction(): Promise<GeneralPremiumState> {
@@ -572,7 +572,7 @@ export async function generateGeneralPremiumAction(): Promise<GeneralPremiumStat
     const { profile } = await requireProfile();
     const subscribed = await hasActiveSubscription(profile.userId);
     if (!subscribed) {
-      return { kind: "error", message: "프리미엄 전용 기능이야." };
+      return { kind: "error", message: "라이트 전용 기능이야." };
     }
 
     const today = todayKst();
@@ -601,7 +601,7 @@ export async function generateGeneralPremiumAction(): Promise<GeneralPremiumStat
 - 생년월일: ${profile.birthDate}
 - 성별: ${profile.gender}
 
-오늘 이 사람의 종합 운세 프리미엄 리포트를 작성해줘.
+오늘 이 사람의 종합 운세 라이트 리포트를 작성해줘.
 모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
 
 반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:

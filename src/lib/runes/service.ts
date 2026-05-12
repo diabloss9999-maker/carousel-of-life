@@ -4,11 +4,11 @@
  * 지원 스프레드:
  * - single : 한 개 — 오늘의 룬 / 핵심 메시지
  * - three  : 세 개 — 과거·현재·미래 (Norns)
- * - five   : 다섯 개 — 십자형 (프리미엄)
- * - nine   : 아홉 개 — 3×3 종합 (프리미엄)
+ * - five   : 다섯 개 — 십자형 (라이트)
+ * - nine   : 아홉 개 — 3×3 종합 (라이트)
  *
  * 무료 사용자는 일일 한도(`FREE_DAILY_RUNES`) 적용.
- * 5개·9개 스프레드는 프리미엄 전용.
+ * 5개·9개 스프레드는 라이트 전용.
  */
 import "server-only";
 
@@ -92,7 +92,7 @@ export async function getTodayRuneReadings(
  * 룬 점술 1회를 수행한다.
  *
  * - `single` / `three` : 무료 사용자도 일일 한도(`FREE_DAILY_RUNES`) 내 가능.
- * - `five` / `nine`    : 프리미엄 구독자 전용.
+ * - `five` / `nine`    : 라이트 구독자 전용.
  */
 export async function createRuneReading(opts: {
   profile: Profile;
@@ -101,14 +101,14 @@ export async function createRuneReading(opts: {
   isSubscribed: boolean;
   reversedEnabled: boolean;
 }): Promise<RuneResult> {
-  // 1. 프리미엄 게이트.
+  // 1. 라이트 게이트.
   const isPremiumSpread =
     opts.spreadType === "five" || opts.spreadType === "nine";
   if (isPremiumSpread && !opts.isSubscribed) {
     return {
       ok: false,
       reason: "premium_only",
-      message: "이 스프레드는 프리미엄 구독자 전용이에요.",
+      message: "이 스프레드는 라이트 구독자 전용이에요.",
     };
   }
 

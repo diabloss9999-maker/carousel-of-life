@@ -105,7 +105,7 @@ export function GenerateFortuneForm({
               <FormMessage state={{ kind: "error", message: state.message ?? "" }} />
               {state.quotaExceeded && (
                 <Button asChild className="w-full" variant="outline" size="sm">
-                  <Link href={ROUTES.pricing}>프리미엄으로 무제한 받기</Link>
+                  <Link href={ROUTES.pricing}>라이트로 무제한 받기</Link>
                 </Button>
               )}
             </div>

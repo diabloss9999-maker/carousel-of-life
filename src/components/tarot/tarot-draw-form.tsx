@@ -187,7 +187,7 @@ export function TarotDrawForm() {
             />
             {state.quotaExceeded ? (
               <Button asChild className="w-full" variant="outline">
-                <Link href={ROUTES.pricing}>프리미엄 구독하기</Link>
+                <Link href={ROUTES.pricing}>라이트 구독하기</Link>
               </Button>
             ) : null}
           </div>

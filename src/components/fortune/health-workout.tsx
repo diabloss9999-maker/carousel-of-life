@@ -15,11 +15,11 @@ interface HealthWorkoutProps {
 }
 
 /**
- * 건강 운세 프리미엄 — 오늘의 맞춤 맨몸 운동 3가지 카드.
+ * 건강 운세 라이트 — 오늘의 맞춤 맨몸 운동 3가지 카드.
  *
- * - 비프리미엄: 흐릿한 미리보기 + 프리미엄 CTA.
- * - 프리미엄 + 미생성: "운동 추천 받기" 버튼.
- * - 프리미엄 + 생성됨: 운동 3가지 상세 표시.
+ * - 비라이트: 흐릿한 미리보기 + 라이트 CTA.
+ * - 라이트 + 미생성: "운동 추천 받기" 버튼.
+ * - 라이트 + 생성됨: 운동 3가지 상세 표시.
  */
 export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
   const [bodyworkouts, setBodyWorkouts] = useState<HealthWorkoutOutput["bodyworkouts"] | null>(null);
@@ -50,7 +50,7 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
             <Lock className="h-4 w-4 text-accent" aria-hidden />
             오늘의 맞춤 운동
             <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
-              프리미엄
+              라이트
             </span>
           </CardTitle>
         </CardHeader>
@@ -71,7 +71,7 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-3.5 w-3.5" aria-hidden />
-              프리미엄으로 확인하기
+              라이트로 확인하기
             </Link>
           </Button>
         </CardContent>

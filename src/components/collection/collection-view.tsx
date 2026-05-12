@@ -440,7 +440,7 @@ function GachaPanel({
         </Button>
         {!subscribed && exhausted ? (
           <p className="text-[11px] text-muted-foreground">
-            프리미엄으로 업그레이드하면 매일 3번 뽑을 수 있어.
+            라이트로 업그레이드하면 매일 3번 뽑을 수 있어.
           </p>
         ) : null}
       </div>

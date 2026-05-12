@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * 궁합 프리미엄 B — 갈등 패턴 + 화해법 카드.
+ * 궁합 라이트 B — 갈등 패턴 + 화해법 카드.
  *
  * 두 사람이 어디서 부딪히는지 + 어떻게 풀어야 하는지를 알려준다.
  */
@@ -72,7 +72,7 @@ export function CompatConflict(props: CompatConflictProps) {
             <Lock className="h-4 w-4 text-accent" />
             갈등 패턴 + 화해법
             <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
-              프리미엄
+              라이트
             </span>
           </CardTitle>
         </CardHeader>
@@ -85,7 +85,7 @@ export function CompatConflict(props: CompatConflictProps) {
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-3.5 w-3.5" />
-              프리미엄으로 확인하기
+              라이트로 확인하기
             </Link>
           </Button>
         </CardContent>

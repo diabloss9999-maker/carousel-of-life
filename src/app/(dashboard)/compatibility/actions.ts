@@ -119,7 +119,7 @@ export async function submitCompatibilityAction(
     return {
       kind: "error",
       quotaExceeded: true,
-      message: `오늘 무료 궁합은 ${result.max}회까지야. 프리미엄으로 무제한 풀어볼래?`,
+      message: `오늘 무료 궁합은 ${result.max}회까지야. 라이트로 무제한 풀어볼래?`,
     };
   }
 
@@ -250,12 +250,12 @@ export async function twoPersonCompatAction(
 }
 
 // =============================================================================
-// 프리미엄 — 궁합 추가 분석 (캐시 없음, 매번 새로 생성)
+// 라이트 — 궁합 추가 분석 (캐시 없음, 매번 새로 생성)
 // =============================================================================
 
-const PREMIUM_ONLY_MESSAGE = "프리미엄 전용 기능이야.";
+const PREMIUM_ONLY_MESSAGE = "라이트 전용 기능이야.";
 
-/** 프리미엄 가드 — 통과 시 null, 실패 시 에러 메시지 반환. */
+/** 라이트 가드 — 통과 시 null, 실패 시 에러 메시지 반환. */
 async function ensurePremium(): Promise<string | null> {
   try {
     const { profile } = await requireProfile();

@@ -62,7 +62,7 @@ export default async function SettingsPage() {
           </CardTitle>
           <CardDescription className="text-xs">
             {subscribed
-              ? "프리미엄 사용 중. 모든 풀이가 무제한이야."
+              ? "라이트 사용 중. 모든 풀이가 무제한이야."
               : "지금은 무료 멤버십이야."}
           </CardDescription>
         </CardHeader>
@@ -92,7 +92,7 @@ export default async function SettingsPage() {
             </>
           ) : (
             <Button asChild className="w-full" size="sm">
-              <Link href={ROUTES.pricing}>프리미엄으로 업그레이드</Link>
+              <Link href={ROUTES.pricing}>라이트로 업그레이드</Link>
             </Button>
           )}
         </CardContent>

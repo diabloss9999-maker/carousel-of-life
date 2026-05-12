@@ -1,12 +1,12 @@
 "use client";
 
 /**
- * 궁합 프리미엄 A — 관계 목적별 점수 카드.
+ * 궁합 라이트 A — 관계 목적별 점수 카드.
  *
  * 두 사람이 연애·결혼·비즈니스·친구 각 관계로 얼마나 맞는지 0~100점 게이지로 보여준다.
  *
- * - 비프리미엄: 잠금 미리보기 + pricing 링크.
- * - 프리미엄: "분석 받기" 버튼 → 결과 표시.
+ * - 비라이트: 잠금 미리보기 + pricing 링크.
+ * - 라이트: "분석 받기" 버튼 → 결과 표시.
  */
 import { useState, useTransition } from "react";
 import Link from "next/link";
@@ -71,7 +71,7 @@ export function CompatPurpose(props: CompatPurposeProps) {
             <Lock className="h-4 w-4 text-accent" />
             관계 목적별 궁합 점수
             <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
-              프리미엄
+              라이트
             </span>
           </CardTitle>
         </CardHeader>
@@ -85,7 +85,7 @@ export function CompatPurpose(props: CompatPurposeProps) {
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-3.5 w-3.5" />
-              프리미엄으로 확인하기
+              라이트로 확인하기
             </Link>
           </Button>
         </CardContent>

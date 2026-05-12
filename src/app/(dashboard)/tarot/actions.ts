@@ -64,7 +64,7 @@ export async function drawSingleTarotAction(
     return {
       kind: "error",
       quotaExceeded: true,
-      message: `오늘의 타로 한도(${result.max}회)를 모두 사용했어. 프리미엄 구독을 하면 한도 없이 받을 수 있어.`,
+      message: `오늘의 타로 한도(${result.max}회)를 모두 사용했어. 라이트 구독을 하면 한도 없이 받을 수 있어.`,
     };
   }
 
@@ -108,7 +108,7 @@ export async function drawThreeTarotAction(
     return {
       kind: "error",
       premiumOnly: true,
-      message: "3장 스프레드는 프리미엄 멤버십에서 만나볼 수 있어.",
+      message: "3장 스프레드는 라이트 멤버십에서 만나볼 수 있어.",
     };
   }
 
@@ -190,7 +190,7 @@ export async function drawLenormandAction(
       return {
         kind: "error",
         quotaExceeded: true,
-        message: `오늘의 무료 르노르망 한도(${result.max}회)를 모두 사용했어. 프리미엄 구독을 하면 한도 없이 받을 수 있어.`,
+        message: `오늘의 무료 르노르망 한도(${result.max}회)를 모두 사용했어. 라이트 구독을 하면 한도 없이 받을 수 있어.`,
       };
     }
     if (result.reason === "premium_only") {
@@ -198,7 +198,7 @@ export async function drawLenormandAction(
         kind: "error",
         premiumOnly: true,
         message:
-          "이 스프레드는 프리미엄 구독자 전용이에요. 구독하면 9장·그랑 타블로를 자유롭게 뽑을 수 있어요.",
+          "이 스프레드는 라이트 구독자 전용이에요. 구독하면 9장·그랑 타블로를 자유롭게 뽑을 수 있어요.",
       };
     }
     if (result.reason === "invalid_input") {
@@ -271,7 +271,7 @@ export async function drawRuneAction(
       return {
         kind: "error",
         quotaExceeded: true,
-        message: `오늘의 무료 룬 한도(${result.max}회)를 모두 사용했어. 프리미엄 구독을 하면 한도 없이 던질 수 있어.`,
+        message: `오늘의 무료 룬 한도(${result.max}회)를 모두 사용했어. 라이트 구독을 하면 한도 없이 던질 수 있어.`,
       };
     }
     if (result.reason === "premium_only") {
@@ -279,7 +279,7 @@ export async function drawRuneAction(
         kind: "error",
         premiumOnly: true,
         message:
-          "이 스프레드는 프리미엄 구독자 전용이에요. 구독하면 5개·9개 스프레드를 자유롭게 던질 수 있어요.",
+          "이 스프레드는 라이트 구독자 전용이에요. 구독하면 5개·9개 스프레드를 자유롭게 던질 수 있어요.",
       };
     }
     return { kind: "error", message: result.message };

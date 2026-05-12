@@ -170,8 +170,8 @@ export function LenormandDrawForm({ subscribed }: Props) {
             >
               <option value="single">한 장 — 오늘의 메시지</option>
               <option value="three">세 장 — 과거·현재·미래</option>
-              <option value="nine">아홉 장 — 3×3 종합 스프레드 (프리미엄)</option>
-              <option value="grand_tableau">그랑 타블로 — 36장 전체 (프리미엄)</option>
+              <option value="nine">아홉 장 — 3×3 종합 스프레드 (라이트)</option>
+              <option value="grand_tableau">그랑 타블로 — 36장 전체 (라이트)</option>
             </Select>
           </div>
 
@@ -212,10 +212,10 @@ export function LenormandDrawForm({ subscribed }: Props) {
             <div className="rounded-lg border border-amber-400/30 bg-amber-50/5 p-3">
               <p className="text-xs leading-relaxed text-amber-300/90">
                 <Lock className="mr-1 inline-block h-3.5 w-3.5" aria-hidden />
-                이 스프레드는 프리미엄 구독자 전용이에요.
+                이 스프레드는 라이트 구독자 전용이에요.
               </p>
               <Button asChild className="mt-2 w-full" variant="outline" size="sm">
-                <Link href={ROUTES.pricing}>프리미엄 구독하기</Link>
+                <Link href={ROUTES.pricing}>라이트 구독하기</Link>
               </Button>
             </div>
           ) : null}
@@ -248,7 +248,7 @@ export function LenormandDrawForm({ subscribed }: Props) {
             />
             {state.quotaExceeded || state.premiumOnly ? (
               <Button asChild className="w-full" variant="outline">
-                <Link href={ROUTES.pricing}>프리미엄 구독하기</Link>
+                <Link href={ROUTES.pricing}>라이트 구독하기</Link>
               </Button>
             ) : null}
           </div>

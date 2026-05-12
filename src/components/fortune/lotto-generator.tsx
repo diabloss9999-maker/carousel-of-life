@@ -70,7 +70,7 @@ export function LottoGenerator({ fortune, subscribed }: LottoGeneratorProps) {
         <div className="flex items-center gap-2">
           <Crown className="h-4 w-4 text-accent" aria-hidden />
           <span className="text-xs font-medium uppercase tracking-wider text-accent">
-            프리미엄
+            라이트
           </span>
         </div>
         <h2 className="font-mystic text-xl font-semibold leading-snug tracking-tight">
@@ -141,7 +141,7 @@ export function LottoGenerator({ fortune, subscribed }: LottoGeneratorProps) {
             </div>
             <div className="space-y-1">
               <p className="font-mystic text-base font-medium">
-                프리미엄 전용 기능이에요
+                라이트 전용 기능이에요
               </p>
               <p className="text-sm text-muted-foreground">
                 구독하면 재산운으로 만든 로또번호를 매일 받을 수 있어요.
@@ -150,7 +150,7 @@ export function LottoGenerator({ fortune, subscribed }: LottoGeneratorProps) {
             <Button asChild className="gap-2 font-mystic">
               <Link href={ROUTES.pricing}>
                 <Crown className="h-4 w-4" aria-hidden />
-                프리미엄 시작하기
+                라이트 시작하기
               </Link>
             </Button>
           </div>

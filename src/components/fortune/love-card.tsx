@@ -1,11 +1,11 @@
 "use client";
 
 /**
- * 오늘의 사랑 리포트 — 프리미엄 전용 카드.
+ * 오늘의 사랑 리포트 — 라이트 전용 카드.
  *
- * - 비프리미엄: 잠금 미리보기 + 결제 CTA.
- * - 프리미엄 + 미생성: "리포트 받기" 버튼.
- * - 프리미엄 + 생성됨: 오늘 전할 한마디 + 매력 팁 3가지.
+ * - 비라이트: 잠금 미리보기 + 결제 CTA.
+ * - 라이트 + 미생성: "리포트 받기" 버튼.
+ * - 라이트 + 생성됨: 오늘 전할 한마디 + 매력 팁 3가지.
  */
 import { useState, useTransition } from "react";
 import Link from "next/link";
@@ -44,7 +44,7 @@ export function LoveCard({ subscribed }: LoveCardProps) {
     });
   };
 
-  // 1) 비프리미엄: 잠금 미리보기
+  // 1) 비라이트: 잠금 미리보기
   if (!subscribed) {
     return (
       <Card className="app-surface ring-1 ring-accent/20">
@@ -53,7 +53,7 @@ export function LoveCard({ subscribed }: LoveCardProps) {
             <Lock className="h-4 w-4 text-accent" />
             오늘의 사랑 리포트
             <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
-              프리미엄
+              라이트
             </span>
           </CardTitle>
         </CardHeader>
@@ -65,7 +65,7 @@ export function LoveCard({ subscribed }: LoveCardProps) {
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-3.5 w-3.5" />
-              프리미엄으로 확인하기
+              라이트로 확인하기
             </Link>
           </Button>
         </CardContent>
@@ -73,7 +73,7 @@ export function LoveCard({ subscribed }: LoveCardProps) {
     );
   }
 
-  // 2) 프리미엄 + 생성됨: 결과
+  // 2) 라이트 + 생성됨: 결과
   if (data) {
     return (
       <Card className="app-surface">
@@ -125,7 +125,7 @@ export function LoveCard({ subscribed }: LoveCardProps) {
     );
   }
 
-  // 3) 프리미엄 + 미생성: 버튼
+  // 3) 라이트 + 미생성: 버튼
   return (
     <Card className="app-surface">
       <CardHeader>

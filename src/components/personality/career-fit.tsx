@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * 유형 프리미엄 F — 직업 적성 심층 리포트 카드.
+ * 유형 라이트 F — 직업 적성 심층 리포트 카드.
  *
  * 한 번 생성되면 영구 저장.
  */
@@ -67,7 +67,7 @@ export function CareerFit({ subscribed }: CareerFitProps) {
             <Lock className="h-4 w-4 text-accent" />
             직업 적성 심층 리포트
             <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
-              프리미엄
+              라이트
             </span>
           </CardTitle>
         </CardHeader>
@@ -80,7 +80,7 @@ export function CareerFit({ subscribed }: CareerFitProps) {
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-3.5 w-3.5" />
-              프리미엄으로 확인하기
+              라이트로 확인하기
             </Link>
           </Button>
         </CardContent>

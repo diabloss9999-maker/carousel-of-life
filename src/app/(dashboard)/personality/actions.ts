@@ -1,7 +1,7 @@
 "use server";
 
 /**
- * 유형(personality) 페이지 — 프리미엄 Server Actions 3종.
+ * 유형(personality) 페이지 — 라이트 Server Actions 3종.
  *
  * D. 사주 × 별자리 × 성격유형 통합 분석
  * E. 스트레스 유형 + 회복법
@@ -33,7 +33,7 @@ import { AI_MODELS } from "@/lib/constants";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { getZodiacSign } from "@/lib/fortunes/zodiac";
 
-const PREMIUM_ONLY_MESSAGE = "프리미엄 전용 기능이야.";
+const PREMIUM_ONLY_MESSAGE = "라이트 전용 기능이야.";
 
 export interface TripleAnalysisState {
   kind: "idle" | "success" | "error";

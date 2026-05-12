@@ -100,7 +100,7 @@ export async function generateDeepReadingAction(): Promise<DeepReadingState> {
     return {
       kind: "error",
       premiumOnly: true,
-      message: "심층 분석은 프리미엄 멤버십에서 만나볼 수 있어.",
+      message: "심층 분석은 라이트 멤버십에서 만나볼 수 있어.",
     };
   }
 
@@ -117,7 +117,7 @@ export async function generateDeepReadingAction(): Promise<DeepReadingState> {
 }
 
 // =============================================================================
-// 오늘의 일진 × 내 사주 (프리미엄)
+// 오늘의 일진 × 내 사주 (라이트)
 // =============================================================================
 
 export interface IljinState {
@@ -149,7 +149,7 @@ export async function generateIljinAction(): Promise<IljinState> {
 
     const subscribed = await hasActiveSubscription(profile.userId);
     if (!subscribed) {
-      return { kind: "error", message: "프리미엄 전용 기능이야." };
+      return { kind: "error", message: "라이트 전용 기능이야." };
     }
 
     if (!profile.sajuPillars) {

@@ -289,7 +289,7 @@ export function ChatWindow({
         <div className="flex flex-col gap-2 rounded-xl border border-amber-400/30 bg-amber-50/5 px-3 py-2 text-sm text-amber-300/90">
           <span>오늘 대화 한도를 모두 사용했어요.</span>
           <Button asChild size="sm" variant="outline">
-            <Link href={ROUTES.pricing}>프리미엄으로 무제한 대화하기</Link>
+            <Link href={ROUTES.pricing}>라이트로 무제한 대화하기</Link>
           </Button>
         </div>
       ) : null}

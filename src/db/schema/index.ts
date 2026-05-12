@@ -115,7 +115,7 @@ export const profiles = pgTable("profiles", {
   /** 오행 분포: { wood, fire, earth, metal, water }. */
   fiveElements: jsonb("five_elements"),
   /**
-   * 프리미엄 전용 사주 심층 풀이 캐시.
+   * 라이트 전용 사주 심층 풀이 캐시.
    *
    * 한 번 생성되면 영구 보관. 형태:
    * { personality, strengths, cautions, loveStyle, careerFit, healthCare, lifeFlow, model, createdAt }
@@ -732,7 +732,7 @@ export type NewCharacterAffinity = typeof characterAffinities.$inferInsert;
 // =============================================================================
 
 // =============================================================================
-// daily_career_tips - 직장 운세 프리미엄 팁 일일 캐시
+// daily_career_tips - 직장 운세 라이트 팁 일일 캐시
 // =============================================================================
 
 export const dailyCareerTips = pgTable(
@@ -756,7 +756,7 @@ export const dailyCareerTips = pgTable(
 export type DailyCareerTip = typeof dailyCareerTips.$inferSelect;
 
 // =============================================================================
-// daily_health_workouts - 건강 운세 프리미엄 맨몸 운동 일일 캐시
+// daily_health_workouts - 건강 운세 라이트 맨몸 운동 일일 캐시
 // =============================================================================
 
 export const dailyHealthWorkouts = pgTable(
@@ -780,7 +780,7 @@ export const dailyHealthWorkouts = pgTable(
 export type DailyHealthWorkout = typeof dailyHealthWorkouts.$inferSelect;
 
 // =============================================================================
-// daily_study_tips - 학업 운세 프리미엄 집중력 팁 일일 캐시
+// daily_study_tips - 학업 운세 라이트 집중력 팁 일일 캐시
 // =============================================================================
 
 export const dailyStudyTips = pgTable(
@@ -802,7 +802,7 @@ export const dailyStudyTips = pgTable(
 export type DailyStudyTip = typeof dailyStudyTips.$inferSelect;
 
 // =============================================================================
-// daily_love_premium - 사랑 운세 프리미엄 일일 캐시 (오늘의 한마디 + 매력 팁)
+// daily_love_premium - 사랑 운세 라이트 일일 캐시 (오늘의 한마디 + 매력 팁)
 // =============================================================================
 
 export const dailyLovePremium = pgTable(
@@ -826,7 +826,7 @@ export const dailyLovePremium = pgTable(
 export type DailyLovePremium = typeof dailyLovePremium.$inferSelect;
 
 // =============================================================================
-// daily_iljin - 오늘의 일진 × 내 사주 프리미엄 일일 캐시
+// daily_iljin - 오늘의 일진 × 내 사주 라이트 일일 캐시
 // =============================================================================
 
 export const dailyIljin = pgTable(
@@ -849,7 +849,7 @@ export const dailyIljin = pgTable(
 export type DailyIljin = typeof dailyIljin.$inferSelect;
 
 // =============================================================================
-// daily_general_premium - 종합 운세 프리미엄 일일 캐시 (시간대별/레이더/DO·DON'T)
+// daily_general_premium - 종합 운세 라이트 일일 캐시 (시간대별/레이더/DO·DON'T)
 // =============================================================================
 
 export const dailyGeneralPremium = pgTable(

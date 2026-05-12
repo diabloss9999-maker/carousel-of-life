@@ -50,7 +50,7 @@ export function DeepReadingButton({ locked }: DeepReadingButtonProps) {
           <div className="flex items-center gap-2">
             <Lock className="h-5 w-5 text-accent" aria-hidden />
             <CardTitle className="font-mystic text-xl">
-              심층 분석은 프리미엄 멤버십
+              심층 분석은 라이트 멤버십
             </CardTitle>
           </div>
           <CardDescription>
@@ -71,7 +71,7 @@ export function DeepReadingButton({ locked }: DeepReadingButtonProps) {
           <Button asChild className="w-full" size="lg">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-4 w-4" aria-hidden />
-              프리미엄으로 풀어보기
+              라이트로 풀어보기
             </Link>
           </Button>
         </CardContent>

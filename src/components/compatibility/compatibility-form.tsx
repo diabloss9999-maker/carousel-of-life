@@ -143,7 +143,7 @@ export function CompatibilityForm() {
               />
               {state.quotaExceeded ? (
                 <Button asChild className="w-full" variant="outline">
-                  <Link href={ROUTES.pricing}>프리미엄으로 무제한</Link>
+                  <Link href={ROUTES.pricing}>라이트로 무제한</Link>
                 </Button>
               ) : null}
             </div>

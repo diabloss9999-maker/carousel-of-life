@@ -3,9 +3,9 @@
 /**
  * 오늘의 일진 × 내 사주 카드.
  *
- * - 비프리미엄: 잠금 미리보기 + 결제 CTA
+ * - 비라이트: 잠금 미리보기 + 결제 CTA
  * - 사주 미계산: 안내 메시지
- * - 프리미엄 + 사주 있음: 분석 버튼 → AI 해석 결과
+ * - 라이트 + 사주 있음: 분석 버튼 → AI 해석 결과
  */
 
 import { useState, useTransition } from "react";
@@ -80,7 +80,7 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
     });
   }
 
-  // 비프리미엄
+  // 비라이트
   if (!subscribed) {
     return (
       <Card className="app-surface ring-1 ring-accent/20">
@@ -89,7 +89,7 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
             <Lock className="h-4 w-4 text-accent" />
             오늘의 일진 × 내 사주
             <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
-              프리미엄
+              라이트
             </span>
           </CardTitle>
         </CardHeader>
@@ -101,7 +101,7 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-3.5 w-3.5" />
-              프리미엄으로 확인하기
+              라이트로 확인하기
             </Link>
           </Button>
         </CardContent>

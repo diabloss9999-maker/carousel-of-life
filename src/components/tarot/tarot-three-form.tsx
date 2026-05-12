@@ -48,7 +48,7 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
         <CardHeader>
           <CardTitle className="font-mystic flex items-center gap-2 text-xl">
             <Lock className="h-5 w-5 text-accent" aria-hidden />
-            과거-현재-미래 (프리미엄)
+            과거-현재-미래 (라이트)
           </CardTitle>
           <CardDescription>
             세 장의 카드가 들려주는 흐름의 이야기. 한 장의 풀이보다 훨씬 깊게.
@@ -64,7 +64,7 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
           <Button asChild className="w-full" size="lg">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-4 w-4" aria-hidden />
-              프리미엄으로 풀어보기
+              라이트로 풀어보기
             </Link>
           </Button>
         </CardContent>

@@ -170,7 +170,7 @@ function RadarChart({
   );
 }
 
-/** 비프리미엄 사용자에게 보여주는 잠금 미리보기 항목들. */
+/** 비라이트 사용자에게 보여주는 잠금 미리보기 항목들. */
 const LOCKED_PREVIEW_ITEMS = [
   "시간대별 운세 — 오전·오후·저녁 기운 분석",
   "운세 레이더 차트 — 6영역 점수 한눈에 보기",
@@ -178,11 +178,11 @@ const LOCKED_PREVIEW_ITEMS = [
 ] as const;
 
 /**
- * 종합 운세 프리미엄 카드.
+ * 종합 운세 라이트 카드.
  *
- * - 비프리미엄: 잠금 미리보기 + 프리미엄 유도 CTA.
- * - 프리미엄 + 미생성: "리포트 받기" 버튼.
- * - 프리미엄 + 생성됨: 시간대별 / 레이더 차트 / DO·DON'T 3개 섹션.
+ * - 비라이트: 잠금 미리보기 + 라이트 유도 CTA.
+ * - 라이트 + 미생성: "리포트 받기" 버튼.
+ * - 라이트 + 생성됨: 시간대별 / 레이더 차트 / DO·DON'T 3개 섹션.
  */
 export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
   const [data, setData] = useState<GeneralFortunePremiumOutput | null>(null);
@@ -209,7 +209,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
             <Lock className="h-4 w-4 text-accent" aria-hidden />
             오늘의 종합 운세 리포트
             <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
-              프리미엄
+              라이트
             </span>
           </CardTitle>
         </CardHeader>
@@ -225,7 +225,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-3.5 w-3.5" aria-hidden />
-              프리미엄으로 확인하기
+              라이트로 확인하기
             </Link>
           </Button>
         </CardContent>
@@ -245,7 +245,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
         <CardContent className="space-y-3">
           <p className="text-sm text-muted-foreground">
             시간대별 기운, 6영역 운세 차트, 오늘의 DO/DON&#39;T 까지 — 종합 운세
-            프리미엄 리포트를 만들어줄게.
+            라이트 리포트를 만들어줄게.
           </p>
           {error && <p className="text-xs text-destructive">{error}</p>}
           <Button

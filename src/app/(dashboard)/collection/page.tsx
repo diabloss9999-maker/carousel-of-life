@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 /**
  * 카드 컬렉션 페이지.
  *
- * - 매일 가챠 (무료 1회 / 프리미엄 3회) 로 카드를 모은다.
+ * - 매일 가챠 (무료 1회 / 라이트 3회) 로 카드를 모은다.
  * - 131 장 중 사용자가 소장한 카드의 진행도와 그리드를 표시한다.
  */
 export default async function CollectionPage() {

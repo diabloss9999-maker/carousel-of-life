@@ -2,7 +2,7 @@
  * 타로 풀이 비즈니스 로직.
  *
  * - single 스프레드 (1장): 무료, 일일 한도
- * - three 스프레드 (3장 — 과거·현재·미래): 프리미엄 전용, 무제한
+ * - three 스프레드 (3장 — 과거·현재·미래): 라이트 전용, 무제한
  */
 import "server-only";
 
@@ -127,7 +127,7 @@ export async function createSingleTarot(opts: {
 /**
  * three 스프레드 (3장: 과거-현재-미래) 타로 풀이.
  *
- * 프리미엄 전용. interpretation 컬럼에 JSON 직렬화로 4개 섹션 저장.
+ * 라이트 전용. interpretation 컬럼에 JSON 직렬화로 4개 섹션 저장.
  */
 export async function createThreeCardTarot(opts: {
   profile: Profile;

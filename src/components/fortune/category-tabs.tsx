@@ -3,7 +3,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { FORTUNE_CATEGORIES, type FortuneCategoryId } from "@/lib/constants";
 
-/** 프리미엄 전용 카테고리. */
+/** 라이트 전용 카테고리. */
 const PREMIUM_CATEGORIES = new Set<FortuneCategoryId>(["zodiac", "chinese_zodiac"]);
 
 interface CategoryTabsProps {

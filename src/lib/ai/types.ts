@@ -151,7 +151,7 @@ export const studyTipsSchema = z.object({
 });
 export type StudyTipsOutput = z.infer<typeof studyTipsSchema>;
 
-/** 사랑 프리미엄 — 오늘의 한마디 + 매력 팁 3가지 */
+/** 사랑 라이트 — 오늘의 한마디 + 매력 팁 3가지 */
 export const lovePremiumSchema = z.object({
   message: z.object({
     text: z.string(),      // 연인/짝에게 전할 한마디 (1~2문장)
@@ -168,7 +168,7 @@ export const lovePremiumSchema = z.object({
 });
 export type LovePremiumOutput = z.infer<typeof lovePremiumSchema>;
 
-/** 종합 운세 프리미엄 — 시간대별 운세 + 6영역 점수 + DO/DON'T */
+/** 종합 운세 라이트 — 시간대별 운세 + 6영역 점수 + DO/DON'T */
 export const generalFortunePremiumSchema = z.object({
   timeSlots: z
     .array(
@@ -195,7 +195,7 @@ export type GeneralFortunePremiumOutput = z.infer<
   typeof generalFortunePremiumSchema
 >;
 
-/** 궁합 프리미엄 A — 관계 목적별 점수 (연애/결혼/비즈니스/친구) */
+/** 궁합 라이트 A — 관계 목적별 점수 (연애/결혼/비즈니스/친구) */
 export const compatPurposeSchema = z.object({
   romance: numField,
   marriage: numField,
@@ -207,7 +207,7 @@ export const compatPurposeSchema = z.object({
 });
 export type CompatPurposeOutput = z.infer<typeof compatPurposeSchema>;
 
-/** 궁합 프리미엄 B — 갈등 패턴 + 화해법 */
+/** 궁합 라이트 B — 갈등 패턴 + 화해법 */
 export const compatConflictSchema = z.object({
   triggers: z.array(z.string()).min(1),
   pattern: z.string(),
@@ -216,7 +216,7 @@ export const compatConflictSchema = z.object({
 });
 export type CompatConflictOutput = z.infer<typeof compatConflictSchema>;
 
-/** 궁합 프리미엄 C — 오늘 이 사람에게 어떻게? */
+/** 궁합 라이트 C — 오늘 이 사람에게 어떻게? */
 export const compatTodaySchema = z.object({
   isGoodDay: z
     .union([z.boolean(), z.string()])
@@ -227,7 +227,7 @@ export const compatTodaySchema = z.object({
 });
 export type CompatTodayOutput = z.infer<typeof compatTodaySchema>;
 
-/** 유형 프리미엄 D — 사주 × 별자리 × 성격유형 통합 분석 */
+/** 유형 라이트 D — 사주 × 별자리 × 성격유형 통합 분석 */
 export const tripleAnalysisSchema = z.object({
   convergence: z.string(),
   contradiction: z.string(),
@@ -236,7 +236,7 @@ export const tripleAnalysisSchema = z.object({
 });
 export type TripleAnalysisOutput = z.infer<typeof tripleAnalysisSchema>;
 
-/** 유형 프리미엄 E — 스트레스 유형 + 회복법 */
+/** 유형 라이트 E — 스트레스 유형 + 회복법 */
 export const stressProfileSchema = z.object({
   triggers: z.array(z.string()).min(1),
   collapsePattern: z.string(),
@@ -245,7 +245,7 @@ export const stressProfileSchema = z.object({
 });
 export type StressProfileOutput = z.infer<typeof stressProfileSchema>;
 
-/** 유형 프리미엄 F — 직업 적성 심층 리포트 */
+/** 유형 라이트 F — 직업 적성 심층 리포트 */
 export const careerFitSchema = z.object({
   bestEnvironment: z.string(),
   fitRoles: z.array(z.string()).min(1),
