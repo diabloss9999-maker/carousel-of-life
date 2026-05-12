@@ -46,7 +46,7 @@ const STEPS = [
     characters: [
       { name: "소령", hook: "신령의 목소리를 전하는 무녀", img: "/characters/shaman_v1.png",   color: "ring-rose-800/50" },
       { name: "현도", hook: "운명을 읽는 500년의 도사",    img: "/characters/taoist_v1.png",   color: "ring-cyan-800/50" },
-      { name: "귀염", hook: "저승을 다스리는 도깨비왕",    img: "/characters/dokkaebi_v1.png", color: "ring-purple-800/50" },
+      { name: "귀염", hook: "저승을 다스리는 도깨비왕",    img: "/characters/dokkaebi_night.png", color: "ring-purple-800/50" },
     ],
   },
   {

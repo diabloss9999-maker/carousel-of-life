@@ -395,7 +395,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     category: "characters",
     nameKo: "귀염",
     nameEn: "Gwieyeom",
-    imageSrc: "/characters/dokkaebi_v1.png",
+    imageSrc: "/characters/dokkaebi_night.png",
     description:
       "소령을 살리기 위해 스스로 귀왕이 된 도깨비. 진짜 이름을 잃었고, 그 사실을 소령은 모른다.",
     rarity: "legendary",
