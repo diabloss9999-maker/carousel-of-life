@@ -1,4 +1,4 @@
-﻿import Image from "next/image";
+﻿import { CharacterImage } from "@/components/shared/character-image";
 import {
   Brain,
   Briefcase,
@@ -98,7 +98,7 @@ export function DeepReadingCard({ reading }: DeepReadingCardProps) {
             </div>
             <div className="flex items-center gap-2">
               <div className="relative h-10 w-7 overflow-hidden rounded-lg shadow-sm flex-shrink-0">
-                <Image src={character.imageSrc} alt={character.name} fill className="object-cover object-top" sizes="28px" />
+                <CharacterImage character={character} fill className="object-cover object-top" sizes="28px" />
               </div>
               <div>
                 <p className="font-mystic text-xs font-semibold text-foreground/80">{character.name}</p>

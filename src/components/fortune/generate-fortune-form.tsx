@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import { CharacterImage } from "@/components/shared/character-image";
 import { useActionState } from "react";
 import { Loader2 } from "lucide-react";
 
@@ -57,9 +57,8 @@ export function GenerateFortuneForm({
       <div className="flex gap-0">
         {/* 캐릭터 이미지 */}
         <div className="relative w-24 sm:w-32 flex-shrink-0">
-          <Image
-            src={character.imageSrc}
-            alt={character.name}
+          <CharacterImage
+            character={character}
             width={600}
             height={900}
             quality={85}

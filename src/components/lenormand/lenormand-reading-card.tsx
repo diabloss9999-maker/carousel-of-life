@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { CharacterImage } from "@/components/shared/character-image";
 import type { LenormandReading } from "@/db/schema";
 import { LENORMAND_BY_ID } from "@/lib/lenormand/cards";
 import { CHARACTERS } from "@/lib/chat/characters";
@@ -63,7 +64,7 @@ export function LenormandReadingCard({ reading }: Props) {
         {/* 캐릭터 배지 */}
         <div className="flex items-center gap-2">
           <div className="relative h-10 w-7 overflow-hidden rounded-lg shadow-sm flex-shrink-0">
-            <Image src={character.imageSrc} alt={character.name} fill className="object-cover object-top" sizes="28px" />
+            <CharacterImage character={character} fill className="object-cover object-top" sizes="28px" />
           </div>
           <div>
             <p className="font-mystic text-xs font-semibold text-foreground/80">{character.name}</p>

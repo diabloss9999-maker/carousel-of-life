@@ -36,7 +36,10 @@ export interface Character {
   description: string;
   /** 전문 영역 배지 */
   specialty: string;
+  /** 밤(기본) 이미지 경로 */
   imageSrc: string;
+  /** 낮 이미지 경로 */
+  imageSrcDay: string;
   placeholder: string;
   category: CharacterCategory;
 }
@@ -51,7 +54,8 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     hook: "욕망을 부정하는 건 자신을 부정하는 거야.",
     description: "욕망을 담당하는 상담사. 진실만 말한다.",
     specialty: "타로 · 카드 점술",
-    imageSrc: "/characters/child_v2.png",
+    imageSrc: "/characters/child_night.png",
+    imageSrcDay: "/characters/child_day.png",
     placeholder: "카엘에게 물어봐...",
   },
   witch: {
@@ -62,7 +66,8 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     hook: "당신의 감정, 나는 이미 기억하고 있어.",
     description: "기억을 관리하는 중재자. 감정의 흐름을 읽는다.",
     specialty: "타로 · 카드 점술",
-    imageSrc: "/characters/witch_v2.png",
+    imageSrc: "/characters/witch_night.png",
+    imageSrcDay: "/characters/witch_day.png",
     placeholder: "루나에게 물어봐...",
   },
   sage: {
@@ -73,7 +78,8 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     hook: "포기는 허락하지 않아요.",
     description: "구원을 담당하는 상담사. 희망과 가능성을 본다.",
     specialty: "타로 · 카드 점술",
-    imageSrc: "/characters/sage_v2.png",
+    imageSrc: "/characters/sage_night.png",
+    imageSrcDay: "/characters/sage_day.png",
     placeholder: "라엘에게 물어봐...",
   },
 
@@ -86,7 +92,8 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     hook: "신령이 당신 이름을 자꾸 부르고 있어.",
     description: "신령과 인간 사이를 잇는 무당. 보이지 않는 것을 본다.",
     specialty: "사주 · 천기",
-    imageSrc: "/characters/shaman_v1.png",
+    imageSrc: "/characters/shaman_night.png",
+    imageSrcDay: "/characters/shaman_day.png",
     placeholder: "소령에게 물어봐...",
   },
   taoist: {
@@ -97,7 +104,8 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     hook: "당신 운명의 갈림길이 지금 보여.",
     description: "500년 된 불로의 도사. 사주와 천기로 운명을 꿰뚫는다.",
     specialty: "사주 · 천기",
-    imageSrc: "/characters/taoist_v1.png",
+    imageSrc: "/characters/taoist_night.png",
+    imageSrcDay: "/characters/taoist_day.png",
     placeholder: "현도에게 물어봐...",
   },
   dokkaebi: {
@@ -108,7 +116,8 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     hook: "뭔데. 그거 내가 원해.",
     description: "원혼과 집착을 다스리는 도깨비왕. 대가 없이 움직이지 않는다.",
     specialty: "사주 · 천기",
-    imageSrc: "/characters/dokkaebi_v1.png",
+    imageSrc: "/characters/dokkaebi_night.png",
+    imageSrcDay: "/characters/dokkaebi_day.png",
     placeholder: "귀염에게 물어봐...",
   },
 };

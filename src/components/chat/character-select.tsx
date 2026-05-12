@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { CharacterImage } from "@/components/shared/character-image";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { Loader2 } from "lucide-react";
@@ -132,9 +132,8 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                   >
                     {/* 캐릭터 이미지 */}
                     <div className="relative w-full overflow-hidden rounded-xl shadow-md">
-                      <Image
-                        src={char.imageSrc}
-                        alt={char.name}
+                      <CharacterImage
+                        character={char}
                         width={600}
                         height={900}
                         quality={95}

@@ -7,10 +7,10 @@
 import { useState } from "react";
 import type { Route } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { ChevronUp, MessageCircle, X } from "lucide-react";
 
 import { CHARACTERS } from "@/lib/chat/characters";
+import { CharacterImage } from "@/components/shared/character-image";
 import { formatKoreanDate } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
@@ -81,9 +81,8 @@ export function SessionDrawer({ sessions }: SessionDrawerProps) {
                 {/* 캐릭터 미니 초상화 */}
                 {char && (
                   <div className="relative h-10 w-7 flex-shrink-0 overflow-hidden rounded-lg">
-                    <Image
-                      src={char.imageSrc}
-                      alt={char.name}
+                    <CharacterImage
+                      character={char}
                       fill
                       className="object-cover object-top"
                       sizes="28px"

@@ -5,7 +5,7 @@
  *
  * 한 번 생성되면 영구 저장되어 동일 결과를 평생 보여준다.
  */
-import Image from "next/image";
+import { CharacterImage } from "@/components/shared/character-image";
 import { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
 import { Layers, Loader2, Lock, Sparkles } from "lucide-react";
@@ -98,7 +98,7 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
             </CardTitle>
             <div className="flex items-center gap-2 flex-shrink-0">
               <div className="relative h-9 w-6 overflow-hidden rounded-lg shadow-sm">
-                <Image src={character.imageSrc} alt={character.name} fill className="object-cover object-top" sizes="24px" />
+                <CharacterImage character={character} fill className="object-cover object-top" sizes="24px" />
               </div>
               <p className="font-mystic text-[10px] font-semibold text-foreground/70">{character.name}</p>
             </div>

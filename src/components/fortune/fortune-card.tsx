@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import { CharacterImage } from "@/components/shared/character-image";
 import { MessageCircle } from "lucide-react";
 
 import {
@@ -65,9 +65,8 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
         {/* 캐릭터 헤더 */}
         <div className="flex items-center gap-3">
           <div className="relative h-12 w-8 flex-shrink-0 overflow-hidden rounded-lg shadow-md">
-            <Image
-              src={character.imageSrc}
-              alt={character.name}
+            <CharacterImage
+              character={character}
               fill
               className="object-cover object-top"
               sizes="32px"

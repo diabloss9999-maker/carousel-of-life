@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
@@ -7,6 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ChatWindow, type InitialMessage } from "@/components/chat/chat-window";
 import { AffinityBar } from "@/components/affinity/affinity-bar";
+import { CharacterImage } from "@/components/shared/character-image";
 import { requireProfile } from "@/lib/auth/get-user";
 import {
   getSessionForUser,
@@ -73,9 +73,8 @@ export default async function ChatSessionPage({
       {/* 모바일: 캐릭터 컴팩트 뱃지 */}
       <div className="flex md:hidden items-center gap-3 rounded-xl border border-border/30 bg-card/30 px-3 py-2 backdrop-blur">
         <div className="relative w-10 h-14 overflow-hidden rounded-lg flex-shrink-0 ring-1 ring-border/40">
-          <Image
-            src={character.imageSrc}
-            alt={character.name}
+          <CharacterImage
+            character={character}
             fill
             className="object-cover object-top"
             sizes="40px"
@@ -92,9 +91,8 @@ export default async function ChatSessionPage({
         {/* 캐릭터 이미지 — 데스크톱 전용, sticky */}
         <div className="hidden md:flex flex-col items-center gap-2 sticky top-20 flex-shrink-0 w-40 h-full">
           <div className="relative w-full flex-1 overflow-hidden rounded-2xl shadow-xl ring-1 ring-amber-200/20">
-            <Image
-              src={character.imageSrc}
-              alt={character.name}
+            <CharacterImage
+              character={character}
               fill
               className="object-cover object-top"
               quality={95}

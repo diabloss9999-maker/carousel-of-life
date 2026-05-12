@@ -4,7 +4,7 @@
  * 오늘의 캐릭터 배너.
  * 캐릭터가 홈 화면에 실제로 존재하는 느낌 — 대형 atmospheric 배너.
  */
-import Image from "next/image";
+import { CharacterImage } from "@/components/shared/character-image";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { Loader2, MessageCircle } from "lucide-react";
@@ -94,9 +94,8 @@ export function DailyQuestionCard({ characterId, question }: DailyQuestionCardPr
       <div className="relative flex gap-0">
         {/* 캐릭터 이미지 — 좌측 세로 배치 */}
         <div className="relative w-28 sm:w-36 flex-shrink-0">
-          <Image
-            src={character.imageSrc}
-            alt={character.name}
+          <CharacterImage
+            character={character}
             width={600}
             height={900}
             quality={90}
