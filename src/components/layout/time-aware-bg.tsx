@@ -17,7 +17,7 @@ function getKstHour(): number {
 }
 
 function isNightTime(hour: number): boolean {
-  return hour >= 21 || hour < 6;
+  return hour >= 19 || hour < 7;
 }
 
 export function TimeAwareBg() {
