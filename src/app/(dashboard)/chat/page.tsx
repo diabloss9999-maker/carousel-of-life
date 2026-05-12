@@ -42,7 +42,7 @@ export default async function ChatPage() {
           주술사 문답
         </h1>
         <p className="text-muted-foreground">
-          세 주술사 중 한 명을 선택해 대화를 시작해봐.
+          여섯 주술사 중 한 명을 골라. 이세계든 동양이든, 그들은 이미 당신의 사주를 알고 있어.
         </p>
       </header>
 

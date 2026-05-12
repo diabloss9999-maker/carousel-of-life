@@ -89,7 +89,7 @@ export default async function SajuPage() {
           내 사주팔자
         </h1>
         <p className="text-muted-foreground">
-          여덟 글자에 새겨진 타고난 기운을 살펴봐요.
+          사주팔자는 태어난 순간의 별 배치야. 운세·타로·궁합 모든 풀이의 뿌리가 여기 있어.
         </p>
       </header>
 

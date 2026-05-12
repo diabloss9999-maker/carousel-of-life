@@ -61,7 +61,7 @@ export default async function CompatibilityPage() {
           궁합
         </h1>
         <p className="text-sm text-muted-foreground">
-          사주·별자리·띠·성격유형으로 두 사람의 운명을 살펴봐.
+          두 사람의 사주·별자리·띠·성격이 어떻게 얽혀 있는지 주술사가 읽어줄게.
         </p>
       </header>
 

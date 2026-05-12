@@ -30,7 +30,7 @@ export default async function PersonalityPage() {
           성격 유형
         </h1>
         <p className="text-muted-foreground">
-          20문항으로 나의 유형을 알아봐. 결과는 운세·타로 풀이에 자동 반영돼.
+          20문항으로 나의 본성을 알아봐. 결과는 주술사 채팅·운세·타로 풀이에 자동 반영돼.
         </p>
       </header>
 

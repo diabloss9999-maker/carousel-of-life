@@ -9,9 +9,9 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 const TABS = [
-  { id: "tarot",     label: "타로" },
-  { id: "lenormand", label: "르노르망" },
-  { id: "runes",     label: "룬" },
+  { id: "tarot",     label: "타로",     desc: "78장 · 운명의 큰 흐름" },
+  { id: "lenormand", label: "르노르망", desc: "36장 · 일상의 상황 읽기" },
+  { id: "runes",     label: "룬",       desc: "24자 · 고대 문자의 계시" },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];
@@ -46,13 +46,17 @@ export function CardDivinationTabs({
               type="button"
               onClick={() => setActive(tab.id)}
               className={cn(
-                "flex flex-1 items-center justify-center rounded-full px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap",
+                "flex flex-1 flex-col items-center justify-center rounded-full px-3 py-2 transition-colors",
                 isActive
                   ? "bg-primary text-primary-foreground shadow"
                   : "text-muted-foreground hover:bg-card/70 hover:text-foreground",
               )}
             >
-              {tab.label}
+              <span className="text-sm font-medium whitespace-nowrap">{tab.label}</span>
+              <span className={cn(
+                "text-[9px] whitespace-nowrap leading-none mt-0.5",
+                isActive ? "text-primary-foreground/70" : "text-muted-foreground/50",
+              )}>{tab.desc}</span>
             </button>
           );
         })}
