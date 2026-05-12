@@ -32,6 +32,7 @@ import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { getTodayMood } from "@/lib/mood/service";
 import { MoodCapture } from "@/components/mood/mood-capture";
 import { getCrackScore } from "@/lib/crack/service";
+import { getHomeHiddenText } from "@/lib/observe/hidden-events";
 import { checkInStreak } from "@/lib/streak/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { formatKoreanDate } from "@/lib/utils";
@@ -117,6 +118,14 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
                 } />
               )}
             </p>
+            {(() => {
+              const hidden = getHomeHiddenText(crackData.level);
+              return hidden ? (
+                <p className="text-[9px] text-muted-foreground/20 tracking-widest mt-0.5 font-mystic italic">
+                  {hidden}
+                </p>
+              ) : null;
+            })()}
           </div>
           <StreakBadge checkIn={streakResult} />
         </div>

@@ -23,6 +23,8 @@ import {
 } from "@/lib/affinity/service";
 import { detectAndDraw } from "@/lib/chat/reading-detector";
 import { addCrack, reduceCrack, getCrackScore, CRACK_CONTEXT } from "@/lib/crack/service";
+import { checkHiddenEvents } from "@/lib/observe/hidden-events";
+import { calcLevel } from "@/lib/affinity/levels";
 import type { CharacterId } from "@/lib/chat/characters";
 import { API_ERROR_CODES } from "@/types/api";
 
@@ -96,6 +98,17 @@ export async function POST(
   const affinityCtx = affinityContext(characterId, currentPoints);
   const crackCtx = CRACK_CONTEXT[crackData.level];
 
+  // 숨겨진 이벤트 체크
+  const dokkaebiLevel = characterId === "dokkaebi"
+    ? calcLevel("dokkaebi", affinityRow?.points ?? 0).level
+    : 0;
+  const hiddenEvent = checkHiddenEvents({
+    characterId,
+    crackLevel: crackData.level,
+    dokkaebiAffinityLevel: dokkaebiLevel,
+    hourKst: new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" })).getHours(),
+  });
+
   // 점술 요청 감지 + 카드 추첨 (이세계만 카드, 동양은 null)
   let reading = null;
   try {
@@ -109,7 +122,7 @@ export async function POST(
     ? `\n\n[카드 읽기 — 지금 즉시 실행]\n${reading.promptText}`
     : "";
 
-  const enrichedSystem = prepared.systemPrompt + affinityCtx + crackCtx + cardSystemInject;
+  const enrichedSystem = prepared.systemPrompt + affinityCtx + crackCtx + hiddenEvent.eventContext + cardSystemInject;
 
   const aiStream = streamChat({
     model: AI_MODELS.chat,
