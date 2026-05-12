@@ -346,3 +346,64 @@ body[data-time="day"] .dark .app-surface {
     }
   }
 }
+
+/* =============================================================================
+   Ritual UI Kit — Carousel of Life
+   Concept: 앱 UI가 아니라 세계와 접촉하는 '의식형 인터페이스'
+   ============================================================================= */
+
+:root {
+  --ritual-bg: #080710;
+  --ritual-panel: rgba(18, 16, 31, 0.58);
+  --ritual-panel-deep: rgba(11, 10, 18, 0.76);
+  --ritual-line: rgba(233, 221, 190, 0.16);
+  --ritual-line-strong: rgba(233, 221, 190, 0.34);
+  --ritual-text: rgba(246, 239, 220, 0.92);
+  --ritual-muted: rgba(246, 239, 220, 0.54);
+  --ritual-gold: #bfa66a;
+  --ritual-violet: #8f79c9;
+  --ritual-teal: #7aa9a1;
+  --ritual-danger: #c96b73;
+  --ritual-radius: 18px;
+}
+
+/* 낮/밤 배경 */
+body.ritual-day {
+  background-image:
+    linear-gradient(rgba(8,7,16,0.08), rgba(8,7,16,0.16)),
+    url("/backgrounds/day.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+body.ritual-night {
+  background-image:
+    linear-gradient(rgba(8,7,16,0.22), rgba(8,7,16,0.42)),
+    url("/backgrounds/night.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* 균열 수치가 높을 때 — body.fracture-high 로 활성화 */
+@keyframes ritual-micro-glitch {
+  0%, 93%, 100% { transform: translate3d(0,0,0); filter: none; }
+  94% { transform: translate3d(-0.5px, 0.3px, 0); filter: blur(0.08px); }
+  95% { transform: translate3d(0.7px, -0.3px, 0); }
+  96% { transform: translate3d(0, 0, 0); filter: none; }
+}
+
+.fracture-high .ritual-button,
+.ritual-button.is-fractured {
+  animation: ritual-micro-glitch 7.5s infinite;
+}
+
+/* 접근성 */
+@media (prefers-reduced-motion: reduce) {
+  .ritual-button,
+  .ritual-orb-button {
+    transition: none;
+    animation: none !important;
+  }
+}

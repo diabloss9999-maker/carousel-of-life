@@ -4,30 +4,28 @@ import { LogOut } from "lucide-react";
 import { TimeAwareHeader } from "@/components/layout/time-aware-header";
 import { DesktopNav } from "@/components/layout/desktop-nav";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { RitualBody } from "@/components/crack/ritual-body";
 
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
 import { siteConfig } from "@/config/site";
 import { signOutAction } from "@/lib/auth/actions";
 import { requireUser } from "@/lib/auth/get-user";
+import { getCrackScore } from "@/lib/crack/service";
 
-/**
- * 대시보드 공용 레이아웃.
- *
- * 모바일 대응:
- * - 헤더에 `pt-safe` 적용 (iPhone Dynamic Island / Galaxy 펀치홀 영역 침범 방지)
- * - 본문에 `px-safe-*` 적용 (landscape 노치 영역 가독성 확보)
- * - 하단 모바일 nav는 `MobileNav` 컴포넌트가 `pb-safe` 처리
- */
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  await requireUser();
+  const user = await requireUser();
+  const crackData = await getCrackScore(user.id).catch(() => ({ level: 0 as const }));
 
   return (
     <div className="flex min-h-screen flex-col">
+      {/* 낮/밤 배경 + 균열 클래스 자동 적용 */}
+      <RitualBody crackLevel={crackData.level} />
+
       <TimeAwareHeader
         className="sticky top-0 z-40 pt-safe"
         style={{
