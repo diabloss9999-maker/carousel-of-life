@@ -389,16 +389,13 @@ ${ctx}
 }
 
 export interface ChatEnrichment {
-  /** profile.sajuDeepReading 원본 */
   sajuDeep?: Record<string, string> | null;
-  /** personality_triple_analysis.data */
   personalityTriple?: Record<string, unknown> | null;
-  /** personality_stress_profile.data */
   personalityStress?: Record<string, unknown> | null;
-  /** personality_career_fit.data */
   personalityCareer?: Record<string, unknown> | null;
-  /** 오늘의 종합 운세 content */
   todayFortune?: string | null;
+  /** 최근 7일 감정 기록 요약 */
+  moodHistory?: string | null;
 }
 
 /**
@@ -463,6 +460,11 @@ export function buildChatContext(
   if (enrichment.todayFortune) {
     lines.push("\n[오늘 받은 종합 운세]");
     lines.push(enrichment.todayFortune.slice(0, 200));
+  }
+
+  // 감정 기록
+  if (enrichment.moodHistory) {
+    lines.push(enrichment.moodHistory);
   }
 
   lines.push("\n[지시]");

@@ -646,6 +646,38 @@ export type DailyQuestion = typeof dailyQuestions.$inferSelect;
 export type NewDailyQuestion = typeof dailyQuestions.$inferInsert;
 
 // =============================================================================
+// mood_entries - 하루 감정 기록 (1일 1회)
+// =============================================================================
+
+export const moodEntries = pgTable(
+  "mood_entries",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    /** KST 기준 날짜 (YYYY-MM-DD). */
+    entryDate: date("entry_date").notNull(),
+    /** great | good | neutral | tough | hard */
+    mood: text("mood").notNull(),
+    /** 선택적 짧은 메모 (50자 이내). */
+    note: text("note"),
+    /** 어디서 기록했는지: fortune | tarot | chat */
+    source: text("source").notNull().default("fortune"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    unique("mood_entries_user_date_uniq").on(t.userId, t.entryDate),
+    index("mood_entries_user_date_idx").on(t.userId, t.entryDate),
+  ],
+);
+
+export type MoodEntry = typeof moodEntries.$inferSelect;
+export type NewMoodEntry = typeof moodEntries.$inferInsert;
+
+// =============================================================================
 // character_affinities - 캐릭터별 친밀도 포인트
 // =============================================================================
 

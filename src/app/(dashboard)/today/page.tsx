@@ -29,6 +29,8 @@ import {
 } from "@/lib/constants";
 import { getDailyFortune } from "@/lib/fortunes/service";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import { getTodayMood } from "@/lib/mood/service";
+import { MoodCapture } from "@/components/mood/mood-capture";
 import { checkInStreak } from "@/lib/streak/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { formatKoreanDate } from "@/lib/utils";
@@ -62,11 +64,12 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
 
   const { profile } = await requireProfile();
 
-  const [fortune, usage, subscribed, streakResult] = await Promise.all([
+  const [fortune, usage, subscribed, streakResult, todayMood] = await Promise.all([
     getDailyFortune(profile.userId, category),
     getTodayUsage(profile.userId),
     hasActiveSubscription(profile.userId),
     checkInStreak(profile.userId),
+    category === "general" ? getTodayMood(profile.userId) : Promise.resolve(null),
   ]);
 
   // general 탭에서만 다른 카테고리들의 오늘 운세를 병렬 조회한다.
@@ -142,6 +145,9 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           {fortune ? (
             <div id="fortune-result" className="space-y-6">
               <FortuneCard fortune={fortune} />
+              {category === "general" && (
+                <MoodCapture todayMood={todayMood?.mood ?? null} source="fortune" />
+              )}
               {category === "money" && (
                 <LottoGenerator fortune={fortune} subscribed={subscribed} />
               )}

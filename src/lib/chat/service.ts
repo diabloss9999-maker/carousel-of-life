@@ -22,6 +22,7 @@ import {
   type Profile,
 } from "@/db/schema";
 import { buildChatContext, type ChatEnrichment } from "@/lib/ai/prompts";
+import { getRecentMoods, buildMoodContext } from "@/lib/mood/service";
 import {
   buildCharacterSystemPrompt,
   DEFAULT_CHARACTER,
@@ -276,10 +277,13 @@ export async function prepareSendMessage(opts: {
             eq(dailyFortunes.fortuneDate, today),
             eq(dailyFortunes.category, "general"),
           )).limit(1),
+        getRecentMoods(profile.userId, 7),
       ]);
 
       const get = <T>(r: PromiseSettledResult<T[]>): T | null =>
         r.status === "fulfilled" ? (r.value[0] ?? null) : null;
+      const getAll = <T>(r: PromiseSettledResult<T[]>): T[] =>
+        r.status === "fulfilled" ? r.value : [];
 
       // 사주 심층 분석 — 핵심 필드만 짧게 (토큰 절약)
       const rawSaju = profile.sajuDeepReading as Record<string, string> | null;
@@ -293,10 +297,12 @@ export async function prepareSendMessage(opts: {
           }
         : null;
 
-      const tripleData = get(results[0] as PromiseSettledResult<typeof personalityTripleAnalysis.$inferSelect[]>);
-      const stressData = get(results[1] as PromiseSettledResult<typeof personalityStressProfile.$inferSelect[]>);
-      const careerData = get(results[2] as PromiseSettledResult<typeof personalityCareerFit.$inferSelect[]>);
+      const tripleData  = get(results[0] as PromiseSettledResult<typeof personalityTripleAnalysis.$inferSelect[]>);
+      const stressData  = get(results[1] as PromiseSettledResult<typeof personalityStressProfile.$inferSelect[]>);
+      const careerData  = get(results[2] as PromiseSettledResult<typeof personalityCareerFit.$inferSelect[]>);
       const fortuneData = get(results[3] as PromiseSettledResult<typeof dailyFortunes.$inferSelect[]>);
+      const moodData    = getAll(results[4] as PromiseSettledResult<import("@/db/schema").MoodEntry[]>);
+      const moodCtx     = buildMoodContext(moodData);
 
       const enrichment: ChatEnrichment = {
         sajuDeep:          sajuDeep,
@@ -304,6 +310,7 @@ export async function prepareSendMessage(opts: {
         personalityStress: stressData?.data as Record<string, unknown> | null,
         personalityCareer: careerData?.data as Record<string, unknown> | null,
         todayFortune:      fortuneData?.content?.slice(0, 150) ?? null,
+        moodHistory:       moodCtx || null,
       };
 
       userCtx = buildChatContext(profile, enrichment);
