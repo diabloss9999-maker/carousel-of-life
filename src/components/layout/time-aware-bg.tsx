@@ -42,8 +42,8 @@ export function TimeAwareBg() {
     return () => clearInterval(timer);
   }, []);
 
-  const wideSrc   = night ? "/mystic-bg-night.png"        : "/mystic-bg-wide.png";
-  const mobileSrc = night ? "/mystic-bg-night-mobile.png" : "/mystic-bg-mobile.png";
+  const wideSrc   = night ? "/backgrounds/night.png" : "/backgrounds/day.png";
+  const mobileSrc = night ? "/backgrounds/night.png" : "/backgrounds/day.png";
 
   return (
     <>

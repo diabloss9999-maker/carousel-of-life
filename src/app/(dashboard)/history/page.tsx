@@ -24,9 +24,13 @@ export default async function HistoryPage() {
   return (
     <div className="space-y-8">
       <header className="space-y-2">
-        <p className="text-[10px] uppercase tracking-widest text-muted-foreground/40">
-          경계(境界) · 기억의 층
-        </p>
+        <div className="flex items-center gap-3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/icons/eye-orbit.svg" alt="" aria-hidden className="h-8 w-8 opacity-60" />
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground/40">
+            경계(境界) · 기억의 층
+          </p>
+        </div>
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
           운명 로그
         </h1>

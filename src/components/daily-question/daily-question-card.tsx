@@ -82,6 +82,14 @@ export function DailyQuestionCard({ characterId, question }: DailyQuestionCardPr
           `bg-gradient-to-r ${theme.gradient}`,
         )}
       />
+      {/* 세계관 아이콘 — 우상단 장식 */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/icons/moon-signal.svg"
+        alt=""
+        aria-hidden
+        className="absolute right-4 top-4 h-8 w-8 opacity-30 pointer-events-none"
+      />
 
       <div className="relative flex gap-0">
         {/* 캐릭터 이미지 — 좌측 세로 배치 */}

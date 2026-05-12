@@ -84,9 +84,15 @@ export function CharacterLoreCard() {
 
   return (
     <div className="space-y-3">
-      <p className="text-xs text-center text-muted-foreground/50 tracking-widest uppercase">
-        세계관 이야기
-      </p>
+      <div className="flex items-center justify-center gap-2">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/icons/sealed-ring.svg" alt="" aria-hidden className="h-5 w-5 opacity-40" />
+        <p className="text-xs text-muted-foreground/50 tracking-widest uppercase">
+          세계관 이야기
+        </p>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/icons/sealed-ring.svg" alt="" aria-hidden className="h-5 w-5 opacity-40 scale-x-[-1]" />
+      </div>
       {LORE_SECTIONS.map((section, i) => {
         const isOpen = openIdx === i;
         return (
