@@ -21,6 +21,12 @@ export interface StoryChapter {
   title: string;
   /** 본문 — 단락은 빈 줄(\n\n)로 구분 */
   body: string;
+  /**
+   * 챕터 이미지 경로 (옵션).
+   * `/stories/{characterId}/ch{N}.png` 형식.
+   * 없으면 텍스트만 표시.
+   */
+  imageSrc?: string;
 }
 
 export interface WorldTruthRoute {
@@ -932,6 +938,36 @@ export const CHARACTER_STORIES: Record<CharacterId, StoryChapter[]> = {
   hunter:     [],
   runeshaman: [],
 };
+
+/**
+ * 캐릭터별 이미지가 존재하는 챕터 번호.
+ * 파일은 `/public/stories/{characterId}/ch{N}.png` 위치.
+ */
+const CHAPTER_IMAGE_AVAILABILITY: Record<CharacterId, ReadonlySet<number>> = {
+  child:      new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+  witch:      new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+  sage:       new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+  // 동양·북유럽 — 추후 추가
+  shaman:     new Set(),
+  taoist:     new Set(),
+  dokkaebi:   new Set(),
+  god:        new Set(),
+  hunter:     new Set(),
+  runeshaman: new Set(),
+};
+
+/**
+ * 챕터 이미지 경로를 반환한다. 이미지가 없는 챕터는 `null`.
+ */
+export function getChapterImageSrc(
+  characterId: CharacterId,
+  chapterNumber: number,
+): string | null {
+  if (!CHAPTER_IMAGE_AVAILABILITY[characterId].has(chapterNumber)) {
+    return null;
+  }
+  return `/stories/${characterId}/ch${chapterNumber}.png`;
+}
 
 // ═════════════════════════════════════════════════════════════════════════════
 // 세계관별 진실 루트 + 최종 챕터

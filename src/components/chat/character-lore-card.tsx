@@ -25,7 +25,9 @@ import { calcLevel } from "@/lib/affinity/levels";
 import {
   CHARACTER_STORIES,
   WORLD_LORE,
+  getChapterImageSrc,
 } from "@/lib/stories/character-stories";
+import Image from "next/image";
 
 interface CharacterLoreCardProps {
   /** 캐릭터별 호감도 포인트 — `{ characterId: points }` */
@@ -464,7 +466,12 @@ function CharacterStoryAccordion({
                     )}
                   </button>
                   {unlocked && isExpanded && (
-                    <div className="px-4 pb-4 pt-2 border-t border-white/5">
+                    <div className="px-4 pb-4 pt-2 border-t border-white/5 space-y-4">
+                      <ChapterImage
+                        characterId={characterId}
+                        chapterNumber={chap.number}
+                        title={chap.title}
+                      />
                       <ChapterBody body={chap.body} />
                     </div>
                   )}
@@ -586,6 +593,34 @@ function TruthRouteSection({
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// 챕터 이미지 — 있을 때만 본문 위에 렌더
+// ════════════════════════════════════════════════════════════════════════════
+
+interface ChapterImageProps {
+  characterId: CharacterId;
+  chapterNumber: number;
+  title: string;
+}
+
+function ChapterImage({ characterId, chapterNumber, title }: ChapterImageProps) {
+  const src = getChapterImageSrc(characterId, chapterNumber);
+  if (!src) return null;
+
+  return (
+    <div className="overflow-hidden rounded-xl border border-white/10 bg-black/30">
+      <Image
+        src={src}
+        alt={`${title} 챕터 이미지`}
+        width={960}
+        height={1280}
+        className="h-auto w-full object-cover"
+        sizes="(max-width: 768px) 100vw, 600px"
+      />
     </div>
   );
 }
