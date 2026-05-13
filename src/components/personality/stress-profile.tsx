@@ -5,7 +5,7 @@
  *
  * 한 번 생성되면 영구 저장.
  */
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import {
   AlertTriangle,
@@ -33,18 +33,19 @@ export function StressProfile({ subscribed }: StressProfileProps) {
   const [data, setData] = useState<StressProfileOutput | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
-  const [didAutoLoad, setDidAutoLoad] = useState(false);
+  // 마운트 1회 자동 로드 가드 — ref 로 처리해 effect 내 setState 회피
+  const didAutoLoadRef = useRef(false);
 
   useEffect(() => {
-    if (!subscribed || didAutoLoad) return;
-    setDidAutoLoad(true);
+    if (!subscribed || didAutoLoadRef.current) return;
+    didAutoLoadRef.current = true;
     startTransition(async () => {
       const result: StressProfileState = await generateStressProfileAction();
       if (result.kind === "success" && result.data) {
         setData(result.data);
       }
     });
-  }, [subscribed, didAutoLoad]);
+  }, [subscribed]);
 
   const handleGenerate = (): void => {
     setErrorMsg(null);

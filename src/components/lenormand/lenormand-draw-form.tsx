@@ -59,8 +59,10 @@ export function LenormandDrawForm({ subscribed }: Props) {
   const isPremiumSpread = spread === "nine" || spread === "grand_tableau";
   const blockedByPremium = isPremiumSpread && !subscribed;
 
+  // 서버 응답 도착 시 phase 를 idle 로 리셋 — state machine 동기화 패턴.
   useEffect(() => {
     if (!isPending && phase === "pending") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPhase("idle");
     }
   }, [isPending, phase]);

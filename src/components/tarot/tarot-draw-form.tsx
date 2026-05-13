@@ -53,9 +53,11 @@ export function TarotDrawForm() {
 
   useScrollToResult(isPending, "tarot-results");
 
-  // 서버 응답 도착 시 phase를 idle로 리셋
+  // 서버 응답 도착 시 phase 를 idle 로 리셋 — useActionState 의 비동기 완료를 효과로
+  // 동기화해야 하는 합법적인 state machine 패턴.
   useEffect(() => {
     if (!isPending && phase === "pending") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPhase("idle");
     }
   }, [isPending, phase]);

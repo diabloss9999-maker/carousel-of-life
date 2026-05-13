@@ -68,6 +68,8 @@ export function OnboardingModal() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const done = localStorage.getItem(STORAGE_KEY);
+    // 마운트 1회 client-only 초기화 (localStorage 조회 후 가시성 결정) — 의도된 패턴
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (!done) setVisible(true);
   }, []);
 

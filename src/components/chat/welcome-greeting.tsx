@@ -43,7 +43,10 @@ export function WelcomeGreeting() {
     } catch { return; }
 
     const pickedId = pickRandomCharacter();
+    // 마운트 1회 client-only 초기화 — SSR 하이드레이션 불일치 회피를 위한 의도된 패턴.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCharId(pickedId);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLine(pickGreeting(pickedId));
     try { window.sessionStorage.setItem(SESSION_KEY, "1"); } catch {}
 

@@ -6,7 +6,7 @@
  * 한 번 생성되면 영구 저장되어 동일 결과를 평생 보여준다.
  */
 import { CharacterImage } from "@/components/shared/character-image";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { Layers, Loader2, Lock, Sparkles } from "lucide-react";
 
@@ -29,12 +29,13 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
   const [data, setData] = useState<TripleAnalysisOutput | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
-  const [didAutoLoad, setDidAutoLoad] = useState(false);
+  // 마운트 1회 자동 로드 가드 — ref 로 처리해 effect 내 setState 회피
+  const didAutoLoadRef = useRef(false);
 
   // 라이트 사용자는 영구 저장된 결과가 있을 수 있으므로 마운트 시 자동 로드 시도.
   useEffect(() => {
-    if (!subscribed || didAutoLoad) return;
-    setDidAutoLoad(true);
+    if (!subscribed || didAutoLoadRef.current) return;
+    didAutoLoadRef.current = true;
     startTransition(async () => {
       const result: TripleAnalysisState = await generateTripleAnalysisAction();
       if (result.kind === "success" && result.data) {
@@ -42,7 +43,7 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
       }
       // 첫 로드 실패는 조용히 — 사용자가 버튼으로 다시 시도할 수 있다.
     });
-  }, [subscribed, didAutoLoad]);
+  }, [subscribed]);
 
   const handleGenerate = (): void => {
     setErrorMsg(null);

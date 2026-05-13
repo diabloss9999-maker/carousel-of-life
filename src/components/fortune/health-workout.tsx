@@ -15,6 +15,43 @@ interface HealthWorkoutProps {
 }
 
 /**
+ * 운동 리스트 카드 — 라벨 + 항목 목록.
+ */
+function WorkoutList({
+  list,
+  label,
+}: {
+  list: HealthWorkoutOutput["bodyworkouts"];
+  label: string;
+}) {
+  return (
+    <div className="space-y-3">
+      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+        {label}
+      </p>
+      {list.map((w, i) => (
+        <div
+          key={i}
+          className="space-y-2 rounded-xl border border-border/40 bg-card/40 p-4"
+        >
+          <div className="flex items-center gap-2">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/15 text-xs font-bold text-primary flex-shrink-0">
+              {i + 1}
+            </span>
+            <p className="font-mystic font-semibold text-sm">{w.name}</p>
+            <span className="ml-auto rounded-full bg-accent/15 px-2 py-0.5 text-[10px] text-accent font-medium">
+              {w.reps}
+            </span>
+          </div>
+          <p className="text-xs leading-relaxed text-muted-foreground">{w.howTo}</p>
+          <p className="text-xs text-primary/80 font-medium">✓ {w.benefit}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
  * 건강 운세 라이트 — 오늘의 맞춤 맨몸 운동 3가지 카드.
  *
  * - 비라이트: 흐릿한 미리보기 + 라이트 CTA.
@@ -115,23 +152,6 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
       </Card>
     );
   }
-
-  const WorkoutList = ({ list, label }: { list: HealthWorkoutOutput["bodyworkouts"]; label: string }) => (
-    <div className="space-y-3">
-      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">{label}</p>
-      {list.map((w, i) => (
-        <div key={i} className="space-y-2 rounded-xl border border-border/40 bg-card/40 p-4">
-          <div className="flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/15 text-xs font-bold text-primary flex-shrink-0">{i + 1}</span>
-            <p className="font-mystic font-semibold text-sm">{w.name}</p>
-            <span className="ml-auto rounded-full bg-accent/15 px-2 py-0.5 text-[10px] text-accent font-medium">{w.reps}</span>
-          </div>
-          <p className="text-xs leading-relaxed text-muted-foreground">{w.howTo}</p>
-          <p className="text-xs text-primary/80 font-medium">✓ {w.benefit}</p>
-        </div>
-      ))}
-    </div>
-  );
 
   return (
     <Card className="app-surface">

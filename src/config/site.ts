@@ -89,11 +89,6 @@ export const defaultMetadata: Metadata = {
     title: siteConfig.shortName,
     statusBarStyle: "black-translucent",
   },
-  icons: {
-    icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
-      { url: "/favicon.ico", sizes: "any" },
-    ],
-    apple: [{ url: "/icon.svg", type: "image/svg+xml" }],
-  },
+  // 아이콘은 src/app/icon.png · apple-icon.png · favicon.ico 파일 컨벤션으로
+  // Next.js Metadata API 가 자동 등록한다. 별도 명시 불필요.
 };

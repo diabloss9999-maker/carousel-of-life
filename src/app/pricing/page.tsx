@@ -59,7 +59,7 @@ export default async function PricingPage() {
             </ul>
             {!user ? (
               <Button asChild className="w-full" variant="outline">
-                <Link href={ROUTES.signup}>무료로 시작</Link>
+                <Link href={ROUTES.login}>무료로 시작</Link>
               </Button>
             ) : tier === "free" ? (
               <Button className="w-full" variant="outline" disabled>
@@ -109,7 +109,7 @@ export default async function PricingPage() {
               </Button>
             ) : !user ? (
               <Button asChild className="w-full" variant="secondary">
-                <Link href={ROUTES.signup}>라이트 시작</Link>
+                <Link href={ROUTES.login}>라이트 시작</Link>
               </Button>
             ) : (
               <Button asChild className="w-full" variant="secondary">
@@ -162,7 +162,7 @@ export default async function PricingPage() {
               </Button>
             ) : !user ? (
               <Button asChild className="w-full">
-                <Link href={ROUTES.signup}>프로 시작</Link>
+                <Link href={ROUTES.login}>프로 시작</Link>
               </Button>
             ) : (
               <Button asChild className="w-full">

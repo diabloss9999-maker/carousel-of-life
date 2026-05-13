@@ -4,6 +4,7 @@ import { LogOut } from "lucide-react";
 import { TimeAwareHeader } from "@/components/layout/time-aware-header";
 import { DesktopNav } from "@/components/layout/desktop-nav";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { MusicToggle } from "@/components/effects/music-toggle";
 import { RitualBody } from "@/components/crack/ritual-body";
 import { FractureWhisper } from "@/components/fracture/fracture-whisper";
 import { DailyWhisper } from "@/components/world/daily-whisper";
@@ -61,22 +62,25 @@ export default async function DashboardLayout({
 
           <DesktopNav />
 
-          <form action={signOutAction}>
-            <Button
-              type="submit"
-              variant="ghost"
-              size="sm"
-              className="rounded-full px-3"
-              style={{
-                border: "1px solid var(--ritual-line)",
-                color: "var(--ritual-muted)",
-                background: "rgba(255,255,255,0.12)",
-              }}
-            >
-              <LogOut className="h-4 w-4" aria-hidden />
-              <span className="hidden sm:inline">로그아웃</span>
-            </Button>
-          </form>
+          <div className="flex items-center gap-2">
+            <MusicToggle />
+            <form action={signOutAction}>
+              <Button
+                type="submit"
+                variant="ghost"
+                size="sm"
+                className="rounded-full px-3"
+                style={{
+                  border: "1px solid var(--ritual-line)",
+                  color: "var(--ritual-muted)",
+                  background: "rgba(255,255,255,0.12)",
+                }}
+              >
+                <LogOut className="h-4 w-4" aria-hidden />
+                <span className="hidden sm:inline">로그아웃</span>
+              </Button>
+            </form>
+          </div>
         </div>
       </TimeAwareHeader>
 

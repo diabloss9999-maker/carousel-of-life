@@ -8,15 +8,25 @@
  * - UI 노출 없음 (이스터에그 느낌)
  * - 브라우저 자동재생 정책에 막히면 첫 사용자 인터랙션에서 시작
  * - 1분마다 시간 재확인, 경계 통과 시 트랙 자동 전환
- * - 볼륨 0.18 (잔잔한 배경)
+ * - 사용자가 헤더의 음소거 토글로 끄면 페이드아웃 후 정지
+ * - 시작/정지/트랙 전환 시 0.4초 페이드 인·아웃
+ * - 목표 볼륨 0.18 (잔잔한 배경)
  */
 import { useEffect, useRef } from "react";
+
+import {
+  getAmbientMuted,
+  hydrateAmbientStore,
+  subscribeAmbient,
+} from "./ambient-store";
 
 const DAY_SRC = "/audio/day-loop.mp3";
 const NIGHT_SRC = "/audio/night-loop.mp3";
 const NIGHT_HOUR_START = 0; // 00:00 포함
 const NIGHT_HOUR_END = 4;   // 04:00 미포함
-const VOLUME = 0.18;
+const TARGET_VOLUME = 0.18;
+const FADE_MS = 400;
+const FADE_STEP_MS = 40;
 const TICK_MS = 60_000;
 
 /**
@@ -38,39 +48,107 @@ function pickTrack(hour: number): string {
 export function AmbientTrack() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const interactionHandlerRef = useRef<(() => void) | null>(null);
+  const fadeIntervalRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined" || typeof Audio === "undefined") {
       return;
     }
 
+    // localStorage 에서 음소거 상태 로드
+    hydrateAmbientStore();
+
     const audio = new Audio();
     audio.loop = true;
-    audio.volume = VOLUME;
+    audio.volume = 0; // 페이드 인으로 자연스럽게 올림
     audio.preload = "auto";
     audioRef.current = audio;
 
     /**
+     * 진행 중인 페이드 인터벌을 정리.
+     */
+    function clearFade() {
+      if (fadeIntervalRef.current !== null) {
+        window.clearInterval(fadeIntervalRef.current);
+        fadeIntervalRef.current = null;
+      }
+    }
+
+    /**
+     * 현재 볼륨에서 목표 볼륨까지 선형 페이드.
+     * 페이드 끝나면 onComplete 호출.
+     */
+    function fadeTo(target: number, onComplete?: () => void) {
+      clearFade();
+      const start = audio.volume;
+      const delta = target - start;
+      const steps = Math.max(1, Math.floor(FADE_MS / FADE_STEP_MS));
+      let stepIndex = 0;
+      fadeIntervalRef.current = window.setInterval(() => {
+        stepIndex += 1;
+        const progress = stepIndex / steps;
+        audio.volume = Math.max(0, Math.min(1, start + delta * progress));
+        if (stepIndex >= steps) {
+          clearFade();
+          onComplete?.();
+        }
+      }, FADE_STEP_MS);
+    }
+
+    /**
      * 시간대에 맞는 트랙을 결정하고, 필요 시 src 를 바꾸며 재생을 시도.
+     * 음소거 상태이면 페이드아웃 후 정지.
      */
     function evaluate() {
+      // 사용자가 음소거를 켰으면 페이드아웃 후 정지
+      if (getAmbientMuted()) {
+        if (!audio.paused) {
+          fadeTo(0, () => {
+            audio.pause();
+          });
+        }
+        return;
+      }
+
       const nextSrc = pickTrack(getKstHour());
-      // 경로 비교를 위해 audio.src 는 절대 URL 로 풀려있으므로 endsWith 사용
       const isCurrentTrack = audio.src.endsWith(nextSrc);
 
+      // 트랙 전환 — 페이드아웃 후 src 교체 후 페이드인
+      if (!isCurrentTrack && audio.src) {
+        fadeTo(0, () => {
+          audio.src = nextSrc;
+          audio.currentTime = 0;
+          startPlayWithFadeIn();
+        });
+        return;
+      }
+
+      // 최초 src 설정
       if (!isCurrentTrack) {
         audio.src = nextSrc;
         audio.currentTime = 0;
       }
 
       if (audio.paused) {
-        const promise = audio.play();
-        if (promise && typeof promise.catch === "function") {
-          promise.catch(() => {
-            // 자동재생 차단 → 첫 인터랙션 시 재시도
+        startPlayWithFadeIn();
+      }
+    }
+
+    /**
+     * 재생을 시작하고 목표 볼륨까지 페이드 인.
+     * 자동재생 차단 시 인터랙션 리스너 부착.
+     */
+    function startPlayWithFadeIn() {
+      audio.volume = 0;
+      const promise = audio.play();
+      if (promise && typeof promise.catch === "function") {
+        promise
+          .then(() => fadeTo(TARGET_VOLUME))
+          .catch(() => {
             attachInteractionListener();
           });
-        }
+      } else {
+        fadeTo(TARGET_VOLUME);
       }
     }
 
@@ -80,10 +158,8 @@ export function AmbientTrack() {
     function attachInteractionListener() {
       if (interactionHandlerRef.current) return;
       const handler = () => {
-        if (audio.paused) {
-          audio.play().catch(() => {
-            /* 무시 — 사용자 환경상 차단 */
-          });
+        if (!getAmbientMuted() && audio.paused) {
+          startPlayWithFadeIn();
         }
         detachInteractionListener();
       };
@@ -112,10 +188,15 @@ export function AmbientTrack() {
     };
     document.addEventListener("visibilitychange", onVisibilityChange);
 
+    // 음소거 토글 시 즉시 재평가
+    const unsubscribeStore = subscribeAmbient(evaluate);
+
     return () => {
       window.clearInterval(tickId);
       document.removeEventListener("visibilitychange", onVisibilityChange);
       detachInteractionListener();
+      unsubscribeStore();
+      clearFade();
       audio.pause();
       audio.src = "";
       audioRef.current = null;

@@ -36,23 +36,26 @@ function cleanContent(text: string): string {
     .trim();
 }
 
+/**
+ * 타자기 효과 훅.
+ *
+ * 스트리밍 중에만 `revealed` 카운트를 한 글자씩 증가시키고,
+ * 스트리밍이 끝나면 전체 텍스트를 한 번에 노출한다 (파생 상태).
+ */
 function useTypewriter(target: string, isStreaming: boolean) {
-  const [displayed, setDisplayed] = useState(target);
+  const [revealed, setRevealed] = useState(target.length);
 
   useEffect(() => {
-    if (!isStreaming) {
-      setDisplayed(target);
-      return;
-    }
-    if (displayed.length < target.length) {
-      const timer = setTimeout(() => {
-        setDisplayed(target.slice(0, displayed.length + 1));
-      }, 18);
-      return () => clearTimeout(timer);
-    }
-  }, [target, displayed, isStreaming]);
+    if (!isStreaming) return;
+    if (revealed >= target.length) return;
+    const timer = setTimeout(() => {
+      setRevealed((r) => Math.min(r + 1, target.length));
+    }, 18);
+    return () => clearTimeout(timer);
+  }, [target, revealed, isStreaming]);
 
-  return displayed;
+  // 스트리밍이 끝났으면 전체, 진행 중이면 카운트만큼 슬라이스 — setState 분기 제거
+  return isStreaming ? target.slice(0, revealed) : target;
 }
 
 export function MessageBubble({ role, content, isStreaming, cards }: MessageBubbleProps) {

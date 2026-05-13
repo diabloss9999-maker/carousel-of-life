@@ -102,7 +102,7 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
           <div className="rounded-xl border border-white/5 bg-white/3 px-4 py-3">
             <p className="text-[10px] text-muted-foreground/70 tracking-widest mb-1">반복 감지</p>
             <p className="text-sm text-muted-foreground/70 font-mystic italic">
-              '{summary.narrative.repeatedCard}' 카드가 {summary.narrative.repeatedCardCount}번 등장했어.
+              &lsquo;{summary.narrative.repeatedCard}&rsquo; 카드가 {summary.narrative.repeatedCardCount}번 등장했어.
             </p>
           </div>
         )}

@@ -64,10 +64,13 @@ export function ShamanCall() {
   const [charId, setCharId] = useState<CharacterId | null>(null);
   const [line, setLine] = useState<string>("");
 
-  // 마운트 시 랜덤 캐릭터 + 라인 선택 (SSR 일치 안 맞춰도 OK — useEffect 에서)
+  // 마운트 시 랜덤 캐릭터 + 라인 선택 — SSR 하이드레이션 불일치 회피를 위해 client-only.
+  // 마운트 1회 초기화는 effect 내 setState 가 의도된 표준 패턴.
   useEffect(() => {
     const id = pickCharacter();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCharId(id);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLine(pickLine(id));
   }, []);
 

@@ -97,7 +97,7 @@ export default function HomePage() {
 
         <div className="flex flex-col gap-3 sm:flex-row mt-2">
           <Button asChild size="lg" className="min-w-44 shadow-lg">
-            <Link href={ROUTES.signup}>
+            <Link href={ROUTES.login}>
               운명 묻기
               <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
@@ -130,7 +130,7 @@ export default function HomePage() {
 
       <section className="relative z-10 mx-auto max-w-3xl px-6 pb-20 pt-8 text-center">
         <Button asChild size="lg" className="min-w-48 shadow-lg">
-          <Link href={ROUTES.signup}>
+          <Link href={ROUTES.login}>
             지금 무료로 시작하기
             <ArrowRight className="h-4 w-4" aria-hidden />
           </Link>
