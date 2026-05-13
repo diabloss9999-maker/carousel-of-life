@@ -1,6 +1,8 @@
 ﻿import type { Metadata } from "next";
 import Link from "next/link";
 
+import { KakaoButton } from "@/components/auth/kakao-button";
+import { OrDivider } from "@/components/auth/or-divider";
 import {
   Card,
   CardContent,
@@ -26,7 +28,9 @@ export default function LoginPage() {
           경계가 당신을 기억하고 있어.
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-4">
+        <KakaoButton label="카카오로 로그인" />
+        <OrDivider />
         <LoginForm />
         <p className="text-center text-sm text-muted-foreground">
           아직 계정이 없나요?{" "}
