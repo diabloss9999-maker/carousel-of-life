@@ -118,14 +118,14 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
       <CardHeader className="relative pb-4">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1.5">
-            <CardTitle className="font-mystic text-xl text-amber-950 dark:text-amber-50">
+            <CardTitle className="font-mystic text-xl text-foreground">
               사주팔자
             </CardTitle>
-            <CardDescription className="text-xs text-stone-600 dark:text-amber-100/65">
+            <CardDescription className="text-xs text-muted-foreground">
               네 기둥 여덟 글자 — 글자를 누르면 의미가 펼쳐져.
             </CardDescription>
           </div>
-          <div className="hidden rounded-full border border-amber-300/60 bg-amber-50/70 px-3 py-1 text-[10px] font-medium text-amber-900 shadow-inner shadow-white/50 dark:border-amber-200/15 dark:bg-amber-200/10 dark:text-amber-100/80 sm:block">
+          <div className="hidden rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-medium text-foreground/80 sm:block">
             四柱
           </div>
         </div>
@@ -145,10 +145,10 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
                 className="relative flex min-w-0 flex-col items-center gap-2 rounded-xl border border-amber-200/65 bg-white/42 px-1.5 py-3 text-center shadow-[inset_0_1px_0_rgb(255_255_255/0.55),0_10px_30px_oklch(0.18_0.04_55/0.08)] dark:border-amber-200/10 dark:bg-white/[0.045] sm:gap-3 sm:px-3 sm:py-4"
               >
                 <div className="space-y-0.5">
-                  <span className="block text-[11px] font-semibold text-stone-600 dark:text-amber-100/70">
+                  <span className="block text-[11px] font-semibold text-foreground">
                     {label.ko}
                   </span>
-                  <span className="block text-[10px] text-stone-500 dark:text-amber-100/45">
+                  <span className="block text-[10px] text-muted-foreground">
                     {label.desc}
                   </span>
                 </div>
@@ -187,12 +187,12 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
         </div>
 
         {!pillars.hour ? (
-          <p className="mt-4 rounded-lg border border-amber-200/55 bg-amber-50/45 px-3 py-2 text-center text-xs text-stone-600 dark:border-amber-200/10 dark:bg-amber-200/5 dark:text-amber-100/65">
+          <p className="mt-4 rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-center text-xs text-muted-foreground">
             태어난 시각이 비어있어 시주는 비워뒀어.
           </p>
         ) : null}
 
-        <p className="mt-3 text-center text-[11px] text-stone-500 dark:text-amber-100/45">
+        <p className="mt-3 text-center text-[11px] text-muted-foreground">
           글자를 탭하면 음양·오행·뜻을 볼 수 있어.
         </p>
       </CardContent>
@@ -349,14 +349,14 @@ function CharPopover({
 
 function CardImg({ src, alt, char, active }: { src: string; alt: string; char: string; active: boolean }) {
   return (
-    <div className={cn(
-      "relative w-full aspect-[2/3] overflow-hidden rounded-xl border-2 shadow-lg transition-all",
-      active ? "border-amber-400 shadow-xl ring-2 ring-amber-400/60" : "border-white/30 shadow-md",
-    )}>
-      <Image src={src} alt={alt} fill className="object-cover" sizes="(max-width: 640px) 88px, 120px" quality={90} />
-      <div className="absolute bottom-0 inset-x-0 bg-black/45 backdrop-blur-[2px] py-1.5 text-center">
-        <span className="font-mystic text-sm font-bold text-white leading-none sm:text-lg">{char}</span>
+    <div className="flex flex-col items-center gap-1.5 w-full">
+      <div className={cn(
+        "relative w-full aspect-[2/3] overflow-hidden rounded-xl border-2 shadow-lg transition-all",
+        active ? "border-amber-400 shadow-xl ring-2 ring-amber-400/60" : "border-white/30 shadow-md",
+      )}>
+        <Image src={src} alt={alt} fill className="object-cover" sizes="(max-width: 640px) 88px, 120px" quality={90} />
       </div>
+      <span className="font-mystic text-base font-bold text-foreground leading-none sm:text-lg">{char}</span>
     </div>
   );
 }
