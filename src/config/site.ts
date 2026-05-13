@@ -46,6 +46,10 @@ export const defaultMetadata: Metadata = {
   creator: siteConfig.author.name,
   applicationName: siteConfig.name,
   generator: "Next.js",
+  // 표준 canonical URL — 미러 도메인(*-k5hs.vercel.app 등) 분산 방지
+  alternates: {
+    canonical: siteConfig.url,
+  },
   openGraph: {
     type: "website",
     locale: "ko_KR",
