@@ -33,6 +33,9 @@ export function createClient() {
  * Supabase Auth 의 `signInWithOAuth` 를 호출해 카카오 인증 페이지로 리다이렉트한다.
  * 인증 완료 후에는 `/auth/callback` 라우트가 세션을 교환한다.
  *
+ * scope 는 `profile_nickname profile_image` 만 요청한다.
+ * `account_email` 은 카카오 비즈앱 검수 통과 후에만 사용 가능하므로 제외 (KOE205 방지).
+ *
  * @returns Supabase OAuth 응답 (data.url 로 리다이렉트되거나 error 가 있음)
  */
 export async function signInWithKakao() {
@@ -41,6 +44,7 @@ export async function signInWithKakao() {
     provider: "kakao",
     options: {
       redirectTo: `${window.location.origin}${ROUTES.authCallback}`,
+      scopes: "profile_nickname profile_image",
     },
   });
 }
