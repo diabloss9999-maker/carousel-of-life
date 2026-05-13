@@ -41,6 +41,8 @@ import { MoodCapture } from "@/components/mood/mood-capture";
 import { getCrackScore } from "@/lib/crack/service";
 import { getHomeHiddenText } from "@/lib/observe/hidden-events";
 import { CrackAtmosphere } from "@/components/crack/crack-atmosphere";
+import { WorldStatusPanel } from "@/components/world/world-status-panel";
+import { EventLogFeed } from "@/components/world/event-log-feed";
 import { checkInStreak } from "@/lib/streak/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { formatKoreanDate } from "@/lib/utils";
@@ -140,11 +142,15 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           </h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
             {profile.displayName
-              ? `${profile.displayName}의 별이 오늘 무엇을 말하는지 주술사가 읽어줄게.`
-              : "오늘 별의 기운이 무엇을 말하는지 주술사가 읽어줄게."}
+              ? `${profile.displayName} 관측 채널 · 오늘의 흐름 기록 중`
+              : "오늘의 흐름 기록 중"}
           </p>
         </div>
       </header>
+
+      {/* 오늘의 세계 상태 — 균열 측정 + 관측 로그 */}
+      <WorldStatusPanel crackLevel={crackData.level} />
+      <EventLogFeed crackLevel={crackData.level} />
 
       {/* 주술사 호출 — 먼저 말을 건다 */}
       <ShamanCall />
