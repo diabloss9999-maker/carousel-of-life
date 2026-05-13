@@ -9,6 +9,7 @@
 import { createBrowserClient } from "@supabase/ssr";
 
 import { clientEnv } from "@/lib/env";
+import { ROUTES } from "@/lib/constants";
 
 export function createClient() {
   if (
@@ -24,4 +25,22 @@ export function createClient() {
     clientEnv.NEXT_PUBLIC_SUPABASE_URL,
     clientEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   );
+}
+
+/**
+ * 카카오 OAuth 로그인을 시작한다.
+ *
+ * Supabase Auth 의 `signInWithOAuth` 를 호출해 카카오 인증 페이지로 리다이렉트한다.
+ * 인증 완료 후에는 `/auth/callback` 라우트가 세션을 교환한다.
+ *
+ * @returns Supabase OAuth 응답 (data.url 로 리다이렉트되거나 error 가 있음)
+ */
+export async function signInWithKakao() {
+  const supabase = createClient();
+  return supabase.auth.signInWithOAuth({
+    provider: "kakao",
+    options: {
+      redirectTo: `${window.location.origin}${ROUTES.authCallback}`,
+    },
+  });
 }

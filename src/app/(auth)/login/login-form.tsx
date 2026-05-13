@@ -120,11 +120,10 @@ export function LoginForm() {
       <Button type="submit" className="w-full" disabled={isPending} size="lg">
         {isPending ? (
           <>
-            <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> 들어가는
-            중…
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> 로그인 중…
           </>
         ) : (
-          "관측 시작"
+          "로그인"
         )}
       </Button>
     </form>
