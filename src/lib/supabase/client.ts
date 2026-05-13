@@ -44,3 +44,16 @@ export async function signInWithKakao() {
     },
   });
 }
+
+/**
+ * 구글 OAuth 로그인을 시작한다.
+ */
+export async function signInWithGoogle() {
+  const supabase = createClient();
+  return supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: `${window.location.origin}${ROUTES.authCallback}`,
+    },
+  });
+}

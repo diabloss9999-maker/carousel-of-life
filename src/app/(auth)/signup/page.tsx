@@ -2,6 +2,7 @@
 import Link from "next/link";
 
 import { KakaoButton } from "@/components/auth/kakao-button";
+import { GoogleButton } from "@/components/auth/google-button";
 import { OrDivider } from "@/components/auth/or-divider";
 import {
   Card,
@@ -31,6 +32,7 @@ export default function SignupPage() {
       </CardHeader>
       <CardContent className="space-y-4">
         <KakaoButton label="카카오로 시작하기" />
+        <GoogleButton label="구글로 시작하기" />
         <OrDivider />
         <SignupForm />
         <p className="text-center text-sm text-muted-foreground">

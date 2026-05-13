@@ -2,6 +2,7 @@
 import Link from "next/link";
 
 import { KakaoButton } from "@/components/auth/kakao-button";
+import { GoogleButton } from "@/components/auth/google-button";
 import { OrDivider } from "@/components/auth/or-divider";
 import {
   Card,
@@ -30,6 +31,7 @@ export default function LoginPage() {
       </CardHeader>
       <CardContent className="space-y-4">
         <KakaoButton label="카카오로 로그인" />
+        <GoogleButton label="구글로 로그인" />
         <OrDivider />
         <LoginForm />
         <p className="text-center text-sm text-muted-foreground">
