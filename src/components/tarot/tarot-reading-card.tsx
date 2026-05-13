@@ -49,13 +49,13 @@ export function TarotReadingCard({ reading }: TarotReadingCardProps) {
     <Card className="app-surface">
       <CardHeader className="space-y-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="relative h-10 w-7 overflow-hidden rounded-lg shadow-sm flex-shrink-0">
-              <CharacterImage character={character} fill className="object-cover object-top" sizes="28px" />
+          <div className="flex items-center gap-3">
+            <div className="relative h-20 w-14 overflow-hidden rounded-lg shadow-md flex-shrink-0">
+              <CharacterImage character={character} fill className="object-cover object-top" sizes="56px" quality={90} />
             </div>
             <div>
-              <p className="font-mystic text-xs font-semibold text-foreground/80">{character.name}</p>
-              <p className="text-[10px] text-muted-foreground">{character.title}</p>
+              <p className="font-mystic text-sm font-semibold text-foreground">{character.name}</p>
+              <p className="text-xs text-muted-foreground">{character.title}</p>
             </div>
           </div>
           <p className="text-xs text-muted-foreground">

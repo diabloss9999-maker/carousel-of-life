@@ -82,12 +82,13 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
       <CardHeader className="space-y-3 pb-3">
         {/* 캐릭터 헤더 */}
         <div className="flex items-center gap-3">
-          <div className="relative h-12 w-8 flex-shrink-0 overflow-hidden rounded-lg shadow-md">
+          <div className="relative h-24 w-16 flex-shrink-0 overflow-hidden rounded-lg shadow-md">
             <CharacterImage
               character={character}
               fill
               className="object-cover object-top"
-              sizes="32px"
+              sizes="64px"
+              quality={90}
             />
           </div>
           <div>
