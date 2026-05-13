@@ -1,8 +1,9 @@
 "use client";
 
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { CharacterImage } from "@/components/shared/character-image";
-import { MessageCircle } from "lucide-react";
+import { Loader2, MessageCircle } from "lucide-react";
 
 import {
   Card,
@@ -36,11 +37,28 @@ const CHARACTER_BORDER: Record<string, string> = {
 
 export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
   const label = CATEGORY_LABEL[fortune.category as FortuneCategoryId] ?? "운세";
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   // 날짜 기반으로 오늘의 캐릭터 결정
   const charId = getTodayCharacter(fortune.fortuneDate) as "child" | "witch" | "sage";
   const character = CHARACTERS[charId];
   const borderColor = CHARACTER_BORDER[charId] ?? "ring-border/40";
+
+  function handleChat() {
+    if (isPending) return;
+    startTransition(async () => {
+      const res = await fetch("/api/chat/sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ character: charId }),
+      });
+      const json = await res.json();
+      if (json.ok) {
+        router.push(`/chat/${json.data.sessionId}`);
+      }
+    });
+  }
 
   function buildShareImageUrl(): string {
     const params = new URLSearchParams({
@@ -102,11 +120,20 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
           <p className="text-xs text-muted-foreground leading-relaxed">
             {character.name}에게 더 물어보고 싶어?
           </p>
-          <Button asChild size="sm" variant="outline" className="shrink-0">
-            <Link href="/chat">
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            className="shrink-0"
+            onClick={handleChat}
+            disabled={isPending}
+          >
+            {isPending ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
+            ) : (
               <MessageCircle className="h-3.5 w-3.5" aria-hidden />
-              대화하기
-            </Link>
+            )}
+            대화하기
           </Button>
         </div>
 
