@@ -153,7 +153,7 @@ function ValuePropsSection() {
       icon: MessagesSquare,
       title: "AI 주술사와의 대화",
       body:
-        "단순 풀이가 아니라 여섯 명의 주술사가 각자의 방식으로 답해줍니다.",
+        "단순 풀이가 아니라 아홉 명의 주술사가 각자의 방식으로 답해줍니다. 이세계의 카드, 동양의 사주·천기, 북방의 룬까지.",
     },
     {
       icon: Sparkles,

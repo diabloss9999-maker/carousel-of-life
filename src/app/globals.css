@@ -616,7 +616,7 @@ body.ritual-dawn {
   filter: brightness(0.96) saturate(0.92);
 }
 
-/* ===== 존재 활성 테마 — 카드 border 미세 색감 (6명) ===== */
+/* ===== 존재 활성 테마 — 카드 border 미세 색감 (9명) ===== */
 .entity-luna .app-surface { border-color: rgba(180, 150, 230, 0.28) !important; }
 .entity-rael .app-surface { border-color: rgba(200, 220, 255, 0.26) !important; }
 .entity-gael .app-surface {
@@ -646,6 +646,35 @@ body.ritual-dawn {
   94% { transform: translateY(-1px); }
   96% { transform: translateY(0.5px); }
   98% { transform: translateY(0); }
+}
+
+/* 외르문드 — 차가운 푸른 빛 / 신탁의 거리감 */
+.entity-ormund .app-surface {
+  border-color: rgba(160, 200, 240, 0.26) !important;
+  background:
+    linear-gradient(180deg, rgba(180, 210, 255, 0.06), rgba(60, 90, 150, 0.04)),
+    rgba(255, 255, 255, 0.08) !important;
+}
+
+/* 비요른 — 어두운 흙·가죽 / 야성 */
+.entity-bjorn .app-surface {
+  border-color: rgba(160, 130, 100, 0.24) !important;
+  background:
+    linear-gradient(180deg, rgba(110, 90, 70, 0.06), rgba(60, 50, 40, 0.04)),
+    rgba(255, 255, 255, 0.08) !important;
+}
+
+/* 헬가 — 룬의 푸른빛 / 미세한 빛 떨림 */
+.entity-helga .app-surface {
+  border-color: rgba(150, 160, 230, 0.26) !important;
+  background:
+    linear-gradient(180deg, rgba(140, 160, 240, 0.06), rgba(80, 90, 180, 0.04)),
+    rgba(255, 255, 255, 0.08) !important;
+  animation: helga-rune-flicker 9s infinite;
+}
+@keyframes helga-rune-flicker {
+  0%, 88%, 100% { box-shadow: none; }
+  90%, 92% { box-shadow: 0 0 12px rgba(140, 160, 240, 0.15); }
 }
 
 /* 접근성 */

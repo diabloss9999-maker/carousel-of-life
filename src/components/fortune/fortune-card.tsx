@@ -16,8 +16,11 @@ import { SaveImageButton } from "@/components/shared/save-image-button";
 import { ShareButton } from "@/components/shared/share-button";
 import type { DailyFortune } from "@/db/schema";
 import { FORTUNE_CATEGORIES, type FortuneCategoryId } from "@/lib/constants";
-import { CHARACTERS } from "@/lib/chat/characters";
-import { getTodayCharacter } from "@/lib/daily-question/rotation";
+import { CHARACTERS, type CharacterId } from "@/lib/chat/characters";
+import {
+  getTodayCharacter,
+  getTodayCharacterByCategory,
+} from "@/lib/daily-question/rotation";
 
 interface FortuneCardProps {
   fortune: DailyFortune;
@@ -28,20 +31,40 @@ const CATEGORY_LABEL: Record<FortuneCategoryId, string> = Object.fromEntries(
   FORTUNE_CATEGORIES.map((c) => [c.id, c.label]),
 ) as Record<FortuneCategoryId, string>;
 
-/** 캐릭터별 테두리 색상 */
-const CHARACTER_BORDER: Record<string, string> = {
-  child: "ring-red-800/30",
-  witch: "ring-blue-800/30",
-  sage:  "ring-amber-700/30",
+/** 캐릭터별 테두리 색상 (9명) */
+const CHARACTER_BORDER: Record<CharacterId, string> = {
+  child:      "ring-red-800/30",
+  witch:      "ring-blue-800/30",
+  sage:       "ring-amber-700/30",
+  shaman:     "ring-rose-800/30",
+  taoist:     "ring-cyan-800/30",
+  dokkaebi:   "ring-purple-800/30",
+  hunter:     "ring-stone-700/30",
+  runeshaman: "ring-indigo-700/30",
+  god:        "ring-sky-700/30",
 };
+
+/**
+ * 운세 카테고리에 따라 해설 주술사를 결정.
+ * - zodiac (별자리)          → 북유럽
+ * - chinese_zodiac (십이간지) → 동양
+ * - 그 외                    → 9명 전체 풀
+ *
+ * fortunes/service.ts 의 캐릭터 분기 로직과 정확히 동일하게 유지.
+ */
+function pickFortuneCharacter(category: string, date: string): CharacterId {
+  if (category === "zodiac") return getTodayCharacterByCategory("북유럽", date);
+  if (category === "chinese_zodiac") return getTodayCharacterByCategory("동양", date);
+  return getTodayCharacter(date);
+}
 
 export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
   const label = CATEGORY_LABEL[fortune.category as FortuneCategoryId] ?? "운세";
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  // 날짜 기반으로 오늘의 캐릭터 결정
-  const charId = getTodayCharacter(fortune.fortuneDate) as "child" | "witch" | "sage";
+  // 운세 카테고리·날짜 기반으로 해설 주술사 결정 (생성 시점 로직과 동일)
+  const charId = pickFortuneCharacter(fortune.category, fortune.fortuneDate);
   const character = CHARACTERS[charId];
   const borderColor = CHARACTER_BORDER[charId] ?? "ring-border/40";
 

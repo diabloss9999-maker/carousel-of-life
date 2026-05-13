@@ -16,7 +16,7 @@ import { sajuDeepAiSchema, type SajuDeepAiOutput } from "@/lib/ai/types";
 import { AI_LIMITS, AI_MODELS } from "@/lib/constants";
 import { ensureSajuCalculated } from "@/lib/saju/calculate";
 import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
-import { getTodayCharacter } from "@/lib/daily-question/rotation";
+import { getTodayCharacterByCategory } from "@/lib/daily-question/rotation";
 
 export interface SajuDeepReading extends SajuDeepAiOutput {
   model: string;
@@ -80,7 +80,7 @@ export async function getOrCreateDeepReading(
       userPrompt: buildSajuDeepPrompt(withSaju),
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.sajuDeepMaxTokens,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacterByCategory("동양")],
     });
   } catch (e) {
     return {

@@ -21,7 +21,7 @@ import {
   type RuneReading,
 } from "@/db/schema";
 import { CHARACTER_PROSE_VOICE } from "@/lib/ai/character-voice";
-import { getTodayCharacter } from "@/lib/daily-question/rotation";
+import { getTodayCharacterByCategory } from "@/lib/daily-question/rotation";
 import { generateMarkdown } from "@/lib/ai/generate";
 import { buildUserContext } from "@/lib/ai/prompts";
 import { AI_MODELS } from "@/lib/constants";
@@ -219,7 +219,7 @@ ${spreadInstruction}
       userPrompt,
       model: AI_MODELS.fast,
       maxTokens: MAX_TOKENS[opts.spreadType],
-      systemSuffix: CHARACTER_PROSE_VOICE[getTodayCharacter()],
+      systemSuffix: CHARACTER_PROSE_VOICE[getTodayCharacterByCategory("북유럽")],
     });
   } catch (e) {
     return {

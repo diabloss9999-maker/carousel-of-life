@@ -32,7 +32,7 @@ import { ensureSajuCalculated } from "@/lib/saju/calculate";
 import { drawCards, type DrawnCard } from "@/lib/tarot/draw";
 import { checkAndIncrementQuota } from "@/lib/usage/quota";
 import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
-import { getTodayCharacter } from "@/lib/daily-question/rotation";
+import { getTodayCharacterByCategory } from "@/lib/daily-question/rotation";
 
 export type TarotResult =
   | {
@@ -92,7 +92,7 @@ export async function createSingleTarot(opts: {
       }),
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.tarotMaxTokens,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacterByCategory("이세계")],
     });
   } catch (e) {
     return {
@@ -168,7 +168,7 @@ export async function createThreeCardTarot(opts: {
       }),
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.tarotMaxTokens * 2,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacterByCategory("이세계")],
     });
   } catch (e) {
     return {

@@ -44,7 +44,7 @@ export default async function ChatPage() {
           존재와의 마주침
         </h1>
         <p className="text-muted-foreground">
-          여섯 주술사 중 한 명을 골라. 이세계든 동양이든, 그들은 이미 당신의 사주를 알고 있어.
+          아홉 주술사 중 한 명을 골라. 이세계의 카드, 동양의 사주·천기, 북방의 룬 — 어느 결을 가진 자든 너의 운명을 이미 알고 있어.
         </p>
       </header>
 
@@ -55,7 +55,7 @@ export default async function ChatPage() {
         tier={tier}
       />
 
-      <CharacterLoreCard />
+      <CharacterLoreCard affinities={affinities} />
 
       <Card className="app-surface">
         <CardContent className="pt-5">

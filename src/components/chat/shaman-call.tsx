@@ -63,7 +63,7 @@ const CALL_LINES: Record<CharacterId, readonly string[]> = {
 const CHARACTER_IDS: CharacterId[] = [
   "child", "witch", "sage",
   "shaman", "taoist", "dokkaebi",
-  "hunter", "runeshaman", "god",
+  "god", "hunter", "runeshaman",
 ];
 
 function pickCharacter(): CharacterId {

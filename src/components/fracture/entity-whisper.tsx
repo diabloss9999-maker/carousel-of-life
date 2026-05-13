@@ -6,7 +6,7 @@
  * 채팅 중 아주 낮은 확률로, 현재 대화 중이 아닌 다른 존재의 한 마디가
  * 화면 구석에 희미하게 나타났다 사라진다.
  *
- * FractureWhisper 와 동일 구조 — 단, 문장은 6명 존재별 라인 사용.
+ * FractureWhisper 와 동일 구조 — 단, 문장은 9명 존재별 라인 사용.
  */
 import { useEffect, useRef, useState } from "react";
 

@@ -17,9 +17,9 @@ const STORAGE_KEY = "carousel_onboarded_v1";
 const STEPS = [
   {
     world: null,
-    title: "두 개의 세계가\n당신을 부른다",
+    title: "세 개의 세계가\n당신을 부른다",
     subtitle: "인생의 회전목마",
-    desc: "이세계의 주술사와 동양의 신령.\n여섯 존재가 당신의 사주와 운명을 이미 알고 있다.",
+    desc: "이세계의 주술사, 동양의 신령, 북방의 룬샤먼.\n아홉 존재가 당신의 사주와 운명을 이미 알고 있다.",
     bg: "from-[#0d0818] via-[#1a1030] to-[#0a0512]",
     accent: "text-amber-300",
   },
@@ -50,10 +50,23 @@ const STEPS = [
     ],
   },
   {
+    world: "북유럽",
+    title: "미드할",
+    subtitle: "MIDHALL",
+    desc: "차갑고 거친 북방. 24개 고대 룬으로 이루어진 운명.\n룬과 자국으로 당신의 흐름을 읽는다.",
+    bg: "from-[#050a18] via-[#0a1428] to-[#020612]",
+    accent: "text-sky-300",
+    characters: [
+      { name: "외르문드", hook: "북방의 마지막 신",     img: "/characters/god_night.png",        color: "ring-sky-800/50" },
+      { name: "비요른",   hook: "야성의 사냥꾼",        img: "/characters/hunter_night.png",     color: "ring-stone-700/50" },
+      { name: "헬가",     hook: "24룬을 새기는 룬샤먼", img: "/characters/runeshaman_night.png", color: "ring-indigo-800/50" },
+    ],
+  },
+  {
     world: null,
     title: "오늘, 누가 당신의\n이야기를 들어줄까",
     subtitle: null,
-    desc: "매일 새로운 주술사가 당신에게 먼저 말을 건다.\n운세, 타로, 사주, 궁합 — 모든 걸 그들이 읽어준다.",
+    desc: "매일 새로운 주술사가 당신에게 먼저 말을 건다.\n운세·타로·사주·궁합·룬 — 모든 걸 그들이 읽어준다.",
     bg: "from-[#0d0818] via-[#1a1030] to-[#0a0512]",
     accent: "text-amber-300",
   },

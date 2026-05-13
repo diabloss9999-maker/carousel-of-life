@@ -189,7 +189,7 @@ export const DEFAULT_CHARACTER: CharacterId = "witch";
 export const CHARACTERS_BY_CATEGORY: Record<CharacterCategory, CharacterId[]> = {
   이세계: ["child", "witch", "sage"],
   동양:   ["shaman", "taoist", "dokkaebi"],
-  북유럽: ["hunter", "runeshaman", "god"],
+  북유럽: ["god", "hunter", "runeshaman"],
 };
 
 /** 캐릭터별 AI 시스템 프롬프트 생성. */

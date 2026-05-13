@@ -21,7 +21,7 @@ import {
   type Profile,
 } from "@/db/schema";
 import { CHARACTER_CARD_VOICE, CHARACTER_PROSE_VOICE } from "@/lib/ai/character-voice";
-import { getTodayCharacter } from "@/lib/daily-question/rotation";
+import { getTodayCharacterByCategory } from "@/lib/daily-question/rotation";
 import { generateJson, generateMarkdown } from "@/lib/ai/generate";
 import { buildUserContext } from "@/lib/ai/prompts";
 import { lenormandSingleAiSchema } from "@/lib/ai/types";
@@ -178,7 +178,7 @@ ${spreadInstruction}
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.fortuneMaxTokens,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacterByCategory("이세계")],
     });
   } catch (e) {
     return {
@@ -282,7 +282,7 @@ ${CARD_DEFS}
       userPrompt,
       model: AI_MODELS.fast,
       maxTokens: 1500,
-      systemSuffix: CHARACTER_PROSE_VOICE[getTodayCharacter()],
+      systemSuffix: CHARACTER_PROSE_VOICE[getTodayCharacterByCategory("이세계")],
     });
   } catch (e) {
     return {
@@ -416,7 +416,7 @@ ${CARD_DEFS}
       userPrompt,
       model: AI_MODELS.fast,
       maxTokens: 2000,
-      systemSuffix: CHARACTER_PROSE_VOICE[getTodayCharacter()],
+      systemSuffix: CHARACTER_PROSE_VOICE[getTodayCharacterByCategory("이세계")],
     });
   } catch (e) {
     return {

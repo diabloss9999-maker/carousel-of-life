@@ -33,7 +33,7 @@ function pickRandomCharacter(): CharacterId {
   const ids: CharacterId[] = [
     "child", "witch", "sage",
     "shaman", "taoist", "dokkaebi",
-    "hunter", "runeshaman", "god",
+    "god", "hunter", "runeshaman",
   ];
   return ids[Math.floor(Math.random() * ids.length)];
 }
