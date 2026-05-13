@@ -8,7 +8,7 @@
 export const FREE_DAILY_LIMITS = {
   fortune: 2,
   tarot: 1,
-  chat: 5,
+  chat: 10,
 } as const;
 
 /** 라이트 구독자 일일 한도 (₩4,900). */
