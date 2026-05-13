@@ -113,7 +113,7 @@ export default function HomePage() {
         </div>
 
         <p className="text-xs text-foreground/85 drop-shadow-sm">
-          매일 무료로 운세 2회, 타로 2장, 주술사 문답 3회를 받을 수 있어요.
+          매일 무료로 운세 2회, 타로 2장, 주술사 문답 10회를 받을 수 있어요.
         </p>
 
         <Link

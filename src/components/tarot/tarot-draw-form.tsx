@@ -102,13 +102,13 @@ export function TarotDrawForm() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* 부채꼴로 펼쳐진 카드 5장 */}
-        <div className="relative mx-auto h-[140px] sm:h-[150px] w-full max-w-md">
+        {/* 부채꼴로 펼쳐진 카드 5장 — 우측 3장 뽑기 카드 영역과 시각적 균형 맞춤 */}
+        <div className="tarot-fan-lg relative mx-auto h-[220px] sm:h-[260px] md:h-[290px] w-full max-w-md mb-4">
           {Array.from({ length: FAN_CARD_COUNT }).map((_, i) => (
             <div
               key={i}
               className={cn(
-                "tarot-card-fan w-[72px] sm:w-[80px]",
+                "tarot-card-fan w-24 sm:w-32 md:w-36",
                 phase === "shuffling" && "shuffling",
                 phase === "selected" && i === SELECTED_CARD_INDEX && "selected",
                 phase === "pending" && i === SELECTED_CARD_INDEX && "selected",

@@ -20,9 +20,9 @@ export const metadata: Metadata = {
 /**
  * Supabase user_metadata 에서 표시 이름 후보를 추출한다.
  *
- * - 이메일 가입: `display_name` 로 저장됨 (signupAction 참고).
  * - 카카오 OAuth: 카카오 프로필 닉네임이 `name` 또는 `full_name` 으로 저장됨.
- * - 다른 OAuth 도 비슷한 키를 쓰므로 폴백 체인으로 처리.
+ * - 구글 OAuth: `full_name` 또는 `name` 키로 저장됨.
+ * - 폴백 체인으로 처리.
  */
 function pickDisplayName(meta: Record<string, unknown> | null | undefined): string {
   if (!meta) return "";

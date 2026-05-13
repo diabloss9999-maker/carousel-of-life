@@ -3,6 +3,7 @@ import { Toaster } from "sonner";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { TimeAwareBg } from "@/components/layout/time-aware-bg";
+import { AmbientTrack } from "@/components/effects/ambient-track";
 import { defaultMetadata } from "@/config/site";
 
 import "./globals.css";
@@ -52,6 +53,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          {/* 배경 BGM — 시간대에 따라 낮/밤 트랙 자동 교차 (UI 없음, 볼륨 0.18) */}
+          <AmbientTrack />
           <Toaster
             position="top-center"
             theme="dark"

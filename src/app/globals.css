@@ -516,6 +516,29 @@ body.ritual-night .ritual-chat-textarea {
 .tarot-card-fan:nth-child(4) { --card-rot:  10deg; --card-ty: -4px; left: calc(50% + 20px);  transform: rotate(10deg)  translateY(-4px); z-index: 2; }
 .tarot-card-fan:nth-child(5) { --card-rot:  20deg; --card-ty: -8px; left: calc(50% + 100px); transform: rotate(20deg)  translateY(-8px); z-index: 1; }
 
+/* 큰 변형 — 우측 3장 뽑기 카드 영역과 시각적 균형 맞춤 (단일 카드 뽑기 폼에서 사용) */
+.tarot-fan-lg .tarot-card-fan:nth-child(1) { left: calc(50% - 240px); transform: rotate(-22deg) translateY(-10px); }
+.tarot-fan-lg .tarot-card-fan:nth-child(2) { left: calc(50% - 140px); transform: rotate(-11deg) translateY(-5px); }
+.tarot-fan-lg .tarot-card-fan:nth-child(3) { left: calc(50% - 60px);  transform: rotate(0deg)   translateY(0); }
+.tarot-fan-lg .tarot-card-fan:nth-child(4) { left: calc(50% + 20px);  transform: rotate(11deg)  translateY(-5px); }
+.tarot-fan-lg .tarot-card-fan:nth-child(5) { left: calc(50% + 120px); transform: rotate(22deg)  translateY(-10px); }
+
+@media (min-width: 640px) {
+  .tarot-fan-lg .tarot-card-fan:nth-child(1) { left: calc(50% - 280px); }
+  .tarot-fan-lg .tarot-card-fan:nth-child(2) { left: calc(50% - 160px); }
+  .tarot-fan-lg .tarot-card-fan:nth-child(3) { left: calc(50% - 70px); }
+  .tarot-fan-lg .tarot-card-fan:nth-child(4) { left: calc(50% + 20px); }
+  .tarot-fan-lg .tarot-card-fan:nth-child(5) { left: calc(50% + 140px); }
+}
+
+@media (min-width: 768px) {
+  .tarot-fan-lg .tarot-card-fan:nth-child(1) { left: calc(50% - 320px); }
+  .tarot-fan-lg .tarot-card-fan:nth-child(2) { left: calc(50% - 180px); }
+  .tarot-fan-lg .tarot-card-fan:nth-child(3) { left: calc(50% - 80px); }
+  .tarot-fan-lg .tarot-card-fan:nth-child(4) { left: calc(50% + 20px); }
+  .tarot-fan-lg .tarot-card-fan:nth-child(5) { left: calc(50% + 160px); }
+}
+
 .tarot-card-fan.shuffling {
   animation: tarot-shuffle 0.35s ease-in-out 3 both;
 }

@@ -1,9 +1,7 @@
 ﻿import type { Metadata } from "next";
-import Link from "next/link";
 
 import { KakaoButton } from "@/components/auth/kakao-button";
 import { GoogleButton } from "@/components/auth/google-button";
-import { OrDivider } from "@/components/auth/or-divider";
 import {
   Card,
   CardContent,
@@ -11,8 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ROUTES } from "@/lib/constants";
-import { LoginForm } from "./login-form";
 
 export const metadata: Metadata = {
   title: "관측 시작",
@@ -29,19 +25,11 @@ export default function LoginPage() {
           경계가 당신을 기억하고 있어.
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3">
         <KakaoButton label="카카오로 로그인" />
         <GoogleButton label="구글로 로그인" />
-        <OrDivider />
-        <LoginForm />
-        <p className="text-center text-sm text-muted-foreground">
-          아직 계정이 없나요?{" "}
-          <Link
-            href={ROUTES.signup}
-            className="font-medium text-primary hover:underline"
-          >
-            가입하기
-          </Link>
+        <p className="pt-2 text-center text-xs text-muted-foreground">
+          첫 방문이라면 그대로 가입돼요.
         </p>
       </CardContent>
     </Card>
