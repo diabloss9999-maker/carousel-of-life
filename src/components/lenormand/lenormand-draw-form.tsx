@@ -101,7 +101,7 @@ export function LenormandDrawForm({ subscribed }: Props) {
       </CardHeader>
       <CardContent className="space-y-4">
         {/* 부채꼴 카드 5장 */}
-        <div className="relative mx-auto h-[220px] w-full max-w-md">
+        <div className="relative mx-auto h-[140px] sm:h-[150px] w-full max-w-md">
           {Array.from({ length: FAN_CARD_COUNT }).map((_, i) => (
             <div
               key={i}
