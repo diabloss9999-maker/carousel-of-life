@@ -16,13 +16,13 @@ import { StudyTips } from "@/components/fortune/study-tips";
 
 import Link from "next/link";
 import type { Route } from "next";
-import { BookMarked, Globe2, Flame } from "lucide-react";
+import { BookMarked, Globe2, Flame, Gift } from "lucide-react";
 import { GenerateFortuneForm } from "@/components/fortune/generate-fortune-form";
 import { QuotaBar } from "@/components/fortune/quota-bar";
 import { TodaySummary } from "@/components/fortune/today-summary";
 import { ZodiacBanner } from "@/components/fortune/zodiac-banner";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
-import { StreakBadge } from "@/components/streak/streak-badge";
+import { StreakNotifier } from "@/components/streak/streak-notifier";
 import type { DailyFortune } from "@/db/schema";
 import { requireProfile } from "@/lib/auth/get-user";
 import {
@@ -113,24 +113,22 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
   return (
     <div className="space-y-8">
       <OnboardingModal />
+      <StreakNotifier checkIn={streakResult} />
       <header className="space-y-3">
-        <div className="flex items-center justify-between gap-2">
-          <div>
-            <CrackAtmosphere
-              crackLevel={crackData.level}
-              todayStr={today}
-              pageName="오늘의 흐름"
-            />
-            {(() => {
-              const hidden = getHomeHiddenText(crackData.level);
-              return hidden ? (
-                <p className="text-[9px] text-muted-foreground/50 tracking-widest mt-0.5 font-mystic italic">
-                  {hidden}
-                </p>
-              ) : null;
-            })()}
-          </div>
-          <StreakBadge checkIn={streakResult} />
+        <div>
+          <CrackAtmosphere
+            crackLevel={crackData.level}
+            todayStr={today}
+            pageName="오늘의 흐름"
+          />
+          {(() => {
+            const hidden = getHomeHiddenText(crackData.level);
+            return hidden ? (
+              <p className="text-[9px] text-muted-foreground/50 tracking-widest mt-0.5 font-mystic italic">
+                {hidden}
+              </p>
+            ) : null;
+          })()}
         </div>
         <div>
           <h1
@@ -165,15 +163,26 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           <span className="font-mystic text-sm font-semibold">세계</span>
           <span className="text-[10px] text-muted-foreground leading-tight">오늘의 흐름</span>
         </Link>
-        <div className="app-surface rounded-xl p-3 sm:p-4 flex flex-col items-start gap-1.5">
-          <Flame className="h-4 w-4 text-accent" aria-hidden />
+        <Link
+          href={ROUTES.history}
+          className="app-surface rounded-xl p-3 sm:p-4 flex flex-col items-start gap-1.5 transition-transform hover:-translate-y-0.5"
+        >
+          <div className="flex items-center gap-2 w-full">
+            <Flame className="h-4 w-4 text-accent" aria-hidden />
+            {streakResult.bonusGachaCredits > 0 && (
+              <span className="ml-auto flex items-center gap-0.5 rounded-full bg-primary/15 px-1.5 py-0.5 text-[9px] font-bold text-primary">
+                <Gift className="h-2.5 w-2.5" aria-hidden />
+                +{streakResult.bonusGachaCredits}
+              </span>
+            )}
+          </div>
           <span className="font-mystic text-sm font-semibold tabular-nums">
             {streakResult.currentStreak}일 연속
           </span>
           <span className="text-[10px] text-muted-foreground leading-tight">
             {streakResult.currentStreak >= 3 ? "흐름이 이어지고 있어요" : "기록이 쌓이고 있어요"}
           </span>
-        </div>
+        </Link>
       </div>
 
       <QuotaBar

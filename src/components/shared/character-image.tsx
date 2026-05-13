@@ -46,6 +46,13 @@ export function CharacterImage({
   const src = useCharacterImage(character);
   const imageAlt = alt ?? character.name;
 
+  // 새 이미지들은 비율이 다르므로 (1106x1422 vs 600x900) cover로 통일
+  const mergedStyle: React.CSSProperties = {
+    objectFit: "cover",
+    objectPosition: "center top",
+    ...style,
+  };
+
   if (fill) {
     return (
       <Image
@@ -56,7 +63,7 @@ export function CharacterImage({
         sizes={sizes}
         priority={priority}
         quality={quality}
-        style={style}
+        style={mergedStyle}
       />
     );
   }
@@ -71,7 +78,7 @@ export function CharacterImage({
       sizes={sizes}
       priority={priority}
       quality={quality}
-      style={style}
+      style={mergedStyle}
     />
   );
 }
