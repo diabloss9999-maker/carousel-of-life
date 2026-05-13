@@ -11,7 +11,7 @@
  *   3) 세계관별 진실 루트 + 최종 챕터
  *      - 해당 세계 3 캐릭터 전원 Lv.10 도달 시 해금
  */
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDown, Lock } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -368,6 +368,8 @@ function CharacterStoryAccordion({
   onToggle,
 }: CharacterStoryAccordionProps) {
   const [openChapter, setOpenChapter] = useState<number | null>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const wasOpenRef = useRef(isOpen);
 
   const character = CHARACTERS[characterId];
   const { level, unlockedCount } = getCharacterStatus(
@@ -378,8 +380,29 @@ function CharacterStoryAccordion({
   const chapters = CHARACTER_STORIES[characterId];
   const hasContent = chapters.length > 0;
 
+  // 다른 캐릭터에서 이 캐릭터로 전환됐을 때 레이아웃 점프 방지 —
+  // 닫혀있다가 열리는 순간 헤더가 viewport 상단에 오도록 부드럽게 스크롤.
+  useEffect(() => {
+    if (isOpen && !wasOpenRef.current && rootRef.current) {
+      const headerY = rootRef.current.getBoundingClientRect().top;
+      // 헤더가 이미 화면 상단 근처(상단 120px 이내)면 굳이 스크롤하지 않음
+      if (headerY < 0 || headerY > 240) {
+        rootRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+    wasOpenRef.current = isOpen;
+  }, [isOpen]);
+
+  // 닫힐 때 내부 챕터 상태 초기화 — 다시 열었을 때 깔끔한 시작.
+  useEffect(() => {
+    if (!isOpen) setOpenChapter(null);
+  }, [isOpen]);
+
   return (
-    <div className="rounded-xl border border-white/10 bg-white/3 overflow-hidden">
+    <div
+      ref={rootRef}
+      className="rounded-xl border border-white/10 bg-white/3 overflow-hidden scroll-mt-20"
+    >
       <button
         type="button"
         onClick={onToggle}
