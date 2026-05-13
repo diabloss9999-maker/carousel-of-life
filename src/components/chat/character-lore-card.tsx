@@ -179,6 +179,10 @@ export function CharacterLoreCard({
   adminMode = false,
 }: CharacterLoreCardProps) {
   const [openWorldIdx, setOpenWorldIdx] = useState<number | null>(null);
+  /** 동시에 한 캐릭터의 스토리만 펼치도록 부모에서 단일 상태로 관리. */
+  const [openCharacterId, setOpenCharacterId] = useState<CharacterId | null>(
+    null,
+  );
 
   return (
     <div className="space-y-3">
@@ -312,6 +316,12 @@ export function CharacterLoreCard({
                       affinities={affinities}
                       accent={deco.accent}
                       adminMode={adminMode}
+                      isOpen={openCharacterId === id}
+                      onToggle={() =>
+                        setOpenCharacterId(
+                          openCharacterId === id ? null : id,
+                        )
+                      }
                     />
                   ))}
                 </div>
@@ -342,6 +352,9 @@ interface CharacterStoryAccordionProps {
   affinities: Record<string, number>;
   accent: string;
   adminMode: boolean;
+  /** 부모에서 단일 캐릭터만 펼치도록 제어한다. */
+  isOpen: boolean;
+  onToggle: () => void;
 }
 
 function CharacterStoryAccordion({
@@ -349,8 +362,9 @@ function CharacterStoryAccordion({
   affinities,
   accent,
   adminMode,
+  isOpen,
+  onToggle,
 }: CharacterStoryAccordionProps) {
-  const [open, setOpen] = useState(false);
   const [openChapter, setOpenChapter] = useState<number | null>(null);
 
   const character = CHARACTERS[characterId];
@@ -366,7 +380,7 @@ function CharacterStoryAccordion({
     <div className="rounded-xl border border-white/10 bg-white/3 overflow-hidden">
       <button
         type="button"
-        onClick={() => setOpen(!open)}
+        onClick={onToggle}
         className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left"
       >
         <div className="flex items-center gap-3">
@@ -384,13 +398,13 @@ function CharacterStoryAccordion({
           <ChevronDown
             className={cn(
               "h-3.5 w-3.5 text-muted-foreground/50 transition-transform",
-              open && "rotate-180",
+              isOpen && "rotate-180",
             )}
           />
         </div>
       </button>
 
-      {open && (
+      {isOpen && (
         <div className="px-4 pb-4 pt-1 space-y-1.5 border-t border-white/5">
           {!hasContent ? (
             <p className="text-xs text-muted-foreground/60 italic py-3">
