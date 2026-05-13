@@ -30,7 +30,7 @@ export default function SignupPage() {
       <CardContent className="space-y-6">
         <SignupForm />
         <p className="text-center text-sm text-muted-foreground">
-          이미 경계를 알고 있나요?{" "}
+          이미 계정이 있나요?{" "}
           <Link
             href={ROUTES.login}
             className="font-medium text-primary hover:underline"

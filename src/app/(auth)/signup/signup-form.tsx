@@ -25,7 +25,7 @@ export function SignupForm() {
 
     if (pw !== pw2) {
       e.preventDefault();
-      setPwError("비밀번호가 일치하지 않아.");
+      setPwError("비밀번호가 일치하지 않습니다.");
       return;
     }
     setPwError(null);
@@ -108,10 +108,10 @@ export function SignupForm() {
       <Button type="submit" className="w-full" disabled={isPending} size="lg">
         {isPending ? (
           <>
-            <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> 이름을 새기는 중…
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> 가입 중…
           </>
         ) : (
-          "경계에 이름 남기기"
+          "가입하기"
         )}
       </Button>
     </form>

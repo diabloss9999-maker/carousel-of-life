@@ -29,7 +29,7 @@ export default function LoginPage() {
       <CardContent className="space-y-6">
         <LoginForm />
         <p className="text-center text-sm text-muted-foreground">
-          아직 흔적을 남기지 않았나요?{" "}
+          아직 계정이 없나요?{" "}
           <Link
             href={ROUTES.signup}
             className="font-medium text-primary hover:underline"
