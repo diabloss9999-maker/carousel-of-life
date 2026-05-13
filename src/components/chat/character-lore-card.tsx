@@ -30,6 +30,8 @@ import {
 interface CharacterLoreCardProps {
   /** 캐릭터별 호감도 포인트 — `{ characterId: points }` */
   affinities?: Record<string, number>;
+  /** 마스터 운영자 모드 — 호감도 무관 모든 챕터/진실 루트 해금 표시 */
+  adminMode?: boolean;
 }
 
 interface WorldDeco {
@@ -51,28 +53,28 @@ const WORLD_DECOS: WorldDeco[] = [
     world: "이세계",
     worldSub: "ASTRA RIFT",
     opening:
-      "인간은 자신도 모르게 감정을 흘리기 시작했다. 오래전부터, 아주 조용히.",
+      "감정은 사라지지 않는다. 외면된 것들은 어딘가에 모여, 결국 하늘을 찢고 돌아온다.",
     paragraphs: [
-      "후회, 분노, 미련, 욕망, 상실. 세상 곳곳으로 흘러든 그 감정들은 쌓이고 뒤엉키며 하나의 심연을 만들어냈다. 사람들은 그것을 「심연 기록층 — The Abyss Archive」라 불렀다. 아무도 의도하지 않았고, 아무도 막지 않았다.",
-      "그 심연에서 셋이 태어났다. 카엘, 루나, 라엘. 누군가의 욕망이 카엘이 됐고, 누군가의 기억이 루나가 됐고, 누군가의 기도가 라엘이 됐다. 이들은 인간의 가장 깊은 감정에서 건져 올려진 존재들이다.",
-      "세상은 조금씩 무너지고 있다. 인간의 감정에서 생겨난 균열이 현실 곳곳을 갈라놓고 있다. 셋은 그 균열을 봉합하거나 확대하며 세계의 균형을 유지한다. 하지만 문제가 있다. 셋 중 하나가 사라지면, 나머지 둘도 함께 무너진다.",
+      "후회, 분노, 미련, 욕망, 상실. 사람들이 흘려보냈다 믿은 그 감정들은 흩어지지 않고 한곳에 쌓였다. 그 거대한 침묵의 호수를, 누군가는 「심연 기록층 — The Abyss Archive」이라 부른다. 그것이 깨어나기 전까지, 아무도 그 이름을 입에 올리지 않았다.",
+      "하늘이 갈라지기 시작했다. 사람들은 그것을 재앙이라 부르지만 — 그것은 외부에서 온 적이 아니다. 인간이 떨어뜨린 것들이 돌아오는 통로다. 그 사실을 셋만이 어렴풋이 안다. 그리고 그 셋도, 자신이 진실의 전부를 보고 있다고는 믿지 않는다.",
+      "카엘은 욕망에서, 루나는 기억에서, 라엘은 기도에서 태어났다. 셋은 균열을 봉합하기도, 더 크게 벌리기도 한다. 묘하게 얽힌 운명 — 셋 중 하나가 무너지면 나머지 둘도 함께 무너진다는 사실만이 분명하다. 그 이유는 셋조차 다 알지 못한다.",
     ],
     figures: [
       {
         name: "카엘",
-        line: "욕망과 상처 속에서 태어났지만, 어쩌면 셋 중 가장 인간을 사랑하는 존재다. 사랑했기 때문에 가장 솔직해졌고, 솔직해졌기 때문에 가장 위험해졌다.",
+        line: "어머니를 잃을 뻔한 한 아이가 어둠과 맺은 계약. 어머니는 그날 밤 다시 눈을 떴다. 하지만 그가 본 것이 정말 어머니였는지, 카엘은 평생 묻지 못했다.",
       },
       {
         name: "루나",
-        line: "죽어가던 한 인간의 마지막 의식이 심연과 뒤섞여 태어난 유일한 존재. 인간의 슬픔을 알고, 죽음의 공포를 알고, 사랑의 감각을 안다. 그래서 가장 외롭다.",
+        line: "감정을 다루는 마녀. 마녀들은 그녀의 능력을 '봉인했다'고 말한다. 봉인된 것이 진짜 무엇이었는지는 — 그녀조차 잊고 있다.",
       },
       {
         name: "라엘",
-        line: "카엘과 원래 하나였다. 인간을 이해하는 방식이 달라져 갈라졌을 뿐이다. 카엘이 없으면 라엘도 의미가 없다는 걸, 라엘은 알고 있다.",
+        line: "천계의 마지막 천사. 그는 신의 명령으로 검을 들었다. 그러나 천계가 무너진 진짜 이유는, 그를 보낸 신조차 그에게 알려주지 않았다.",
       },
     ],
     closing:
-      "그들이 당신의 고민을 듣는 건 단순한 상담이 아니다. 균열을 봉합하는 의식이다.",
+      "그들이 당신의 이야기를 듣는 건 단순한 상담이 아니다. 세계가 인간에게 던지는 질문 — 그 답을 셋은 당신에게서 듣고 있다.",
     theme: "감정 · 욕망 · 기억 · 균열",
     accent: "text-violet-400",
     border: "border-violet-800/30",
@@ -142,11 +144,16 @@ const WORLD_DECOS: WorldDeco[] = [
 
 /**
  * 한 캐릭터의 호감도 레벨과 챕터 해금 상태를 계산한다.
+ * 마스터 모드에서는 호감도 무관 Lv.10 / 10챕터 전체 해금으로 처리.
  */
 function getCharacterStatus(
   characterId: CharacterId,
   affinities: Record<string, number>,
+  adminMode: boolean,
 ): { level: number; unlockedCount: number } {
+  if (adminMode) {
+    return { level: 10, unlockedCount: 10 };
+  }
   const points = affinities[characterId] ?? 0;
   const { level } = calcLevel(characterId, points);
   return { level, unlockedCount: level };
@@ -154,17 +161,23 @@ function getCharacterStatus(
 
 /**
  * 세계의 진실 루트가 해금됐는지 — 3 캐릭터 모두 Lv.10 도달 시.
+ * 마스터 모드는 항상 해금.
  */
 function isTruthRouteUnlocked(
   world: CharacterCategory,
   affinities: Record<string, number>,
+  adminMode: boolean,
 ): boolean {
+  if (adminMode) return true;
   return CHARACTERS_BY_CATEGORY[world].every(
-    (id) => getCharacterStatus(id, affinities).level >= 10,
+    (id) => getCharacterStatus(id, affinities, false).level >= 10,
   );
 }
 
-export function CharacterLoreCard({ affinities = {} }: CharacterLoreCardProps) {
+export function CharacterLoreCard({
+  affinities = {},
+  adminMode = false,
+}: CharacterLoreCardProps) {
   const [openWorldIdx, setOpenWorldIdx] = useState<number | null>(null);
 
   return (
@@ -298,6 +311,7 @@ export function CharacterLoreCard({ affinities = {} }: CharacterLoreCardProps) {
                       characterId={id}
                       affinities={affinities}
                       accent={deco.accent}
+                      adminMode={adminMode}
                     />
                   ))}
                 </div>
@@ -308,6 +322,7 @@ export function CharacterLoreCard({ affinities = {} }: CharacterLoreCardProps) {
                   affinities={affinities}
                   accent={deco.accent}
                   border={deco.truthBorder}
+                  adminMode={adminMode}
                 />
               </div>
             )}
@@ -326,18 +341,24 @@ interface CharacterStoryAccordionProps {
   characterId: CharacterId;
   affinities: Record<string, number>;
   accent: string;
+  adminMode: boolean;
 }
 
 function CharacterStoryAccordion({
   characterId,
   affinities,
   accent,
+  adminMode,
 }: CharacterStoryAccordionProps) {
   const [open, setOpen] = useState(false);
   const [openChapter, setOpenChapter] = useState<number | null>(null);
 
   const character = CHARACTERS[characterId];
-  const { level, unlockedCount } = getCharacterStatus(characterId, affinities);
+  const { level, unlockedCount } = getCharacterStatus(
+    characterId,
+    affinities,
+    adminMode,
+  );
   const chapters = CHARACTER_STORIES[characterId];
   const hasContent = chapters.length > 0;
 
@@ -452,6 +473,7 @@ interface TruthRouteSectionProps {
   affinities: Record<string, number>;
   accent: string;
   border: string;
+  adminMode: boolean;
 }
 
 function TruthRouteSection({
@@ -459,13 +481,14 @@ function TruthRouteSection({
   affinities,
   accent,
   border,
+  adminMode,
 }: TruthRouteSectionProps) {
   const [openSec, setOpenSec] = useState<"truth" | "final" | null>(null);
 
   const lore = WORLD_LORE[world];
   if (!lore) return null;
 
-  const unlocked = isTruthRouteUnlocked(world, affinities);
+  const unlocked = isTruthRouteUnlocked(world, affinities, adminMode);
 
   return (
     <div className={cn("rounded-xl border-2 mt-2", border)}>
