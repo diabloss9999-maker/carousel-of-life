@@ -16,7 +16,7 @@ import { CharacterLoreCard } from "@/components/chat/character-lore-card";
 import { WelcomeGreeting } from "@/components/chat/welcome-greeting";
 
 export const metadata: Metadata = {
-  title: "존재와의 조우",
+  title: "존재와의 마주침",
   description: "사주를 아는 친구에게 궁금한 걸 물어봐요.",
 };
 
@@ -41,7 +41,7 @@ export default async function ChatPage() {
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/icons/whisper-hand.svg" alt="" aria-hidden className="h-8 w-8 opacity-60" />
-          존재와의 조우
+          존재와의 마주침
         </h1>
         <p className="text-muted-foreground">
           여섯 주술사 중 한 명을 골라. 이세계든 동양이든, 그들은 이미 당신의 사주를 알고 있어.

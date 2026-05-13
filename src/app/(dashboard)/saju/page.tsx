@@ -25,7 +25,7 @@ import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { asSajuDeepReading } from "@/lib/saju/deep-reading";
 
 export const metadata: Metadata = {
-  title: "팔자",
+  title: "타고남",
   description: "여덟 글자 안에 새겨진 타고난 기운을 살펴봐요.",
 };
 
@@ -86,7 +86,7 @@ export default async function SajuPage() {
     <div className="space-y-8">
       <header className="space-y-2">
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
-          팔자
+          타고남
         </h1>
         <p className="text-muted-foreground">
           사주팔자는 태어난 순간의 별 배치야. 운세·타로·궁합 모든 풀이의 뿌리가 여기 있어.
