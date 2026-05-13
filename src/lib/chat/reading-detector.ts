@@ -4,14 +4,18 @@
  * 카테고리 제한:
  *  - 이세계 (child·witch·sage): 타로·룬·르노르망 가능, 사주 불가
  *  - 동양  (shaman·taoist·dokkaebi): 사주·천기 기반 대화만, 카드 뽑기 불가
+ *  - 북유럽 (hunter·runeshaman·god): 룬·타로·르노르망 가능 (룬을 가장 잘 한다)
  */
 import { drawRunes } from "@/lib/runes/draw";
 import { drawLenormand } from "@/lib/lenormand/draw";
 import { TAROT_DECK } from "@/lib/tarot/cards";
 import type { CharacterId } from "@/lib/chat/characters";
 
-/** 이세계 캐릭터 집합 */
-const OTHERWORLD: Set<CharacterId> = new Set(["child", "witch", "sage"]);
+/** 카드 점술을 다루는 캐릭터 집합 (이세계 + 북유럽). 동양은 카드 뽑기 불가. */
+const CARD_READERS: Set<CharacterId> = new Set([
+  "child", "witch", "sage",
+  "hunter", "runeshaman", "god",
+]);
 
 export type ReadingType = "tarot1" | "tarot3" | "rune1" | "lenormand1" | null;
 
@@ -45,8 +49,8 @@ function drawTarot(count: 1 | 3): DrawnCard[] {
   }));
 }
 
-/** 이세계 전용 감지 패턴 */
-const OTHERWORLD_PATTERNS: { type: ReadingType; regex: RegExp }[] = [
+/** 카드 점술 요청 감지 패턴 (이세계·북유럽 공용) */
+const CARD_REQUEST_PATTERNS: { type: ReadingType; regex: RegExp }[] = [
   { type: "tarot3",     regex: /타로.*(3장|세\s*장|세장|과거.현재|과거.*미래)/i },
   { type: "tarot1",     regex: /타로|카드.*뽑|뽑.*카드|카드.*봐|카드.*한\s*장|오늘.*카드/i },
   { type: "rune1",      regex: /룬.*뽑|룬.*봐|룬.*줘|룬.*해줘|룬 점/i },
@@ -61,10 +65,10 @@ export function detectAndDraw(
   message: string,
   characterId: CharacterId,
 ): ReadingResult | null {
-  // 동양 캐릭터 → 카드 뽑기 없음
-  if (!OTHERWORLD.has(characterId)) return null;
+  // 동양 캐릭터 → 카드 뽑기 없음 (사주·천기 기반만)
+  if (!CARD_READERS.has(characterId)) return null;
 
-  for (const { type, regex } of OTHERWORLD_PATTERNS) {
+  for (const { type, regex } of CARD_REQUEST_PATTERNS) {
     if (!regex.test(message)) continue;
 
     if (type === "tarot1") {

@@ -28,18 +28,22 @@ const CHAR_THEME: Record<CharacterId, {
   badge: string;
   badgeText: string;
 }> = {
-  child:    { gradient: "from-red-950/60 via-black/40 to-transparent",       glow: "shadow-red-900/30",     accent: "text-red-300",    border: "border-red-800/30",    badge: "bg-red-950/60 border-red-700/40",    badgeText: "text-red-300" },
-  witch:    { gradient: "from-blue-950/60 via-black/40 to-transparent",      glow: "shadow-blue-900/30",    accent: "text-blue-300",   border: "border-blue-800/30",   badge: "bg-blue-950/60 border-blue-700/40",   badgeText: "text-blue-300" },
-  sage:     { gradient: "from-amber-950/50 via-black/40 to-transparent",     glow: "shadow-amber-900/30",   accent: "text-amber-300",  border: "border-amber-700/30",  badge: "bg-amber-950/60 border-amber-600/40",  badgeText: "text-amber-300" },
-  shaman:   { gradient: "from-rose-950/60 via-black/40 to-transparent",      glow: "shadow-rose-900/30",    accent: "text-rose-300",   border: "border-rose-700/30",   badge: "bg-rose-950/60 border-rose-700/40",   badgeText: "text-rose-300" },
-  taoist:   { gradient: "from-cyan-950/60 via-black/40 to-transparent",      glow: "shadow-cyan-900/30",    accent: "text-cyan-300",   border: "border-cyan-800/30",   badge: "bg-cyan-950/60 border-cyan-700/40",   badgeText: "text-cyan-300" },
-  dokkaebi: { gradient: "from-purple-950/60 via-black/40 to-transparent",    glow: "shadow-purple-900/30",  accent: "text-purple-300", border: "border-purple-800/30", badge: "bg-purple-950/60 border-purple-700/40", badgeText: "text-purple-300" },
+  child:      { gradient: "from-red-950/60 via-black/40 to-transparent",       glow: "shadow-red-900/30",      accent: "text-red-300",     border: "border-red-800/30",     badge: "bg-red-950/60 border-red-700/40",       badgeText: "text-red-300" },
+  witch:      { gradient: "from-blue-950/60 via-black/40 to-transparent",      glow: "shadow-blue-900/30",     accent: "text-blue-300",    border: "border-blue-800/30",    badge: "bg-blue-950/60 border-blue-700/40",     badgeText: "text-blue-300" },
+  sage:       { gradient: "from-amber-950/50 via-black/40 to-transparent",     glow: "shadow-amber-900/30",    accent: "text-amber-300",   border: "border-amber-700/30",   badge: "bg-amber-950/60 border-amber-600/40",   badgeText: "text-amber-300" },
+  shaman:     { gradient: "from-rose-950/60 via-black/40 to-transparent",      glow: "shadow-rose-900/30",     accent: "text-rose-300",    border: "border-rose-700/30",    badge: "bg-rose-950/60 border-rose-700/40",     badgeText: "text-rose-300" },
+  taoist:     { gradient: "from-cyan-950/60 via-black/40 to-transparent",      glow: "shadow-cyan-900/30",     accent: "text-cyan-300",    border: "border-cyan-800/30",    badge: "bg-cyan-950/60 border-cyan-700/40",     badgeText: "text-cyan-300" },
+  dokkaebi:   { gradient: "from-purple-950/60 via-black/40 to-transparent",    glow: "shadow-purple-900/30",   accent: "text-purple-300",  border: "border-purple-800/30",  badge: "bg-purple-950/60 border-purple-700/40", badgeText: "text-purple-300" },
+  hunter:     { gradient: "from-stone-950/60 via-black/40 to-transparent",     glow: "shadow-stone-900/30",    accent: "text-stone-300",   border: "border-stone-700/30",   badge: "bg-stone-950/60 border-stone-700/40",   badgeText: "text-stone-300" },
+  runeshaman: { gradient: "from-indigo-950/60 via-black/40 to-transparent",    glow: "shadow-indigo-900/30",   accent: "text-indigo-300",  border: "border-indigo-700/30",  badge: "bg-indigo-950/60 border-indigo-700/40", badgeText: "text-indigo-300" },
+  god:        { gradient: "from-sky-950/60 via-black/40 to-transparent",       glow: "shadow-sky-900/30",      accent: "text-sky-300",     border: "border-sky-700/30",     badge: "bg-sky-950/60 border-sky-600/40",       badgeText: "text-sky-300" },
 };
 
 /** 카테고리 표시 */
 const CATEGORY_LABEL: Record<string, string> = {
   이세계: "ASTRA RIFT",
   동양: "月蝕鏡",
+  북유럽: "MIDHALL",
 };
 
 export function DailyQuestionCard({ characterId, question }: DailyQuestionCardProps) {

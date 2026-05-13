@@ -36,6 +36,8 @@ export function DesktopNav() {
               key={item.href}
               href={item.href}
               aria-current={isActive ? "page" : undefined}
+              aria-label={`${item.label} — ${item.description}`}
+              title={item.description}
               className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold transition-all"
               style={
                 isActive

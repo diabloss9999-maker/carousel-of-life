@@ -24,8 +24,8 @@ import { getTodayTarotReadings } from "@/lib/tarot/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 
 export const metadata: Metadata = {
-  title: "카드의 계시",
-  description: "카드의 계시를 읽어.",
+  title: "카드의 속삭임",
+  description: "카드의 속삭임을 읽어.",
 };
 
 export default async function TarotPage() {
@@ -45,7 +45,7 @@ export default async function TarotPage() {
     <div className="space-y-8">
       <header className="space-y-2">
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
-          카드의 계시
+          카드의 속삭임
         </h1>
         <p className="text-muted-foreground">
           카드를 뽑아 운명의 한 자락을 살펴봐요.

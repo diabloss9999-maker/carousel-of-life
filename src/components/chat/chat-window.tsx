@@ -43,12 +43,15 @@ const CHARACTER_THEME: Record<
   CharacterId,
   { surface: string; ring: string; input: string; send: string }
 > = {
-  child:     { surface: "bg-red-950/25 border border-red-800/30",     ring: "ring-red-700/40",     input: "border-red-800/30 bg-red-950/20 focus-visible:ring-red-700/40",         send: "bg-red-700 hover:bg-red-600 text-white" },
-  witch:     { surface: "bg-blue-950/25 border border-blue-800/30",   ring: "ring-blue-700/40",    input: "border-blue-800/30 bg-blue-950/20 focus-visible:ring-blue-700/40",       send: "bg-blue-700 hover:bg-blue-600 text-white" },
-  sage:      { surface: "bg-amber-950/20 border border-amber-700/30", ring: "ring-amber-600/40",   input: "border-amber-700/30 bg-amber-950/15 focus-visible:ring-amber-600/40",   send: "bg-amber-600 hover:bg-amber-500 text-white" },
-  shaman:    { surface: "bg-rose-950/20 border border-rose-700/30",   ring: "ring-rose-600/40",    input: "border-rose-700/30 bg-rose-950/15 focus-visible:ring-rose-600/40",       send: "bg-rose-700 hover:bg-rose-600 text-white" },
-  taoist:    { surface: "bg-cyan-950/20 border border-cyan-800/30",   ring: "ring-cyan-700/40",    input: "border-cyan-800/30 bg-cyan-950/15 focus-visible:ring-cyan-700/40",       send: "bg-cyan-700 hover:bg-cyan-600 text-white" },
-  dokkaebi:  { surface: "bg-purple-950/25 border border-purple-800/30", ring: "ring-purple-700/40", input: "border-purple-800/30 bg-purple-950/20 focus-visible:ring-purple-700/40", send: "bg-purple-700 hover:bg-purple-600 text-white" },
+  child:      { surface: "bg-red-950/25 border border-red-800/30",     ring: "ring-red-700/40",     input: "border-red-800/30 bg-red-950/20 focus-visible:ring-red-700/40",         send: "bg-red-700 hover:bg-red-600 text-white" },
+  witch:      { surface: "bg-blue-950/25 border border-blue-800/30",   ring: "ring-blue-700/40",    input: "border-blue-800/30 bg-blue-950/20 focus-visible:ring-blue-700/40",       send: "bg-blue-700 hover:bg-blue-600 text-white" },
+  sage:       { surface: "bg-amber-950/20 border border-amber-700/30", ring: "ring-amber-600/40",   input: "border-amber-700/30 bg-amber-950/15 focus-visible:ring-amber-600/40",   send: "bg-amber-600 hover:bg-amber-500 text-white" },
+  shaman:     { surface: "bg-rose-950/20 border border-rose-700/30",   ring: "ring-rose-600/40",    input: "border-rose-700/30 bg-rose-950/15 focus-visible:ring-rose-600/40",     send: "bg-rose-700 hover:bg-rose-600 text-white" },
+  taoist:     { surface: "bg-cyan-950/20 border border-cyan-800/30",   ring: "ring-cyan-700/40",    input: "border-cyan-800/30 bg-cyan-950/15 focus-visible:ring-cyan-700/40",     send: "bg-cyan-700 hover:bg-cyan-600 text-white" },
+  dokkaebi:   { surface: "bg-purple-950/25 border border-purple-800/30", ring: "ring-purple-700/40", input: "border-purple-800/30 bg-purple-950/20 focus-visible:ring-purple-700/40", send: "bg-purple-700 hover:bg-purple-600 text-white" },
+  hunter:     { surface: "bg-stone-950/30 border border-stone-700/30", ring: "ring-stone-600/40",   input: "border-stone-700/30 bg-stone-950/20 focus-visible:ring-stone-600/40",   send: "bg-stone-700 hover:bg-stone-600 text-white" },
+  runeshaman: { surface: "bg-indigo-950/25 border border-indigo-700/30", ring: "ring-indigo-600/40", input: "border-indigo-700/30 bg-indigo-950/20 focus-visible:ring-indigo-600/40", send: "bg-indigo-700 hover:bg-indigo-600 text-white" },
+  god:        { surface: "bg-sky-950/25 border border-sky-700/30",     ring: "ring-sky-500/40",     input: "border-sky-700/30 bg-sky-950/20 focus-visible:ring-sky-500/40",       send: "bg-sky-600 hover:bg-sky-500 text-white" },
 };
 
 const DEFAULT_THEME = CHARACTER_THEME.witch;

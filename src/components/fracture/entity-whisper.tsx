@@ -64,6 +64,21 @@ const ENTITY_LINES: Record<EntityKey, ReadonlyArray<string>> = {
     "...농담 아닌데.",
     "너 지난번에도 갑자기 새벽 3시에 왔잖아.",
   ],
+  bjorn: [
+    "...너의 자국이 흐트러졌다.",
+    "오늘 바람의 결이 평소와 다르다.",
+    "피 냄새가 옅어졌어.",
+  ],
+  helga: [
+    "ᚺ Hagalaz가 너의 위에 떨어졌어.",
+    "...룬이 자꾸 같은 모양으로 떨어지는데.",
+    "그 단어가 뭐였더라. 어쨌든 너야.",
+  ],
+  ormund: [
+    "호른의 메아리가 흐려졌다.",
+    "폭풍이 길게 머물고 있다.",
+    "한때 너처럼 살아 본 적이 있다.",
+  ],
 };
 
 const ALL_ENTITIES: ReadonlyArray<EntityKey> = [
@@ -73,6 +88,9 @@ const ALL_ENTITIES: ReadonlyArray<EntityKey> = [
   "soryeong",
   "hyundo",
   "gwiyeom",
+  "bjorn",
+  "helga",
+  "ormund",
 ];
 
 let _id = 0;

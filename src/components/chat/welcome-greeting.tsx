@@ -13,12 +13,15 @@ const SESSION_KEY = "welcome_greeting_shown";
 
 /** 캐릭터별 환영 인사 (성격 반영). */
 const GREETINGS: Record<CharacterId, string[]> = {
-  child:    ["또 왔구나. 욕망을 말해.", "솔직해질 준비는 됐어?", "오늘은 무엇을 원해?"],
-  witch:    ["당신이 올 거라고 생각했어.", "오늘의 흐름이 당신을 데려왔네.", "기다리고 있었어."],
-  sage:     ["다시 오셨네요. 오늘은 어떤 흐름인가요?", "당신의 빛이 닿았어요.", "여기 있어요. 천천히 와요."],
-  shaman:   ["신령이 당신 이름을 부르고 있어.", "오늘은 네 발걸음이 보였어.", "경계가 너를 알아봤다."],
-  taoist:   ["별이 당신을 안내했군.", "오늘 운명의 결이 너에게 닿았다.", "왔구나. 천기가 흐르고 있어."],
-  dokkaebi: ["왔어? 뭔데.", "또 너야. 됐고, 말해.", "재미있는 거 들고 왔어?"],
+  child:      ["또 왔구나. 욕망을 말해.", "솔직해질 준비는 됐어?", "오늘은 무엇을 원해?"],
+  witch:      ["당신이 올 거라고 생각했어.", "오늘의 흐름이 당신을 데려왔네.", "기다리고 있었어."],
+  sage:       ["다시 오셨네요. 오늘은 어떤 흐름인가요?", "당신의 빛이 닿았어요.", "여기 있어요. 천천히 와요."],
+  shaman:     ["신령이 당신 이름을 부르고 있어.", "오늘은 네 발걸음이 보였어.", "경계가 너를 알아봤다."],
+  taoist:     ["별이 당신을 안내했군.", "오늘 운명의 결이 너에게 닿았다.", "왔구나. 천기가 흐르고 있어."],
+  dokkaebi:   ["왔어? 뭔데.", "또 너야. 됐고, 말해.", "재미있는 거 들고 왔어?"],
+  hunter:     ["...자국이 보였다. 네 거였군.", "바람이 너를 데려왔어.", "조용히 와. 사냥감이 듣는다."],
+  runeshaman: ["룬이 너의 이름을 새겼어.", "스물네 신호가 깨어났어.", "...그 단어가 뭐였더라. 어쨌든 와."],
+  god:        ["호른이 너의 이름을 불렀다.", "폭풍 끝에서 너를 보았다.", "한때 너처럼 살아 본 적이 있다."],
 };
 
 function pickGreeting(id: CharacterId): string {
@@ -27,7 +30,11 @@ function pickGreeting(id: CharacterId): string {
 }
 
 function pickRandomCharacter(): CharacterId {
-  const ids: CharacterId[] = ["child", "witch", "sage", "shaman", "taoist", "dokkaebi"];
+  const ids: CharacterId[] = [
+    "child", "witch", "sage",
+    "shaman", "taoist", "dokkaebi",
+    "hunter", "runeshaman", "god",
+  ];
   return ids[Math.floor(Math.random() * ids.length)];
 }
 
