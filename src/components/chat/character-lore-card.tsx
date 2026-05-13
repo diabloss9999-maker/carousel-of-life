@@ -635,14 +635,14 @@ function ChapterImage({ characterId, chapterNumber, title }: ChapterImageProps) 
   if (!src) return null;
 
   return (
-    <div className="overflow-hidden rounded-xl border border-white/10 bg-black/30">
+    <div className="mx-auto w-full max-w-[280px] overflow-hidden rounded-xl border border-white/10 bg-black/30">
       <Image
         src={src}
         alt={`${title} 챕터 이미지`}
         width={960}
         height={1280}
         className="h-auto w-full object-cover"
-        sizes="(max-width: 768px) 100vw, 600px"
+        sizes="(max-width: 640px) 240px, 280px"
       />
     </div>
   );
