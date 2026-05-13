@@ -15,7 +15,11 @@ import { API_ERROR_CODES } from "@/types/api";
 
 const bodySchema = z.object({
   character: z
-    .enum(["witch", "child", "sage", "shaman", "taoist", "dokkaebi"])
+    .enum([
+      "witch", "child", "sage",
+      "shaman", "taoist", "dokkaebi",
+      "hunter", "runeshaman", "god",
+    ])
     .optional(),
   /** true이면 강제로 새 세션 생성. 기본은 false (기존 세션 이어가기). */
   fresh: z.boolean().optional(),

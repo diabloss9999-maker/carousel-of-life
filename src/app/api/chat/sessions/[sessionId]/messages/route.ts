@@ -121,10 +121,10 @@ export async function POST(
     ? `\n\n[카드 읽기 — 지금 즉시 실행]\n${reading.promptText}`
     : "";
 
-  // 존재 기분 — 6명 캐릭터 전체 적용
+  // 존재 기분 — 9명 캐릭터 전체 적용
   const dailySeed = getDailySeed();
   const entityId = characterToEntityKey(characterId);
-  // 캐릭터별 고유 seed index (기존 witch=10/sage=11/child=12 유지, 동양은 13~15)
+  // 캐릭터별 고유 seed index (이세계 10~12 / 동양 13~15 / 북유럽 16~18)
   const ENTITY_SEED_INDEX: Record<typeof entityId, number> = {
     luna: 10,
     rael: 11,
@@ -132,6 +132,9 @@ export async function POST(
     soryeong: 13,
     hyundo: 14,
     gwiyeom: 15,
+    bjorn: 16,
+    helga: 17,
+    ormund: 18,
   };
   const mood = computeEntityMood({
     entityId,

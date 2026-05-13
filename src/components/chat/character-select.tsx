@@ -18,7 +18,7 @@ interface CharacterSelectProps {
   affinities?: Record<string, number>;
 }
 
-const CATEGORY_ORDER: CharacterCategory[] = ["이세계", "동양"];
+const CATEGORY_ORDER: CharacterCategory[] = ["이세계", "동양", "북유럽"];
 
 /** 카테고리별 디자인 설정 */
 const CATEGORY_STYLE: Record<CharacterCategory, {
@@ -42,25 +42,38 @@ const CATEGORY_STYLE: Record<CharacterCategory, {
     text: "text-emerald-400",
     dot: "bg-emerald-500",
   },
+  북유럽: {
+    label: "북유럽",
+    sub: "MIDHALL",
+    border: "border-sky-500/30",
+    text: "text-sky-300",
+    dot: "bg-sky-400",
+  },
 };
 
 /** 캐릭터별 호버 강조 색 */
 const CHAR_ACCENT: Record<CharacterId, string> = {
-  child:    "hover:ring-red-700/50 hover:border-red-800/50",
-  witch:    "hover:ring-blue-700/50 hover:border-blue-800/50",
-  sage:     "hover:ring-amber-600/50 hover:border-amber-700/50",
-  shaman:   "hover:ring-rose-700/50 hover:border-rose-800/50",
-  taoist:   "hover:ring-cyan-700/50 hover:border-cyan-800/50",
-  dokkaebi: "hover:ring-purple-700/50 hover:border-purple-800/50",
+  child:      "hover:ring-red-700/50 hover:border-red-800/50",
+  witch:      "hover:ring-blue-700/50 hover:border-blue-800/50",
+  sage:       "hover:ring-amber-600/50 hover:border-amber-700/50",
+  shaman:     "hover:ring-rose-700/50 hover:border-rose-800/50",
+  taoist:     "hover:ring-cyan-700/50 hover:border-cyan-800/50",
+  dokkaebi:   "hover:ring-purple-700/50 hover:border-purple-800/50",
+  hunter:     "hover:ring-stone-600/50 hover:border-stone-700/50",
+  runeshaman: "hover:ring-indigo-600/50 hover:border-indigo-700/50",
+  god:        "hover:ring-sky-500/50 hover:border-sky-600/50",
 };
 
 const CHAR_SELECTED: Record<CharacterId, string> = {
-  child:    "ring-red-700/60 border-red-800/60 bg-red-950/20",
-  witch:    "ring-blue-700/60 border-blue-800/60 bg-blue-950/20",
-  sage:     "ring-amber-600/60 border-amber-700/60 bg-amber-950/15",
-  shaman:   "ring-rose-700/60 border-rose-800/60 bg-rose-950/20",
-  taoist:   "ring-cyan-700/60 border-cyan-800/60 bg-cyan-950/20",
-  dokkaebi: "ring-purple-700/60 border-purple-800/60 bg-purple-950/20",
+  child:      "ring-red-700/60 border-red-800/60 bg-red-950/20",
+  witch:      "ring-blue-700/60 border-blue-800/60 bg-blue-950/20",
+  sage:       "ring-amber-600/60 border-amber-700/60 bg-amber-950/15",
+  shaman:     "ring-rose-700/60 border-rose-800/60 bg-rose-950/20",
+  taoist:     "ring-cyan-700/60 border-cyan-800/60 bg-cyan-950/20",
+  dokkaebi:   "ring-purple-700/60 border-purple-800/60 bg-purple-950/20",
+  hunter:     "ring-stone-600/60 border-stone-700/60 bg-stone-950/20",
+  runeshaman: "ring-indigo-600/60 border-indigo-700/60 bg-indigo-950/20",
+  god:        "ring-sky-500/60 border-sky-600/60 bg-sky-950/20",
 };
 
 export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {

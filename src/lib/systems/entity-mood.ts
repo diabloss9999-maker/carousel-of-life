@@ -4,7 +4,10 @@
  * - 매일 / 시간대 / 균열 / 반복 질문 / 밤 방문 횟수에 따라
  *   각 존재의 "오늘 기분"이 미세하게 달라진다.
  * - 결과는 시스템 프롬프트의 톤 조정 컨텍스트와 CSS 클래스 힌트로 반환된다.
- * - 6명 캐릭터 전체 지원: luna / rael / gael / soryeong / hyundo / gwiyeom.
+ * - 9명 캐릭터 전체 지원:
+ *   이세계 luna / rael / gael
+ *   동양   soryeong / hyundo / gwiyeom
+ *   북유럽 bjorn / helga / ormund
  */
 
 export type EntityMood =
@@ -21,7 +24,10 @@ export type EntityKey =
   | "gael"
   | "soryeong"
   | "hyundo"
-  | "gwiyeom";
+  | "gwiyeom"
+  | "bjorn"
+  | "helga"
+  | "ormund";
 
 export interface EntityState {
   id: EntityKey;
@@ -91,6 +97,25 @@ export function computeEntityMood(opts: {
             ? "curious"
             : "distant";
     }
+    case "bjorn": {
+      // 비요른 — 야성 사냥꾼. 침묵 잦고 밤에 더 가까워짐.
+      if (fractureLevel >= 4) return "silent";
+      if (isNight) return base < 3 ? "protective" : "curious";
+      return base < 3 ? "distant" : "calm";
+    }
+    case "helga": {
+      // 헬가 — 룬샤먼. 인간성 잃어가는 중. 새벽에 흔들림.
+      if (fractureLevel >= 3) return "unstable";
+      if (isDawn) return "silent";
+      if (repeatedQuestionCount >= 3) return "distant";
+      return base < 2 ? "calm" : base < 4 ? "curious" : "distant";
+    }
+    case "ormund": {
+      // 외르문드 — 미드할의 신. 거리감 있지만 인간이 절박할 때 부드러워짐.
+      if (fractureLevel >= 4) return "protective";
+      if (repeatedQuestionCount >= 4) return "protective";
+      return base < 3 ? "distant" : base < 5 ? "calm" : "curious";
+    }
   }
 }
 
@@ -122,12 +147,15 @@ export const MOOD_CLASS: Record<EntityMood, string> = {
 /**
  * CharacterId → entityKey 매핑 헬퍼.
  *
- * - witch    → luna
- * - sage     → rael
- * - child    → gael
- * - shaman   → soryeong
- * - taoist   → hyundo
- * - dokkaebi → gwiyeom
+ * - witch      → luna
+ * - sage       → rael
+ * - child      → gael
+ * - shaman     → soryeong
+ * - taoist     → hyundo
+ * - dokkaebi   → gwiyeom
+ * - hunter     → bjorn
+ * - runeshaman → helga
+ * - god        → ormund
  */
 export function characterToEntityKey(characterId: string): EntityKey {
   switch (characterId) {
@@ -143,6 +171,12 @@ export function characterToEntityKey(characterId: string): EntityKey {
       return "hyundo";
     case "dokkaebi":
       return "gwiyeom";
+    case "hunter":
+      return "bjorn";
+    case "runeshaman":
+      return "helga";
+    case "god":
+      return "ormund";
     default:
       return "luna";
   }

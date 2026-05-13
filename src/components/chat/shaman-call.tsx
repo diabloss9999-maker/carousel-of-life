@@ -43,10 +43,27 @@ const CALL_LINES: Record<CharacterId, readonly string[]> = {
     "심심하니까 말 좀 걸어봐.",
     "재밌는 거 들고 와봐.",
   ],
+  hunter: [
+    "...너의 자국이 보였다. 따라가도 되겠나.",
+    "바람이 너를 데려왔어. 조용히 따라와.",
+    "피 냄새가 너에게서 난다. 무슨 일이지.",
+  ],
+  runeshaman: [
+    "스물네 룬 중 하나가 깨어났어. 너를 부르는데.",
+    "...그 단어가 뭐였더라. 어쨌든 너야.",
+    "검은 균열 사이로 너의 이름이 새겨졌어.",
+  ],
+  god: [
+    "호른의 메아리가 너에게 닿았다.",
+    "폭풍이 잠시 멈췄다. 그 사이에 말해.",
+    "한때 너처럼 살아 본 적이 있다. 들어줄게.",
+  ],
 };
 
 const CHARACTER_IDS: CharacterId[] = [
-  "child", "witch", "sage", "shaman", "taoist", "dokkaebi",
+  "child", "witch", "sage",
+  "shaman", "taoist", "dokkaebi",
+  "hunter", "runeshaman", "god",
 ];
 
 function pickCharacter(): CharacterId {
