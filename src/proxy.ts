@@ -4,14 +4,34 @@
  * Next.js 16 부터 파일명이 `middleware` → `proxy` 로, export 이름도
  * `middleware` → `proxy` 로 변경되었다.
  *
+ * 책임:
+ * - 미러 도메인을 canonical URL 로 301 리다이렉트 (SEO 분산 방지)
  * - Supabase 세션 갱신
  * - 보호된 라우트 접근 제어
  */
-import type { NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
 import { updateSession } from "@/lib/supabase/middleware";
 
+const CANONICAL_HOST = "carousel-of-life.vercel.app";
+
 export async function proxy(request: NextRequest) {
+  const host = request.headers.get("host") ?? "";
+
+  // 다른 *.vercel.app 별칭으로 들어왔으면 canonical 로 301 redirect.
+  // localhost / *.local / canonical 호스트는 통과.
+  if (
+    host !== CANONICAL_HOST &&
+    !host.startsWith("localhost") &&
+    !host.endsWith(".local") &&
+    host.endsWith(".vercel.app")
+  ) {
+    const url = request.nextUrl.clone();
+    url.host = CANONICAL_HOST;
+    url.protocol = "https";
+    return NextResponse.redirect(url, 301);
+  }
+
   return updateSession(request);
 }
 
