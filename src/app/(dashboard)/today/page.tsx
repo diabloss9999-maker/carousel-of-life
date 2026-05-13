@@ -22,6 +22,7 @@ import { QuotaBar } from "@/components/fortune/quota-bar";
 import { TodaySummary } from "@/components/fortune/today-summary";
 import { ZodiacBanner } from "@/components/fortune/zodiac-banner";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
+import { ShamanCall } from "@/components/chat/shaman-call";
 import { StreakNotifier } from "@/components/streak/streak-notifier";
 import type { DailyFortune } from "@/db/schema";
 import { requireProfile } from "@/lib/auth/get-user";
@@ -144,6 +145,9 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           </p>
         </div>
       </header>
+
+      {/* 주술사 호출 — 먼저 말을 건다 */}
+      <ShamanCall />
 
       {/* 보관 · 세계 · 연속 흐름 — 메뉴바 대체 진입 카드 */}
       <div className="grid grid-cols-3 gap-3">
