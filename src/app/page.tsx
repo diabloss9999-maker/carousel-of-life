@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Layers, MessagesSquare, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Heart,
+  Layers,
+  Lightbulb,
+  MessageCircle,
+  MessagesSquare,
+  Sparkles,
+} from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
@@ -108,6 +116,7 @@ export default async function HomePage() {
       </section>
 
       <ValuePropsSection />
+      <HowToPlaySection />
       <PreviewSection />
       <FaqSection />
 
@@ -165,6 +174,70 @@ async function ValuePropsSection() {
             </CardHeader>
             <CardContent>
               <CardDescription className="leading-relaxed">{body}</CardDescription>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/** 사용법·꿀팁 3카드 섹션. */
+async function HowToPlaySection() {
+  const t = await getTranslations("landing.howToPlay");
+  const items = [
+    {
+      icon: MessageCircle,
+      title: t("tip1Title"),
+      body: t("tip1Body"),
+      tone: "bg-primary/15 text-primary",
+    },
+    {
+      icon: Heart,
+      title: t("tip2Title"),
+      body: t("tip2Body"),
+      tone: "bg-accent/15 text-accent",
+    },
+    {
+      icon: Lightbulb,
+      title: t("tip3Title"),
+      body: t("tip3Body"),
+      // 꿀팁은 시각적으로 구분 — amber 톤 + ring 강조
+      tone: "bg-amber-400/15 text-amber-500",
+      highlight: true,
+    },
+  ];
+
+  return (
+    <section className="relative z-10 mx-auto max-w-5xl space-y-6 px-6 pt-12 sm:pt-16">
+      <div className="space-y-2 text-center">
+        <h2 className="font-mystic text-2xl font-semibold sm:text-3xl">
+          {t("heading")}
+        </h2>
+        <p className="text-sm text-muted-foreground">{t("subheading")}</p>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-3">
+        {items.map(({ icon: Icon, title, body, tone, highlight }) => (
+          <Card
+            key={title}
+            className={
+              highlight
+                ? "h-full ring-1 ring-amber-400/40 bg-amber-400/5"
+                : "h-full"
+            }
+          >
+            <CardHeader className="space-y-3">
+              <div
+                className={`flex h-10 w-10 items-center justify-center rounded-lg ${tone}`}
+              >
+                <Icon className="h-5 w-5" aria-hidden />
+              </div>
+              <CardTitle className="text-base">{title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="leading-relaxed">
+                {body}
+              </CardDescription>
             </CardContent>
           </Card>
         ))}

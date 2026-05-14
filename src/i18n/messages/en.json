@@ -128,6 +128,16 @@
       "v3Title": "Daily Flow, Free",
       "v3Body": "Just sign up. 2 fortunes, 1 tarot card, 10 shaman messages daily."
     },
+    "howToPlay": {
+      "heading": "How to Enjoy It",
+      "subheading": "The closer you grow to a shaman, the more of their story unfolds.",
+      "tip1Title": "Talk with the Shamans",
+      "tip1Body": "Each day, one of nine shamans visits you. Ask anything — your fate, your worries, the things you don't say out loud.",
+      "tip2Title": "Build Affinity, Unlock Their Story",
+      "tip2Body": "Every conversation grows your bond with that shaman. As your level rises, their hidden past and true voice slowly come into view.",
+      "tip3Title": "Tip: Draw Cards Last",
+      "tip3Body": "Pulling a card refunds 1–7 of the day's used Q&A count, based on rarity. Use your messages first, then draw — that way the bonus actually pays off."
+    },
     "preview": {
       "heading": "How We Read Today's Fate",
       "exampleLabel": "Example"
