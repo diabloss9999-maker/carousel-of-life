@@ -1,108 +1,177 @@
 /**
- * 사주팔자 계산 — AI 위임 + DB 캐시.
+ * 사주팔자 계산 — 결정론적 알고리즘 + DB 캐시.
+ *
+ * lunar-typescript 라이브러리로 양력↔음력 변환과 24절기 기반
+ * 60갑자 순환을 정확하게 계산한다. 이전엔 AI(Claude Haiku)에 위임했으나
+ * 결정론적이지 않아 정확도가 흔들렸음 — 알고리즘 기반으로 교체.
+ *
+ * 규칙:
+ * - 양력 입력: 그대로 Solar 객체로 변환
+ * - 음력 입력: Lunar 객체로 변환 후 양력 보정
+ * - 입춘(立春) 기준 년주, 절기 기반 월주, 60갑자 순환 일주, 일간×시진 시주
+ * - 시각이 비어 있으면 시주(hour)는 null
+ * - 오행 분포: 천간 4(또는 3) + 지지 4(또는 3) 합 = 8 또는 6
  */
 import "server-only";
 
 import { eq } from "drizzle-orm";
-import { z } from "zod";
+import { Solar, Lunar } from "lunar-typescript";
 
 import { db } from "@/db";
 import { profiles, type Profile } from "@/db/schema";
-import { generateJson } from "@/lib/ai/generate";
-import { AI_LIMITS, AI_MODELS } from "@/lib/constants";
-import { buildUserContext } from "@/lib/ai/prompts";
 
-const stemSchema = z.string().min(1).max(2);
-const branchSchema = z.string().min(1).max(2);
+export interface SajuOutput {
+  pillars: {
+    year: { stem: string; branch: string };
+    month: { stem: string; branch: string };
+    day: { stem: string; branch: string };
+    hour: { stem: string; branch: string } | null;
+  };
+  fiveElements: {
+    wood: number;
+    fire: number;
+    earth: number;
+    metal: number;
+    water: number;
+  };
+}
 
-const sajuPillarsSchema = z.object({
-  year: z.object({ stem: stemSchema, branch: branchSchema }),
-  month: z.object({ stem: stemSchema, branch: branchSchema }),
-  day: z.object({ stem: stemSchema, branch: branchSchema }),
-  hour: z.object({ stem: stemSchema, branch: branchSchema }).nullable(),
-});
+/** 천간(天干) → 오행 매핑. */
+const STEM_TO_ELEMENT: Record<string, keyof SajuOutput["fiveElements"]> = {
+  甲: "wood",  乙: "wood",
+  丙: "fire",  丁: "fire",
+  戊: "earth", 己: "earth",
+  庚: "metal", 辛: "metal",
+  壬: "water", 癸: "water",
+};
 
-const fiveElementsSchema = z.object({
-  wood: z.number().int().min(0).max(8),
-  fire: z.number().int().min(0).max(8),
-  earth: z.number().int().min(0).max(8),
-  metal: z.number().int().min(0).max(8),
-  water: z.number().int().min(0).max(8),
-});
+/** 지지(地支) → 오행 매핑. */
+const BRANCH_TO_ELEMENT: Record<string, keyof SajuOutput["fiveElements"]> = {
+  寅: "wood",  卯: "wood",
+  巳: "fire",  午: "fire",
+  辰: "earth", 戌: "earth", 丑: "earth", 未: "earth",
+  申: "metal", 酉: "metal",
+  亥: "water", 子: "water",
+};
 
-const sajuOutputSchema = z.object({
-  pillars: sajuPillarsSchema,
-  fiveElements: fiveElementsSchema,
-});
+/** "YYYY-MM-DD" → [year, month, day]. */
+function parseDate(birthDate: string): [number, number, number] {
+  const [y, m, d] = birthDate.split("-").map((v) => parseInt(v, 10));
+  if (!Number.isFinite(y) || !Number.isFinite(m) || !Number.isFinite(d)) {
+    throw new Error(`Invalid birthDate: ${birthDate}`);
+  }
+  return [y, m, d];
+}
 
-export type SajuOutput = z.infer<typeof sajuOutputSchema>;
+/** "HH:MM" → [hour, minute]. 미지정 시 null. */
+function parseTime(birthTime: string | null): [number, number] | null {
+  if (!birthTime) return null;
+  const [h, mn] = birthTime.split(":").map((v) => parseInt(v, 10));
+  if (!Number.isFinite(h) || !Number.isFinite(mn)) return null;
+  return [h, mn];
+}
 
 /**
- * AI 에 사주 계산을 요청.
+ * 사주팔자 결정론적 계산.
+ *
+ * - calendarSystem === "lunar": Lunar 입력으로 처리
+ * - 그 외 (solar / unknown): Solar 입력으로 처리
+ * - birthTime 없으면 시주 null + 6글자 기준 오행
  */
-export async function calculateSaju(
+export function calculateSaju(
   profile: Pick<
     Profile,
-    | "birthDate"
-    | "birthTime"
-    | "calendarSystem"
-    | "gender"
-    | "displayName"
-    | "mbti"
-    | "birthPlace"
+    "birthDate" | "birthTime" | "calendarSystem"
   >,
-): Promise<SajuOutput> {
-  const ctx = buildUserContext({ profile });
+): SajuOutput {
+  const [year, month, day] = parseDate(profile.birthDate);
+  const time = parseTime(profile.birthTime);
+  const isLunar = profile.calendarSystem === "lunar";
 
-  const userPrompt = `[질문자 정보]
-${ctx}
+  // 1) 시각이 있으면 시·분 포함, 없으면 정오 12:00 으로 일주 계산 안정화
+  //    (lunar-typescript 가 hour 기본 0 일 때 자정 직전 케이스가 위태롭기에
+  //    중립 시각 12:00 으로 잡되, 시주는 별도로 null 처리)
+  const hour = time ? time[0] : 12;
+  const minute = time ? time[1] : 0;
 
-[지시]
-질문자의 정보를 바탕으로 사주팔자(년주·월주·일주·시주)와 오행 분포를 계산해주세요.
-
-규칙:
-- 양력으로 입력된 경우 입춘(立春) 기준으로 년주를 결정합니다.
-- 음력 입력은 양력으로 환산한 후 절기를 적용합니다.
-- 태어난 시각이 없으면 시주(hour)는 null 로 두고 시지를 추정하지 않습니다.
-- 천간(天干)과 지지(地支)는 한자 한 글자만 사용합니다.
-  허용 천간: 甲乙丙丁戊己庚辛壬癸
-  허용 지지: 子丑寅卯辰巳午未申酉戌亥
-- 오행(wood, fire, earth, metal, water) 합은 8(시주 포함) 또는 6(시주 없음).
-
-다음 JSON 스키마를 정확히 따라 단 하나의 JSON 객체로만 응답하세요. 추가 설명·markdown·코드펜스 없이 JSON 만 출력합니다.
-
-{
-  "pillars": {
-    "year":  { "stem": "한자 1자", "branch": "한자 1자" },
-    "month": { "stem": "한자 1자", "branch": "한자 1자" },
-    "day":   { "stem": "한자 1자", "branch": "한자 1자" },
-    "hour":  { "stem": "한자 1자", "branch": "한자 1자" } 또는 null
-  },
-  "fiveElements": {
-    "wood": 정수, "fire": 정수, "earth": 정수, "metal": 정수, "water": 정수
+  // 2) Solar 객체 생성 — 음력 입력이면 Lunar.fromYmdHms 거쳐서 solar 추출
+  let solar;
+  if (isLunar) {
+    const lunar = time
+      ? Lunar.fromYmdHms(year, month, day, hour, minute, 0)
+      : Lunar.fromYmd(year, month, day);
+    solar = lunar.getSolar();
+  } else {
+    solar = time
+      ? Solar.fromYmdHms(year, month, day, hour, minute, 0)
+      : Solar.fromYmd(year, month, day);
   }
-}`;
 
-  return generateJson({
-    schema: sajuOutputSchema,
-    userPrompt,
-    model: AI_MODELS.fast,
-    maxTokens: AI_LIMITS.sajuMaxTokens,
-    systemSuffix:
-      "사주 계산 전용 모드입니다. 산문이나 풀이는 일절 덧붙이지 말고 JSON 만 응답합니다.",
-  });
+  // 3) EightChar — 자동으로 입춘 기준 년주, 절기 기반 월주, 60갑자 일주 처리
+  const lunar = solar.getLunar();
+  const ec = lunar.getEightChar();
+
+  const yearStem  = ec.getYearGan();
+  const yearBr    = ec.getYearZhi();
+  const monthStem = ec.getMonthGan();
+  const monthBr   = ec.getMonthZhi();
+  const dayStem   = ec.getDayGan();
+  const dayBr     = ec.getDayZhi();
+
+  // 4) 시주는 birthTime 있을 때만 포함
+  let hourPillar: { stem: string; branch: string } | null = null;
+  if (time) {
+    hourPillar = {
+      stem: ec.getTimeGan(),
+      branch: ec.getTimeZhi(),
+    };
+  }
+
+  // 5) 오행 분포 계산
+  const fiveElements = {
+    wood: 0, fire: 0, earth: 0, metal: 0, water: 0,
+  } as SajuOutput["fiveElements"];
+
+  const stems = [yearStem, monthStem, dayStem];
+  const branches = [yearBr, monthBr, dayBr];
+  if (hourPillar) {
+    stems.push(hourPillar.stem);
+    branches.push(hourPillar.branch);
+  }
+
+  for (const s of stems) {
+    const el = STEM_TO_ELEMENT[s];
+    if (el) fiveElements[el] += 1;
+  }
+  for (const b of branches) {
+    const el = BRANCH_TO_ELEMENT[b];
+    if (el) fiveElements[el] += 1;
+  }
+
+  return {
+    pillars: {
+      year:  { stem: yearStem,  branch: yearBr },
+      month: { stem: monthStem, branch: monthBr },
+      day:   { stem: dayStem,   branch: dayBr },
+      hour:  hourPillar,
+    },
+    fiveElements,
+  };
 }
 
 /**
  * profile 에 사주가 캐시되어 있으면 그대로 반환,
- * 없으면 AI 호출 + DB 저장 후 반환.
+ * 없으면 계산 + DB 저장 후 반환.
+ *
+ * 계산은 결정론적이라 cache miss 시 즉시(동기) 계산되지만,
+ * DB 쓰기 일관성을 위해 async 시그니처 유지.
  */
 export async function ensureSajuCalculated(profile: Profile): Promise<Profile> {
   if (profile.sajuPillars && profile.fiveElements) {
     return profile;
   }
 
-  const saju = await calculateSaju(profile);
+  const saju = calculateSaju(profile);
 
   const [updated] = await db
     .update(profiles)
