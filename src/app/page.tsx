@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   // 랜딩은 사이트 기본 타이틀 그대로 노출 (template 우회).
   title: { absolute: `${siteConfig.name} — ${siteConfig.tagline}` },
   description:
-    "AI 가 사주팔자·타로·성격유형을 통합해 매일의 운명을 풀이해드려요. 가입 후 매일 무료로 운세 3회·타로 3장·주술사 문답 3회를 받아볼 수 있어요.",
+    "AI 가 사주팔자·타로·성격유형을 통합해 매일의 운명을 풀이해드려요. 가입 후 매일 무료로 운세 2회·타로 1장·주술사 문답 10회를 받아볼 수 있어요.",
   alternates: {
     canonical: "/",
   },
@@ -68,7 +68,7 @@ const structuredData = {
         "@type": "Offer",
         price: "0",
         priceCurrency: "KRW",
-        description: "무료 가입 후 매일 운세 2회·타로 2장·주술사 문답 3회 제공",
+        description: "무료 가입 후 매일 운세 2회·타로 1장·주술사 문답 10회 제공",
       },
     },
   ],
