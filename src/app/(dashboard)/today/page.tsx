@@ -46,6 +46,7 @@ import { EventLogFeed } from "@/components/world/event-log-feed";
 import { checkInStreak } from "@/lib/streak/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { formatKoreanDate } from "@/lib/utils";
+import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "오늘의 운세",
@@ -75,6 +76,8 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
     (rawCategory as FortuneCategoryId | undefined) ?? "general";
 
   const { profile } = await requireProfile();
+  const t = await getTranslations("today");
+  const tNav = await getTranslations("nav");
 
   const [fortune, usage, subscribed, tier, streakResult, todayMood, crackData] = await Promise.all([
     getDailyFortune(profile.userId, category),
@@ -123,7 +126,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           <CrackAtmosphere
             crackLevel={crackData.level}
             todayStr={today}
-            pageName="운세"
+            pageName={tNav("fortune")}
           />
           {(() => {
             const hidden = getHomeHiddenText(crackData.level);
@@ -139,12 +142,12 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
             data-fracture="today-title"
             className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl"
           >
-            운세
+            {t("title")}
           </h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
             {profile.displayName
-              ? `${profile.displayName} 관측 채널 · 오늘의 운세 기록 중`
-              : "오늘의 운세 기록 중"}
+              ? t("subtitleWithName", { name: profile.displayName })
+              : t("subtitleNoName")}
           </p>
         </div>
       </header>

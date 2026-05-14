@@ -23,6 +23,7 @@ import {
 import { requireProfile } from "@/lib/auth/get-user";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { asSajuDeepReading } from "@/lib/saju/deep-reading";
+import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "사주",
@@ -76,6 +77,7 @@ function asFiveElements(v: unknown): FiveElementsValue | null {
 
 export default async function SajuPage() {
   const { profile } = await requireProfile();
+  const t = await getTranslations("saju");
 
   const pillars = asPillars(profile.sajuPillars);
   const elements = asFiveElements(profile.fiveElements);
@@ -86,10 +88,10 @@ export default async function SajuPage() {
     <div className="space-y-8">
       <header className="space-y-2">
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
-          사주
+          {t("title")}
         </h1>
         <p className="text-muted-foreground">
-          사주팔자는 태어난 순간의 별 배치야. 운세·타로·궁합 모든 풀이의 뿌리가 여기 있어.
+          {t("description")}
         </p>
       </header>
 
@@ -130,11 +132,10 @@ export default async function SajuPage() {
         <Card className="app-surface">
           <CardHeader>
             <CardTitle className="font-mystic text-xl">
-              사주를 아직 보지 않았어
+              {t("noSajuTitle")}
             </CardTitle>
             <CardDescription>
-              한 번 살펴보면 운세 풀이가 한결 깊어져요. 처음 한 번만 계산하면
-              계속 저장돼요.
+              {t("noSajuDescription")}
             </CardDescription>
           </CardHeader>
           <CardContent>

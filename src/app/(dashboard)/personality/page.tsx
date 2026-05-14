@@ -13,6 +13,7 @@ import { StressProfile } from "@/components/personality/stress-profile";
 import { TripleAnalysis } from "@/components/personality/triple-analysis";
 import { requireProfile } from "@/lib/auth/get-user";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "성격유형",
@@ -22,15 +23,16 @@ export const metadata: Metadata = {
 export default async function PersonalityPage() {
   const { profile } = await requireProfile();
   const subscribed = await hasActiveSubscription(profile.userId);
+  const t = await getTranslations("personality");
 
   return (
     <div className="space-y-8">
       <header className="space-y-2">
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
-          성격유형
+          {t("title")}
         </h1>
         <p className="text-muted-foreground">
-          20문항으로 나의 본성을 알아봐. 결과는 주술사 채팅·운세·타로 풀이에 자동 반영돼.
+          {t("description")}
         </p>
       </header>
 

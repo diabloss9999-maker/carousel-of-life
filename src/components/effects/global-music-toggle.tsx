@@ -8,6 +8,7 @@
 import { usePathname } from "next/navigation";
 import { useSyncExternalStore } from "react";
 import { Volume2, VolumeX } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import {
   getAmbientMuted,
@@ -40,6 +41,7 @@ function isDashboardRoute(pathname: string): boolean {
 
 export function GlobalMusicToggle() {
   const pathname = usePathname();
+  const t = useTranslations("header");
   const muted = useSyncExternalStore(
     subscribeAmbient,
     getAmbientMuted,
@@ -48,12 +50,14 @@ export function GlobalMusicToggle() {
 
   if (isDashboardRoute(pathname)) return null;
 
+  const label = muted ? t("unmuteMusic") : t("muteMusic");
+
   return (
     <button
       type="button"
       onClick={toggleAmbientMuted}
-      aria-label={muted ? "배경 음악 켜기" : "배경 음악 끄기"}
-      title={muted ? "배경 음악 켜기" : "배경 음악 끄기"}
+      aria-label={label}
+      title={label}
       className="fixed z-50 inline-flex h-10 w-10 items-center justify-center rounded-full border backdrop-blur-md transition-opacity hover:opacity-80"
       style={{
         top: "calc(env(safe-area-inset-top, 0px) + 16px)",

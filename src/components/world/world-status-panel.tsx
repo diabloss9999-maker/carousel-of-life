@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 import { crackLabel, crackToPercent } from "@/lib/world/crack-percent";
 
 interface WorldStatusPanelProps {
@@ -7,6 +9,15 @@ interface WorldStatusPanelProps {
   crackLevel: number;
 }
 
+/** crackLabel(level)의 한국어 결과를 i18n 키로 매핑. */
+const LABEL_TO_KEY: Record<ReturnType<typeof crackLabel>, string> = {
+  안정: "stable",
+  파동: "wave",
+  균열: "fracture",
+  위험: "danger",
+  임박: "imminent",
+};
+
 /**
  * 오늘의 세계 상태(경계 균열 측정 패널).
  *
@@ -14,8 +25,11 @@ interface WorldStatusPanelProps {
  * - 게임화 금지 원칙에 따라 점수/레벨 자체는 노출하지 않는다.
  */
 export function WorldStatusPanel({ crackScore, crackLevel }: WorldStatusPanelProps) {
+  const t = useTranslations("today");
+  const tLabels = useTranslations("crackLabels");
   const percent = crackToPercent(crackScore);
-  const label = crackLabel(crackLevel);
+  const labelKey = LABEL_TO_KEY[crackLabel(crackLevel)] ?? "stable";
+  const label = tLabels(labelKey);
   const isHigh = crackLevel >= 3;
 
   return (
@@ -23,10 +37,10 @@ export function WorldStatusPanel({ crackScore, crackLevel }: WorldStatusPanelPro
       <div className="flex items-baseline justify-between gap-2">
         <div className="space-y-0.5">
           <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
-            경계 균열 측정
+            {t("worldStatusLabel")}
           </p>
           <p className="font-mystic text-sm font-semibold text-foreground">
-            오늘의 세계 상태
+            {t("worldStatusTitle")}
           </p>
         </div>
         <div className="text-right">

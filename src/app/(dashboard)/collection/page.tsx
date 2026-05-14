@@ -9,6 +9,7 @@ import {
 } from "@/lib/collection/service";
 import { requireProfile } from "@/lib/auth/get-user";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "도감",
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
 export default async function CollectionPage() {
   const { profile } = await requireProfile();
   const subscribed = await hasActiveSubscription(profile.userId);
+  const t = await getTranslations("collection");
 
   const [status, ownedSet, ownedCount] = await Promise.all([
     getTodayGachaStatus(profile.userId),
@@ -47,11 +49,11 @@ export default async function CollectionPage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/icons/memory-vessel.svg" alt="" aria-hidden className="h-6 w-6 opacity-60" />
               <h1 className="font-mystic text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-                도감
+                {t("title")}
               </h1>
             </div>
             <p className="mt-1 text-sm text-muted-foreground">
-              기억의 조각들이 여기 쌓인다.
+              {t("description")}
             </p>
           </div>
           <div className="text-right">

@@ -15,6 +15,7 @@ import { getTodayCompatibility } from "@/lib/compatibility/service";
 import { getChineseZodiac, getZodiacSign } from "@/lib/fortunes/zodiac";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import type { PersonalityType } from "@/lib/personality/questions";
+import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "궁합",
@@ -24,6 +25,7 @@ export const metadata: Metadata = {
 const MBTI_PATTERN = /^[EI][NS][TF][JP]$/;
 
 export default async function CompatibilityPage() {
+  const t = await getTranslations("compatibility");
   const { profile } = await requireProfile();
   const subscribed = await hasActiveSubscription(profile.userId);
 
@@ -58,10 +60,10 @@ export default async function CompatibilityPage() {
     <div className="space-y-8">
       <header className="space-y-2">
         <h1 className="font-mystic text-3xl font-semibold tracking-tight sm:text-4xl">
-          궁합
+          {t("title")}
         </h1>
         <p className="text-sm text-muted-foreground">
-          두 사람의 사주·별자리·띠·성격이 어떻게 얽혀 있는지 주술사가 읽어줄게.
+          {t("description")}
         </p>
       </header>
 

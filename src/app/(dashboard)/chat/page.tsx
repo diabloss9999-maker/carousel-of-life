@@ -15,6 +15,7 @@ import { getAllAffinities } from "@/lib/affinity/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { CharacterLoreCard } from "@/components/chat/character-lore-card";
 import { WelcomeGreeting } from "@/components/chat/welcome-greeting";
+import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "주술사",
@@ -24,6 +25,7 @@ export const metadata: Metadata = {
 export default async function ChatPage() {
   const { user, profile } = await requireProfile();
   const adminMode = isAdmin(user.email);
+  const t = await getTranslations("chat");
 
   const [sessions, usage, tier, affinityRows] = await Promise.all([
     listTodaySessions(profile.userId),
@@ -43,10 +45,10 @@ export default async function ChatPage() {
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/icons/whisper-hand.svg" alt="" aria-hidden className="h-8 w-8 opacity-60" />
-          주술사
+          {t("title")}
         </h1>
         <p className="text-muted-foreground">
-          아홉 주술사 중 한 명을 골라. 이세계의 카드, 동양의 사주·천기, 북방의 룬 — 어느 결을 가진 자든 너의 운명을 이미 알고 있어.
+          {t("description")}
         </p>
       </header>
 

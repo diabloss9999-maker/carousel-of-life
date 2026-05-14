@@ -6,6 +6,7 @@ import { DesktopNav } from "@/components/layout/desktop-nav";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { MusicToggle } from "@/components/effects/music-toggle";
 import { LanguageToggle } from "@/components/layout/language-toggle";
+import { getTranslations } from "next-intl/server";
 import { RitualBody } from "@/components/crack/ritual-body";
 import { FractureWhisper } from "@/components/fracture/fracture-whisper";
 import { DailyWhisper } from "@/components/world/daily-whisper";
@@ -32,6 +33,7 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const user = await requireUser();
+  const tCommon = await getTranslations("common");
   const [crackData, streakRow] = await Promise.all([
     getCrackScore(user.id).catch(() => ({ level: 0 as const })),
     getStreak(user.id).catch(() => null),
@@ -79,7 +81,7 @@ export default async function DashboardLayout({
                 }}
               >
                 <LogOut className="h-4 w-4" aria-hidden />
-                <span className="hidden sm:inline">로그아웃</span>
+                <span className="hidden sm:inline">{tCommon("logout")}</span>
               </Button>
             </form>
           </div>

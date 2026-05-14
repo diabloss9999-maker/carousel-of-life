@@ -22,6 +22,7 @@ import {
 import { getTodayRuneReadings } from "@/lib/runes/service";
 import { getTodayTarotReadings } from "@/lib/tarot/service";
 import { getTodayUsage } from "@/lib/usage/quota";
+import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "점술",
@@ -30,6 +31,7 @@ export const metadata: Metadata = {
 
 export default async function TarotPage() {
   const { profile } = await requireProfile();
+  const tTarot = await getTranslations("tarot");
 
   const [readings, usage, subscribed, tier, lenormandReadings, runeReadings] =
     await Promise.all([
@@ -45,10 +47,10 @@ export default async function TarotPage() {
     <div className="space-y-8">
       <header className="space-y-2">
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
-          점술
+          {tTarot("title")}
         </h1>
         <p className="text-muted-foreground">
-          카드를 뽑아 운명의 한 자락을 살펴봐요.
+          {tTarot("description")}
         </p>
       </header>
 

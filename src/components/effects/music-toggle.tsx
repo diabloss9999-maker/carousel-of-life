@@ -9,6 +9,7 @@
  */
 import { useSyncExternalStore } from "react";
 import { Volume2, VolumeX } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,11 +20,14 @@ import {
 } from "./ambient-store";
 
 export function MusicToggle() {
+  const t = useTranslations("header");
   const muted = useSyncExternalStore(
     subscribeAmbient,
     getAmbientMuted,
     getAmbientMutedServerSnapshot,
   );
+
+  const label = muted ? t("unmuteMusic") : t("muteMusic");
 
   return (
     <Button
@@ -31,8 +35,8 @@ export function MusicToggle() {
       variant="ghost"
       size="sm"
       onClick={toggleAmbientMuted}
-      aria-label={muted ? "배경 음악 켜기" : "배경 음악 끄기"}
-      title={muted ? "배경 음악 켜기" : "배경 음악 끄기"}
+      aria-label={label}
+      title={label}
       className="rounded-full px-3"
       style={{
         border: "1px solid var(--ritual-line)",
