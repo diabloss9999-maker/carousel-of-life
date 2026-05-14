@@ -16,6 +16,9 @@ import { cn } from "@/lib/utils";
 const STORAGE_KEY = "carousel_onboarded_v1";
 
 /** STEP 디자인 메타 — 텍스트는 i18n 에서 가져옴. */
+/** 각 step 의 캐릭터 미리보기는 character id 만 보관하고 이름·훅은 i18n 에서 lookup. */
+type CharId = "child" | "witch" | "sage" | "shaman" | "taoist" | "dokkaebi" | "god" | "hunter" | "runeshaman";
+
 const STEPS_META = [
   {
     titleKey: "step1Title",
@@ -32,9 +35,9 @@ const STEPS_META = [
     bg: "from-[#0d0818] via-[#1a0a30] to-[#0a0520]",
     accent: "text-violet-400",
     characters: [
-      { name: "카엘", hook: "욕망을 꿰뚫는 악마", img: "/characters/child_v2.png", color: "ring-red-800/50" },
-      { name: "루나", hook: "기억을 읽는 마녀",   img: "/characters/witch_night_v2.png", color: "ring-blue-800/50" },
-      { name: "라엘", hook: "희망을 전하는 천사", img: "/characters/sage_night_v2.png",  color: "ring-amber-700/50" },
+      { id: "child" as CharId, img: "/characters/child_v2.png", color: "ring-red-800/50" },
+      { id: "witch" as CharId, img: "/characters/witch_night_v2.png", color: "ring-blue-800/50" },
+      { id: "sage" as CharId,  img: "/characters/sage_night_v2.png",  color: "ring-amber-700/50" },
     ],
   },
   {
@@ -44,9 +47,9 @@ const STEPS_META = [
     bg: "from-[#050d08] via-[#0a1a10] to-[#030a06]",
     accent: "text-emerald-400",
     characters: [
-      { name: "소령", hook: "신령의 목소리를 전하는 무녀", img: "/characters/shaman_v1.png",   color: "ring-rose-800/50" },
-      { name: "현도", hook: "운명을 읽는 500년의 도사",    img: "/characters/taoist_v1.png",   color: "ring-cyan-800/50" },
-      { name: "귀염", hook: "저승을 다스리는 도깨비왕",    img: "/characters/dokkaebi_night_v2.png", color: "ring-purple-800/50" },
+      { id: "shaman" as CharId,   img: "/characters/shaman_v1.png",   color: "ring-rose-800/50" },
+      { id: "taoist" as CharId,   img: "/characters/taoist_v1.png",   color: "ring-cyan-800/50" },
+      { id: "dokkaebi" as CharId, img: "/characters/dokkaebi_night_v2.png", color: "ring-purple-800/50" },
     ],
   },
   {
@@ -56,9 +59,9 @@ const STEPS_META = [
     bg: "from-[#050a18] via-[#0a1428] to-[#020612]",
     accent: "text-sky-300",
     characters: [
-      { name: "외르문드", hook: "북방의 마지막 신",     img: "/characters/god_night.png",        color: "ring-sky-800/50" },
-      { name: "비요른",   hook: "야성의 사냥꾼",        img: "/characters/hunter_night.png",     color: "ring-stone-700/50" },
-      { name: "헬가",     hook: "24룬을 새기는 룬샤먼", img: "/characters/runeshaman_night.png", color: "ring-indigo-800/50" },
+      { id: "god" as CharId,        img: "/characters/god_night.png",        color: "ring-sky-800/50" },
+      { id: "hunter" as CharId,     img: "/characters/hunter_night.png",     color: "ring-stone-700/50" },
+      { id: "runeshaman" as CharId, img: "/characters/runeshaman_night.png", color: "ring-indigo-800/50" },
     ],
   },
   {
@@ -74,6 +77,8 @@ const STEPS_META = [
 export function OnboardingModal() {
   const t = useTranslations("onboarding");
   const tCat = useTranslations("characterSelect");
+  const tChar = useTranslations("characters");
+  const tHooks = useTranslations("onboardingHooks");
   const [visible, setVisible] = useState(false);
   const [step, setStep] = useState(0);
   const [animating, setAnimating] = useState(false);
@@ -174,27 +179,31 @@ export function OnboardingModal() {
           {/* 캐릭터 미리보기 (이세계/동양/북유럽 스텝) */}
           {current.characters && (
             <div className="flex justify-center gap-3 w-full">
-              {current.characters.map((c) => (
-                <div key={c.name} className="flex flex-col items-center gap-2 flex-1">
-                  <div className={cn(
-                    "relative w-full aspect-[2/3] overflow-hidden rounded-xl ring-1 shadow-lg",
-                    c.color,
-                  )}>
-                    <Image
-                      src={c.img}
-                      alt={c.name}
-                      fill
-                      className="object-cover object-top"
-                      sizes="120px"
-                      quality={80}
-                    />
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-1.5 py-2">
-                      <p className="font-mystic text-xs font-bold text-white">{c.name}</p>
+              {current.characters.map((c) => {
+                const name = tChar(`${c.id}.name`);
+                const hook = tHooks(c.id);
+                return (
+                  <div key={c.id} className="flex flex-col items-center gap-2 flex-1">
+                    <div className={cn(
+                      "relative w-full aspect-[2/3] overflow-hidden rounded-xl ring-1 shadow-lg",
+                      c.color,
+                    )}>
+                      <Image
+                        src={c.img}
+                        alt={name}
+                        fill
+                        className="object-cover object-top"
+                        sizes="120px"
+                        quality={80}
+                      />
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-1.5 py-2">
+                        <p className="font-mystic text-xs font-bold text-white">{name}</p>
+                      </div>
                     </div>
+                    <p className="text-[10px] text-white/50 leading-tight">{hook}</p>
                   </div>
-                  <p className="text-[10px] text-white/50 leading-tight">{c.hook}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
 

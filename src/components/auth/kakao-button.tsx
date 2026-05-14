@@ -9,6 +9,7 @@
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 import { signInWithKakao } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
@@ -39,18 +40,19 @@ function KakaoLogo() {
 
 export function KakaoButton({ label, className }: KakaoButtonProps) {
   const [isPending, setIsPending] = useState(false);
+  const t = useTranslations("authButton");
 
   async function handleClick() {
     setIsPending(true);
     try {
       const { error } = await signInWithKakao();
       if (error) {
-        toast.error(`카카오 로그인에 실패했어요: ${error.message}`);
+        toast.error(t("kakaoFailed", { message: error.message }));
         setIsPending(false);
       }
       // 성공 시 카카오로 리다이렉트되므로 setIsPending(false) 호출 안 함.
     } catch {
-      toast.error("카카오 로그인을 시작할 수 없어요. 잠시 후 다시 시도해주세요.");
+      toast.error(t("kakaoStartFailed"));
       setIsPending(false);
     }
   }
@@ -72,7 +74,7 @@ export function KakaoButton({ label, className }: KakaoButtonProps) {
       {isPending ? (
         <>
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-          <span>이동 중…</span>
+          <span>{t("redirecting")}</span>
         </>
       ) : (
         <>

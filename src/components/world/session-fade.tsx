@@ -9,25 +9,9 @@
  * - sessionStorage 키로 세션당 1회 제한.
  */
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { loadFractureState } from "@/lib/fracture/fracture-state";
-
-/** 일반 종료 시 후보 문장. */
-const CLOSING_LINES: readonly string[] = [
-  "오늘의 관측이 조용히 봉인되었습니다.",
-  "루나는 아직 문장을 정리하고 있습니다.",
-  "오늘 남겨진 흔적은 쉽게 사라지지 않습니다.",
-  "기록이 천천히 닫히고 있습니다.",
-  "오늘의 빛은 조금 늦게 꺼졌습니다.",
-] as const;
-
-/** 후유증 조건 충족 시의 우선 문장. */
-const AFTERTASTE_LINES: readonly string[] = [
-  "오늘의 기록은 아직 완전히 닫히지 않았습니다.",
-  "루나는 당신의 마지막 문장을 오래 바라보았습니다.",
-  "같은 흐름은 쉽게 사라지지 않습니다.",
-  "이 문장은 오늘만 남는 문장입니다.",
-] as const;
 
 /** 세션 1회 제한 키. */
 const SESSION_KEY = "session_fade_shown";
@@ -85,6 +69,7 @@ function pickOne(pool: readonly string[]): string {
 export function SessionFade() {
   const [closing, setClosing] = useState(false);
   const [line, setLine] = useState("");
+  const tWorld = useTranslations("worldAtmosphere");
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -107,7 +92,10 @@ export function SessionFade() {
         /* 무시 — 그래도 한 번은 보여줌 */
       }
 
-      const pool = shouldUseAftertaste() ? AFTERTASTE_LINES : CLOSING_LINES;
+      const aftertaste = shouldUseAftertaste();
+      const pool = (aftertaste
+        ? tWorld.raw("sessionAftertasteFull")
+        : tWorld.raw("sessionClosing")) as readonly string[];
       setLine(pickOne(pool));
       setClosing(true);
     };
@@ -125,7 +113,7 @@ export function SessionFade() {
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("pagehide", handler);
     };
-  }, []);
+  }, [tWorld]);
 
   if (!closing) return null;
 

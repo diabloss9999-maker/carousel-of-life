@@ -7,7 +7,8 @@
 import { useState } from "react";
 import type { Route } from "next";
 import Link from "next/link";
-import { ChevronUp, MessageCircle, X } from "lucide-react";
+import { ChevronUp, MessageCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { CHARACTERS } from "@/lib/chat/characters";
 import { CharacterImage } from "@/components/shared/character-image";
@@ -27,6 +28,7 @@ interface SessionDrawerProps {
 
 export function SessionDrawer({ sessions }: SessionDrawerProps) {
   const [open, setOpen] = useState(false);
+  const t = useTranslations("chatShell");
 
   if (sessions.length === 0) return null;
 
@@ -45,7 +47,7 @@ export function SessionDrawer({ sessions }: SessionDrawerProps) {
         <div className="flex items-center gap-2.5">
           <MessageCircle className="h-4 w-4 text-muted-foreground/60" aria-hidden />
           <span className="font-mystic text-sm text-muted-foreground/70">
-            오늘의 조우 기록
+            {t("drawerTitle")}
           </span>
           <span className="rounded-full bg-muted/40 px-2 py-0.5 text-[10px] text-muted-foreground/80 tabular-nums">
             {sessions.length}

@@ -11,12 +11,40 @@ import type { NextRequest } from "next/server";
 
 export const runtime = "edge";
 
-const CRACK_LABEL: Record<string, string> = {
+const CRACK_LABEL_KO: Record<string, string> = {
   "0": "경계 · 안정",
   "1": "경계 · 파동 감지",
   "2": "경계 · 균열 확장",
   "3": "경계 · 위험",
   "4": "경계 · 임박",
+};
+const CRACK_LABEL_EN: Record<string, string> = {
+  "0": "Boundary · Stable",
+  "1": "Boundary · Ripple",
+  "2": "Boundary · Fracture",
+  "3": "Boundary · Danger",
+  "4": "Boundary · Imminent",
+};
+
+const I18N_KO = {
+  appName: "인생의 회전목마",
+  scoreUnit: "점",
+  defaultTitle: "오늘의 흐름",
+  defaultCategory: "운세",
+  defaultChar: "주술사",
+  luckyColor: "행운의 색",
+  luckyNumber: "행운의 숫자",
+  luckyDirection: "행운의 방향",
+};
+const I18N_EN = {
+  appName: "Carousel of Life",
+  scoreUnit: "pts",
+  defaultTitle: "Today's flow",
+  defaultCategory: "Fortune",
+  defaultChar: "Shaman",
+  luckyColor: "Lucky color",
+  luckyNumber: "Lucky number",
+  luckyDirection: "Lucky direction",
 };
 
 const CRACK_COLOR: Record<string, string> = {
@@ -40,15 +68,19 @@ function truncate(text: string, max: number) {
 export async function GET(req: NextRequest) {
   const sp = new URL(req.url).searchParams;
 
-  const title     = sp.get("title")     ?? "오늘의 흐름";
+  const locale = sp.get("locale") === "en" ? "en" : "ko";
+  const T = locale === "en" ? I18N_EN : I18N_KO;
+  const CRACK_LABEL = locale === "en" ? CRACK_LABEL_EN : CRACK_LABEL_KO;
+
+  const title     = sp.get("title")     ?? T.defaultTitle;
   const score     = Math.min(100, Math.max(0, Number(sp.get("score") ?? 70)));
-  const category  = sp.get("category")  ?? "운세";
+  const category  = sp.get("category")  ?? T.defaultCategory;
   const content   = truncate(sp.get("content") ?? "", 60);
   const color     = sp.get("color")     ?? null;
   const number    = sp.get("number")    ?? null;
   const direction = sp.get("direction") ?? null;
   const date      = sp.get("date")      ?? "";
-  const charName  = sp.get("char")      ?? "주술사";
+  const charName  = sp.get("char")      ?? T.defaultChar;
   const charTitle = sp.get("charTitle") ?? "";
   const crack     = sp.get("crack")     ?? "0";
 
@@ -84,7 +116,7 @@ export async function GET(req: NextRequest) {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 40 }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
             <span style={{ fontSize: 20, color: "#a090b0", letterSpacing: 3 }}>
-              인생의 회전목마
+              {T.appName}
             </span>
             <span style={{ fontSize: 14, color: "#604060", letterSpacing: 2 }}>
               CAROUSEL OF LIFE
@@ -119,7 +151,7 @@ export async function GET(req: NextRequest) {
           <span style={{ fontSize: 110, fontWeight: 700, color: accent, lineHeight: 1 }}>
             {score}
           </span>
-          <span style={{ fontSize: 32, color: `${accent}aa`, marginBottom: 16 }}>점</span>
+          <span style={{ fontSize: 32, color: `${accent}aa`, marginBottom: 16 }}>{T.scoreUnit}</span>
         </div>
 
         {/* 구분선 */}
@@ -144,9 +176,9 @@ export async function GET(req: NextRequest) {
         {/* 행운 정보 */}
         {(color || number || direction) && (
           <div style={{ display: "flex", gap: 28, marginBottom: 32 }}>
-            {color     && <LuckyItem label="행운의 색"  value={color} />}
-            {number    && <LuckyItem label="행운의 숫자" value={number} />}
-            {direction && <LuckyItem label="행운의 방향" value={direction} />}
+            {color     && <LuckyItem label={T.luckyColor}  value={color} />}
+            {number    && <LuckyItem label={T.luckyNumber} value={number} />}
+            {direction && <LuckyItem label={T.luckyDirection} value={direction} />}
           </div>
         )}
 

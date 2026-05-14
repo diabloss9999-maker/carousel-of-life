@@ -1,6 +1,7 @@
-﻿import type { Metadata, Route } from "next";
+import type { Metadata, Route } from "next";
 import Link from "next/link";
 import { Archive, Crown, MessageCircleHeart, User } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,27 +21,43 @@ import {
 } from "@/lib/payment/subscription-state";
 import { formatKoreanDate } from "@/lib/utils";
 
-export const metadata: Metadata = {
-  title: "설정",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("settingsPage");
+  return { title: t("metaTitle") };
+}
 
 export default async function SettingsPage() {
   const { user, profile } = await requireProfile();
   const subscribed = await hasActiveSubscription(user.id);
   const subscription = await getLatestSubscription(user.id);
+  const t = await getTranslations("settingsPage");
+
+  const calendarLabel =
+    profile.calendarSystem === "lunar"
+      ? t("calendarLunar")
+      : profile.calendarSystem === "solar"
+        ? t("calendarSolar")
+        : t("calendarUnknown");
+
+  const genderLabel =
+    profile.gender === "male"
+      ? t("genderMale")
+      : profile.gender === "female"
+        ? t("genderFemale")
+        : t("genderOther");
 
   return (
     <div className="space-y-6">
       <header className="space-y-1">
         <h1 className="font-mystic text-3xl font-semibold tracking-tight">
-          내 자리
+          {t("heading")}
         </h1>
         <p className="text-sm text-muted-foreground">
-          멤버십과 정보를 살펴볼 수 있어.
+          {t("subheading")}
         </p>
       </header>
 
-      {/* 멤버십 카드 */}
+      {/* Plan card */}
       <Card
         className={
           subscribed
@@ -58,12 +75,10 @@ export default async function SettingsPage() {
               }
               aria-hidden
             />
-            멤버십
+            {t("membership")}
           </CardTitle>
           <CardDescription className="text-xs">
-            {subscribed
-              ? "라이트 사용 중. 모든 풀이가 무제한이야."
-              : "지금은 무료 멤버십이야."}
+            {subscribed ? t("lightActive") : t("freeMembership")}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -71,7 +86,7 @@ export default async function SettingsPage() {
             <>
               <div className="rounded-2xl bg-muted/30 p-3 text-sm">
                 <Row
-                  label="다음 결제일"
+                  label={t("nextBilling")}
                   value={
                     subscription.currentPeriodEndsAt
                       ? formatKoreanDate(
@@ -82,7 +97,7 @@ export default async function SettingsPage() {
                 />
                 {subscription.cancelAtPeriodEnd ? (
                   <p className="mt-2 text-xs text-muted-foreground">
-                    이 날짜 이후 자동으로 만료돼.
+                    {t("autoExpireNote")}
                   </p>
                 ) : null}
               </div>
@@ -92,43 +107,34 @@ export default async function SettingsPage() {
             </>
           ) : (
             <Button asChild className="w-full" size="sm">
-              <Link href={ROUTES.pricing}>라이트로 업그레이드</Link>
+              <Link href={ROUTES.pricing}>{t("upgradeCta")}</Link>
             </Button>
           )}
         </CardContent>
       </Card>
 
-      {/* 기본 정보 카드 */}
+      {/* Profile card */}
       <Card className="app-surface">
         <CardHeader className="pb-3">
           <CardTitle className="font-mystic flex items-center gap-2 text-lg">
             <User className="h-5 w-5 text-primary" aria-hidden />
-            내 정보
+            {t("myInfo")}
           </CardTitle>
           <CardDescription className="text-xs">
-            사주 풀이에 쓰이는 정보야.
+            {t("myInfoHelp")}
           </CardDescription>
         </CardHeader>
         <CardContent className="text-sm">
-          <Row label="이름" value={profile.displayName ?? "—"} />
-          <Row label="이메일" value={user.email ?? "—"} />
+          <Row label={t("labelName")} value={profile.displayName ?? "—"} />
+          <Row label={t("labelEmail")} value={user.email ?? "—"} />
           <Row
-            label="생년월일"
-            value={`${profile.birthDate} (${profile.calendarSystem === "lunar" ? "음력" : "양력"})`}
+            label={t("labelBirthDate")}
+            value={`${profile.birthDate} (${calendarLabel})`}
           />
-          <Row label="태어난 시각" value={profile.birthTime ?? "모름"} />
-          <Row
-            label="성별"
-            value={
-              profile.gender === "male"
-                ? "남"
-                : profile.gender === "female"
-                  ? "여"
-                  : "기타"
-            }
-          />
-          <Row label="성격유형" value={profile.mbti ?? "—"} />
-          <Row label="출생지" value={profile.birthPlace ?? "—"} />
+          <Row label={t("labelBirthTime")} value={profile.birthTime ?? t("calendarUnknown")} />
+          <Row label={t("labelGender")} value={genderLabel} />
+          <Row label={t("labelMbti")} value={profile.mbti ?? "—"} />
+          <Row label={t("labelBirthplace")} value={profile.birthPlace ?? "—"} />
           <div className="pt-2">
             <ProfileEditForm
               displayName={profile.displayName ?? ""}
@@ -139,34 +145,33 @@ export default async function SettingsPage() {
         </CardContent>
       </Card>
 
-      {/* 기록 카드 */}
+      {/* History card */}
       <Card className="border-border/40 bg-card/50 backdrop-blur">
         <CardHeader className="pb-3">
           <CardTitle className="font-mystic flex items-center gap-2 text-lg">
             <Archive className="h-5 w-5 text-primary" aria-hidden />
-            풀이 기록
+            {t("fateLog")}
           </CardTitle>
           <CardDescription className="text-xs">
-            지난 운세·타로·궁합 풀이를 한 곳에서 돌아봐.
+            {t("fateLogHelp")}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Button asChild variant="outline" size="sm" className="w-full">
-            <Link href={ROUTES.history as Route}>기록 보기</Link>
+            <Link href={ROUTES.history as Route}>{t("fateLogCta")}</Link>
           </Button>
         </CardContent>
       </Card>
 
-      {/* 운영자에게 정보 공유 */}
+      {/* Feedback card */}
       <Card className="border-border/40 bg-card/50 backdrop-blur">
         <CardHeader className="pb-3">
           <CardTitle className="font-mystic flex items-center gap-2 text-lg">
             <MessageCircleHeart className="h-5 w-5 text-primary" aria-hidden />
-            운영자에게 의견 보내기
+            {t("feedbackCta")}
           </CardTitle>
           <CardDescription className="text-xs">
-            불편한 점, 바라는 기능, 솔직한 피드백 — 뭐든 환영해.
-            카카오 오픈채팅방에서 자유롭게 이야기해줘.
+            {t("feedbackBody")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -176,14 +181,16 @@ export default async function SettingsPage() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              오픈채팅방 참여하기
+              {t("openChatCta")}
             </a>
           </Button>
         </CardContent>
       </Card>
 
       <p className="text-center text-xs text-muted-foreground/60">
-        {profile.displayName ?? "친구"}야, 오늘도 별이 함께해.
+        {profile.displayName
+          ? t("greetingNamed", { name: profile.displayName })
+          : t("greetingAnon")}
       </p>
     </div>
   );

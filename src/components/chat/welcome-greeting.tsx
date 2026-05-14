@@ -6,28 +6,11 @@
  */
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { CHARACTERS, type CharacterId } from "@/lib/chat/characters";
 import { useCharacterImage } from "@/hooks/use-character-image";
 
 const SESSION_KEY = "welcome_greeting_shown";
-
-/** 캐릭터별 환영 인사 (성격 반영). */
-const GREETINGS: Record<CharacterId, string[]> = {
-  child:      ["또 왔구나. 욕망을 말해.", "솔직해질 준비는 됐어?", "오늘은 무엇을 원해?"],
-  witch:      ["당신이 올 거라고 생각했어.", "오늘의 흐름이 당신을 데려왔네.", "기다리고 있었어."],
-  sage:       ["다시 오셨네요. 오늘은 어떤 흐름인가요?", "당신의 빛이 닿았어요.", "여기 있어요. 천천히 와요."],
-  shaman:     ["신령이 당신 이름을 부르고 있어.", "오늘은 네 발걸음이 보였어.", "경계가 너를 알아봤다."],
-  taoist:     ["별이 당신을 안내했군.", "오늘 운명의 결이 너에게 닿았다.", "왔구나. 천기가 흐르고 있어."],
-  dokkaebi:   ["왔어? 뭔데.", "또 너야. 됐고, 말해.", "재미있는 거 들고 왔어?"],
-  hunter:     ["...자국이 보였다. 네 거였군.", "바람이 너를 데려왔어.", "조용히 와. 사냥감이 듣는다."],
-  runeshaman: ["룬이 너의 이름을 새겼어.", "스물네 신호가 깨어났어.", "...그 단어가 뭐였더라. 어쨌든 와."],
-  god:        ["호른이 너의 이름을 불렀다.", "폭풍 끝에서 너를 보았다.", "한때 너처럼 살아 본 적이 있다."],
-};
-
-function pickGreeting(id: CharacterId): string {
-  const lines = GREETINGS[id];
-  return lines[Math.floor(Math.random() * lines.length)];
-}
 
 function pickRandomCharacter(): CharacterId {
   const ids: CharacterId[] = [
@@ -42,6 +25,7 @@ export function WelcomeGreeting() {
   const [charId, setCharId] = useState<CharacterId | null>(null);
   const [line, setLine] = useState<string>("");
   const [fadingOut, setFadingOut] = useState(false);
+  const tGreetings = useTranslations("chatShell.greetings");
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -53,14 +37,17 @@ export function WelcomeGreeting() {
     // 마운트 1회 client-only 초기화 — SSR 하이드레이션 불일치 회피를 위한 의도된 패턴.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setCharId(pickedId);
+    // 캐릭터별 3개 인사 중 무작위 1개 — i18n 번역에서 가져온다.
+    const lines = tGreetings.raw(pickedId) as string[];
+    const picked = lines[Math.floor(Math.random() * lines.length)] ?? "";
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setLine(pickGreeting(pickedId));
+    setLine(picked);
     try { window.sessionStorage.setItem(SESSION_KEY, "1"); } catch {}
 
     const t1 = setTimeout(() => setFadingOut(true), 4500);
     const t2 = setTimeout(() => setCharId(null), 6000);
     return () => { clearTimeout(t1); clearTimeout(t2); };
-  }, []);
+  }, [tGreetings]);
 
   if (!charId) return null;
   return <GreetingCard charId={charId} line={line} fadingOut={fadingOut} />;
@@ -77,6 +64,9 @@ function GreetingCard({
 }) {
   const character = CHARACTERS[charId];
   const imageSrc = useCharacterImage(character);
+  const tChar = useTranslations("characters");
+  const name = tChar(`${charId}.name`);
+  const title = tChar(`${charId}.title`);
 
   return (
     <div
@@ -115,7 +105,7 @@ function GreetingCard({
           border: "1px solid rgba(255,255,255,0.26)",
         }}
       >
-        <Image src={imageSrc} alt={character.name} fill sizes="42px" style={{ objectFit: "cover", objectPosition: "top" }} aria-hidden />
+        <Image src={imageSrc} alt={name} fill sizes="42px" style={{ objectFit: "cover", objectPosition: "top" }} aria-hidden />
       </div>
       <div style={{ minWidth: 0, lineHeight: 1.4 }}>
         <p
@@ -127,7 +117,7 @@ function GreetingCard({
             fontFamily: "var(--font-serif)",
           }}
         >
-          {character.name} · {character.title}
+          {name} · {title}
         </p>
         <p
           style={{

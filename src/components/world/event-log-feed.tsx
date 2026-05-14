@@ -1,3 +1,5 @@
+import { getTranslations } from "next-intl/server";
+
 import {
   formatTimeAgo,
   getTodayEventLog,
@@ -21,17 +23,18 @@ const TONE_COLOR: Record<WorldEvent["tone"], string> = {
  * - daily seed 기반 결정론적 이벤트 4~5건을 시간 역순으로 표시한다.
  * - 게임화 금지 원칙에 따라 점수/카운트는 노출하지 않는다(총 건수만 표시).
  */
-export function EventLogFeed({ crackLevel }: EventLogFeedProps) {
+export async function EventLogFeed({ crackLevel }: EventLogFeedProps) {
   const events = getTodayEventLog(crackLevel);
+  const t = await getTranslations("worldAtmosphere");
 
   return (
     <div className="app-surface rounded-2xl p-4 sm:p-5 space-y-3">
       <div className="flex items-center justify-between">
         <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
-          관측 로그 · OBS LOG
+          {t("obsLog")}
         </p>
         <span className="text-[10px] font-mono text-muted-foreground tabular-nums">
-          {events.length}건
+          {t("logCount", { n: events.length })}
         </span>
       </div>
 
@@ -52,7 +55,7 @@ export function EventLogFeed({ crackLevel }: EventLogFeedProps) {
       </ul>
 
       <p className="text-[10px] text-muted-foreground/60 leading-relaxed font-mono">
-        ※ 일부 기록은 관측 한계로 인해 손상되어 있습니다.
+        {t("logCorrupted")}
       </p>
     </div>
   );

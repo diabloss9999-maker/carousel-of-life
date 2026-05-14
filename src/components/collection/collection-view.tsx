@@ -10,6 +10,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { Sparkles, X } from "lucide-react";
 import { toast } from "sonner";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -55,12 +56,11 @@ const RARITY_GLOW: Record<CollectionRarity, string> = {
   legendary: "shadow-amber-300/40 shadow-xl",
 };
 
-/** 희귀도 한글 라벨. */
-const RARITY_LABEL: Record<CollectionRarity, string> = {
-  common: "일반",
-  rare: "희귀",
-  legendary: "전설",
-};
+/** locale 에 따라 카드의 표시 이름을 고른다. */
+function displayName(card: { nameKo: string; nameEn?: string | null }, locale: string): string {
+  if (locale === "en" && card.nameEn) return card.nameEn;
+  return card.nameKo;
+}
 
 /** 카테고리 표시 순서. */
 const CATEGORY_ORDER: CollectionCategory[] = [
@@ -108,6 +108,9 @@ export function CollectionView({
 
   const [tab, setTab] = useState<TabId>("all");
   const [selected, setSelected] = useState<FlatCard | null>(null);
+
+  const t = useTranslations("collectionPage");
+  const locale = useLocale();
 
   // 가챠 액션 결과로 직접 state 를 업데이트하므로 props 변동 동기화는 불필요하다.
   // (서버에서 revalidatePath 후 다시 마운트되면 초기값으로 자연 동기화된다.)
@@ -192,7 +195,7 @@ export function CollectionView({
       }
 
       if (!result.ok) {
-        toast.error("오늘 뽑기 횟수를 모두 사용했어.");
+        toast.error(t("quotaError"));
         setRemaining(0);
         setLimit(result.limit);
         return;
@@ -206,16 +209,17 @@ export function CollectionView({
       setRemaining(result.remaining);
       setLimit(result.limit);
       const bonusSuffix =
-        result.chatBonus > 0 ? ` (+${result.chatBonus} 문답 보너스)` : "";
+        result.chatBonus > 0 ? t("chatBonus", { n: result.chatBonus }) : "";
+      const cardName = displayName(result.card, locale);
       if (result.isNew) {
         setOwnedSet((prev) => {
           const next = new Set(prev);
           next.add(result.card.id);
           return next;
         });
-        toast.success(`새 카드 획득 — ${result.card.nameKo}${bonusSuffix}`);
+        toast.success(`${t("newCardTitle", { name: cardName })}${bonusSuffix}`);
       } else {
-        toast(`이미 소장 중인 카드 — ${result.card.nameKo}${bonusSuffix}`);
+        toast(`${t("dupeCardTitle", { name: cardName })}${bonusSuffix}`);
       }
 
       // 살짝 딜레이 후 플립
@@ -239,10 +243,10 @@ export function CollectionView({
       {/* 진행도 표시 — 카테고리 탭 위 한 줄. */}
       <div className="flex items-end justify-between gap-3">
         <h2 className="font-mystic text-lg font-semibold text-foreground sm:text-xl">
-          나의 도감
+          {t("heading")}
         </h2>
         <p className="text-xs tabular-nums text-muted-foreground">
-          {ownedAll} / {totalAll} 소장
+          {t("ownedFraction", { owned: ownedAll, total: totalAll })}
         </p>
       </div>
 
@@ -252,7 +256,7 @@ export function CollectionView({
           <TabButton
             active={tab === "all"}
             onClick={() => setTab("all")}
-            label="전체"
+            label={t("filterAll")}
             owned={ownedAll}
             total={totalAll}
           />
@@ -299,6 +303,19 @@ export function CollectionView({
 }
 
 // =============================================================================
+// 카테고리 라벨 / 희귀도 라벨 — i18n hook 안에서 사용해야 하므로 컴포넌트 안에서 호출.
+// =============================================================================
+
+function useRarityLabel(): Record<CollectionRarity, string> {
+  const t = useTranslations("collectionPage");
+  return {
+    common: t("rarityNormal"),
+    rare: t("rarityRare"),
+    legendary: t("rarityLegend"),
+  };
+}
+
+// =============================================================================
 // 가챠 패널
 // =============================================================================
 
@@ -323,26 +340,28 @@ function GachaPanel({
   subscribed,
   onPull,
 }: GachaPanelProps) {
+  const t = useTranslations("collectionPage");
+  const locale = useLocale();
   const canUseBonus = remaining <= 0 && bonusCredits > 0;
   const exhausted = remaining <= 0 && bonusCredits <= 0;
   const buttonLabel = isPending
-    ? "뽑는 중..."
+    ? t("drawingNow")
     : exhausted
-      ? "오늘 뽑기 완료"
+      ? t("drawDoneToday")
       : canUseBonus
-        ? `보너스 뽑기 (${bonusCredits}회 남음)`
-        : `카드 뽑기 (${remaining}/${limit})`;
+        ? t("drawBonus", { n: bonusCredits })
+        : t("drawCount", { used: remaining, max: limit });
 
   return (
     <div className="app-surface space-y-5 rounded-2xl border border-border/60 p-5 shadow-sm sm:p-7">
       <div className="flex flex-col items-center gap-1 text-center">
         <h2 className="font-mystic text-xl font-semibold text-foreground sm:text-2xl">
-          오늘의 카드 뽑기
+          {t("drawAction")}
         </h2>
         <p className="text-xs text-muted-foreground sm:text-sm">
           {subscribed
-            ? "구독자는 매일 더 많은 카드를 뽑을 수 있어 (라이트 3장 / 프로 5장)."
-            : "무료 1장 / 라이트 3장 / 프로 5장. 희귀·전설 카드는 문답 보너스도 함께 줘."}
+            ? t("subDescSubscribed")
+            : t("subDescFree")}
         </p>
       </div>
 
@@ -385,7 +404,7 @@ function GachaPanel({
             {pulled ? (
               <Image
                 src={pulled.card.imageSrc}
-                alt={pulled.card.nameKo}
+                alt={displayName(pulled.card, locale)}
                 fill
                 sizes="(min-width: 640px) 192px, 160px"
                 className="object-cover"
@@ -397,7 +416,7 @@ function GachaPanel({
             {pulled ? (
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent px-2 py-2 text-center">
                 <p className="line-clamp-1 text-xs font-medium text-white">
-                  {pulled.card.nameKo}
+                  {displayName(pulled.card, locale)}
                 </p>
               </div>
             ) : null}
@@ -411,22 +430,22 @@ function GachaPanel({
           <>
             {pulled.isNew ? (
               <p className="text-sm font-semibold text-primary">
-                새로운 카드를 소장하게 됐어!
+                {t("resultNew")}
               </p>
             ) : (
               <p className="text-sm text-muted-foreground">
-                이미 소장 중인 카드야 — 뽑기 횟수만 1 차감됐어.
+                {t("dupeDetailLine")}
               </p>
             )}
             {pulled.chatBonus > 0 ? (
               <p className="font-mystic text-sm text-accent">
-                +{pulled.chatBonus} 문답 보너스 획득!
+                {t("resultBonus", { n: pulled.chatBonus })}
               </p>
             ) : null}
           </>
         ) : (
           <p className="text-xs text-muted-foreground">
-            카드를 뽑으면 결과가 여기에 나타나.
+            {t("resultIdle")}
           </p>
         )}
       </div>
@@ -437,14 +456,14 @@ function GachaPanel({
           size="lg"
           onClick={onPull}
           disabled={isPending || exhausted}
-          aria-label="카드 뽑기"
+          aria-label={t("drawAriaLabel")}
         >
           <Sparkles aria-hidden />
           {buttonLabel}
         </Button>
         {!subscribed && exhausted ? (
           <p className="text-[11px] text-muted-foreground">
-            라이트로 업그레이드하면 매일 {GACHA_DAILY_LIMITS.lite}번 뽑을 수 있어.
+            {t("upgradeHint", { n: GACHA_DAILY_LIMITS.lite })}
           </p>
         ) : null}
       </div>
@@ -501,16 +520,19 @@ interface CardCellProps {
 
 function CardCell({ card, owned, onClick }: CardCellProps) {
   const backSrc = CATEGORY_META[card.category].cardBackSrc;
+  const t = useTranslations("collectionPage");
+  const locale = useLocale();
+  const cardName = displayName(card, locale);
 
   if (!owned) {
     return (
       <div
         className="relative aspect-[2/3] overflow-hidden rounded-xl border border-border/30 cursor-default"
-        aria-label="미소장 카드"
+        aria-label={t("lockedAriaLabel")}
       >
         <Image
           src={backSrc}
-          alt="미소장"
+          alt={t("lockedBadge")}
           fill
           className="object-cover"
           sizes="120px"
@@ -529,18 +551,18 @@ function CardCell({ card, owned, onClick }: CardCellProps) {
         RARITY_BORDER[card.rarity],
         RARITY_GLOW[card.rarity],
       )}
-      aria-label={`${card.nameKo} 상세 보기`}
+      aria-label={t("detailAriaLabel", { name: cardName })}
     >
       <Image
         src={card.imageSrc}
-        alt={card.nameKo}
+        alt={cardName}
         fill
         sizes="(min-width: 1024px) 16vw, (min-width: 768px) 20vw, 33vw"
         className="object-cover transition-transform duration-300 group-hover:scale-105"
       />
       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent px-1.5 py-1.5 text-center">
         <span className="line-clamp-1 text-[11px] font-medium text-white">
-          {card.nameKo}
+          {cardName}
         </span>
       </div>
     </button>
@@ -557,6 +579,10 @@ interface CardDetailDialogProps {
 }
 
 function CardDetailDialog({ card, onClose }: CardDetailDialogProps) {
+  const t = useTranslations("collectionPage");
+  const locale = useLocale();
+  const rarityLabels = useRarityLabel();
+  const cardName = displayName(card, locale);
   return (
     <div
       role="dialog"
@@ -580,7 +606,7 @@ function CardDetailDialog({ card, onClose }: CardDetailDialogProps) {
           type="button"
           onClick={onClose}
           className="absolute right-3 top-3 z-10 rounded-full bg-black/40 p-1.5 text-white transition-colors hover:bg-black/65"
-          aria-label="닫기"
+          aria-label={t("closeAriaLabel")}
         >
           <X className="h-4 w-4" aria-hidden />
         </button>
@@ -595,7 +621,7 @@ function CardDetailDialog({ card, onClose }: CardDetailDialogProps) {
           >
             <Image
               src={card.imageSrc}
-              alt={card.nameKo}
+              alt={cardName}
               fill
               sizes="220px"
               className="object-cover"
@@ -608,11 +634,15 @@ function CardDetailDialog({ card, onClose }: CardDetailDialogProps) {
               id="collection-card-title"
               className="font-mystic text-xl font-semibold text-foreground"
             >
-              {card.nameKo}
+              {cardName}
             </h3>
-            {card.nameEn ? (
+            {locale !== "en" && card.nameEn ? (
               <p className="text-xs uppercase tracking-wider text-muted-foreground">
                 {card.nameEn}
+              </p>
+            ) : locale === "en" && card.nameEn && card.nameKo !== card.nameEn ? (
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                {card.nameKo}
               </p>
             ) : null}
             <span
@@ -626,7 +656,7 @@ function CardDetailDialog({ card, onClose }: CardDetailDialogProps) {
                   "bg-stone-200/40 text-stone-700 dark:bg-stone-500/20 dark:text-stone-200",
               )}
             >
-              {RARITY_LABEL[card.rarity]}
+              {rarityLabels[card.rarity]}
             </span>
           </div>
 

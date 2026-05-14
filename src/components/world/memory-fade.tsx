@@ -1,11 +1,10 @@
 /**
  * 기억 손실 연출 래퍼.
- *
- * - faded: 약한 opacity + blur, hover 시 선명해짐
- * - redacted: 텍스트가 가려진 듯 보이게 (실제 데이터 변경 없음, CSS only)
- * - normal: 일반 표시
  */
+"use client";
+
 import type { ReactNode } from "react";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 
@@ -20,6 +19,7 @@ export function MemoryFade({
   variant = "normal",
   className,
 }: MemoryFadeProps) {
+  const t = useTranslations("worldAtmosphere");
   if (variant === "faded") {
     return <span className={cn("memory-faded", className)}>{children}</span>;
   }
@@ -27,7 +27,7 @@ export function MemoryFade({
     return (
       <span
         className={cn("memory-redacted", className)}
-        aria-label="기록 손실"
+        aria-label={t("memoryLoss")}
       >
         {children}
       </span>

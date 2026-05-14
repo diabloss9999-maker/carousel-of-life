@@ -46,7 +46,7 @@ import { EventLogFeed } from "@/components/world/event-log-feed";
 import { checkInStreak } from "@/lib/streak/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { formatKoreanDate } from "@/lib/utils";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "오늘의 운세",
@@ -78,6 +78,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
   const { profile } = await requireProfile();
   const t = await getTranslations("today");
   const tNav = await getTranslations("nav");
+  const locale = await getLocale();
 
   const [fortune, usage, subscribed, tier, streakResult, todayMood, crackData] = await Promise.all([
     getDailyFortune(profile.userId, category),
@@ -129,7 +130,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
             pageName={tNav("fortune")}
           />
           {(() => {
-            const hidden = getHomeHiddenText(crackData.level);
+            const hidden = getHomeHiddenText(crackData.level, locale);
             return hidden ? (
               <p className="text-[9px] text-muted-foreground/50 tracking-widest mt-0.5 font-mystic italic">
                 {hidden}

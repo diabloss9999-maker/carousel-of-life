@@ -4,6 +4,7 @@ import type { Route } from "next";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { Loader2, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button, type ButtonProps } from "@/components/ui/button";
 
@@ -20,6 +21,7 @@ export function NewSessionButton({
 }: NewSessionButtonProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("chatShell");
 
   function handleClick() {
     startTransition(async () => {
@@ -49,7 +51,7 @@ export function NewSessionButton({
       ) : (
         <Plus className="h-4 w-4" aria-hidden />
       )}
-      {children ?? "새 대화"}
+      {children ?? t("newSession")}
     </Button>
   );
 }

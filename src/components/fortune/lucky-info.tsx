@@ -2,7 +2,10 @@
  * 운세 카드 내부의 행운 정보(색·수·방향)를 시각적으로 표현하는 컴포넌트.
  * 텍스트 한 줄 대신 3등분 아이콘 카드로 노출한다.
  */
+"use client";
+
 import { ArrowUp } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 /** 한글 색 이름 → CSS 색상 매핑. 매칭 실패 시 회색 fallback. */
 const COLOR_MAP: Record<string, string> = {
@@ -97,13 +100,14 @@ interface LuckyInfoProps {
 }
 
 export function LuckyInfo({ color, number, direction }: LuckyInfoProps) {
+  const t = useTranslations("fortuneCard");
   const colorHex = resolveColor(color);
   const rotation = resolveDirectionRotation(direction);
 
   return (
     <div className="grid grid-cols-3 gap-2 border-t border-border/40 pt-4 sm:gap-3">
       {/* 행운의 색 */}
-      <LuckyTile label="행운의 색">
+      <LuckyTile label={t("luckyColor")}>
         <span
           className="inline-block h-8 w-8 rounded-full border border-border/60 shadow-inner sm:h-10 sm:w-10"
           style={{ backgroundColor: colorHex }}
@@ -115,18 +119,18 @@ export function LuckyInfo({ color, number, direction }: LuckyInfoProps) {
       </LuckyTile>
 
       {/* 행운의 수 */}
-      <LuckyTile label="행운의 수">
+      <LuckyTile label={t("luckyNumber")}>
         <span
           className="font-mystic bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-600 bg-clip-text text-3xl font-bold text-transparent drop-shadow-sm sm:text-4xl"
           aria-hidden="true"
         >
           {number ?? "—"}
         </span>
-        <span className="sr-only">{number ?? "정보 없음"}</span>
+        <span className="sr-only">{number ?? "—"}</span>
       </LuckyTile>
 
       {/* 행운의 방향 */}
-      <LuckyTile label="행운의 방향">
+      <LuckyTile label={t("luckyDirection")}>
         {rotation !== null ? (
           <ArrowUp
             className="h-7 w-7 text-primary sm:h-9 sm:w-9"

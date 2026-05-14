@@ -200,3 +200,27 @@ export const CHARACTER_SILENCE_HINT: Record<string, string> = {
   dokkaebi:
     "\n[침묵 가이드] 답을 회피해야 할 때는 '나도 갑자기 할 말 없어짐.' 처럼 가볍게.",
 };
+
+/** 영어 출력용 침묵 가이드. */
+const CHARACTER_SILENCE_HINT_EN: Record<string, string> = {
+  witch:
+    "\n[Silence guide] When you need to dodge an answer, use only '…' or less than one short line.",
+  sage:
+    "\n[Silence guide] When you need to dodge an answer, soften it like \"It's all right to rest a little today.\"",
+  child:
+    "\n[Silence guide] When you need to dodge an answer, keep it short and clipped like \"The answer is already out.\"",
+  shaman:
+    "\n[Silence guide] When you need to dodge an answer, write it in a record-keeper's voice like \"The record was briefly cut.\"",
+  taoist:
+    "\n[Silence guide] When you need to dodge an answer, be practical like \"Right now this person needs rest more than reading.\"",
+  dokkaebi:
+    "\n[Silence guide] When you need to dodge an answer, be light like \"Suddenly I've got nothing to say either.\"",
+};
+
+/**
+ * locale 별 침묵 가이드 lookup.
+ */
+export function getCharacterSilenceHint(characterId: string, locale: string | undefined): string {
+  const map = locale === "en" ? CHARACTER_SILENCE_HINT_EN : CHARACTER_SILENCE_HINT;
+  return map[characterId] ?? "";
+}

@@ -1,9 +1,11 @@
-﻿import { Heart, Sparkles, Sun } from "lucide-react";
+"use client";
+
+import { Heart, Sparkles, Sun } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Card, CardContent } from "@/components/ui/card";
 import type { HistoryItem } from "@/lib/history/service";
 import {
-  FORTUNE_CATEGORIES,
   type FortuneCategoryId,
 } from "@/lib/constants";
 import { cn, formatKoreanDate } from "@/lib/utils";
@@ -12,9 +14,23 @@ interface HistoryItemCardProps {
   item: HistoryItem;
 }
 
-const CATEGORY_LABEL: Record<FortuneCategoryId, string> = Object.fromEntries(
-  FORTUNE_CATEGORIES.map((c) => [c.id, c.label]),
-) as Record<FortuneCategoryId, string>;
+const CATEGORY_TKEY: Record<FortuneCategoryId, string> = {
+  general: "categoryGeneral",
+  love: "categoryLove",
+  money: "categoryWealth",
+  career: "categoryCareer",
+  health: "categoryHealth",
+  study: "categoryStudy",
+  zodiac: "categoryZodiac",
+  chinese_zodiac: "categoryChineseZodiac",
+};
+
+function localizedDate(date: Date, locale: string): string {
+  if (locale === "en") {
+    return date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+  }
+  return formatKoreanDate(date);
+}
 
 export function HistoryItemCard({ item }: HistoryItemCardProps) {
   if (item.kind === "fortune") return <FortuneRow item={item.data} />;
@@ -27,7 +43,13 @@ function FortuneRow({
 }: {
   item: Extract<HistoryItem, { kind: "fortune" }>["data"];
 }) {
-  const label = CATEGORY_LABEL[item.category as FortuneCategoryId] ?? "운세";
+  const t = useTranslations("fortuneCard");
+  const tHist = useTranslations("historyPage");
+  const locale = useLocale();
+  const key = CATEGORY_TKEY[item.category as FortuneCategoryId];
+  const label = key
+    ? t(key as "categoryGeneral" | "categoryLove" | "categoryWealth" | "categoryCareer" | "categoryHealth" | "categoryStudy" | "categoryZodiac" | "categoryChineseZodiac")
+    : tHist("itemFortune");
   return (
     <Card className="app-surface">
       <CardContent className="p-4 flex items-start gap-4">
@@ -35,9 +57,8 @@ function FortuneRow({
         <div className="flex-1 min-w-0 space-y-1.5">
           <div className="flex items-center justify-between gap-2">
             <span className="text-xs uppercase tracking-wide text-muted-foreground">
-              {label} · {formatKoreanDate(new Date(item.createdAt))}
+              {label} · {localizedDate(new Date(item.createdAt), locale)}
             </span>
-            
           </div>
           <p className="font-mystic font-medium leading-snug">{item.title}</p>
           <p className="text-sm text-muted-foreground line-clamp-2">
@@ -54,11 +75,15 @@ function TarotRow({
 }: {
   item: Extract<HistoryItem, { kind: "tarot" }>["data"];
 }) {
+  const t = useTranslations("historyPage");
+  const locale = useLocale();
   const cards = Array.isArray(item.cards)
-    ? (item.cards as Array<{ nameKo: string; isReversed: boolean }>)
+    ? (item.cards as Array<{ nameKo: string; nameEn?: string | null; isReversed: boolean }>)
     : [];
-  const cardSummary = cards.map((c) => c.nameKo).join(", ");
-  const spreadLabel = item.spreadType === "three" ? "타로 3장" : "타로 한 장";
+  const cardSummary = cards
+    .map((c) => (locale === "en" && c.nameEn ? c.nameEn : c.nameKo))
+    .join(", ");
+  const spreadLabel = item.spreadType === "three" ? t("itemTarotThree") : t("itemTarotOne");
 
   // three 스프레드는 interpretation 이 JSON 이라 summary 만 추출.
   let preview = item.interpretation;
@@ -77,7 +102,7 @@ function TarotRow({
         <BadgeIcon icon={<Sparkles className="h-4 w-4" />} tone="accent" />
         <div className="flex-1 min-w-0 space-y-1.5">
           <span className="text-xs uppercase tracking-wide text-muted-foreground">
-            {spreadLabel} · {formatKoreanDate(new Date(item.createdAt))}
+            {spreadLabel} · {localizedDate(new Date(item.createdAt), locale)}
           </span>
           <p className="font-mystic font-medium leading-snug truncate">
             {cardSummary}
@@ -99,6 +124,8 @@ function CompatibilityRow({
 }: {
   item: Extract<HistoryItem, { kind: "compatibility" }>["data"];
 }) {
+  const t = useTranslations("historyPage");
+  const locale = useLocale();
   return (
     <Card className="app-surface">
       <CardContent className="p-4 flex items-start gap-4">
@@ -106,12 +133,11 @@ function CompatibilityRow({
         <div className="flex-1 min-w-0 space-y-1.5">
           <div className="flex items-center justify-between gap-2">
             <span className="text-xs uppercase tracking-wide text-muted-foreground">
-              궁합 · {formatKoreanDate(new Date(item.createdAt))}
+              {t("itemCompat", { date: localizedDate(new Date(item.createdAt), locale) })}
             </span>
-            
           </div>
           <p className="font-mystic font-medium leading-snug">
-            {item.partnerName}님과의 궁합
+            {t("itemCompatTitle", { partner: item.partnerName })}
           </p>
           <p className="text-sm text-muted-foreground line-clamp-2">
             {item.summary}
@@ -140,25 +166,5 @@ function BadgeIcon({
     >
       {icon}
     </div>
-  );
-}
-
-function ScoreBadge({ score }: { score: number }) {
-  const tone =
-    score >= 80
-      ? "bg-accent/15 text-accent"
-      : score >= 50
-        ? "bg-primary/15 text-primary"
-        : "bg-destructive/10 text-destructive";
-
-  return (
-    <span
-      className={cn(
-        "rounded-full px-2 py-0.5 font-mystic text-xs font-medium tabular-nums",
-        tone,
-      )}
-    >
-      {score}점
-    </span>
   );
 }

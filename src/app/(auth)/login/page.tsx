@@ -11,11 +11,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export const metadata: Metadata = {
-  title: "관측 시작",
-  description: "경계로 돌아옵니다.",
-  alternates: { canonical: "/login" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("auth");
+  return {
+    title: t("loginTitle"),
+    description: t("loginSubtitle"),
+    alternates: { canonical: "/login" },
+  };
+}
 
 export default async function LoginPage() {
   const t = await getTranslations("auth");

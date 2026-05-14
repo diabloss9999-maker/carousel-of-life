@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { CharacterImage } from "@/components/shared/character-image";
 import { Loader2, MessageCircle } from "lucide-react";
 
@@ -15,7 +16,7 @@ import { LuckyInfo } from "@/components/fortune/lucky-info";
 import { SaveImageButton } from "@/components/shared/save-image-button";
 import { ShareButton } from "@/components/shared/share-button";
 import type { DailyFortune } from "@/db/schema";
-import { FORTUNE_CATEGORIES, type FortuneCategoryId } from "@/lib/constants";
+import { type FortuneCategoryId } from "@/lib/constants";
 import { CHARACTERS, type CharacterId } from "@/lib/chat/characters";
 import {
   getTodayCharacter,
@@ -27,9 +28,17 @@ interface FortuneCardProps {
   crackLevel?: number;
 }
 
-const CATEGORY_LABEL: Record<FortuneCategoryId, string> = Object.fromEntries(
-  FORTUNE_CATEGORIES.map((c) => [c.id, c.label]),
-) as Record<FortuneCategoryId, string>;
+/** 카테고리별 fortuneCard 번역 키 (i18n). */
+const CATEGORY_TKEY: Record<FortuneCategoryId, string> = {
+  general: "categoryGeneral",
+  love: "categoryLove",
+  money: "categoryWealth",
+  career: "categoryCareer",
+  health: "categoryHealth",
+  study: "categoryStudy",
+  zodiac: "categoryZodiac",
+  chinese_zodiac: "categoryChineseZodiac",
+};
 
 /** 캐릭터별 테두리 색상 (9명) */
 const CHARACTER_BORDER: Record<CharacterId, string> = {
@@ -49,8 +58,6 @@ const CHARACTER_BORDER: Record<CharacterId, string> = {
  * - zodiac (별자리)          → 북유럽
  * - chinese_zodiac (십이간지) → 동양
  * - 그 외                    → 9명 전체 풀
- *
- * fortunes/service.ts 의 캐릭터 분기 로직과 정확히 동일하게 유지.
  */
 function pickFortuneCharacter(category: string, date: string): CharacterId {
   if (category === "zodiac") return getTodayCharacterByCategory("북유럽", date);
@@ -59,7 +66,9 @@ function pickFortuneCharacter(category: string, date: string): CharacterId {
 }
 
 export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
-  const label = CATEGORY_LABEL[fortune.category as FortuneCategoryId] ?? "운세";
+  const t = useTranslations("fortuneCard");
+  const tChar = useTranslations("characters");
+  const locale = useLocale();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -67,6 +76,13 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
   const charId = pickFortuneCharacter(fortune.category, fortune.fortuneDate);
   const character = CHARACTERS[charId];
   const borderColor = CHARACTER_BORDER[charId] ?? "ring-border/40";
+  const name = tChar(`${charId}.name`);
+  const title = tChar(`${charId}.title`);
+
+  const categoryKey = CATEGORY_TKEY[fortune.category as FortuneCategoryId];
+  const label = categoryKey
+    ? t(categoryKey as "categoryGeneral" | "categoryLove" | "categoryWealth" | "categoryCareer" | "categoryHealth" | "categoryStudy" | "categoryZodiac" | "categoryChineseZodiac")
+    : t("categoryFallback");
 
   function handleChat() {
     if (isPending) return;
@@ -92,10 +108,13 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
       ...(fortune.luckyColor     && { color:     fortune.luckyColor }),
       ...(fortune.luckyNumber    && { number:    String(fortune.luckyNumber) }),
       ...(fortune.luckyDirection && { direction: fortune.luckyDirection }),
-      date:      new Date(fortune.createdAt).toLocaleDateString("ko-KR"),
-      char:      character.name,
-      charTitle: character.title,
+      date:      new Date(fortune.createdAt).toLocaleDateString(
+        locale === "en" ? "en-US" : "ko-KR",
+      ),
+      char:      name,
+      charTitle: title,
       crack:     String(crackLevel),
+      locale,
     });
     return `/api/share/fortune?${params}`;
   }
@@ -116,9 +135,9 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
           </div>
           <div>
             <p className="font-mystic text-sm font-semibold text-foreground/90">
-              {character.name}
+              {name}
             </p>
-            <p className="text-[10px] text-muted-foreground">{character.title}</p>
+            <p className="text-[10px] text-muted-foreground">{title}</p>
           </div>
           <span className="ml-auto text-xs text-muted-foreground">{label}</span>
         </div>
@@ -142,7 +161,7 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
         {/* 채팅으로 연결 */}
         <div className="rounded-xl border border-border/30 bg-muted/20 px-4 py-3 flex items-center justify-between gap-3">
           <p className="text-xs text-muted-foreground leading-relaxed">
-            {character.name}에게 더 물어보고 싶어?
+            {t("askMore", { name })}
           </p>
           <Button
             type="button"
@@ -157,18 +176,25 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
             ) : (
               <MessageCircle className="h-3.5 w-3.5" aria-hidden />
             )}
-            대화하기
+            {t("chatCta")}
           </Button>
         </div>
 
         <div className="flex items-center justify-end gap-2">
           <SaveImageButton
             imageUrl={buildShareImageUrl()}
-            filename={`인생의회전목마_${label}`}
+            filename={t("shareFilename", { label })}
           />
           <ShareButton
             title={`[${label}] ${fortune.title}`}
-            text={`[${label}] ${fortune.title}\n\n${fortune.content}\n\n행운: ${fortune.luckyColor ?? "—"} / ${fortune.luckyNumber ?? "—"} / ${fortune.luckyDirection ?? "—"}`}
+            text={t("shareTextLine", {
+              label,
+              title: fortune.title,
+              content: fortune.content,
+              color: fortune.luckyColor ?? "—",
+              number: fortune.luckyNumber ?? "—",
+              direction: fortune.luckyDirection ?? "—",
+            })}
           />
         </div>
       </CardContent>

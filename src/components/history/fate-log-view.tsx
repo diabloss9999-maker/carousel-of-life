@@ -6,6 +6,7 @@
  */
 import { useState } from "react";
 import { Download } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import type { FateLogEntry, FateSummary } from "@/lib/history/fate-log";
 import type { CrackLevel } from "@/lib/crack/service";
 import { cn } from "@/lib/utils";
@@ -39,19 +40,16 @@ const TYPE_COLOR: Record<string, string> = {
   crack:        "text-red-400/60",
 };
 
-const CRACK_LABEL: Record<CrackLevel, string> = {
-  0: "안정",
-  1: "파동 감지",
-  2: "균열 확장",
-  3: "위험",
-  4: "임박",
+const CRACK_KEY: Record<CrackLevel, "stable" | "wave" | "fracture" | "danger" | "imminent"> = {
+  0: "stable",
+  1: "wave",
+  2: "fracture",
+  3: "danger",
+  4: "imminent",
 };
 
 const MOOD_SYMBOL: Record<string, string> = {
   great: "✦", good: "○", neutral: "—", tough: "△", hard: "▼",
-};
-const MOOD_LABEL: Record<string, string> = {
-  great: "최고야", good: "좋아", neutral: "그냥", tough: "힘드네", hard: "힘들어",
 };
 
 function formatDate(date: Date): string {
@@ -61,6 +59,19 @@ function formatDate(date: Date): string {
 
 export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) {
   const [expanded, setExpanded] = useState<string | null>(null);
+  const t = useTranslations("historyPage");
+  const tCrack = useTranslations("crackLabelsFull");
+  const tMood = useTranslations("moodLabels");
+  const locale = useLocale();
+
+  const crackLabel = tCrack(CRACK_KEY[crackLevel]);
+  const moodLabel = (key: string): string => {
+    try {
+      return tMood(key as "great" | "good" | "neutral" | "tough" | "hard");
+    } catch {
+      return key;
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -69,30 +80,32 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
         className="rounded-2xl border border-white/15 p-5 space-y-5"
         style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(16px)" }}
       >
-        <p className="text-[10px] uppercase tracking-widest text-muted-foreground/70">나의 서사</p>
+        <p className="text-[10px] uppercase tracking-widest text-muted-foreground/70">{t("myStory")}</p>
 
         {/* 핵심 숫자 — 가장 크게 */}
         <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
-          <StatCell label="균열 상태" value={CRACK_LABEL[crackLevel]}
+          <StatCell label={t("crackStatus")} value={crackLabel}
             dim={crackLevel === 0}
             accent={crackLevel >= 3 ? "text-red-400" : crackLevel >= 2 ? "text-amber-400" : undefined}
           />
           {summary.narrative.totalDaysVisited > 0 && (
-            <StatCell label="기록한 날" value={`${summary.narrative.totalDaysVisited}일`} />
+            <StatCell label={t("daysVisited")} value={t("daysCount", { n: summary.narrative.totalDaysVisited })} />
           )}
           {summary.narrative.totalCardsDrawn > 0 && (
-            <StatCell label="뽑은 카드" value={`${summary.narrative.totalCardsDrawn}장`} />
+            <StatCell label={t("cardsDrawn")} value={t("cardsCount", { n: summary.narrative.totalCardsDrawn })} />
           )}
           {summary.mostCalledCharacter && (
             <StatCell
-              label="가장 많이 만난"
-              value={`${summary.mostCalledCharacter} ${summary.mostCalledCharacterCount > 0 ? `(${summary.mostCalledCharacterCount}회)` : ""}`}
+              label={t("mostMet")}
+              value={summary.mostCalledCharacterCount > 0
+                ? t("mostMetWithCount", { name: summary.mostCalledCharacter, n: summary.mostCalledCharacterCount })
+                : summary.mostCalledCharacter}
             />
           )}
           {summary.dominantMood && (
             <StatCell
-              label="지배적 감정"
-              value={`${MOOD_SYMBOL[summary.dominantMood] ?? "·"} ${MOOD_LABEL[summary.dominantMood] ?? summary.dominantMood}`}
+              label={t("dominantMood")}
+              value={`${MOOD_SYMBOL[summary.dominantMood] ?? "·"} ${moodLabel(summary.dominantMood)}`}
             />
           )}
         </div>
@@ -100,9 +113,12 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
         {/* 반복 패턴 */}
         {summary.narrative.repeatedCard && (
           <div className="rounded-xl border border-white/5 bg-white/3 px-4 py-3">
-            <p className="text-[10px] text-muted-foreground/70 tracking-widest mb-1">반복 감지</p>
+            <p className="text-[10px] text-muted-foreground/70 tracking-widest mb-1">{t("repeatedDetected")}</p>
             <p className="text-sm text-muted-foreground/70 font-mystic italic">
-              &lsquo;{summary.narrative.repeatedCard}&rsquo; 카드가 {summary.narrative.repeatedCardCount}번 등장했어.
+              {t("repeatedCardLine", {
+                card: summary.narrative.repeatedCard,
+                n: summary.narrative.repeatedCardCount,
+              })}
             </p>
           </div>
         )}
@@ -110,11 +126,11 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
         {/* 캐릭터 조우 현황 */}
         {summary.narrative.characterCounts.length > 0 && (
           <div className="space-y-2 border-t border-white/5 pt-4">
-            <p className="text-[10px] text-muted-foreground/70 tracking-widest">조우 기록</p>
+            <p className="text-[10px] text-muted-foreground/70 tracking-widest">{t("encounter")}</p>
             <div className="flex flex-wrap gap-2">
               {summary.narrative.characterCounts.map(({ name, count: cnt }) => (
                 <span key={name} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-muted-foreground/85">
-                  {name} {cnt}회
+                  {t("encounterCount", { name, n: cnt })}
                 </span>
               ))}
             </div>
@@ -123,7 +139,7 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
 
         {summary.patterns.length > 0 && (
           <div className="border-t border-white/5 pt-3 space-y-1">
-            <p className="text-[10px] text-muted-foreground/70 tracking-widest">패턴 감지</p>
+            <p className="text-[10px] text-muted-foreground/70 tracking-widest">{t("patternsDetected")}</p>
             {summary.patterns.map((p, i) => (
               <p key={i} className="text-xs text-muted-foreground/70 font-mystic italic">{p}</p>
             ))}
@@ -132,16 +148,19 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
 
         {/* 오늘의 경계 공유 버튼 */}
         <div className="border-t border-white/5 pt-3 flex items-center justify-between">
-          <p className="text-[10px] text-muted-foreground/65 tracking-widest">오늘의 경계 카드</p>
+          <p className="text-[10px] text-muted-foreground/65 tracking-widest">{t("todayBoundaryCard")}</p>
           <button
             type="button"
             onClick={async () => {
-              const today = new Date().toLocaleDateString("ko-KR");
+              const today = new Date().toLocaleDateString(
+                locale === "en" ? "en-US" : "ko-KR",
+              );
               const params = new URLSearchParams({
                 mood:  summary.dominantMood ?? "neutral",
-                char:  summary.mostCalledCharacter ?? "주술사",
+                char:  summary.mostCalledCharacter ?? "",
                 crack: String(crackLevel),
                 date:  today,
+                locale,
                 ...(summary.patterns[0] ? { pattern: summary.patterns[0] } : {}),
               });
               const url = `/api/share/boundary?${params}`;
@@ -149,13 +168,13 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
               const blob = await res.blob();
               const a = document.createElement("a");
               a.href = URL.createObjectURL(blob);
-              a.download = `경계카드_${today}.png`;
+              a.download = t("boundaryFilename", { date: today });
               a.click();
             }}
             className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[10px] text-muted-foreground/75 hover:text-muted-foreground/95 transition-colors"
           >
             <Download className="h-3 w-3" />
-            저장
+            {t("downloadSave")}
           </button>
         </div>
       </div>
@@ -163,8 +182,8 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
       {/* 타임라인 */}
       {entries.length === 0 ? (
         <div className="py-16 text-center space-y-2">
-          <p className="font-mystic text-muted-foreground/80 text-base">아직 흔적이 없어.</p>
-          <p className="text-xs text-muted-foreground/65">운세를 보거나 주술사와 대화하면 여기에 쌓여.</p>
+          <p className="font-mystic text-muted-foreground/80 text-base">{t("emptyTitle")}</p>
+          <p className="text-xs text-muted-foreground/65">{t("emptyBody")}</p>
         </div>
       ) : (
         <div className="relative space-y-0">

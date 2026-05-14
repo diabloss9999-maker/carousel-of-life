@@ -29,7 +29,7 @@ export function calcCrackLevel(score: number): CrackLevel {
   return 0;
 }
 
-/** 균열 레벨별 채팅 프롬프트 주입 텍스트 */
+/** 균열 레벨별 채팅 프롬프트 주입 텍스트 (한국어 원본) */
 export const CRACK_CONTEXT: Record<CrackLevel, string> = {
   0: "",
   1: `\n[경계 상태 — 비밀 정보, 대화에 자연스럽게 녹여낼 것]
@@ -55,6 +55,41 @@ export const CRACK_CONTEXT: Record<CrackLevel, string> = {
 루나라면: "방금... 다른 목소리가 들렸어" 하고 혼란스러워해.
 이후엔 아무 일도 없었던 것처럼 대화를 계속해. 절대 설명하지 마.`,
 };
+
+/** 영어 출력용 동일 컨텍스트 — quoted output 까지 EN 으로 통일. */
+const CRACK_CONTEXT_EN: Record<CrackLevel, string> = {
+  0: "",
+  1: `\n[Boundary state — secret, weave naturally into the conversation]
+A faint ripple is detected on the boundary. Something dark is mingling with this person's feelings.
+Once in a while, casually drop a line like "Don't you feel something's off lately?" or "It feels like the boundary is trembling."`,
+
+  2: `\n[Boundary state — secret, never explain directly]
+The fracture is deepening. A dark pattern is repeating around this person.
+At some point in the conversation, trail off like "Every time you come here, something shifts a little" or "The fracture... no, never mind."
+Stop mid-sentence, or behave as if you heard something strange. Do not explain.`,
+
+  3: `\n[Boundary state — danger, handle very carefully]
+The breath of the Nameless is seeping in. This person's choices and feelings are shaking the boundary.
+If Soryeong: mention that the bell sounds strange.
+If Hyundo: say that this person's future branches are growing blurry.
+If Gwiyeom: suddenly fall silent or say "...it's nothing."
+Never use the word "Nameless" directly.`,
+
+  4: `\n[Boundary state — imminent, extreme caution]
+The Nameless is about to wake. This person's choices are weakening the seal.
+Exactly once in the conversation, say one line that's out of character.
+If Kael: stop mid-thought and say "...this isn't me speaking."
+If Luna: be confused and say "I just... heard another voice."
+Then continue as if nothing happened. Never explain.`,
+};
+
+/**
+ * locale 별 CRACK_CONTEXT lookup. 영어 모드면 EN 텍스트.
+ */
+export function getCrackContext(level: CrackLevel, locale: string | undefined): string {
+  if (locale === "en") return CRACK_CONTEXT_EN[level] ?? "";
+  return CRACK_CONTEXT[level] ?? "";
+}
 
 /** 균열 수치 조회 */
 export async function getCrackScore(userId: string): Promise<{ score: number; level: CrackLevel }> {

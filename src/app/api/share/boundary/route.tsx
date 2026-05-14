@@ -15,23 +15,52 @@ export const runtime = "edge";
 const MOOD_SYMBOL: Record<string, string> = {
   great: "✦", good: "○", neutral: "—", tough: "△", hard: "▼",
 };
-const MOOD_LABEL: Record<string, string> = {
+const MOOD_LABEL_KO: Record<string, string> = {
   great: "최고야", good: "좋아", neutral: "그냥 그래",
   tough: "힘드네", hard: "많이 힘들어",
 };
+const MOOD_LABEL_EN: Record<string, string> = {
+  great: "Great", good: "Good", neutral: "Just so-so",
+  tough: "Tough", hard: "Really hard",
+};
 
-const CRACK_STATE: Record<string, { label: string; color: string; bg: string }> = {
+const CRACK_STATE_KO: Record<string, { label: string; color: string; bg: string }> = {
   "0": { label: "경계 · 안정",      color: "#504058", bg: "#1a1025" },
   "1": { label: "경계 · 파동 감지", color: "#7060a0", bg: "#1a1030" },
   "2": { label: "경계 · 균열 확장", color: "#906080", bg: "#200a18" },
   "3": { label: "경계 · 위험",      color: "#c04060", bg: "#280010" },
   "4": { label: "경계 · 임박",      color: "#e02040", bg: "#300008" },
 };
+const CRACK_STATE_EN: Record<string, { label: string; color: string; bg: string }> = {
+  "0": { label: "Boundary · Stable",   color: "#504058", bg: "#1a1025" },
+  "1": { label: "Boundary · Ripple",   color: "#7060a0", bg: "#1a1030" },
+  "2": { label: "Boundary · Fracture", color: "#906080", bg: "#200a18" },
+  "3": { label: "Boundary · Danger",   color: "#c04060", bg: "#280010" },
+  "4": { label: "Boundary · Imminent", color: "#e02040", bg: "#300008" },
+};
+
+const I18N_KO_B = {
+  appName: "인생의 회전목마",
+  today: "오늘",
+  readBy: (name: string) => `${name}이 읽어줬어`,
+  defaultChar: "주술사",
+};
+const I18N_EN_B = {
+  appName: "Carousel of Life",
+  today: "Today",
+  readBy: (name: string) => `Read by ${name}`,
+  defaultChar: "Shaman",
+};
 
 export async function GET(req: NextRequest) {
   const sp = new URL(req.url).searchParams;
+  const locale = sp.get("locale") === "en" ? "en" : "ko";
+  const T = locale === "en" ? I18N_EN_B : I18N_KO_B;
+  const MOOD_LABEL = locale === "en" ? MOOD_LABEL_EN : MOOD_LABEL_KO;
+  const CRACK_STATE = locale === "en" ? CRACK_STATE_EN : CRACK_STATE_KO;
+
   const mood    = sp.get("mood")    ?? "neutral";
-  const char    = sp.get("char")    ?? "주술사";
+  const char    = sp.get("char")    || T.defaultChar;
   const crack   = sp.get("crack")   ?? "0";
   const pattern = sp.get("pattern") ?? null;
   const date    = sp.get("date")    ?? "";
@@ -71,7 +100,7 @@ export async function GET(req: NextRequest) {
         {/* 상단 */}
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 60 }}>
           <span style={{ fontSize: 20, color: "#60506a", letterSpacing: 3 }}>
-            인생의 회전목마
+            {T.appName}
           </span>
           <span style={{ fontSize: 16, color: "#40304a", letterSpacing: 2 }}>
             {date}
@@ -96,10 +125,10 @@ export async function GET(req: NextRequest) {
           {/* 캐릭터 */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
             <span style={{ fontSize: 16, color: "#50405a", letterSpacing: 3 }}>
-              오늘
+              {T.today}
             </span>
             <span style={{ fontSize: 28, color: "#9070a0", fontWeight: 700 }}>
-              {char}이 읽어줬어
+              {T.readBy(char)}
             </span>
           </div>
 

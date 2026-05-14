@@ -7,7 +7,7 @@
  *   첫 줄이 "CARDS:{json}\n" 이면 카드 메타데이터 (점술 요청 시)
  */
 import { NextResponse, type NextRequest } from "next/server";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { z } from "zod";
 
 import { requireProfile } from "@/lib/auth/get-user";
@@ -23,7 +23,7 @@ import {
   getAffinity,
 } from "@/lib/affinity/service";
 import { resolveReadingFlow, type ReadingResult } from "@/lib/chat/reading-detector";
-import { addCrack, reduceCrack, getCrackScore, CRACK_CONTEXT } from "@/lib/crack/service";
+import { addCrack, reduceCrack, getCrackScore, getCrackContext } from "@/lib/crack/service";
 import { checkHiddenEvents } from "@/lib/observe/hidden-events";
 import { calcLevel } from "@/lib/affinity/levels";
 import type { CharacterId } from "@/lib/chat/characters";
@@ -31,9 +31,9 @@ import { API_ERROR_CODES } from "@/types/api";
 import { getDailySeed, seedValue } from "@/lib/systems/daily-seed";
 import {
   computeEntityMood,
+  getCharacterSilenceHint,
   MOOD_CONTEXT,
   characterToEntityKey,
-  CHARACTER_SILENCE_HINT,
 } from "@/lib/systems/entity-mood";
 
 export const runtime = "nodejs";
@@ -128,8 +128,9 @@ export async function POST(
     getCrackScore(profile.userId),
   ]);
   const currentPoints = affinityRow?.points ?? 0;
+  const locale = await getLocale();
   const affinityCtx = affinityContext(characterId, currentPoints);
-  const crackCtx = CRACK_CONTEXT[crackData.level];
+  const crackCtx = getCrackContext(crackData.level, locale);
 
   // 숨겨진 이벤트 체크
   const dokkaebiLevel = characterId === "dokkaebi"
@@ -140,6 +141,7 @@ export async function POST(
     crackLevel: crackData.level,
     dokkaebiAffinityLevel: dokkaebiLevel,
     hourKst: new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" })).getHours(),
+    locale,
   });
 
   const messages = prepared.messages;
@@ -193,7 +195,7 @@ export async function POST(
     nightVisitCount: 0,
   });
   const moodCtx = MOOD_CONTEXT[mood];
-  const silenceHint = CHARACTER_SILENCE_HINT[characterId] ?? "";
+  const silenceHint = getCharacterSilenceHint(characterId, locale);
 
   const enrichedSystem =
     prepared.systemPrompt +
@@ -203,8 +205,6 @@ export async function POST(
     cardSystemInject +
     moodCtx +
     silenceHint;
-
-  const locale = await getLocale();
 
   const aiStream = streamChat({
     // 카드 점술 해석은 Sonnet, 일반 대화는 Haiku (비용 최적화)

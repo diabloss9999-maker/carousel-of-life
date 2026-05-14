@@ -13,13 +13,30 @@ function truncate(text: string, max: number): string {
   return text.length > max ? text.slice(0, max) + "…" : text;
 }
 
+const I18N_KO_T = {
+  appName: "인생의 회전목마",
+  tarotLabel: "타로",
+  defaultSpread: "한 장",
+  defaultCard: "타로",
+  reversed: "역방향",
+};
+const I18N_EN_T = {
+  appName: "Carousel of Life",
+  tarotLabel: "Tarot",
+  defaultSpread: "1 card",
+  defaultCard: "Tarot",
+  reversed: "Reversed",
+};
+
 export async function GET(req: NextRequest) {
   const sp = new URL(req.url).searchParams;
+  const locale = sp.get("locale") === "en" ? "en" : "ko";
+  const T = locale === "en" ? I18N_EN_T : I18N_KO_T;
 
-  const card     = sp.get("card")     ?? "타로";
+  const card     = sp.get("card")     ?? T.defaultCard;
   const reversed = sp.get("reversed") === "true";
   const summary  = truncate(sp.get("summary") ?? "", 60);
-  const spread   = sp.get("spread")   ?? "한 장";
+  const spread   = sp.get("spread")   ?? T.defaultSpread;
   const date     = sp.get("date")     ?? "";
 
   const accent = "#c8a96e";
@@ -56,7 +73,7 @@ export async function GET(req: NextRequest) {
         {/* 상단: 앱 이름 + 스프레드 */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 64 }}>
           <span style={{ fontSize: 26, color: "#90809a", letterSpacing: 2 }}>
-            인생의 회전목마
+            {T.appName}
           </span>
           <span
             style={{
@@ -68,7 +85,7 @@ export async function GET(req: NextRequest) {
               letterSpacing: 1,
             }}
           >
-            타로 · {spread}
+            {T.tarotLabel} · {spread}
           </span>
         </div>
 
@@ -94,7 +111,7 @@ export async function GET(req: NextRequest) {
                 padding: "4px 16px",
               }}
             >
-              역방향
+              {T.reversed}
             </span>
           )}
         </div>

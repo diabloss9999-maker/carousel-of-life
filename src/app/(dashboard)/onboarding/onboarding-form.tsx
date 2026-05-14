@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { FormMessage } from "@/components/ui/form-message";
@@ -26,12 +27,13 @@ export function OnboardingForm({
     onboardingAction,
     initial,
   );
+  const t = useTranslations("onboardingForm");
 
   return (
     <form action={formAction} className="space-y-5">
       <div className="space-y-2">
         <Label htmlFor="displayName">
-          이름 <span className="text-destructive">*</span>
+          {t("name")} <span className="text-destructive">*</span>
         </Label>
         <Input
           id="displayName"
@@ -40,7 +42,7 @@ export function OnboardingForm({
           required
           maxLength={40}
           defaultValue={initialDisplayName}
-          placeholder="주술사가 부를 당신의 이름"
+          placeholder={t("namePlaceholder")}
           disabled={isPending}
         />
       </div>
@@ -48,7 +50,7 @@ export function OnboardingForm({
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="birthDate">
-            생년월일 <span className="text-destructive">*</span>
+            {t("birthDate")} <span className="text-destructive">*</span>
           </Label>
           <Input
             id="birthDate"
@@ -61,7 +63,7 @@ export function OnboardingForm({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="birthTime">태어난 시각</Label>
+          <Label htmlFor="birthTime">{t("birthTime")}</Label>
           <Input
             id="birthTime"
             name="birthTime"
@@ -69,7 +71,7 @@ export function OnboardingForm({
             disabled={isPending}
           />
           <p className="text-xs text-muted-foreground">
-            모르면 비워두세요. 시주 추정은 생략됩니다.
+            {t("birthTimeHelp")}
           </p>
         </div>
       </div>
@@ -77,7 +79,7 @@ export function OnboardingForm({
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="calendarSystem">
-            달력 <span className="text-destructive">*</span>
+            {t("calendarSystem")} <span className="text-destructive">*</span>
           </Label>
           <Select
             id="calendarSystem"
@@ -86,14 +88,14 @@ export function OnboardingForm({
             required
             disabled={isPending}
           >
-            <option value="solar">양력</option>
-            <option value="lunar">음력</option>
+            <option value="solar">{t("calendarSolar")}</option>
+            <option value="lunar">{t("calendarLunar")}</option>
           </Select>
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="gender">
-            성별 <span className="text-destructive">*</span>
+            {t("gender")} <span className="text-destructive">*</span>
           </Label>
           <Select
             id="gender"
@@ -103,37 +105,37 @@ export function OnboardingForm({
             disabled={isPending}
           >
             <option value="" disabled>
-              선택해주세요
+              {t("genderPick")}
             </option>
-            <option value="male">남</option>
-            <option value="female">여</option>
-            <option value="other">기타</option>
+            <option value="male">{t("genderMale")}</option>
+            <option value="female">{t("genderFemale")}</option>
+            <option value="other">{t("genderOther")}</option>
           </Select>
         </div>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="mbti">성격유형 (예: INFJ)</Label>
+          <Label htmlFor="mbti">{t("mbti")}</Label>
           <Input
             id="mbti"
             name="mbti"
             type="text"
             maxLength={4}
-            placeholder="예: INFJ"
+            placeholder={t("mbtiPlaceholder")}
             className="uppercase"
             disabled={isPending}
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="birthPlace">출생지</Label>
+          <Label htmlFor="birthPlace">{t("birthplace")}</Label>
           <Input
             id="birthPlace"
             name="birthPlace"
             type="text"
             maxLength={80}
-            placeholder="예: 서울"
+            placeholder={t("birthplacePlaceholder")}
             disabled={isPending}
           />
         </div>
@@ -150,16 +152,15 @@ export function OnboardingForm({
       <Button type="submit" className="w-full" disabled={isPending} size="lg">
         {isPending ? (
           <>
-            <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> 운명의
-            책장을 펼치는 중…
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> {t("submitLoading")}
           </>
         ) : (
-          "시작하기"
+          t("submit")
         )}
       </Button>
 
       <p className="text-center text-xs text-muted-foreground">
-        입력하신 정보는 사주 풀이에만 사용돼요.
+        {t("privacy")}
       </p>
     </form>
   );

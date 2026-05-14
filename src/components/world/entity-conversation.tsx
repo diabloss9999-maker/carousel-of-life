@@ -8,6 +8,7 @@
  * - 어떤 대화가 선택되는지는 dailySeed 로 결정 (같은 날에는 사용자별로 같은 흐름).
  */
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { loadFractureState } from "@/lib/fracture/fracture-state";
 import { getDailySeed, seedValue } from "@/lib/systems/daily-seed";
@@ -16,28 +17,6 @@ interface ConversationLine {
   who: string;
   line: string;
 }
-
-/** 후보 대화군. 각 항목은 2~3턴. */
-const CONVERSATIONS: ReadonlyArray<ReadonlyArray<ConversationLine>> = [
-  [
-    { who: "루나", line: "최근에는 밤보다 낮에 더 자주 나타납니다." },
-    { who: "가엘", line: "하지만 같은 질문은 여전히 반복되고 있어." },
-    { who: "라엘", line: "조금 더 안정된 흐름으로 보입니다." },
-  ],
-  [
-    { who: "가엘", line: "또 같은 카드 근처를 맴돌고 있어." },
-    { who: "루나", line: "그 사람은 그게 자기 답이라고 생각하나 봐." },
-  ],
-  [
-    { who: "라엘", line: "오늘은 조금 늦게 도착했네요." },
-    { who: "루나", line: "그건 늘 그래왔어요." },
-  ],
-  [
-    { who: "루나", line: "새벽에 너무 자주 나타나요." },
-    { who: "가엘", line: "잠을 안 자나 보지." },
-    { who: "라엘", line: "그래서 우리가 여기 있는 거예요." },
-  ],
-] as const;
 
 /** 모서리 위치 후보. */
 const POSITIONS: ReadonlyArray<{ top?: string; bottom?: string; left?: string; right?: string }> = [
@@ -70,6 +49,7 @@ export function EntityConversation() {
   const [position, setPosition] = useState<(typeof POSITIONS)[number] | null>(null);
   const [fadingOut, setFadingOut] = useState(false);
   const timersRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
+  const tWorld = useTranslations("worldAtmosphere");
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -109,10 +89,12 @@ export function EntityConversation() {
         /* 무시 */
       }
 
-      // 대화 / 위치 선택 (seed 기반)
+      // 대화 / 위치 선택 (seed 기반) — i18n 에서 대화 배열 로드
+      const conversations = tWorld.raw("entityDialogs") as ReadonlyArray<ReadonlyArray<ConversationLine>>;
+      if (!conversations || conversations.length === 0) return;
       const seed = getDailySeed();
-      const convIdx = Math.floor(seedValue(seed, 200) * CONVERSATIONS.length);
-      const conv = CONVERSATIONS[convIdx] ?? CONVERSATIONS[0];
+      const convIdx = Math.floor(seedValue(seed, 200) * conversations.length);
+      const conv = conversations[convIdx] ?? conversations[0];
       if (!conv) return;
 
       const posIdx = Math.floor(seedValue(seed, 201) * POSITIONS.length);
@@ -139,7 +121,7 @@ export function EntityConversation() {
       timers.forEach((t) => clearTimeout(t));
       timers.clear();
     };
-  }, []);
+  }, [tWorld]);
 
   if (lines.length === 0 || !position) return null;
 

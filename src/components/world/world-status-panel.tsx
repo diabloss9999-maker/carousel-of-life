@@ -71,13 +71,20 @@ export function WorldStatusPanel({ crackScore, crackLevel }: WorldStatusPanelPro
         />
       </div>
 
-      <p className="text-[11px] text-muted-foreground leading-relaxed font-mystic italic">
-        {crackLevel >= 3
-          ? "관측 신호가 흐려지고 있습니다. 흐름이 안정적이지 않아요."
-          : crackLevel >= 2
-            ? "경계가 평소보다 얇아져 있습니다."
-            : "관측소는 평온하게 작동 중입니다."}
-      </p>
+      <PanelMessage crackLevel={crackLevel} />
     </div>
+  );
+}
+
+function PanelMessage({ crackLevel }: { crackLevel: number }) {
+  const t = useTranslations("worldAtmosphere");
+  const msg =
+    crackLevel >= 3 ? t("panelDangerMsg")
+    : crackLevel >= 2 ? t("panelFractureMsg")
+    : t("panelStableMsg");
+  return (
+    <p className="text-[11px] text-muted-foreground leading-relaxed font-mystic italic">
+      {msg}
+    </p>
   );
 }

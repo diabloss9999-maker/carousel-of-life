@@ -8,6 +8,7 @@
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 import { signInWithGoogle } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
@@ -50,17 +51,18 @@ function GoogleLogo() {
 
 export function GoogleButton({ label, className }: GoogleButtonProps) {
   const [isPending, setIsPending] = useState(false);
+  const t = useTranslations("authButton");
 
   async function handleClick() {
     setIsPending(true);
     try {
       const { error } = await signInWithGoogle();
       if (error) {
-        toast.error(`구글 로그인에 실패했어요: ${error.message}`);
+        toast.error(t("googleFailed", { message: error.message }));
         setIsPending(false);
       }
     } catch {
-      toast.error("구글 로그인을 시작할 수 없어요. 잠시 후 다시 시도해주세요.");
+      toast.error(t("googleStartFailed"));
       setIsPending(false);
     }
   }
@@ -82,7 +84,7 @@ export function GoogleButton({ label, className }: GoogleButtonProps) {
       {isPending ? (
         <>
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-          <span>이동 중…</span>
+          <span>{t("redirecting")}</span>
         </>
       ) : (
         <>

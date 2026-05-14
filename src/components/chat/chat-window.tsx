@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState, useTransition, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Loader2, Send, Trash2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { MessageBubble, type DrawnCardMeta } from "@/components/chat/message-bubble";
@@ -72,6 +73,7 @@ export function ChatWindow({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const theme = characterId ? (CHARACTER_THEME[characterId] ?? DEFAULT_THEME) : DEFAULT_THEME;
+  const t = useTranslations("chatShell");
 
   const { state: fractureState, isNight } = useFractureSystem();
   const placeholder = getPlaceholder(fractureState, isNight);
@@ -115,7 +117,7 @@ export function ChatWindow({
     const trimmed = input.trim();
     if (!trimmed || isStreaming) return;
     if (trimmed.length > MAX_MESSAGE_LENGTH) {
-      setError(`질문은 ${MAX_MESSAGE_LENGTH}자 이내로 짧게 부탁해.`);
+      setError(t("messageTooLong", { n: MAX_MESSAGE_LENGTH }));
       return;
     }
 
@@ -149,12 +151,12 @@ export function ChatWindow({
 
       if (!res.ok) {
         const json = await res.json().catch(() => null);
-        const isQuota = json?.error?.code === "quota_exceeded" || String(json?.error?.message ?? "").includes("한도");
+        const isQuota = json?.error?.code === "quota_exceeded";
         // 한도 초과는 그대로, 그 외 오류는 캐릭터 변명으로 대체
         if (isQuota) {
           setError("quota");
         } else {
-          const excuse = characterId ? (CHARACTERS[characterId]?.errorExcuse ?? "잠깐 자리를 비울게요.") : "잠깐 자리를 비울게요.";
+          const excuse = characterId ? (CHARACTERS[characterId]?.errorExcuse ?? t("excuseFallback")) : t("excuseFallback");
           setMessages((prev) =>
             prev.map((m) =>
               m.id === assistantId
@@ -167,7 +169,7 @@ export function ChatWindow({
       }
 
       if (!res.body) {
-        const excuse = characterId ? (CHARACTERS[characterId]?.errorExcuse ?? "잠깐 자리를 비울게요.") : "잠깐 자리를 비울게요.";
+        const excuse = characterId ? (CHARACTERS[characterId]?.errorExcuse ?? t("excuseFallback")) : t("excuseFallback");
         setMessages((prev) =>
           prev.map((m) =>
             m.id === assistantId
@@ -221,7 +223,7 @@ export function ChatWindow({
         router.refresh();
       });
     } catch {
-      const excuse = characterId ? (CHARACTERS[characterId]?.errorExcuse ?? "잠깐 자리를 비울게요.") : "잠깐 자리를 비울게요.";
+      const excuse = characterId ? (CHARACTERS[characterId]?.errorExcuse ?? t("excuseFallback")) : t("excuseFallback");
       setMessages((prev) =>
         prev.map((m) =>
           m.id === assistantId
@@ -239,7 +241,7 @@ export function ChatWindow({
       onDeleteRequest();
       return;
     }
-    if (!confirm("이 대화를 삭제할까요? 되돌릴 수 없어요.")) return;
+    if (!confirm(t("deleteConfirm"))) return;
     const res = await fetch(`/api/chat/sessions/${sessionId}`, {
       method: "DELETE",
     });
@@ -261,7 +263,7 @@ export function ChatWindow({
           onClick={handleDelete}
           className="text-muted-foreground hover:text-destructive"
         >
-          <Trash2 className="h-4 w-4" aria-hidden /> 대화 삭제
+          <Trash2 className="h-4 w-4" aria-hidden /> {t("deleteTitle")}
         </Button>
       </div>
 
@@ -290,9 +292,9 @@ export function ChatWindow({
 
       {isQuotaError ? (
         <div className="flex flex-col gap-2 rounded-xl border border-amber-400/30 bg-amber-50/5 px-3 py-2 text-sm text-amber-300/90">
-          <span>오늘 대화 한도를 모두 사용했어요.</span>
+          <span>{t("quotaExceeded")}</span>
           <Button asChild size="sm" variant="outline">
-            <Link href={ROUTES.pricing}>라이트로 무제한 대화하기</Link>
+            <Link href={ROUTES.pricing}>{t("upgradeChatCta")}</Link>
           </Button>
         </div>
       ) : null}
@@ -334,7 +336,7 @@ export function ChatWindow({
           <button
             type="submit"
             disabled={isStreaming || isPending || input.trim().length === 0}
-            aria-label="신호 보내기"
+            aria-label={t("sendAriaLabel")}
             style={{
               minWidth: "52px",
               height: "52px",
@@ -377,18 +379,18 @@ export function ChatWindow({
 // 빈 화면 — 캐릭터별 세계관 첫 인사
 // =============================================================================
 
-const EMPTY_LINES: Record<string, { line1: string; line2: string }> = {
-  child:    { line1: "입을 열어.",              line2: "욕망이든 상처든, 어차피 다 보이거든." },
-  witch:    { line1: "달이 당신을 부르고 있어.", line2: "기억의 안개 속에서, 무엇이 보여?" },
-  sage:     { line1: "여기 있어요.",             line2: "어떤 이야기든 들을게요. 괜찮아요." },
-  shaman:   { line1: "신령이 말하기를…",         line2: "당신의 이름이 방울 소리에 섞여 들려." },
-  taoist:   { line1: "천기를 읽는 중.",          line2: "당신 앞에 어떤 갈림길이 있는지 보여." },
-  dokkaebi: { line1: "왜 왔어.",                 line2: "뭔가 원하는 게 있으니까 왔겠지." },
-};
-
 function EmptyState({ characterId }: { characterId?: string }) {
+  const tEmpty = useTranslations("chatShell.emptyLines");
   const key = characterId ?? "witch";
-  const lines = EMPTY_LINES[key] ?? EMPTY_LINES.witch;
+  // raw() 로 객체를 통째로 가져온 뒤 line1/line2 추출. 알 수 없는 키는 witch 폴백.
+  const fallback = tEmpty.raw("witch") as { line1: string; line2: string };
+  let lines: { line1: string; line2: string };
+  try {
+    lines = tEmpty.raw(key) as { line1: string; line2: string };
+    if (!lines?.line1) lines = fallback;
+  } catch {
+    lines = fallback;
+  }
 
   return (
     <div className="flex h-full flex-col items-center justify-center gap-2 text-center px-4">

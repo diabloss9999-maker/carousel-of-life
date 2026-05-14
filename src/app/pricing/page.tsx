@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Check, Crown } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -21,66 +22,69 @@ import { getUser } from "@/lib/auth/get-user";
 import { getSubscriptionTier } from "@/lib/payment/subscription-state";
 import { formatKRW } from "@/lib/utils";
 
-export const metadata: Metadata = {
-  title: "멤버십",
-  description:
-    "무료 / 라이트 / 프로 멤버십을 비교해보세요. 라이트는 일일 한도를 크게 늘려주고, 프로는 운세50·타로50·문답100회를 제공해요.",
-  alternates: { canonical: "/pricing" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("pricing");
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescriptionFull"),
+    alternates: { canonical: "/pricing" },
+  };
+}
 
 export default async function PricingPage() {
   const user = await getUser();
   const tier = user ? await getSubscriptionTier(user.id) : "free";
+  const t = await getTranslations("pricing");
 
   return (
     <main className="mx-auto w-full max-w-5xl px-6 py-16">
       <header className="mb-10 text-center space-y-2">
         <h1 className="font-mystic text-3xl font-semibold tracking-tight sm:text-4xl">
-          세 가지 멤버십
+          {t("h1")}
         </h1>
         <p className="text-muted-foreground">
-          당신에게 맞는 멤버십을 골라보세요.
+          {t("h1Sub")}
         </p>
       </header>
 
       <div className="grid gap-6 sm:grid-cols-3">
-        {/* 무료 플랜 */}
+        {/* Free plan */}
         <Card className="app-surface">
           <CardHeader>
-            <CardTitle className="font-mystic text-2xl">무료</CardTitle>
-            <CardDescription>매일 가벼운 풀이를 받아보세요.</CardDescription>
+            <CardTitle className="font-mystic text-2xl">{t("freeName")}</CardTitle>
+            <CardDescription>{t("freeDesc")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="font-mystic text-3xl font-semibold">₩0</p>
             <ul className="space-y-2 text-sm">
-              <Bullet>오늘의 운세 일일 {FREE_DAILY_LIMITS.fortune}회</Bullet>
-              <Bullet>타로 한 장 일일 {FREE_DAILY_LIMITS.tarot}회</Bullet>
-              <Bullet>주술사 문답 일일 {FREE_DAILY_LIMITS.chat}회</Bullet>
+              <Bullet>{t("fortuneLine", { n: FREE_DAILY_LIMITS.fortune })}</Bullet>
+              <Bullet>{t("tarotOneLine", { n: FREE_DAILY_LIMITS.tarot })}</Bullet>
+              <Bullet>{t("chatLine", { n: FREE_DAILY_LIMITS.chat })}</Bullet>
             </ul>
             {!user ? (
               <Button asChild className="w-full" variant="outline">
-                <Link href={ROUTES.login}>무료로 시작</Link>
+                <Link href={ROUTES.login}>{t("ctaFreeStart")}</Link>
               </Button>
             ) : tier === "free" ? (
               <Button className="w-full" variant="outline" disabled>
-                현재 사용 중
+                {t("ctaCurrent")}
               </Button>
             ) : (
               <Button className="w-full" variant="outline" disabled>
-                무료 플랜
+                {t("ctaFree")}
               </Button>
             )}
           </CardContent>
         </Card>
 
-        {/* 라이트 플랜 */}
+        {/* Light plan */}
         <Card className="app-surface">
           <CardHeader>
             <CardTitle className="font-mystic text-2xl">
               {SUBSCRIPTION.lite.label}
             </CardTitle>
             <CardDescription>
-              일일 한도를 크게 늘려 더 자주 만나봐요.
+              {t("lightDesc")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -88,43 +92,43 @@ export default async function PricingPage() {
               {formatKRW(SUBSCRIPTION.lite.monthlyPriceKRW)}
               <span className="text-base text-muted-foreground font-normal">
                 {" "}
-                / 월
+                {t("perMonth")}
               </span>
             </p>
             <ul className="space-y-2 text-sm">
-              <Bullet>오늘의 운세 일일 {LITE_DAILY_LIMITS.fortune}회</Bullet>
-              <Bullet>타로 일일 {LITE_DAILY_LIMITS.tarot}회</Bullet>
-              <Bullet>주술사 문답 일일 {LITE_DAILY_LIMITS.chat}회</Bullet>
-              <Bullet>별자리·십이간지 운세</Bullet>
-              <Bullet>타로 3장 스프레드</Bullet>
-              <Bullet>궁합 풀이</Bullet>
+              <Bullet>{t("fortuneLine", { n: LITE_DAILY_LIMITS.fortune })}</Bullet>
+              <Bullet>{t("tarotLine", { n: LITE_DAILY_LIMITS.tarot })}</Bullet>
+              <Bullet>{t("chatLine", { n: LITE_DAILY_LIMITS.chat })}</Bullet>
+              <Bullet>{t("bulletZodiac")}</Bullet>
+              <Bullet>{t("bulletTarotThree")}</Bullet>
+              <Bullet>{t("bulletCompat")}</Bullet>
             </ul>
             {tier === "lite" ? (
               <Button className="w-full" variant="secondary" disabled>
-                구독 중
+                {t("ctaSubscribed")}
               </Button>
             ) : tier === "pro" ? (
               <Button className="w-full" variant="outline" disabled>
-                프로 사용 중
+                {t("ctaProActive")}
               </Button>
             ) : !user ? (
               <Button asChild className="w-full" variant="secondary">
-                <Link href={ROUTES.login}>라이트 시작</Link>
+                <Link href={ROUTES.login}>{t("ctaLightStart")}</Link>
               </Button>
             ) : (
               <Button asChild className="w-full" variant="secondary">
-                <a href="/api/checkout">라이트 시작</a>
+                <a href="/api/checkout">{t("ctaLightStart")}</a>
               </Button>
             )}
           </CardContent>
         </Card>
 
-        {/* 프로 플랜 */}
+        {/* Pro plan */}
         <Card className="app-surface ring-2 ring-primary/40 relative overflow-hidden">
           <div className="absolute top-0 right-0">
             <div className="flex items-center gap-1 bg-primary text-primary-foreground text-xs font-bold px-3 py-1.5 rounded-bl-xl">
               <Crown className="h-3.5 w-3.5" aria-hidden />
-              추천
+              {t("recommended")}
             </div>
           </div>
 
@@ -133,7 +137,7 @@ export default async function PricingPage() {
               {SUBSCRIPTION.pro.label}
             </CardTitle>
             <CardDescription>
-              한도 없이 모든 풀이를 받을 수 있어요.
+              {t("proDesc")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -141,32 +145,32 @@ export default async function PricingPage() {
               {formatKRW(SUBSCRIPTION.pro.monthlyPriceKRW)}
               <span className="text-base text-muted-foreground font-normal">
                 {" "}
-                / 월
+                {t("perMonth")}
               </span>
             </p>
             <ul className="space-y-2 text-sm">
-              <Bullet>오늘의 운세 일일 {PRO_DAILY_LIMITS.fortune}회</Bullet>
-              <Bullet>타로 일일 {PRO_DAILY_LIMITS.tarot}회 (켈틱 크로스 포함)</Bullet>
-              <Bullet>주술사 문답 일일 {PRO_DAILY_LIMITS.chat}회</Bullet>
-              <Bullet>별자리·십이간지 운세</Bullet>
-              <Bullet>르노르망 9장·그랑 타블로</Bullet>
-              <Bullet>룬 5장·9장 스프레드</Bullet>
-              <Bullet>궁합 풀이</Bullet>
-              <Bullet>사주 심층 분석 (평생 보관)</Bullet>
-              <Bullet>카드 가챠 매일 3장</Bullet>
+              <Bullet>{t("fortuneLine", { n: PRO_DAILY_LIMITS.fortune })}</Bullet>
+              <Bullet>{t("bulletTarotCeltic", { n: PRO_DAILY_LIMITS.tarot })}</Bullet>
+              <Bullet>{t("chatLine", { n: PRO_DAILY_LIMITS.chat })}</Bullet>
+              <Bullet>{t("bulletZodiac")}</Bullet>
+              <Bullet>{t("bulletLenormand")}</Bullet>
+              <Bullet>{t("bulletRunes")}</Bullet>
+              <Bullet>{t("bulletCompat")}</Bullet>
+              <Bullet>{t("bulletSajuDeep")}</Bullet>
+              <Bullet>{t("bulletGacha")}</Bullet>
             </ul>
 
             {tier === "pro" ? (
               <Button className="w-full" disabled>
-                구독 중
+                {t("ctaSubscribed")}
               </Button>
             ) : !user ? (
               <Button asChild className="w-full">
-                <Link href={ROUTES.login}>프로 시작</Link>
+                <Link href={ROUTES.login}>{t("ctaProStart")}</Link>
               </Button>
             ) : (
               <Button asChild className="w-full">
-                <a href="/api/checkout/pro">프로 시작</a>
+                <a href="/api/checkout/pro">{t("ctaProStart")}</a>
               </Button>
             )}
           </CardContent>
@@ -174,7 +178,7 @@ export default async function PricingPage() {
       </div>
 
       <p className="mt-6 text-center text-xs text-muted-foreground">
-        결제는 Lemon Squeezy 가 안전하게 처리해요. 언제든 취소할 수 있어요.
+        {t("footer")}
       </p>
     </main>
   );

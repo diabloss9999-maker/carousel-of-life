@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { Loader2, Pencil, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { FormMessage } from "@/components/ui/form-message";
@@ -30,6 +31,8 @@ export function ProfileEditForm({
     updateProfileAction,
     initial,
   );
+  const t = useTranslations("settingsPage");
+  const tForm = useTranslations("onboardingForm");
 
   if (!editing) {
     return (
@@ -40,7 +43,7 @@ export function ProfileEditForm({
         onClick={() => setEditing(true)}
       >
         <Pencil className="h-3.5 w-3.5" />
-        정보 수정
+        {t("profileEdit")}
       </Button>
     );
   }
@@ -54,19 +57,19 @@ export function ProfileEditForm({
       className="space-y-4 pt-2"
     >
       <div className="flex items-center justify-between">
-        <p className="text-sm font-medium">정보 수정</p>
+        <p className="text-sm font-medium">{t("profileEdit")}</p>
         <button
           type="button"
           onClick={() => setEditing(false)}
           className="text-muted-foreground hover:text-foreground transition-colors"
-          aria-label="닫기"
+          aria-label={t("profileEditClose")}
         >
           <X className="h-4 w-4" />
         </button>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="edit-name">이름</Label>
+        <Label htmlFor="edit-name">{tForm("name")}</Label>
         <Input
           id="edit-name"
           name="displayName"
@@ -85,19 +88,19 @@ export function ProfileEditForm({
             name="mbti"
             defaultValue={mbti ?? ""}
             maxLength={4}
-            placeholder="예: INFP"
+            placeholder={tForm("mbtiPlaceholder")}
             className="uppercase"
             disabled={isPending}
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="edit-birthPlace">출생지</Label>
+          <Label htmlFor="edit-birthPlace">{tForm("birthplace")}</Label>
           <Input
             id="edit-birthPlace"
             name="birthPlace"
             defaultValue={birthPlace ?? ""}
             maxLength={80}
-            placeholder="예: 서울"
+            placeholder={tForm("birthplacePlaceholder")}
             disabled={isPending}
           />
         </div>
@@ -122,13 +125,13 @@ export function ProfileEditForm({
           onClick={() => setEditing(false)}
           disabled={isPending}
         >
-          취소
+          {t("profileEditCancel")}
         </Button>
         <Button type="submit" size="sm" className="flex-1" disabled={isPending}>
           {isPending ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
-            "저장"
+            t("profileEditSave")
           )}
         </Button>
       </div>
