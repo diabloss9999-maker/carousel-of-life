@@ -95,24 +95,7 @@ export default async function HomePage() {
           {t("tagline")}
         </p>
 
-        <div className="flex flex-col gap-3 sm:flex-row mt-2">
-          <Button asChild size="lg" className="min-w-44 shadow-lg">
-            <Link href={ROUTES.login}>
-              {t("ctaStart")}
-              <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
-          </Button>
-          <Button
-            asChild
-            size="lg"
-            variant="outline"
-            className="min-w-44 border-white/40 bg-white/25 backdrop-blur-md hover:bg-white/35"
-          >
-            <Link href={ROUTES.login}>{t("ctaSignedIn")}</Link>
-          </Button>
-        </div>
-
-        <p className="text-xs text-foreground/85 drop-shadow-sm">
+        <p className="text-xs text-foreground/85 drop-shadow-sm mt-2">
           {t("freeHint")}
         </p>
 
