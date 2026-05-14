@@ -922,6 +922,12 @@ const sageChapters: StoryChapter[] = [
 // 전체 캐릭터 스토리 매핑
 // ═════════════════════════════════════════════════════════════════════════════
 
+/**
+ * 한국어 — 캐릭터 스토리 매핑.
+ *
+ * 영어 버전은 `character-stories.en.ts` 의 `CHARACTER_STORIES_EN` 참조.
+ * locale 별 lookup 은 `getCharacterStories(locale)` 사용.
+ */
 export const CHARACTER_STORIES: Record<CharacterId, StoryChapter[]> = {
   // 이세계 — 완성
   child: childChapters,
@@ -936,6 +942,7 @@ export const CHARACTER_STORIES: Record<CharacterId, StoryChapter[]> = {
   hunter:     [],
   runeshaman: [],
 };
+
 
 /**
  * 캐릭터별 이미지가 존재하는 챕터 번호.

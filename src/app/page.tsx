@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Layers, MessagesSquare, Sparkles } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -65,7 +66,8 @@ const structuredData = {
   ],
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const t = await getTranslations("landing");
   return (
     <main className="relative min-h-screen">
       <script
@@ -90,15 +92,13 @@ export default function HomePage() {
         </h1>
 
         <p className="font-mystic text-balance text-base leading-relaxed text-foreground/90 sm:text-lg drop-shadow-[0_1px_4px_rgba(60,30,100,0.25)]">
-          별의 흐름과 카드의 계시,
-          <br className="hidden sm:block" />
-          그리고 사주팔자가 오늘의 운명을 들려줘요.
+          {t("tagline")}
         </p>
 
         <div className="flex flex-col gap-3 sm:flex-row mt-2">
           <Button asChild size="lg" className="min-w-44 shadow-lg">
             <Link href={ROUTES.login}>
-              운명 묻기
+              {t("ctaStart")}
               <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
           </Button>
@@ -108,19 +108,19 @@ export default function HomePage() {
             variant="outline"
             className="min-w-44 border-white/40 bg-white/25 backdrop-blur-md hover:bg-white/35"
           >
-            <Link href={ROUTES.login}>이미 가입했어요</Link>
+            <Link href={ROUTES.login}>{t("ctaSignedIn")}</Link>
           </Button>
         </div>
 
         <p className="text-xs text-foreground/85 drop-shadow-sm">
-          매일 무료로 운세 2회, 타로 2장, 주술사 문답 10회를 받을 수 있어요.
+          {t("freeHint")}
         </p>
 
         <Link
           href={ROUTES.pricing}
           className="text-sm text-foreground/80 underline underline-offset-4 hover:text-foreground"
         >
-          유료 플랜 보기
+          {t("viewPricing")}
         </Link>
       </section>
 
@@ -131,7 +131,7 @@ export default function HomePage() {
       <section className="relative z-10 mx-auto max-w-3xl px-6 pb-20 pt-8 text-center">
         <Button asChild size="lg" className="min-w-48 shadow-lg">
           <Link href={ROUTES.login}>
-            지금 무료로 시작하기
+            {t("finalCta")}
             <ArrowRight className="h-4 w-4" aria-hidden />
           </Link>
         </Button>
@@ -141,25 +141,23 @@ export default function HomePage() {
 }
 
 /** 차별점 3카드 섹션. */
-function ValuePropsSection() {
+async function ValuePropsSection() {
+  const t = await getTranslations("landing.valueProps");
   const items = [
     {
       icon: Layers,
-      title: "사주 + 타로 + 성격유형 통합",
-      body:
-        "다른 곳은 하나만 봅니다. 우리는 세 가지 시선으로 같은 흐름을 읽어드려요.",
+      title: t("v1Title"),
+      body: t("v1Body"),
     },
     {
       icon: MessagesSquare,
-      title: "AI 주술사와의 대화",
-      body:
-        "단순 풀이가 아니라 아홉 명의 주술사가 각자의 방식으로 답해줍니다. 이세계의 카드, 동양의 사주·천기, 북방의 룬까지.",
+      title: t("v2Title"),
+      body: t("v2Body"),
     },
     {
       icon: Sparkles,
-      title: "매일 무료로 받는 흐름",
-      body:
-        "가입만 하면 매일 운세 2회·타로 1장·주술사 문답 10회를 무료로.",
+      title: t("v3Title"),
+      body: t("v3Body"),
     },
   ];
 
@@ -167,10 +165,10 @@ function ValuePropsSection() {
     <section className="relative z-10 mx-auto max-w-5xl space-y-6 px-6 pt-12 sm:pt-16">
       <div className="space-y-2 text-center">
         <h2 className="font-mystic text-2xl font-semibold sm:text-3xl">
-          왜 인생의 회전목마인가
+          {t("heading")}
         </h2>
         <p className="text-sm text-muted-foreground">
-          다른 운세 서비스와 다른 세 가지
+          {t("subheading")}
         </p>
       </div>
       <div className="grid gap-4 sm:grid-cols-3">
@@ -193,14 +191,15 @@ function ValuePropsSection() {
 }
 
 /** 결과물 미리보기 섹션 (예시 카드 2장). */
-function PreviewSection() {
+async function PreviewSection() {
+  const t = await getTranslations("landing.preview");
   return (
     <section className="relative z-10 mx-auto max-w-3xl space-y-6 px-6 pt-12 sm:pt-16">
       <div className="space-y-2 text-center">
         <h2 className="font-mystic text-2xl font-semibold sm:text-3xl">
-          오늘의 운명, 이렇게 풀어드려요
+          {t("heading")}
         </h2>
-        <p className="text-xs text-muted-foreground">아래는 예시입니다</p>
+        <p className="text-xs text-muted-foreground">{t("exampleLabel")}</p>
       </div>
 
       <div className="mx-auto grid max-w-3xl gap-6 sm:grid-cols-2">

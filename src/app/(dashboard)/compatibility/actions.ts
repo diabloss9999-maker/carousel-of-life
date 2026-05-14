@@ -4,6 +4,7 @@
  * 궁합 풀이 Server Actions.
  */
 import { revalidatePath } from "next/cache";
+import { getLocale } from "next-intl/server";
 import { z } from "zod";
 
 import { requireProfile } from "@/lib/auth/get-user";
@@ -223,6 +224,7 @@ export async function twoPersonCompatAction(
       }),
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.compatibilityMaxTokens,
+      locale: await getLocale(),
     });
 
     return {
@@ -346,6 +348,7 @@ export async function generateCompatPurposeAction(
       model: AI_MODELS.premium,
       maxTokens: 800,
       systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      locale: await getLocale(),
     });
 
     return { kind: "success", data };
@@ -410,6 +413,7 @@ export async function generateCompatConflictAction(
       model: AI_MODELS.premium,
       maxTokens: 800,
       systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      locale: await getLocale(),
     });
 
     return { kind: "success", data };
@@ -477,6 +481,7 @@ ${mbtiLine.join("\n")}
       model: AI_MODELS.premium,
       maxTokens: 800,
       systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      locale: await getLocale(),
     });
 
     return { kind: "success", data };

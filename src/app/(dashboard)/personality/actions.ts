@@ -17,6 +17,7 @@ import {
   personalityStressProfile,
   personalityTripleAnalysis,
 } from "@/db/schema";
+import { getLocale } from "next-intl/server";
 import { requireProfile } from "@/lib/auth/get-user";
 import { generateJson } from "@/lib/ai/generate";
 import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
@@ -103,6 +104,7 @@ export async function generateTripleAnalysisAction(): Promise<TripleAnalysisStat
       model: AI_MODELS.premium,
       maxTokens: 800,
       systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      locale: await getLocale(),
     });
 
     if (cached) {
@@ -186,6 +188,7 @@ ${profile.mbti} 유형이 스트레스를 받을 때 어떻게 무너지는지 +
       model: AI_MODELS.premium,
       maxTokens: 800,
       systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      locale: await getLocale(),
     });
 
     if (cached) {
@@ -270,6 +273,7 @@ ${profile.mbti} 유형 기반으로 어떤 업무 환경·직군이 잘 맞는�
       model: AI_MODELS.premium,
       maxTokens: 800,
       systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      locale: await getLocale(),
     });
 
     if (cached) {

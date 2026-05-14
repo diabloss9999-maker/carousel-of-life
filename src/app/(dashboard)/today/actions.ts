@@ -16,6 +16,7 @@ import {
   dailyLovePremium,
   dailyStudyTips,
 } from "@/db/schema";
+import { getLocale } from "next-intl/server";
 import { requireProfile } from "@/lib/auth/get-user";
 import { generateJson } from "@/lib/ai/generate";
 import {
@@ -219,6 +220,7 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
       model: AI_MODELS.premium,
       maxTokens: 1500,
       systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      locale: await getLocale(),
     });
 
     // DB에 저장 (tips 컬럼에 전체 리포트 JSON 저장)
@@ -335,6 +337,7 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
       model: AI_MODELS.premium,
       maxTokens: 1200,
       systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      locale: await getLocale(),
     });
 
     if (cached) {
@@ -432,6 +435,7 @@ export async function generateStudyTipsAction(): Promise<StudyTipsState> {
       model: AI_MODELS.premium,
       maxTokens: 800,
       systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      locale: await getLocale(),
     });
 
     if (cached) {
@@ -527,6 +531,7 @@ export async function generateLovePremiumAction(): Promise<LovePremiumState> {
       model: AI_MODELS.premium,
       maxTokens: 1000,
       systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      locale: await getLocale(),
     });
 
     if (cached) {
@@ -629,6 +634,7 @@ export async function generateGeneralPremiumAction(): Promise<GeneralPremiumStat
       model: AI_MODELS.premium,
       maxTokens: 1000,
       systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      locale: await getLocale(),
     });
 
     if (cached) {

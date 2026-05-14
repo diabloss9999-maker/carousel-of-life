@@ -12,6 +12,7 @@ import { and, eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { dailyQuestions, type DailyQuestion, type Profile } from "@/db/schema";
+import { getLocale } from "next-intl/server";
 import { generateMarkdown } from "@/lib/ai/generate";
 import { buildUserContext } from "@/lib/ai/prompts";
 import { AI_MODELS } from "@/lib/constants";
@@ -101,6 +102,7 @@ ${charPrompt}
       model: AI_MODELS.fast,
       maxTokens: 80,
       systemSuffix: "질문 한 문장만 출력하세요. 마크다운·이모지 금지.",
+      locale: await getLocale(),
     });
     question = question.trim().replace(/^["']|["']$/g, "");
   } catch {

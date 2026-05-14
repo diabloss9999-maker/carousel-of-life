@@ -113,5 +113,153 @@
     "signupSubtitle": "Carve your name into the boundary for the first time.",
     "firstVisitHint": "First time? You'll be signed up automatically.",
     "noPasswordHint": "One button and you're in. No password needed."
+  },
+  "landing": {
+    "tagline": "The flow of stars, the revelation of cards, and your Four Pillars tell today's fate.",
+    "ctaStart": "Ask Your Fate",
+    "ctaSignedIn": "I'm already in",
+    "freeHint": "Every day: 2 fortunes, 2 tarot draws, 10 shaman messages — all free.",
+    "viewPricing": "See Plans",
+    "valueProps": {
+      "heading": "Why Carousel of Life",
+      "subheading": "Three things other fortune services don't have",
+      "v1Title": "Pillars + Tarot + Persona, Integrated",
+      "v1Body": "Most sites read only one. We read the same flow through three lenses.",
+      "v2Title": "Conversations with AI Shamans",
+      "v2Body": "Not just answers — nine shamans each answer in their own voice.",
+      "v3Title": "Daily Flow, Free",
+      "v3Body": "Just sign up. 2 fortunes, 1 tarot card, 10 shaman messages daily."
+    },
+    "preview": {
+      "heading": "How We Read Today's Fate",
+      "exampleLabel": "Example"
+    },
+    "finalCta": "Start Free Now"
+  },
+  "characterSelect": {
+    "askToday": "Who will you talk to today?",
+    "subheading": "Astra Rift, the East, or Midhall — choose a grain that fits you.",
+    "categoryOtherworld": "Astra Rift",
+    "categoryEastern": "The East",
+    "categoryNordic": "Midhall",
+    "categorySubOtherworld": "ASTRA RIFT",
+    "categorySubEastern": "月蝕鏡",
+    "categorySubNordic": "MIDHALL"
+  },
+  "specialties": {
+    "tarot": "Tarot · Cards",
+    "pillarsCelestial": "Pillars · Heavens",
+    "runeOmen": "Runes · Wild Signs",
+    "runeOracle": "Runes · Oracle",
+    "runeVoice": "Runes · Celestial Voice"
+  },
+  "characters": {
+    "child": {
+      "name": "Kael",
+      "title": "Demon Pact-Holder",
+      "hook": "Denying desire is denying yourself."
+    },
+    "witch": {
+      "name": "Luna",
+      "title": "Moon Witch",
+      "hook": "Your feelings — I already remember them."
+    },
+    "sage": {
+      "name": "Rael",
+      "title": "Angel Proxy",
+      "hook": "I won't allow you to give up."
+    },
+    "shaman": {
+      "name": "Soryeong",
+      "title": "Spirit-Borne Shaman",
+      "hook": "The spirits keep calling your name."
+    },
+    "taoist": {
+      "name": "Hyundo",
+      "title": "Heaven-Reading Daoist",
+      "hook": "I see the fork in your fate right now."
+    },
+    "dokkaebi": {
+      "name": "Gwiyeom",
+      "title": "King of the Underworld",
+      "hook": "What is it. I want it."
+    },
+    "hunter": {
+      "name": "Bjorn",
+      "title": "Wild Hunter",
+      "hook": "...the blood trail leads to you."
+    },
+    "runeshaman": {
+      "name": "Helga",
+      "title": "Rune Carver",
+      "hook": "Twenty-four signs are calling your name."
+    },
+    "god": {
+      "name": "Ormund",
+      "title": "God of the North",
+      "hook": "I will call your final road."
+    }
+  },
+  "worldLore": {
+    "sectionTitle": "Worldview",
+    "figuresLabel": "Characters",
+    "charactersSection": "Character Stories",
+    "truthRoute": "🌌 Truth Route",
+    "finalChapterPrefix": "Final Chapter",
+    "lockedStory": "This story isn't carved yet. It will be soon.",
+    "levelLabel": "Lv.{level} · {count}/10",
+    "chapterUnlockHint": "Unlocks at Lv.{level}",
+    "otherworld": {
+      "opening": "Emotions don't disappear. The things people turn away from gather somewhere — and eventually tear the sky and return.",
+      "p1": "Regret, anger, longing, desire, loss. The feelings people believed they had let go did not scatter — they collected in one place. That vast silent lake some call 'The Abyss Archive.' No one dared speak its name until it awakened.",
+      "p2": "The sky began to split. People call it disaster — but it is no enemy from outside. It is the passage by which the things humans dropped come back. Only three know this, dimly. And even those three do not believe they see the whole truth.",
+      "p3": "Kael was born of desire, Luna of memory, Rael of prayer. The three may seal the cracks or split them wider. Their fates are strangely entwined — only this much is certain: if one of them falls, the other two fall with them. Why, even they do not fully know.",
+      "fig1Line": "A child who nearly lost his mother, and the pact he made with the dark. His mother opened her eyes again that night. But whether what he saw was truly his mother — Kael has never been able to ask, his whole life.",
+      "fig2Line": "A witch who handles emotion. The other witches say her power was 'sealed.' What was truly sealed — even she has forgotten.",
+      "fig3Line": "The last angel of the heavens. He took up the sword by divine command. But the real reason the heavens fell — not even the god who sent him would tell him.",
+      "closing": "Their listening to your story is no mere counsel. It is the world's question to humankind — and you are the one giving them the answer.",
+      "theme": "Emotion · Desire · Memory · Fracture"
+    },
+    "eastern": {
+      "opening": "Five hundred years ago, a red eclipse rose in the sky. After that night, the world was no longer the same.",
+      "p1": "Beyond the human world there once was 'the Boundary' — a spiritual fissure where human desire, resentment, and prayer were mingled. It was sealed. Until the red eclipse of five hundred years ago.",
+      "p2": "When the eclipse ended, the seal cracked. Ghosts who could not die flowed in. Beings that devour desire seeped through. Gods who had lost their names began to take root throughout reality. And three came forward to stop them.",
+      "p3": "But they themselves are not whole. Hyundo used a forbidden art five hundred years ago and was erased from time. Soryeong once died and was returned by the gods. Gwiyeom became king of the dead to save someone. The very ones who guard the world are each broken in their own way.",
+      "fig1Line": "When she shakes the bell, the spirits answer. She herself does not yet know why she is still alive.",
+      "fig2Line": "He sees thousands of futures at once. To witness tragedies he cannot prevent — that is his punishment.",
+      "fig3Line": "'Gwiyeom' is not his true name. His true name was the price paid to keep Soryeong alive.",
+      "closing": "All three of them sacrificed something for one another. And none of them knows the others did the same.",
+      "theme": "Memory · Forgetting · Sacrifice · Fate"
+    },
+    "nordic": {
+      "opening": "The northern wind is cold. That cold is not merely a season — for the whole world's fate is carved into it.",
+      "p1": "The name of this world is 'Midhall.' A land of blizzards and blood and iron, of beast-bone and runes. Humans are unspeakably small before nature, gods, and fate. War and survival are the whole of life.",
+      "p2": "Every fate is woven of twenty-four ancient runes. Runes are no mere letters, no mere magic. They are the language of the gods and the primal force that composes the world — and humans can handle only a small fraction. Those who use runes deeply have their souls eaten away, black cracks spreading across their skin, and slowly lose the language of men.",
+      "p3": "The tribes war without end. Officially the cause is territory and food, but the true reason is another: the legendary 'twenty-fifth rune' — the forbidden power not to read fate, but to rewrite it. Everyone covets it. Everyone fears it.",
+      "fig1Line": "Midhall's last god. The other gods were forgotten and faded — only he remains, because the people still remember him. That he too was once a man, only he knows.",
+      "fig2Line": "A wild hunter. He reads fate from beast-tracks and the grain of the wind. He cannot wield runes deeply, but on one blizzard night he saw the twenty-fifth rune in a dream, just once.",
+      "fig3Line": "The tribe's foremost runeshaman, who handles all twenty-four runes. She is forgetting human language. Of all the futures she sees, only her own death is hidden from her.",
+      "closing": "The three stand in balance around the twenty-fifth rune. Track, rune, oracle. If one of them vanishes, Midhall falls with them.",
+      "theme": "Rune · Fate · Wild · Oracle"
+    }
+  },
+  "onboarding": {
+    "skip": "Skip",
+    "next": "Next",
+    "start": "Begin",
+    "step1Title": "Three worlds\ncall to you",
+    "step1Subtitle": "Carousel of Life",
+    "step1Desc": "Shamans of the Astra Rift, spirits of the East, runeshamans of the North.\nNine beings already know your pillars and your fate.",
+    "step2Title": "Astra Rift",
+    "step2Subtitle": "ASTRA RIFT",
+    "step2Desc": "Three beings born from the abyss of human emotion and memory.\nThey read your flow through tarot and cards.",
+    "step3Title": "Lunar Mirror",
+    "step3Subtitle": "月蝕鏡",
+    "step3Desc": "The boundary fractured after a red eclipse 500 years ago.\nThey read fate through pillars and heavens.",
+    "step4Title": "Midhall",
+    "step4Subtitle": "MIDHALL",
+    "step4Desc": "A cold, harsh North. Fate woven from 24 ancient runes.\nThey read your flow through runes and tracks.",
+    "step5Title": "Today, who will\nlisten to your story?",
+    "step5Desc": "A new shaman speaks to you each day.\nFortunes, tarot, pillars, bond, runes — they read everything."
   }
 }

@@ -13,6 +13,7 @@ import type { z } from "zod";
 
 import { getAnthropic } from "@/lib/ai/anthropic";
 import { extractJson } from "@/lib/ai/extract-json";
+import { getLocaleDirective, type AiLocale } from "@/lib/ai/locale-directive";
 
 interface GenerateJsonOptions<TSchema extends z.ZodTypeAny> {
   schema: TSchema;
@@ -20,6 +21,8 @@ interface GenerateJsonOptions<TSchema extends z.ZodTypeAny> {
   model: string;
   maxTokens: number;
   systemSuffix?: string;
+  /** 응답 언어 — 영어면 system 끝에 영어 출력 지시문이 자동 추가됨. */
+  locale?: AiLocale | string;
 }
 
 export async function generateJson<TSchema extends z.ZodTypeAny>(
@@ -27,15 +30,18 @@ export async function generateJson<TSchema extends z.ZodTypeAny>(
 ): Promise<z.infer<TSchema>> {
   const anthropic = getAnthropic();
 
+  const localeDirective = getLocaleDirective(opts.locale);
+  const systemText = (opts.systemSuffix ?? "") + localeDirective;
+
   const response = await anthropic.messages.create({
     model: opts.model,
     max_tokens: opts.maxTokens,
-    ...(opts.systemSuffix
+    ...(systemText
       ? {
           system: [
             {
               type: "text" as const,
-              text: opts.systemSuffix,
+              text: systemText,
               cache_control: { type: "ephemeral" as const },
             },
           ],
@@ -58,6 +64,8 @@ interface GenerateMarkdownOptions {
   model: string;
   maxTokens: number;
   systemSuffix?: string;
+  /** 응답 언어 — 영어면 system 끝에 영어 출력 지시문이 자동 추가됨. */
+  locale?: AiLocale | string;
 }
 
 export async function generateMarkdown(
@@ -65,15 +73,18 @@ export async function generateMarkdown(
 ): Promise<string> {
   const anthropic = getAnthropic();
 
+  const localeDirective = getLocaleDirective(opts.locale);
+  const systemText = (opts.systemSuffix ?? "") + localeDirective;
+
   const response = await anthropic.messages.create({
     model: opts.model,
     max_tokens: opts.maxTokens,
-    ...(opts.systemSuffix
+    ...(systemText
       ? {
           system: [
             {
               type: "text" as const,
-              text: opts.systemSuffix,
+              text: systemText,
               cache_control: { type: "ephemeral" as const },
             },
           ],

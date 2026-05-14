@@ -8,12 +8,15 @@
 import "server-only";
 
 import { getAnthropic } from "@/lib/ai/anthropic";
+import { getLocaleDirective, type AiLocale } from "@/lib/ai/locale-directive";
 
 export interface StreamChatOptions {
   model: string;
   maxTokens: number;
   system: string;
   messages: { role: "user" | "assistant"; content: string }[];
+  /** 출력 언어 — 영어면 system 끝에 영어 출력 지시문이 자동 추가됨. */
+  locale?: AiLocale | string;
   /** 청크가 끝난 후 호출. 전체 텍스트와 토큰 사용량을 받는다. */
   onComplete?: (result: {
     fullText: string;
@@ -45,7 +48,7 @@ export function streamChat(opts: StreamChatOptions): ReadableStream<Uint8Array> 
           system: [
             {
               type: "text" as const,
-              text: opts.system,
+              text: opts.system + getLocaleDirective(opts.locale),
               cache_control: { type: "ephemeral" as const },
             },
           ],

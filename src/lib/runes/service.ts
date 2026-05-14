@@ -22,6 +22,7 @@ import {
 } from "@/db/schema";
 import { CHARACTER_PROSE_VOICE } from "@/lib/ai/character-voice";
 import { getTodayCharacterByCategory } from "@/lib/daily-question/rotation";
+import { getLocale } from "next-intl/server";
 import { generateMarkdown } from "@/lib/ai/generate";
 import { buildUserContext } from "@/lib/ai/prompts";
 import { AI_MODELS } from "@/lib/constants";
@@ -220,6 +221,7 @@ ${spreadInstruction}
       model: AI_MODELS.fast,
       maxTokens: MAX_TOKENS[opts.spreadType],
       systemSuffix: CHARACTER_PROSE_VOICE[getTodayCharacterByCategory("북유럽")],
+      locale: await getLocale(),
     });
   } catch (e) {
     return {

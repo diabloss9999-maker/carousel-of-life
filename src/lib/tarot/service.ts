@@ -12,6 +12,7 @@ import {
   type Profile,
   type TarotReading,
 } from "@/db/schema";
+import { getLocale } from "next-intl/server";
 import { generateJson } from "@/lib/ai/generate";
 import {
   buildTarotSinglePrompt,
@@ -93,6 +94,7 @@ export async function createSingleTarot(opts: {
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.tarotMaxTokens,
       systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacterByCategory("이세계")],
+      locale: await getLocale(),
     });
   } catch (e) {
     return {
@@ -169,6 +171,7 @@ export async function createThreeCardTarot(opts: {
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.tarotMaxTokens * 2,
       systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacterByCategory("이세계")],
+      locale: await getLocale(),
     });
   } catch (e) {
     return {

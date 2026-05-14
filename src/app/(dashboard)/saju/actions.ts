@@ -4,6 +4,7 @@
  * 사주 페이지 — 사주 캐시 + 심층 분석 액션.
  */
 import { revalidatePath } from "next/cache";
+import { getLocale } from "next-intl/server";
 
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
@@ -234,6 +235,7 @@ ${relText}
       model: AI_MODELS.premium,
       maxTokens: 800,
       systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      locale: await getLocale(),
     });
 
     const saveData = { aiOutput, relationships };

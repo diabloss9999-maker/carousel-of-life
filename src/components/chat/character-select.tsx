@@ -4,6 +4,7 @@ import { CharacterImage } from "@/components/shared/character-image";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { AffinityBar } from "@/components/affinity/affinity-bar";
 import {
@@ -12,6 +13,7 @@ import {
   type CharacterId,
   type CharacterCategory,
 } from "@/lib/chat/characters";
+import { SPECIALTY_KEY } from "@/i18n/character-display";
 import { cn } from "@/lib/utils";
 
 interface CharacterSelectProps {
@@ -20,31 +22,27 @@ interface CharacterSelectProps {
 
 const CATEGORY_ORDER: CharacterCategory[] = ["이세계", "동양", "북유럽"];
 
-/** 카테고리별 디자인 설정 */
-const CATEGORY_STYLE: Record<CharacterCategory, {
-  label: string;
-  sub: string;
+/** 카테고리별 디자인 — 라벨은 i18n 에서, 색상은 여기서. */
+const CATEGORY_DECO: Record<CharacterCategory, {
+  labelKey: "Otherworld" | "Eastern" | "Nordic";
   border: string;
   text: string;
   dot: string;
 }> = {
   이세계: {
-    label: "이세계",
-    sub: "ASTRA RIFT",
+    labelKey: "Otherworld",
     border: "border-violet-500/30",
     text: "text-violet-400",
     dot: "bg-violet-500",
   },
   동양: {
-    label: "동양",
-    sub: "月蝕鏡",
+    labelKey: "Eastern",
     border: "border-emerald-500/30",
     text: "text-emerald-400",
     dot: "bg-emerald-500",
   },
   북유럽: {
-    label: "북유럽",
-    sub: "MIDHALL",
+    labelKey: "Nordic",
     border: "border-sky-500/30",
     text: "text-sky-300",
     dot: "bg-sky-400",
@@ -81,6 +79,10 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
   const [selected, setSelected] = useState<CharacterId | null>(null);
   const [isPending, startTransition] = useTransition();
 
+  const tCat = useTranslations("characterSelect");
+  const tChar = useTranslations("characters");
+  const tSpec = useTranslations("specialties");
+
   async function handleSelect(id: CharacterId) {
     setSelected(id);
     startTransition(async () => {
@@ -99,27 +101,29 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
   return (
     <div className="space-y-8">
       <p className="text-center text-sm text-muted-foreground">
-        오늘은 누구와 이야기할까?
+        {tCat("askToday")}
       </p>
 
       {CATEGORY_ORDER.map((category) => {
-        const style = CATEGORY_STYLE[category];
+        const deco = CATEGORY_DECO[category];
         const ids = CHARACTERS_BY_CATEGORY[category];
+        const label = tCat(`category${deco.labelKey}` as "categoryOtherworld" | "categoryEastern" | "categoryNordic");
+        const sub = tCat(`categorySub${deco.labelKey}` as "categorySubOtherworld" | "categorySubEastern" | "categorySubNordic");
 
         return (
           <div key={category} className="space-y-4">
             {/* 카테고리 헤더 */}
             <div className="flex items-center gap-3">
-              <div className={cn("h-2 w-2 rounded-full flex-shrink-0", style.dot)} />
+              <div className={cn("h-2 w-2 rounded-full flex-shrink-0", deco.dot)} />
               <div className="flex items-baseline gap-2">
-                <span className={cn("font-mystic text-sm font-bold tracking-wider", style.text)}>
-                  {style.label}
+                <span className={cn("font-mystic text-sm font-bold tracking-wider", deco.text)}>
+                  {label}
                 </span>
                 <span className="text-[10px] tracking-widest text-muted-foreground/50 uppercase">
-                  {style.sub}
+                  {sub}
                 </span>
               </div>
-              <div className={cn("flex-1 h-px", style.border, "border-t")} />
+              <div className={cn("flex-1 h-px", deco.border, "border-t")} />
             </div>
 
             {/* 캐릭터 카드 그리드 */}
@@ -128,6 +132,10 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                 const char = CHARACTERS[id];
                 const isLoading = isPending && selected === id;
                 const isSelected = selected === id;
+                const name = tChar(`${id}.name`);
+                const title = tChar(`${id}.title`);
+                const hook = tChar(`${id}.hook`);
+                const specialty = tSpec(SPECIALTY_KEY[id] as "tarot" | "pillarsCelestial" | "runeOmen" | "runeOracle" | "runeVoice");
 
                 return (
                   <button
@@ -161,7 +169,7 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                       {/* 전문 배지 */}
                       <div className="absolute top-1.5 left-1.5">
                         <span className="rounded-md bg-black/60 backdrop-blur-sm px-1.5 py-0.5 text-[8px] font-medium text-white/70 leading-none">
-                          {char.specialty}
+                          {specialty}
                         </span>
                       </div>
                     </div>
@@ -169,14 +177,14 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                     {/* 이름 + 직함 */}
                     <div className="w-full space-y-1">
                       <p className="font-mystic font-bold text-sm leading-tight text-foreground/95">
-                        {char.name}
+                        {name}
                       </p>
                       <p className="text-[10px] text-muted-foreground/70 leading-tight">
-                        {char.title}
+                        {title}
                       </p>
                       {/* 훅 — 데스크탑에서만 */}
                       <p className="hidden sm:block text-[11px] text-foreground/80 leading-snug font-mystic italic">
-                        &ldquo;{char.hook}&rdquo;
+                        &ldquo;{hook}&rdquo;
                       </p>
                       {/* 친밀도 */}
                       <AffinityBar

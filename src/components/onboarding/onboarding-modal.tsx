@@ -8,26 +8,27 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChevronRight, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const STORAGE_KEY = "carousel_onboarded_v1";
 
-const STEPS = [
+/** STEP 디자인 메타 — 텍스트는 i18n 에서 가져옴. */
+const STEPS_META = [
   {
-    world: null,
-    title: "세 개의 세계가\n당신을 부른다",
-    subtitle: "인생의 회전목마",
-    desc: "이세계의 주술사, 동양의 신령, 북방의 룬샤먼.\n아홉 존재가 당신의 사주와 운명을 이미 알고 있다.",
+    titleKey: "step1Title",
+    subtitleKey: "step1Subtitle",
+    descKey: "step1Desc",
     bg: "from-[#0d0818] via-[#1a1030] to-[#0a0512]",
     accent: "text-amber-300",
+    characters: null,
   },
   {
-    world: "이세계",
-    title: "아스트라 균열",
-    subtitle: "ASTRA RIFT",
-    desc: "인간의 감정과 기억이 만들어낸 심연에서 태어난 세 존재.\n타로와 카드로 당신의 흐름을 읽는다.",
+    titleKey: "step2Title",
+    subtitleKey: "step2Subtitle",
+    descKey: "step2Desc",
     bg: "from-[#0d0818] via-[#1a0a30] to-[#0a0520]",
     accent: "text-violet-400",
     characters: [
@@ -37,10 +38,9 @@ const STEPS = [
     ],
   },
   {
-    world: "동양",
-    title: "월식경",
-    subtitle: "月蝕鏡",
-    desc: "500년 전 붉은 월식 이후 균열된 경계(境界).\n사주와 천기로 운명의 흐름을 읽는다.",
+    titleKey: "step3Title",
+    subtitleKey: "step3Subtitle",
+    descKey: "step3Desc",
     bg: "from-[#050d08] via-[#0a1a10] to-[#030a06]",
     accent: "text-emerald-400",
     characters: [
@@ -50,10 +50,9 @@ const STEPS = [
     ],
   },
   {
-    world: "북유럽",
-    title: "미드할",
-    subtitle: "MIDHALL",
-    desc: "차갑고 거친 북방. 24개 고대 룬으로 이루어진 운명.\n룬과 자국으로 당신의 흐름을 읽는다.",
+    titleKey: "step4Title",
+    subtitleKey: "step4Subtitle",
+    descKey: "step4Desc",
     bg: "from-[#050a18] via-[#0a1428] to-[#020612]",
     accent: "text-sky-300",
     characters: [
@@ -63,16 +62,18 @@ const STEPS = [
     ],
   },
   {
-    world: null,
-    title: "오늘, 누가 당신의\n이야기를 들어줄까",
-    subtitle: null,
-    desc: "매일 새로운 주술사가 당신에게 먼저 말을 건다.\n운세·타로·사주·궁합·룬 — 모든 걸 그들이 읽어준다.",
+    titleKey: "step5Title",
+    subtitleKey: null,
+    descKey: "step5Desc",
     bg: "from-[#0d0818] via-[#1a1030] to-[#0a0512]",
     accent: "text-amber-300",
+    characters: null,
   },
 ] as const;
 
 export function OnboardingModal() {
+  const t = useTranslations("onboarding");
+  const tCat = useTranslations("characterSelect");
   const [visible, setVisible] = useState(false);
   const [step, setStep] = useState(0);
   const [animating, setAnimating] = useState(false);
@@ -92,7 +93,7 @@ export function OnboardingModal() {
   }
 
   function next() {
-    if (step < STEPS.length - 1) {
+    if (step < STEPS_META.length - 1) {
       setAnimating(true);
       setTimeout(() => {
         setStep((s) => s + 1);
@@ -105,7 +106,17 @@ export function OnboardingModal() {
 
   if (!visible) return null;
 
-  const current = STEPS[step];
+  const current = STEPS_META[step];
+  // i18n 텍스트 lookup
+  const title = t(current.titleKey);
+  const subtitle = current.subtitleKey ? t(current.subtitleKey) : null;
+  const desc = t(current.descKey);
+  // step 2~4 만 카테고리 라벨 존재
+  const worldLabel =
+    step === 1 ? tCat("categoryOtherworld")
+    : step === 2 ? tCat("categoryEastern")
+    : step === 3 ? tCat("categoryNordic")
+    : null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -127,39 +138,41 @@ export function OnboardingModal() {
           type="button"
           onClick={dismiss}
           className="absolute right-4 top-4 z-10 rounded-full p-1.5 text-white/40 hover:text-white/80 transition-colors"
-          aria-label="건너뛰기"
+          aria-label={t("skip")}
         >
           <X className="h-4 w-4" />
         </button>
 
         <div className="flex flex-col items-center gap-6 px-8 py-10 text-center">
-          {/* 세계 라벨 */}
-          {current.world && (
+          {/* 세계 라벨 — step 2~4 */}
+          {worldLabel && subtitle && (
             <span className={cn(
               "rounded-full border px-4 py-1 text-xs font-bold tracking-widest uppercase",
-              current.world === "이세계"
+              step === 1
                 ? "border-violet-500/40 text-violet-400"
-                : "border-emerald-500/40 text-emerald-400",
+                : step === 2
+                  ? "border-emerald-500/40 text-emerald-400"
+                  : "border-sky-500/40 text-sky-300",
             )}>
-              {current.world} — {current.subtitle}
+              {worldLabel} — {subtitle}
             </span>
           )}
 
           {/* 제목 */}
           <div className="space-y-1">
-            {current.subtitle && !current.world && (
-              <p className="text-xs tracking-widest text-white/40 uppercase">{current.subtitle}</p>
+            {subtitle && !worldLabel && (
+              <p className="text-xs tracking-widest text-white/40 uppercase">{subtitle}</p>
             )}
             <h2 className={cn(
               "font-mystic text-3xl font-bold leading-tight whitespace-pre-line",
               current.accent,
             )}>
-              {current.title}
+              {title}
             </h2>
           </div>
 
-          {/* 캐릭터 미리보기 (이세계/동양 스텝) */}
-          {"characters" in current && current.characters && (
+          {/* 캐릭터 미리보기 (이세계/동양/북유럽 스텝) */}
+          {current.characters && (
             <div className="flex justify-center gap-3 w-full">
               {current.characters.map((c) => (
                 <div key={c.name} className="flex flex-col items-center gap-2 flex-1">
@@ -187,12 +200,12 @@ export function OnboardingModal() {
 
           {/* 설명 */}
           <p className="text-sm text-white/65 leading-relaxed whitespace-pre-line">
-            {current.desc}
+            {desc}
           </p>
 
           {/* 진행 표시 */}
           <div className="flex gap-1.5">
-            {STEPS.map((_, i) => (
+            {STEPS_META.map((_, i) => (
               <div
                 key={i}
                 className={cn(
@@ -213,13 +226,13 @@ export function OnboardingModal() {
             onClick={next}
             className="w-full gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur"
           >
-            {step < STEPS.length - 1 ? (
+            {step < STEPS_META.length - 1 ? (
               <>
-                다음
+                {t("next")}
                 <ChevronRight className="h-4 w-4" />
               </>
             ) : (
-              "주술사 만나러 가기"
+              t("start")
             )}
           </Button>
         </div>

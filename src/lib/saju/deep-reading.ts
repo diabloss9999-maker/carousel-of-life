@@ -10,6 +10,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { profiles, type Profile } from "@/db/schema";
+import { getLocale } from "next-intl/server";
 import { generateJson } from "@/lib/ai/generate";
 import { buildSajuDeepPrompt } from "@/lib/ai/prompts";
 import { sajuDeepAiSchema, type SajuDeepAiOutput } from "@/lib/ai/types";
@@ -81,6 +82,7 @@ export async function getOrCreateDeepReading(
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.sajuDeepMaxTokens,
       systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacterByCategory("동양")],
+      locale: await getLocale(),
     });
   } catch (e) {
     return {

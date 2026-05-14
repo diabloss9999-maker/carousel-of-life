@@ -7,6 +7,7 @@
  *   첫 줄이 "CARDS:{json}\n" 이면 카드 메타데이터 (점술 요청 시)
  */
 import { NextResponse, type NextRequest } from "next/server";
+import { getLocale } from "next-intl/server";
 import { z } from "zod";
 
 import { requireProfile } from "@/lib/auth/get-user";
@@ -203,11 +204,14 @@ export async function POST(
     moodCtx +
     silenceHint;
 
+  const locale = await getLocale();
+
   const aiStream = streamChat({
     // 카드 점술 해석은 Sonnet, 일반 대화는 Haiku (비용 최적화)
     model: reading ? AI_MODELS.premium : AI_MODELS.chat,
     maxTokens: reading ? 1200 : AI_LIMITS.chatMaxTokens,
     system: enrichedSystem,
+    locale,
     messages,
     onComplete: async ({ fullText, inputTokens, outputTokens }) => {
       if (fullText.trim().length === 0) return;

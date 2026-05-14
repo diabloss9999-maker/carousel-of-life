@@ -14,6 +14,7 @@ import {
   type CompatibilityReading,
   type Profile,
 } from "@/db/schema";
+import { getLocale } from "next-intl/server";
 import { generateJson } from "@/lib/ai/generate";
 import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
 import { getTodayCharacter } from "@/lib/daily-question/rotation";
@@ -175,6 +176,7 @@ export async function createCompatibility(opts: {
       model: AI_MODELS.fast,
       maxTokens: 900,
       systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      locale: await getLocale(),
     });
   } catch (e) {
     return {

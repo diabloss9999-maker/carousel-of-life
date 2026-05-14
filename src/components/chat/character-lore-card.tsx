@@ -13,10 +13,10 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, Lock } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 import {
-  CHARACTERS,
   CHARACTERS_BY_CATEGORY,
   type CharacterCategory,
   type CharacterId,
@@ -26,8 +26,37 @@ import {
   CHARACTER_STORIES,
   WORLD_LORE,
   getChapterImageSrc,
+  type StoryChapter,
+  type WorldTruthRoute,
+  type WorldFinalChapter,
 } from "@/lib/stories/character-stories";
+import {
+  CHARACTER_STORIES_EN,
+  WORLD_LORE_EN,
+} from "@/lib/stories/character-stories.en";
 import Image from "next/image";
+
+/**
+ * locale 에 따라 한국어/영어 스토리 매핑을 고른다.
+ * 영어판 챕터가 비어 있는 캐릭터(동양·북유럽)는 한국어로 폴백.
+ */
+function pickStories(locale: string): Record<CharacterId, StoryChapter[]> {
+  if (locale !== "en") return CHARACTER_STORIES;
+  const merged: Record<CharacterId, StoryChapter[]> = { ...CHARACTER_STORIES };
+  for (const id of Object.keys(CHARACTER_STORIES_EN) as CharacterId[]) {
+    if (CHARACTER_STORIES_EN[id].length > 0) {
+      merged[id] = CHARACTER_STORIES_EN[id];
+    }
+  }
+  return merged;
+}
+
+function pickWorldLore(locale: string): Partial<
+  Record<CharacterCategory, { truthRoute: WorldTruthRoute; finalChapter: WorldFinalChapter }>
+> {
+  if (locale !== "en") return WORLD_LORE;
+  return { ...WORLD_LORE, ...WORLD_LORE_EN };
+}
 
 interface CharacterLoreCardProps {
   /** 캐릭터별 호감도 포인트 — `{ characterId: points }` */
@@ -38,12 +67,11 @@ interface CharacterLoreCardProps {
 
 interface WorldDeco {
   world: CharacterCategory;
+  /** worldLore 네임스페이스 안의 sub-namespace key */
+  loreKey: "otherworld" | "eastern" | "nordic";
+  /** characterSelect 의 category 라벨 키 (Otherworld/Eastern/Nordic) */
+  labelKey: "Otherworld" | "Eastern" | "Nordic";
   worldSub: string;
-  opening: string;
-  paragraphs: string[];
-  figures: { name: string; line: string }[];
-  closing: string;
-  theme: string;
   accent: string;
   border: string;
   /** 진실 루트·최종 챕터의 카드 보더 색상 */
@@ -53,91 +81,27 @@ interface WorldDeco {
 const WORLD_DECOS: WorldDeco[] = [
   {
     world: "이세계",
+    loreKey: "otherworld",
+    labelKey: "Otherworld",
     worldSub: "ASTRA RIFT",
-    opening:
-      "감정은 사라지지 않는다. 외면된 것들은 어딘가에 모여, 결국 하늘을 찢고 돌아온다.",
-    paragraphs: [
-      "후회, 분노, 미련, 욕망, 상실. 사람들이 흘려보냈다 믿은 그 감정들은 흩어지지 않고 한곳에 쌓였다. 그 거대한 침묵의 호수를, 누군가는 「심연 기록층 — The Abyss Archive」이라 부른다. 그것이 깨어나기 전까지, 아무도 그 이름을 입에 올리지 않았다.",
-      "하늘이 갈라지기 시작했다. 사람들은 그것을 재앙이라 부르지만 — 그것은 외부에서 온 적이 아니다. 인간이 떨어뜨린 것들이 돌아오는 통로다. 그 사실을 셋만이 어렴풋이 안다. 그리고 그 셋도, 자신이 진실의 전부를 보고 있다고는 믿지 않는다.",
-      "카엘은 욕망에서, 루나는 기억에서, 라엘은 기도에서 태어났다. 셋은 균열을 봉합하기도, 더 크게 벌리기도 한다. 묘하게 얽힌 운명 — 셋 중 하나가 무너지면 나머지 둘도 함께 무너진다는 사실만이 분명하다. 그 이유는 셋조차 다 알지 못한다.",
-    ],
-    figures: [
-      {
-        name: "카엘",
-        line: "어머니를 잃을 뻔한 한 아이가 어둠과 맺은 계약. 어머니는 그날 밤 다시 눈을 떴다. 하지만 그가 본 것이 정말 어머니였는지, 카엘은 평생 묻지 못했다.",
-      },
-      {
-        name: "루나",
-        line: "감정을 다루는 마녀. 마녀들은 그녀의 능력을 '봉인했다'고 말한다. 봉인된 것이 진짜 무엇이었는지는 — 그녀조차 잊고 있다.",
-      },
-      {
-        name: "라엘",
-        line: "천계의 마지막 천사. 그는 신의 명령으로 검을 들었다. 그러나 천계가 무너진 진짜 이유는, 그를 보낸 신조차 그에게 알려주지 않았다.",
-      },
-    ],
-    closing:
-      "그들이 당신의 이야기를 듣는 건 단순한 상담이 아니다. 세계가 인간에게 던지는 질문 — 그 답을 셋은 당신에게서 듣고 있다.",
-    theme: "감정 · 욕망 · 기억 · 균열",
     accent: "text-violet-400",
     border: "border-violet-800/30",
     truthBorder: "border-violet-500/40",
   },
   {
     world: "동양",
+    loreKey: "eastern",
+    labelKey: "Eastern",
     worldSub: "月蝕鏡",
-    opening: "500년 전, 하늘에서 붉은 월식이 일었다. 그날 밤 이후 세상이 달라졌다.",
-    paragraphs: [
-      "원래 인간 세상 너머에는 「경계(境界)」가 있었다. 인간의 욕망과 원한과 기도가 뒤섞인 영적 차원의 틈. 그것은 봉인되어 있었다. 500년 전 붉은 월식이 오기 전까지는.",
-      "월식이 끝나자 봉인이 균열됐다. 죽지 못한 귀신들이 흘러 들어왔고, 욕망을 먹는 존재들이 스며들었으며, 이름을 잃은 신들이 현실 곳곳에 깃들기 시작했다. 그리고 그것을 막으러 세 존재가 나타났다.",
-      "하지만 그들 자신도 온전하지 않다. 현도는 500년 전 금기를 사용하다 시간에서 지워진 존재고, 소령은 이미 한 번 죽었다 신들에게 되살아난 존재이며, 귀염은 누군가를 살리기 위해 스스로 귀왕이 됐다. 세상을 지키는 자들이 각자의 방식으로 망가져 있다.",
-    ],
-    figures: [
-      {
-        name: "소령",
-        line: "방울을 흔들면 신령이 응한다. 그녀 스스로는 자신이 왜 살아있는지 아직 모른다.",
-      },
-      {
-        name: "현도",
-        line: "수천 개의 미래를 동시에 본다. 막을 수 없는 비극을 미리 보는 것이 그의 형벌이다.",
-      },
-      {
-        name: "귀염",
-        line: "'귀염'은 진짜 이름이 아니다. 진짜 이름은 소령을 살리기 위해 지불한 대가다.",
-      },
-    ],
-    closing: "세 사람 모두 서로를 위해 뭔가를 희생했다. 그리고 그 사실을 서로 모른다.",
-    theme: "기억 · 망각 · 희생 · 운명",
     accent: "text-emerald-400",
     border: "border-emerald-800/30",
     truthBorder: "border-emerald-500/40",
   },
   {
     world: "북유럽",
+    loreKey: "nordic",
+    labelKey: "Nordic",
     worldSub: "MIDHALL",
-    opening:
-      "북방의 바람이 차다. 그 추위는 단순히 계절이 아니다. 세계의 모든 운명이 거기에 새겨져 있기 때문이다.",
-    paragraphs: [
-      "이 세계의 이름은 「미드할(Midhall)」이다. 눈보라와 피와 철, 짐승의 뼈와 룬이 중심이 되는 땅. 인간은 자연과 신과 운명 앞에서 극도로 작은 존재이고, 전쟁과 생존이 삶의 전부다.",
-      "모든 운명은 24개의 고대 룬으로 이루어져 있다. 룬은 단순한 문자도 마법도 아니다. 신들의 언어이자 세계를 구성하는 원초적 힘이고, 인간은 그 중 아주 일부만을 다룰 수 있다. 룬을 깊이 사용하는 자는 영혼이 갉히고, 피부에 검은 균열이 번지며, 인간의 언어를 잃어간다.",
-      "부족들은 끊임없이 전쟁한다. 표면적인 이유는 영토와 식량이지만, 진짜 이유는 따로 있다. 전설 속의 「25번째 룬」 — 미래를 읽는 게 아니라 운명 자체를 바꿀 수 있다는 금기의 힘. 모두가 그것을 노리고, 그것을 두려워한다.",
-    ],
-    figures: [
-      {
-        name: "외르문드",
-        line: "미드할의 마지막 신. 다른 신들은 잊혀 사라졌지만 그만이 남았다 — 사람들이 아직 그를 기억하기 때문이다. 한때 그도 인간이었다는 사실은 그만이 안다.",
-      },
-      {
-        name: "비요른",
-        line: "야성의 사냥꾼. 짐승의 자국과 바람의 결로 운명을 읽는다. 룬은 강하게 다루지 못하지만, 어느 눈보라 밤 꿈에서 25번째 룬을 한 번 본 적이 있다.",
-      },
-      {
-        name: "헬가",
-        line: "24개 룬을 모두 다루는 부족 최고의 룬샤먼. 인간의 언어를 잊어가는 중이다. 그녀가 보는 미래 중 자신의 죽음만이 보이지 않는다.",
-      },
-    ],
-    closing:
-      "셋은 25번째 룬을 사이에 두고 균형을 이룬다. 자국·룬·신탁. 하나가 사라지면 미드할도 함께 무너진다.",
-    theme: "룬 · 운명 · 야성 · 신탁",
     accent: "text-sky-300",
     border: "border-sky-800/30",
     truthBorder: "border-sky-500/40",
@@ -186,6 +150,13 @@ export function CharacterLoreCard({
     null,
   );
 
+  const tLore = useTranslations("worldLore");
+  const tCat = useTranslations("characterSelect");
+  const tChar = useTranslations("characters");
+  const locale = useLocale();
+  const stories = pickStories(locale);
+  const worldLore = pickWorldLore(locale);
+
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-center gap-2">
@@ -197,7 +168,7 @@ export function CharacterLoreCard({
           className="h-5 w-5 opacity-40"
         />
         <p className="text-xs text-muted-foreground/50 tracking-widest uppercase">
-          세계관 이야기
+          {tLore("sectionTitle")}
         </p>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -210,6 +181,25 @@ export function CharacterLoreCard({
 
       {WORLD_DECOS.map((deco, i) => {
         const isOpen = openWorldIdx === i;
+        const worldLabel = tCat(`category${deco.labelKey}` as "categoryOtherworld" | "categoryEastern" | "categoryNordic");
+        const lorePath = (key: string) => `${deco.loreKey}.${key}` as const;
+        const characterIds = CHARACTERS_BY_CATEGORY[deco.world];
+        const figures = characterIds.map((id, idx) => ({
+          id,
+          name: tChar(`${id}.name`),
+          line: tLore(lorePath(`fig${idx + 1}Line`) as
+            | "otherworld.fig1Line" | "otherworld.fig2Line" | "otherworld.fig3Line"
+            | "eastern.fig1Line" | "eastern.fig2Line" | "eastern.fig3Line"
+            | "nordic.fig1Line" | "nordic.fig2Line" | "nordic.fig3Line"),
+        }));
+        const opening = tLore(lorePath("opening") as "otherworld.opening" | "eastern.opening" | "nordic.opening");
+        const paragraphs = [
+          tLore(lorePath("p1") as "otherworld.p1" | "eastern.p1" | "nordic.p1"),
+          tLore(lorePath("p2") as "otherworld.p2" | "eastern.p2" | "nordic.p2"),
+          tLore(lorePath("p3") as "otherworld.p3" | "eastern.p3" | "nordic.p3"),
+        ];
+        const closing = tLore(lorePath("closing") as "otherworld.closing" | "eastern.closing" | "nordic.closing");
+        const theme = tLore(lorePath("theme") as "otherworld.theme" | "eastern.theme" | "nordic.theme");
         return (
           <div
             key={deco.world}
@@ -231,7 +221,7 @@ export function CharacterLoreCard({
                 <span
                   className={cn("font-mystic font-bold text-base", deco.accent)}
                 >
-                  {deco.world}
+                  {worldLabel}
                 </span>
                 <span className="ml-2 text-[10px] tracking-widest text-muted-foreground/70 uppercase">
                   {deco.worldSub}
@@ -254,12 +244,12 @@ export function CharacterLoreCard({
                     deco.accent,
                   )}
                 >
-                  {deco.opening}
+                  {opening}
                 </p>
 
                 {/* 본문 단락 */}
                 <div className="space-y-3">
-                  {deco.paragraphs.map((p, j) => (
+                  {paragraphs.map((p, j) => (
                     <p key={j} className="text-sm leading-loose text-foreground/70">
                       {p}
                     </p>
@@ -269,10 +259,10 @@ export function CharacterLoreCard({
                 {/* 인물 요약 */}
                 <div className="space-y-2 border-t border-white/5 pt-4">
                   <p className="text-[10px] uppercase tracking-widest text-muted-foreground/65 mb-3">
-                    등장인물
+                    {tLore("figuresLabel")}
                   </p>
-                  {deco.figures.map((f) => (
-                    <div key={f.name} className="flex gap-3">
+                  {figures.map((f) => (
+                    <div key={f.id} className="flex gap-3">
                       <span
                         className={cn(
                           "font-mystic text-sm font-bold flex-shrink-0 w-10",
@@ -290,12 +280,12 @@ export function CharacterLoreCard({
 
                 {/* 마무리 */}
                 <p className="font-mystic text-xs italic text-muted-foreground/50 border-t border-white/5 pt-4 leading-relaxed">
-                  {deco.closing}
+                  {closing}
                 </p>
 
                 {/* 테마 태그 */}
                 <div className="flex flex-wrap gap-2">
-                  {deco.theme.split(" · ").map((t) => (
+                  {theme.split(" · ").map((t) => (
                     <span
                       key={t}
                       className="rounded-full border border-white/10 bg-white/5 px-3 py-0.5 text-[10px] text-muted-foreground/50"
@@ -308,16 +298,17 @@ export function CharacterLoreCard({
                 {/* ── 캐릭터 스토리 챕터 (호감도 잠금/해금) ─────────── */}
                 <div className="space-y-3 border-t border-white/5 pt-5">
                   <p className="text-[10px] uppercase tracking-widest text-muted-foreground/65">
-                    캐릭터 스토리
+                    {tLore("charactersSection")}
                   </p>
 
-                  {CHARACTERS_BY_CATEGORY[deco.world].map((id) => (
+                  {characterIds.map((id) => (
                     <CharacterStoryAccordion
                       key={id}
                       characterId={id}
                       affinities={affinities}
                       accent={deco.accent}
                       adminMode={adminMode}
+                      chapters={stories[id]}
                       isOpen={openCharacterId === id}
                       onToggle={() =>
                         setOpenCharacterId(
@@ -335,6 +326,7 @@ export function CharacterLoreCard({
                   accent={deco.accent}
                   border={deco.truthBorder}
                   adminMode={adminMode}
+                  lore={worldLore[deco.world] ?? null}
                 />
               </div>
             )}
@@ -354,6 +346,8 @@ interface CharacterStoryAccordionProps {
   affinities: Record<string, number>;
   accent: string;
   adminMode: boolean;
+  /** locale 별로 선택된 챕터 배열 — 부모에서 주입. */
+  chapters: StoryChapter[];
   /** 부모에서 단일 캐릭터만 펼치도록 제어한다. */
   isOpen: boolean;
   onToggle: () => void;
@@ -364,6 +358,7 @@ function CharacterStoryAccordion({
   affinities,
   accent,
   adminMode,
+  chapters,
   isOpen,
   onToggle,
 }: CharacterStoryAccordionProps) {
@@ -371,13 +366,15 @@ function CharacterStoryAccordion({
   const rootRef = useRef<HTMLDivElement>(null);
   const wasOpenRef = useRef(isOpen);
 
-  const character = CHARACTERS[characterId];
+  const tChar = useTranslations("characters");
+  const tLore = useTranslations("worldLore");
+  const characterName = tChar(`${characterId}.name`);
+  const characterTitle = tChar(`${characterId}.title`);
   const { level, unlockedCount } = getCharacterStatus(
     characterId,
     affinities,
     adminMode,
   );
-  const chapters = CHARACTER_STORIES[characterId];
   const hasContent = chapters.length > 0;
 
   // 다른 캐릭터에서 이 캐릭터로 전환됐을 때 레이아웃 점프 방지 —
@@ -394,7 +391,9 @@ function CharacterStoryAccordion({
   }, [isOpen]);
 
   // 닫힐 때 내부 챕터 상태 초기화 — 다시 열었을 때 깔끔한 시작.
+  // 부모 토글에 따른 자식 상태 리셋이므로 의도된 패턴.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (!isOpen) setOpenChapter(null);
   }, [isOpen]);
 
@@ -410,10 +409,10 @@ function CharacterStoryAccordion({
       >
         <div className="flex items-center gap-3">
           <span className={cn("font-mystic font-bold text-sm", accent)}>
-            {character.name}
+            {characterName}
           </span>
           <span className="text-[10px] text-muted-foreground/60">
-            {character.title}
+            {characterTitle}
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -433,7 +432,7 @@ function CharacterStoryAccordion({
         <div className="px-4 pb-4 pt-1 space-y-1.5 border-t border-white/5">
           {!hasContent ? (
             <p className="text-xs text-muted-foreground/60 italic py-3">
-              아직 풀리지 않은 이야기야. 곧 새겨질 거예요.
+              {tLore("lockedStory")}
             </p>
           ) : (
             chapters.map((chap) => {
@@ -469,6 +468,11 @@ interface TruthRouteSectionProps {
   accent: string;
   border: string;
   adminMode: boolean;
+  /** locale 에 맞게 선택된 진실 루트 + 최종 챕터 데이터. */
+  lore: {
+    truthRoute: WorldTruthRoute;
+    finalChapter: WorldFinalChapter;
+  } | null;
 }
 
 function TruthRouteSection({
@@ -477,10 +481,11 @@ function TruthRouteSection({
   accent,
   border,
   adminMode,
+  lore,
 }: TruthRouteSectionProps) {
   const [openSec, setOpenSec] = useState<"truth" | "final" | null>(null);
+  const tLore = useTranslations("worldLore");
 
-  const lore = WORLD_LORE[world];
   if (!lore) return null;
 
   const unlocked = isTruthRouteUnlocked(world, affinities, adminMode);
@@ -489,7 +494,7 @@ function TruthRouteSection({
     <div className={cn("rounded-xl border-2 mt-2", border)}>
       <div className="px-4 py-3 border-b border-white/5">
         <p className={cn("font-mystic text-xs font-bold uppercase tracking-widest", accent)}>
-          🌌 진실 루트
+          {tLore("truthRoute")}
         </p>
         {!unlocked && (
           <p className="text-[10px] text-muted-foreground/55 mt-1 flex items-center gap-1.5">
@@ -545,7 +550,7 @@ function TruthRouteSection({
           )}
         >
           <span className="text-xs font-medium text-foreground/85">
-            최종 챕터 · {lore.finalChapter.title}
+            {tLore("finalChapterPrefix")} · {lore.finalChapter.title}
           </span>
           {unlocked ? (
             <ChevronDown
@@ -592,6 +597,7 @@ function ChapterRow({
 }: ChapterRowProps) {
   const rowRef = useRef<HTMLDivElement>(null);
   const wasExpandedRef = useRef(isExpanded);
+  const tLore = useTranslations("worldLore");
 
   // 챕터가 새로 펼쳐지는 순간 — 챕터 헤더(곧이어 이미지가 오는 위치)가
   // viewport 상단에 자리잡도록 부드럽게 스크롤한다.
@@ -639,7 +645,7 @@ function ChapterRow({
           ) : (
             <span className="text-xs text-muted-foreground/50 flex items-center gap-1.5">
               <Lock className="h-3 w-3" aria-hidden />
-              Lv.{chapter.number} 해금
+              {tLore("chapterUnlockHint", { level: chapter.number })}
             </span>
           )}
         </div>
@@ -684,7 +690,7 @@ function ChapterImage({ characterId, chapterNumber, title }: ChapterImageProps) 
     <div className="mx-auto w-full max-w-[280px] overflow-hidden rounded-xl border border-white/10 bg-black/30">
       <Image
         src={src}
-        alt={`${title} 챕터 이미지`}
+        alt={title}
         width={960}
         height={1280}
         className="h-auto w-full object-cover"

@@ -11,6 +11,7 @@ import {
   type DailyFortune,
   type Profile,
 } from "@/db/schema";
+import { getLocale } from "next-intl/server";
 import { generateJson } from "@/lib/ai/generate";
 import {
   buildDailyFortunePrompt,
@@ -127,6 +128,7 @@ export async function getOrCreateDailyFortune(opts: {
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.fortuneMaxTokens,
       systemSuffix: CHARACTER_CARD_VOICE[characterId],
+      locale: await getLocale(),
     });
   } catch (e) {
     return {
