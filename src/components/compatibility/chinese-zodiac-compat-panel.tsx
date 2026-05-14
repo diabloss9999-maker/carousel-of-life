@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { CalendarDays } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import {
   Card,
@@ -18,6 +18,7 @@ import {
 import {
   getChineseZodiacCompat,
   type ChineseZodiacCompatResult,
+  type ChineseZodiacRelation,
 } from "@/lib/compatibility/chinese-zodiac-compat";
 import { cn } from "@/lib/utils";
 
@@ -25,33 +26,35 @@ interface ChineseZodiacCompatPanelProps {
   myChineseZodiac: ChineseZodiacSign;
 }
 
-/** 관계 유형 (KO) → 배지 색상 + 번역 키. */
-const RELATION_TONE: Record<string, string> = {
-  삼합: "bg-accent/15 text-accent",
-  육합: "bg-primary/15 text-primary",
-  상충: "bg-destructive/10 text-destructive",
-  동갑띠: "bg-muted/60 text-muted-foreground",
-  일반: "bg-muted/60 text-muted-foreground",
+/** 관계 유형 enum → 배지 색상. */
+const RELATION_TONE: Record<ChineseZodiacRelation, string> = {
+  samhap: "bg-accent/15 text-accent",
+  yukhap: "bg-primary/15 text-primary",
+  sangchung: "bg-destructive/10 text-destructive",
+  self: "bg-muted/60 text-muted-foreground",
+  general: "bg-muted/60 text-muted-foreground",
 };
 
-const RELATION_TKEY: Record<string, string> = {
-  삼합: "relSamhap",
-  육합: "relYukhap",
-  상충: "relSangchung",
-  동갑띠: "relSameYear",
-  일반: "relGeneral",
-};
+const RELATION_TKEY = {
+  samhap: "relSamhap",
+  yukhap: "relYukhap",
+  sangchung: "relSangchung",
+  self: "relSameYear",
+  general: "relGeneral",
+} as const;
 
 export function ChineseZodiacCompatPanel({
   myChineseZodiac,
 }: ChineseZodiacCompatPanelProps) {
   const [partner, setPartner] = useState<ChineseZodiacSign | null>(null);
+  const locale = useLocale();
+  const compatLocale = locale === "en" ? "en" : "ko";
   const result: ChineseZodiacCompatResult | null = partner
-    ? getChineseZodiacCompat(myChineseZodiac, partner)
+    ? getChineseZodiacCompat(myChineseZodiac, partner, compatLocale)
     : null;
 
-  const myInfo = CHINESE_ZODIAC_LIST.find((z) => z.id === myChineseZodiac)!;
   const t = useTranslations("chineseCompat");
+  const tName = useTranslations("chineseZodiacName");
 
   return (
     <Card className="app-surface">
@@ -85,7 +88,7 @@ export function ChineseZodiacCompatPanel({
               >
                 <span className="block text-base">{z.animal}</span>
                 <span className="mt-0.5 block text-[10px] text-muted-foreground">
-                  {z.ko}
+                  {tName(z.id)}
                 </span>
               </button>
             );
@@ -97,15 +100,15 @@ export function ChineseZodiacCompatPanel({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 flex-wrap">
                 <p className="font-mystic text-sm text-muted-foreground">
-                  {result.me.ko} × {result.partner.ko}
+                  {tName(result.me.id)} × {tName(result.partner.id)}
                 </p>
                 <span
                   className={cn(
                     "rounded-full px-2 py-0.5 text-[10px] font-medium",
-                    RELATION_TONE[result.relationType] ?? RELATION_TONE["일반"],
+                    RELATION_TONE[result.relationKind],
                   )}
                 >
-                  {t((RELATION_TKEY[result.relationType] ?? "relGeneral") as "relSamhap" | "relYukhap" | "relSangchung" | "relSameYear" | "relGeneral")}
+                  {t(RELATION_TKEY[result.relationKind])}
                 </span>
               </div>
               <ScoreBadge score={result.score} />

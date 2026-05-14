@@ -221,10 +221,10 @@ ${relText}
 
 위 분석을 바탕으로 오늘 이 사람의 일진을 해석해줘.
 모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼. 예언 투 금지.
-마크다운 없이 JSON만:
+마크다운 없이 JSON만. overallEnergy 는 locale 무관 영문 enum 으로:
 {
   "todayPillar": "${todayPillar.stemHanja}${todayPillar.branchHanja}일",
-  "overallEnergy": "긍정적" 또는 "중립" 또는 "주의 필요",
+  "overallEnergy": "positive" 또는 "neutral" 또는 "caution",
   "mainMessage": "오늘 일진의 핵심 한두 문장",
   "advice": "오늘 하루 어떻게 지내면 좋을지 구체적 조언 2~3문장",
   "luckyTime": "어느 시간대가 좋은지",

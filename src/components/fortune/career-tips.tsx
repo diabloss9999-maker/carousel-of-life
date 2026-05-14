@@ -161,8 +161,21 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
   }
 
   const todayIdx = getTodayWeekdayIdxKst();
-  const weekdays = t.raw("weekdays") as string[];
-  const todayWeekdayLabel = weekdays[todayIdx];
+  // Sun=0 ~ Sat=6 → 평일만 enum (Mon=1..Fri=5).
+  const WEEKDAY_ENUM = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"] as const;
+  const todayDayEnum: string = WEEKDAY_ENUM[todayIdx];
+  // 구버전 캐시(한글) 호환을 위한 정규화 맵: 한글 → enum.
+  const KO_TO_ENUM: Record<string, string> = {
+    월: "mon", 화: "tue", 수: "wed", 목: "thu", 금: "fri",
+  };
+  // enum → 표시 라벨 키 매핑.
+  const DAY_LABEL_KEY: Record<string, "weekdayMon" | "weekdayTue" | "weekdayWed" | "weekdayThu" | "weekdayFri" | null> = {
+    mon: "weekdayMon",
+    tue: "weekdayTue",
+    wed: "weekdayWed",
+    thu: "weekdayThu",
+    fri: "weekdayFri",
+  };
   const periodLabel =
     report.timing.period === "morning" ? t("periodMorning") : t("periodAfternoon");
 
@@ -230,7 +243,11 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
           </h3>
           <ul className="space-y-2">
             {report.weeklyFlow.map((item) => {
-              const isToday = item.day === todayWeekdayLabel || item.day === ["일","월","화","수","목","금","토"][todayIdx];
+              // 신: 영문 enum, 구: 한글 — 둘 다 정규화.
+              const normalized = KO_TO_ENUM[item.day] ?? item.day;
+              const isToday = normalized === todayDayEnum;
+              const labelKey = DAY_LABEL_KEY[normalized] ?? null;
+              const dayLabel = labelKey ? t(labelKey) : item.day;
               return (
                 <li
                   key={item.day}
@@ -248,7 +265,7 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
                           : "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-border/60 text-[11px] font-medium text-muted-foreground"
                       }
                     >
-                      {item.day}
+                      {dayLabel}
                     </span>
                     <div className="flex-1 space-y-1">
                       <div className="flex items-center justify-between text-xs">

@@ -99,6 +99,10 @@ export type SajuDeepAiOutput = z.infer<typeof sajuDeepAiSchema>;
  */
 const numField = z.union([z.number(), z.string()]).transform(Number);
 
+/** weeklyFlow 의 요일 enum (월~금, locale 무관). */
+export const CAREER_WEEKLY_DAY_VALUES = ["mon", "tue", "wed", "thu", "fri"] as const;
+export type CareerWeeklyDay = (typeof CAREER_WEEKLY_DAY_VALUES)[number];
+
 export const careerReportSchema = z.object({
   tips: z.array(z.object({ title: z.string(), description: z.string() })).min(1),
   energy: z.object({
@@ -113,6 +117,10 @@ export const careerReportSchema = z.object({
     meetingTip: z.string(),
   }),
   weeklyFlow: z.array(z.object({
+    /**
+     * 영문 enum: "mon"|"tue"|"wed"|"thu"|"fri".
+     * 구버전 캐시는 한글("월","화"...)이 올 수 있어 string 폴백을 허용한다 — 컴포넌트에서 정규화.
+     */
     day: z.string(),
     forecast: z.string(),
     score: numField,
@@ -274,10 +282,19 @@ export const careerFitSchema = z.object({
 });
 export type CareerFitOutput = z.infer<typeof careerFitSchema>;
 
-/** 오늘의 일진 × 내 사주 — AI 해석 결과 */
+/** 일진 분석의 전체 에너지 enum (locale 무관). */
+export const ILJIN_ENERGY_VALUES = ["positive", "neutral", "caution"] as const;
+export type IljinEnergy = (typeof ILJIN_ENERGY_VALUES)[number];
+
+/**
+ * 오늘의 일진 × 내 사주 — AI 해석 결과.
+ *
+ * - overallEnergy: 영문 enum (positive | neutral | caution).
+ *   구버전 캐시의 한글 값은 컴포넌트 폴백에서 처리한다.
+ */
 export const iljinAiSchema = z.object({
   todayPillar: z.string().min(1).max(20),
-  overallEnergy: z.string().min(1).max(20),
+  overallEnergy: z.enum(ILJIN_ENERGY_VALUES),
   mainMessage: z.string().min(1).max(400),
   advice: z.string().min(1).max(800),
   luckyTime: z.string().min(1).max(300),

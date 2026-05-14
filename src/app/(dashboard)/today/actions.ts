@@ -123,11 +123,11 @@ export interface CareerTipsState {
   message?: string;
 }
 
-/** KST 기준 한글 요일 ("월"~"일"). */
-function todayWeekdayKst(): string {
-  const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"] as const;
+/** KST 기준 요일 enum ("mon"~"sun"). */
+const WEEKDAY_ENUMS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"] as const;
+function todayWeekdayKst(): (typeof WEEKDAY_ENUMS)[number] {
   const d = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
-  return WEEKDAYS[d.getDay()];
+  return WEEKDAY_ENUMS[d.getDay()];
 }
 
 /**
@@ -176,13 +176,14 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
 - MBTI: ${mbti}
 - 생년월일: ${profile.birthDate}
 - 성별: ${profile.gender}
-- 오늘 날짜: ${today} (${weekday}요일)
+- 오늘 날짜: ${today} (요일코드: ${weekday})
 
 이 사용자의 오늘 직장 운세 종합 리포트를 작성해줘.
 구체적이고 실천 가능하게, 이 사람의 MBTI 성격과 오늘 요일을 반영해서 작성해.
 모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
 
-반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:
+반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력.
+"day" 필드는 영문 enum 으로만 ("mon"|"tue"|"wed"|"thu"|"fri"). 한글 요일 금지.
 {
   "tips": [
     { "title": "팁 제목(10자 이내)", "description": "설명 2문장" },
@@ -201,11 +202,11 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
     "meetingTip": "회의·협상 팁 1문장"
   },
   "weeklyFlow": [
-    { "day": "월", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 },
-    { "day": "화", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 },
-    { "day": "수", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 },
-    { "day": "목", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 },
-    { "day": "금", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 }
+    { "day": "mon", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 },
+    { "day": "tue", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 },
+    { "day": "wed", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 },
+    { "day": "thu", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 },
+    { "day": "fri", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 }
   ],
   "relationship": {
     "isGoodToAsk": true 또는 false,

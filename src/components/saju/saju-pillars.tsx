@@ -12,10 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  ELEMENT_LABEL,
-  POLARITY_LABEL,
   lookupChar,
-  type ElementKey,
 } from "@/lib/saju/meanings";
 import { CHINESE_ZODIAC_LIST } from "@/lib/fortunes/zodiac";
 import { cn } from "@/lib/utils";
@@ -55,33 +52,6 @@ const PILLAR_TKEYS = {
   day:   { label: "pillarDay",   desc: "pillarDaySub" },
   hour:  { label: "pillarHour",  desc: "pillarHourSub" },
 } as const;
-
-const STEM_TO_ELEMENT: Record<string, ElementKey> = {
-  甲: "wood", 乙: "wood",
-  丙: "fire", 丁: "fire",
-  戊: "earth", 己: "earth",
-  庚: "metal", 辛: "metal",
-  壬: "water", 癸: "water",
-};
-
-const BRANCH_TO_ELEMENT: Record<string, ElementKey> = {
-  寅: "wood", 卯: "wood",
-  巳: "fire", 午: "fire",
-  辰: "earth", 戌: "earth", 丑: "earth", 未: "earth",
-  申: "metal", 酉: "metal",
-  亥: "water", 子: "water",
-};
-
-const ELEMENT_TONE: Record<ElementKey, string> = {
-  wood: "border-emerald-300/45 bg-gradient-to-br from-emerald-100/95 via-emerald-200/65 to-emerald-600/30 text-emerald-950 shadow-emerald-950/10 dark:from-emerald-400/25 dark:via-emerald-500/18 dark:to-emerald-950/55 dark:text-emerald-100",
-  fire: "border-rose-300/50 bg-gradient-to-br from-rose-100/95 via-red-200/65 to-red-600/35 text-red-950 shadow-red-950/10 dark:from-red-400/25 dark:via-red-500/18 dark:to-red-950/55 dark:text-red-100",
-  earth:
-    "border-amber-300/55 bg-gradient-to-br from-amber-100/95 via-yellow-200/65 to-orange-500/30 text-amber-950 shadow-amber-950/10 dark:from-amber-300/24 dark:via-yellow-500/18 dark:to-amber-950/55 dark:text-amber-100",
-  metal:
-    "border-stone-300/65 bg-gradient-to-br from-stone-50/95 via-zinc-200/75 to-zinc-500/30 text-zinc-950 shadow-zinc-950/10 dark:from-zinc-200/22 dark:via-zinc-400/16 dark:to-zinc-950/55 dark:text-zinc-100",
-  water:
-    "border-sky-300/50 bg-gradient-to-br from-sky-100/95 via-cyan-200/65 to-blue-600/30 text-sky-950 shadow-sky-950/10 dark:from-sky-400/24 dark:via-blue-500/16 dark:to-blue-950/60 dark:text-sky-100",
-};
 
 export function SajuPillars({ pillars }: SajuPillarsProps) {
   const pillarKeys: Array<keyof SajuPillarsValue> = [
@@ -212,10 +182,8 @@ interface CharProps {
 
 function Char({ value, kind, id, active, onToggle }: CharProps) {
   const lookup = lookupChar(value);
-  const element =
-    kind === "stem" ? STEM_TO_ELEMENT[value] : BRANCH_TO_ELEMENT[value];
-  const tone = element ? ELEMENT_TONE[element] : "bg-muted/40 text-foreground";
   const ko = lookup?.meaning.ko ?? "";
+  const tCzName = useTranslations("chineseZodiacName");
   const zodiacId = kind === "branch" ? BRANCH_TO_ZODIAC[value] : null;
   const zodiacInfo = zodiacId
     ? CHINESE_ZODIAC_LIST.find((c) => c.id === zodiacId)
@@ -241,7 +209,7 @@ function Char({ value, kind, id, active, onToggle }: CharProps) {
       >
         {/* 지지 — 십이간지 이미지 */}
         {zodiacId && zodiacInfo ? (
-          <CardImg src={`/chinese-zodiac/${zodiacId}.png`} alt={zodiacInfo.ko} char={value} active={active} />
+          <CardImg src={`/chinese-zodiac/${zodiacId}.png`} alt={tCzName(zodiacInfo.id)} char={value} active={active} />
         ) : stemImgId ? (
           /* 천간 — 천간 이미지 */
           <CardImg src={`/cheongan/${stemImgId}.png`} alt={ko || value} char={value} active={active} />
@@ -249,7 +217,7 @@ function Char({ value, kind, id, active, onToggle }: CharProps) {
           /* 천간 자리에 지지 글자 → 십이간지 이미지 */
           <CardImg
             src={`/chinese-zodiac/${stemZodiacId ?? BRANCH_TO_ZODIAC[value]}.png`}
-            alt={stemZodiacInfo?.ko ?? value}
+            alt={stemZodiacInfo ? tCzName(stemZodiacInfo.id) : value}
             char={value}
             active={active}
           />
@@ -278,8 +246,20 @@ function CharPopover({
 }) {
   const { kind, meaning } = lookup;
   const t = useTranslations("sajuPillars");
-  const elementLabel = ELEMENT_LABEL[meaning.element];
-  const polarityLabel = POLARITY_LABEL[meaning.polarity];
+  const tm = useTranslations("sajuMeanings");
+  const ELEMENT_KEY = {
+    wood: "elementWood",
+    fire: "elementFire",
+    earth: "elementEarth",
+    metal: "elementMetal",
+    water: "elementWater",
+  } as const;
+  const POLARITY_KEY = {
+    yang: "polarityYang",
+    yin: "polarityYin",
+  } as const;
+  const elementLabel = tm(ELEMENT_KEY[meaning.element]);
+  const polarityLabel = tm(POLARITY_KEY[meaning.polarity]);
   const opensAbove = placement === "top";
 
   return (
@@ -328,7 +308,7 @@ function CharPopover({
           <>
             <div className="flex items-center gap-1">
               <dt className="text-stone-500 dark:text-amber-100/50">{t("animal")}</dt>
-              <dd className="font-medium">{meaning.animal}</dd>
+              <dd className="font-medium">{tm(`branch_${meaning.char}_animal`)}</dd>
             </div>
             <div className="flex items-center gap-1">
               <dt className="text-stone-500 dark:text-amber-100/50">{t("hour")}</dt>
@@ -338,13 +318,13 @@ function CharPopover({
         ) : (
           <div className="col-span-2 flex items-center gap-1">
             <dt className="text-stone-500 dark:text-amber-100/50">{t("symbol")}</dt>
-            <dd className="font-medium">{meaning.symbol}</dd>
+            <dd className="font-medium">{tm(`stem_${meaning.char}_symbol`)}</dd>
           </div>
         )}
       </dl>
 
       <p className="mt-2 text-[11px] leading-relaxed text-stone-600 dark:text-amber-100/65">
-        {meaning.description}
+        {kind === "branch" ? tm(`branch_${meaning.char}_description`) : tm(`stem_${meaning.char}_description`)}
       </p>
     </div>
   );

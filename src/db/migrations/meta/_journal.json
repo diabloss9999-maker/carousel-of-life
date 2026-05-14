@@ -15,6 +15,13 @@
       "when": 1778118362103,
       "tag": "0001_hot_black_queen",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1778500000000,
+      "tag": "0002_invalidate_stale_saju",
+      "breakpoints": true
     }
   ]
 }

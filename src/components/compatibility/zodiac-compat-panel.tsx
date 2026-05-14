@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Sparkles } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import {
   Card,
@@ -24,12 +24,16 @@ interface ZodiacCompatPanelProps {
 
 export function ZodiacCompatPanel({ myZodiac }: ZodiacCompatPanelProps) {
   const [partner, setPartner] = useState<ZodiacSign | null>(null);
+  const locale = useLocale();
+  const compatLocale = locale === "en" ? "en" : "ko";
   const result: ZodiacCompatResult | null = partner
-    ? getZodiacCompat(myZodiac, partner)
+    ? getZodiacCompat(myZodiac, partner, compatLocale)
     : null;
 
   const myInfo = ZODIAC_LIST.find((z) => z.id === myZodiac)!;
   const t = useTranslations("zodiacCompat");
+  const tName = useTranslations("zodiacName");
+  const tDate = useTranslations("zodiacDateRange");
 
   return (
     <Card className="app-surface">
@@ -39,7 +43,7 @@ export function ZodiacCompatPanel({ myZodiac }: ZodiacCompatPanelProps) {
           {t("heading")}
         </CardTitle>
         <CardDescription className="text-xs">
-          {t("yourSignIs", { sign: myInfo.ko })} · {t("pickPartner")}
+          {t("yourSignIs", { sign: tName(myInfo.id) })} · {t("pickPartner")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-5">
@@ -59,9 +63,9 @@ export function ZodiacCompatPanel({ myZodiac }: ZodiacCompatPanelProps) {
                 )}
                 aria-pressed={selected}
               >
-                <span className="block font-medium">{z.ko}</span>
+                <span className="block font-medium">{tName(z.id)}</span>
                 <span className="mt-1 block text-[10px] text-muted-foreground">
-                  {z.dateRange}
+                  {tDate(z.id)}
                 </span>
               </button>
             );
@@ -72,7 +76,7 @@ export function ZodiacCompatPanel({ myZodiac }: ZodiacCompatPanelProps) {
           <div className="space-y-3 rounded-xl border border-border/60 bg-card/40 p-4">
             <div className="flex items-center justify-between">
               <p className="font-mystic text-sm text-muted-foreground">
-                {result.me.ko} × {result.partner.ko}
+                {tName(result.me.id)} × {tName(result.partner.id)}
               </p>
               <ScoreBadge score={result.score} />
             </div>

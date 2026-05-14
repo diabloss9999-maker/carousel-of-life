@@ -38,6 +38,7 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
   const [axes, setAxes] = useState<Record<string, AxisResult> | null>(null);
   const [isPending, startTransition] = useTransition();
   const t = useTranslations("personalityTest");
+  const tQ = useTranslations("personalityQuestions");
 
   /** 선택지 클릭 시 호출. */
   function handleSelect(choice: Choice) {
@@ -174,13 +175,13 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
         <div className="flex flex-col gap-3">
           <ChoiceButton
             label="A"
-            text={q.a}
+            text={tQ(`q${q.id}_a`)}
             selected={answers[current] === "A"}
             onClick={() => handleSelect("A")}
           />
           <ChoiceButton
             label="B"
-            text={q.b}
+            text={tQ(`q${q.id}_b`)}
             selected={answers[current] === "B"}
             onClick={() => handleSelect("B")}
           />
@@ -260,6 +261,10 @@ function ResultCard({
   onRetest: () => void;
 }) {
   const t = useTranslations("personalityTest");
+  const tT = useTranslations("personalityTypes");
+  const strengths = tT.raw(`${info.type}_strengths`) as string[];
+  const cautions = tT.raw(`${info.type}_cautions`) as string[];
+  const suitableJobs = tT.raw(`${info.type}_suitableJobs`) as string[];
   return (
     <div className="space-y-5">
       {/* 유형 헤더 */}
@@ -278,10 +283,10 @@ function ResultCard({
           <p className="font-mystic text-3xl font-bold tracking-widest text-primary">
             {info.type}
           </p>
-          <p className="font-mystic text-lg font-medium">{info.nickname}</p>
-          <p className="text-xs text-muted-foreground/70 italic">{info.imageRole}</p>
+          <p className="font-mystic text-lg font-medium">{tT(`${info.type}_nickname`)}</p>
+          <p className="text-xs text-muted-foreground/70 italic">{tT(`${info.type}_imageRole`)}</p>
           <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mt-1">
-            {info.summary}
+            {tT(`${info.type}_summary`)}
           </p>
         </div>
       </div>
@@ -328,7 +333,7 @@ function ResultCard({
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
         <h3 className="font-mystic font-semibold text-sm">{t("careersHeading")}</h3>
         <div className="flex flex-wrap gap-1.5">
-          {info.suitableJobs.map((job) => (
+          {suitableJobs.map((job) => (
             <span key={job} className="rounded-full bg-primary/10 border border-primary/25 px-2.5 py-0.5 text-xs text-primary font-medium">
               {job}
             </span>
@@ -340,7 +345,7 @@ function ResultCard({
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
         <h3 className="font-mystic font-semibold text-sm">{t("iAm")}</h3>
         <p className="text-sm text-muted-foreground leading-relaxed">
-          {info.description}
+          {tT(`${info.type}_description`)}
         </p>
       </div>
 
@@ -348,7 +353,7 @@ function ResultCard({
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
         <h3 className="font-mystic font-semibold text-sm text-accent">{t("strengths")}</h3>
         <ul className="space-y-1.5">
-          {info.strengths.map((s) => (
+          {strengths.map((s) => (
             <li key={s} className="flex items-center gap-2 text-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
               {s}
@@ -361,7 +366,7 @@ function ResultCard({
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
         <h3 className="font-mystic font-semibold text-sm text-muted-foreground">{t("cautions")}</h3>
         <ul className="space-y-1.5">
-          {info.cautions.map((c) => (
+          {cautions.map((c) => (
             <li key={c} className="flex items-center gap-2 text-sm text-muted-foreground">
               <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/50 flex-shrink-0" />
               {c}
@@ -376,15 +381,14 @@ function ResultCard({
         <div className="space-y-2">
           <h3 className="font-mystic font-semibold text-sm text-center">💞 {t("compatible")}</h3>
           <div className="flex justify-center gap-2">
-            {info.compatibleWith.map((t) => {
-              const ti = TYPE_INFO[t];
+            {info.compatibleWith.map((typeCode) => {
               return (
-                <div key={t} className="flex flex-col items-center gap-1">
+                <div key={typeCode} className="flex flex-col items-center gap-1">
                   <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-primary/40">
-                    <Image src={`/mbti/${t}.png`} alt={t} fill className="object-cover" sizes="96px" />
+                    <Image src={`/mbti/${typeCode}.png`} alt={typeCode} fill className="object-cover" sizes="96px" />
                   </div>
-                  <p className="font-mystic text-[11px] font-bold text-primary">{t}</p>
-                  <p className="text-[10px] text-muted-foreground text-center leading-tight">{ti.nickname}</p>
+                  <p className="font-mystic text-[11px] font-bold text-primary">{typeCode}</p>
+                  <p className="text-[10px] text-muted-foreground text-center leading-tight">{tT(`${typeCode}_nickname`)}</p>
                 </div>
               );
             })}
@@ -395,15 +399,14 @@ function ResultCard({
         <div className="space-y-2">
           <h3 className="font-mystic font-semibold text-sm text-center">{t("caution")}</h3>
           <div className="flex justify-center gap-2">
-            {info.incompatibleWith.map((t) => {
-              const ti = TYPE_INFO[t];
+            {info.incompatibleWith.map((typeCode) => {
               return (
-                <div key={t} className="flex flex-col items-center gap-1">
+                <div key={typeCode} className="flex flex-col items-center gap-1">
                   <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-destructive/40 grayscale-[30%]">
-                    <Image src={`/mbti/${t}.png`} alt={t} fill className="object-cover" sizes="96px" />
+                    <Image src={`/mbti/${typeCode}.png`} alt={typeCode} fill className="object-cover" sizes="96px" />
                   </div>
-                  <p className="font-mystic text-[11px] font-bold text-destructive">{t}</p>
-                  <p className="text-[10px] text-muted-foreground text-center leading-tight">{ti.nickname}</p>
+                  <p className="font-mystic text-[11px] font-bold text-destructive">{typeCode}</p>
+                  <p className="text-[10px] text-muted-foreground text-center leading-tight">{tT(`${typeCode}_nickname`)}</p>
                 </div>
               );
             })}

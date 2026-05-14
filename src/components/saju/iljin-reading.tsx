@@ -41,33 +41,43 @@ interface IljinReadingProps {
 }
 
 const ENERGY_STYLE = {
-  긍정적: {
+  positive: {
     icon: Sun,
     color: "text-amber-400",
     bg: "bg-amber-400/10 border-amber-400/20",
   },
-  중립: {
+  neutral: {
     icon: Minus,
     color: "text-slate-400",
     bg: "bg-slate-400/10 border-slate-400/20",
   },
-  "주의 필요": {
+  caution: {
     icon: AlertTriangle,
     color: "text-red-400",
     bg: "bg-red-400/10 border-red-400/20",
   },
 } as const;
 
+type EnergyKey = keyof typeof ENERGY_STYLE;
+
+/**
+ * AI 응답·구버전 캐시의 overallEnergy 값을 영문 enum 으로 정규화한다.
+ * - 신버전: "positive" | "neutral" | "caution"
+ * - 구버전 캐시: "긍정적" | "중립" | "주의 필요"
+ * - 알 수 없는 값은 "neutral" 로 폴백.
+ */
+function normalizeEnergy(raw: string): EnergyKey {
+  if (raw === "positive" || raw === "neutral" || raw === "caution") return raw;
+  if (raw === "긍정적") return "positive";
+  if (raw === "중립") return "neutral";
+  if (raw === "주의 필요" || raw === "주의필요") return "caution";
+  return "neutral";
+}
+
 const RELATION_COLOR = {
   positive: "text-emerald-400",
   negative: "text-red-400",
   neutral: "text-slate-400",
-} as const;
-
-const RELATION_LABEL = {
-  positive: "합",
-  negative: "충",
-  neutral: "—",
 } as const;
 
 export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
@@ -126,9 +136,19 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
   // 결과
   if (result?.kind === "success" && result.data) {
     const { data, relationships } = result;
-    const energyKey = data.overallEnergy as keyof typeof ENERGY_STYLE;
-    const energyStyle = ENERGY_STYLE[energyKey] ?? ENERGY_STYLE["중립"];
+    const energyKey = normalizeEnergy(data.overallEnergy);
+    const energyStyle = ENERGY_STYLE[energyKey];
     const EnergyIcon = energyStyle.icon;
+    const ENERGY_LABEL_KEY = {
+      positive: "energyPositive",
+      neutral: "energyNeutral",
+      caution: "energyCaution",
+    } as const;
+    const RELATION_LABEL_KEY = {
+      positive: "relPositive",
+      negative: "relNegative",
+      neutral: null,
+    } as const;
 
     return (
       <Card className="app-surface">
@@ -159,7 +179,7 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
                 {data.todayPillar}
               </p>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                {data.overallEnergy}
+                {t(ENERGY_LABEL_KEY[energyKey])}
               </p>
             </div>
           </div>
@@ -168,16 +188,19 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
           {relationships && relationships.length > 0 && (
             <div className="space-y-1.5">
               {relationships.map((r, i) => {
-                const colorKey = r.energy as keyof typeof RELATION_COLOR;
+                const colorKey = (r.energy as keyof typeof RELATION_COLOR) in RELATION_COLOR
+                  ? (r.energy as keyof typeof RELATION_COLOR)
+                  : "neutral";
+                const labelKey = RELATION_LABEL_KEY[colorKey];
                 return (
                   <div key={i} className="flex items-start gap-2 text-xs">
                     <span
                       className={cn(
                         "mt-0.5 flex-shrink-0 font-bold",
-                        RELATION_COLOR[colorKey] ?? RELATION_COLOR.neutral,
+                        RELATION_COLOR[colorKey],
                       )}
                     >
-                      {RELATION_LABEL[colorKey] ?? RELATION_LABEL.neutral}
+                      {labelKey ? t(labelKey) : "—"}
                     </span>
                     <span className="text-muted-foreground">
                       {r.description}: {r.detail}
@@ -248,7 +271,7 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
       <CardHeader>
         <CardTitle className="font-mystic flex items-center gap-2 text-base">
           <Sparkles className="h-4 w-4 text-accent" />
-          오늘의 일진 × 내 사주
+          {t("title")}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">

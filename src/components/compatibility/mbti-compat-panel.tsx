@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { BookHeart } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import {
   Card,
@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { TYPE_INFO } from "@/lib/personality/types";
 import type { PersonalityType } from "@/lib/personality/questions";
 import {
   getMbtiCompat,
@@ -32,6 +31,9 @@ export function MbtiCompatPanel({ myMbti }: MbtiCompatPanelProps) {
   const [manualMe, setManualMe] = useState("");
   const [partner, setPartner] = useState<PersonalityType | null>(null);
   const t = useTranslations("mbtiCompat");
+  const tT = useTranslations("personalityTypes");
+  const locale = useLocale();
+  const compatLocale: "ko" | "en" = locale === "en" ? "en" : "ko";
 
   const effectiveMe: PersonalityType | null =
     myMbti ?? (MBTI_PATTERN.test(manualMe.toUpperCase())
@@ -39,7 +41,14 @@ export function MbtiCompatPanel({ myMbti }: MbtiCompatPanelProps) {
       : null);
 
   const result: MbtiCompatResult | null =
-    effectiveMe && partner ? getMbtiCompat(effectiveMe, partner) : null;
+    effectiveMe && partner
+      ? getMbtiCompat(effectiveMe, partner, compatLocale, {
+          meNickname: tT(`${effectiveMe}_nickname`),
+          partnerNickname: tT(`${partner}_nickname`),
+          meStrength0: (tT.raw(`${effectiveMe}_strengths`) as string[])[0] ?? "",
+          partnerStrength0: (tT.raw(`${partner}_strengths`) as string[])[0] ?? "",
+        })
+      : null;
 
   return (
     <Card className="app-surface">
@@ -94,7 +103,7 @@ export function MbtiCompatPanel({ myMbti }: MbtiCompatPanelProps) {
                     {type}
                   </span>
                   <span className="mt-0.5 block text-[10px] text-muted-foreground">
-                    {TYPE_INFO[type].nickname}
+                    {tT(`${type}_nickname`)}
                   </span>
                 </button>
               );
