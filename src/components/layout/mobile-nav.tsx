@@ -68,7 +68,7 @@ export function MobileNav() {
                 <NavIcon item={item} size={22} />
               </span>
 
-              <span className="max-w-[52px] truncate text-center font-semibold leading-none"
+              <span className="max-w-[64px] truncate text-center font-semibold tracking-tight leading-none"
                 style={{ fontSize: 10 }}>
                 {item.label}
               </span>
