@@ -114,23 +114,42 @@ body.ritual-day {
   background: url("/backgrounds/day.png") center / cover no-repeat fixed;
 }
 
-/* 밤 배경 — 흰색 텍스트 */
+/* 밤 배경 — 검정 텍스트 (사용자 요청: 밤에도 글씨 전부 검정) */
 body[data-time="night"],
 body.ritual-night {
-  --foreground: rgba(255, 255, 255, 0.92);
-  --card-foreground: rgba(255, 255, 255, 0.92);
-  --popover-foreground: rgba(255, 255, 255, 0.92);
-  --muted-foreground: rgba(255, 255, 255, 0.62);
-  --secondary-foreground: rgba(255, 255, 255, 0.80);
-  --nav-active: rgba(255, 255, 255, 0.92);
-  --nav-muted: rgba(255, 255, 255, 0.62);
-  --col-ink: rgba(255, 255, 255, 0.92);
-  --col-muted: rgba(255, 255, 255, 0.62);
-  --col-faint: rgba(255, 255, 255, 0.36);
-  --ritual-text: rgba(255, 255, 255, 0.92);
-  --ritual-muted: rgba(255, 255, 255, 0.62);
-  color: rgba(255, 255, 255, 0.92) !important;
+  --foreground: rgba(0, 0, 0, 0.92);
+  --card-foreground: rgba(0, 0, 0, 0.92);
+  --popover-foreground: rgba(0, 0, 0, 0.92);
+  --muted-foreground: rgba(0, 0, 0, 0.62);
+  --secondary-foreground: rgba(0, 0, 0, 0.80);
+  --nav-active: rgba(0, 0, 0, 0.92);
+  --nav-muted: rgba(0, 0, 0, 0.62);
+  --col-ink: rgba(0, 0, 0, 0.92);
+  --col-muted: rgba(0, 0, 0, 0.62);
+  --col-faint: rgba(0, 0, 0, 0.36);
+  --ritual-text: rgba(0, 0, 0, 0.92);
+  --ritual-muted: rgba(0, 0, 0, 0.62);
+  color: rgba(0, 0, 0, 0.92) !important;
   background: url("/backgrounds/night.png") center / cover no-repeat fixed !important;
+}
+
+/* ─── 야간 모드: 모든 텍스트 강제 검정 ───
+   사용자 요청: 밤일 때도 글씨 전부 검정. CSS 변수만으로는 명시적 흰색 클래스
+   (text-white, text-zinc-50 등)를 못 덮어서 광범위 catchall 추가. */
+body[data-time="night"] *,
+body.ritual-night * {
+  color: rgba(0, 0, 0, 0.92) !important;
+}
+/* 단, primary·destructive 버튼처럼 색배경 위 inverse 텍스트는 흰색 유지 — 가독성. */
+body[data-time="night"] .text-primary-foreground,
+body[data-time="night"] .text-destructive-foreground,
+body[data-time="night"] .text-accent-foreground,
+body[data-time="night"] [data-keep-color],
+body.ritual-night .text-primary-foreground,
+body.ritual-night .text-destructive-foreground,
+body.ritual-night .text-accent-foreground,
+body.ritual-night [data-keep-color] {
+  color: rgba(255, 255, 255, 0.95) !important;
 }
 
 /* White Glass 카드 — v3 */
@@ -388,11 +407,11 @@ body.ritual-night {
 }
 body[data-time="night"] .ritual-chat-textarea::placeholder,
 body.ritual-night .ritual-chat-textarea::placeholder {
-  color: rgba(255, 255, 255, 0.40);
+  color: rgba(0, 0, 0, 0.40);
 }
 body[data-time="night"] .ritual-chat-textarea,
 body.ritual-night .ritual-chat-textarea {
-  color: rgba(255, 255, 255, 0.88) !important;
+  color: rgba(0, 0, 0, 0.88) !important;
   background: rgba(255, 255, 255, 0.06) !important;
   border-color: rgba(255, 255, 255, 0.15) !important;
 }
