@@ -52,12 +52,14 @@ export default async function ChatPage() {
         </p>
       </header>
 
-      <QuotaBar
-        fortuneCount={usage.fortuneCount}
-        tarotCount={usage.tarotCount}
-        chatCount={usage.chatCount}
-        tier={tier}
-      />
+      <div className="rounded-2xl ring-1 ring-primary/25 shadow-lg shadow-primary/5">
+        <QuotaBar
+          fortuneCount={usage.fortuneCount}
+          tarotCount={usage.tarotCount}
+          chatCount={usage.chatCount}
+          tier={tier}
+        />
+      </div>
 
       <CharacterLoreCard affinities={affinities} adminMode={adminMode} />
 

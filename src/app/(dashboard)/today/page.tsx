@@ -154,6 +154,16 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
         </div>
       </header>
 
+      {/* 일일 사용량 — 페이지 진입 시 즉시 보이도록 헤더 바로 아래에 고정 배치 */}
+      <div className="rounded-2xl ring-1 ring-primary/25 shadow-lg shadow-primary/5">
+        <QuotaBar
+          fortuneCount={usage.fortuneCount}
+          tarotCount={usage.tarotCount}
+          chatCount={usage.chatCount}
+          tier={tier}
+        />
+      </div>
+
       {/* 오늘의 세계 상태 — 균열 측정 + 관측 로그 */}
       <WorldStatusPanel crackScore={crackData.score} crackLevel={crackData.level} />
 
@@ -204,13 +214,6 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           </span>
         </Link>
       </div>
-
-      <QuotaBar
-        fortuneCount={usage.fortuneCount}
-        tarotCount={usage.tarotCount}
-        chatCount={usage.chatCount}
-        tier={tier}
-      />
 
       <CategoryTabs current={category} subscribed={subscribed} />
 
