@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { Lock, Sparkles, Loader2, Dumbbell } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -51,19 +52,21 @@ function WorkoutList({
   );
 }
 
-/**
- * 건강 운세 라이트 — 오늘의 맞춤 맨몸 운동 3가지 카드.
- *
- * - 비라이트: 흐릿한 미리보기 + 라이트 CTA.
- * - 라이트 + 미생성: "운동 추천 받기" 버튼.
- * - 라이트 + 생성됨: 운동 3가지 상세 표시.
- */
 export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
   const [bodyworkouts, setBodyWorkouts] = useState<HealthWorkoutOutput["bodyworkouts"] | null>(null);
   const [gymWorkouts, setGymWorkouts] = useState<HealthWorkoutOutput["gymWorkouts"] | null>(null);
   const [quote, setQuote] = useState<HealthWorkoutOutput["quote"] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("healthReport");
+  const tPrem = useTranslations("premiumCard");
+
+  const lockBullets = [
+    t("lockBullet1"),
+    t("lockBullet2"),
+    t("lockBullet3"),
+    t("lockBullet4"),
+  ];
 
   function handleGenerate() {
     setError(null);
@@ -74,7 +77,7 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
         if (result.gymWorkouts) setGymWorkouts(result.gymWorkouts);
         if (result.quote) setQuote(result.quote);
       } else {
-        setError(result.message ?? "오류가 발생했어.");
+        setError(result.message ?? tPrem("genericError"));
       }
     });
   }
@@ -85,30 +88,25 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
         <CardHeader>
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" aria-hidden />
-            오늘의 맞춤 운동
+            {t("title")}
             <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
-              라이트
+              {tPrem("lightBadge")}
             </span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="space-y-2 select-none blur-[3px] pointer-events-none">
-            {[
-              "맨몸 운동 3가지 추천",
-              "기구 운동 3가지 추천",
-              "각 운동 방법 상세 설명",
-              "어디에 좋은지 효과 + 권장 횟수",
-            ].map((t) => (
-              <div key={t} className="flex items-center gap-2">
+            {lockBullets.map((line) => (
+              <div key={line} className="flex items-center gap-2">
                 <span className="h-4 w-4 rounded-full bg-accent/30 flex-shrink-0" />
-                <p className="text-sm">{t}</p>
+                <p className="text-sm">{line}</p>
               </div>
             ))}
           </div>
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-3.5 w-3.5" aria-hidden />
-              라이트로 확인하기
+              {tPrem("verifyCta")}
             </Link>
           </Button>
         </CardContent>
@@ -122,12 +120,12 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
         <CardHeader>
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Dumbbell className="h-4 w-4 text-accent" aria-hidden />
-            오늘의 맞춤 운동
+            {t("title")}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <p className="text-sm text-muted-foreground">
-            기구 없이 집에서 바로 할 수 있는 맞춤 운동 3가지를 알려줄게.
+            {t("lockBody")}
           </p>
           {error && <p className="text-xs text-destructive">{error}</p>}
           <Button
@@ -139,12 +137,12 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
             {isPending ? (
               <>
                 <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
-                분석 중…
+                {tPrem("analyzing")}
               </>
             ) : (
               <>
                 <Dumbbell className="h-3.5 w-3.5" aria-hidden />
-                운동 추천 받기
+                {t("workoutCta")}
               </>
             )}
           </Button>
@@ -158,12 +156,12 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
       <CardHeader>
         <CardTitle className="font-mystic flex items-center gap-2 text-base">
           <Dumbbell className="h-4 w-4 text-accent" aria-hidden />
-          오늘의 맞춤 운동
+          {t("title")}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-5">
-        {bodyworkouts && <WorkoutList list={bodyworkouts} label="맨몸 운동" />}
-        {gymWorkouts && <WorkoutList list={gymWorkouts} label="기구 운동" />}
+        {bodyworkouts && <WorkoutList list={bodyworkouts} label={t("bodyweight")} />}
+        {gymWorkouts && <WorkoutList list={gymWorkouts} label={t("equipment")} />}
 
         {quote && (
           <div className="rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3">

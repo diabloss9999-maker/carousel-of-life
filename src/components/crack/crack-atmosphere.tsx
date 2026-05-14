@@ -5,6 +5,7 @@
  * 균열 수치에 따라 홈 화면 특정 요소에 이상 현상을 연출한다.
  * 설명 없음. 눈치채는 사람만 눈치챈다.
  */
+import { useTranslations } from "next-intl";
 import { GlitchText } from "@/components/crack/glitch-text";
 import type { CrackLevel } from "@/lib/crack/service";
 
@@ -19,10 +20,11 @@ export function CrackAtmosphere({
   todayStr,
   pageName,
 }: CrackAtmosphereProps) {
+  const t = useTranslations("crackAtmosphere");
   if (crackLevel < 2) {
     return (
       <p className="text-[10px] uppercase tracking-widest text-muted-foreground/50">
-        경계(境界) · {todayStr}
+        {t("boundaryWithDate", { date: todayStr })}
       </p>
     );
   }
@@ -30,7 +32,7 @@ export function CrackAtmosphere({
   return (
     <p className="text-[10px] uppercase tracking-widest text-muted-foreground/50">
       <GlitchText crackLevel={crackLevel} probability={0.25}>
-        경계(境界)
+        {t("boundaryShort")}
       </GlitchText>
       {" · "}
       <GlitchText crackLevel={crackLevel} probability={0.15}>

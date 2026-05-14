@@ -1,7 +1,10 @@
 /**
  * 별자리 · 십이간지 카드 배너.
  */
+"use client";
+
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 import { getZodiacSign, getChineseZodiac, ZODIAC_LIST, CHINESE_ZODIAC_LIST } from "@/lib/fortunes/zodiac";
 
@@ -21,6 +24,7 @@ const CZ_NAME_TO_ID: Record<string, string> = Object.fromEntries(
 );
 
 export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
+  const t = useTranslations("zodiacBanner");
   if (!birthDate) return null;
 
   if (category === "zodiac") {
@@ -43,7 +47,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
         <div className="w-full grid grid-cols-2 gap-3">
           {/* 잘 맞는 별자리 */}
           <div className="space-y-2">
-            <p className="text-xs font-semibold text-center text-foreground/80 tracking-wide">잘 맞는</p>
+            <p className="text-xs font-semibold text-center text-foreground/80 tracking-wide">{t("compatible")}</p>
             <div className="flex justify-center gap-2">
               {z.compatible.map((name) => {
                 const id = ZODIAC_NAME_TO_ID[name];
@@ -61,7 +65,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
 
           {/* 주의가 필요한 별자리 */}
           <div className="space-y-2">
-            <p className="text-xs font-semibold text-center text-foreground/80 tracking-wide">주의</p>
+            <p className="text-xs font-semibold text-center text-foreground/80 tracking-wide">{t("caution")}</p>
             <div className="flex justify-center gap-2">
               {z.incompatible.map((name) => {
                 const id = ZODIAC_NAME_TO_ID[name];
@@ -99,7 +103,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
         {/* 잘 맞는(왼쪽) / 주의(오른쪽) */}
         <div className="w-full grid grid-cols-2 gap-3">
           <div className="space-y-2">
-            <p className="text-xs font-semibold text-center text-foreground/80 tracking-wide">잘 맞는</p>
+            <p className="text-xs font-semibold text-center text-foreground/80 tracking-wide">{t("compatible")}</p>
             <div className="flex justify-center gap-2">
               {cz.compatible.map((name) => {
                 const id = CZ_NAME_TO_ID[name];
@@ -116,7 +120,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
           </div>
 
           <div className="space-y-2">
-            <p className="text-xs font-semibold text-center text-foreground/80 tracking-wide">주의</p>
+            <p className="text-xs font-semibold text-center text-foreground/80 tracking-wide">{t("caution")}</p>
             <div className="flex justify-center gap-2">
               {cz.incompatible.map((name) => {
                 const id = CZ_NAME_TO_ID[name];

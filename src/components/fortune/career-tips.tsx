@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,13 +25,12 @@ interface CareerTipsProps {
   subscribed: boolean;
 }
 
-/** KST 기준 한글 요일 ("월"~"일"). */
-function getTodayWeekdayKst(): string {
-  const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"] as const;
+/** KST 기준 요일 index 0~6 (Sun=0). */
+function getTodayWeekdayIdxKst(): number {
   const d = new Date(
     new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }),
   );
-  return WEEKDAYS[d.getDay()];
+  return d.getDay();
 }
 
 /**
@@ -68,6 +68,16 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
   const [report, setReport] = useState<CareerReportOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("careerReport");
+  const tPrem = useTranslations("premiumCard");
+
+  const lockBullets = [
+    t("lockBullet1"),
+    t("lockBullet2"),
+    t("lockBullet3"),
+    t("lockBullet4"),
+    t("lockBullet5"),
+  ];
 
   function handleGenerate() {
     setError(null);
@@ -76,7 +86,7 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
       if (result.kind === "success" && result.report) {
         setReport(result.report);
       } else {
-        setError(result.message ?? "오류가 발생했어.");
+        setError(result.message ?? tPrem("genericError"));
       }
     });
   }
@@ -87,31 +97,25 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
         <CardHeader>
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" aria-hidden />
-            오늘의 직장 종합 리포트
+            {t("title")}
             <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
-              라이트
+              {tPrem("lightBadge")}
             </span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="space-y-2 select-none blur-[3px] pointer-events-none">
-            {[
-              "오늘의 직장 에너지 (집중력·대인관계·추진력)",
-              "최적 업무 타이밍 — 오전 vs 오후",
-              "이번 주 직장 흐름 (월~금)",
-              "오늘의 관계 운 — 부탁·상사·동료 팁",
-              "직장에서 예쁨받는 방법 3가지",
-            ].map((t) => (
-              <div key={t} className="flex items-start gap-2">
+            {lockBullets.map((line) => (
+              <div key={line} className="flex items-start gap-2">
                 <span className="mt-1 h-4 w-4 rounded-full bg-accent/30 flex-shrink-0" />
-                <p className="text-sm font-medium">{t}</p>
+                <p className="text-sm font-medium">{line}</p>
               </div>
             ))}
           </div>
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-3.5 w-3.5" aria-hidden />
-              라이트로 확인하기
+              {tPrem("verifyCta")}
             </Link>
           </Button>
         </CardContent>
@@ -125,13 +129,12 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
         <CardHeader>
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Sparkles className="h-4 w-4 text-accent" aria-hidden />
-            오늘의 직장 종합 리포트
+            {t("title")}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <p className="text-sm text-muted-foreground">
-            오늘의 에너지·업무 타이밍·이번 주 흐름·관계 운까지, 직장 운세
-            종합 리포트를 만들어줄게.
+            {t("lockBody")}
           </p>
           {error && <p className="text-xs text-destructive">{error}</p>}
           <Button
@@ -143,12 +146,12 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
             {isPending ? (
               <>
                 <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
-                분석 중…
+                {tPrem("analyzing")}
               </>
             ) : (
               <>
                 <Sparkles className="h-3.5 w-3.5" aria-hidden />
-                리포트 받기
+                {tPrem("getReport")}
               </>
             )}
           </Button>
@@ -157,15 +160,18 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
     );
   }
 
-  const todayWeekday = getTodayWeekdayKst();
-  const periodLabel = report.timing.period === "morning" ? "오전" : "오후";
+  const todayIdx = getTodayWeekdayIdxKst();
+  const weekdays = t.raw("weekdays") as string[];
+  const todayWeekdayLabel = weekdays[todayIdx];
+  const periodLabel =
+    report.timing.period === "morning" ? t("periodMorning") : t("periodAfternoon");
 
   return (
     <Card className="app-surface">
       <CardHeader>
         <CardTitle className="font-mystic flex items-center gap-2 text-base">
           <Sparkles className="h-4 w-4 text-accent" aria-hidden />
-          오늘의 직장 종합 리포트
+          {t("title")}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -173,13 +179,13 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
         <section className="space-y-3">
           <h3 className="font-mystic flex items-center gap-2 text-sm font-semibold">
             <Zap className="h-4 w-4 text-primary" aria-hidden />
-            오늘의 직장 에너지
+            {t("energy")}
           </h3>
           <div className="space-y-2.5">
             {[
-              { label: "집중력", value: report.energy.focus },
-              { label: "대인관계", value: report.energy.relations },
-              { label: "추진력", value: report.energy.drive },
+              { label: t("energyFocus"), value: report.energy.focus },
+              { label: t("energyRelation"), value: report.energy.relations },
+              { label: t("energyDrive"), value: report.energy.drive },
             ].map((item) => (
               <div key={item.label} className="space-y-1">
                 <div className="flex items-center justify-between text-xs">
@@ -191,7 +197,7 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
             ))}
           </div>
           <div className="rounded-md bg-destructive/5 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
-            <span className="font-semibold text-destructive">피하기 </span>
+            <span className="font-semibold text-destructive">{t("avoid")} </span>
             {report.energy.avoid}
           </div>
         </section>
@@ -200,18 +206,18 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
         <section className="space-y-2">
           <h3 className="font-mystic flex items-center gap-2 text-sm font-semibold">
             <Clock className="h-4 w-4 text-primary" aria-hidden />
-            최적 업무 타이밍
+            {t("timing")}
           </h3>
           <div className="rounded-md bg-primary/5 px-3 py-2.5">
             <p className="text-sm font-medium text-primary">
-              {periodLabel}이 좋아요
+              {t("periodGood", { period: periodLabel })}
             </p>
             <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
               {report.timing.periodDesc}
             </p>
           </div>
           <p className="text-xs leading-relaxed text-muted-foreground">
-            <span className="font-semibold">회의·협상 </span>
+            <span className="font-semibold">{t("meetings")} </span>
             {report.timing.meetingTip}
           </p>
         </section>
@@ -220,11 +226,11 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
         <section className="space-y-3">
           <h3 className="font-mystic flex items-center gap-2 text-sm font-semibold">
             <CalendarDays className="h-4 w-4 text-primary" aria-hidden />
-            이번 주 직장 흐름
+            {t("weekly")}
           </h3>
           <ul className="space-y-2">
             {report.weeklyFlow.map((item) => {
-              const isToday = item.day === todayWeekday;
+              const isToday = item.day === todayWeekdayLabel || item.day === ["일","월","화","수","목","금","토"][todayIdx];
               return (
                 <li
                   key={item.day}
@@ -272,7 +278,7 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
         <section className="space-y-2">
           <h3 className="font-mystic flex items-center gap-2 text-sm font-semibold">
             <Users className="h-4 w-4 text-primary" aria-hidden />
-            오늘의 관계 운
+            {t("relation")}
           </h3>
           <div
             className={
@@ -284,26 +290,26 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
             {report.relationship.isGoodToAsk ? (
               <>
                 <Check className="h-4 w-4" aria-hidden />
-                부탁하기 좋은 날
+                {t("askGood")}
               </>
             ) : (
               <>
                 <X className="h-4 w-4" aria-hidden />
-                부탁은 내일로 미루기
+                {t("askLater")}
               </>
             )}
           </div>
           <ul className="space-y-1.5 text-xs leading-relaxed text-muted-foreground">
             <li>
-              <span className="font-semibold text-foreground">상사 </span>
+              <span className="font-semibold text-foreground">{t("boss")} </span>
               {report.relationship.bossAdvice}
             </li>
             <li>
-              <span className="font-semibold text-foreground">동료 </span>
+              <span className="font-semibold text-foreground">{t("coworker")} </span>
               {report.relationship.colleagueTip}
             </li>
             <li>
-              <span className="font-semibold text-foreground">돋보임 </span>
+              <span className="font-semibold text-foreground">{t("stand")} </span>
               {report.relationship.standoutTip}
             </li>
           </ul>
@@ -313,7 +319,7 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
         <section className="space-y-3">
           <h3 className="font-mystic flex items-center gap-2 text-sm font-semibold">
             <Sparkles className="h-4 w-4 text-primary" aria-hidden />
-            직장에서 예쁨받는 방법
+            {t("loved")}
           </h3>
           <ol className="space-y-3">
             {report.tips.map((tip, i) => (

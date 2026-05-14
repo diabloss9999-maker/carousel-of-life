@@ -8,10 +8,11 @@ import { CharacterImage } from "@/components/shared/character-image";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { Loader2, MessageCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { CHARACTERS } from "@/lib/chat/characters";
-import type { CharacterId } from "@/lib/chat/characters";
+import type { CharacterId, CharacterCategory } from "@/lib/chat/characters";
 import { cn } from "@/lib/utils";
 
 interface DailyQuestionCardProps {
@@ -39,21 +40,33 @@ const CHAR_THEME: Record<CharacterId, {
   god:        { gradient: "from-sky-950/60 via-black/40 to-transparent",       glow: "shadow-sky-900/30",      accent: "text-sky-300",     border: "border-sky-700/30",     badge: "bg-sky-950/60 border-sky-600/40",       badgeText: "text-sky-300" },
 };
 
-/** 카테고리 표시 */
-const CATEGORY_LABEL: Record<string, string> = {
+/** 카테고리 → 세계관 라벨(서브) */
+const CATEGORY_SUB: Record<CharacterCategory, string> = {
   이세계: "ASTRA RIFT",
   동양: "月蝕鏡",
   북유럽: "MIDHALL",
+};
+/** 카테고리 → characterSelect.* i18n 키 */
+const CATEGORY_TKEY: Record<CharacterCategory, "categoryOtherworld" | "categoryEastern" | "categoryNordic"> = {
+  이세계: "categoryOtherworld",
+  동양: "categoryEastern",
+  북유럽: "categoryNordic",
 };
 
 export function DailyQuestionCard({ characterId, question }: DailyQuestionCardProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [clicked, setClicked] = useState(false);
+  const t = useTranslations("dailyQuestion");
+  const tChar = useTranslations("characters");
+  const tCat = useTranslations("characterSelect");
 
   const character = CHARACTERS[characterId];
   const theme = CHAR_THEME[characterId];
-  const worldLabel = CATEGORY_LABEL[character.category] ?? "";
+  const worldSub = CATEGORY_SUB[character.category] ?? "";
+  const worldLabel = tCat(CATEGORY_TKEY[character.category]);
+  const name = tChar(`${characterId}.name`);
+  const title = tChar(`${characterId}.title`);
 
   function handleAnswer() {
     if (isPending || clicked) return;
@@ -120,20 +133,20 @@ export function DailyQuestionCard({ characterId, question }: DailyQuestionCardPr
                 "rounded border px-2 py-0.5 text-[9px] font-bold tracking-widest uppercase",
                 theme.badge, theme.badgeText,
               )}>
-                {character.category} · {worldLabel}
+                {worldLabel} · {worldSub}
               </span>
             </div>
             <div>
               <p className={cn("font-mystic text-lg font-bold leading-none", theme.accent)}>
-                {character.name}
+                {name}
               </p>
-              <p className="text-[10px] text-muted-foreground mt-0.5">{character.title}</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5">{title}</p>
             </div>
           </div>
 
           {/* 중간: 오늘의 질문 */}
           <div className="space-y-1">
-            <p className="text-[9px] uppercase tracking-widest text-muted-foreground/50">오늘의 질문</p>
+            <p className="text-[9px] uppercase tracking-widest text-muted-foreground/50">{t("eyebrow")}</p>
             <p className="font-mystic text-sm leading-relaxed text-foreground/90">
               {question}
             </p>
@@ -155,7 +168,7 @@ export function DailyQuestionCard({ characterId, question }: DailyQuestionCardPr
             ) : (
               <MessageCircle className="h-3 w-3" aria-hidden />
             )}
-            {character.name}에게 답하기
+            {t("answerCta", { name })}
           </Button>
         </div>
       </div>

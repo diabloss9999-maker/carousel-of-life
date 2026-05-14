@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { Lock, Sparkles, Loader2, Clock, Radar, ListChecks } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,14 +15,14 @@ interface GeneralPremiumProps {
   subscribed: boolean;
 }
 
-/** 레이더 차트 6개 영역 정의. */
+/** 레이더 차트 6개 영역 정의. label 은 i18n 으로 lookup. */
 const RADAR_AREAS = [
-  { key: "fortune", label: "종합" },
-  { key: "love", label: "사랑" },
-  { key: "money", label: "재물" },
-  { key: "career", label: "직장" },
-  { key: "health", label: "건강" },
-  { key: "study", label: "학업" },
+  { key: "fortune", labelKey: "radarGeneral" },
+  { key: "love",    labelKey: "radarLove" },
+  { key: "money",   labelKey: "radarMoney" },
+  { key: "career",  labelKey: "radarCareer" },
+  { key: "health",  labelKey: "radarHealth" },
+  { key: "study",   labelKey: "radarStudy" },
 ] as const;
 
 /** 레이더 차트 SVG 상수. */
@@ -75,6 +76,7 @@ function RadarChart({
 }: {
   scores: GeneralFortunePremiumOutput["scores"];
 }) {
+  const t = useTranslations("generalPremium");
   const { CENTER_X, CENTER_Y, BG_RATIOS, LABEL_RATIO } = RADAR_CONFIG;
 
   const dataPoints: RadarPoint[] = RADAR_AREAS.map((area, i) => {
@@ -94,7 +96,7 @@ function RadarChart({
       viewBox="0 0 200 200"
       className="mx-auto w-full max-w-[220px]"
       role="img"
-      aria-label="6개 영역 운세 점수 레이더 차트"
+      aria-label={t("radarAria")}
     >
       {/* 배경 동심 다각형 */}
       {BG_RATIOS.map((r) => {
@@ -162,7 +164,7 @@ function RadarChart({
               fill: "rgba(251,191,36,0.85)",
             }}
           >
-            {area.label} {score}
+            {t(area.labelKey as "radarGeneral" | "radarLove" | "radarMoney" | "radarCareer" | "radarHealth" | "radarStudy")} {score}
           </text>
         );
       })}
@@ -170,24 +172,17 @@ function RadarChart({
   );
 }
 
-/** 비라이트 사용자에게 보여주는 잠금 미리보기 항목들. */
-const LOCKED_PREVIEW_ITEMS = [
-  "시간대별 운세 — 오전·오후·저녁 기운 분석",
-  "운세 레이더 차트 — 6영역 점수 한눈에 보기",
-  "오늘의 DO/DON'T — 해야 할 것·피해야 할 것",
-] as const;
-
 /**
  * 종합 운세 라이트 카드.
- *
- * - 비라이트: 잠금 미리보기 + 라이트 유도 CTA.
- * - 라이트 + 미생성: "리포트 받기" 버튼.
- * - 라이트 + 생성됨: 시간대별 / 레이더 차트 / DO·DON'T 3개 섹션.
  */
 export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
   const [data, setData] = useState<GeneralFortunePremiumOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("generalPremium");
+  const tPrem = useTranslations("premiumCard");
+
+  const lockBullets = [t("lockBullet1"), t("lockBullet2"), t("lockBullet3")];
 
   function handleGenerate() {
     setError(null);
@@ -196,7 +191,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
       if (result.kind === "success" && result.data) {
         setData(result.data);
       } else {
-        setError(result.message ?? "오류가 발생했어.");
+        setError(result.message ?? tPrem("genericError"));
       }
     });
   }
@@ -207,25 +202,25 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
         <CardHeader>
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" aria-hidden />
-            오늘의 종합 운세 리포트
+            {t("title")}
             <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
-              라이트
+              {tPrem("lightBadge")}
             </span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="pointer-events-none select-none space-y-2 blur-[3px]">
-            {LOCKED_PREVIEW_ITEMS.map((t) => (
-              <div key={t} className="flex items-start gap-2">
+            {lockBullets.map((line) => (
+              <div key={line} className="flex items-start gap-2">
                 <span className="mt-1 h-4 w-4 flex-shrink-0 rounded-full bg-accent/30" />
-                <p className="text-sm font-medium">{t}</p>
+                <p className="text-sm font-medium">{line}</p>
               </div>
             ))}
           </div>
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-3.5 w-3.5" aria-hidden />
-              라이트로 확인하기
+              {tPrem("verifyCta")}
             </Link>
           </Button>
         </CardContent>
@@ -239,13 +234,12 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
         <CardHeader>
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Sparkles className="h-4 w-4 text-accent" aria-hidden />
-            오늘의 종합 운세 리포트
+            {t("title")}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <p className="text-sm text-muted-foreground">
-            시간대별 기운, 6영역 운세 차트, 오늘의 DO/DON&#39;T 까지 — 종합 운세
-            라이트 리포트를 만들어줄게.
+            {t("lockBody")}
           </p>
           {error && <p className="text-xs text-destructive">{error}</p>}
           <Button
@@ -257,12 +251,12 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
             {isPending ? (
               <>
                 <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
-                분석 중…
+                {tPrem("analyzing")}
               </>
             ) : (
               <>
                 <Sparkles className="h-3.5 w-3.5" aria-hidden />
-                리포트 받기
+                {tPrem("getReport")}
               </>
             )}
           </Button>
@@ -276,7 +270,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
       <CardHeader>
         <CardTitle className="font-mystic flex items-center gap-2 text-base">
           <Sparkles className="h-4 w-4 text-accent" aria-hidden />
-          오늘의 종합 운세 리포트
+          {t("title")}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -284,7 +278,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
         <section className="space-y-3">
           <h3 className="font-mystic flex items-center gap-2 text-sm font-semibold">
             <Clock className="h-4 w-4 text-primary" aria-hidden />
-            시간대별 운세
+            {t("section1")}
           </h3>
           <div className="grid grid-cols-3 gap-2">
             {data.timeSlots.map((slot, i) => {
@@ -319,7 +313,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
         <section className="space-y-3">
           <h3 className="font-mystic flex items-center gap-2 text-sm font-semibold">
             <Radar className="h-4 w-4 text-primary" aria-hidden />
-            운세 레이더 차트
+            {t("section2")}
           </h3>
           <RadarChart scores={data.scores} />
         </section>
@@ -328,12 +322,12 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
         <section className="space-y-3">
           <h3 className="font-mystic flex items-center gap-2 text-sm font-semibold">
             <ListChecks className="h-4 w-4 text-primary" aria-hidden />
-            오늘의 DO / DON&#39;T
+            {t("section3")}
           </h3>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
               <p className="text-xs font-semibold text-emerald-400">
-                오늘 해야 할 것
+                {t("doToday")}
               </p>
               {data.doList.map((item, i) => (
                 <div key={i} className="flex items-start gap-1.5">
@@ -348,7 +342,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
             </div>
             <div className="space-y-2">
               <p className="text-xs font-semibold text-red-400">
-                오늘 피해야 할 것
+                {t("dontToday")}
               </p>
               {data.dontList.map((item, i) => (
                 <div key={i} className="flex items-start gap-1.5">

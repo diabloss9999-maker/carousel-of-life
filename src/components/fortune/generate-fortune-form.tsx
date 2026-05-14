@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CharacterImage } from "@/components/shared/character-image";
 import { useActionState } from "react";
 import { Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { FormMessage } from "@/components/ui/form-message";
@@ -23,16 +24,16 @@ interface GenerateFortuneFormProps {
 
 const initial: FortuneActionState = { kind: "idle" };
 
-/** 카테고리별 세계관 문구 */
-const CATEGORY_COPY: Record<string, { line: string; sub: string }> = {
-  general:       { line: "오늘 하루 전체 흐름을 읽어줄게.",         sub: "사주와 일진을 함께 살펴볼게." },
-  love:          { line: "인연의 잔향이 오늘 어떻게 흐르는지 봐.",  sub: "감정의 기운이 보여." },
-  money:         { line: "금빛 흐름이 오늘 어디로 향하는지 봐.",    sub: "재물의 기운을 읽어줄게." },
-  career:        { line: "사명의 자리에서 오늘 뭐가 보이는지 봐.",  sub: "일과 자리의 기운을 읽어줄게." },
-  health:        { line: "몸이 오늘 어떤 신호를 보내고 있어.",      sub: "몸의 기운을 살펴볼게." },
-  study:         { line: "지혜의 궤도가 오늘 어떻게 돌아.",         sub: "집중과 학업의 기운을 볼게." },
-  zodiac:        { line: "별이 오늘 어떤 기록을 남겼는지 봐.",      sub: "태어난 별자리가 전하는 메시지야." },
-  chinese_zodiac:{ line: "태어난 짐승의 기운이 오늘 어때.",         sub: "12지신이 전하는 오늘의 흐름이야." },
+/** 카테고리 id → generateForm 의 line 메시지 키. sub 는 fallbackSaju 공통. */
+const COPY_TKEY: Record<string, string> = {
+  general: "copyGeneral",
+  love: "copyLove",
+  money: "copyMoney",
+  career: "copyCareer",
+  health: "copyHealth",
+  study: "copyStudy",
+  zodiac: "copyZodiac",
+  chinese_zodiac: "copyChineseZodiac",
 };
 
 export function GenerateFortuneForm({
@@ -43,12 +44,20 @@ export function GenerateFortuneForm({
     generateFortuneAction,
     initial,
   );
+  const t = useTranslations("generateForm");
+  const tChar = useTranslations("characters");
 
   useScrollToResult(isPending, "fortune-result");
 
   const charId = getTodayCharacter();
   const character = CHARACTERS[charId];
-  const copy = CATEGORY_COPY[category] ?? { line: `${categoryLabel} 흐름을 읽어줄게.`, sub: "사주를 살펴볼게." };
+  const name = tChar(`${charId}.name`);
+  const title = tChar(`${charId}.title`);
+  const copyKey = COPY_TKEY[category];
+  const line = copyKey
+    ? t(copyKey as "copyGeneral" | "copyLove" | "copyMoney" | "copyCareer" | "copyHealth" | "copyStudy" | "copyZodiac" | "copyChineseZodiac")
+    : t("fallbackBody", { category: categoryLabel });
+  const sub = t("fallbackSaju");
 
   return (
     <div className="overflow-hidden rounded-2xl border border-border/20"
@@ -73,12 +82,12 @@ export function GenerateFortuneForm({
         <div className="flex flex-1 flex-col justify-between gap-4 p-4 sm:p-5">
           <div className="space-y-1">
             <p className="text-[10px] text-muted-foreground/50 uppercase tracking-widest">
-              {character.name} · {character.title}
+              {name} · {title}
             </p>
             <p className="font-mystic text-base font-semibold text-foreground/90 leading-snug">
-              {copy.line}
+              {line}
             </p>
-            <p className="text-xs text-muted-foreground/60">{copy.sub}</p>
+            <p className="text-xs text-muted-foreground/60">{sub}</p>
           </div>
 
           <form action={formAction}>
@@ -92,10 +101,10 @@ export function GenerateFortuneForm({
               {isPending ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                  별의 흐름을 읽는 중…
+                  {t("loading")}
                 </>
               ) : (
-                `${character.name}에게 ${categoryLabel} 묻기`
+                t("askCta", { name, category: categoryLabel })
               )}
             </Button>
           </form>
@@ -105,7 +114,7 @@ export function GenerateFortuneForm({
               <FormMessage state={{ kind: "error", message: state.message ?? "" }} />
               {state.quotaExceeded && (
                 <Button asChild className="w-full" variant="outline" size="sm">
-                  <Link href={ROUTES.pricing}>라이트로 무제한 받기</Link>
+                  <Link href={ROUTES.pricing}>{t("unlimitedCta")}</Link>
                 </Button>
               )}
             </div>

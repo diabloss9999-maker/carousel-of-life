@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Crown, Lock, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -63,6 +64,8 @@ function ballColor(n: number): string {
 export function LottoGenerator({ fortune, subscribed }: LottoGeneratorProps) {
   const [revealed, setRevealed] = useState(false);
   const numbers = generateLottoNumbers(fortune.score, fortune.luckyNumber);
+  const t = useTranslations("lottoCard");
+  const tPrem = useTranslations("premiumCard");
 
   return (
     <Card className="app-surface relative overflow-hidden">
@@ -70,14 +73,14 @@ export function LottoGenerator({ fortune, subscribed }: LottoGeneratorProps) {
         <div className="flex items-center gap-2">
           <Crown className="h-4 w-4 text-accent" aria-hidden />
           <span className="text-xs font-medium uppercase tracking-wider text-accent">
-            라이트
+            {tPrem("lightBadge")}
           </span>
         </div>
         <h2 className="font-mystic text-xl font-semibold leading-snug tracking-tight">
-          재산운 로또번호 생성기
+          {t("title")}
         </h2>
         <p className="text-sm text-muted-foreground">
-          오늘의 재산운 기운이 담긴 번호 6개를 뽑아드려요.
+          {t("subtitle")}
         </p>
       </CardHeader>
 
@@ -99,7 +102,7 @@ export function LottoGenerator({ fortune, subscribed }: LottoGeneratorProps) {
                   style={{
                     transitionDelay: revealed ? `${i * 90}ms` : "0ms",
                   }}
-                  aria-label={`로또 번호 ${n}`}
+                  aria-label={t("luckyNumberAria", { n })}
                 >
                   {n}
                 </div>
@@ -114,13 +117,13 @@ export function LottoGenerator({ fortune, subscribed }: LottoGeneratorProps) {
                   className="gap-2 font-mystic"
                 >
                   <Sparkles className="h-4 w-4" aria-hidden />
-                  오늘의 행운 번호 받기
+                  {t("getCta")}
                 </Button>
               </div>
             ) : (
               <div className="space-y-3 text-center">
                 <p className="text-xs text-muted-foreground">
-                  재산운 {fortune.score}점 기반 · 오늘 하루 고정된 번호예요
+                  {t("fixedNote", { score: fortune.score })}
                 </p>
                 <Button
                   variant="ghost"
@@ -128,7 +131,7 @@ export function LottoGenerator({ fortune, subscribed }: LottoGeneratorProps) {
                   onClick={() => setRevealed(false)}
                   className="text-xs"
                 >
-                  다시 보기
+                  {t("againCta")}
                 </Button>
               </div>
             )}
@@ -141,16 +144,16 @@ export function LottoGenerator({ fortune, subscribed }: LottoGeneratorProps) {
             </div>
             <div className="space-y-1">
               <p className="font-mystic text-base font-medium">
-                라이트 전용 기능이에요
+                {t("lockedTitle")}
               </p>
               <p className="text-sm text-muted-foreground">
-                구독하면 재산운으로 만든 로또번호를 매일 받을 수 있어요.
+                {t("lockedBody")}
               </p>
             </div>
             <Button asChild className="gap-2 font-mystic">
               <Link href={ROUTES.pricing}>
                 <Crown className="h-4 w-4" aria-hidden />
-                라이트 시작하기
+                {t("lockedCta")}
               </Link>
             </Button>
           </div>

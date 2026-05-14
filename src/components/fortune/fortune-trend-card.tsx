@@ -1,7 +1,10 @@
 /**
  * 운세 점수 추이 — 컴팩트 sparkline 카드.
  */
+"use client";
+
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import type { FortuneTrend } from "@/lib/fortunes/trend";
 import { cn } from "@/lib/utils";
@@ -16,6 +19,7 @@ const PAD_X = 2;
 const PAD_Y = 4;
 
 export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
+  const t = useTranslations("fortuneTrend");
   if (trend.recorded === 0) return null;
 
   const points = trend.points;
@@ -74,18 +78,18 @@ export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
       {/* 헤더 */}
       <div className="flex items-center justify-between">
         <span className="font-mystic text-sm font-medium text-foreground/80">
-          최근 {n}일 흐름
+          {t("lastNDays", { n })}
         </span>
         <div className="flex items-center gap-3 text-xs text-muted-foreground">
           {trend.average !== null && (
             <span className="tabular-nums">
-              평균 <span className="font-semibold text-foreground/80">{trend.average}점</span>
+              {t("avgScore", { n: trend.average })}
             </span>
           )}
           {delta !== null && (
             <span className={cn("flex items-center gap-0.5 tabular-nums font-medium", deltaColor)}>
               <DeltaIcon className="h-3 w-3" />
-              {delta > 0 ? `+${delta}` : delta}점
+              {t("deltaScore", { delta: delta > 0 ? `+${delta}` : delta })}
             </span>
           )}
         </div>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Crown, Infinity as InfinityIcon, Sparkles } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -15,12 +16,14 @@ interface QuotaBarProps {
   tier?: QuotaTier;
 }
 
-export function QuotaBar({
+export async function QuotaBar({
   fortuneCount,
   tarotCount,
   chatCount,
   tier = "free",
 }: QuotaBarProps) {
+  const t = await getTranslations("quotaBar");
+
   if (tier === "pro") {
     return (
       <div className="app-surface rounded-xl p-4 ring-1 ring-accent/15">
@@ -28,16 +31,16 @@ export function QuotaBar({
           <div className="flex items-center gap-3">
             <Crown className="h-5 w-5 text-accent" aria-hidden />
             <div className="space-y-0.5">
-              <p className="font-mystic text-sm font-medium">프로 사용 중</p>
+              <p className="font-mystic text-sm font-medium">{t("proActive")}</p>
               <p className="text-xs text-muted-foreground">
-                운세·타로·문답 모두 무제한이야.
+                {t("proSub")}
               </p>
             </div>
           </div>
           <div className="grid grid-cols-3 gap-3 sm:gap-5 text-xs">
-            <UnlimitedItem label="운세" used={fortuneCount} />
-            <UnlimitedItem label="타로" used={tarotCount} />
-            <UnlimitedItem label="문답" used={chatCount} />
+            <UnlimitedItem label={t("fortune")} used={fortuneCount} />
+            <UnlimitedItem label={t("tarot")} used={tarotCount} />
+            <UnlimitedItem label={t("chat")} used={chatCount} />
           </div>
         </div>
       </div>
@@ -50,25 +53,25 @@ export function QuotaBar({
         <div className="flex items-center justify-between gap-4 flex-wrap mb-3">
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-primary" aria-hidden />
-            <p className="font-mystic text-sm font-medium">라이트 플랜</p>
+            <p className="font-mystic text-sm font-medium">{t("lightPlan")}</p>
           </div>
           <Button asChild size="sm" variant="ghost">
-            <Link href={ROUTES.pricing}>프로로 업그레이드</Link>
+            <Link href={ROUTES.pricing}>{t("upgradePro")}</Link>
           </Button>
         </div>
         <div className="grid grid-cols-3 gap-4 sm:gap-6 text-sm">
           <Item
-            label="운세"
+            label={t("fortune")}
             used={fortuneCount}
             max={LITE_DAILY_LIMITS.fortune}
           />
           <Item
-            label="타로"
+            label={t("tarot")}
             used={tarotCount}
             max={LITE_DAILY_LIMITS.tarot}
           />
           <Item
-            label="문답"
+            label={t("chat")}
             used={chatCount}
             max={LITE_DAILY_LIMITS.chat}
           />
@@ -82,15 +85,15 @@ export function QuotaBar({
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div className="grid grid-cols-3 gap-4 sm:gap-6 text-sm flex-1 min-w-0">
           <Item
-            label="운세"
+            label={t("fortune")}
             used={fortuneCount}
             max={FREE_DAILY_LIMITS.fortune}
           />
-          <Item label="타로" used={tarotCount} max={FREE_DAILY_LIMITS.tarot} />
-          <Item label="문답" used={chatCount} max={FREE_DAILY_LIMITS.chat} />
+          <Item label={t("tarot")} used={tarotCount} max={FREE_DAILY_LIMITS.tarot} />
+          <Item label={t("chat")} used={chatCount} max={FREE_DAILY_LIMITS.chat} />
         </div>
         <Button asChild size="sm" variant="ghost">
-          <Link href={ROUTES.pricing}>업그레이드</Link>
+          <Link href={ROUTES.pricing}>{t("upgrade")}</Link>
         </Button>
       </div>
     </div>

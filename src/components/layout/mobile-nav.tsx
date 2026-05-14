@@ -15,10 +15,11 @@ const NAV_SURFACE2 = "rgba(255,255,255,0.08)";
 export function MobileNav() {
   const pathname = usePathname();
   const tNav = useTranslations("nav");
+  const tExtras = useTranslations("todayExtras");
 
   return (
     <nav
-      aria-label="하단 메뉴"
+      aria-label={tExtras("navBottomAria")}
       className="sticky bottom-0 z-30 md:hidden"
       style={{
         background: `linear-gradient(to top, ${NAV_SURFACE}, ${NAV_SURFACE2})`,

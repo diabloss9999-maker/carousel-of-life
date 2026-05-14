@@ -726,6 +726,180 @@
     "grandTableauSaveFailed": "그랑 타블로 결과 저장에 실패했어요.",
     "grandTableauGenderRequired": "그랑 타블로는 시그니피케이터 성별이 필요해요."
   },
+  "todayExtras": {
+    "archive": "보관",
+    "archiveSub": "존재의 기록",
+    "world": "세계",
+    "worldSub": "오늘의 흐름",
+    "streakDaysRow": "{n}일 연속",
+    "streakActive": "흐름이 이어지고 있어요",
+    "streakNew": "기록이 쌓이고 있어요",
+    "navTopAria": "상단 메뉴",
+    "navBottomAria": "하단 메뉴"
+  },
+  "quotaBar": {
+    "proActive": "프로 사용 중",
+    "proSub": "운세·타로·문답 모두 무제한이야.",
+    "fortune": "운세",
+    "tarot": "타로",
+    "chat": "문답",
+    "lightPlan": "라이트 플랜",
+    "upgradePro": "프로로 업그레이드",
+    "upgrade": "업그레이드"
+  },
+  "streak": {
+    "milestone3": "3일 연속 출석 달성!",
+    "milestone7": "7일 연속! 일주일을 채웠어.",
+    "milestone30": "30일 연속! 한 달을 채웠어!",
+    "milestone100": "100일 연속! 정말 대단해!",
+    "milestoneGeneric": "{n}일 연속 달성!",
+    "reset": "스트릭이 초기화됐어. 오늘부터 다시 시작!",
+    "badgeLabel": "{n}일 연속",
+    "bonus": "보너스 +{n}"
+  },
+  "dailyQuestion": {
+    "eyebrow": "오늘의 질문",
+    "answerCta": "{name}에게 답하기"
+  },
+  "premiumCard": {
+    "lightBadge": "라이트",
+    "verifyCta": "라이트로 확인하기",
+    "solveCta": "라이트로 풀어보기",
+    "unlimitedCta": "라이트로 무제한",
+    "analyzing": "분석 중…",
+    "getReport": "리포트 받기",
+    "genericError": "오류가 발생했어.",
+    "shortError": "오류가 났어",
+    "retry": "다시 시도"
+  },
+  "generalPremium": {
+    "title": "오늘의 종합 운세 리포트",
+    "lockBody": "시간대별 기운, 6영역 운세 차트, DO/DON'T 까지 한 번에 보여줄게.",
+    "lockBullet1": "시간대별 운세 (새벽·오전·오후·저녁)",
+    "lockBullet2": "운세 레이더 차트 (6영역)",
+    "lockBullet3": "오늘의 DO/DON'T",
+    "section1": "시간대별 운세",
+    "section2": "운세 레이더 차트",
+    "section3": "오늘의 DO / DON'T",
+    "doToday": "오늘 해야 할 것",
+    "dontToday": "오늘 피해야 할 것",
+    "radarAria": "6개 영역 운세 점수 레이더 차트",
+    "radarGeneral": "종합",
+    "radarLove": "사랑",
+    "radarMoney": "재물",
+    "radarCareer": "직장",
+    "radarHealth": "건강",
+    "radarStudy": "학업"
+  },
+  "careerReport": {
+    "title": "오늘의 직장 종합 리포트",
+    "lockBody": "오늘의 에너지·업무 타이밍·관계 운까지 한 번에 보여줄게.",
+    "lockBullet1": "오늘의 직장 에너지 (집중력·관계·추진력)",
+    "lockBullet2": "최적 업무 타이밍",
+    "lockBullet3": "이번 주 직장 흐름",
+    "lockBullet4": "오늘의 관계 운 (상사·동료)",
+    "lockBullet5": "예쁨받는 방법",
+    "energy": "오늘의 직장 에너지",
+    "energyFocus": "집중력",
+    "energyRelation": "대인관계",
+    "energyDrive": "추진력",
+    "avoid": "피하기",
+    "timing": "최적 업무 타이밍",
+    "periodMorning": "오전",
+    "periodAfternoon": "오후",
+    "periodGood": "{period}이 좋아요",
+    "meetings": "회의·협상",
+    "weekly": "이մ 주 직장 흐름",
+    "relation": "오늘의 관계 운",
+    "askGood": "부탁하기 좋은 날",
+    "askLater": "부탁은 내일로 미루기",
+    "boss": "상사",
+    "coworker": "동료",
+    "stand": "돋보임",
+    "loved": "직장에서 예쁨받는 방법",
+    "weekdays": ["일","월","화","수","목","금","토"]
+  },
+  "healthReport": {
+    "title": "오늘의 맞춤 운동",
+    "lockBody": "기구 없이 집에서 할 수 있는 운동을 추천해줄게.",
+    "lockBullet1": "오늘 컨디션 분석",
+    "lockBullet2": "맨몸 운동 추천",
+    "lockBullet3": "스트레스 풀이 운동",
+    "lockBullet4": "주의해야 할 운동",
+    "workoutCta": "운동 추천 받기",
+    "bodyweight": "맨몸 운동",
+    "equipment": "기구 운동"
+  },
+  "studyReport": {
+    "title": "집중력 높이는 공부 팁",
+    "lockBody": "나의 MBTI 성격에 맞는 학습 전략 + 환경 조성법.",
+    "lockBullet1": "오늘 가장 잘 흡수되는 과목",
+    "lockBullet2": "최적 학습 시간",
+    "lockBullet3": "MBTI 맞춤 학습법",
+    "getTipsCta": "팁 받기"
+  },
+  "loveReport": {
+    "title": "오늘의 사랑 리포트",
+    "lockBody": "오늘 전할 달콤한 한마디 + 매력 어필 팁.",
+    "lockBullet1": "오늘의 한마디 (썸/연인용)",
+    "lockBullet2": "오늘의 매력 어필 팁",
+    "todayLine": "오늘 전할 한마디",
+    "charmTip": "오늘의 매력 팁",
+    "loadingShort": "불러오는 중..."
+  },
+  "lottoCard": {
+    "title": "재산운 로또번호 생성기",
+    "subtitle": "오늘의 재산운 기운이 담긴 번호 6개를 뽑아드려요.",
+    "luckyNumberAria": "로또 번호 {n}",
+    "getCta": "오늘의 행운 번호 받기",
+    "againCta": "다시 보기",
+    "fixedNote": "재산운 {score}점 기반 · 오늘 하루 고정된 번호예요",
+    "lockedTitle": "라이트 전용 기능이에요",
+    "lockedBody": "재산운 기반 행운의 6자리 번호를 매일 생성해드려요.",
+    "lockedCta": "라이트 시작하기"
+  },
+  "premiumGate": {
+    "zodiacTitle": "별자리 운세 — 라이트 전용",
+    "zodiacBody": "별자리 운세는 라이트 구독자만 받을 수 있어. 매일 12별자리 중 너의 별자리 운세를 새로 적어줘.",
+    "chineseTitle": "십이간지 운세 — 라이트 전용",
+    "chineseBody": "십이간지 운세는 라이트 구독자만 받을 수 있어. 매일 12간지 중 너의 띠 운세를 새로 적어줘.",
+    "fallbackTitle": "라이트 전용",
+    "fallbackBody": "이 운세는 라이트 구독자 전용이야.",
+    "subscribeCta": "라이트 구독하기",
+    "footer": "구독 시 별자리·십이간지·라이트 전용 사주 풀이까지 모두 매일 받을 수 있어."
+  },
+  "fortuneTrend": {
+    "lastNDays": "최근 {n}일 흐름",
+    "avgScore": "평균 {n}점",
+    "deltaScore": "{delta}점"
+  },
+  "todaySummary": {
+    "title": "오늘 함께 본 운세",
+    "viewMore": "자세히 보기 →"
+  },
+  "zodiacBanner": {
+    "compatible": "잘 맞는",
+    "caution": "주의"
+  },
+  "generateForm": {
+    "loading": "별의 흐름을 읽는 중…",
+    "askCta": "{name}에게 {category} 묻기",
+    "unlimitedCta": "라이트로 무제한 받기",
+    "fallbackBody": "{category} 흐름을 읽어줄게.",
+    "fallbackSaju": "사주를 살펴볼게.",
+    "copyGeneral": "오늘 하루 전체 흐름을 읽어줄게.",
+    "copyLove": "오늘의 연애·관계 흐름을 풀어줄게.",
+    "copyMoney": "오늘의 재물·금전 흐름을 짚어줄게.",
+    "copyCareer": "오늘의 직장·업무 흐름을 읽어줄게.",
+    "copyHealth": "오늘의 건강·컨디션 흐름을 살펴줄게.",
+    "copyStudy": "오늘의 공부·집중 흐름을 짚어줄게.",
+    "copyZodiac": "오늘의 별자리 흐름을 읽어줄게.",
+    "copyChineseZodiac": "오늘의 십이간지 흐름을 짚어줄게."
+  },
+  "crackAtmosphere": {
+    "boundaryWithDate": "경계(境界) · {date}",
+    "boundaryShort": "경계(境界)"
+  },
   "shareCard": {
     "fortuneTitle": "오늘의 흐름",
     "fortuneFallbackName": "주술사",

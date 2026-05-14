@@ -14,6 +14,7 @@ const NAV_MUTED      = "var(--nav-muted)";
 export function DesktopNav() {
   const pathname = usePathname();
   const tNav = useTranslations("nav");
+  const tExtras = useTranslations("todayExtras");
 
   return (
     <nav
@@ -24,7 +25,7 @@ export function DesktopNav() {
         border: "1px solid var(--header-border)",
         background: "rgba(255,255,255,0.10)",
       }}
-      aria-label="상단 메뉴"
+      aria-label={tExtras("navTopAria")}
     >
       {mainNav
         .filter((item) => item.authOnly)

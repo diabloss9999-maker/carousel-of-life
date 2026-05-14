@@ -726,6 +726,180 @@
     "grandTableauSaveFailed": "Couldn't save the Grand Tableau result.",
     "grandTableauGenderRequired": "Grand Tableau needs the significator's gender."
   },
+  "todayExtras": {
+    "archive": "Archive",
+    "archiveSub": "Records of presence",
+    "world": "World",
+    "worldSub": "Today's flow",
+    "streakDaysRow": "{n}-day streak",
+    "streakActive": "Your flow is keeping up",
+    "streakNew": "Your record is building up",
+    "navTopAria": "Top navigation",
+    "navBottomAria": "Bottom navigation"
+  },
+  "quotaBar": {
+    "proActive": "Pro active",
+    "proSub": "Fortunes, tarot, and chat are all unlimited.",
+    "fortune": "Fortune",
+    "tarot": "Tarot",
+    "chat": "Chat",
+    "lightPlan": "Light plan",
+    "upgradePro": "Upgrade to Pro",
+    "upgrade": "Upgrade"
+  },
+  "streak": {
+    "milestone3": "3-day streak!",
+    "milestone7": "7-day streak — a whole week!",
+    "milestone30": "30-day streak — a whole month!",
+    "milestone100": "100-day streak — incredible!",
+    "milestoneGeneric": "{n}-day streak!",
+    "reset": "Your streak was reset. Starting again from today!",
+    "badgeLabel": "{n}-day streak",
+    "bonus": "Bonus +{n}"
+  },
+  "dailyQuestion": {
+    "eyebrow": "Today's question",
+    "answerCta": "Answer {name}"
+  },
+  "premiumCard": {
+    "lightBadge": "Light",
+    "verifyCta": "Unlock with Light",
+    "solveCta": "Unlock with Light",
+    "unlimitedCta": "Go Light for unlimited",
+    "analyzing": "Analyzing…",
+    "getReport": "Get report",
+    "genericError": "Something went wrong.",
+    "shortError": "Something went wrong",
+    "retry": "Try again"
+  },
+  "generalPremium": {
+    "title": "Today's full fortune report",
+    "lockBody": "See your day in time-of-day energy, a 6-area fortune chart, and today's DO/DON'T — all in one place.",
+    "lockBullet1": "Time-of-day energy (dawn / morning / afternoon / evening)",
+    "lockBullet2": "Fortune radar (6 areas)",
+    "lockBullet3": "Today's DO / DON'T",
+    "section1": "Time-of-day energy",
+    "section2": "Fortune radar",
+    "section3": "Today's DO / DON'T",
+    "doToday": "Do today",
+    "dontToday": "Avoid today",
+    "radarAria": "6-area fortune score radar chart",
+    "radarGeneral": "General",
+    "radarLove": "Love",
+    "radarMoney": "Wealth",
+    "radarCareer": "Career",
+    "radarHealth": "Health",
+    "radarStudy": "Study"
+  },
+  "careerReport": {
+    "title": "Today's career report",
+    "lockBody": "Today's energy, optimal work timing, and relational luck — all in one place.",
+    "lockBullet1": "Career energy (focus · relations · drive)",
+    "lockBullet2": "Optimal work timing",
+    "lockBullet3": "This week's career flow",
+    "lockBullet4": "Today's relational luck (boss · coworkers)",
+    "lockBullet5": "How to be appreciated",
+    "energy": "Today's career energy",
+    "energyFocus": "Focus",
+    "energyRelation": "Relations",
+    "energyDrive": "Drive",
+    "avoid": "Avoid",
+    "timing": "Optimal work timing",
+    "periodMorning": "Morning",
+    "periodAfternoon": "Afternoon",
+    "periodGood": "{period} is best",
+    "meetings": "Meetings · negotiation",
+    "weekly": "This week's career flow",
+    "relation": "Today's relational luck",
+    "askGood": "Good day to ask",
+    "askLater": "Put the ask off until tomorrow",
+    "boss": "Boss",
+    "coworker": "Coworker",
+    "stand": "Stand out",
+    "loved": "How to be appreciated at work",
+    "weekdays": ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+  },
+  "healthReport": {
+    "title": "Today's tailored workout",
+    "lockBody": "An at-home, no-equipment workout for today.",
+    "lockBullet1": "Today's condition analysis",
+    "lockBullet2": "Bodyweight workout",
+    "lockBullet3": "Stress-relief workout",
+    "lockBullet4": "Workouts to avoid",
+    "workoutCta": "Get workout",
+    "bodyweight": "Bodyweight",
+    "equipment": "Equipment"
+  },
+  "studyReport": {
+    "title": "Tips to sharpen focus",
+    "lockBody": "Study strategy and environment design tailored to your MBTI.",
+    "lockBullet1": "Subjects you'll absorb best today",
+    "lockBullet2": "Optimal study time",
+    "lockBullet3": "MBTI-tailored study method",
+    "getTipsCta": "Get tips"
+  },
+  "loveReport": {
+    "title": "Today's love report",
+    "lockBody": "A sweet line to deliver today + a charm tip.",
+    "lockBullet1": "Today's line (for crush / partner)",
+    "lockBullet2": "Today's charm tip",
+    "todayLine": "Today's line",
+    "charmTip": "Today's charm tip",
+    "loadingShort": "Loading..."
+  },
+  "lottoCard": {
+    "title": "Wealth-luck lottery generator",
+    "subtitle": "Six numbers drawn with today's wealth energy.",
+    "luckyNumberAria": "Lottery number {n}",
+    "getCta": "Get today's lucky numbers",
+    "againCta": "View again",
+    "fixedNote": "Based on wealth luck {score} · fixed for today",
+    "lockedTitle": "Light-only feature",
+    "lockedBody": "Get six lucky numbers based on your wealth luck, every day.",
+    "lockedCta": "Start Light"
+  },
+  "premiumGate": {
+    "zodiacTitle": "Zodiac fortune — Light only",
+    "zodiacBody": "Zodiac fortunes are for Light subscribers. We write your sign's reading anew each day across 12 signs.",
+    "chineseTitle": "Chinese zodiac — Light only",
+    "chineseBody": "Chinese zodiac fortunes are for Light subscribers. We write your animal's reading anew each day.",
+    "fallbackTitle": "Light only",
+    "fallbackBody": "This fortune is for Light subscribers.",
+    "subscribeCta": "Subscribe to Light",
+    "footer": "Subscribing unlocks zodiac, Chinese zodiac, and Light-only pillar readings every day."
+  },
+  "fortuneTrend": {
+    "lastNDays": "Last {n} days",
+    "avgScore": "Avg {n}",
+    "deltaScore": "{delta}"
+  },
+  "todaySummary": {
+    "title": "Today's other readings",
+    "viewMore": "See more →"
+  },
+  "zodiacBanner": {
+    "compatible": "Good match",
+    "caution": "Caution"
+  },
+  "generateForm": {
+    "loading": "Reading the flow of stars…",
+    "askCta": "Ask {name} for {category}",
+    "unlimitedCta": "Go Light for unlimited",
+    "fallbackBody": "I'll read the {category} flow for you.",
+    "fallbackSaju": "I'll look at your pillars.",
+    "copyGeneral": "I'll read your overall flow for today.",
+    "copyLove": "I'll unfold your love and relationship flow.",
+    "copyMoney": "I'll trace your wealth and money flow.",
+    "copyCareer": "I'll read your work and career flow.",
+    "copyHealth": "I'll check your health and condition.",
+    "copyStudy": "I'll trace your study and focus.",
+    "copyZodiac": "I'll read your zodiac flow today.",
+    "copyChineseZodiac": "I'll trace your Chinese zodiac flow today."
+  },
+  "crackAtmosphere": {
+    "boundaryWithDate": "Boundary · {date}",
+    "boundaryShort": "Boundary"
+  },
   "shareCard": {
     "fortuneTitle": "Today's flow",
     "fortuneFallbackName": "Shaman",

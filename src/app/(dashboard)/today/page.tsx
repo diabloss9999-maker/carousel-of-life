@@ -78,6 +78,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
   const { profile } = await requireProfile();
   const t = await getTranslations("today");
   const tNav = await getTranslations("nav");
+  const tExtras = await getTranslations("todayExtras");
   const locale = await getLocale();
 
   const [fortune, usage, subscribed, tier, streakResult, todayMood, crackData] = await Promise.all([
@@ -171,16 +172,16 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           className="app-surface rounded-xl p-3 sm:p-4 flex flex-col items-start gap-1.5 transition-transform hover:-translate-y-0.5"
         >
           <BookMarked className="h-4 w-4 text-accent" aria-hidden />
-          <span className="font-mystic text-sm font-semibold">보관</span>
-          <span className="text-[10px] text-muted-foreground leading-tight">존재의 기록</span>
+          <span className="font-mystic text-sm font-semibold">{tExtras("archive")}</span>
+          <span className="text-[10px] text-muted-foreground leading-tight">{tExtras("archiveSub")}</span>
         </Link>
         <Link
           href={ROUTES.world as Route}
           className="app-surface rounded-xl p-3 sm:p-4 flex flex-col items-start gap-1.5 transition-transform hover:-translate-y-0.5"
         >
           <Globe2 className="h-4 w-4 text-accent" aria-hidden />
-          <span className="font-mystic text-sm font-semibold">세계</span>
-          <span className="text-[10px] text-muted-foreground leading-tight">오늘의 흐름</span>
+          <span className="font-mystic text-sm font-semibold">{tExtras("world")}</span>
+          <span className="text-[10px] text-muted-foreground leading-tight">{tExtras("worldSub")}</span>
         </Link>
         <Link
           href={ROUTES.history}
@@ -196,10 +197,10 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
             )}
           </div>
           <span className="font-mystic text-sm font-semibold tabular-nums">
-            {streakResult.currentStreak}일 연속
+            {tExtras("streakDaysRow", { n: streakResult.currentStreak })}
           </span>
           <span className="text-[10px] text-muted-foreground leading-tight">
-            {streakResult.currentStreak >= 3 ? "흐름이 이어지고 있어요" : "기록이 쌓이고 있어요"}
+            {streakResult.currentStreak >= 3 ? tExtras("streakActive") : tExtras("streakNew")}
           </span>
         </Link>
       </div>

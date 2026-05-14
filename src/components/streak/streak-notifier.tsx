@@ -6,6 +6,7 @@
  */
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 import type { CheckInResult } from "@/lib/streak/service";
 
@@ -13,38 +14,33 @@ interface StreakNotifierProps {
   checkIn: CheckInResult;
 }
 
-const MILESTONE_MESSAGES: Record<number, string> = {
-  3:  "3일 연속 출석 달성! 보너스 가챠 1회 지급됐어.",
-  7:  "7일 연속 달성! 보너스 가챠 2회 지급됐어.",
-  14: "14일 연속 달성! 보너스 가챠 2회 지급됐어.",
-  30: "30일 연속 달성! 보너스 가챠 3회 지급됐어.",
-};
-
-function getMilestoneMessage(streak: number, bonus: number): string | null {
-  if (bonus <= 0) return null;
-  return MILESTONE_MESSAGES[streak] ?? `${streak}일 연속 달성! 보너스 가챠 ${bonus}회 지급됐어.`;
-}
-
 export function StreakNotifier({ checkIn }: StreakNotifierProps) {
   const { currentStreak, milestoneBonus, wasReset } = checkIn;
   const notified = useRef(false);
+  const t = useTranslations("streak");
 
   useEffect(() => {
     if (notified.current) return;
     notified.current = true;
 
     if (milestoneBonus > 0) {
-      const msg = getMilestoneMessage(currentStreak, milestoneBonus);
-      if (msg) {
-        setTimeout(() => toast.success(msg, { duration: 5000 }), 500);
-      }
+      const key =
+        currentStreak === 3 ? "milestone3"
+        : currentStreak === 7 ? "milestone7"
+        : currentStreak === 30 ? "milestone30"
+        : currentStreak === 100 ? "milestone100"
+        : null;
+      const msg = key
+        ? t(key as "milestone3" | "milestone7" | "milestone30" | "milestone100")
+        : t("milestoneGeneric", { n: currentStreak });
+      setTimeout(() => toast.success(msg, { duration: 5000 }), 500);
     } else if (wasReset && currentStreak === 1) {
       setTimeout(
-        () => toast("스트릭이 초기화됐어. 오늘부터 다시 시작!", { duration: 3000 }),
+        () => toast(t("reset"), { duration: 3000 }),
         300,
       );
     }
-  }, [currentStreak, milestoneBonus, wasReset]);
+  }, [currentStreak, milestoneBonus, wasReset, t]);
 
   return null;
 }
