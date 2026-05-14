@@ -150,6 +150,10 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
 
       {/* 오늘의 세계 상태 — 균열 측정 + 관측 로그 */}
       <WorldStatusPanel crackLevel={crackData.level} />
+
+      {/* 오늘 기분 — 운세 생성 전부터 페이지 진입 시 바로 입력 가능 */}
+      <MoodCapture todayMood={todayMood?.mood ?? null} source="today_top" />
+
       <EventLogFeed crackLevel={crackData.level} />
 
       {/* 주술사 호출 — 먼저 말을 건다 */}
@@ -217,9 +221,6 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           {fortune ? (
             <div id="fortune-result" className="space-y-6">
               <FortuneCard fortune={fortune} crackLevel={crackData.level} />
-              {category === "general" && (
-                <MoodCapture todayMood={todayMood?.mood ?? null} source="fortune" />
-              )}
               {category === "money" && (
                 <LottoGenerator fortune={fortune} subscribed={subscribed} />
               )}

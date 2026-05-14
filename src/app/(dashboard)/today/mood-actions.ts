@@ -1,7 +1,9 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { requireProfile } from "@/lib/auth/get-user";
-import { saveMood, type MoodKey } from "@/lib/mood/service";
+import { saveMood, getTodayMood, type MoodKey } from "@/lib/mood/service";
 import { addCrack, reduceCrack } from "@/lib/crack/service";
 
 /** 감정별 균열 증감량 */
@@ -18,9 +20,20 @@ export async function saveMoodAction(opts: {
   source?: string;
 }): Promise<void> {
   const { profile } = await requireProfile();
+
+  // 오늘 이미 기록된 기분이 있으면 균열 점수는 다시 적용하지 않는다
+  // (mood 자체는 saveMood 가 upsert 처리하지만, 균열은 1일 1회만 반영).
+  const existing = await getTodayMood(profile.userId);
+  const isFirstToday = existing === null;
+
   await saveMood({ userId: profile.userId, mood: opts.mood, source: opts.source });
 
-  const delta = MOOD_CRACK[opts.mood] ?? 0;
-  if (delta > 0) await addCrack(profile.userId, delta, `mood:${opts.mood}`);
-  if (delta < 0) await reduceCrack(profile.userId, Math.abs(delta));
+  if (isFirstToday) {
+    const delta = MOOD_CRACK[opts.mood] ?? 0;
+    if (delta > 0) await addCrack(profile.userId, delta, `mood:${opts.mood}`);
+    if (delta < 0) await reduceCrack(profile.userId, Math.abs(delta));
+  }
+
+  // 서버 컴포넌트(/today 의 WorldStatusPanel 등)를 새 균열 점수로 재렌더.
+  revalidatePath("/today");
 }

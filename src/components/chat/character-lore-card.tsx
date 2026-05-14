@@ -440,65 +440,16 @@ function CharacterStoryAccordion({
               const unlocked = chap.number <= unlockedCount;
               const isExpanded = openChapter === chap.number;
               return (
-                <div
+                <ChapterRow
                   key={chap.number}
-                  className="rounded-lg border border-white/5 bg-white/3 overflow-hidden"
-                >
-                  <button
-                    type="button"
-                    onClick={() =>
-                      unlocked
-                        ? setOpenChapter(isExpanded ? null : chap.number)
-                        : undefined
-                    }
-                    disabled={!unlocked}
-                    className={cn(
-                      "w-full flex items-center justify-between gap-3 px-3 py-2 text-left",
-                      unlocked ? "cursor-pointer" : "cursor-not-allowed opacity-50",
-                    )}
-                  >
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <span
-                        className={cn(
-                          "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-[10px] tabular-nums font-bold",
-                          unlocked
-                            ? "bg-white/10 text-foreground/80"
-                            : "bg-white/5 text-muted-foreground/40",
-                        )}
-                      >
-                        {chap.number}
-                      </span>
-                      {unlocked ? (
-                        <span className="text-xs font-medium text-foreground/85 truncate">
-                          {chap.title}
-                        </span>
-                      ) : (
-                        <span className="text-xs text-muted-foreground/50 flex items-center gap-1.5">
-                          <Lock className="h-3 w-3" aria-hidden />
-                          Lv.{chap.number} 해금
-                        </span>
-                      )}
-                    </div>
-                    {unlocked && (
-                      <ChevronDown
-                        className={cn(
-                          "h-3 w-3 text-muted-foreground/50 transition-transform flex-shrink-0",
-                          isExpanded && "rotate-180",
-                        )}
-                      />
-                    )}
-                  </button>
-                  {unlocked && isExpanded && (
-                    <div className="px-4 pb-4 pt-2 border-t border-white/5 space-y-4">
-                      <ChapterImage
-                        characterId={characterId}
-                        chapterNumber={chap.number}
-                        title={chap.title}
-                      />
-                      <ChapterBody body={chap.body} />
-                    </div>
-                  )}
-                </div>
+                  characterId={characterId}
+                  chapter={chap}
+                  unlocked={unlocked}
+                  isExpanded={isExpanded}
+                  onToggle={() =>
+                    setOpenChapter(isExpanded ? null : chap.number)
+                  }
+                />
               );
             })
           )}
@@ -616,6 +567,101 @@ function TruthRouteSection({
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// 챕터 단일 행 — 열림 시 이미지가 화면 상단에 오도록 스크롤
+// ════════════════════════════════════════════════════════════════════════════
+
+interface ChapterRowProps {
+  characterId: CharacterId;
+  chapter: { number: number; title: string; body: string };
+  unlocked: boolean;
+  isExpanded: boolean;
+  onToggle: () => void;
+}
+
+function ChapterRow({
+  characterId,
+  chapter,
+  unlocked,
+  isExpanded,
+  onToggle,
+}: ChapterRowProps) {
+  const rowRef = useRef<HTMLDivElement>(null);
+  const wasExpandedRef = useRef(isExpanded);
+
+  // 챕터가 새로 펼쳐지는 순간 — 챕터 헤더(곧이어 이미지가 오는 위치)가
+  // viewport 상단에 자리잡도록 부드럽게 스크롤한다.
+  useEffect(() => {
+    if (isExpanded && !wasExpandedRef.current && rowRef.current) {
+      // 본문/이미지 DOM 이 마운트된 다음 프레임에 스크롤해야 정확.
+      const id = requestAnimationFrame(() => {
+        rowRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+      wasExpandedRef.current = isExpanded;
+      return () => cancelAnimationFrame(id);
+    }
+    wasExpandedRef.current = isExpanded;
+  }, [isExpanded]);
+
+  return (
+    <div
+      ref={rowRef}
+      className="rounded-lg border border-white/5 bg-white/3 overflow-hidden scroll-mt-20"
+    >
+      <button
+        type="button"
+        onClick={unlocked ? onToggle : undefined}
+        disabled={!unlocked}
+        className={cn(
+          "w-full flex items-center justify-between gap-3 px-3 py-2 text-left",
+          unlocked ? "cursor-pointer" : "cursor-not-allowed opacity-50",
+        )}
+      >
+        <div className="flex items-center gap-2.5 min-w-0">
+          <span
+            className={cn(
+              "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-[10px] tabular-nums font-bold",
+              unlocked
+                ? "bg-white/10 text-foreground/80"
+                : "bg-white/5 text-muted-foreground/40",
+            )}
+          >
+            {chapter.number}
+          </span>
+          {unlocked ? (
+            <span className="text-xs font-medium text-foreground/85 truncate">
+              {chapter.title}
+            </span>
+          ) : (
+            <span className="text-xs text-muted-foreground/50 flex items-center gap-1.5">
+              <Lock className="h-3 w-3" aria-hidden />
+              Lv.{chapter.number} 해금
+            </span>
+          )}
+        </div>
+        {unlocked && (
+          <ChevronDown
+            className={cn(
+              "h-3 w-3 text-muted-foreground/50 transition-transform flex-shrink-0",
+              isExpanded && "rotate-180",
+            )}
+          />
+        )}
+      </button>
+      {unlocked && isExpanded && (
+        <div className="px-4 pb-4 pt-2 border-t border-white/5 space-y-4">
+          <ChapterImage
+            characterId={characterId}
+            chapterNumber={chapter.number}
+            title={chapter.title}
+          />
+          <ChapterBody body={chapter.body} />
+        </div>
+      )}
     </div>
   );
 }
