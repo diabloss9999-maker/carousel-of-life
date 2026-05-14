@@ -11,7 +11,7 @@ export const siteConfig = {
   tagline: "별의 흐름과 카드의 계시로 오늘의 운명을 읽어드려요",
   description:
     "사주팔자·타로·성격유형을 통합한 AI 운명 풀이. 신비한 주술사가 매일의 기운을 읽어드립니다.",
-  url: process.env.NEXT_PUBLIC_APP_URL ?? "https://carousel-of-life.vercel.app",
+  url: process.env.NEXT_PUBLIC_APP_URL ?? "https://carouseloflife.com",
   ogImage: "/og-image.png",
   keywords: [
     "사주",

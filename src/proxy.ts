@@ -13,18 +13,19 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { updateSession } from "@/lib/supabase/middleware";
 
-const CANONICAL_HOST = "carousel-of-life.vercel.app";
+const CANONICAL_HOST = "carouseloflife.com";
 
 export async function proxy(request: NextRequest) {
   const host = request.headers.get("host") ?? "";
 
-  // 다른 *.vercel.app 별칭으로 들어왔으면 canonical 로 301 redirect.
+  // 비-canonical 호스트로 들어왔으면 canonical 로 301 redirect.
+  // 대상: 모든 *.vercel.app 별칭 + www.{CANONICAL_HOST} 서브도메인.
   // localhost / *.local / canonical 호스트는 통과.
   if (
     host !== CANONICAL_HOST &&
     !host.startsWith("localhost") &&
     !host.endsWith(".local") &&
-    host.endsWith(".vercel.app")
+    (host.endsWith(".vercel.app") || host === `www.${CANONICAL_HOST}`)
   ) {
     const url = request.nextUrl.clone();
     url.host = CANONICAL_HOST;

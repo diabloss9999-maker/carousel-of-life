@@ -16,10 +16,10 @@ const config: CapacitorConfig = {
   appName: "인생의 회전목마",
   webDir: "public",
   server: {
-    // Vercel production URL. 커스텀 도메인 등록 후 변경.
+    // 커스텀 도메인 — 환경변수로 override 가능.
     url:
       process.env.CAPACITOR_SERVER_URL ??
-      "https://carousel-of-life-k5hs.vercel.app",
+      "https://carouseloflife.com",
     cleartext: false,
     // 외부 URL 도 in-app 으로 처리할지 여부.
     androidScheme: "https",

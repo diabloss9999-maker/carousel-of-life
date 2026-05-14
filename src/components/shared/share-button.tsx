@@ -40,7 +40,7 @@ export function ShareButton({
   const ref = useRef<HTMLDivElement>(null);
 
   const shareUrl =
-    url ?? (typeof window !== "undefined" ? window.location.origin : "https://carousel-of-life.vercel.app");
+    url ?? (typeof window !== "undefined" ? window.location.origin : "https://carouseloflife.com");
   const shareText = `${text}\n\n— 인생의 회전목마\n${shareUrl}`;
 
   // 외부 클릭 시 닫기
