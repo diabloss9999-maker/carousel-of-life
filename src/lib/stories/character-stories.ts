@@ -346,8 +346,6 @@ const childChapters: StoryChapter[] = [
 
 카엘의 몸은 검은 룬으로 뒤덮이고, 그는 인간도 악마도 아닌 존재가 된다.
 
-마지막 순간, 그는 플레이어를 바라보며 말한다.
-
 "기억해. 욕망은 죄가 아니야.
 죄는, 그것을 핑계로 누군가를 짓밟는 거지."
 
@@ -984,7 +982,7 @@ export const WORLD_LORE: Partial<Record<
   이세계: {
     truthRoute: {
       title: "진실 루트",
-      unlockHint: "카엘·루나·라엘 셋 모두 Lv.10 도달 시 해금",
+      unlockHint: "심연의 룬 · 달의 룬 · 태양의 룬을 모두 획득하면 해금",
       body: `카엘의 심연의 룬
 루나의 달의 룬
 라엘의 태양의 룬
