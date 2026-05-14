@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CalendarDays } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import {
   Card,
@@ -24,13 +25,21 @@ interface ChineseZodiacCompatPanelProps {
   myChineseZodiac: ChineseZodiacSign;
 }
 
-/** 관계 유형 배지 색상. */
+/** 관계 유형 (KO) → 배지 색상 + 번역 키. */
 const RELATION_TONE: Record<string, string> = {
   삼합: "bg-accent/15 text-accent",
   육합: "bg-primary/15 text-primary",
   상충: "bg-destructive/10 text-destructive",
   동갑띠: "bg-muted/60 text-muted-foreground",
   일반: "bg-muted/60 text-muted-foreground",
+};
+
+const RELATION_TKEY: Record<string, string> = {
+  삼합: "relSamhap",
+  육합: "relYukhap",
+  상충: "relSangchung",
+  동갑띠: "relSameYear",
+  일반: "relGeneral",
 };
 
 export function ChineseZodiacCompatPanel({
@@ -42,16 +51,17 @@ export function ChineseZodiacCompatPanel({
     : null;
 
   const myInfo = CHINESE_ZODIAC_LIST.find((z) => z.id === myChineseZodiac)!;
+  const t = useTranslations("chineseCompat");
 
   return (
     <Card className="app-surface">
       <CardHeader>
         <CardTitle className="font-mystic flex items-center gap-2 text-lg">
           <CalendarDays className="h-5 w-5 text-accent" aria-hidden />
-          띠 궁합
+          {t("heading")}
         </CardTitle>
         <CardDescription className="text-xs">
-          내 띠는 <strong>{myInfo.ko}</strong> · 상대의 띠를 골라봐.
+          {t("body")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-5">
@@ -95,7 +105,7 @@ export function ChineseZodiacCompatPanel({
                     RELATION_TONE[result.relationType] ?? RELATION_TONE["일반"],
                   )}
                 >
-                  {result.relationType}
+                  {t((RELATION_TKEY[result.relationType] ?? "relGeneral") as "relSamhap" | "relYukhap" | "relSangchung" | "relSameYear" | "relGeneral")}
                 </span>
               </div>
               <ScoreBadge score={result.score} />
@@ -109,7 +119,7 @@ export function ChineseZodiacCompatPanel({
           </div>
         ) : (
           <p className="rounded-xl border border-dashed border-border/60 bg-card/30 p-4 text-center text-sm text-muted-foreground">
-            상대의 띠를 골라봐. 즉시 궁합 점수를 보여줄게.
+            {t("body")}
           </p>
         )}
       </CardContent>
@@ -118,6 +128,7 @@ export function ChineseZodiacCompatPanel({
 }
 
 function ScoreBadge({ score }: { score: number }) {
+  const t = useTranslations("chineseCompat");
   const tone =
     score >= 80
       ? "bg-accent/15 text-accent"
@@ -132,7 +143,7 @@ function ScoreBadge({ score }: { score: number }) {
         tone,
       )}
     >
-      {score}점
+      {t("score", { n: score })}
     </span>
   );
 }

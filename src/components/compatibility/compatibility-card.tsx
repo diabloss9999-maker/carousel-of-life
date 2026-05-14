@@ -1,4 +1,7 @@
-﻿import { Heart } from "lucide-react";
+"use client";
+
+import { Heart } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 import {
   Card,
@@ -13,12 +16,21 @@ interface CompatibilityCardProps {
 }
 
 export function CompatibilityCard({ reading }: CompatibilityCardProps) {
+  const locale = useLocale();
+  const dateStr =
+    locale === "en"
+      ? new Date(reading.createdAt).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+      : formatKoreanDate(new Date(reading.createdAt));
   return (
     <Card className="app-surface">
       <CardHeader className="space-y-3 pb-3">
         <div className="flex items-center justify-between">
           <span className="text-xs text-muted-foreground">
-            {formatKoreanDate(new Date(reading.createdAt))}
+            {dateStr}
           </span>
           <ScoreBadge score={reading.score} />
         </div>
@@ -43,6 +55,7 @@ export function CompatibilityCard({ reading }: CompatibilityCardProps) {
 }
 
 function ScoreBadge({ score }: { score: number }) {
+  const t = useTranslations("compatibilityCard");
   const tone =
     score >= 80
       ? "bg-accent/15 text-accent"
@@ -56,9 +69,9 @@ function ScoreBadge({ score }: { score: number }) {
         "rounded-full px-3 py-0.5 font-mystic text-sm font-medium",
         tone,
       )}
-      aria-label={`궁합 점수 ${score}점`}
+      aria-label={t("scoreAria", { n: score })}
     >
-      {score}점
+      {t("scoreSuffix", { n: score })}
     </span>
   );
 }

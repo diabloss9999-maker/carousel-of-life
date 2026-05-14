@@ -1,10 +1,5 @@
 "use client";
 
-/**
- * 궁합 라이트 C — 오늘 이 사람에게 어떻게?
- *
- * 오늘의 일진 × 두 사람 궁합 기반 즉시 조언 (매일 달라짐).
- */
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import {
@@ -17,6 +12,7 @@ import {
   TriangleAlert,
   X,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -41,6 +37,8 @@ export function CompatToday(props: CompatTodayProps) {
   const [data, setData] = useState<CompatTodayOutput | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("compatToday");
+  const tPrem = useTranslations("premiumCard");
 
   const handleGenerate = (): void => {
     setErrorMsg(null);
@@ -55,10 +53,12 @@ export function CompatToday(props: CompatTodayProps) {
       if (result.kind === "success" && result.data) {
         setData(result.data);
       } else {
-        setErrorMsg(result.message ?? "분석에 실패했어.");
+        setErrorMsg(result.message ?? tPrem("genericError"));
       }
     });
   };
+
+  const lockBullets = t.raw("lockBullets") as string[];
 
   if (!subscribed) {
     return (
@@ -66,22 +66,22 @@ export function CompatToday(props: CompatTodayProps) {
         <CardHeader>
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" />
-            오늘 이 사람에게 어떻게?
+            {t("title")}
             <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
-              라이트
+              {tPrem("lightBadge")}
             </span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="blur-[3px] select-none pointer-events-none space-y-2">
-            <p className="text-sm">오늘 가까이 지내기 좋은 날</p>
-            <p className="text-sm">오늘 보내기 좋은 메시지 톤</p>
-            <p className="text-sm">오늘 하지 말아야 할 것</p>
+            {lockBullets.map((line) => (
+              <p key={line} className="text-sm">{line}</p>
+            ))}
           </div>
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-3.5 w-3.5" />
-              라이트로 확인하기
+              {tPrem("verifyCta")}
             </Link>
           </Button>
         </CardContent>
@@ -95,7 +95,7 @@ export function CompatToday(props: CompatTodayProps) {
         <CardHeader>
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Calendar className="h-4 w-4 text-accent" />
-            오늘 {props.bName}에게 어떻게?
+            {t("title")}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -112,15 +112,13 @@ export function CompatToday(props: CompatTodayProps) {
               <X className="h-5 w-5 text-destructive" />
             )}
             <p className="font-mystic text-sm font-semibold">
-              {data.isGoodDay
-                ? "오늘은 가까이 지내기 좋은 날이야."
-                : "오늘은 거리감을 두는 게 좋겠어."}
+              {data.isGoodDay ? t("goodDay") : t("notGoodDay")}
             </p>
           </div>
 
           <div className="rounded-xl border border-border/60 bg-card/40 p-4 space-y-1.5">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-              오늘의 접근법
+              {t("approach")}
             </p>
             <p className="font-mystic leading-relaxed">{data.approach}</p>
           </div>
@@ -129,7 +127,7 @@ export function CompatToday(props: CompatTodayProps) {
             <MessageCircle className="h-4 w-4 flex-shrink-0 text-primary mt-0.5" />
             <div>
               <p className="text-xs font-semibold text-primary uppercase tracking-wide">
-                메시지 아이디어
+                {t("messageIdea")}
               </p>
               <p className="mt-0.5 text-sm leading-relaxed">
                 {data.messageIdea}
@@ -141,7 +139,7 @@ export function CompatToday(props: CompatTodayProps) {
             <TriangleAlert className="h-4 w-4 flex-shrink-0 text-destructive mt-0.5" />
             <div>
               <p className="text-xs font-semibold text-destructive uppercase tracking-wide">
-                오늘 피해야 할 것
+                {t("caution")}
               </p>
               <p className="mt-0.5 text-sm leading-relaxed">{data.caution}</p>
             </div>
@@ -156,13 +154,12 @@ export function CompatToday(props: CompatTodayProps) {
       <CardHeader>
         <CardTitle className="font-mystic flex items-center gap-2 text-base">
           <Calendar className="h-4 w-4 text-accent" />
-          오늘 {props.bName}에게 어떻게?
+          {t("title")}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         <p className="text-xs text-muted-foreground">
-          오늘의 일진과 두 사람 궁합을 합쳐 오늘 어떻게 다가가야 하는지 즉석
-          조언을 받아 봐.
+          {t("lockBody")}
         </p>
         {errorMsg ? (
           <p className="text-xs text-destructive">{errorMsg}</p>
@@ -176,12 +173,12 @@ export function CompatToday(props: CompatTodayProps) {
           {isPending ? (
             <>
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
-              오늘의 기운을 살피는 중...
+              {t("analyzing")}
             </>
           ) : (
             <>
               <Sparkles className="h-3.5 w-3.5" />
-              오늘의 조언 받기
+              {t("getCta")}
             </>
           )}
         </Button>

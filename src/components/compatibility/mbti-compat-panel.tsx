@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { BookHeart } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import {
   Card,
@@ -30,6 +31,7 @@ interface MbtiCompatPanelProps {
 export function MbtiCompatPanel({ myMbti }: MbtiCompatPanelProps) {
   const [manualMe, setManualMe] = useState("");
   const [partner, setPartner] = useState<PersonalityType | null>(null);
+  const t = useTranslations("mbtiCompat");
 
   const effectiveMe: PersonalityType | null =
     myMbti ?? (MBTI_PATTERN.test(manualMe.toUpperCase())
@@ -44,44 +46,42 @@ export function MbtiCompatPanel({ myMbti }: MbtiCompatPanelProps) {
       <CardHeader>
         <CardTitle className="font-mystic flex items-center gap-2 text-lg">
           <BookHeart className="h-5 w-5 text-accent" aria-hidden />
-          성격유형 궁합
+          {t("heading")}
         </CardTitle>
         <CardDescription className="text-xs">
-          {myMbti
-            ? `내 MBTI: ${myMbti} (${TYPE_INFO[myMbti].nickname}). 상대 MBTI 를 골라봐.`
-            : "내 MBTI 를 먼저 알려주면 더 정확해."}
+          {t("body")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-5">
         {!myMbti ? (
           <div className="space-y-2">
-            <Label htmlFor="manualMbti">내 MBTI</Label>
+            <Label htmlFor="manualMbti">{t("myMbti")}</Label>
             <Input
               id="manualMbti"
               value={manualMe}
               onChange={(e) => setManualMe(e.target.value.toUpperCase())}
               maxLength={4}
-              placeholder="예: ENFP"
+              placeholder={t("myMbtiPlaceholder")}
               className="uppercase"
             />
             {manualMe && !MBTI_PATTERN.test(manualMe.toUpperCase()) ? (
               <p className="text-xs text-destructive">
-                네 글자 MBTI 를 정확히 적어줘.
+                {t("myMbtiHint")}
               </p>
             ) : null}
           </div>
         ) : null}
 
         <div>
-          <p className="mb-2 text-xs text-muted-foreground">상대 MBTI</p>
+          <p className="mb-2 text-xs text-muted-foreground">{t("partnerMbti")}</p>
           <div className="grid grid-cols-4 gap-2">
-            {MBTI_TYPES.map((t) => {
-              const selected = partner === t;
+            {MBTI_TYPES.map((type) => {
+              const selected = partner === type;
               return (
                 <button
-                  key={t}
+                  key={type}
                   type="button"
-                  onClick={() => setPartner(t)}
+                  onClick={() => setPartner(type)}
                   className={cn(
                     "rounded-xl border px-2 py-3 text-center text-sm transition-all",
                     selected
@@ -91,10 +91,10 @@ export function MbtiCompatPanel({ myMbti }: MbtiCompatPanelProps) {
                   aria-pressed={selected}
                 >
                   <span className="block font-mystic text-base font-semibold">
-                    {t}
+                    {type}
                   </span>
                   <span className="mt-0.5 block text-[10px] text-muted-foreground">
-                    {TYPE_INFO[t].nickname}
+                    {TYPE_INFO[type].nickname}
                   </span>
                 </button>
               );
@@ -119,9 +119,7 @@ export function MbtiCompatPanel({ myMbti }: MbtiCompatPanelProps) {
           </div>
         ) : (
           <p className="rounded-xl border border-dashed border-border/60 bg-card/30 p-4 text-center text-sm text-muted-foreground">
-            {effectiveMe
-              ? "상대 MBTI 를 골라봐."
-              : "내 MBTI 부터 알려줘."}
+            {t("pickPartner")}
           </p>
         )}
       </CardContent>
@@ -130,6 +128,7 @@ export function MbtiCompatPanel({ myMbti }: MbtiCompatPanelProps) {
 }
 
 function ScoreBadge({ score }: { score: number }) {
+  const t = useTranslations("mbtiCompat");
   const tone =
     score >= 80
       ? "bg-accent/15 text-accent"
@@ -144,7 +143,7 @@ function ScoreBadge({ score }: { score: number }) {
         tone,
       )}
     >
-      {score}점
+      {t("score", { n: score })}
     </span>
   );
 }

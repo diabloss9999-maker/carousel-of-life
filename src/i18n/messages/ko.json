@@ -1235,15 +1235,19 @@
   },
   "careerFit": {
     "title": "직업 적성 심층 리포트",
-    "lockBody": "사주 + 별자리 + MBTI 통합 직업 적성 분석.",
+    "lockBody": "어떤 업무 환경·직군이 잘 맞는지 심층 분석. 한 번 생성하면 평생 보관돼.",
     "lockBullets": [
-      "최적 직업 분야 3가지",
-      "어울리는 업무 스타일",
-      "리더십 vs 팀원 적합도",
-      "주의해야 할 직업 환경"
+      "빛나는 업무 환경",
+      "잘 맞는 직군 5가지",
+      "성장 팁"
     ],
-    "analyzing": "직업 결을 풀고 있어…",
-    "getCta": "직업 적성 분석"
+    "analyzing": "직업 적성을 분석하는 중...",
+    "getCta": "분석 받기",
+    "bestEnvironment": "빛나는 업무 환경",
+    "fitRoles": "잘 맞는 직군",
+    "avoidEnvironments": "피해야 할 환경",
+    "workStyle": "나의 업무 스타일",
+    "growthTip": "직장에서 성장하는 팁"
   },
   "stressProfile": {
     "title": "스트레스 유형 + 회복법",

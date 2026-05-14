@@ -1235,15 +1235,19 @@
   },
   "careerFit": {
     "title": "Career fit — deep report",
-    "lockBody": "Integrated career-fit analysis across pillars, zodiac, and MBTI.",
+    "lockBody": "A deep analysis of which environment and roles fit you. Saved for life once generated.",
     "lockBullets": [
-      "Three best-fit fields",
-      "Work style that fits you",
-      "Leader vs. team player fit",
-      "Work environments to avoid"
+      "Best work environment",
+      "Five best-fit roles",
+      "Growth tip"
     ],
-    "analyzing": "Reading the career grain…",
-    "getCta": "Analyze career fit"
+    "analyzing": "Analyzing career fit...",
+    "getCta": "Analyze",
+    "bestEnvironment": "Best work environment",
+    "fitRoles": "Best-fit roles",
+    "avoidEnvironments": "Environments to avoid",
+    "workStyle": "My work style",
+    "growthTip": "How to grow at work"
   },
   "stressProfile": {
     "title": "Stress type + recovery",

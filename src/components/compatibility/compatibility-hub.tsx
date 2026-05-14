@@ -2,27 +2,16 @@
 
 /**
  * 궁합 허브 — 5개의 탭을 한 화면에서 전환한다.
- *  1) 나의 궁합 (나 + 상대)
- *  2) 타인 간 궁합 (제3자 두 명)
- *  3) 별자리 궁합
- *  4) 띠 궁합
- *  5) 성격유형 궁합
  */
 import { useState } from "react";
 import type { ReactNode } from "react";
 import { BookHeart, CalendarDays, Heart, Sparkles, UsersRound } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 
-const TAB_DEFS = [
-  { id: "new",           label: "나의 궁합",    icon: Heart },
-  { id: "twoPerson",     label: "타인 간 궁합", icon: UsersRound },
-  { id: "zodiac",        label: "별자리 궁합",  icon: Sparkles },
-  { id: "chineseZodiac", label: "띠 궁합",      icon: CalendarDays },
-  { id: "mbti",          label: "성격유형 궁합", icon: BookHeart },
-] as const;
-
-export type CompatibilityTabId = (typeof TAB_DEFS)[number]["id"];
+const TAB_IDS = ["new", "twoPerson", "zodiac", "chineseZodiac", "mbti"] as const;
+export type CompatibilityTabId = (typeof TAB_IDS)[number];
 
 interface CompatibilityHubProps {
   newReading: ReactNode;
@@ -42,15 +31,24 @@ export function CompatibilityHub({
   defaultTab = "new",
 }: CompatibilityHubProps) {
   const [active, setActive] = useState<CompatibilityTabId>(defaultTab);
+  const t = useTranslations("compatibilityHub");
+
+  const tabs = [
+    { id: "new"           as CompatibilityTabId, label: t("tabMine"),       icon: Heart },
+    { id: "twoPerson"     as CompatibilityTabId, label: t("tabTwoPerson"),  icon: UsersRound },
+    { id: "zodiac"        as CompatibilityTabId, label: t("tabZodiac"),     icon: Sparkles },
+    { id: "chineseZodiac" as CompatibilityTabId, label: t("tabChinese"),    icon: CalendarDays },
+    { id: "mbti"          as CompatibilityTabId, label: t("tabMbti"),       icon: BookHeart },
+  ];
 
   return (
     <div className="space-y-6">
       <div
         role="tablist"
-        aria-label="궁합 탭"
+        aria-label={t("aria")}
         className="flex gap-1 overflow-x-auto rounded-full border border-border/60 bg-card/40 p-1 backdrop-blur"
       >
-        {TAB_DEFS.map((tab) => {
+        {tabs.map((tab) => {
           const Icon = tab.icon;
           const selected = tab.id === active;
           return (

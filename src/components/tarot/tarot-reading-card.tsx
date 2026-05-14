@@ -1,6 +1,4 @@
-"use client";
-
-import { useLocale, useTranslations } from "next-intl";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { CharacterImage } from "@/components/shared/character-image";
 import {
@@ -34,13 +32,13 @@ function asDrawnCards(cards: unknown): DrawnCardJson[] {
   return [];
 }
 
-export function TarotReadingCard({ reading }: TarotReadingCardProps) {
+export async function TarotReadingCard({ reading }: TarotReadingCardProps) {
   const cards = asDrawnCards(reading.cards);
   const card = cards[0];
-  const t = useTranslations("tarotForm");
-  const tChar = useTranslations("characters");
-  const tCardTabs = useTranslations("cardTabs");
-  const locale = useLocale();
+  const t = await getTranslations("tarotForm");
+  const tChar = await getTranslations("characters");
+  const tCardTabs = await getTranslations("cardTabs");
+  const locale = await getLocale();
 
   const readDate = reading.createdAt instanceof Date
     ? reading.createdAt.toISOString().slice(0, 10)

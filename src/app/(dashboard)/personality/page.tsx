@@ -15,15 +15,16 @@ import { requireProfile } from "@/lib/auth/get-user";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "성격유형",
-  description: "20문항으로 나의 성격 유형을 알아봐요.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const tPage = await getTranslations("personalityPage");
+  return { title: tPage("metaTitle"), description: tPage("metaDescription") };
+}
 
 export default async function PersonalityPage() {
   const { profile } = await requireProfile();
   const subscribed = await hasActiveSubscription(profile.userId);
   const t = await getTranslations("personality");
+  const tPage = await getTranslations("personalityPage");
 
   return (
     <div className="space-y-8">
@@ -38,11 +39,11 @@ export default async function PersonalityPage() {
 
       <Card className="app-surface">
         <CardHeader className="pb-2">
-          <CardTitle className="font-mystic text-lg">나는 어떤 유형?</CardTitle>
+          <CardTitle className="font-mystic text-lg">{tPage("title")}</CardTitle>
           <CardDescription className="text-xs">
             {profile.mbti
-              ? `현재 유형: ${profile.mbti} — 다시 테스트하거나 그대로 유지할 수 있어.`
-              : "아직 유형 테스트를 하지 않았어. 지금 바로 알아봐!"}
+              ? tPage("bodyWithProfile")
+              : tPage("bodyNoProfile")}
           </CardDescription>
         </CardHeader>
         <CardContent>

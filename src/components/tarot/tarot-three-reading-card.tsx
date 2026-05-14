@@ -1,7 +1,5 @@
-"use client";
-
 import { ArrowRight, Clock, History, Sparkles } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import {
   Card,
@@ -34,11 +32,11 @@ function asDrawnCards(cards: unknown): DrawnCardJson[] {
 
 const POSITION_KEYS = ["past", "present", "future"] as const;
 
-export function TarotThreeReadingCard({ reading }: TarotThreeReadingCardProps) {
+export async function TarotThreeReadingCard({ reading }: TarotThreeReadingCardProps) {
   const cards = asDrawnCards(reading.cards);
   const parsed = parseThreeInterpretation(reading.interpretation);
-  const t = useTranslations("tarotForm");
-  const locale = useLocale();
+  const t = await getTranslations("tarotForm");
+  const locale = await getLocale();
 
   if (!parsed || cards.length < 3) {
     return null;

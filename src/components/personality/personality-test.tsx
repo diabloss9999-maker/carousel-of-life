@@ -10,6 +10,7 @@
 import Image from "next/image";
 import { useState, useTransition } from "react";
 import { ChevronLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { savePersonalityResult } from "@/lib/personality/actions";
@@ -36,6 +37,7 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
   const [resultType, setResultType] = useState<string | null>(currentType);
   const [axes, setAxes] = useState<Record<string, AxisResult> | null>(null);
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("personalityTest");
 
   /** 선택지 클릭 시 호출. */
   function handleSelect(choice: Choice) {
@@ -89,27 +91,27 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
         <div className="h-12" />
         <div className="space-y-2">
           <h2 className="font-mystic text-2xl font-semibold">
-            나는 어떤 유형일까?
+            {t("startTitle")}
           </h2>
           <p className="text-muted-foreground text-sm leading-relaxed">
-            20개의 질문으로 나의 성격 유형을 알아봐.
+            {t("startBody1")}
             <br />
-            솔직하게 답할수록 정확해져.
+            {t("startBody2")}
           </p>
         </div>
         <div className="grid grid-cols-3 gap-3 text-xs text-muted-foreground">
           <div className="rounded-xl border border-border/40 bg-card/50 p-3 space-y-1">
-            <p>약 3~5분</p>
+            <p>{t("duration")}</p>
           </div>
           <div className="rounded-xl border border-border/40 bg-card/50 p-3 space-y-1">
-            <p>20문항</p>
+            <p>{t("questionCount")}</p>
           </div>
           <div className="rounded-xl border border-border/40 bg-card/50 p-3 space-y-1">
-            <p>16가지 유형</p>
+            <p>{t("typeCount")}</p>
           </div>
         </div>
         <Button size="lg" className="min-w-44" onClick={() => setStarted(true)}>
-          테스트 시작
+          {t("startCta")}
         </Button>
       </div>
     );
@@ -120,7 +122,7 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
     return (
       <div className="flex flex-col items-center gap-4 py-16 text-center">
         <div className="h-10 animate-pulse" />
-        <p className="font-mystic text-lg">유형을 분석하고 있어…</p>
+        <p className="font-mystic text-lg">{t("analyzing")}</p>
       </div>
     );
   }
@@ -166,7 +168,7 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
       {/* 문항 카드 */}
       <div className="rounded-2xl border border-border/40 bg-card/60 p-6 backdrop-blur space-y-6">
         <p className="font-mystic text-lg font-medium leading-relaxed text-center">
-          {current + 1}. 나는…
+          {t("questionPrefix", { n: current + 1 })}
         </p>
 
         <div className="flex flex-col gap-3">
@@ -195,7 +197,7 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
             className="text-muted-foreground"
           >
             <ChevronLeft className="h-4 w-4 mr-1" />
-            이전 문항
+            {t("previousQ")}
           </Button>
         </div>
       )}
@@ -242,10 +244,10 @@ function ChoiceButton({
 }
 
 const AXIS_CONFIG = [
-  { axis: "EI", labelA: "E 외향", labelB: "I 내향" },
-  { axis: "SN", labelA: "S 감각", labelB: "N 직관" },
-  { axis: "TF", labelA: "T 사고", labelB: "F 감정" },
-  { axis: "JP", labelA: "J 판단", labelB: "P 인식" },
+  { axis: "EI", aKey: "axisE", bKey: "axisI" },
+  { axis: "SN", aKey: "axisS", bKey: "axisN" },
+  { axis: "TF", aKey: "axisT", bKey: "axisF" },
+  { axis: "JP", aKey: "axisJ", bKey: "axisP" },
 ] as const;
 
 function ResultCard({
@@ -257,6 +259,7 @@ function ResultCard({
   axes: Record<string, AxisResult> | null;
   onRetest: () => void;
 }) {
+  const t = useTranslations("personalityTest");
   return (
     <div className="space-y-5">
       {/* 유형 헤더 */}
@@ -286,12 +289,14 @@ function ResultCard({
       {/* 축별 퍼센트 바 */}
       {axes && (
         <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
-          <h3 className="font-mystic font-semibold text-sm">성향 강도</h3>
+          <h3 className="font-mystic font-semibold text-sm">{t("strengthsHeading")}</h3>
           <div className="space-y-3">
-            {AXIS_CONFIG.map(({ axis, labelA, labelB }) => {
+            {AXIS_CONFIG.map(({ axis, aKey, bKey }) => {
               const ax = axes[axis];
               if (!ax) return null;
               const isA = ax.winner === "A";
+              const labelA = t(aKey as "axisE" | "axisS" | "axisT" | "axisJ");
+              const labelB = t(bKey as "axisI" | "axisN" | "axisF" | "axisP");
               const winnerLabel = isA ? labelA : labelB;
               const pct = ax.pct;
               return (
@@ -321,7 +326,7 @@ function ResultCard({
 
       {/* 어울리는 직업 */}
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
-        <h3 className="font-mystic font-semibold text-sm">어울리는 직업</h3>
+        <h3 className="font-mystic font-semibold text-sm">{t("careersHeading")}</h3>
         <div className="flex flex-wrap gap-1.5">
           {info.suitableJobs.map((job) => (
             <span key={job} className="rounded-full bg-primary/10 border border-primary/25 px-2.5 py-0.5 text-xs text-primary font-medium">
@@ -333,7 +338,7 @@ function ResultCard({
 
       {/* 상세 설명 */}
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
-        <h3 className="font-mystic font-semibold text-sm">나는 이런 사람이야</h3>
+        <h3 className="font-mystic font-semibold text-sm">{t("iAm")}</h3>
         <p className="text-sm text-muted-foreground leading-relaxed">
           {info.description}
         </p>
@@ -341,7 +346,7 @@ function ResultCard({
 
       {/* 강점 */}
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
-        <h3 className="font-mystic font-semibold text-sm text-accent">강점</h3>
+        <h3 className="font-mystic font-semibold text-sm text-accent">{t("strengths")}</h3>
         <ul className="space-y-1.5">
           {info.strengths.map((s) => (
             <li key={s} className="flex items-center gap-2 text-sm">
@@ -354,7 +359,7 @@ function ResultCard({
 
       {/* 주의점 */}
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
-        <h3 className="font-mystic font-semibold text-sm text-muted-foreground">이런 점 주의해</h3>
+        <h3 className="font-mystic font-semibold text-sm text-muted-foreground">{t("cautions")}</h3>
         <ul className="space-y-1.5">
           {info.cautions.map((c) => (
             <li key={c} className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -369,7 +374,7 @@ function ResultCard({
       <div className="grid grid-cols-2 gap-3">
         {/* 잘 맞는 유형 */}
         <div className="space-y-2">
-          <h3 className="font-mystic font-semibold text-sm text-center">💞 잘 맞는</h3>
+          <h3 className="font-mystic font-semibold text-sm text-center">💞 {t("compatible")}</h3>
           <div className="flex justify-center gap-2">
             {info.compatibleWith.map((t) => {
               const ti = TYPE_INFO[t];
@@ -388,7 +393,7 @@ function ResultCard({
 
         {/* 주의가 필요한 유형 */}
         <div className="space-y-2">
-          <h3 className="font-mystic font-semibold text-sm text-center">주의</h3>
+          <h3 className="font-mystic font-semibold text-sm text-center">{t("caution")}</h3>
           <div className="flex justify-center gap-2">
             {info.incompatibleWith.map((t) => {
               const ti = TYPE_INFO[t];
@@ -407,7 +412,7 @@ function ResultCard({
       </div>
 
       <p className="text-center text-xs text-muted-foreground">
-        이 결과는 운세·타로·사주 풀이에 자동으로 반영돼.
+        {t("resultIntegration")}
       </p>
 
       <Button
@@ -416,7 +421,7 @@ function ResultCard({
         className="w-full"
         onClick={onRetest}
       >
-        다시 테스트하기
+        {t("retestCta")}
       </Button>
     </div>
   );

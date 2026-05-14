@@ -17,15 +17,16 @@ import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import type { PersonalityType } from "@/lib/personality/questions";
 import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "궁합",
-  description: "사주·별자리·띠·성격유형으로 보는 궁합 풀이.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const tPage = await getTranslations("compatibilityPage");
+  return { title: tPage("metaTitle"), description: tPage("metaDescription") };
+}
 
 const MBTI_PATTERN = /^[EI][NS][TF][JP]$/;
 
 export default async function CompatibilityPage() {
   const t = await getTranslations("compatibility");
+  const tPage = await getTranslations("compatibilityPage");
   const { profile } = await requireProfile();
   const subscribed = await hasActiveSubscription(profile.userId);
 
@@ -44,7 +45,7 @@ export default async function CompatibilityPage() {
       {recentReadings.length > 0 ? (
         <section id="compat-result" className="space-y-4">
           <h2 className="font-mystic text-xl font-semibold tracking-tight">
-            오늘의 궁합
+            {tPage("todayHeading")}
           </h2>
           <div className="space-y-4">
             {recentReadings.map((r) => (

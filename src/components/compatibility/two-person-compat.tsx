@@ -2,11 +2,10 @@
 
 /**
  * 타인 간 궁합 — 제3자 두 명(A, B)의 궁합을 분석한다.
- *
- * 입력만 받아 AI 풀이 결과를 즉석에서 보여주며 DB에 저장하지 않는다.
  */
 import { useActionState } from "react";
 import { Heart, Loader2, UsersRound } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -43,6 +42,8 @@ export function TwoPersonCompat({ subscribed }: TwoPersonCompatProps) {
     twoPersonCompatAction,
     twoPersonCompatIdleState,
   );
+  const t = useTranslations("twoPersonCompat");
+  const tForm = useTranslations("compatibilityForm");
 
   useScrollToResult(isPending, "two-person-result", 200);
 
@@ -52,22 +53,22 @@ export function TwoPersonCompat({ subscribed }: TwoPersonCompatProps) {
         <CardHeader>
           <CardTitle className="font-mystic flex items-center gap-2 text-lg">
             <UsersRound className="h-5 w-5 text-accent" aria-hidden />
-            타인 간 궁합
+            {t("heading")}
           </CardTitle>
           <CardDescription className="text-xs">
-            두 사람의 정보를 입력하면 AI 가 궁합을 분석해 드려요. 결혼·친구·비즈니스 파트너 적합성 검토에 좋아.
+            {t("body")}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form action={formAction} className="space-y-6">
             <div className="grid gap-6 md:grid-cols-2">
               <PersonFieldset
-                title="첫 번째 사람"
+                title={t("person1")}
                 prefix="a"
                 disabled={isPending}
               />
               <PersonFieldset
-                title="두 번째 사람"
+                title={t("person2")}
                 prefix="b"
                 disabled={isPending}
               />
@@ -88,12 +89,12 @@ export function TwoPersonCompat({ subscribed }: TwoPersonCompatProps) {
               {isPending ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                  두 사람의 기운을 견주는 중…
+                  {tForm("submitLoading")}
                 </>
               ) : (
                 <>
                   <Heart className="h-4 w-4" aria-hidden />
-                  궁합 분석하기
+                  {tForm("submitCta")}
                 </>
               )}
             </Button>
@@ -140,7 +141,6 @@ export function TwoPersonCompat({ subscribed }: TwoPersonCompatProps) {
 
 interface PersonFieldsetProps {
   title: string;
-  /** 폼 필드 prefix — "a" 또는 "b". */
   prefix: "a" | "b";
   disabled: boolean;
 }
@@ -148,6 +148,7 @@ interface PersonFieldsetProps {
 function PersonFieldset({ title, prefix, disabled }: PersonFieldsetProps) {
   const id = (suffix: string): string => `${prefix}${suffix}`;
   const name = (suffix: string): string => `${prefix}${suffix}`;
+  const tForm = useTranslations("compatibilityForm");
 
   return (
     <fieldset className="space-y-4 rounded-xl border border-border/60 bg-card/40 p-4">
@@ -156,24 +157,20 @@ function PersonFieldset({ title, prefix, disabled }: PersonFieldsetProps) {
       </legend>
 
       <div className="space-y-2">
-        <Label htmlFor={id("Name")}>
-          이름 <span className="text-destructive">*</span>
-        </Label>
+        <Label htmlFor={id("Name")}>{tForm("name")}</Label>
         <Input
           id={id("Name")}
           name={name("Name")}
           type="text"
           maxLength={40}
           required
-          placeholder="이름"
+          placeholder={tForm("namePlaceholder")}
           disabled={disabled}
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor={id("BirthDate")}>
-          생년월일 <span className="text-destructive">*</span>
-        </Label>
+        <Label htmlFor={id("BirthDate")}>{tForm("birthDate")}</Label>
         <Input
           id={id("BirthDate")}
           name={name("BirthDate")}
@@ -186,9 +183,7 @@ function PersonFieldset({ title, prefix, disabled }: PersonFieldsetProps) {
 
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
-          <Label htmlFor={id("CalendarSystem")}>
-            달력 <span className="text-destructive">*</span>
-          </Label>
+          <Label htmlFor={id("CalendarSystem")}>{tForm("calendar")}</Label>
           <Select
             id={id("CalendarSystem")}
             name={name("CalendarSystem")}
@@ -196,14 +191,12 @@ function PersonFieldset({ title, prefix, disabled }: PersonFieldsetProps) {
             required
             disabled={disabled}
           >
-            <option value="solar">양력</option>
-            <option value="lunar">음력</option>
+            <option value="solar">{tForm("calendarSolar")}</option>
+            <option value="lunar">{tForm("calendarLunar")}</option>
           </Select>
         </div>
         <div className="space-y-2">
-          <Label htmlFor={id("Gender")}>
-            성별 <span className="text-destructive">*</span>
-          </Label>
+          <Label htmlFor={id("Gender")}>{tForm("gender")}</Label>
           <Select
             id={id("Gender")}
             name={name("Gender")}
@@ -212,11 +205,11 @@ function PersonFieldset({ title, prefix, disabled }: PersonFieldsetProps) {
             disabled={disabled}
           >
             <option value="" disabled>
-              골라줘
+              {tForm("genderPick")}
             </option>
-            <option value="male">남</option>
-            <option value="female">여</option>
-            <option value="other">기타</option>
+            <option value="male">{tForm("genderMale")}</option>
+            <option value="female">{tForm("genderFemale")}</option>
+            <option value="other">{tForm("genderOther")}</option>
           </Select>
         </div>
       </div>
@@ -228,7 +221,7 @@ function PersonFieldset({ title, prefix, disabled }: PersonFieldsetProps) {
           name={name("Mbti")}
           type="text"
           maxLength={4}
-          placeholder="예: ENFP"
+          placeholder={tForm("mbtiPlaceholder")}
           className="uppercase"
           disabled={disabled}
         />
@@ -243,6 +236,7 @@ interface TwoPersonResultProps {
 
 function TwoPersonResultCard({ result }: TwoPersonResultProps) {
   const { score, summary, detail } = result.output;
+  const t = useTranslations("twoPersonCompat");
 
   return (
     <Card className="app-surface">
@@ -274,9 +268,36 @@ function TwoPersonResultCard({ result }: TwoPersonResultProps) {
       </CardContent>
     </Card>
   );
+
+  function ScoreGauge({ score }: { score: number }) {
+    const clamped = Math.max(0, Math.min(100, score));
+    const gaugeStyle = { "--gauge": `${clamped}%` } as React.CSSProperties;
+
+    return (
+      <div className="space-y-1">
+        <div className="flex items-center justify-between text-xs text-muted-foreground">
+          <span>{t("score")}</span>
+          <span className="font-mystic font-semibold text-foreground">
+            {clamped} / 100
+          </span>
+        </div>
+        <div
+          className="h-2 w-full overflow-hidden rounded-full bg-card"
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={clamped}
+          style={gaugeStyle}
+        >
+          <div className="h-full w-[var(--gauge)] rounded-full bg-gradient-to-r from-primary via-accent to-primary transition-[width] duration-700 ease-out" />
+        </div>
+      </div>
+    );
+  }
 }
 
 function ScoreBadge({ score }: { score: number }) {
+  const t = useTranslations("twoPersonCompat");
   const tone =
     score >= 80
       ? "bg-accent/15 text-accent"
@@ -290,36 +311,9 @@ function ScoreBadge({ score }: { score: number }) {
         "rounded-full px-3 py-0.5 font-mystic text-sm font-medium",
         tone,
       )}
-      aria-label={`궁합 점수 ${score}점`}
+      aria-label={t("scoreUnit", { n: score })}
     >
-      {score}점
+      {t("scoreUnit", { n: score })}
     </span>
-  );
-}
-
-function ScoreGauge({ score }: { score: number }) {
-  const clamped = Math.max(0, Math.min(100, score));
-  // Tailwind 4 의 arbitrary value + CSS 변수로 동적 width 처리.
-  const gaugeStyle = { "--gauge": `${clamped}%` } as React.CSSProperties;
-
-  return (
-    <div className="space-y-1">
-      <div className="flex items-center justify-between text-xs text-muted-foreground">
-        <span>궁합 점수</span>
-        <span className="font-mystic font-semibold text-foreground">
-          {clamped} / 100
-        </span>
-      </div>
-      <div
-        className="h-2 w-full overflow-hidden rounded-full bg-card"
-        role="progressbar"
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={clamped}
-        style={gaugeStyle}
-      >
-        <div className="h-full w-[var(--gauge)] rounded-full bg-gradient-to-r from-primary via-accent to-primary transition-[width] duration-700 ease-out" />
-      </div>
-    </div>
   );
 }

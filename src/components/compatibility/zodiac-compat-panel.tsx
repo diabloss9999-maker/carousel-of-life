@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import {
   Card,
@@ -28,16 +29,17 @@ export function ZodiacCompatPanel({ myZodiac }: ZodiacCompatPanelProps) {
     : null;
 
   const myInfo = ZODIAC_LIST.find((z) => z.id === myZodiac)!;
+  const t = useTranslations("zodiacCompat");
 
   return (
     <Card className="app-surface">
       <CardHeader>
         <CardTitle className="font-mystic flex items-center gap-2 text-lg">
           <Sparkles className="h-5 w-5 text-accent" aria-hidden />
-          별자리 궁합
+          {t("heading")}
         </CardTitle>
         <CardDescription className="text-xs">
-          내 별자리는 <strong>{myInfo.ko}</strong> · 궁금한 상대 별자리를 골라봐.
+          {t("yourSignIs", { sign: myInfo.ko })} · {t("pickPartner")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-5">
@@ -83,7 +85,7 @@ export function ZodiacCompatPanel({ myZodiac }: ZodiacCompatPanelProps) {
           </div>
         ) : (
           <p className="rounded-xl border border-dashed border-border/60 bg-card/30 p-4 text-center text-sm text-muted-foreground">
-            상대의 별자리를 골라봐. 즉시 궁합 점수를 보여줄게.
+            {t("pickPartner")}
           </p>
         )}
       </CardContent>
@@ -92,6 +94,7 @@ export function ZodiacCompatPanel({ myZodiac }: ZodiacCompatPanelProps) {
 }
 
 function ScoreBadge({ score }: { score: number }) {
+  const t = useTranslations("zodiacCompat");
   const tone =
     score >= 80
       ? "bg-accent/15 text-accent"
@@ -106,7 +109,7 @@ function ScoreBadge({ score }: { score: number }) {
         tone,
       )}
     >
-      {score}점
+      {t("score", { n: score })}
     </span>
   );
 }
