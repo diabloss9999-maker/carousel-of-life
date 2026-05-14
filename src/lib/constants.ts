@@ -71,8 +71,8 @@ export const AI_MODELS = {
 /** AI 응답 토큰 한도. */
 export const AI_LIMITS = {
   sajuMaxTokens: 600,
-  /** 사주 심층 분석 — 7개 섹션 × 5-10문장. */
-  sajuDeepMaxTokens: 4500,
+  /** 사주 심층 분석 — 7개 섹션 × 5-10문장 + 8글자 분해. 한국어/영어 모두 안전한 여유분. */
+  sajuDeepMaxTokens: 8000,
   fortuneMaxTokens: 2200, // 6-8문장 본문 + 메타 필드
   tarotMaxTokens: 2000,
   /**
