@@ -6,6 +6,7 @@
  *  → { sessionId } 반환
  */
 import { NextResponse, type NextRequest } from "next/server";
+import { getTranslations } from "next-intl/server";
 import { z } from "zod";
 
 import { requireProfile } from "@/lib/auth/get-user";
@@ -52,12 +53,13 @@ export async function POST(request: NextRequest) {
       data: { sessionId: session.id, resumed },
     });
   } catch (e) {
+    const tErr = await getTranslations("actionErrors");
     return NextResponse.json(
       {
         ok: false,
         error: {
           code: API_ERROR_CODES.INTERNAL_ERROR,
-          message: e instanceof Error ? e.message : "세션 생성 실패",
+          message: e instanceof Error ? e.message : tErr("sessionCreateFailed"),
         },
       },
       { status: 500 },

@@ -85,19 +85,20 @@ export async function POST(
   ctx: { params: Promise<{ sessionId: string }> },
 ) {
   const { sessionId } = await ctx.params;
+  const tErr = await getTranslations("actionErrors");
 
   let parsed;
   try {
     const body = await request.json();
     parsed = bodySchema.safeParse(body);
   } catch {
-    return jsonError(400, API_ERROR_CODES.VALIDATION_FAILED, "요청 본문 파싱 실패");
+    return jsonError(400, API_ERROR_CODES.VALIDATION_FAILED, tErr("chatBodyParseFailed"));
   }
   if (!parsed.success) {
     return jsonError(
       400,
       API_ERROR_CODES.VALIDATION_FAILED,
-      parsed.error.issues[0]?.message ?? "본문이 올바르지 않아요.",
+      parsed.error.issues[0]?.message ?? tErr("chatBodyInvalid"),
     );
   }
 
@@ -112,7 +113,7 @@ export async function POST(
   if (!prepared.ok) {
     if (prepared.reason === "quota_exceeded") {
       return jsonError(429, API_ERROR_CODES.QUOTA_EXCEEDED,
-        `오늘의 문답 한도(${prepared.max}회)를 모두 사용했어요.`);
+        tErr("chatQuotaExceeded", { n: prepared.max }));
     }
     if (prepared.reason === "session_not_found") {
       return jsonError(404, API_ERROR_CODES.NOT_FOUND, prepared.message);

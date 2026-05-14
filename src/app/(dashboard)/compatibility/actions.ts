@@ -4,7 +4,7 @@
  * 궁합 풀이 Server Actions.
  */
 import { revalidatePath } from "next/cache";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { z } from "zod";
 
 import { requireProfile } from "@/lib/auth/get-user";
@@ -73,10 +73,12 @@ export async function submitCompatibilityAction(
     mbti: formData.get("partnerMbti") ?? "",
   });
 
+  const tErr = await getTranslations("actionErrors");
+
   if (!parsed.success) {
     return {
       kind: "error",
-      message: parsed.error.issues[0]?.message ?? "입력값이 올바르지 않아.",
+      message: parsed.error.issues[0]?.message ?? tErr("validationFailed"),
     };
   }
 
@@ -87,7 +89,7 @@ export async function submitCompatibilityAction(
   } catch (e) {
     return {
       kind: "error",
-      message: "인증 오류: " + (e instanceof Error ? e.message : "다시 로그인해 줘."),
+      message: tErr("authError", { message: e instanceof Error ? e.message : tErr("reloginRequired") }),
     };
   }
 
@@ -107,7 +109,7 @@ export async function submitCompatibilityAction(
   } catch (e) {
     return {
       kind: "error",
-      message: "궁합을 풀이하는 중 오류가 생겼어: " + (e instanceof Error ? e.message : "알 수 없는 원인"),
+      message: tErr("compatibilityError", { message: e instanceof Error ? e.message : tErr("unknownReason") }),
     };
   }
 
@@ -120,7 +122,7 @@ export async function submitCompatibilityAction(
     return {
       kind: "error",
       quotaExceeded: true,
-      message: `오늘 무료 궁합은 ${result.max}회까지야. 라이트로 무제한 풀어볼래?`,
+      message: tErr("compatFreeExceeded", { n: result.max }),
     };
   }
 
@@ -194,10 +196,12 @@ export async function twoPersonCompatAction(
     bMbti: formData.get("bMbti") ?? "",
   });
 
+  const tErr = await getTranslations("actionErrors");
+
   if (!parsed.success) {
     return {
       kind: "error",
-      message: parsed.error.issues[0]?.message ?? "입력값이 올바르지 않아.",
+      message: parsed.error.issues[0]?.message ?? tErr("validationFailed"),
     };
   }
 
@@ -244,9 +248,9 @@ export async function twoPersonCompatAction(
   } catch (e) {
     return {
       kind: "error",
-      message:
-        "두 사람의 기운을 읽지 못했어요: " +
-        (e instanceof Error ? e.message : "알 수 없는 원인"),
+      message: tErr("compatibilityAiFailed", {
+        message: e instanceof Error ? e.message : tErr("unknownReason"),
+      }),
     };
   }
 }
@@ -255,17 +259,16 @@ export async function twoPersonCompatAction(
 // 라이트 — 궁합 추가 분석 (캐시 없음, 매번 새로 생성)
 // =============================================================================
 
-const PREMIUM_ONLY_MESSAGE = "라이트 전용 기능이야.";
-
 /** 라이트 가드 — 통과 시 null, 실패 시 에러 메시지 반환. */
 async function ensurePremium(): Promise<string | null> {
+  const tErr = await getTranslations("actionErrors");
   try {
     const { profile } = await requireProfile();
     const subscribed = await hasActiveSubscription(profile.userId);
-    if (!subscribed) return PREMIUM_ONLY_MESSAGE;
+    if (!subscribed) return tErr("compatPremiumOnly");
     return null;
   } catch (e) {
-    return e instanceof Error ? e.message : "다시 로그인해 줘.";
+    return e instanceof Error ? e.message : tErr("reloginRequired");
   }
 }
 
@@ -355,7 +358,7 @@ export async function generateCompatPurposeAction(
   } catch (e) {
     return {
       kind: "error",
-      message: e instanceof Error ? e.message : "분석에 실패했어.",
+      message: e instanceof Error ? e.message : (await getTranslations("actionErrors"))("analysisFailed"),
     };
   }
 }
@@ -420,7 +423,7 @@ export async function generateCompatConflictAction(
   } catch (e) {
     return {
       kind: "error",
-      message: e instanceof Error ? e.message : "분석에 실패했어.",
+      message: e instanceof Error ? e.message : (await getTranslations("actionErrors"))("analysisFailed"),
     };
   }
 }
@@ -488,7 +491,7 @@ ${mbtiLine.join("\n")}
   } catch (e) {
     return {
       kind: "error",
-      message: e instanceof Error ? e.message : "분석에 실패했어.",
+      message: e instanceof Error ? e.message : (await getTranslations("actionErrors"))("analysisFailed"),
     };
   }
 }

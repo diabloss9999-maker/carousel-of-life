@@ -22,7 +22,7 @@ import {
 } from "@/db/schema";
 import { CHARACTER_CARD_VOICE, CHARACTER_PROSE_VOICE } from "@/lib/ai/character-voice";
 import { getTodayCharacterByCategory } from "@/lib/daily-question/rotation";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { generateJson, generateMarkdown } from "@/lib/ai/generate";
 import { buildUserContext } from "@/lib/ai/prompts";
 import { lenormandSingleAiSchema } from "@/lib/ai/types";
@@ -183,12 +183,13 @@ ${spreadInstruction}
       locale: await getLocale(),
     });
   } catch (e) {
+    const tErr = await getTranslations("actionErrors");
     return {
       ok: false,
       reason: "ai_failed",
-      message:
-        "르노르망의 메시지를 읽지 못했어요: " +
-        (e instanceof Error ? e.message : "알 수 없는 원인"),
+      message: tErr("lenormandAiFailed", {
+        message: e instanceof Error ? e.message : tErr("unknownReason"),
+      }),
     };
   }
 
@@ -288,12 +289,13 @@ ${CARD_DEFS}
       locale: await getLocale(),
     });
   } catch (e) {
+    const tErr = await getTranslations("actionErrors");
     return {
       ok: false,
       reason: "ai_failed",
-      message:
-        "르노르망 9장 해석을 만들지 못했어요: " +
-        (e instanceof Error ? e.message : "알 수 없는 원인"),
+      message: tErr("lenormandThreeFailed", {
+        message: e instanceof Error ? e.message : tErr("unknownReason"),
+      }),
     };
   }
 
@@ -318,7 +320,7 @@ ${CARD_DEFS}
     return {
       ok: false,
       reason: "ai_failed",
-      message: "르노르망 9장 결과 저장에 실패했어요.",
+      message: (await getTranslations("actionErrors"))("lenormandSaveFailed"),
     };
   }
 
@@ -339,12 +341,13 @@ async function processGrandTableau(opts: {
   try {
     analysis = analyzeGrandTableau(drawnCards, opts.gender);
   } catch (e) {
+    const tErr = await getTranslations("actionErrors");
     return {
       ok: false,
       reason: "ai_failed",
-      message:
-        "그랑 타블로 분석에 실패했어요: " +
-        (e instanceof Error ? e.message : "알 수 없는 원인"),
+      message: tErr("grandTableauFailed", {
+        message: e instanceof Error ? e.message : tErr("unknownReason"),
+      }),
     };
   }
 
@@ -423,12 +426,13 @@ ${CARD_DEFS}
       locale: await getLocale(),
     });
   } catch (e) {
+    const tErr = await getTranslations("actionErrors");
     return {
       ok: false,
       reason: "ai_failed",
-      message:
-        "그랑 타블로 해석을 만들지 못했어요: " +
-        (e instanceof Error ? e.message : "알 수 없는 원인"),
+      message: tErr("grandTableauInterpretFailed", {
+        message: e instanceof Error ? e.message : tErr("unknownReason"),
+      }),
     };
   }
 
@@ -455,7 +459,7 @@ ${CARD_DEFS}
     return {
       ok: false,
       reason: "ai_failed",
-      message: "그랑 타블로 결과 저장에 실패했어요.",
+      message: (await getTranslations("actionErrors"))("grandTableauSaveFailed"),
     };
   }
 
@@ -533,7 +537,7 @@ export async function createLenormandReading(opts: {
     return {
       ok: false,
       reason: "invalid_input",
-      message: "그랑 타블로는 시그니피케이터 성별이 필요해요.",
+      message: (await getTranslations("actionErrors"))("grandTableauGenderRequired"),
     };
   }
 

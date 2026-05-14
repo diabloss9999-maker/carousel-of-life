@@ -7,6 +7,7 @@
  */
 import "server-only";
 
+import { getTranslations } from "next-intl/server";
 import { and, asc, desc, eq, gte } from "drizzle-orm";
 
 import { db } from "@/db";
@@ -260,12 +261,13 @@ export async function prepareSendMessage(opts: {
   try {
     profile = await ensureSajuCalculated(opts.profile);
   } catch (e) {
+    const tErr = await getTranslations("actionErrors");
     return {
       ok: false,
       reason: "saju_failed",
-      message:
-        "사주를 풀이할 별의 흐름을 읽지 못했어요: " +
-        (e instanceof Error ? e.message : "알 수 없는 원인"),
+      message: tErr("fortuneSajuFailed", {
+        message: e instanceof Error ? e.message : tErr("unknownReason"),
+      }),
     };
   }
 

@@ -22,7 +22,7 @@ import {
 } from "@/db/schema";
 import { CHARACTER_PROSE_VOICE } from "@/lib/ai/character-voice";
 import { getTodayCharacterByCategory } from "@/lib/daily-question/rotation";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { generateMarkdown } from "@/lib/ai/generate";
 import { buildUserContext } from "@/lib/ai/prompts";
 import { AI_MODELS } from "@/lib/constants";
@@ -224,12 +224,13 @@ ${spreadInstruction}
       locale: await getLocale(),
     });
   } catch (e) {
+    const tErr = await getTranslations("actionErrors");
     return {
       ok: false,
       reason: "ai_failed",
-      message:
-        "룬의 메시지를 읽지 못했어요: " +
-        (e instanceof Error ? e.message : "알 수 없는 원인"),
+      message: tErr("runeAiFailed", {
+        message: e instanceof Error ? e.message : tErr("unknownReason"),
+      }),
     };
   }
 

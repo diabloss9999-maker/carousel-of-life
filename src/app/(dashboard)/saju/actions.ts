@@ -4,7 +4,7 @@
  * 사주 페이지 — 사주 캐시 + 심층 분석 액션.
  */
 import { revalidatePath } from "next/cache";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
@@ -98,10 +98,11 @@ export async function generateDeepReadingAction(): Promise<DeepReadingState> {
 
   const subscribed = await hasActiveSubscription(profile.userId);
   if (!subscribed) {
+    const tErr = await getTranslations("actionErrors");
     return {
       kind: "error",
       premiumOnly: true,
-      message: "심층 분석은 라이트 멤버십에서 만나볼 수 있어.",
+      message: tErr("sajuDeepPremium"),
     };
   }
 
@@ -149,12 +150,13 @@ export async function generateIljinAction(): Promise<IljinState> {
     const { profile } = await requireProfile();
 
     const subscribed = await hasActiveSubscription(profile.userId);
+    const tErr = await getTranslations("actionErrors");
     if (!subscribed) {
-      return { kind: "error", message: "라이트 전용 기능이야." };
+      return { kind: "error", message: tErr("premiumOnly") };
     }
 
     if (!profile.sajuPillars) {
-      return { kind: "error", message: "먼저 사주를 계산해줘." };
+      return { kind: "error", message: tErr("sajuRequired") };
     }
 
     // KST 기준 오늘 날짜 (YYYY-MM-DD)
@@ -260,7 +262,7 @@ ${relText}
   } catch (e) {
     return {
       kind: "error",
-      message: e instanceof Error ? e.message : "일진을 읽지 못했어.",
+      message: e instanceof Error ? e.message : (await getTranslations("actionErrors"))("iljinError"),
     };
   }
 }

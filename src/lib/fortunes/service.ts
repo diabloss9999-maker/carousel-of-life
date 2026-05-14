@@ -11,7 +11,7 @@ import {
   type DailyFortune,
   type Profile,
 } from "@/db/schema";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { generateJson } from "@/lib/ai/generate";
 import {
   buildDailyFortunePrompt,
@@ -92,12 +92,13 @@ export async function getOrCreateDailyFortune(opts: {
   try {
     profile = await ensureSajuCalculated(opts.profile);
   } catch (e) {
+    const tErr = await getTranslations("actionErrors");
     return {
       ok: false,
       reason: "ai_failed",
-      message:
-        "사주를 풀이할 별의 흐름을 읽지 못했어요: " +
-        (e instanceof Error ? e.message : "알 수 없는 원인"),
+      message: tErr("fortuneSajuFailed", {
+        message: e instanceof Error ? e.message : tErr("unknownReason"),
+      }),
     };
   }
 
@@ -131,12 +132,13 @@ export async function getOrCreateDailyFortune(opts: {
       locale: await getLocale(),
     });
   } catch (e) {
+    const tErr = await getTranslations("actionErrors");
     return {
       ok: false,
       reason: "ai_failed",
-      message:
-        "주술사가 풀이를 적지 못했어요: " +
-        (e instanceof Error ? e.message : "알 수 없는 원인"),
+      message: tErr("fortuneAiFailed", {
+        message: e instanceof Error ? e.message : tErr("unknownReason"),
+      }),
     };
   }
 

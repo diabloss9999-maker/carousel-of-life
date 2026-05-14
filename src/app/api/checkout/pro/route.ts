@@ -5,6 +5,7 @@
  *  → Lemon Squeezy 프로 결제 페이지로 redirect
  */
 import { NextResponse } from "next/server";
+import { getTranslations } from "next-intl/server";
 
 import { requireUser } from "@/lib/auth/get-user";
 import { clientEnv } from "@/lib/env";
@@ -16,10 +17,11 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   const user = await requireUser();
+  const tErr = await getTranslations("actionErrors");
 
   if (!user.email) {
     return NextResponse.json(
-      { ok: false, error: { code: "NO_EMAIL", message: "구독을 시작하려면 이메일이 필요해요." } },
+      { ok: false, error: { code: "NO_EMAIL", message: tErr("checkoutEmailRequired") } },
       { status: 400 },
     );
   }
@@ -35,7 +37,7 @@ export async function GET() {
     return NextResponse.redirect(url, 303);
   } catch (e) {
     return NextResponse.json(
-      { ok: false, error: { code: "CHECKOUT_FAILED", message: e instanceof Error ? e.message : "결제 페이지 생성 실패" } },
+      { ok: false, error: { code: "CHECKOUT_FAILED", message: e instanceof Error ? e.message : tErr("checkoutCreationFailed") } },
       { status: 500 },
     );
   }

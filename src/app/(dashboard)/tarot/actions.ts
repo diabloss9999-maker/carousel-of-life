@@ -4,6 +4,7 @@
  * 타로 카드 뽑기 Server Action.
  */
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 import { z } from "zod";
 
 import { requireProfile } from "@/lib/auth/get-user";
@@ -22,7 +23,7 @@ const drawSchema = z.object({
   question: z
     .string()
     .trim()
-    .max(100, "질문은 100자 이내로 짧게 부탁해.")
+    .max(100, "QUESTION_TOO_LONG")
     .optional()
     .or(z.literal("")),
 });
@@ -32,6 +33,13 @@ export interface TarotDrawState {
   message?: string;
   quotaExceeded?: boolean;
   premiumOnly?: boolean;
+}
+
+/** zod 에러 메시지 토큰 → locale 별 메시지. */
+async function zodMessage(code: string | undefined): Promise<string> {
+  const tErr = await getTranslations("actionErrors");
+  if (code === "QUESTION_TOO_LONG") return tErr("questionTooLong");
+  return tErr("validationFailed");
 }
 
 export async function drawSingleTarotAction(
@@ -44,7 +52,7 @@ export async function drawSingleTarotAction(
   if (!parsed.success) {
     return {
       kind: "error",
-      message: parsed.error.issues[0]?.message ?? "입력값이 올바르지 않아요.",
+      message: await zodMessage(parsed.error.issues[0]?.message),
     };
   }
 
@@ -60,11 +68,13 @@ export async function drawSingleTarotAction(
     return { kind: "idle" };
   }
 
+  const tErr = await getTranslations("actionErrors");
+
   if (result.reason === "quota_exceeded") {
     return {
       kind: "error",
       quotaExceeded: true,
-      message: `오늘의 타로 한도(${result.max}회)를 모두 사용했어. 라이트 구독을 하면 한도 없이 받을 수 있어.`,
+      message: tErr("tarotQuotaUpgradeFull", { n: result.max }),
     };
   }
 
@@ -88,7 +98,7 @@ export async function drawThreeTarotAction(
   if (!parsed.success) {
     return {
       kind: "error",
-      message: parsed.error.issues[0]?.message ?? "입력값이 올바르지 않아요.",
+      message: await zodMessage(parsed.error.issues[0]?.message),
     };
   }
 
@@ -104,17 +114,19 @@ export async function drawThreeTarotAction(
     return { kind: "idle" };
   }
 
+  const tErr = await getTranslations("actionErrors");
+
   if (result.reason === "premium_only") {
     return {
       kind: "error",
       premiumOnly: true,
-      message: "3장 스프레드는 라이트 멤버십에서 만나볼 수 있어.",
+      message: tErr("tarotThreePremium"),
     };
   }
 
   return {
     kind: "error",
-    message: result.ok === false && "message" in result ? result.message : "오류가 났어",
+    message: result.ok === false && "message" in result ? result.message : tErr("tarotGenericError"),
   };
 }
 
@@ -129,7 +141,7 @@ const lenormandSchema = z.object({
   question: z
     .string()
     .trim()
-    .max(100, "질문은 100자 이내로 짧게 부탁해.")
+    .max(100, "QUESTION_TOO_LONG")
     .optional()
     .or(z.literal("")),
   gender: z.enum(["male", "female"]).optional(),
@@ -158,15 +170,17 @@ export async function drawLenormandAction(
   if (!parsed.success) {
     return {
       kind: "error",
-      message: parsed.error.issues[0]?.message ?? "입력값이 올바르지 않아요.",
+      message: await zodMessage(parsed.error.issues[0]?.message),
     };
   }
+
+  const tErr = await getTranslations("actionErrors");
 
   // 그랑 타블로는 gender 가 필수.
   if (parsed.data.spread === "grand_tableau" && !parsed.data.gender) {
     return {
       kind: "error",
-      message: "그랑 타블로는 시그니피케이터 성별을 선택해야 해요.",
+      message: tErr("lenormandGrandTableauGender"),
     };
   }
 
@@ -190,15 +204,14 @@ export async function drawLenormandAction(
       return {
         kind: "error",
         quotaExceeded: true,
-        message: `오늘의 무료 르노르망 한도(${result.max}회)를 모두 사용했어. 라이트 구독을 하면 한도 없이 받을 수 있어.`,
+        message: tErr("lenormandQuotaUpgradeFull", { n: result.max }),
       };
     }
     if (result.reason === "premium_only") {
       return {
         kind: "error",
         premiumOnly: true,
-        message:
-          "이 스프레드는 라이트 구독자 전용이에요. 구독하면 9장·그랑 타블로를 자유롭게 뽑을 수 있어요.",
+        message: tErr("lenormandPremiumSpread"),
       };
     }
     if (result.reason === "invalid_input") {
@@ -208,7 +221,7 @@ export async function drawLenormandAction(
   } catch (e) {
     return {
       kind: "error",
-      message: e instanceof Error ? e.message : "오류가 발생했어.",
+      message: e instanceof Error ? e.message : tErr("lenormandGenericError"),
     };
   }
 }
@@ -222,7 +235,7 @@ const runeSchema = z.object({
   question: z
     .string()
     .trim()
-    .max(100, "질문은 100자 이내로 짧게 부탁해.")
+    .max(100, "QUESTION_TOO_LONG")
     .optional()
     .or(z.literal("")),
   reversedEnabled: z.boolean().default(true),
@@ -247,9 +260,11 @@ export async function drawRuneAction(
   if (!parsed.success) {
     return {
       kind: "error",
-      message: parsed.error.issues[0]?.message ?? "입력값이 올바르지 않아요.",
+      message: await zodMessage(parsed.error.issues[0]?.message),
     };
   }
+
+  const tErr = await getTranslations("actionErrors");
 
   try {
     const { profile } = await requireProfile();
@@ -271,22 +286,21 @@ export async function drawRuneAction(
       return {
         kind: "error",
         quotaExceeded: true,
-        message: `오늘의 무료 룬 한도(${result.max}회)를 모두 사용했어. 라이트 구독을 하면 한도 없이 던질 수 있어.`,
+        message: tErr("runeQuotaUpgradeFull", { n: result.max }),
       };
     }
     if (result.reason === "premium_only") {
       return {
         kind: "error",
         premiumOnly: true,
-        message:
-          "이 스프레드는 라이트 구독자 전용이에요. 구독하면 5개·9개 스프레드를 자유롭게 던질 수 있어요.",
+        message: tErr("runePremiumSpread"),
       };
     }
     return { kind: "error", message: result.message };
   } catch (e) {
     return {
       kind: "error",
-      message: e instanceof Error ? e.message : "룬을 던지지 못했어.",
+      message: e instanceof Error ? e.message : tErr("runeGenericError"),
     };
   }
 }

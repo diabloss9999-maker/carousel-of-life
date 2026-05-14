@@ -712,7 +712,19 @@
     "deepReadingSajuFailed": "Couldn't read the stellar flow for your pillars: {message}",
     "unknownReason": "unknown cause",
     "reloginRequired": "Please sign in again.",
-    "compatPremiumOnly": "Light-only feature."
+    "compatPremiumOnly": "Light-only feature.",
+    "tarotQuotaUpgradeFull": "You've used today's tarot limit ({n}). Subscribe to Light for unlimited readings.",
+    "lenormandQuotaUpgradeFull": "You've used today's free Lenormand limit ({n}). Subscribe to Light for unlimited readings.",
+    "lenormandPremiumSpread": "This spread is Light-only. Subscribe to draw 9-card and Grand Tableau freely.",
+    "runeQuotaUpgradeFull": "You've used today's free rune limit ({n}). Subscribe to Light to cast freely.",
+    "runePremiumSpread": "This spread is Light-only. Subscribe to cast 5- and 9-rune spreads freely.",
+    "questionTooLong": "Please keep your question under 100 characters.",
+    "compatTwoSidedHeader": "Couldn't read the two energies",
+    "lenormandSaveFailed": "Couldn't save the 9-card Lenormand result.",
+    "grandTableauFailed": "Grand Tableau analysis failed: {message}",
+    "grandTableauInterpretFailed": "Couldn't generate the Grand Tableau interpretation: {message}",
+    "grandTableauSaveFailed": "Couldn't save the Grand Tableau result.",
+    "grandTableauGenderRequired": "Grand Tableau needs the significator's gender."
   },
   "shareCard": {
     "fortuneTitle": "Today's flow",

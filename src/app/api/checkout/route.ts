@@ -7,6 +7,7 @@
  * 인증된 사용자만 호출 가능. user_id 가 custom_data 로 전달됨.
  */
 import { NextResponse } from "next/server";
+import { getTranslations } from "next-intl/server";
 
 import { requireUser } from "@/lib/auth/get-user";
 import { clientEnv } from "@/lib/env";
@@ -18,6 +19,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   const user = await requireUser();
+  const tErr = await getTranslations("actionErrors");
 
   if (!user.email) {
     return NextResponse.json(
@@ -25,7 +27,7 @@ export async function GET() {
         ok: false,
         error: {
           code: "NO_EMAIL",
-          message: "구독을 시작하려면 이메일이 필요해요.",
+          message: tErr("checkoutEmailRequired"),
         },
       },
       { status: 400 },
@@ -47,7 +49,7 @@ export async function GET() {
         ok: false,
         error: {
           code: "CHECKOUT_FAILED",
-          message: e instanceof Error ? e.message : "결제 페이지 생성 실패",
+          message: e instanceof Error ? e.message : tErr("checkoutCreationFailed"),
         },
       },
       { status: 500 },

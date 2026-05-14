@@ -7,6 +7,7 @@
  * - LS API 호출 → webhook 으로 DB 반영 (또는 직접 업데이트)
  */
 import { NextResponse } from "next/server";
+import { getTranslations } from "next-intl/server";
 
 import { db } from "@/db";
 import { subscriptions } from "@/db/schema";
@@ -42,12 +43,13 @@ export async function POST() {
   try {
     await cancelSubscription(active.lsSubscriptionId);
   } catch (e) {
+    const tErr = await getTranslations("actionErrors");
     return NextResponse.json(
       {
         ok: false,
         error: {
           code: "CANCEL_FAILED",
-          message: e instanceof Error ? e.message : "취소 실패",
+          message: e instanceof Error ? e.message : tErr("subscriptionCancelFailed"),
         },
       },
       { status: 500 },

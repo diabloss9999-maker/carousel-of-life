@@ -12,7 +12,7 @@ import {
   type Profile,
   type TarotReading,
 } from "@/db/schema";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { generateJson } from "@/lib/ai/generate";
 import {
   buildTarotSinglePrompt,
@@ -69,12 +69,13 @@ export async function createSingleTarot(opts: {
   try {
     profile = await ensureSajuCalculated(opts.profile);
   } catch (e) {
+    const tErr = await getTranslations("actionErrors");
     return {
       ok: false,
       reason: "ai_failed",
-      message:
-        "사주를 풀이할 별의 흐름을 읽지 못했어요: " +
-        (e instanceof Error ? e.message : "알 수 없는 원인"),
+      message: tErr("fortuneSajuFailed", {
+        message: e instanceof Error ? e.message : tErr("unknownReason"),
+      }),
     };
   }
 
@@ -97,12 +98,13 @@ export async function createSingleTarot(opts: {
       locale: await getLocale(),
     });
   } catch (e) {
+    const tErr = await getTranslations("actionErrors");
     return {
       ok: false,
       reason: "ai_failed",
-      message:
-        "타로의 계시를 읽지 못했어요: " +
-        (e instanceof Error ? e.message : "알 수 없는 원인"),
+      message: tErr("tarotAiFailed", {
+        message: e instanceof Error ? e.message : tErr("unknownReason"),
+      }),
     };
   }
 
@@ -146,12 +148,13 @@ export async function createThreeCardTarot(opts: {
   try {
     profile = await ensureSajuCalculated(opts.profile);
   } catch (e) {
+    const tErr = await getTranslations("actionErrors");
     return {
       ok: false,
       reason: "ai_failed",
-      message:
-        "사주를 풀이할 별의 흐름을 읽지 못했어요: " +
-        (e instanceof Error ? e.message : "알 수 없는 원인"),
+      message: tErr("fortuneSajuFailed", {
+        message: e instanceof Error ? e.message : tErr("unknownReason"),
+      }),
     };
   }
 
@@ -174,12 +177,13 @@ export async function createThreeCardTarot(opts: {
       locale: await getLocale(),
     });
   } catch (e) {
+    const tErr = await getTranslations("actionErrors");
     return {
       ok: false,
       reason: "ai_failed",
-      message:
-        "세 장의 흐름을 읽지 못했어요: " +
-        (e instanceof Error ? e.message : "알 수 없는 원인"),
+      message: tErr("tarotAiFailed", {
+        message: e instanceof Error ? e.message : tErr("unknownReason"),
+      }),
     };
   }
 

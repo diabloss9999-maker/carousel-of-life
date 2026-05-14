@@ -17,7 +17,7 @@ import {
   personalityStressProfile,
   personalityTripleAnalysis,
 } from "@/db/schema";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { requireProfile } from "@/lib/auth/get-user";
 import { generateJson } from "@/lib/ai/generate";
 import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
@@ -34,7 +34,15 @@ import { AI_MODELS } from "@/lib/constants";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { getZodiacSign } from "@/lib/fortunes/zodiac";
 
-const PREMIUM_ONLY_MESSAGE = "라이트 전용 기능이야.";
+/** locale 별 공통 에러 메시지 lookup. */
+async function errMessages() {
+  const t = await getTranslations("actionErrors");
+  return {
+    premiumOnly: t("premiumOnly"),
+    completePersonalityFirst: t("completePersonalityFirst"),
+    analysisFailed: t("analysisFailed"),
+  };
+}
 
 export interface TripleAnalysisState {
   kind: "idle" | "success" | "error";
@@ -49,14 +57,15 @@ export async function generateTripleAnalysisAction(): Promise<TripleAnalysisStat
   try {
     const { profile } = await requireProfile();
     const subscribed = await hasActiveSubscription(profile.userId);
+    const tErr = await errMessages();
     if (!subscribed) {
-      return { kind: "error", message: PREMIUM_ONLY_MESSAGE };
+      return { kind: "error", message: tErr.premiumOnly };
     }
 
     if (!profile.mbti) {
       return {
         kind: "error",
-        message: "먼저 성격유형 테스트를 완료해 줘.",
+        message: tErr.completePersonalityFirst,
       };
     }
 
@@ -123,7 +132,7 @@ export async function generateTripleAnalysisAction(): Promise<TripleAnalysisStat
   } catch (e) {
     return {
       kind: "error",
-      message: e instanceof Error ? e.message : "분석에 실패했어.",
+      message: e instanceof Error ? e.message : (await errMessages()).analysisFailed,
     };
   }
 }
@@ -141,14 +150,15 @@ export async function generateStressProfileAction(): Promise<StressProfileState>
   try {
     const { profile } = await requireProfile();
     const subscribed = await hasActiveSubscription(profile.userId);
+    const tErr = await errMessages();
     if (!subscribed) {
-      return { kind: "error", message: PREMIUM_ONLY_MESSAGE };
+      return { kind: "error", message: tErr.premiumOnly };
     }
 
     if (!profile.mbti) {
       return {
         kind: "error",
-        message: "먼저 성격유형 테스트를 완료해 줘.",
+        message: tErr.completePersonalityFirst,
       };
     }
 
@@ -207,7 +217,7 @@ ${profile.mbti} 유형이 스트레스를 받을 때 어떻게 무너지는지 +
   } catch (e) {
     return {
       kind: "error",
-      message: e instanceof Error ? e.message : "분석에 실패했어.",
+      message: e instanceof Error ? e.message : (await errMessages()).analysisFailed,
     };
   }
 }
@@ -225,14 +235,15 @@ export async function generateCareerFitAction(): Promise<CareerFitState> {
   try {
     const { profile } = await requireProfile();
     const subscribed = await hasActiveSubscription(profile.userId);
+    const tErr = await errMessages();
     if (!subscribed) {
-      return { kind: "error", message: PREMIUM_ONLY_MESSAGE };
+      return { kind: "error", message: tErr.premiumOnly };
     }
 
     if (!profile.mbti) {
       return {
         kind: "error",
-        message: "먼저 성격유형 테스트를 완료해 줘.",
+        message: tErr.completePersonalityFirst,
       };
     }
 
@@ -292,7 +303,7 @@ ${profile.mbti} 유형 기반으로 어떤 업무 환경·직군이 잘 맞는�
   } catch (e) {
     return {
       kind: "error",
-      message: e instanceof Error ? e.message : "분석에 실패했어.",
+      message: e instanceof Error ? e.message : (await errMessages()).analysisFailed,
     };
   }
 }

@@ -4,6 +4,7 @@
  * DELETE /api/chat/sessions/[sessionId]
  */
 import { NextResponse, type NextRequest } from "next/server";
+import { getTranslations } from "next-intl/server";
 
 import { requireProfile } from "@/lib/auth/get-user";
 import { deleteSession } from "@/lib/chat/service";
@@ -18,12 +19,13 @@ export async function DELETE(
 
   const ok = await deleteSession({ sessionId, userId: profile.userId });
   if (!ok) {
+    const tErr = await getTranslations("actionErrors");
     return NextResponse.json(
       {
         ok: false,
         error: {
           code: API_ERROR_CODES.NOT_FOUND,
-          message: "세션을 찾지 못했어요.",
+          message: tErr("sessionNotFound"),
         },
       },
       { status: 404 },

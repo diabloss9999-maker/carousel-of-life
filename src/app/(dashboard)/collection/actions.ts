@@ -6,6 +6,7 @@
  * 클라이언트 컴포넌트에서 호출되어 뽑기 결과를 반환한다.
  */
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 
 import { requireProfile } from "@/lib/auth/get-user";
 import { pullGacha, type GachaPullResult } from "@/lib/collection/service";
@@ -31,8 +32,9 @@ export async function pullGachaAction(): Promise<PullGachaActionResult> {
     }
     return result;
   } catch (e) {
+    const tErr = await getTranslations("actionErrors");
     const message =
-      e instanceof Error ? e.message : "뽑기 중 알 수 없는 오류가 발생했어.";
+      e instanceof Error ? e.message : tErr("collectionDrawError");
     return { ok: false, error: message };
   }
 }

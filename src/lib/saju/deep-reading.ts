@@ -10,7 +10,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { profiles, type Profile } from "@/db/schema";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { generateJson } from "@/lib/ai/generate";
 import { buildSajuDeepPrompt } from "@/lib/ai/prompts";
 import { sajuDeepAiSchema, type SajuDeepAiOutput } from "@/lib/ai/types";
@@ -64,12 +64,13 @@ export async function getOrCreateDeepReading(
   try {
     withSaju = await ensureSajuCalculated(profile);
   } catch (e) {
+    const tErr = await getTranslations("actionErrors");
     return {
       ok: false,
       reason: "ai_failed",
-      message:
-        "사주를 풀이할 별의 흐름을 읽지 못했어: " +
-        (e instanceof Error ? e.message : "알 수 없는 원인"),
+      message: tErr("deepReadingSajuFailed", {
+        message: e instanceof Error ? e.message : tErr("unknownReason"),
+      }),
     };
   }
 
@@ -85,12 +86,13 @@ export async function getOrCreateDeepReading(
       locale: await getLocale(),
     });
   } catch (e) {
+    const tErr = await getTranslations("actionErrors");
     return {
       ok: false,
       reason: "ai_failed",
-      message:
-        "심층 분석을 적지 못했어: " +
-        (e instanceof Error ? e.message : "알 수 없는 원인"),
+      message: tErr("deepReadingAiFailed", {
+        message: e instanceof Error ? e.message : tErr("unknownReason"),
+      }),
     };
   }
 

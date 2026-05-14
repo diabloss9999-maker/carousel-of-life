@@ -16,7 +16,7 @@ import {
   dailyLovePremium,
   dailyStudyTips,
 } from "@/db/schema";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { requireProfile } from "@/lib/auth/get-user";
 import { generateJson } from "@/lib/ai/generate";
 import {
@@ -71,10 +71,11 @@ export async function generateFortuneAction(
   formData: FormData,
 ): Promise<FortuneActionState> {
   const parsed = categorySchema.safeParse(formData.get("category"));
+  const tErr = await getTranslations("actionErrors");
   if (!parsed.success) {
     return {
       kind: "error",
-      message: "카테고리가 올바르지 않아요.",
+      message: tErr("categoryInvalid"),
     };
   }
 
@@ -87,7 +88,7 @@ export async function generateFortuneAction(
       return {
         kind: "error",
         premiumOnly: true,
-        message: "별자리·십이간지 운세는 라이트 전용이에요.",
+        message: tErr("zodiacPremiumOnly"),
       };
     }
   }
@@ -106,7 +107,7 @@ export async function generateFortuneAction(
     return {
       kind: "error",
       quotaExceeded: true,
-      message: `오늘의 운세 한도(${result.max}회)를 모두 사용했어요. 라이트 구독을 하시면 한도 없이 받으실 수 있어요.`,
+      message: tErr("fortuneQuotaExceeded", { n: result.max }),
     };
   }
 
@@ -141,7 +142,7 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
     const { profile } = await requireProfile();
     const subscribed = await hasActiveSubscription(profile.userId);
     if (!subscribed) {
-      return { kind: "error", message: "라이트 전용 기능이야." };
+      return { kind: "error", message: (await getTranslations("actionErrors"))("premiumOnly") };
     }
 
     const today = todayKst();
@@ -245,7 +246,7 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
   } catch (e) {
     return {
       kind: "error",
-      message: e instanceof Error ? e.message : "리포트를 불러오지 못했어.",
+      message: e instanceof Error ? e.message : (await getTranslations("actionErrors"))("careerReportError"),
     };
   }
 }
@@ -270,7 +271,7 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
     const { profile } = await requireProfile();
     const subscribed = await hasActiveSubscription(profile.userId);
     if (!subscribed) {
-      return { kind: "error", message: "라이트 전용 기능이야." };
+      return { kind: "error", message: (await getTranslations("actionErrors"))("premiumOnly") };
     }
 
     const today = todayKst();
@@ -360,7 +361,7 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
   } catch (e) {
     return {
       kind: "error",
-      message: e instanceof Error ? e.message : "운동을 불러오지 못했어.",
+      message: e instanceof Error ? e.message : (await getTranslations("actionErrors"))("healthWorkoutError"),
     };
   }
 }
@@ -383,7 +384,7 @@ export async function generateStudyTipsAction(): Promise<StudyTipsState> {
     const { profile } = await requireProfile();
     const subscribed = await hasActiveSubscription(profile.userId);
     if (!subscribed) {
-      return { kind: "error", message: "라이트 전용 기능이야." };
+      return { kind: "error", message: (await getTranslations("actionErrors"))("premiumOnly") };
     }
 
     const today = todayKst();
@@ -458,7 +459,7 @@ export async function generateStudyTipsAction(): Promise<StudyTipsState> {
   } catch (e) {
     return {
       kind: "error",
-      message: e instanceof Error ? e.message : "팁을 불러오지 못했어.",
+      message: e instanceof Error ? e.message : (await getTranslations("actionErrors"))("studyTipsError"),
     };
   }
 }
@@ -480,7 +481,7 @@ export async function generateLovePremiumAction(): Promise<LovePremiumState> {
     const { profile } = await requireProfile();
     const subscribed = await hasActiveSubscription(profile.userId);
     if (!subscribed) {
-      return { kind: "error", message: "라이트 전용 기능이야." };
+      return { kind: "error", message: (await getTranslations("actionErrors"))("premiumOnly") };
     }
 
     const today = todayKst();
@@ -554,7 +555,7 @@ export async function generateLovePremiumAction(): Promise<LovePremiumState> {
   } catch (e) {
     return {
       kind: "error",
-      message: e instanceof Error ? e.message : "불러오지 못했어.",
+      message: e instanceof Error ? e.message : (await getTranslations("actionErrors"))("loveCardError"),
     };
   }
 }
@@ -577,7 +578,7 @@ export async function generateGeneralPremiumAction(): Promise<GeneralPremiumStat
     const { profile } = await requireProfile();
     const subscribed = await hasActiveSubscription(profile.userId);
     if (!subscribed) {
-      return { kind: "error", message: "라이트 전용 기능이야." };
+      return { kind: "error", message: (await getTranslations("actionErrors"))("premiumOnly") };
     }
 
     const today = todayKst();
@@ -657,7 +658,7 @@ export async function generateGeneralPremiumAction(): Promise<GeneralPremiumStat
   } catch (e) {
     return {
       kind: "error",
-      message: e instanceof Error ? e.message : "불러오지 못했어.",
+      message: e instanceof Error ? e.message : (await getTranslations("actionErrors"))("loveCardError"),
     };
   }
 }

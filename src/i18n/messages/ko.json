@@ -712,7 +712,19 @@
     "deepReadingSajuFailed": "사주를 풀이할 별의 흐름을 읽지 못했어: {message}",
     "unknownReason": "알 수 없는 원인",
     "reloginRequired": "다시 로그인해 줘.",
-    "compatPremiumOnly": "라이트 전용 기능이야."
+    "compatPremiumOnly": "라이트 전용 기능이야.",
+    "tarotQuotaUpgradeFull": "오늘의 타로 한도({n}회)를 모두 사용했어. 라이트 구독을 하면 한도 없이 받을 수 있어.",
+    "lenormandQuotaUpgradeFull": "오늘의 무료 르노르망 한도({n}회)를 모두 사용했어. 라이트 구독을 하면 한도 없이 받을 수 있어.",
+    "lenormandPremiumSpread": "이 스프레드는 라이트 구독자 전용이에요. 구독하면 9장·그랑 타블로를 자유롭게 뽑을 수 있어요.",
+    "runeQuotaUpgradeFull": "오늘의 무료 룬 한도({n}회)를 모두 사용했어. 라이트 구독을 하면 한도 없이 던질 수 있어.",
+    "runePremiumSpread": "이 스프레드는 라이트 구독자 전용이에요. 구독하면 5개·9개 스프레드를 자유롭게 던질 수 있어요.",
+    "questionTooLong": "질문은 100자 이내로 짧게 부탁해.",
+    "compatTwoSidedHeader": "두 사람의 기운을 읽지 못했어요",
+    "lenormandSaveFailed": "르노르망 9장 결과 저장에 실패했어요.",
+    "grandTableauFailed": "그랑 타블로 분석에 실패했어요: {message}",
+    "grandTableauInterpretFailed": "그랑 타블로 해석을 만들지 못했어요: {message}",
+    "grandTableauSaveFailed": "그랑 타블로 결과 저장에 실패했어요.",
+    "grandTableauGenderRequired": "그랑 타블로는 시그니피케이터 성별이 필요해요."
   },
   "shareCard": {
     "fortuneTitle": "오늘의 흐름",
