@@ -25,10 +25,13 @@ import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { asSajuDeepReading } from "@/lib/saju/deep-reading";
 import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "사주",
-  description: "여덟 글자 안에 새겨진 타고난 기운을 살펴봐요.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const tPage = await getTranslations("sajuPage");
+  return {
+    title: tPage("metaTitle"),
+    description: tPage("metaDescription"),
+  };
+}
 
 function asPillars(v: unknown): SajuPillarsValue | null {
   if (!v || typeof v !== "object") return null;
@@ -78,6 +81,7 @@ function asFiveElements(v: unknown): FiveElementsValue | null {
 export default async function SajuPage() {
   const { profile } = await requireProfile();
   const t = await getTranslations("saju");
+  const tPage = await getTranslations("sajuPage");
 
   const pillars = asPillars(profile.sajuPillars);
   const elements = asFiveElements(profile.fiveElements);
@@ -116,11 +120,10 @@ export default async function SajuPage() {
           <Card className="app-surface">
             <CardHeader>
               <CardTitle className="font-mystic text-lg">
-                기억해두면 좋은 것
+                {tPage("tipTitle")}
               </CardTitle>
               <CardDescription>
-                사주는 정해진 운명이 아니라 흐름이에요. 강한 기운은 살리고, 약한
-                기운은 보충하면서 살면 결이 한결 부드러워져요.
+                {tPage("tipBody")}
               </CardDescription>
             </CardHeader>
             <CardContent>

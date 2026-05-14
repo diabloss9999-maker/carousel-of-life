@@ -1,4 +1,7 @@
+"use client";
+
 import { ArrowRight, Clock, History, Sparkles } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 import {
   Card,
@@ -12,7 +15,6 @@ import {
 import { ShareButton } from "@/components/shared/share-button";
 import type { TarotReading } from "@/db/schema";
 import { parseThreeInterpretation } from "@/lib/tarot/service";
-import { cn, formatKoreanDate } from "@/lib/utils";
 
 interface TarotThreeReadingCardProps {
   reading: TarotReading;
@@ -30,30 +32,36 @@ function asDrawnCards(cards: unknown): DrawnCardJson[] {
   return [];
 }
 
-const POSITIONS = [
-  { key: "past" as const, label: "과거", desc: "지나온 자리", icon: History },
-  { key: "present" as const, label: "현재", desc: "머무는 자리", icon: Clock },
-  {
-    key: "future" as const,
-    label: "미래",
-    desc: "다가올 자리",
-    icon: ArrowRight,
-  },
-];
+const POSITION_KEYS = ["past", "present", "future"] as const;
 
 export function TarotThreeReadingCard({ reading }: TarotThreeReadingCardProps) {
   const cards = asDrawnCards(reading.cards);
   const parsed = parseThreeInterpretation(reading.interpretation);
+  const t = useTranslations("tarotForm");
+  const locale = useLocale();
 
   if (!parsed || cards.length < 3) {
     return null;
   }
 
+  const positions = [
+    { key: "past" as const,    label: t("positionPast"),    desc: t("positionPastSub"),    icon: History },
+    { key: "present" as const, label: t("positionPresent"), desc: t("positionPresentSub"), icon: Clock },
+    { key: "future" as const,  label: t("positionFuture"),  desc: t("positionFutureSub"),  icon: ArrowRight },
+  ];
+
+  const localeDateStr = new Date(reading.createdAt).toLocaleDateString(
+    locale === "en" ? "en-US" : "ko-KR",
+    locale === "en"
+      ? { year: "numeric", month: "short", day: "numeric" }
+      : undefined,
+  );
+
   return (
     <Card className="app-surface ring-1 ring-accent/15">
       <CardHeader className="space-y-3">
         <p className="text-xs uppercase tracking-wider text-muted-foreground">
-          {formatKoreanDate(new Date(reading.createdAt))} · 3장 스프레드
+          {localeDateStr} · {t("spreadThreeLabel")}
         </p>
         {reading.question ? (
           <p className="font-mystic text-base text-foreground/80 italic">
@@ -65,20 +73,17 @@ export function TarotThreeReadingCard({ reading }: TarotThreeReadingCardProps) {
         </p>
       </CardHeader>
       <CardContent className="space-y-8">
-        {/* 카드별 묶음: 라벨 → 카드 → 풀이 */}
         <div className="grid gap-8 md:grid-cols-3">
-          {POSITIONS.map((pos, i) => {
+          {positions.map((pos, i) => {
             const Icon = pos.icon;
             const card = cards[i];
             return (
               <div key={pos.key} className="flex flex-col items-center gap-4">
-                {/* 위치 라벨 */}
                 <div className="flex items-center gap-1.5 text-sm font-medium text-accent">
                   <Icon className="h-4 w-4" aria-hidden />
                   <span className="font-mystic">{pos.label}</span>
                   <span className="text-xs text-muted-foreground/70 font-normal">{pos.desc}</span>
                 </div>
-                {/* 카드 이미지 */}
                 <div className="flex flex-col items-center gap-2">
                   <TarotCardDisplay
                     id={card.id}
@@ -89,20 +94,18 @@ export function TarotThreeReadingCard({ reading }: TarotThreeReadingCardProps) {
                   />
                   <CardOrientationBadge isReversed={card.isReversed} />
                 </div>
-                {/* 위치 풀이 */}
                 <p className="font-mystic whitespace-pre-line leading-relaxed text-sm text-foreground/85 text-center md:text-left">
-                  {parsed[pos.key]}
+                  {parsed[POSITION_KEYS[i]]}
                 </p>
               </div>
             );
           })}
         </div>
 
-        {/* 종합 풀이 */}
         <div className="space-y-2 rounded-xl border border-accent/25 bg-accent/10 p-5 shadow-sm">
           <div className="flex items-center gap-1.5 text-sm font-medium text-accent">
             <Sparkles className="h-4 w-4" aria-hidden />
-            <span className="font-mystic">종합 풀이</span>
+            <span className="font-mystic">{t("synthesis")}</span>
           </div>
           <p className="font-mystic whitespace-pre-line leading-relaxed text-foreground/90">
             {parsed.synthesis}
@@ -111,8 +114,8 @@ export function TarotThreeReadingCard({ reading }: TarotThreeReadingCardProps) {
 
         <div className="flex justify-end">
           <ShareButton
-            title={`타로 3장 스프레드: ${parsed.summary}`}
-            text={`[타로 3장 — 과거·현재·미래]${reading.question ? `\nQ. ${reading.question}` : ""}\n\n핵심: ${parsed.summary}\n\n과거: ${parsed.past}\n\n현재: ${parsed.present}\n\n미래: ${parsed.future}\n\n종합: ${parsed.synthesis}`}
+            title={t("shareTitleThree", { summary: parsed.summary })}
+            text={`${t("synthesis")}: ${parsed.summary}\n\n${t("positionPast")}: ${parsed.past}\n\n${t("positionPresent")}: ${parsed.present}\n\n${t("positionFuture")}: ${parsed.future}\n\n${parsed.synthesis}`}
           />
         </div>
       </CardContent>

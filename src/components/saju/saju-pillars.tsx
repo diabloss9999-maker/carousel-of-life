@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import {
   Card,
@@ -48,11 +49,11 @@ interface SajuPillarsProps {
   pillars: SajuPillarsValue;
 }
 
-const PILLAR_LABEL = {
-  year: { ko: "년주", desc: "뿌리" },
-  month: { ko: "월주", desc: "환경" },
-  day: { ko: "일주", desc: "나" },
-  hour: { ko: "시주", desc: "내면" },
+const PILLAR_TKEYS = {
+  year:  { label: "pillarYear",  desc: "pillarYearSub" },
+  month: { label: "pillarMonth", desc: "pillarMonthSub" },
+  day:   { label: "pillarDay",   desc: "pillarDaySub" },
+  hour:  { label: "pillarHour",  desc: "pillarHourSub" },
 } as const;
 
 const STEM_TO_ELEMENT: Record<string, ElementKey> = {
@@ -92,6 +93,7 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
 
   const [activeId, setActiveId] = useState<string | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const t = useTranslations("sajuPillars");
 
   // 외부 클릭 / Esc 로 닫기.
   useEffect(() => {
@@ -119,10 +121,10 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1.5">
             <CardTitle className="font-mystic text-xl text-foreground">
-              사주팔자
+              {t("heading")}
             </CardTitle>
             <CardDescription className="text-xs text-muted-foreground">
-              네 기둥 여덟 글자 — 글자를 누르면 의미가 펼쳐져.
+              {t("subheading")}
             </CardDescription>
           </div>
           <div className="hidden rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-medium text-foreground/80 sm:block">
@@ -134,7 +136,7 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
         <div ref={wrapperRef} className="grid grid-cols-4 gap-1.5 sm:gap-3">
           {pillarKeys.map((key) => {
             const pillar = pillars[key];
-            const label = PILLAR_LABEL[key];
+            const labelKey = PILLAR_TKEYS[key];
 
             const stemId = `${key}-stem`;
             const branchId = `${key}-branch`;
@@ -146,10 +148,10 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
               >
                 <div className="space-y-0.5">
                   <span className="block text-[11px] font-semibold text-foreground">
-                    {label.ko}
+                    {t(labelKey.label as "pillarYear" | "pillarMonth" | "pillarDay" | "pillarHour")}
                   </span>
                   <span className="block text-[10px] text-muted-foreground">
-                    {label.desc}
+                    {t(labelKey.desc as "pillarYearSub" | "pillarMonthSub" | "pillarDaySub" | "pillarHourSub")}
                   </span>
                 </div>
                 {pillar ? (
@@ -188,12 +190,12 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
 
         {!pillars.hour ? (
           <p className="mt-4 rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-center text-xs text-muted-foreground">
-            태어난 시각이 비어있어 시주는 비워뒀어.
+            {t("hourEmpty")}
           </p>
         ) : null}
 
         <p className="mt-3 text-center text-[11px] text-muted-foreground">
-          글자를 탭하면 음양·오행·뜻을 볼 수 있어.
+          {t("tapHint")}
         </p>
       </CardContent>
     </Card>
@@ -275,6 +277,7 @@ function CharPopover({
   placement: "top" | "bottom";
 }) {
   const { kind, meaning } = lookup;
+  const t = useTranslations("sajuPillars");
   const elementLabel = ELEMENT_LABEL[meaning.element];
   const polarityLabel = POLARITY_LABEL[meaning.polarity];
   const opensAbove = placement === "top";
@@ -308,33 +311,33 @@ function CharPopover({
           {meaning.ko}
         </span>
         <span className="ml-auto rounded-full bg-amber-200/45 px-2 py-0.5 text-[10px] text-amber-900 dark:bg-amber-200/10 dark:text-amber-100/80">
-          {kind === "stem" ? "천간" : "지지"}
+          {kind === "stem" ? t("popoverStem") : t("popoverBranch")}
         </span>
       </div>
 
       <dl className="mt-2 grid grid-cols-2 gap-x-2 gap-y-1 text-[11px]">
         <div className="flex items-center gap-1">
-          <dt className="text-stone-500 dark:text-amber-100/50">음양</dt>
+          <dt className="text-stone-500 dark:text-amber-100/50">{t("yinYang")}</dt>
           <dd className="font-medium">{polarityLabel}</dd>
         </div>
         <div className="flex items-center gap-1">
-          <dt className="text-stone-500 dark:text-amber-100/50">오행</dt>
+          <dt className="text-stone-500 dark:text-amber-100/50">{t("fiveElements")}</dt>
           <dd className="font-medium">{elementLabel}</dd>
         </div>
         {kind === "branch" ? (
           <>
             <div className="flex items-center gap-1">
-              <dt className="text-stone-500 dark:text-amber-100/50">동물</dt>
+              <dt className="text-stone-500 dark:text-amber-100/50">{t("animal")}</dt>
               <dd className="font-medium">{meaning.animal}</dd>
             </div>
             <div className="flex items-center gap-1">
-              <dt className="text-stone-500 dark:text-amber-100/50">시간</dt>
+              <dt className="text-stone-500 dark:text-amber-100/50">{t("hour")}</dt>
               <dd className="font-medium tabular-nums">{meaning.timeRange}</dd>
             </div>
           </>
         ) : (
           <div className="col-span-2 flex items-center gap-1">
-            <dt className="text-stone-500 dark:text-amber-100/50">상징</dt>
+            <dt className="text-stone-500 dark:text-amber-100/50">{t("symbol")}</dt>
             <dd className="font-medium">{meaning.symbol}</dd>
           </div>
         )}

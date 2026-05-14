@@ -1,3 +1,7 @@
+"use client";
+
+import { useLocale, useTranslations } from "next-intl";
+
 import { CharacterImage } from "@/components/shared/character-image";
 import {
   Card,
@@ -13,7 +17,6 @@ import { ShareButton } from "@/components/shared/share-button";
 import type { TarotReading } from "@/db/schema";
 import { CHARACTERS } from "@/lib/chat/characters";
 import { getTodayCharacter } from "@/lib/daily-question/rotation";
-import { formatKoreanDate } from "@/lib/utils";
 
 interface TarotReadingCardProps {
   reading: TarotReading;
@@ -26,11 +29,6 @@ interface DrawnCardJson {
   isReversed: boolean;
 }
 
-/**
- * DB 의 cards jsonb 컬럼 타입.
- *
- * Drizzle jsonb 는 unknown 으로 추론되므로 좁혀준다.
- */
 function asDrawnCards(cards: unknown): DrawnCardJson[] {
   if (Array.isArray(cards)) return cards as DrawnCardJson[];
   return [];
@@ -39,11 +37,32 @@ function asDrawnCards(cards: unknown): DrawnCardJson[] {
 export function TarotReadingCard({ reading }: TarotReadingCardProps) {
   const cards = asDrawnCards(reading.cards);
   const card = cards[0];
+  const t = useTranslations("tarotForm");
+  const tChar = useTranslations("characters");
+  const tCardTabs = useTranslations("cardTabs");
+  const locale = useLocale();
+
   const readDate = reading.createdAt instanceof Date
     ? reading.createdAt.toISOString().slice(0, 10)
     : String(reading.createdAt).slice(0, 10);
   const charId = getTodayCharacter(readDate);
   const character = CHARACTERS[charId];
+  const charName = tChar(`${charId}.name`);
+  const charTitle = tChar(`${charId}.title`);
+
+  const localeDateStr = new Date(reading.createdAt).toLocaleDateString(
+    locale === "en" ? "en-US" : "ko-KR",
+    locale === "en"
+      ? { year: "numeric", month: "short", day: "numeric" }
+      : undefined,
+  );
+  const cardName = card
+    ? locale === "en" && card.nameEn
+      ? card.nameEn
+      : card.nameKo
+    : tCardTabs("tarot");
+  const orient = card?.isReversed ? t("reversedBadge") : t("uprightBadge");
+  const dateForFile = new Date(reading.createdAt).toISOString().slice(0, 10);
 
   return (
     <Card className="app-surface">
@@ -54,12 +73,12 @@ export function TarotReadingCard({ reading }: TarotReadingCardProps) {
               <CharacterImage character={character} fill className="object-cover object-top" sizes="56px" quality={90} />
             </div>
             <div>
-              <p className="font-mystic text-sm font-semibold text-foreground">{character.name}</p>
-              <p className="text-xs text-muted-foreground">{character.title}</p>
+              <p className="font-mystic text-sm font-semibold text-foreground">{charName}</p>
+              <p className="text-xs text-muted-foreground">{charTitle}</p>
             </div>
           </div>
           <p className="text-xs text-muted-foreground">
-            {formatKoreanDate(new Date(reading.createdAt))}
+            {localeDateStr}
           </p>
         </div>
         {reading.question ? (
@@ -88,17 +107,22 @@ export function TarotReadingCard({ reading }: TarotReadingCardProps) {
           <div className="flex items-center justify-end gap-2">
             <SaveImageButton
               imageUrl={`/api/share/tarot?${new URLSearchParams({
-                card:     card?.nameKo ?? "타로",
+                card:     cardName,
                 reversed: String(card?.isReversed ?? false),
                 summary:  reading.interpretation.slice(0, 60),
-                spread:   "한 장",
-                date:     new Date(reading.createdAt).toLocaleDateString("ko-KR"),
+                spread:   locale === "en" ? "1 card" : "한 장",
+                date:     localeDateStr,
+                locale,
               })}`}
-              filename={`인생의회전목마_타로_${card?.nameKo ?? ""}`}
+              filename={t("shareFilename", { date: dateForFile })}
             />
             <ShareButton
-              title={`타로 한 장: ${card?.nameKo ?? ""}`}
-              text={`[타로] ${card?.nameKo ?? ""} (${card?.isReversed ? "거꾸로" : "바로 선"})${reading.question ? `\n\nQ. ${reading.question}` : ""}\n\n${reading.interpretation}`}
+              title={t("shareTitleOne", { card: cardName })}
+              text={t("shareTextOne", {
+                card: cardName,
+                orient,
+                summary: reading.interpretation,
+              }) + (reading.question ? `\n\nQ. ${reading.question}` : "")}
             />
           </div>
         </div>

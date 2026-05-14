@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useActionState, useState } from "react";
 import { useScrollToResult } from "@/hooks/use-scroll-to-result";
 import { Loader2, Lock, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -39,6 +40,7 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
   );
   const [question, setQuestion] = useState("");
   const charsLeft = MAX_QUESTION_LENGTH - question.length;
+  const t = useTranslations("tarotForm");
 
   useScrollToResult(isPending, "tarot-results");
 
@@ -48,23 +50,23 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
         <CardHeader>
           <CardTitle className="font-mystic flex items-center gap-2 text-xl">
             <Lock className="h-5 w-5 text-accent" aria-hidden />
-            과거-현재-미래 (라이트)
+            {t("threeLightTitle")}
           </CardTitle>
           <CardDescription>
-            세 장의 카드가 들려주는 흐름의 이야기. 한 장의 풀이보다 훨씬 깊게.
+            {t("threeBody")}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           <ul className="space-y-1.5 text-sm text-muted-foreground">
-            <li>· 과거 · 지금까지의 결</li>
-            <li>· 현재 · 머무는 자리</li>
-            <li>· 미래 · 다가올 흐름</li>
-            <li>· 세 장을 묶는 종합 풀이</li>
+            <li>· {t("threeBullet1")}</li>
+            <li>· {t("threeBullet2")}</li>
+            <li>· {t("threeBullet3")}</li>
+            <li>· {t("threeBullet4")}</li>
           </ul>
           <Button asChild className="w-full" size="lg">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-4 w-4" aria-hidden />
-              라이트로 풀어보기
+              {t("threeCta")}
             </Link>
           </Button>
         </CardContent>
@@ -77,15 +79,14 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
       <CardHeader>
         <CardTitle className="font-mystic flex items-center gap-2 text-xl">
           <Sparkles className="h-5 w-5 text-accent" aria-hidden />
-          과거-현재-미래 (3장)
+          {t("threeTitle")}
         </CardTitle>
         <CardDescription>
-          마음을 가라앉히고 흐름을 묻는 한 가지 질문을 떠올려봐.
-          {isPending ? " 카드를 섞고 있어요…" : ""}
+          {t("threeBody")}
+          {isPending ? ` ${t("shuffling")}` : ""}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {/* 카드 뒷면 3장 미리보기 — 왼쪽 단일 카드와 크기·위치 맞춤 */}
         <div className="flex justify-center mb-4">
           {[
             { rotate: -10, translateY: 10 },
@@ -105,7 +106,7 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
             >
               <Image
                 src="/tarot/card_back.png"
-                alt="타로 카드 뒷면"
+                alt={t("cardBackAlt")}
                 width={448}
                 height={672}
                 className="w-full rounded-xl shadow-lg"
@@ -117,8 +118,7 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
         <form action={formAction} className="space-y-4">
           <div className="space-y-1.5">
             <Label htmlFor="three-question">
-              질문{" "}
-              <span className="text-muted-foreground text-xs">(선택)</span>
+              {t("questionLabel")}
             </Label>
             <Input
               id="three-question"
@@ -127,12 +127,12 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
               maxLength={MAX_QUESTION_LENGTH}
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              placeholder="예: 이 일은 어떻게 흘러갈까? (100자 이내)"
+              placeholder={t("threeQuestionPlaceholder")}
               disabled={isPending}
             />
             <div className="flex items-center justify-between gap-2 px-1">
               <p className="text-xs text-muted-foreground">
-                비워두고 그냥 흐름만 살펴봐도 OK.
+                {t("threeQuestionHint")}
               </p>
               <span
                 className={cn(
@@ -158,10 +158,10 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
             {isPending ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                세 장의 흐름을 읽는 중…
+                {t("threeLoading")}
               </>
             ) : (
-              "3장 뽑기"
+              t("threeDraw")
             )}
           </Button>
         </form>
@@ -171,7 +171,7 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
             <FormMessage
               state={{
                 kind: "error",
-                message: state.message ?? "오류가 났어",
+                message: state.message ?? t("threeError"),
               }}
             />
           </div>

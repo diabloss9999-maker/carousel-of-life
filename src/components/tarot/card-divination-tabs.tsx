@@ -5,16 +5,12 @@
  */
 import { useState } from "react";
 import type { ReactNode } from "react";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 
-const TABS = [
-  { id: "tarot",     label: "타로",     desc: "78장 · 운명의 큰 흐름" },
-  { id: "lenormand", label: "르노르망", desc: "36장 · 일상의 상황 읽기" },
-  { id: "runes",     label: "룬",       desc: "24자 · 고대 문자의 계시" },
-] as const;
-
-type TabId = (typeof TABS)[number]["id"];
+const TAB_IDS = ["tarot", "lenormand", "runes"] as const;
+type TabId = (typeof TAB_IDS)[number];
 
 interface Props {
   tarotPanel: ReactNode;
@@ -28,15 +24,22 @@ export function CardDivinationTabs({
   runesPanel,
 }: Props) {
   const [active, setActive] = useState<TabId>("tarot");
+  const t = useTranslations("cardTabs");
+
+  const tabs: { id: TabId; label: string; desc: string }[] = [
+    { id: "tarot",     label: t("tarot"),     desc: t("tarotDesc") },
+    { id: "lenormand", label: t("lenormand"), desc: t("lenormandDesc") },
+    { id: "runes",     label: t("rune"),      desc: t("runeDesc") },
+  ];
 
   return (
     <div className="space-y-6">
       <div
         role="tablist"
-        aria-label="카드 점술 종류"
+        aria-label={t("aria")}
         className="flex w-full gap-1 rounded-full border border-border/60 bg-card/40 p-1 backdrop-blur"
       >
-        {TABS.map((tab) => {
+        {tabs.map((tab) => {
           const isActive = tab.id === active;
           return (
             <button

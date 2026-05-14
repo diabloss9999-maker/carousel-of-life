@@ -1,3 +1,7 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -14,51 +18,11 @@ interface FiveElementsChartProps {
 }
 
 const ELEMENTS = [
-  {
-    key: "wood" as const,
-    ko: "나무",
-    hanja: "木",
-    stroke: "#34d399",
-    glow: "#34d399",
-    textClass: "text-emerald-400",
-    dotClass: "bg-emerald-400",
-  },
-  {
-    key: "fire" as const,
-    ko: "불",
-    hanja: "火",
-    stroke: "#f87171",
-    glow: "#f87171",
-    textClass: "text-red-400",
-    dotClass: "bg-red-400",
-  },
-  {
-    key: "earth" as const,
-    ko: "흙",
-    hanja: "土",
-    stroke: "#fbbf24",
-    glow: "#fbbf24",
-    textClass: "text-amber-400",
-    dotClass: "bg-amber-400",
-  },
-  {
-    key: "metal" as const,
-    ko: "쇠",
-    hanja: "金",
-    stroke: "#94a3b8",
-    glow: "#94a3b8",
-    textClass: "text-slate-400",
-    dotClass: "bg-slate-400",
-  },
-  {
-    key: "water" as const,
-    ko: "물",
-    hanja: "水",
-    stroke: "#38bdf8",
-    glow: "#38bdf8",
-    textClass: "text-sky-400",
-    dotClass: "bg-sky-400",
-  },
+  { key: "wood"  as const, tKey: "wood",  hanja: "木", stroke: "#34d399", glow: "#34d399", textClass: "text-emerald-400", dotClass: "bg-emerald-400" },
+  { key: "fire"  as const, tKey: "fire",  hanja: "火", stroke: "#f87171", glow: "#f87171", textClass: "text-red-400",     dotClass: "bg-red-400" },
+  { key: "earth" as const, tKey: "earth", hanja: "土", stroke: "#fbbf24", glow: "#fbbf24", textClass: "text-amber-400",   dotClass: "bg-amber-400" },
+  { key: "metal" as const, tKey: "metal", hanja: "金", stroke: "#94a3b8", glow: "#94a3b8", textClass: "text-slate-400",   dotClass: "bg-slate-400" },
+  { key: "water" as const, tKey: "water", hanja: "水", stroke: "#38bdf8", glow: "#38bdf8", textClass: "text-sky-400",     dotClass: "bg-sky-400" },
 ];
 
 const R = 30;
@@ -136,10 +100,13 @@ function GaugeRing({ pct, stroke, glow, isStrongest, isEmpty, hanja, textClass }
 }
 
 export function FiveElementsChart({ elements }: FiveElementsChartProps) {
+  const t = useTranslations("fiveElements");
   const total = ELEMENTS.reduce((s, e) => s + elements[e.key], 0) || 1;
   const sorted = [...ELEMENTS].sort((a, b) => elements[b.key] - elements[a.key]);
   const strongest = sorted[0]!;
   const weakest = sorted[sorted.length - 1]!;
+  const strongestLabel = t(strongest.tKey as "wood" | "fire" | "earth" | "metal" | "water");
+  const weakestLabel = t(weakest.tKey as "wood" | "fire" | "earth" | "metal" | "water");
 
   return (
     <Card className="border-white/20 bg-white/10 shadow-none backdrop-blur-md">
@@ -147,8 +114,8 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
         {/* 헤더 */}
         <div className="flex items-center justify-between">
           <div>
-            <p className="font-mystic text-xl font-semibold text-foreground/90">오행 분포</p>
-            <p className="text-xs text-muted-foreground mt-0.5">사주 {total}글자의 기운 분포</p>
+            <p className="font-mystic text-xl font-semibold text-foreground/90">{t("heading")}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{t("subheading", { total })}</p>
           </div>
           <span className="text-[11px] text-muted-foreground/50 font-medium">五行</span>
         </div>
@@ -183,7 +150,7 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
                       isEmpty ? "text-muted-foreground/60" : el.textClass,
                     )}
                   >
-                    {el.ko}
+                    {t(el.tKey as "wood" | "fire" | "earth" | "metal" | "water")}
                   </p>
                   <p
                     className={cn(
@@ -202,21 +169,21 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
         {/* 강한/약한 기운 */}
         <div className="flex gap-3">
           <div className="flex-1 rounded-xl bg-white/10 backdrop-blur border border-white/20 px-3 py-2.5">
-            <p className="text-[10px] text-muted-foreground/80 mb-1.5">강한 기운</p>
+            <p className="text-[10px] text-muted-foreground/80 mb-1.5">{t("strong")}</p>
             <div className="flex items-center gap-1.5">
               <span className={cn("h-2 w-2 rounded-full flex-shrink-0", strongest.dotClass)} />
               <span className={cn("font-mystic font-bold text-sm", strongest.textClass)}>
-                {strongest.ko}
+                {strongestLabel}
               </span>
               <span className="text-[10px] text-muted-foreground/70">{strongest.hanja}</span>
             </div>
           </div>
           <div className="flex-1 rounded-xl bg-white/10 backdrop-blur border border-white/20 px-3 py-2.5">
-            <p className="text-[10px] text-muted-foreground/80 mb-1.5">약한 기운</p>
+            <p className="text-[10px] text-muted-foreground/80 mb-1.5">{t("weak")}</p>
             <div className="flex items-center gap-1.5">
               <span className={cn("h-2 w-2 rounded-full flex-shrink-0 opacity-50", weakest.dotClass)} />
               <span className={cn("font-mystic font-semibold text-sm opacity-60", weakest.textClass)}>
-                {weakest.ko}
+                {weakestLabel}
               </span>
               <span className="text-[10px] text-muted-foreground/65">{weakest.hanja}</span>
             </div>

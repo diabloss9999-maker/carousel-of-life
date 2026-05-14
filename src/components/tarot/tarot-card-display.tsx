@@ -11,6 +11,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Sparkles } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 
@@ -32,6 +33,12 @@ export function TarotCardDisplay({
 }: TarotCardDisplayProps) {
   const [imgError, setImgError] = useState(false);
   const src = `/tarot/${id}.png`;
+  const t = useTranslations("tarotForm");
+  const locale = useLocale();
+  const displayName = locale === "en" && nameEn ? nameEn : nameKo;
+  const ariaLabel = isReversed
+    ? t("cardAriaReversed", { name: displayName })
+    : t("cardAriaUpright", { name: displayName });
 
   return (
     <div
@@ -41,12 +48,12 @@ export function TarotCardDisplay({
         isReversed && "rotate-180",
         className,
       )}
-      aria-label={`${nameKo} ${isReversed ? "거꾸로 선" : "바로 선"}`}
+      aria-label={ariaLabel}
     >
       {!imgError ? (
         <Image
           src={src}
-          alt={nameKo}
+          alt={displayName}
           fill
           className="object-cover rounded-xl border border-white/20 shadow-[0_22px_60px_rgb(0_0_0/0.22)]"
           onError={() => setImgError(true)}
@@ -54,7 +61,7 @@ export function TarotCardDisplay({
           priority={false}
         />
       ) : (
-        <FallbackCard nameKo={nameKo} nameEn={nameEn} />
+        <FallbackCard primary={displayName} secondary={locale === "en" ? nameKo : nameEn} />
       )}
     </div>
   );
@@ -62,11 +69,11 @@ export function TarotCardDisplay({
 
 /** 이미지 없을 때 보여주는 텍스트 카드. */
 function FallbackCard({
-  nameKo,
-  nameEn,
+  primary,
+  secondary,
 }: {
-  nameKo: string;
-  nameEn: string;
+  primary: string;
+  secondary: string;
 }) {
   return (
     <div
@@ -81,9 +88,9 @@ function FallbackCard({
       <Sparkles className="h-5 w-5 text-accent self-start" aria-hidden />
       <div className="text-center space-y-2">
         <p className="font-mystic text-base sm:text-lg font-semibold leading-tight">
-          {nameKo}
+          {primary}
         </p>
-        <p className="text-xs text-muted-foreground tracking-wide">{nameEn}</p>
+        <p className="text-xs text-muted-foreground tracking-wide">{secondary}</p>
       </div>
       <Sparkles
         className="h-5 w-5 text-accent self-end rotate-180"
@@ -102,6 +109,7 @@ export function CardOrientationBadge({
 }: {
   isReversed: boolean;
 }) {
+  const t = useTranslations("tarotForm");
   return (
     <span
       className={cn(
@@ -111,7 +119,7 @@ export function CardOrientationBadge({
           : "border-primary/60 bg-primary text-primary-foreground",
       )}
     >
-      {isReversed ? "거꾸로 선 카드" : "바로 선 카드"}
+      {isReversed ? t("reversedBadge") : t("uprightBadge")}
     </span>
   );
 }

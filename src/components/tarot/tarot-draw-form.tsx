@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { useScrollToResult } from "@/hooks/use-scroll-to-result";
 import { Loader2, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -50,6 +51,7 @@ export function TarotDrawForm() {
   const [phase, setPhase] = useState<AnimPhase>("idle");
   const formRef = useRef<HTMLFormElement>(null);
   const charsLeft = MAX_QUESTION_LENGTH - question.length;
+  const t = useTranslations("tarotForm");
 
   useScrollToResult(isPending, "tarot-results");
 
@@ -80,13 +82,13 @@ export function TarotDrawForm() {
   const buttonLabel = (() => {
     switch (phase) {
       case "shuffling":
-        return "섞는 중...";
+        return t("shuffling");
       case "selected":
-        return "선택됨";
+        return t("selected");
       case "pending":
-        return "운명을 읽는 중...";
+        return t("drawing");
       default:
-        return isPending ? "운명을 읽는 중..." : "카드 뽑기";
+        return isPending ? t("drawing") : t("drawCard");
     }
   })();
 
@@ -95,12 +97,12 @@ export function TarotDrawForm() {
       <CardHeader>
         <CardTitle className="font-mystic flex items-center gap-2 text-xl">
           <Sparkles className="h-5 w-5 text-accent" aria-hidden />
-          카드 한 장 뽑기
+          {t("drawCardHeading")}
         </CardTitle>
         <CardDescription>
-          질문을 떠올린 채 마음을 가다듬고, 한 장을 뽑아봐.
-          {phase === "shuffling" ? " 카드를 섞고 있어요…" : ""}
-          {phase === "pending" || isPending ? " 운명을 읽는 중…" : ""}
+          {t("drawCardBody")}
+          {phase === "shuffling" ? ` ${t("shuffling")}` : ""}
+          {phase === "pending" || isPending ? ` ${t("drawing")}` : ""}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -119,7 +121,7 @@ export function TarotDrawForm() {
             >
               <Image
                 src="/tarot/card_back.png"
-                alt="타로 카드 뒷면"
+                alt={t("cardBackAlt")}
                 width={144}
                 height={216}
                 className="w-full"
@@ -132,8 +134,7 @@ export function TarotDrawForm() {
         <form ref={formRef} action={formAction} className="space-y-4">
           <div className="space-y-1.5">
             <Label htmlFor="question">
-              질문{" "}
-              <span className="text-muted-foreground text-xs">(선택)</span>
+              {t("questionLabel")}
             </Label>
             <Input
               id="question"
@@ -142,12 +143,12 @@ export function TarotDrawForm() {
               maxLength={MAX_QUESTION_LENGTH}
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              placeholder="예: 이번 주 일이 어떻게 흘러갈까? (100자 이내)"
+              placeholder={t("questionPlaceholderOne")}
               disabled={isBusy}
             />
             <div className="flex items-center justify-between gap-2 px-1">
               <p className="text-xs text-muted-foreground">
-                비워두면 그냥 오늘의 한 장을 뽑을 수 있어요.
+                {t("questionHintOne")}
               </p>
               <span
                 className={cn(
@@ -189,7 +190,7 @@ export function TarotDrawForm() {
             />
             {state.quotaExceeded ? (
               <Button asChild className="w-full" variant="outline">
-                <Link href={ROUTES.pricing}>라이트 구독하기</Link>
+                <Link href={ROUTES.pricing}>{t("subscribeCta")}</Link>
               </Button>
             ) : null}
           </div>

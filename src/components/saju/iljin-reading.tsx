@@ -19,6 +19,7 @@ import {
   Sun,
 } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -72,6 +73,8 @@ const RELATION_LABEL = {
 export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
   const [result, setResult] = useState<IljinState | null>(null);
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("iljin");
+  const tPrem = useTranslations("premiumCard");
 
   function handleGenerate() {
     startTransition(async () => {
@@ -87,21 +90,21 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
         <CardHeader>
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" />
-            오늘의 일진 × 내 사주
+            {t("title")}
             <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
-              라이트
+              {tPrem("lightBadge")}
             </span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="pointer-events-none select-none space-y-1.5 text-sm text-muted-foreground blur-[3px]">
-            <p>오늘 壬寅일이 내 일주와 삼합을 이뤄요</p>
-            <p>결단하기 좋은 날 — 오전에 중요한 일 처리 권장</p>
+            <p>{t("lockBullet1")}</p>
+            <p>{t("lockBullet2")}</p>
           </div>
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-3.5 w-3.5" />
-              라이트로 확인하기
+              {tPrem("verifyCta")}
             </Link>
           </Button>
         </CardContent>
@@ -114,7 +117,7 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
     return (
       <Card className="app-surface">
         <CardContent className="py-6 text-center text-sm text-muted-foreground">
-          사주를 먼저 계산해야 일진 분석이 가능해.
+          {t("emptyMessage")}
         </CardContent>
       </Card>
     );
@@ -132,7 +135,7 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
         <CardHeader className="pb-3">
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Sparkles className="h-4 w-4 text-accent" />
-            오늘의 일진 × 내 사주
+            {t("title")}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -192,7 +195,7 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
 
           {/* 조언 */}
           <div className="space-y-1.5 rounded-xl bg-white/8 px-3 py-2.5">
-            <p className="text-xs font-semibold text-accent">오늘의 조언</p>
+            <p className="text-xs font-semibold text-accent">{t("advice")}</p>
             <p className="text-xs leading-relaxed text-muted-foreground">
               {data.advice}
             </p>
@@ -201,11 +204,11 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
           {/* 좋은 시간 + 주의 */}
           <div className="grid grid-cols-2 gap-2 text-xs">
             <div className="rounded-lg border border-emerald-400/20 bg-emerald-400/8 px-2.5 py-2">
-              <p className="mb-0.5 font-semibold text-emerald-400">좋은 시간</p>
+              <p className="mb-0.5 font-semibold text-emerald-400">{t("luckyHour")}</p>
               <p className="text-muted-foreground">{data.luckyTime}</p>
             </div>
             <div className="rounded-lg border border-red-400/20 bg-red-400/8 px-2.5 py-2">
-              <p className="mb-0.5 font-semibold text-red-400">주의</p>
+              <p className="mb-0.5 font-semibold text-red-400">{t("caution")}</p>
               <p className="text-muted-foreground">{data.caution}</p>
             </div>
           </div>
@@ -221,7 +224,7 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
         <CardHeader>
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Sparkles className="h-4 w-4 text-accent" />
-            오늘의 일진 × 내 사주
+            {t("title")}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -232,7 +235,7 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
             size="sm"
             className="w-full"
           >
-            다시 시도
+            {t("retry")}
           </Button>
         </CardContent>
       </Card>
@@ -250,7 +253,7 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
       </CardHeader>
       <CardContent className="space-y-3">
         <p className="text-sm text-muted-foreground">
-          오늘 날짜의 일주(日柱)가 내 사주와 어떤 충·합을 이루는지 분석해줄게.
+          {t("body")}
         </p>
         <Button
           onClick={handleGenerate}
@@ -261,12 +264,12 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
           {isPending ? (
             <>
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
-              분석 중…
+              {t("analyzing")}
             </>
           ) : (
             <>
               <Sparkles className="h-3.5 w-3.5" />
-              오늘 일진 보기
+              {t("showCta")}
             </>
           )}
         </Button>

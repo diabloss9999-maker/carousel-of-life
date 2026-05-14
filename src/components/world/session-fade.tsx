@@ -7,8 +7,13 @@
  * - 게임화 없음. 사용자 입력 방해 없음 (pointer-events: none, aria-hidden).
  * - 후유증 조건(긴 채팅 체류 / 새벽 / 균열 3+)에 해당하면 AFTERTASTE 문장이 우선.
  * - sessionStorage 키로 세션당 1회 제한.
+ *
+ * 자동 사라짐:
+ *  - 표시 후 ~2.6초 뒤에 자동으로 페이드아웃 → 언마운트
+ *  - 사용자가 탭으로 돌아오면(visibility=visible) 즉시 닫힘
+ *  - 페이지 이탈이 실제 일어나면 새 페이지에서 새 mount 되니까 자연 초기화
  */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { loadFractureState } from "@/lib/fracture/fracture-state";
@@ -24,6 +29,10 @@ const FRACTURE_THRESHOLD = 3;
 /** 새벽 시작/끝 (KST). */
 const DAWN_HOUR_START = 2;
 const DAWN_HOUR_END = 5;
+/** 페이드 표시 유지 시간 (이후 페이드아웃 시작). */
+const VISIBLE_HOLD_MS = 2100;
+/** 페이드아웃 애니메이션 시간 (CSS 와 동기화). */
+const FADE_OUT_MS = 500;
 
 /** KST 기준 현재 시(0~23). */
 function getKstHour(): number {
@@ -40,18 +49,15 @@ function getKstHour(): number {
 function shouldUseAftertaste(): boolean {
   if (typeof window === "undefined") return false;
 
-  // 1) 채팅 페이지에서 5분 이상 체류
   const entryRaw = window.sessionStorage.getItem(ENTRY_TIME_KEY);
   const entryAt = entryRaw ? parseInt(entryRaw, 10) || 0 : 0;
   const dwelled = entryAt > 0 ? Date.now() - entryAt : 0;
   const onChat = window.location.pathname.startsWith("/chat");
   if (onChat && dwelled >= LONG_DWELL_MS) return true;
 
-  // 2) 새벽 시간대
   const h = getKstHour();
   if (h >= DAWN_HOUR_START && h < DAWN_HOUR_END) return true;
 
-  // 3) 균열 임계 이상
   try {
     const fracture = loadFractureState();
     if (fracture.level >= FRACTURE_THRESHOLD) return true;
@@ -61,20 +67,23 @@ function shouldUseAftertaste(): boolean {
   return false;
 }
 
-/** 후보 배열 중 하나를 무작위 선택. */
 function pickOne(pool: readonly string[]): string {
   return pool[Math.floor(Math.random() * pool.length)] ?? pool[0] ?? "";
 }
 
 export function SessionFade() {
   const [closing, setClosing] = useState(false);
+  const [fadingOut, setFadingOut] = useState(false);
   const [line, setLine] = useState("");
   const tWorld = useTranslations("worldAtmosphere");
+  /** 진행 중인 타이머 핸들 모음 — cleanup 에서 한 번에 정리. */
+  const timersRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // 페이지 진입 시각 기록 (없는 경우만)
+    const timers = timersRef.current;
+
     try {
       if (!window.sessionStorage.getItem(ENTRY_TIME_KEY)) {
         window.sessionStorage.setItem(ENTRY_TIME_KEY, String(Date.now()));
@@ -82,6 +91,29 @@ export function SessionFade() {
     } catch {
       /* 무시 */
     }
+
+    /** 즉시 닫기 — 탭 복귀 시 / 새 mount 시 / 안전 fallback. */
+    const closeImmediately = (): void => {
+      timers.forEach((id) => clearTimeout(id));
+      timers.clear();
+      setFadingOut(false);
+      setClosing(false);
+    };
+
+    /** 부드러운 페이드아웃 후 언마운트. */
+    const scheduleAutoHide = (): void => {
+      const t1 = setTimeout(() => {
+        setFadingOut(true);
+        const t2 = setTimeout(() => {
+          setFadingOut(false);
+          setClosing(false);
+          timers.delete(t2);
+        }, FADE_OUT_MS);
+        timers.add(t2);
+        timers.delete(t1);
+      }, VISIBLE_HOLD_MS);
+      timers.add(t1);
+    };
 
     /** 종료 직전 트리거. */
     const handler = (): void => {
@@ -97,11 +129,19 @@ export function SessionFade() {
         ? tWorld.raw("sessionAftertasteFull")
         : tWorld.raw("sessionClosing")) as readonly string[];
       setLine(pickOne(pool));
+      setFadingOut(false);
       setClosing(true);
+      // 일정 시간 후 자동으로 사라지도록 예약.
+      scheduleAutoHide();
     };
 
     const onVisibility = (): void => {
-      if (document.visibilityState === "hidden") handler();
+      if (document.visibilityState === "hidden") {
+        handler();
+      } else {
+        // 사용자가 돌아오면 즉시 닫기.
+        closeImmediately();
+      }
     };
 
     window.addEventListener("beforeunload", handler);
@@ -109,6 +149,8 @@ export function SessionFade() {
     window.addEventListener("pagehide", handler);
 
     return () => {
+      timers.forEach((id) => clearTimeout(id));
+      timers.clear();
       window.removeEventListener("beforeunload", handler);
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("pagehide", handler);
@@ -131,7 +173,11 @@ export function SessionFade() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        animation: "session-fade-in 0.45s ease-out forwards",
+        opacity: fadingOut ? 0 : 1,
+        animation: fadingOut
+          ? undefined
+          : "session-fade-in 0.45s ease-out forwards",
+        transition: `opacity ${FADE_OUT_MS}ms ease-in`,
       }}
     >
       <p
