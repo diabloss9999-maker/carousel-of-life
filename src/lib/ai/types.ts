@@ -65,6 +65,25 @@ export const sajuDeepAiSchema = z.object({
   careerFit: z.string().min(1).max(2000),
   healthCare: z.string().min(1).max(2000),
   lifeFlow: z.string().min(1).max(3000),
+  /**
+   * 사주 8글자 각 글자의 도출 근거 + 의미 풀이.
+   * - 각 필드: 2-4문장. "이 글자가 왜 나왔는가 + 무엇을 상징하는가 + 너에게 어떤 의미인가"
+   * - hourStem/hourBranch 는 태어난 시각 모를 때 null.
+   * - 기존 캐시 호환을 위해 옵셔널.
+   */
+  pillarBreakdown: z
+    .object({
+      yearStem: z.string().min(1).max(800),
+      yearBranch: z.string().min(1).max(800),
+      monthStem: z.string().min(1).max(800),
+      monthBranch: z.string().min(1).max(800),
+      dayStem: z.string().min(1).max(800),
+      dayBranch: z.string().min(1).max(800),
+      hourStem: z.string().max(800).nullable(),
+      hourBranch: z.string().max(800).nullable(),
+      summary: z.string().min(1).max(1500),
+    })
+    .optional(),
 });
 
 export type SajuDeepAiOutput = z.infer<typeof sajuDeepAiSchema>;

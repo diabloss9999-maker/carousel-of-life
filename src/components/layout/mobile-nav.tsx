@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 import { mainNav, type NavItem } from "@/config/navigation";
 import { cn } from "@/lib/utils";
@@ -13,6 +14,7 @@ const NAV_SURFACE2 = "rgba(255,255,255,0.08)";
 
 export function MobileNav() {
   const pathname = usePathname();
+  const tNav = useTranslations("nav");
 
   return (
     <nav
@@ -42,12 +44,13 @@ export function MobileNav() {
             pathname === item.href ||
             (item.href !== "/" && pathname.startsWith(item.href));
 
+          const label = tNav(item.labelKey);
           return (
             <Link
               key={item.href}
               href={item.href}
               aria-current={isActive ? "page" : undefined}
-              aria-label={`${item.label} — ${item.description}`}
+              aria-label={`${label} — ${item.description}`}
               title={item.description}
               className="flex min-w-[56px] flex-1 shrink-0 flex-col items-center justify-center gap-[3px] min-h-[52px] px-1 transition-colors duration-150"
               style={{ color: isActive ? NAV_ACTIVE : NAV_MUTED }}
@@ -70,7 +73,7 @@ export function MobileNav() {
 
               <span className="max-w-[64px] truncate text-center font-semibold tracking-tight leading-none"
                 style={{ fontSize: 10 }}>
-                {item.label}
+                {label}
               </span>
             </Link>
           );

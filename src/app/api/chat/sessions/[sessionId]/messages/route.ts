@@ -21,7 +21,7 @@ import {
   affinityContext,
   getAffinity,
 } from "@/lib/affinity/service";
-import { detectAndDraw } from "@/lib/chat/reading-detector";
+import { resolveReadingFlow, type ReadingResult } from "@/lib/chat/reading-detector";
 import { addCrack, reduceCrack, getCrackScore, CRACK_CONTEXT } from "@/lib/crack/service";
 import { checkHiddenEvents } from "@/lib/observe/hidden-events";
 import { calcLevel } from "@/lib/affinity/levels";
@@ -45,6 +45,39 @@ const bodySchema = z.object({
     .min(1, "질문을 입력해줘.")
     .max(100, "질문은 100자 이내로 짧게 부탁해."),
 });
+
+/**
+ * 캐릭터별 메시지당 균열 변동량 — 선·악 스펙트럼.
+ *
+ *  강한 선 (-2): 라엘
+ *  선     (-1): 소령 · 헬가
+ *  중립    (0): 루나 · 현도 · 외르문드
+ *  악     (+1): 카엘 · 비요른
+ *  강한 악 (+2): 귀염
+ */
+const CHARACTER_CRACK_DELTA: Record<CharacterId, number> = {
+  sage:       -2, // 라엘 — 강한 선
+  shaman:     -1, // 소령
+  runeshaman: -1, // 헬가
+  witch:       0, // 루나
+  taoist:      0, // 현도
+  god:         0, // 외르문드
+  child:      +1, // 카엘
+  hunter:     +1, // 비요른
+  dokkaebi:   +2, // 귀염 — 강한 악
+};
+
+/**
+ * 한 메시지에 대해 캐릭터별 균열 변동을 적용.
+ */
+async function applyCharacterCrackDelta(
+  userId: string,
+  characterId: CharacterId,
+): Promise<void> {
+  const delta = CHARACTER_CRACK_DELTA[characterId] ?? 0;
+  if (delta > 0) await addCrack(userId, delta, `chat:${characterId}`);
+  else if (delta < 0) await reduceCrack(userId, Math.abs(delta));
+}
 
 export async function POST(
   request: NextRequest,
@@ -108,18 +141,30 @@ export async function POST(
     hourKst: new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" })).getHours(),
   });
 
-  // 점술 요청 감지 + 카드 추첨 (이세계만 카드, 동양은 null)
-  let reading = null;
-  try {
-    reading = detectAndDraw(parsed.data.content, characterId);
-  } catch { /* 카드 추첨 실패 시 무시하고 일반 대화로 진행 */ }
-
   const messages = prepared.messages;
 
-  // 카드가 뽑혔으면 시스템 프롬프트에 주입 (유저 메시지보다 강하게 적용)
-  const cardSystemInject = reading
-    ? `\n\n[카드 읽기 — 지금 즉시 실행]\n${reading.promptText}`
-    : "";
+  // 점술 흐름 결정 — 2턴 분리 (1턴 defer / 2턴 실제 그리기)
+  let reading: ReadingResult | null = null;
+  let cardSystemInject = "";
+  try {
+    const decision = resolveReadingFlow(
+      parsed.data.content,
+      characterId,
+      messages.map((m) => ({
+        role: m.role === "assistant" ? "assistant" : "user",
+        content: m.content,
+      })),
+    );
+    if (decision.kind === "defer") {
+      // 카드는 안 그림 — AI 가 setup 질문 한 줄만 던지도록 유도
+      cardSystemInject = decision.promptInjection;
+    } else if (decision.kind === "draw") {
+      reading = decision.reading;
+      cardSystemInject = `\n\n[카드 읽기 — 지금 즉시 실행]\n${reading.promptText}`;
+    }
+  } catch {
+    /* 점술 흐름 판정 실패 시 무시하고 일반 대화로 진행 */
+  }
 
   // 존재 기분 — 9명 캐릭터 전체 적용
   const dailySeed = getDailySeed();
@@ -176,12 +221,8 @@ export async function POST(
           model: AI_MODELS.chat,
         }),
         addAffinityPoint(prepared.profile.userId, characterId),
-        // 귀염 대화 → 균열 +1 / 라엘 대화 → 균열 -1
-        characterId === "dokkaebi"
-          ? addCrack(prepared.profile.userId, 1, "chat:dokkaebi")
-          : characterId === "sage"
-            ? reduceCrack(prepared.profile.userId, 1)
-            : Promise.resolve(undefined),
+        // 캐릭터 본질에 따른 균열 변동 — 선/악 스펙트럼.
+        applyCharacterCrackDelta(prepared.profile.userId, characterId),
       ]);
     },
   });

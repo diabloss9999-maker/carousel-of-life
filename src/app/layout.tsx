@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Toaster } from "sonner";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { TimeAwareBg } from "@/components/layout/time-aware-bg";
@@ -22,13 +24,20 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="ko" suppressHydrationWarning className="h-full antialiased">
+    <html
+      lang={locale}
+      suppressHydrationWarning
+      className="h-full antialiased"
+    >
       <head>
         {/* Pretendard — 한국어 친화 모던 산세리프 (CDN). */}
         <link
@@ -47,28 +56,30 @@ export default function RootLayout({
         {/* 가독성 오버레이 */}
         <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 bg-white/10" />
 
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          {children}
-          {/* 배경 BGM — 시간대에 따라 낮/밤 트랙 자동 교차 (UI 없음, 볼륨 0.18) */}
-          <AmbientTrack />
-          {/* 비대시보드 페이지용 떠있는 음소거 토글 (대시보드는 헤더 내 토글 사용) */}
-          <GlobalMusicToggle />
-          <Toaster
-            position="top-center"
-            theme="dark"
-            richColors
-            toastOptions={{
-              style: {
-                fontFamily: "var(--font-sans), system-ui",
-              },
-            }}
-          />
-        </ThemeProvider>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem={false}
+            disableTransitionOnChange
+          >
+            {children}
+            {/* 배경 BGM — 시간대에 따라 낮/밤 트랙 자동 교차 (UI 없음, 볼륨 0.18) */}
+            <AmbientTrack />
+            {/* 비대시보드 페이지용 떠있는 음소거 토글 (대시보드는 헤더 내 토글 사용) */}
+            <GlobalMusicToggle />
+            <Toaster
+              position="top-center"
+              theme="dark"
+              richColors
+              toastOptions={{
+                style: {
+                  fontFamily: "var(--font-sans), system-ui",
+                },
+              }}
+            />
+          </ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

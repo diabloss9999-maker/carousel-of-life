@@ -1,0 +1,117 @@
+{
+  "nav": {
+    "fortune": "운세",
+    "oracle": "주술사",
+    "tarot": "점술",
+    "pillars": "사주",
+    "bond": "궁합",
+    "persona": "성격유형",
+    "archive": "도감",
+    "settings": "설정"
+  },
+  "common": {
+    "logout": "로그아웃",
+    "login": "로그인",
+    "signup": "가입하기",
+    "save": "저장",
+    "cancel": "취소",
+    "confirm": "확인",
+    "back": "뒤로",
+    "next": "다음",
+    "close": "닫기",
+    "loading": "불러오는 중...",
+    "error": "오류가 났어",
+    "retry": "다시 시도",
+    "today": "오늘",
+    "viewMore": "더 보기"
+  },
+  "header": {
+    "muteMusic": "배경 음악 끄기",
+    "unmuteMusic": "배경 음악 켜기",
+    "languageToggle": "언어 변경"
+  },
+  "today": {
+    "title": "운세",
+    "subtitleWithName": "{name} 관측 채널 · 오늘의 운세 기록 중",
+    "subtitleNoName": "오늘의 운세 기록 중",
+    "worldStatusTitle": "오늘의 세계 상태",
+    "worldStatusLabel": "경계 균열 측정",
+    "moodPrompt": "오늘 기분은 어때?",
+    "moodSaved": "기록됨"
+  },
+  "moods": {
+    "great": "최고야",
+    "good": "좋아",
+    "neutral": "그냥",
+    "tough": "힘드네",
+    "hard": "힘들어"
+  },
+  "crackLabels": {
+    "stable": "안정",
+    "wave": "파동",
+    "fracture": "균열",
+    "danger": "위험",
+    "imminent": "임박"
+  },
+  "chat": {
+    "title": "주술사",
+    "description": "아홉 주술사 중 한 명을 골라. 이세계의 카드, 동양의 사주·천기, 북방의 룬 — 어느 결을 가진 자든 너의 운명을 이미 알고 있어.",
+    "placeholderDefault": "물어봐...",
+    "loreSectionTitle": "세계관 이야기",
+    "charactersSection": "캐릭터 스토리",
+    "truthRoute": "진실 루트",
+    "chapter": "Chapter {number}",
+    "unlockHint": "Lv.{level} 해금",
+    "characterStoryLocked": "아직 풀리지 않은 이야기야. 곧 새겨질 거예요."
+  },
+  "tarot": {
+    "title": "점술",
+    "description": "카드를 뽑아 운명의 한 자락을 살펴봐요.",
+    "drawOne": "카드 뽑기",
+    "drawThree": "3장 뽑기",
+    "drawingTitle": "카드 한 장 뽑기",
+    "drawingThreeTitle": "과거-현재-미래 (3장)",
+    "questionLabel": "질문",
+    "questionOptional": "(선택)",
+    "questionPlaceholderOne": "예: 이번 주 일이 어떻게 흘러갈까? (100자 이내)",
+    "questionPlaceholderThree": "예: 이 일은 어떻게 흘러갈까? (100자 이내)",
+    "questionHintOne": "비워두면 그냥 오늘의 한 장을 뽑을 수 있어요.",
+    "questionHintThree": "비워두고 그냥 흐름만 살펴봐도 OK."
+  },
+  "saju": {
+    "title": "사주",
+    "description": "사주팔자는 태어난 순간의 별 배치야. 운세·타로·궁합 모든 풀이의 뿌리가 여기 있어.",
+    "noSajuTitle": "사주를 아직 보지 않았어",
+    "noSajuDescription": "한 번 살펴보면 운세 풀이가 한결 깊어져요. 처음 한 번만 계산하면 계속 저장돼요."
+  },
+  "compatibility": {
+    "title": "궁합",
+    "description": "두 사람의 사주·별자리·띠·성격이 어떻게 얽혀 있는지 주술사가 읽어줄게."
+  },
+  "personality": {
+    "title": "성격유형",
+    "description": "20문항으로 나의 본성을 알아봐. 결과는 주술사 채팅·운세·타로 풀이에 자동 반영돼."
+  },
+  "collection": {
+    "title": "도감",
+    "description": "기억의 조각들이 여기 쌓인다."
+  },
+  "settings": {
+    "title": "설정",
+    "languageSection": "언어",
+    "languageDescription": "표시 언어를 선택해. 운세·풀이도 같은 언어로 생성돼요 (지원 시).",
+    "logout": "로그아웃"
+  },
+  "auth": {
+    "kakaoLogin": "카카오로 로그인",
+    "googleLogin": "구글로 로그인",
+    "kakaoSignup": "카카오로 시작하기",
+    "googleSignup": "구글로 시작하기",
+    "loginTitle": "관측 시작",
+    "loginSubtitle": "경계가 당신을 기억하고 있어.",
+    "signupTitle": "첫 관측",
+    "signupSubtitle": "경계에 처음으로 이름을 새겨.",
+    "firstVisitHint": "첫 방문이라면 그대로 가입돼요.",
+    "noPasswordHint": "버튼 한 번이면 가입 완료. 별도 비밀번호는 없어요."
+  }
+}

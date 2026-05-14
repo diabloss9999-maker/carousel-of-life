@@ -11,7 +11,7 @@ import { requireProfile } from "@/lib/auth/get-user";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 
 export const metadata: Metadata = {
-  title: "자취 보관소",
+  title: "도감",
   description:
     "매일 카드 뽑기로 모으는 나만의 카드 도감 — 194장 컬렉션.",
 };
@@ -47,7 +47,7 @@ export default async function CollectionPage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/icons/memory-vessel.svg" alt="" aria-hidden className="h-6 w-6 opacity-60" />
               <h1 className="font-mystic text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-                자취 보관소
+                도감
               </h1>
             </div>
             <p className="mt-1 text-sm text-muted-foreground">

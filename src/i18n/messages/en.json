@@ -1,0 +1,117 @@
+{
+  "nav": {
+    "fortune": "Fortune",
+    "oracle": "Oracle",
+    "tarot": "Tarot",
+    "pillars": "Pillars",
+    "bond": "Bond",
+    "persona": "Persona",
+    "archive": "Archive",
+    "settings": "Settings"
+  },
+  "common": {
+    "logout": "Log out",
+    "login": "Log in",
+    "signup": "Sign up",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "close": "Close",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "today": "Today",
+    "viewMore": "View more"
+  },
+  "header": {
+    "muteMusic": "Mute background music",
+    "unmuteMusic": "Unmute background music",
+    "languageToggle": "Change language"
+  },
+  "today": {
+    "title": "Fortune",
+    "subtitleWithName": "{name}'s observatory · today's fortune in record",
+    "subtitleNoName": "Today's fortune in record",
+    "worldStatusTitle": "Today's World State",
+    "worldStatusLabel": "Boundary Fracture Reading",
+    "moodPrompt": "How do you feel today?",
+    "moodSaved": "Saved"
+  },
+  "moods": {
+    "great": "Great",
+    "good": "Good",
+    "neutral": "Just so-so",
+    "tough": "Tough",
+    "hard": "Really hard"
+  },
+  "crackLabels": {
+    "stable": "Stable",
+    "wave": "Ripple",
+    "fracture": "Fracture",
+    "danger": "Danger",
+    "imminent": "Imminent"
+  },
+  "chat": {
+    "title": "Oracle",
+    "description": "Pick one of nine shamans. The Astra Rift's cards, the East's pillars and heavens, the North's runes — whoever's grain you choose, they already know your fate.",
+    "placeholderDefault": "Ask...",
+    "loreSectionTitle": "Worldview",
+    "charactersSection": "Character Stories",
+    "truthRoute": "Truth Route",
+    "chapter": "Chapter {number}",
+    "unlockHint": "Unlocks at Lv.{level}",
+    "characterStoryLocked": "This story isn't carved yet. It will be soon."
+  },
+  "tarot": {
+    "title": "Tarot",
+    "description": "Draw a card and glimpse a strand of fate.",
+    "drawOne": "Draw a card",
+    "drawThree": "Draw three",
+    "drawingTitle": "Draw One Card",
+    "drawingThreeTitle": "Past · Present · Future (3 cards)",
+    "questionLabel": "Question",
+    "questionOptional": "(optional)",
+    "questionPlaceholderOne": "e.g. How will this week unfold? (within 100 chars)",
+    "questionPlaceholderThree": "e.g. How will this matter flow? (within 100 chars)",
+    "questionHintOne": "Leave blank for today's general card.",
+    "questionHintThree": "Or simply observe the flow."
+  },
+  "saju": {
+    "title": "Pillars",
+    "description": "The Four Pillars are the stars' configuration at the moment of your birth. The root of every fortune, tarot, and compatibility reading lives here.",
+    "noSajuTitle": "You haven't read your pillars yet",
+    "noSajuDescription": "Reading them once deepens every other reading. You only need to compute them once — they stay forever."
+  },
+  "compatibility": {
+    "title": "Bond",
+    "description": "A shaman will read how two people's pillars, constellations, zodiac, and personality are tangled together."
+  },
+  "personality": {
+    "title": "Persona",
+    "description": "Twenty questions to learn your nature. Results feed into shaman chat, fortunes, and tarot readings automatically."
+  },
+  "collection": {
+    "title": "Archive",
+    "description": "Fragments of memory gather here."
+  },
+  "settings": {
+    "title": "Settings",
+    "languageSection": "Language",
+    "languageDescription": "Choose the display language. Fortunes and readings generate in the same language (when supported).",
+    "logout": "Log out"
+  },
+  "auth": {
+    "kakaoLogin": "Continue with Kakao",
+    "googleLogin": "Continue with Google",
+    "kakaoSignup": "Start with Kakao",
+    "googleSignup": "Start with Google",
+    "loginTitle": "Begin Observation",
+    "loginSubtitle": "The boundary remembers you.",
+    "signupTitle": "First Observation",
+    "signupSubtitle": "Carve your name into the boundary for the first time.",
+    "firstVisitHint": "First time? You'll be signed up automatically.",
+    "noPasswordHint": "One button and you're in. No password needed."
+  }
+}

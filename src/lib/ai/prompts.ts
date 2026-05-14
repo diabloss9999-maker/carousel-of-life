@@ -15,7 +15,10 @@ interface BuildContextOptions {
     | "mbti"
     | "birthPlace"
     | "displayName"
-  >;
+  > & {
+    /** 사주 4 기둥 — 계산되어 있으면 buildSajuDeepPrompt 가 글자별 풀이에 사용. */
+    sajuPillars?: unknown;
+  };
 }
 
 /**
@@ -408,14 +411,54 @@ export function buildSajuDeepPrompt(
   profile: BuildContextOptions["profile"],
 ): string {
   const ctx = buildUserContext({ profile });
+
+  // 이미 계산된 4 기둥이 있으면 컨텍스트에 직접 노출 — AI 가 글자별 풀이를 정확히 만들 수 있도록.
+  const pillarsLines: string[] = [];
+  const sp = profile.sajuPillars as
+    | {
+        year?: { stem?: string; branch?: string };
+        month?: { stem?: string; branch?: string };
+        day?: { stem?: string; branch?: string };
+        hour?: { stem?: string; branch?: string } | null;
+      }
+    | null
+    | undefined;
+  if (sp?.year?.stem && sp?.year?.branch) {
+    pillarsLines.push(`년주: ${sp.year.stem}${sp.year.branch} (천간=${sp.year.stem}, 지지=${sp.year.branch})`);
+  }
+  if (sp?.month?.stem && sp?.month?.branch) {
+    pillarsLines.push(`월주: ${sp.month.stem}${sp.month.branch} (천간=${sp.month.stem}, 지지=${sp.month.branch})`);
+  }
+  if (sp?.day?.stem && sp?.day?.branch) {
+    pillarsLines.push(`일주: ${sp.day.stem}${sp.day.branch} (천간=${sp.day.stem}, 지지=${sp.day.branch}) — ★일간=${sp.day.stem} 본인`);
+  }
+  if (sp?.hour?.stem && sp?.hour?.branch) {
+    pillarsLines.push(`시주: ${sp.hour.stem}${sp.hour.branch} (천간=${sp.hour.stem}, 지지=${sp.hour.branch})`);
+  } else {
+    pillarsLines.push(`시주: 미지 (태어난 시각 모름 — 시주 두 글자는 null)`);
+  }
+  const pillarsBlock = pillarsLines.join("\n");
+
   return `[질문자 정보]
 ${ctx}
 
+[질문자의 사주 8글자 — 이미 계산된 결과]
+${pillarsBlock}
+
 [지시]
-질문자의 사주를 깊이 살펴 7가지 주제로 풀이해주세요.
+질문자의 사주를 깊이 살펴 풀이해주세요.
 이건 한 번만 생성되어 평생 보관될 풀이이니, 평생 곱씹어볼 수 있을 정도로 정성껏 적어주세요.
 
 다음 JSON 스키마를 정확히 따라 단 하나의 JSON 객체로만 응답하세요. 추가 설명·markdown·코드펜스 없이 JSON 만 출력합니다. 모든 본문은 친한 친구가 차분하게 풀어주는 반말 톤. 어려운 한자어는 풀어 쓰기.
+
+pillarBreakdown 작성 규칙:
+- 각 글자마다 2-4문장.
+- 구성: ① 이 글자가 왜 이렇게 나왔는지 (생년월일시 + 60갑자/만세력/절기 기준 간단히)
+  ② 그 글자가 상징하는 것 (오행·동물·계절·하루의 때 등)
+  ③ 너에게 어떤 의미인지 (자리에 따라 다름 — 년=뿌리·조상, 월=꽃·청년기·부모형제,
+     일=본인·배우자·중년기, 시=씨앗·말년·자녀 / 천간=드러난 결, 지지=감춰진 결)
+- 너무 단정적이거나 운명론적이지 않게. "그래서 이런 결이 있어" 톤.
+- 시주 글자가 null 이면 hourStem/hourBranch 도 null 로 두고 summary 에서 "시각을 모르니 절반의 그림" 정도로 언급.
 
 {
   "personality": "5-7문장의 성격 분석. 사주 흐름이 어떻게 성격으로 드러나는지.",
@@ -424,7 +467,18 @@ ${ctx}
   "loveStyle": "5-7문장의 연애 스타일. 어떤 사람과 잘 맞는지, 사랑을 표현하는 방식.",
   "careerFit": "5-7문장의 직업 적성. 잘 풀리는 분야와 빛이 나지 않는 분야.",
   "healthCare": "4-6문장의 건강 관리 포인트. 약한 기운·체질·습관.",
-  "lifeFlow": "7-10문장의 인생 큰 흐름. 자연스럽게 이어지는 흐름으로, 결정적인 시기들·움직임이 좋은 때·쉬어가야 할 때 짚어주기."
+  "lifeFlow": "7-10문장의 인생 큰 흐름. 자연스럽게 이어지는 흐름으로, 결정적인 시기들·움직임이 좋은 때·쉬어가야 할 때 짚어주기.",
+  "pillarBreakdown": {
+    "yearStem":   "년주 천간 한 글자 풀이 (도출 근거 + 상징 + 의미)",
+    "yearBranch": "년주 지지 한 글자 풀이",
+    "monthStem":  "월주 천간 한 글자 풀이",
+    "monthBranch":"월주 지지 한 글자 풀이",
+    "dayStem":    "일주 천간 한 글자 풀이 — 본인 자체이므로 가장 중요. 가장 길게 풀어줘.",
+    "dayBranch":  "일주 지지 한 글자 풀이 — 배우자궁·중년의 자리",
+    "hourStem":   "시주 천간 한 글자 풀이 (시각 모르면 null)",
+    "hourBranch": "시주 지지 한 글자 풀이 (시각 모르면 null)",
+    "summary":    "8글자(또는 6글자) 전체의 큰 그림 한 단락. 어느 오행이 많고/적은지, 한 사람의 결이 어떻게 짜였는지 3-5문장."
+  }
 }`;
 }
 

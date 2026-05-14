@@ -5,6 +5,7 @@ import { TimeAwareHeader } from "@/components/layout/time-aware-header";
 import { DesktopNav } from "@/components/layout/desktop-nav";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { MusicToggle } from "@/components/effects/music-toggle";
+import { LanguageToggle } from "@/components/layout/language-toggle";
 import { RitualBody } from "@/components/crack/ritual-body";
 import { FractureWhisper } from "@/components/fracture/fracture-whisper";
 import { DailyWhisper } from "@/components/world/daily-whisper";
@@ -63,6 +64,7 @@ export default async function DashboardLayout({
           <DesktopNav />
 
           <div className="flex items-center gap-2">
+            <LanguageToggle />
             <MusicToggle />
             <form action={signOutAction}>
               <Button

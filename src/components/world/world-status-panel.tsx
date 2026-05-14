@@ -1,7 +1,9 @@
 import { crackLabel, crackToPercent } from "@/lib/world/crack-percent";
 
 interface WorldStatusPanelProps {
-  /** 사용자의 현재 크랙 레벨 (0~4). */
+  /** 사용자의 현재 크랙 점수 (0~100). */
+  crackScore: number;
+  /** 사용자의 현재 크랙 레벨 (0~4) — 색상 분기에 사용. */
   crackLevel: number;
 }
 
@@ -11,8 +13,8 @@ interface WorldStatusPanelProps {
  * - %, 라벨, 진행 바, 분위기 한 줄을 함께 표시한다.
  * - 게임화 금지 원칙에 따라 점수/레벨 자체는 노출하지 않는다.
  */
-export function WorldStatusPanel({ crackLevel }: WorldStatusPanelProps) {
-  const percent = crackToPercent(crackLevel);
+export function WorldStatusPanel({ crackScore, crackLevel }: WorldStatusPanelProps) {
+  const percent = crackToPercent(crackScore);
   const label = crackLabel(crackLevel);
   const isHigh = crackLevel >= 3;
 

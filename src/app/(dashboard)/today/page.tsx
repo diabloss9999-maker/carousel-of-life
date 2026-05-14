@@ -82,7 +82,8 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
     hasActiveSubscription(profile.userId),
     getSubscriptionTier(profile.userId),
     checkInStreak(profile.userId),
-    category === "general" ? getTodayMood(profile.userId) : Promise.resolve(null),
+    // 모든 탭에서 오늘 기분을 조회 — MoodCapture 가 페이지 상단 고정이라 탭 무관 일관성 유지.
+    getTodayMood(profile.userId),
     getCrackScore(profile.userId),
   ]);
 
@@ -122,7 +123,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           <CrackAtmosphere
             crackLevel={crackData.level}
             todayStr={today}
-            pageName="오늘의 흐름"
+            pageName="운세"
           />
           {(() => {
             const hidden = getHomeHiddenText(crackData.level);
@@ -138,18 +139,18 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
             data-fracture="today-title"
             className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl"
           >
-            오늘의 흐름
+            운세
           </h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
             {profile.displayName
-              ? `${profile.displayName} 관측 채널 · 오늘의 흐름 기록 중`
-              : "오늘의 흐름 기록 중"}
+              ? `${profile.displayName} 관측 채널 · 오늘의 운세 기록 중`
+              : "오늘의 운세 기록 중"}
           </p>
         </div>
       </header>
 
       {/* 오늘의 세계 상태 — 균열 측정 + 관측 로그 */}
-      <WorldStatusPanel crackLevel={crackData.level} />
+      <WorldStatusPanel crackScore={crackData.score} crackLevel={crackData.level} />
 
       {/* 오늘 기분 — 운세 생성 전부터 페이지 진입 시 바로 입력 가능 */}
       <MoodCapture todayMood={todayMood?.mood ?? null} source="today_top" />

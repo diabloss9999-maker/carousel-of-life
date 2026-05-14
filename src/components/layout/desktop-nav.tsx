@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 import { mainNav, type NavItem } from "@/config/navigation";
 
@@ -12,6 +13,7 @@ const NAV_MUTED      = "var(--nav-muted)";
 
 export function DesktopNav() {
   const pathname = usePathname();
+  const tNav = useTranslations("nav");
 
   return (
     <nav
@@ -31,12 +33,13 @@ export function DesktopNav() {
             pathname === item.href ||
             (item.href !== "/" && pathname.startsWith(item.href));
 
+          const label = tNav(item.labelKey);
           return (
             <Link
               key={item.href}
               href={item.href}
               aria-current={isActive ? "page" : undefined}
-              aria-label={`${item.label} — ${item.description}`}
+              aria-label={`${label} — ${item.description}`}
               title={item.description}
               className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold transition-all"
               style={
@@ -53,7 +56,7 @@ export function DesktopNav() {
               }
             >
               <NavIcon item={item} size={15} />
-              {item.label}
+              {label}
             </Link>
           );
         })}
