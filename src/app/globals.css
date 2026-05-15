@@ -142,11 +142,15 @@ body * {
   color: rgba(0, 0, 0, 0.92) !important;
 }
 /* 단, primary·destructive·accent 버튼처럼 색배경 위 inverse 텍스트는 흰색 유지 — 가독성.
-   data-keep-color 속성으로 개별 element 도 옵트인 가능. */
+   data-keep-color 속성으로 개별 element 도 옵트인 가능.
+   .on-character-image 클래스는 캐릭터 이미지 위에 오버레이된 텍스트(이름·title 등)를
+   흰색으로 유지한다 — 자식 모두 포함. */
 body .text-primary-foreground,
 body .text-destructive-foreground,
 body .text-accent-foreground,
-body [data-keep-color] {
+body [data-keep-color],
+body .on-character-image,
+body .on-character-image * {
   color: rgba(255, 255, 255, 0.95) !important;
 }
 

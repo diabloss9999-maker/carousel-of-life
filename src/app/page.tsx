@@ -303,11 +303,11 @@ function OracleCard({
           aria-hidden
           className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent"
         />
-        <div className="absolute bottom-0 left-0 right-0 p-4 space-y-0.5 text-white">
+        <div className="on-character-image absolute bottom-0 left-0 right-0 p-4 space-y-0.5">
           <p className="font-mystic text-lg font-semibold drop-shadow">
             {name}
           </p>
-          <p className="text-[15px] text-white/85 drop-shadow">{title}</p>
+          <p className="text-[15px] drop-shadow opacity-90">{title}</p>
         </div>
       </div>
       <CardContent className="p-4">

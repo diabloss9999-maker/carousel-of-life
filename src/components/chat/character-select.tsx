@@ -167,8 +167,8 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                         </div>
                       )}
                       {/* 전문 배지 */}
-                      <div className="absolute top-1.5 left-1.5">
-                        <span className="rounded-md bg-black/60 backdrop-blur-sm px-1.5 py-0.5 text-[15px] font-medium text-white/70 leading-none">
+                      <div className="absolute top-1.5 left-1.5 on-character-image">
+                        <span className="rounded-md bg-black/60 backdrop-blur-sm px-1.5 py-0.5 text-[15px] font-medium leading-none">
                           {specialty}
                         </span>
                       </div>
