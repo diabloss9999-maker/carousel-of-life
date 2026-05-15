@@ -25,6 +25,18 @@ interface CharacterImageProps {
   alt?: string;
   /** 인라인 스타일 (크기 제한 등 부득이한 경우에만 사용) */
   style?: React.CSSProperties;
+  /** CSS idle 애니메이션(호흡·발광) 적용 여부. 기본 true. 작은 썸네일 등에서만 false. */
+  idle?: boolean;
+}
+
+/**
+ * 캐릭터 id 첫 글자 charCode 기반으로 -2.5s ~ 0s 사이 결정론적 animation-delay 산출.
+ * 9명이 동시에 같은 박자로 움직이는 어색함을 피하기 위함.
+ */
+function getIdleDelay(characterId: string): string {
+  const code = characterId.charCodeAt(0);
+  const delaySeconds = (code % 25) / 10; // 0.0 ~ 2.4
+  return `-${delaySeconds}s`;
 }
 
 /**
@@ -42,6 +54,7 @@ export function CharacterImage({
   height,
   alt,
   style,
+  idle = true,
 }: CharacterImageProps) {
   const src = useCharacterImage(character);
   const imageAlt = alt ?? character.name;
@@ -50,8 +63,13 @@ export function CharacterImage({
   const mergedStyle: React.CSSProperties = {
     objectFit: "cover",
     objectPosition: "center top",
+    ...(idle ? { animationDelay: getIdleDelay(character.id) } : {}),
     ...style,
   };
+
+  const mergedClass = [className, idle ? "character-idle" : null]
+    .filter(Boolean)
+    .join(" ");
 
   if (fill) {
     return (
@@ -59,7 +77,7 @@ export function CharacterImage({
         src={src}
         alt={imageAlt}
         fill
-        className={className}
+        className={mergedClass || undefined}
         sizes={sizes}
         priority={priority}
         quality={quality}
@@ -74,7 +92,7 @@ export function CharacterImage({
       alt={imageAlt}
       width={width ?? DEFAULT_WIDTH}
       height={height ?? DEFAULT_HEIGHT}
-      className={className}
+      className={mergedClass || undefined}
       sizes={sizes}
       priority={priority}
       quality={quality}

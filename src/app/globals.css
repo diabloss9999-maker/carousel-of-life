@@ -781,3 +781,53 @@ body.presence-gael .app-surface {
 @media (prefers-reduced-motion: reduce) {
   .old-memory { transition: none; }
 }
+
+/* =============================================================================
+   캐릭터 Idle 애니메이션 — Live2D 대신 CSS 만으로 살짝 살아있는 느낌
+   - breathe: 미세한 호흡 (scale + translateY)
+   - sway: 매우 작은 좌우 흔들림 (rotate)
+   - aura: 은은한 발광 펄스 (drop-shadow)
+   - 세 keyframe 모두 다른 주기 → 동기화 안 돼서 자연스러움
+   - prefers-reduced-motion 존중
+   ============================================================================= */
+@keyframes character-breathe {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-3px) scale(1.012); }
+}
+
+@keyframes character-sway {
+  0%, 100% { transform: rotate(-0.35deg); }
+  50%      { transform: rotate(0.35deg); }
+}
+
+@keyframes character-aura {
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 210, 140, 0.12)); }
+  50%      { filter: drop-shadow(0 0 22px rgba(255, 210, 140, 0.32)); }
+}
+
+/* 핵심 idle 클래스 — character-image wrapper 에 적용.
+   - breathe + aura 는 컨테이너 자체에
+   - sway 는 transform 충돌 방지를 위해 inner wrapper 에 적용 */
+.character-idle {
+  animation: character-breathe 4.2s ease-in-out infinite,
+             character-aura 6.5s ease-in-out infinite;
+  will-change: transform, filter;
+}
+
+/* 밤 모드: 발광 톤을 보라/파랑으로 바꿔 분위기 매칭 */
+body[data-time="night"] .character-idle {
+  animation: character-breathe 4.2s ease-in-out infinite,
+             character-aura-night 6.5s ease-in-out infinite;
+}
+
+@keyframes character-aura-night {
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(180, 160, 230, 0.18)); }
+  50%      { filter: drop-shadow(0 0 26px rgba(180, 160, 230, 0.42)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .character-idle,
+  body[data-time="night"] .character-idle {
+    animation: none;
+  }
+}
