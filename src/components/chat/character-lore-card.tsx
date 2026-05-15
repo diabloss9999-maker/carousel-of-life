@@ -17,6 +17,7 @@ import { useLocale, useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 import {
+  CHARACTERS,
   CHARACTERS_BY_CATEGORY,
   type CharacterCategory,
   type CharacterId,
@@ -746,15 +747,22 @@ function ChapterImage({ characterId, chapterNumber, title }: ChapterImageProps) 
   const src = getChapterImageSrc(characterId, chapterNumber);
   if (!src) return null;
 
+  // 북방 챕터 이미지는 사용자 요청대로 다른 카테고리 대비 2 배 크기로 표시.
+  const isNordic = CHARACTERS[characterId].category === "북유럽";
+  const maxWidth = isNordic ? "max-w-[560px]" : "max-w-[280px]";
+  const sizes = isNordic
+    ? "(max-width: 640px) 480px, 560px"
+    : "(max-width: 640px) 240px, 280px";
+
   return (
-    <div className="mx-auto w-full max-w-[280px] overflow-hidden rounded-xl border border-white/10 bg-black/30">
+    <div className={cn("mx-auto w-full overflow-hidden rounded-xl border border-white/10 bg-black/30", maxWidth)}>
       <Image
         src={src}
         alt={title}
         width={960}
         height={1280}
         className="h-auto w-full object-cover"
-        sizes="(max-width: 640px) 240px, 280px"
+        sizes={sizes}
       />
     </div>
   );
