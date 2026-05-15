@@ -147,10 +147,14 @@ export function CharacterLoreCard({
   const [openWorldIdx, setOpenWorldIdx] = useState<number | null>(null);
   /**
    * 동시에 한 캐릭터의 스토리만 펼치도록 부모에서 단일 상태로 관리.
-   * 동양 카테고리는 셋이 묶여 단일 행으로 표시되므로 그 행을 식별하기 위한
-   * 가상 키 "eastern-merged" 를 함께 허용한다.
+   * 동양·북유럽 카테고리는 셋이 묶여 단일 행으로 표시되므로 각 카테고리의
+   * 묶음 행을 식별하기 위한 가상 키를 함께 허용한다.
    */
-  type OpenStoryKey = CharacterId | "eastern-merged" | null;
+  type OpenStoryKey =
+    | CharacterId
+    | "eastern-merged"
+    | "nordic-merged"
+    | null;
   const [openCharacterId, setOpenCharacterId] = useState<OpenStoryKey>(null);
 
   const tLore = useTranslations("worldLore");
@@ -302,34 +306,42 @@ export function CharacterLoreCard({
                 </div>
 
                 {/* ── 캐릭터 스토리 챕터 (호감도 잠금/해금) ───────────
-                    동양은 셋이 같은 챕터를 공유하므로 한 줄만 렌더하고
-                    헤더는 "소령 · 현도 · 흑랑" 통합 라벨로 표시한다.
-                    진척도는 셋 중 최댓값 (한 명만 깊이 친해져도 모두 잠금 해제). */}
+                    동양·북유럽은 셋이 같은 챕터를 공유하므로 한 줄만 렌더하고
+                    헤더는 셋의 이름을 묶은 통합 라벨로 표시한다.
+                    진척도는 셋 중 최댓값 (한 명만 깊이 친해져도 모두 잠금 해제).
+                    이세계만 셋이 다른 스토리라 캐릭터별 행을 유지. */}
                 <div className="space-y-3 border-t border-white/5 pt-5">
                   <p className="text-[15px] uppercase tracking-widest text-muted-foreground/65">
                     {tLore("charactersSection")}
                   </p>
 
-                  {deco.world === "동양" ? (
-                    <CharacterStoryAccordion
-                      key="eastern-merged"
-                      characterId={characterIds[0]}
-                      mergedCharacterIds={characterIds}
-                      affinities={affinities}
-                      accent={deco.accent}
-                      adminMode={adminMode}
-                      chapters={stories[characterIds[0]]}
-                      isOpen={openCharacterId === "eastern-merged"}
-                      onToggle={() =>
-                        setOpenCharacterId(
-                          openCharacterId === "eastern-merged"
-                            ? null
-                            : "eastern-merged",
-                        )
-                      }
-                    />
-                  ) : (
-                    characterIds.map((id) => (
+                  {(() => {
+                    const mergedKey: OpenStoryKey | null =
+                      deco.world === "동양"
+                        ? "eastern-merged"
+                        : deco.world === "북유럽"
+                          ? "nordic-merged"
+                          : null;
+                    if (mergedKey) {
+                      return (
+                        <CharacterStoryAccordion
+                          key={mergedKey}
+                          characterId={characterIds[0]}
+                          mergedCharacterIds={characterIds}
+                          affinities={affinities}
+                          accent={deco.accent}
+                          adminMode={adminMode}
+                          chapters={stories[characterIds[0]]}
+                          isOpen={openCharacterId === mergedKey}
+                          onToggle={() =>
+                            setOpenCharacterId(
+                              openCharacterId === mergedKey ? null : mergedKey,
+                            )
+                          }
+                        />
+                      );
+                    }
+                    return characterIds.map((id) => (
                       <CharacterStoryAccordion
                         key={id}
                         characterId={id}
@@ -344,8 +356,8 @@ export function CharacterLoreCard({
                           )
                         }
                       />
-                    ))
-                  )}
+                    ));
+                  })()}
                 </div>
 
                 {/* ── 진실 루트 + 최종 챕터 ───────────────────────── */}
