@@ -1295,19 +1295,28 @@ export const CHARACTER_STORIES: Record<CharacterId, StoryChapter[]> = {
 
 /**
  * 캐릭터별 이미지가 존재하는 챕터 번호.
- * 파일은 `/public/stories/{characterId}/ch{N}.png` 위치.
+ * 파일은 `/public/stories/{folder}/ch{N}.png` 위치.
+ * 동양 셋은 같은 챕터를 공유하므로 동일한 `shaman` 폴더의 이미지를 함께 사용한다.
  */
 const CHAPTER_IMAGE_AVAILABILITY: Record<CharacterId, ReadonlySet<number>> = {
   child:      new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
   witch:      new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
   sage:       new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-  // 동양·북유럽 — 추후 추가
-  shaman:     new Set(),
-  taoist:     new Set(),
-  dokkaebi:   new Set(),
+  // 동양 — 셋이 같은 챕터 공유 (shaman 폴더 이미지 사용)
+  shaman:     new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+  taoist:     new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+  dokkaebi:   new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+  // 북유럽 — 추후 추가
   god:        new Set(),
   hunter:     new Set(),
   runeshaman: new Set(),
+};
+
+/** 동양 캐릭터들은 같은 챕터 이미지를 공유 — 모두 `shaman` 폴더의 파일을 참조. */
+const EASTERN_SHARED_FOLDER: Partial<Record<CharacterId, CharacterId>> = {
+  shaman:   "shaman",
+  taoist:   "shaman",
+  dokkaebi: "shaman",
 };
 
 /**
@@ -1320,7 +1329,8 @@ export function getChapterImageSrc(
   if (!CHAPTER_IMAGE_AVAILABILITY[characterId].has(chapterNumber)) {
     return null;
   }
-  return `/stories/${characterId}/ch${chapterNumber}.png`;
+  const folder = EASTERN_SHARED_FOLDER[characterId] ?? characterId;
+  return `/stories/${folder}/ch${chapterNumber}.png`;
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
