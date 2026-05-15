@@ -217,14 +217,17 @@ export function CharacterLoreCard({
               onClick={() => setOpenWorldIdx(isOpen ? null : i)}
               className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left"
             >
-              <div>
+              <div className="flex items-baseline gap-2 flex-wrap">
                 <span
                   className={cn("font-mystic font-bold text-base", deco.accent)}
                 >
                   {worldLabel}
                 </span>
-                <span className="ml-2 text-[15px] tracking-widest text-muted-foreground/70 uppercase">
+                <span className="text-[15px] tracking-widest text-muted-foreground/70 uppercase">
                   {deco.worldSub}
+                </span>
+                <span className="text-[15px] text-muted-foreground/60">
+                  · {tLore("episodeLabel")}
                 </span>
               </div>
               <ChevronDown

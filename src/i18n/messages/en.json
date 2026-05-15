@@ -225,6 +225,7 @@
   },
   "worldLore": {
     "sectionTitle": "Worldview",
+    "episodeLabel": "Episode",
     "figuresLabel": "Characters",
     "charactersSection": "Character Stories",
     "truthRoute": "🌌 Truth Route",

@@ -225,6 +225,7 @@
   },
   "worldLore": {
     "sectionTitle": "세계관 이야기",
+    "episodeLabel": "에피소드",
     "figuresLabel": "등장인물",
     "charactersSection": "캐릭터 스토리",
     "truthRoute": "🌌 진실 루트",
