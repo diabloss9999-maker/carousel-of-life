@@ -2765,7 +2765,8 @@ export const CHARACTER_STORIES: Record<CharacterId, StoryChapter[]> = {
 /**
  * 캐릭터별 이미지가 존재하는 챕터 번호.
  * 파일은 `/public/stories/{folder}/ch{N}.png` 위치.
- * 동양 셋은 같은 챕터를 공유하므로 동일한 `shaman` 폴더의 이미지를 함께 사용한다.
+ * 동양·북유럽 셋은 같은 챕터를 공유하므로 각각 한 폴더(`shaman` / `god`) 의
+ * 이미지를 함께 사용한다.
  */
 const CHAPTER_IMAGE_AVAILABILITY: Record<CharacterId, ReadonlySet<number>> = {
   child:      new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
@@ -2775,17 +2776,23 @@ const CHAPTER_IMAGE_AVAILABILITY: Record<CharacterId, ReadonlySet<number>> = {
   shaman:     new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
   taoist:     new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
   dokkaebi:   new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-  // 북유럽 — 추후 추가
-  god:        new Set(),
-  hunter:     new Set(),
-  runeshaman: new Set(),
+  // 북유럽 — 셋이 같은 챕터 공유 (god 폴더 이미지 사용)
+  god:        new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+  hunter:     new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+  runeshaman: new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
 };
 
-/** 동양 캐릭터들은 같은 챕터 이미지를 공유 — 모두 `shaman` 폴더의 파일을 참조. */
-const EASTERN_SHARED_FOLDER: Partial<Record<CharacterId, CharacterId>> = {
-  shaman:   "shaman",
-  taoist:   "shaman",
-  dokkaebi: "shaman",
+/**
+ * 동양·북유럽 캐릭터들은 같은 챕터 이미지를 공유 — 각각 대표 폴더의 파일을 참조.
+ * 동양: shaman, 북유럽: god.
+ */
+const SHARED_STORY_FOLDER: Partial<Record<CharacterId, CharacterId>> = {
+  shaman:     "shaman",
+  taoist:     "shaman",
+  dokkaebi:   "shaman",
+  god:        "god",
+  hunter:     "god",
+  runeshaman: "god",
 };
 
 /**
@@ -2798,7 +2805,7 @@ export function getChapterImageSrc(
   if (!CHAPTER_IMAGE_AVAILABILITY[characterId].has(chapterNumber)) {
     return null;
   }
-  const folder = EASTERN_SHARED_FOLDER[characterId] ?? characterId;
+  const folder = SHARED_STORY_FOLDER[characterId] ?? characterId;
   return `/stories/${folder}/ch${chapterNumber}.png`;
 }
 
