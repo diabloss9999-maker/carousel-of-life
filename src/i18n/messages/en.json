@@ -118,8 +118,11 @@
     "tagline": "The flow of stars, the revelation of cards, and your Four Pillars tell today's fate.",
     "intro": "Nine AI shamans weave together pillars, tarot, and personality to read your day. Every day: 2 fortunes, 1 tarot card, 10 shaman messages — all free.",
     "freeHint": "Every day: 2 fortunes, 1 tarot card, 10 shaman messages — all free.",
-    "startFree": "Start free",
+    "startFree": "Start free now",
     "viewPricing": "See Plans",
+    "kakaoStart": "Start with Kakao in 1 second",
+    "alreadyMember": "Already have an account?",
+    "loginLink": "Sign in",
     "valueProps": {
       "heading": "Why Carousel of Life",
       "subheading": "Three things other fortune services don't have",

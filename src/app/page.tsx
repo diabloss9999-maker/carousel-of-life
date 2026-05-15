@@ -20,6 +20,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { KakaoButton } from "@/components/auth/kakao-button";
 import { ROUTES } from "@/lib/constants";
 import { siteConfig } from "@/config/site";
 
@@ -108,8 +109,8 @@ export default async function HomePage() {
           {t("intro")}
         </p>
 
-        {/* 두 CTA 나란히 — 무료 시작 + 유료 플랜 보기 */}
-        <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 mt-2">
+        {/* 1차 CTA — 무료 시작 (primary, 가장 눈에 띔) + 유료 플랜 보기 (outline) */}
+        <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 mt-2 w-full sm:w-auto max-w-sm sm:max-w-none">
           <Button asChild size="lg" className="min-w-44 shadow-lg">
             <Link href={ROUTES.login}>
               {t("startFree")}
@@ -125,6 +126,22 @@ export default async function HomePage() {
             <Link href={ROUTES.pricing}>{t("viewPricing")}</Link>
           </Button>
         </div>
+
+        {/* 카카오 빠른 시작 — 한국 사용자 전환 훅 */}
+        <div className="w-full max-w-sm">
+          <KakaoButton label={t("kakaoStart")} />
+        </div>
+
+        {/* 보조: 이미 계정 있으면 로그인 */}
+        <p className="text-[15px] text-foreground/70 drop-shadow-sm">
+          {t("alreadyMember")}{" "}
+          <Link
+            href={ROUTES.login}
+            className="font-semibold text-foreground underline underline-offset-4 hover:text-primary"
+          >
+            {t("loginLink")}
+          </Link>
+        </p>
       </section>
 
       <ValuePropsSection />
