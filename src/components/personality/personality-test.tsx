@@ -402,7 +402,7 @@ function ResultCard({
       {/* 상세 설명 */}
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
         <h3 className="font-mystic font-semibold text-[15px]">{t("iAm")}</h3>
-        <p className="text-[15px] text-muted-foreground leading-relaxed">
+        <p className="text-[15px] text-muted-foreground leading-relaxed whitespace-pre-line">
           {tT(`${info.type}_description`)}
         </p>
       </div>

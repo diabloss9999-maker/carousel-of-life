@@ -119,7 +119,7 @@ export default async function HomePage() {
         </p>
 
         {/* 페이지 설명 — 앱이 무엇을 하는지 한 단락 */}
-        <p className="text-balance text-[15px] leading-relaxed text-foreground/85 drop-shadow-sm max-w-lg">
+        <p className="text-balance text-[15px] leading-relaxed text-foreground/85 drop-shadow-sm max-w-lg whitespace-pre-line">
           {t("intro")}
         </p>
 
@@ -379,7 +379,7 @@ async function HowToPlaySection() {
               <CardTitle className="text-base">{title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription className="leading-relaxed">
+              <CardDescription className="leading-relaxed whitespace-pre-line">
                 {body}
               </CardDescription>
             </CardContent>

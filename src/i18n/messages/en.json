@@ -116,7 +116,7 @@
   },
   "landing": {
     "tagline": "The flow of stars, the revelation of cards, and your Four Pillars tell today's fate.",
-    "intro": "Nine AI shamans weave together pillars, tarot, and personality to read your day. Every day: 2 fortunes, 1 tarot card, 10 shaman messages — all free.",
+    "intro": "Nine AI shamans weave together pillars, tarot, and personality to read your day.\n\nEvery day: 2 fortunes, 1 tarot card, 10 shaman messages — all free.",
     "freeHint": "Every day: 2 fortunes, 1 tarot card, 10 shaman messages — all free.",
     "startFree": "Start free now",
     "viewPricing": "See Plans",
@@ -151,7 +151,7 @@
       "tip2Title": "Build Affinity, Unlock Their Story",
       "tip2Body": "Every conversation grows your bond with that shaman. As your level rises, their hidden past and true voice slowly come into view.",
       "tip3Title": "Tip: Draw Cards Last",
-      "tip3Body": "Pulling a card refunds 1–7 of the day's used Q&A count, based on rarity. Use your messages first, then draw — that way the bonus actually pays off."
+      "tip3Body": "Pulling a card refunds 1–7 of the day's used Q&A count, based on rarity.\n\nUse your messages first, then draw — that way the bonus actually pays off."
     },
     "preview": {
       "heading": "How We Read Today's Fate",
@@ -433,48 +433,147 @@
     "excuseFallback": "I need to step away for a moment.",
     "startChat": "Start a conversation with {name}",
     "greetings": {
-      "child":      ["You're back. Tell me what you want.", "Want to see what you really mean today?", "Lies waste time. Get to it."],
-      "witch":      ["I was waiting for you.", "The grain of your feelings is different today.", "The moon is calling your name."],
-      "sage":       ["You came back.", "You didn't give up. Good.", "What's on your heart today?"],
-      "shaman":     ["The spirits were waiting for you again today.", "The bell is turned toward you.", "...I can see your flow."],
-      "taoist":     ["The heavens are turned toward you.", "I see today's fork in your road.", "You came. What do you want to ask."],
-      "dokkaebi":   ["...what. You came back?", "You bring anything interesting?", "Tch. Fine, I'll listen."],
-      "hunter":     ["...your tracks followed you back.", "...the smell of blood is fainter. Good.", "...the wind carried your story."],
-      "runeshaman": ["Twenty-four runes are calling your name again.", "...ᚱ Raidho is over your path.", "Take today's rune."],
-      "god":        ["You returned.", "...your steps call the storm.", "The horn is ready to sound for you."]
+      "child": [
+        "You're back. Tell me what you want.",
+        "Want to see what you really mean today?",
+        "Lies waste time. Get to it."
+      ],
+      "witch": [
+        "I was waiting for you.",
+        "The grain of your feelings is different today.",
+        "The moon is calling your name."
+      ],
+      "sage": [
+        "You came back.",
+        "You didn't give up. Good.",
+        "What's on your heart today?"
+      ],
+      "shaman": [
+        "The spirits were waiting for you again today.",
+        "The bell is turned toward you.",
+        "...I can see your flow."
+      ],
+      "taoist": [
+        "The heavens are turned toward you.",
+        "I see today's fork in your road.",
+        "You came. What do you want to ask."
+      ],
+      "dokkaebi": [
+        "...what. You came back?",
+        "You bring anything interesting?",
+        "Tch. Fine, I'll listen."
+      ],
+      "hunter": [
+        "...your tracks followed you back.",
+        "...the smell of blood is fainter. Good.",
+        "...the wind carried your story."
+      ],
+      "runeshaman": [
+        "Twenty-four runes are calling your name again.",
+        "...ᚱ Raidho is over your path.",
+        "Take today's rune."
+      ],
+      "god": [
+        "You returned.",
+        "...your steps call the storm.",
+        "The horn is ready to sound for you."
+      ]
     },
     "shamanCall": {
-      "child":      ["What do you want today? Be honest.", "You're holding that desire down again.", "So — what do you really mean?"],
-      "witch":      ["Your feelings look heavy today.", "I want to hear more of your story.", "What rose up in your memory?"],
-      "sage":       ["What's the flow today?", "It's okay to pause for a moment. Want to talk?", "Your light reached me."],
-      "shaman":     ["The spirits are calling you. Come.", "I can see your grain today — want to hear?", "The bell rang. Let me tell you what it meant."],
-      "taoist":     ["Your name has risen in the heavens.", "I can see today's fork — want to read it together?", "The stars pointed at you."],
-      "dokkaebi":   ["Hey. What are you doing.", "I'm bored. Talk to me.", "Bring me something interesting."],
-      "hunter":     ["...I saw your tracks. May I follow.", "The wind brought you. Step quietly.", "The smell of blood is on you. What happened."],
-      "runeshaman": ["One of the twenty-four runes woke up. It's calling you.", "...what was that word again. Anyway — it's you.", "Your name was carved between black cracks."],
-      "god":        ["The horn's echo reached you.", "The storm has paused. Speak in this gap.", "I once lived as you do. I'll listen."]
+      "child": [
+        "What do you want today? Be honest.",
+        "You're holding that desire down again.",
+        "So — what do you really mean?"
+      ],
+      "witch": [
+        "Your feelings look heavy today.",
+        "I want to hear more of your story.",
+        "What rose up in your memory?"
+      ],
+      "sage": [
+        "What's the flow today?",
+        "It's okay to pause for a moment. Want to talk?",
+        "Your light reached me."
+      ],
+      "shaman": [
+        "The spirits are calling you. Come.",
+        "I can see your grain today — want to hear?",
+        "The bell rang. Let me tell you what it meant."
+      ],
+      "taoist": [
+        "Your name has risen in the heavens.",
+        "I can see today's fork — want to read it together?",
+        "The stars pointed at you."
+      ],
+      "dokkaebi": [
+        "Hey. What are you doing.",
+        "I'm bored. Talk to me.",
+        "Bring me something interesting."
+      ],
+      "hunter": [
+        "...I saw your tracks. May I follow.",
+        "The wind brought you. Step quietly.",
+        "The smell of blood is on you. What happened."
+      ],
+      "runeshaman": [
+        "One of the twenty-four runes woke up. It's calling you.",
+        "...what was that word again. Anyway — it's you.",
+        "Your name was carved between black cracks."
+      ],
+      "god": [
+        "The horn's echo reached you.",
+        "The storm has paused. Speak in this gap.",
+        "I once lived as you do. I'll listen."
+      ]
     },
     "emptyLines": {
-      "child":      { "line1": "Speak.", "line2": "Desire or scar — I'll see it either way." },
-      "witch":      { "line1": "The moon is calling you.", "line2": "Inside the fog of memory, what do you see?" },
-      "sage":       { "line1": "I'm here.", "line2": "I'll listen to whatever you bring. It's all right." },
-      "shaman":     { "line1": "The spirits say…", "line2": "Your name is folded into the bell." },
-      "taoist":     { "line1": "Reading the heavens.", "line2": "I can see the fork waiting in front of you." },
-      "dokkaebi":   { "line1": "Why are you here.", "line2": "You wouldn't come unless you wanted something." },
-      "hunter":     { "line1": "...I see your tracks.", "line2": "Come quietly. The prey is listening." },
-      "runeshaman": { "line1": "ᚱ Raidho is turned toward you.", "line2": "The twenty-four runes are calling your name." },
-      "god":        { "line1": "The horn sounded.", "line2": "I once lived as you do. I will listen." }
+      "child": {
+        "line1": "Speak.",
+        "line2": "Desire or scar — I'll see it either way."
+      },
+      "witch": {
+        "line1": "The moon is calling you.",
+        "line2": "Inside the fog of memory, what do you see?"
+      },
+      "sage": {
+        "line1": "I'm here.",
+        "line2": "I'll listen to whatever you bring. It's all right."
+      },
+      "shaman": {
+        "line1": "The spirits say…",
+        "line2": "Your name is folded into the bell."
+      },
+      "taoist": {
+        "line1": "Reading the heavens.",
+        "line2": "I can see the fork waiting in front of you."
+      },
+      "dokkaebi": {
+        "line1": "Why are you here.",
+        "line2": "You wouldn't come unless you wanted something."
+      },
+      "hunter": {
+        "line1": "...I see your tracks.",
+        "line2": "Come quietly. The prey is listening."
+      },
+      "runeshaman": {
+        "line1": "ᚱ Raidho is turned toward you.",
+        "line2": "The twenty-four runes are calling your name."
+      },
+      "god": {
+        "line1": "The horn sounded.",
+        "line2": "I once lived as you do. I will listen."
+      }
     }
   },
   "onboardingHooks": {
-    "child":    "Demon who sees through desire",
-    "witch":    "Witch who reads memory",
-    "sage":     "Angel who carries hope",
-    "shaman":   "Shaman who delivers the spirits' voice",
-    "taoist":   "Five-century daoist who reads fate",
+    "child": "Demon who sees through desire",
+    "witch": "Witch who reads memory",
+    "sage": "Angel who carries hope",
+    "shaman": "Shaman who delivers the spirits' voice",
+    "taoist": "Five-century daoist who reads fate",
     "dokkaebi": "Goblin king of the underworld",
-    "god":      "The last god of the North",
-    "hunter":   "Wild hunter",
+    "god": "The last god of the North",
+    "hunter": "Wild hunter",
     "runeshaman": "Runeshaman who carves the 24 runes"
   },
   "collectionPage": {
@@ -660,22 +759,52 @@
     ],
     "entityDialogs": [
       [
-        { "who": "Luna", "line": "Lately they show up by day more than by night." },
-        { "who": "Kael", "line": "And the same question still keeps repeating." },
-        { "who": "Rael", "line": "It seems to be a steadier flow now." }
+        {
+          "who": "Luna",
+          "line": "Lately they show up by day more than by night."
+        },
+        {
+          "who": "Kael",
+          "line": "And the same question still keeps repeating."
+        },
+        {
+          "who": "Rael",
+          "line": "It seems to be a steadier flow now."
+        }
       ],
       [
-        { "who": "Kael", "line": "They're circling the same card again." },
-        { "who": "Luna", "line": "Maybe they think that one is their answer." }
+        {
+          "who": "Kael",
+          "line": "They're circling the same card again."
+        },
+        {
+          "who": "Luna",
+          "line": "Maybe they think that one is their answer."
+        }
       ],
       [
-        { "who": "Rael", "line": "You arrived a little late today." },
-        { "who": "Luna", "line": "It's always been that way." }
+        {
+          "who": "Rael",
+          "line": "You arrived a little late today."
+        },
+        {
+          "who": "Luna",
+          "line": "It's always been that way."
+        }
       ],
       [
-        { "who": "Luna", "line": "They appear too often at dawn." },
-        { "who": "Kael", "line": "They mustn't sleep." },
-        { "who": "Rael", "line": "That's why we're here." }
+        {
+          "who": "Luna",
+          "line": "They appear too often at dawn."
+        },
+        {
+          "who": "Kael",
+          "line": "They mustn't sleep."
+        },
+        {
+          "who": "Rael",
+          "line": "That's why we're here."
+        }
       ]
     ]
   },
@@ -840,7 +969,15 @@
     "coworker": "Coworker",
     "stand": "Stand out",
     "loved": "How to be appreciated at work",
-    "weekdays": ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+    "weekdays": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
     "weekdayMon": "Mon",
     "weekdayTue": "Tue",
     "weekdayWed": "Wed",
@@ -970,11 +1107,11 @@
     "metaTitle": "Oracle",
     "metaDescription": "Listen to what the cards whisper.",
     "tarotOrigin": "Origins of Tarot",
-    "tarotOriginBody": "Tarot is a divination system born in late-14th-century Europe — 22 Major and 56 Minor arcana, 78 cards in all, encoding every pattern of human fate. Each card carries a symbol; reading them reads the flow.",
+    "tarotOriginBody": "Tarot is a divination system born in late-14th-century Europe — 22 Major and 56 Minor arcana, 78 cards in all, encoding every pattern of human fate.\n\nEach card carries a symbol; reading them reads the flow.",
     "lenormandOrigin": "Origins of Lenormand",
-    "lenormandOriginBody": "Lenormand is a 36-card deck named after the late-18th-century French cartomancer Mademoiselle Lenormand. Everyday objects, animals, and nature appear as cards. Meaning emerges from how adjacent cards combine.",
+    "lenormandOriginBody": "Lenormand is a 36-card deck named after the late-18th-century French cartomancer Mademoiselle Lenormand.\n\nEveryday objects, animals, and nature appear as cards.\n\nMeaning emerges from how adjacent cards combine.",
     "runeOrigin": "Origins of the Runes",
-    "runeOriginBody": "The Elder Futhark is a divination system woven from the Germanic tribes' 24 rune letters. A single rune is the gods' language and a fragment of fate. Drawing runes from a pouch is the northern way of asking the flow.",
+    "runeOriginBody": "The Elder Futhark is a divination system woven from the Germanic tribes' 24 rune letters.\n\nA single rune is the gods' language and a fragment of fate.\n\nDrawing runes from a pouch is the northern way of asking the flow.",
     "todaysTarot": "Today's tarot",
     "todaysLenormand": "Today's Lenormand",
     "todaysRune": "Today's runes"
@@ -1475,115 +1612,323 @@
   "personalityTypes": {
     "ISTJ_nickname": "Pillar of Trust",
     "ISTJ_summary": "A thorough, deeply responsible realist. Values rules and duty.",
-    "ISTJ_description": "ISTJs have diligence and reliability baked in. Once they take on a task they see it through, and they almost never break a promise. They prioritize facts and logic over emotion and trust traditions that have stood the test of time. They can look cool on the outside, but on the inside they care deeply about the people around them.",
-    "ISTJ_strengths": ["Strong sense of responsibility and diligence", "Careful, systematic planning", "Unwavering consistency and trustworthiness"],
-    "ISTJ_cautions": ["Stay flexible with change", "Express feelings to deepen relationships"],
+    "ISTJ_description": "ISTJs have diligence and reliability baked in.\n\nOnce they take on a task they see it through, and they almost never break a promise.\n\nThey prioritize facts and logic over emotion and trust traditions that have stood the test of time.\n\nThey can look cool on the outside, but on the inside they care deeply about the people around them.",
+    "ISTJ_strengths": [
+      "Strong sense of responsibility and diligence",
+      "Careful, systematic planning",
+      "Unwavering consistency and trustworthiness"
+    ],
+    "ISTJ_cautions": [
+      "Stay flexible with change",
+      "Express feelings to deepen relationships"
+    ],
     "ISTJ_imageRole": "A military strategist reading the star maps",
-    "ISTJ_suitableJobs": ["Strategy consultant", "Researcher", "Systems analyst", "Architect", "Investment analyst"],
+    "ISTJ_suitableJobs": [
+      "Strategy consultant",
+      "Researcher",
+      "Systems analyst",
+      "Architect",
+      "Investment analyst"
+    ],
     "ISFJ_nickname": "Warm Guardian",
     "ISFJ_summary": "A quiet protector with a devoted, warm heart.",
-    "ISFJ_description": "ISFJs instinctively pick up on what people around them need and help out quietly. They have great memories for the little preferences and special days of those close to them. They tend to put others first and treasure stable settings and deep relationships. They prefer the familiar over sudden change.",
-    "ISFJ_strengths": ["Deep, careful empathy", "Reliable, meticulous execution", "Steady devotion and loyalty"],
-    "ISFJ_cautions": ["Take care of your own feelings and needs", "Practice saying no when you mean it"],
+    "ISFJ_description": "ISFJs instinctively pick up on what people around them need and help out quietly.\n\nThey have great memories for the little preferences and special days of those close to them.\n\nThey tend to put others first and treasure stable settings and deep relationships.\n\nThey prefer the familiar over sudden change.",
+    "ISFJ_strengths": [
+      "Deep, careful empathy",
+      "Reliable, meticulous execution",
+      "Steady devotion and loyalty"
+    ],
+    "ISFJ_cautions": [
+      "Take care of your own feelings and needs",
+      "Practice saying no when you mean it"
+    ],
     "ISFJ_imageRole": "Guardian of the sanctuary · Healer",
-    "ISFJ_suitableJobs": ["Nurse", "Social worker", "Elementary teacher", "Executive assistant", "Administrative support"],
+    "ISFJ_suitableJobs": [
+      "Nurse",
+      "Social worker",
+      "Elementary teacher",
+      "Executive assistant",
+      "Administrative support"
+    ],
     "INFJ_nickname": "Visionary Oracle",
     "INFJ_summary": "A rare insight-keeper who quietly moves toward an ideal.",
-    "INFJ_description": "INFJs are one of the rarest types. They have an uncanny read on others and deep empathy at the same time. They need solitude, yet they also want to leave a positive mark on the world. For values they believe in, they can work with quiet determination for a very long time.",
-    "INFJ_strengths": ["Exceptional intuition and insight", "Strong empathy and understanding", "A clear, firm vision"],
-    "INFJ_cautions": ["Loosen the grip of perfectionism a little", "Watch for burnout from pushing too hard"],
+    "INFJ_description": "INFJs are one of the rarest types.\n\nThey have an uncanny read on others and deep empathy at the same time.\n\nThey need solitude, yet they also want to leave a positive mark on the world.\n\nFor values they believe in, they can work with quiet determination for a very long time.",
+    "INFJ_strengths": [
+      "Exceptional intuition and insight",
+      "Strong empathy and understanding",
+      "A clear, firm vision"
+    ],
+    "INFJ_cautions": [
+      "Loosen the grip of perfectionism a little",
+      "Watch for burnout from pushing too hard"
+    ],
     "INFJ_imageRole": "Spiritual counselor · Quiet reformer",
-    "INFJ_suitableJobs": ["Psychotherapist", "Writer", "Social worker", "Physician", "Educator"],
+    "INFJ_suitableJobs": [
+      "Psychotherapist",
+      "Writer",
+      "Social worker",
+      "Physician",
+      "Educator"
+    ],
     "INTJ_nickname": "Strategist",
     "INTJ_summary": "An independent, strategic big-picture designer.",
-    "INTJ_description": "INTJs see through complex systems and patterns with sharp strategic thinking. They enjoy deep solo analysis and hold themselves and others to high standards. Inefficiency drives them up the wall, and they trust their own judgment strongly. They can look cold on the surface but bring surprising passion to areas they choose.",
-    "INTJ_strengths": ["Long-range, top-tier strategy", "Independent, creative thinking", "Strong goal orientation and drive"],
-    "INTJ_cautions": ["Stay flexible when the situation calls for it", "Make more space for emotional connection"],
+    "INTJ_description": "INTJs see through complex systems and patterns with sharp strategic thinking.\n\nThey enjoy deep solo analysis and hold themselves and others to high standards.\n\nInefficiency drives them up the wall, and they trust their own judgment strongly.\n\nThey can look cold on the surface but bring surprising passion to areas they choose.",
+    "INTJ_strengths": [
+      "Long-range, top-tier strategy",
+      "Independent, creative thinking",
+      "Strong goal orientation and drive"
+    ],
+    "INTJ_cautions": [
+      "Stay flexible when the situation calls for it",
+      "Make more space for emotional connection"
+    ],
     "INTJ_imageRole": "A military strategist reading the star maps · A chess-style tactician",
-    "INTJ_suitableJobs": ["Strategy consultant", "Researcher", "Systems analyst", "Architect", "Investment analyst"],
+    "INTJ_suitableJobs": [
+      "Strategy consultant",
+      "Researcher",
+      "Systems analyst",
+      "Architect",
+      "Investment analyst"
+    ],
     "ISTP_nickname": "Jack-of-all-trades",
     "ISTP_summary": "A practical, level-headed observer. Loves solving things hands-on.",
-    "ISTP_description": "ISTPs stay calm under almost any circumstance and find optimal solutions. They love tools and machines, fixing things with their hands, and have a great spatial sense. They'd rather solve problems their own way than follow unnecessary rules. They shine brightest in a crisis.",
-    "ISTP_strengths": ["Excellent problem-solving and hands-on skill", "Calm under crisis", "Pragmatic thinking free of bias"],
-    "ISTP_cautions": ["Build the habit of long-range planning", "Express your feelings more directly"],
+    "ISTP_description": "ISTPs stay calm under almost any circumstance and find optimal solutions.\n\nThey love tools and machines, fixing things with their hands, and have a great spatial sense.\n\nThey'd rather solve problems their own way than follow unnecessary rules.\n\nThey shine brightest in a crisis.",
+    "ISTP_strengths": [
+      "Excellent problem-solving and hands-on skill",
+      "Calm under crisis",
+      "Pragmatic thinking free of bias"
+    ],
+    "ISTP_cautions": [
+      "Build the habit of long-range planning",
+      "Express your feelings more directly"
+    ],
     "ISTP_imageRole": "Craftsman · Mechanic · On-site fixer",
-    "ISTP_suitableJobs": ["Engineer", "Surgeon", "Pilot", "Technician", "Forensic specialist"],
+    "ISTP_suitableJobs": [
+      "Engineer",
+      "Surgeon",
+      "Pilot",
+      "Technician",
+      "Forensic specialist"
+    ],
     "ISFP_nickname": "Free-spirited Artist",
     "ISFP_summary": "A quiet, warm sensibility — a present-moment explorer.",
-    "ISFP_description": "ISFPs may not draw attention to themselves, but they see the world through eyes attuned to beauty and harmony. They express themselves in their own original way and find real happiness in life's small moments. They lean toward cooperation over competition, and harmony over argument.",
-    "ISFP_strengths": ["Rich, delicate sensibility", "Warm, open mind free of judgment", "Natural, sincere kindness"],
-    "ISFP_cautions": ["Some long-term planning helps too", "Speak up for your own view more actively"],
+    "ISFP_description": "ISFPs may not draw attention to themselves, but they see the world through eyes attuned to beauty and harmony.\n\nThey express themselves in their own original way and find real happiness in life's small moments.\n\nThey lean toward cooperation over competition, and harmony over argument.",
+    "ISFP_strengths": [
+      "Rich, delicate sensibility",
+      "Warm, open mind free of judgment",
+      "Natural, sincere kindness"
+    ],
+    "ISFP_cautions": [
+      "Some long-term planning helps too",
+      "Speak up for your own view more actively"
+    ],
     "ISFP_imageRole": "Painter · Nature craftsman",
-    "ISFP_suitableJobs": ["Artist", "Fashion designer", "Photographer", "Chef", "Physical therapist"],
+    "ISFP_suitableJobs": [
+      "Artist",
+      "Fashion designer",
+      "Photographer",
+      "Chef",
+      "Physical therapist"
+    ],
     "INFP_nickname": "Idealist Dreamer",
     "INFP_summary": "A quiet idealist with deep feeling and conviction.",
-    "INFP_description": "INFPs hold their own values and ideals above almost everything else. They're quiet on the outside but carry a rich, complex inner world. They pursue genuine relationships and a meaningful life, and they quietly want to leave the world a little better. Writing, art, music — these are how they let their inner world out.",
-    "INFP_strengths": ["Deep, delicate empathy", "Original, creative thinking", "Strong values that don't bend"],
-    "INFP_cautions": ["Find balance with the practical side", "Watch for burnout from emotional overinvestment"],
+    "INFP_description": "INFPs hold their own values and ideals above almost everything else.\n\nThey're quiet on the outside but carry a rich, complex inner world.\n\nThey pursue genuine relationships and a meaningful life, and they quietly want to leave the world a little better.\n\nWriting, art, music — these are how they let their inner world out.",
+    "INFP_strengths": [
+      "Deep, delicate empathy",
+      "Original, creative thinking",
+      "Strong values that don't bend"
+    ],
+    "INFP_cautions": [
+      "Find balance with the practical side",
+      "Watch for burnout from emotional overinvestment"
+    ],
     "INFP_imageRole": "Poetic mediator · Healer · Dream interpreter",
-    "INFP_suitableJobs": ["Writer", "Artist", "Counselor", "UX designer", "Psychologist"],
+    "INFP_suitableJobs": [
+      "Writer",
+      "Artist",
+      "Counselor",
+      "UX designer",
+      "Psychologist"
+    ],
     "INTP_nickname": "Logical Thinker",
     "INTP_summary": "A quiet innovator who analyzes the world with endless curiosity.",
-    "INTP_description": "INTPs want to understand and explain everything. They enjoy complex theories and concepts and have an unusual talent for spotting logical holes. Solo thinking time is more comfortable than chatting, and sometimes their heads are so full of ideas that execution lags. They want to contribute original ideas that flip received wisdom on its head.",
-    "INTP_strengths": ["Sharp, deep analytical thinking", "Original thinking that breaks old molds", "Objective judgment that doesn't sway with emotion"],
-    "INTP_cautions": ["Practice moving from thinking to doing", "Tend to relationships and communication too"],
+    "INTP_description": "INTPs want to understand and explain everything.\n\nThey enjoy complex theories and concepts and have an unusual talent for spotting logical holes.\n\nSolo thinking time is more comfortable than chatting, and sometimes their heads are so full of ideas that execution lags.\n\nThey want to contribute original ideas that flip received wisdom on its head.",
+    "INTP_strengths": [
+      "Sharp, deep analytical thinking",
+      "Original thinking that breaks old molds",
+      "Objective judgment that doesn't sway with emotion"
+    ],
+    "INTP_cautions": [
+      "Practice moving from thinking to doing",
+      "Tend to relationships and communication too"
+    ],
     "INTP_imageRole": "Philosopher at the observatory · Theorist",
-    "INTP_suitableJobs": ["Scientist", "Philosopher", "Software developer", "University professor", "Data analyst"],
+    "INTP_suitableJobs": [
+      "Scientist",
+      "Philosopher",
+      "Software developer",
+      "University professor",
+      "Data analyst"
+    ],
     "ESTP_nickname": "Bold Entrepreneur",
     "ESTP_summary": "An energetic, realistic doer who lives in the moment.",
-    "ESTP_description": "ESTPs are natural executors who spot the opportunity and act on it in any situation. They don't fear risk — they enjoy the thrill — and their reflexes and snap judgment are excellent. They'd rather learn by doing than by theory, and they have a natural ability to set the tone in a group.",
-    "ESTP_strengths": ["Immediate, bold execution", "Sharp crisis response", "Persuasive presence with people"],
-    "ESTP_cautions": ["Make room for long-term planning", "Sanity-check impulsive moves occasionally"],
+    "ESTP_description": "ESTPs are natural executors who spot the opportunity and act on it in any situation.\n\nThey don't fear risk — they enjoy the thrill — and their reflexes and snap judgment are excellent.\n\nThey'd rather learn by doing than by theory, and they have a natural ability to set the tone in a group.",
+    "ESTP_strengths": [
+      "Immediate, bold execution",
+      "Sharp crisis response",
+      "Persuasive presence with people"
+    ],
+    "ESTP_cautions": [
+      "Make room for long-term planning",
+      "Sanity-check impulsive moves occasionally"
+    ],
     "ESTP_imageRole": "Adventurer merchant · Explorer · Deal-maker",
-    "ESTP_suitableJobs": ["Sales", "Entrepreneur", "Athlete", "Paramedic", "Real estate agent"],
+    "ESTP_suitableJobs": [
+      "Sales",
+      "Entrepreneur",
+      "Athlete",
+      "Paramedic",
+      "Real estate agent"
+    ],
     "ESFP_nickname": "Free-spirited Performer",
     "ESFP_summary": "A lively, spontaneous spreader of life's joys.",
-    "ESFP_description": "ESFPs liven up every room they enter — natural entertainers. They treat life itself as a stage and love being with people, making fun moments together. They live in the present and treasure current experience over future planning. They have an uncanny ability to make the people around them happy.",
-    "ESFP_strengths": ["Abundant positive energy and vitality", "Strong social skills and empathy", "Genuine ability to enjoy the moment"],
-    "ESFP_cautions": ["Plan for the longer term too", "Make space for serious, deeper conversations sometimes"],
+    "ESFP_description": "ESFPs liven up every room they enter — natural entertainers.\n\nThey treat life itself as a stage and love being with people, making fun moments together.\n\nThey live in the present and treasure current experience over future planning.\n\nThey have an uncanny ability to make the people around them happy.",
+    "ESFP_strengths": [
+      "Abundant positive energy and vitality",
+      "Strong social skills and empathy",
+      "Genuine ability to enjoy the moment"
+    ],
+    "ESFP_cautions": [
+      "Plan for the longer term too",
+      "Make space for serious, deeper conversations sometimes"
+    ],
     "ESFP_imageRole": "Festival entertainer · Performer",
-    "ESFP_suitableJobs": ["Entertainer", "Event host", "Tour guide", "Sales associate", "YouTuber"],
+    "ESFP_suitableJobs": [
+      "Entertainer",
+      "Event host",
+      "Tour guide",
+      "Sales associate",
+      "YouTuber"
+    ],
     "ENFP_nickname": "Passionate Activist",
     "ENFP_summary": "A free spirit full of imagination and passion.",
-    "ENFP_description": "ENFPs see the world as full of possibility — bright optimists. They get excited by new ideas and people easily, and their enthusiasm tends to inspire those around them. With deep understanding of people and strong empathy, they make friends quickly. The flip side: they care about so much that focusing on one thing can be hard.",
-    "ENFP_strengths": ["Abundant creativity and imagination", "Deep empathy and warm connection", "Endless curiosity about the new"],
-    "ENFP_cautions": ["Practice concentrating on one thing", "Finish what you start"],
+    "ENFP_description": "ENFPs see the world as full of possibility — bright optimists.\n\nThey get excited by new ideas and people easily, and their enthusiasm tends to inspire those around them.\n\nWith deep understanding of people and strong empathy, they make friends quickly.\n\nThe flip side: they care about so much that focusing on one thing can be hard.",
+    "ENFP_strengths": [
+      "Abundant creativity and imagination",
+      "Deep empathy and warm connection",
+      "Endless curiosity about the new"
+    ],
+    "ENFP_cautions": [
+      "Practice concentrating on one thing",
+      "Finish what you start"
+    ],
     "ENFP_imageRole": "Festival organizer · Inspirational performer",
-    "ENFP_suitableJobs": ["Creator", "Marketer", "Actor", "Journalist", "Event planner"],
+    "ENFP_suitableJobs": [
+      "Creator",
+      "Marketer",
+      "Actor",
+      "Journalist",
+      "Event planner"
+    ],
     "ENTP_nickname": "Inventor who loves debate",
     "ENTP_summary": "A creative innovator who enjoys a challenge and never runs out of ideas.",
-    "ENTP_description": "ENTPs challenge existing molds and pour out new ideas nonstop. They enjoy intellectual debate and confidently make their case against opposing views. They're broadly curious and love finding ways to make the impossible possible. Plenty of ideas — sometimes weaker on execution and follow-through.",
-    "ENTP_strengths": ["Quick insight and intellectual flexibility", "Creative problem-solving for complex issues", "Confident debate in any setting"],
-    "ENTP_cautions": ["Build the habit of finishing things you start", "Watch the other side's feelings during debate"],
+    "ENTP_description": "ENTPs challenge existing molds and pour out new ideas nonstop.\n\nThey enjoy intellectual debate and confidently make their case against opposing views.\n\nThey're broadly curious and love finding ways to make the impossible possible.\n\nPlenty of ideas — sometimes weaker on execution and follow-through.",
+    "ENTP_strengths": [
+      "Quick insight and intellectual flexibility",
+      "Creative problem-solving for complex issues",
+      "Confident debate in any setting"
+    ],
+    "ENTP_cautions": [
+      "Build the habit of finishing things you start",
+      "Watch the other side's feelings during debate"
+    ],
     "ENTP_imageRole": "Debater · Innovator · Inventor",
-    "ENTP_suitableJobs": ["Founder", "Marketer", "Lawyer", "Inventor", "Advertising planner"],
+    "ENTP_suitableJobs": [
+      "Founder",
+      "Marketer",
+      "Lawyer",
+      "Inventor",
+      "Advertising planner"
+    ],
     "ESTJ_nickname": "Stern Manager",
     "ESTJ_summary": "A natural leader who values structure and order.",
-    "ESTJ_description": "ESTJs treat keeping order and rules in the community as their mission — natural organizers. They set clear goals and execute systematically, and their sense of responsibility wins trust. They value tradition and proven methods, and have little patience for inefficiency. They shine in leadership roles.",
-    "ESTJ_strengths": ["Excellent organization and execution", "Clear decision-making and leadership", "Strong responsibility and commitment"],
-    "ESTJ_cautions": ["Flex with the situation when needed", "Accept different methods and opinions"],
+    "ESTJ_description": "ESTJs treat keeping order and rules in the community as their mission — natural organizers.\n\nThey set clear goals and execute systematically, and their sense of responsibility wins trust.\n\nThey value tradition and proven methods, and have little patience for inefficiency.\n\nThey shine in leadership roles.",
+    "ESTJ_strengths": [
+      "Excellent organization and execution",
+      "Clear decision-making and leadership",
+      "Strong responsibility and commitment"
+    ],
+    "ESTJ_cautions": [
+      "Flex with the situation when needed",
+      "Accept different methods and opinions"
+    ],
     "ESTJ_imageRole": "City administrator · Keeper of law and order",
-    "ESTJ_suitableJobs": ["Manager", "Judge", "Police officer", "Financial regulator", "Military officer"],
+    "ESTJ_suitableJobs": [
+      "Manager",
+      "Judge",
+      "Police officer",
+      "Financial regulator",
+      "Military officer"
+    ],
     "ESFJ_nickname": "Sociable Diplomat",
     "ESFJ_summary": "A warm diplomat who takes care of others and seeks harmony.",
-    "ESFJ_description": "ESFJs pick up on what people around them need and look after them — warm by nature. They're great at setting a tone where people mix well, and they naturally play mediator in conflicts. They gain energy from being acknowledged and appreciated, and they treasure tradition and community.",
-    "ESFJ_strengths": ["Strong empathy and careful attention", "Strong cooperation and teamwork", "Practical, meticulous execution"],
-    "ESFJ_cautions": ["Put your own needs and feelings first sometimes", "Practice relying less on others' evaluation"],
+    "ESFJ_description": "ESFJs pick up on what people around them need and look after them — warm by nature.\n\nThey're great at setting a tone where people mix well, and they naturally play mediator in conflicts.\n\nThey gain energy from being acknowledged and appreciated, and they treasure tradition and community.",
+    "ESFJ_strengths": [
+      "Strong empathy and careful attention",
+      "Strong cooperation and teamwork",
+      "Practical, meticulous execution"
+    ],
+    "ESFJ_cautions": [
+      "Put your own needs and feelings first sometimes",
+      "Practice relying less on others' evaluation"
+    ],
     "ESFJ_imageRole": "Court diplomat · Banquet host",
-    "ESFJ_suitableJobs": ["Nurse", "Teacher", "Sales manager", "HR specialist", "Event planner"],
+    "ESFJ_suitableJobs": [
+      "Nurse",
+      "Teacher",
+      "Sales manager",
+      "HR specialist",
+      "Event planner"
+    ],
     "ENFJ_nickname": "Justice-driven Advocate",
     "ENFJ_summary": "A charismatic born leader who grows others.",
-    "ENFJ_description": "ENFJs find real fulfillment in others' growth and development — natural mentors. With strong verbal skill and empathy they inspire people and lead a whole group toward a goal. They sense others' feelings instinctively and know what to say. The risk: they pour themselves out for others and run their own tank dry.",
-    "ENFJ_strengths": ["Born charisma and leadership", "Deep empathy and inspiring communication", "The power to bind people and community together"],
-    "ENFJ_cautions": ["Take care of your own energy and feelings too", "Watch out for over-dependence from others"],
+    "ENFJ_description": "ENFJs find real fulfillment in others' growth and development — natural mentors.\n\nWith strong verbal skill and empathy they inspire people and lead a whole group toward a goal.\n\nThey sense others' feelings instinctively and know what to say.\n\nThe risk: they pour themselves out for others and run their own tank dry.",
+    "ENFJ_strengths": [
+      "Born charisma and leadership",
+      "Deep empathy and inspiring communication",
+      "The power to bind people and community together"
+    ],
+    "ENFJ_cautions": [
+      "Take care of your own energy and feelings too",
+      "Watch out for over-dependence from others"
+    ],
     "ENFJ_imageRole": "Community leader · Guide",
-    "ENFJ_suitableJobs": ["Teacher", "Coach", "HR manager", "Activist", "Broadcaster"],
+    "ENFJ_suitableJobs": [
+      "Teacher",
+      "Coach",
+      "HR manager",
+      "Activist",
+      "Broadcaster"
+    ],
     "ENTJ_nickname": "Bold Commander",
     "ENTJ_summary": "A charismatic strategic leader. Moves toward goals without flinching.",
-    "ENTJ_description": "ENTJs set goals and mobilize every resource to reach them — natural commanders. They can't stand the inefficient and always look for a better way. With strong confidence and decisiveness they hold steady in a crisis and lead. They carry long-range vision and can turn seemingly impossible goals into achievable plans.",
-    "ENTJ_strengths": ["Powerful drive and decisiveness", "Long-range strategy and outstanding planning", "Clear, moving vision"],
-    "ENTJ_cautions": ["Watch the feelings of those moving with you", "Pace the process as much as you push the goal"],
+    "ENTJ_description": "ENTJs set goals and mobilize every resource to reach them — natural commanders.\n\nThey can't stand the inefficient and always look for a better way.\n\nWith strong confidence and decisiveness they hold steady in a crisis and lead.\n\nThey carry long-range vision and can turn seemingly impossible goals into achievable plans.",
+    "ENTJ_strengths": [
+      "Powerful drive and decisiveness",
+      "Long-range strategy and outstanding planning",
+      "Clear, moving vision"
+    ],
+    "ENTJ_cautions": [
+      "Watch the feelings of those moving with you",
+      "Pace the process as much as you push the goal"
+    ],
     "ENTJ_imageRole": "Commander of an empire · Ruler",
-    "ENTJ_suitableJobs": ["CEO", "Management consultant", "Lawyer", "Politician", "Project manager"]
+    "ENTJ_suitableJobs": [
+      "CEO",
+      "Management consultant",
+      "Lawyer",
+      "Politician",
+      "Project manager"
+    ]
   }
 }
