@@ -50,6 +50,13 @@ export default async function RootLayout({
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
         />
+        {/*
+          Naver Search Advisor verification
+          ----------------------------------
+          https://searchadvisor.naver.com 에서 사이트 등록 후 발급받은
+          <meta name="naver-site-verification" content="..."/> 태그를 여기에
+          붙여 넣으세요. 그 전까지는 빈 자리로 남겨둡니다.
+        */}
       </head>
       <body className="relative min-h-full text-foreground">
         {/* KST 시간대 배경 — 06~20시 낮, 21~05시 밤 */}
