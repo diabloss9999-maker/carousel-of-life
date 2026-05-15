@@ -4,6 +4,7 @@ import Link from "next/link";
 import {
   ArrowRight,
   Check,
+  ChevronDown,
   Crown,
   Heart,
   Layers,
@@ -22,7 +23,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { KakaoButton } from "@/components/auth/kakao-button";
 import {
   CHARACTERS,
   CHARACTERS_BY_CATEGORY,
@@ -123,7 +123,7 @@ export default async function HomePage() {
           {t("intro")}
         </p>
 
-        {/* 1차 CTA — 무료 시작 (primary, 가장 눈에 띔) + 유료 플랜 보기 (outline) */}
+        {/* 1차 CTA — 무료 시작 (primary) + 유료 플랜 (배경 없는 outline) */}
         <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 mt-2 w-full sm:w-auto max-w-sm sm:max-w-none">
           <Button asChild size="lg" className="min-w-44 shadow-lg">
             <Link href={ROUTES.login}>
@@ -135,15 +135,10 @@ export default async function HomePage() {
             asChild
             size="lg"
             variant="outline"
-            className="min-w-44 border-white/40 bg-white/25 backdrop-blur-md hover:bg-white/35"
+            className="min-w-44 border-white/50 bg-transparent hover:bg-white/10"
           >
             <Link href={ROUTES.pricing}>{t("viewPricing")}</Link>
           </Button>
-        </div>
-
-        {/* 카카오 빠른 시작 — 한국 사용자 전환 훅 */}
-        <div className="w-full max-w-sm">
-          <KakaoButton label={t("kakaoStart")} />
         </div>
 
         {/* 보조: 이미 계정 있으면 로그인 */}
@@ -156,13 +151,22 @@ export default async function HomePage() {
             {t("loginLink")}
           </Link>
         </p>
+
+        {/* 스크롤 아래로 힌트 */}
+        <div
+          aria-hidden
+          className="flex flex-col items-center gap-1 text-foreground/60 mt-6 sm:mt-10 animate-bounce"
+        >
+          <span className="text-[15px] tracking-widest">SCROLL</span>
+          <ChevronDown className="h-5 w-5" />
+        </div>
       </section>
 
+      <PreviewSection />
       <ValuePropsSection />
       <OraclesSection />
       <HowToPlaySection />
       <PlansSection />
-      <PreviewSection />
       <FaqSection />
 
       <section className="relative z-10 mx-auto max-w-3xl px-6 pb-20 pt-8 text-center">
