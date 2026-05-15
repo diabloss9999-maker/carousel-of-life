@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
+  Check,
+  Crown,
   Heart,
   Layers,
   Lightbulb,
@@ -26,7 +28,14 @@ import {
   CHARACTERS_BY_CATEGORY,
   type CharacterId,
 } from "@/lib/chat/characters";
-import { ROUTES } from "@/lib/constants";
+import {
+  ROUTES,
+  SUBSCRIPTION,
+  FREE_DAILY_LIMITS,
+  LITE_DAILY_LIMITS,
+  PRO_DAILY_LIMITS,
+} from "@/lib/constants";
+import { formatKRW } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -152,6 +161,7 @@ export default async function HomePage() {
       <ValuePropsSection />
       <OraclesSection />
       <HowToPlaySection />
+      <PlansSection />
       <PreviewSection />
       <FaqSection />
 
@@ -380,6 +390,148 @@ async function HowToPlaySection() {
   );
 }
 
+/** 가격 섹션 — 무료 / 라이트 / 프로 3 카드. 가격 페이지와 동일 데이터 소스. */
+async function PlansSection() {
+  const t = await getTranslations("landing.plansSection");
+  const tPricing = await getTranslations("pricing");
+
+  return (
+    <section className="relative z-10 mx-auto max-w-5xl space-y-8 px-6 pt-12 sm:pt-16">
+      <div className="space-y-2 text-center">
+        <h2 className="font-mystic text-2xl font-semibold sm:text-3xl">
+          {t("heading")}
+        </h2>
+        <p className="text-[15px] text-muted-foreground leading-relaxed">
+          {t("subheading")}
+        </p>
+      </div>
+
+      <div className="grid gap-6 sm:grid-cols-3">
+        {/* 무료 */}
+        <Card className="app-surface flex flex-col">
+          <CardHeader>
+            <CardTitle className="font-mystic text-2xl">
+              {tPricing("freeName")}
+            </CardTitle>
+            <CardDescription>{tPricing("freeDesc")}</CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4 flex-1">
+            <p className="font-mystic text-3xl font-semibold">₩0</p>
+            <ul className="space-y-2 text-[15px] flex-1">
+              <PlanBullet>
+                {tPricing("fortuneLine", { n: FREE_DAILY_LIMITS.fortune })}
+              </PlanBullet>
+              <PlanBullet>
+                {tPricing("tarotOneLine", { n: FREE_DAILY_LIMITS.tarot })}
+              </PlanBullet>
+              <PlanBullet>
+                {tPricing("chatLine", { n: FREE_DAILY_LIMITS.chat })}
+              </PlanBullet>
+            </ul>
+            <Button asChild variant="outline" className="w-full">
+              <Link href={ROUTES.login}>{tPricing("ctaFreeStart")}</Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* 라이트 — 인기 배지 */}
+        <Card className="app-surface flex flex-col ring-2 ring-primary/40 relative overflow-hidden">
+          <div className="absolute top-0 right-0">
+            <div className="flex items-center gap-1 bg-primary text-primary-foreground text-[15px] font-bold px-3 py-1.5 rounded-bl-xl">
+              <Sparkles className="h-3.5 w-3.5" aria-hidden />
+              {t("badgePopular")}
+            </div>
+          </div>
+          <CardHeader className="pt-8">
+            <CardTitle className="font-mystic text-2xl">
+              {SUBSCRIPTION.lite.label}
+            </CardTitle>
+            <CardDescription>{tPricing("lightDesc")}</CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4 flex-1">
+            <p className="font-mystic text-3xl font-semibold text-primary">
+              {formatKRW(SUBSCRIPTION.lite.monthlyPriceKRW)}
+              <span className="text-base text-muted-foreground font-normal">
+                {" "}
+                {tPricing("perMonth")}
+              </span>
+            </p>
+            <ul className="space-y-2 text-[15px] flex-1">
+              <PlanBullet>
+                {tPricing("fortuneLine", { n: LITE_DAILY_LIMITS.fortune })}
+              </PlanBullet>
+              <PlanBullet>
+                {tPricing("tarotLine", { n: LITE_DAILY_LIMITS.tarot })}
+              </PlanBullet>
+              <PlanBullet>
+                {tPricing("chatLine", { n: LITE_DAILY_LIMITS.chat })}
+              </PlanBullet>
+              <PlanBullet>{tPricing("bulletZodiac")}</PlanBullet>
+              <PlanBullet>{tPricing("bulletTarotThree")}</PlanBullet>
+              <PlanBullet>{tPricing("bulletCompat")}</PlanBullet>
+            </ul>
+            <Button asChild className="w-full">
+              <Link href={ROUTES.pricing}>{tPricing("ctaLightStart")}</Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* 프로 */}
+        <Card className="app-surface flex flex-col">
+          <CardHeader>
+            <CardTitle className="font-mystic text-2xl flex items-center gap-2">
+              <Crown className="h-5 w-5 text-accent" aria-hidden />
+              {SUBSCRIPTION.pro.label}
+            </CardTitle>
+            <CardDescription>{tPricing("proDesc")}</CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4 flex-1">
+            <p className="font-mystic text-3xl font-semibold">
+              {formatKRW(SUBSCRIPTION.pro.monthlyPriceKRW)}
+              <span className="text-base text-muted-foreground font-normal">
+                {" "}
+                {tPricing("perMonth")}
+              </span>
+            </p>
+            <ul className="space-y-2 text-[15px] flex-1">
+              <PlanBullet>
+                {tPricing("fortuneLine", { n: PRO_DAILY_LIMITS.fortune })}
+              </PlanBullet>
+              <PlanBullet>
+                {tPricing("bulletTarotCeltic", { n: PRO_DAILY_LIMITS.tarot })}
+              </PlanBullet>
+              <PlanBullet>
+                {tPricing("chatLine", { n: PRO_DAILY_LIMITS.chat })}
+              </PlanBullet>
+              <PlanBullet>{tPricing("bulletZodiac")}</PlanBullet>
+              <PlanBullet>{tPricing("bulletLenormand")}</PlanBullet>
+              <PlanBullet>{tPricing("bulletRunes")}</PlanBullet>
+              <PlanBullet>{tPricing("bulletCompat")}</PlanBullet>
+              <PlanBullet>{tPricing("bulletSajuDeep")}</PlanBullet>
+              <PlanBullet>{tPricing("bulletGacha")}</PlanBullet>
+            </ul>
+            <Button asChild variant="secondary" className="w-full">
+              <Link href={ROUTES.pricing}>{tPricing("ctaProStart")}</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    </section>
+  );
+}
+
+function PlanBullet({ children }: { children: React.ReactNode }) {
+  return (
+    <li className="flex items-start gap-2 leading-relaxed">
+      <Check
+        className="h-4 w-4 text-primary flex-shrink-0 mt-0.5"
+        aria-hidden
+      />
+      <span>{children}</span>
+    </li>
+  );
+}
+
 /** 결과물 미리보기 섹션 (예시 카드 2장). */
 async function PreviewSection() {
   const t = await getTranslations("landing.preview");
@@ -463,7 +615,7 @@ function FaqSection() {
   const faqs: { q: string; a: string }[] = [
     {
       q: "정말 무료인가요?",
-      a: "네. 가입만 하면 매일 운세 2회·타로 1장·주술사 문답 10회를 무료로 받으실 수 있어요. 더 많은 풀이를 원하시면 라이트(₩4,900) 또는 프로(₩9,900) 멤버십을 선택할 수 있습니다.",
+      a: "네. 가입만 하면 매일 운세 2회·타로 1장·주술사 문답 10회를 무료로 받으실 수 있어요. 더 많은 풀이를 원하시면 위 가격 안내에서 라이트·프로 멤버십을 확인해주세요.",
     },
     {
       q: "사주 정보는 어떻게 입력하나요?",

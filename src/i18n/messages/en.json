@@ -133,6 +133,11 @@
       "v3Title": "Daily Flow, Free",
       "v3Body": "Just sign up. 2 fortunes, 1 tarot card, 10 shaman messages daily."
     },
+    "plansSection": {
+      "heading": "Pick how deep you want to go",
+      "subheading": "Choose only what you need. Cancel anytime.",
+      "badgePopular": "Popular"
+    },
     "oracles": {
       "heading": "Nine shamans waiting to find you",
       "subheading": "One shaman visits you each day. Build affinity and new chapters open up.",
