@@ -147,12 +147,12 @@ export function TarotDrawForm() {
               disabled={isBusy}
             />
             <div className="flex items-center justify-between gap-2 px-1">
-              <p className="text-xs text-muted-foreground">
+              <p className="text-[15px] text-muted-foreground">
                 {t("questionHintOne")}
               </p>
               <span
                 className={cn(
-                  "text-xs tabular-nums shrink-0",
+                  "text-[15px] tabular-nums shrink-0",
                   charsLeft <= 0
                     ? "text-destructive font-medium"
                     : charsLeft <= 10

@@ -134,12 +134,12 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
             />
           </div>
           <div>
-            <p className="font-mystic text-sm font-semibold text-foreground/90">
+            <p className="font-mystic text-[15px] font-semibold text-foreground/90">
               {name}
             </p>
-            <p className="text-xs text-muted-foreground">{title}</p>
+            <p className="text-[15px] text-muted-foreground">{title}</p>
           </div>
-          <span className="ml-auto text-xs text-muted-foreground">{label}</span>
+          <span className="ml-auto text-[15px] text-muted-foreground">{label}</span>
         </div>
 
         <h2 className="font-mystic text-xl font-semibold leading-snug tracking-tight">
@@ -160,7 +160,7 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
 
         {/* 채팅으로 연결 */}
         <div className="rounded-xl border border-border/30 bg-muted/20 px-4 py-3 flex items-center justify-between gap-3">
-          <p className="text-xs text-muted-foreground leading-relaxed">
+          <p className="text-[15px] text-muted-foreground leading-relaxed">
             {t("askMore", { name })}
           </p>
           <Button

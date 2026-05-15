@@ -45,7 +45,7 @@ export function StudyTips({ subscribed }: StudyTipsProps) {
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" aria-hidden />
             {t("title")}
-            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-xs font-medium text-primary">
+            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[15px] font-medium text-primary">
               {tPrem("lightBadge")}
             </span>
           </CardTitle>
@@ -55,7 +55,7 @@ export function StudyTips({ subscribed }: StudyTipsProps) {
             {lockBullets.map((line) => (
               <div key={line} className="flex items-center gap-2">
                 <span className="h-4 w-4 rounded-full bg-accent/30 flex-shrink-0" />
-                <p className="text-sm">{line}</p>
+                <p className="text-[15px]">{line}</p>
               </div>
             ))}
           </div>
@@ -80,10 +80,10 @@ export function StudyTips({ subscribed }: StudyTipsProps) {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-[15px] text-muted-foreground">
             {t("lockBody")}
           </p>
-          {error && <p className="text-xs text-destructive">{error}</p>}
+          {error && <p className="text-[15px] text-destructive">{error}</p>}
           <Button
             onClick={handleGenerate}
             disabled={isPending}
@@ -119,12 +119,12 @@ export function StudyTips({ subscribed }: StudyTipsProps) {
         <ol className="space-y-4">
           {tips.map((tip, i) => (
             <li key={i} className="flex items-start gap-3">
-              <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/15 text-xs font-bold text-primary">
+              <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/15 text-[15px] font-bold text-primary">
                 {i + 1}
               </span>
               <div>
-                <p className="font-mystic text-sm font-semibold">{tip.title}</p>
-                <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+                <p className="font-mystic text-[15px] font-semibold">{tip.title}</p>
+                <p className="mt-0.5 text-[15px] leading-relaxed text-muted-foreground">
                   {tip.description}
                 </p>
               </div>
@@ -134,10 +134,10 @@ export function StudyTips({ subscribed }: StudyTipsProps) {
 
         {quote && (
           <div className="mt-5 rounded-xl border border-accent/20 bg-accent/5 px-4 py-3">
-            <p className="font-mystic text-sm leading-relaxed text-foreground/85 italic">
+            <p className="font-mystic text-[15px] leading-relaxed text-foreground/85 italic">
               &ldquo;{quote.text}&rdquo;
             </p>
-            <p className="mt-1.5 text-right text-xs text-muted-foreground">
+            <p className="mt-1.5 text-right text-[15px] text-muted-foreground">
               — {quote.author}
             </p>
           </div>

@@ -29,7 +29,7 @@ export function CompatibilityCard({ reading }: CompatibilityCardProps) {
     <Card className="app-surface">
       <CardHeader className="space-y-3 pb-3">
         <div className="flex items-center justify-between">
-          <span className="text-xs text-muted-foreground">
+          <span className="text-[15px] text-muted-foreground">
             {dateStr}
           </span>
           <ScoreBadge score={reading.score} />
@@ -37,7 +37,7 @@ export function CompatibilityCard({ reading }: CompatibilityCardProps) {
         <p className="font-mystic text-base flex items-center gap-2">
           <Heart className="h-4 w-4 text-accent" aria-hidden />
           <span>{reading.partnerName}</span>
-          <span className="text-xs text-muted-foreground font-normal">
+          <span className="text-[15px] text-muted-foreground font-normal">
             ({reading.partnerBirthDate})
           </span>
         </p>
@@ -66,7 +66,7 @@ function ScoreBadge({ score }: { score: number }) {
   return (
     <span
       className={cn(
-        "rounded-full px-3 py-0.5 font-mystic text-sm font-medium",
+        "rounded-full px-3 py-0.5 font-mystic text-[15px] font-medium",
         tone,
       )}
       aria-label={t("scoreAria", { n: score })}

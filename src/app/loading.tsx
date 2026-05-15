@@ -7,7 +7,7 @@ export default async function GlobalLoading() {
     <div className="flex min-h-screen items-center justify-center bg-background">
       <div className="flex flex-col items-center gap-4 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin text-primary" aria-hidden />
-        <p className="font-mystic text-sm">{t("loadingText")}</p>
+        <p className="font-mystic text-[15px]">{t("loadingText")}</p>
       </div>
     </div>
   );

@@ -103,13 +103,13 @@ export default async function HomePage() {
           {t("tagline")}
         </p>
 
-        <p className="text-xs text-foreground/85 drop-shadow-sm mt-2">
+        <p className="text-[15px] text-foreground/85 drop-shadow-sm mt-2">
           {t("freeHint")}
         </p>
 
         <Link
           href={ROUTES.pricing}
-          className="text-sm text-foreground/80 underline underline-offset-4 hover:text-foreground"
+          className="text-[15px] text-foreground/80 underline underline-offset-4 hover:text-foreground"
         >
           {t("viewPricing")}
         </Link>
@@ -159,7 +159,7 @@ async function ValuePropsSection() {
         <h2 className="font-mystic text-2xl font-semibold sm:text-3xl">
           {t("heading")}
         </h2>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-[15px] text-muted-foreground">
           {t("subheading")}
         </p>
       </div>
@@ -214,7 +214,7 @@ async function HowToPlaySection() {
         <h2 className="font-mystic text-2xl font-semibold sm:text-3xl">
           {t("heading")}
         </h2>
-        <p className="text-sm text-muted-foreground">{t("subheading")}</p>
+        <p className="text-[15px] text-muted-foreground">{t("subheading")}</p>
       </div>
       <div className="grid gap-4 sm:grid-cols-3">
         {items.map(({ icon: Icon, title, body, tone, highlight }) => (
@@ -255,7 +255,7 @@ async function PreviewSection() {
         <h2 className="font-mystic text-2xl font-semibold sm:text-3xl">
           {t("heading")}
         </h2>
-        <p className="text-xs text-muted-foreground">{t("exampleLabel")}</p>
+        <p className="text-[15px] text-muted-foreground">{t("exampleLabel")}</p>
       </div>
 
       <div className="mx-auto grid max-w-3xl gap-6 sm:grid-cols-2">
@@ -264,11 +264,11 @@ async function PreviewSection() {
           <CardHeader className="space-y-2">
             <div className="flex items-center justify-between">
               <CardTitle className="text-base">타로 한 장</CardTitle>
-              <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+              <span className="rounded-full bg-muted px-2 py-0.5 text-[15px] text-muted-foreground">
                 예시
               </span>
             </div>
-            <CardDescription className="text-xs">The Star · 별의 인도</CardDescription>
+            <CardDescription className="text-[15px]">The Star · 별의 인도</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="mx-auto h-44 w-28 overflow-hidden rounded-lg ring-1 ring-border">
@@ -280,7 +280,7 @@ async function PreviewSection() {
                 className="h-full w-full object-cover"
               />
             </div>
-            <p className="text-xs leading-relaxed text-muted-foreground">
+            <p className="text-[15px] leading-relaxed text-muted-foreground">
               오래 흐려 있던 마음에 다시 빛이 닿아요. 무리해서 결론 내지 말고,
               지금은 회복의 시간을 천천히 받아들여요. 작은 희망을 발견하는 것이
               오늘의 시작입니다.
@@ -293,17 +293,17 @@ async function PreviewSection() {
           <CardHeader className="space-y-2">
             <div className="flex items-center justify-between">
               <CardTitle className="text-base">오늘의 운세</CardTitle>
-              <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+              <span className="rounded-full bg-muted px-2 py-0.5 text-[15px] text-muted-foreground">
                 예시
               </span>
             </div>
-            <CardDescription className="text-xs">사주 + 일진 통합 풀이</CardDescription>
+            <CardDescription className="text-[15px]">사주 + 일진 통합 풀이</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <p className="text-sm font-medium leading-relaxed">
+            <p className="text-[15px] font-medium leading-relaxed">
               조급함을 내려놓을수록 길이 보이는 하루.
             </p>
-            <p className="text-xs leading-relaxed text-muted-foreground">
+            <p className="text-[15px] leading-relaxed text-muted-foreground">
               계획대로 풀리지 않더라도 흔들리지 마세요. 오늘은 결단보다 관찰이
               유리합니다. 가까운 사람의 한마디에 단서가 있을 수 있어요.
             </p>
@@ -311,7 +311,7 @@ async function PreviewSection() {
               {["회복", "기다림", "별빛"].map((k) => (
                 <span
                   key={k}
-                  className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs text-primary"
+                  className="rounded-full bg-primary/10 px-2.5 py-0.5 text-[15px] text-primary"
                 >
                   #{k}
                 </span>
@@ -362,7 +362,7 @@ function FaqSection() {
             key={q}
             className="app-surface group rounded-xl p-4 [&_summary::-webkit-details-marker]:hidden"
           >
-            <summary className="flex cursor-pointer items-center justify-between gap-3 text-sm font-semibold">
+            <summary className="flex cursor-pointer items-center justify-between gap-3 text-[15px] font-semibold">
               <span>{q}</span>
               <span
                 aria-hidden
@@ -371,7 +371,7 @@ function FaqSection() {
                 ▾
               </span>
             </summary>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
               {a}
             </p>
           </details>

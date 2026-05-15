@@ -69,15 +69,15 @@ function RuneCell({
           sizes="(max-width: 640px) 176px, 224px"
         />
       </div>
-      <p className="text-center text-xs text-muted-foreground">
+      <p className="text-center text-[15px] text-muted-foreground">
         {entry.position}
       </p>
-      <p className="text-center text-xs font-medium text-foreground/80">
+      <p className="text-center text-[15px] font-medium text-foreground/80">
         {rune.symbol} {rune.nameKo}
         {entry.isReversed ? " ⤵" : ""}
       </p>
       {entry.isReversed ? (
-        <span className="text-xs text-amber-300/80">역방향</span>
+        <span className="text-[15px] text-amber-300/80">역방향</span>
       ) : null}
     </div>
   );
@@ -103,8 +103,8 @@ export function RuneReadingCard({ reading }: Props) {
             <CharacterImage character={character} fill className="object-cover object-top" sizes="56px" quality={90} />
           </div>
           <div>
-            <p className="font-mystic text-sm font-semibold text-foreground">{character.name}</p>
-            <p className="text-xs text-muted-foreground">{character.title}</p>
+            <p className="font-mystic text-[15px] font-semibold text-foreground">{character.name}</p>
+            <p className="text-[15px] text-muted-foreground">{character.title}</p>
           </div>
         </div>
         {spreadType === "single" ? (
@@ -146,7 +146,7 @@ export function RuneReadingCard({ reading }: Props) {
         ) : null}
 
         {reading.question ? (
-          <p className="text-center text-xs text-muted-foreground">
+          <p className="text-center text-[15px] text-muted-foreground">
             “{reading.question}”
           </p>
         ) : null}
@@ -155,7 +155,7 @@ export function RuneReadingCard({ reading }: Props) {
         <p className="font-mystic whitespace-pre-line leading-relaxed text-foreground/90">
           {reading.interpretation}
         </p>
-        <p className="text-right text-xs text-muted-foreground">
+        <p className="text-right text-[15px] text-muted-foreground">
           {new Date(reading.createdAt).toLocaleDateString("ko-KR")}
         </p>
       </CardContent>

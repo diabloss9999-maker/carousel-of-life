@@ -53,7 +53,7 @@ export function StreakBadge({ checkIn }: StreakBadgeProps) {
       <Link
         href="/history"
         className={cn(
-          "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold transition-opacity hover:opacity-80",
+          "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[15px] font-semibold transition-opacity hover:opacity-80",
           isHot
             ? "bg-orange-500/15 text-orange-500 dark:text-orange-400"
             : "bg-muted/50 text-muted-foreground",
@@ -70,7 +70,7 @@ export function StreakBadge({ checkIn }: StreakBadgeProps) {
 
       {/* 보너스 가챠 크레딧 */}
       {bonusGachaCredits > 0 && (
-        <div className="flex items-center gap-1.5 rounded-full bg-primary/15 px-3 py-1.5 text-sm font-semibold text-primary">
+        <div className="flex items-center gap-1.5 rounded-full bg-primary/15 px-3 py-1.5 text-[15px] font-semibold text-primary">
           <Gift className="h-4 w-4" aria-hidden />
           <span>{t("bonus", { n: bonusGachaCredits })}</span>
         </div>

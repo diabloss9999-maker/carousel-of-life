@@ -30,10 +30,10 @@ export async function EventLogFeed({ crackLevel }: EventLogFeedProps) {
   return (
     <div className="app-surface rounded-2xl p-4 sm:p-5 space-y-3">
       <div className="flex items-center justify-between">
-        <p className="text-xs uppercase tracking-widest text-muted-foreground">
+        <p className="text-[15px] uppercase tracking-widest text-muted-foreground">
           {t("obsLog")}
         </p>
-        <span className="text-xs font-mono text-muted-foreground tabular-nums">
+        <span className="text-[15px] font-mono text-muted-foreground tabular-nums">
           {t("logCount", { n: events.length })}
         </span>
       </div>
@@ -44,17 +44,17 @@ export async function EventLogFeed({ crackLevel }: EventLogFeedProps) {
             key={`${event.minutesAgo}-${i}`}
             className={`flex items-start gap-2 border-l pl-3 py-0.5 ${TONE_COLOR[event.tone]}`}
           >
-            <span className="text-xs font-mono tabular-nums shrink-0 mt-0.5 text-muted-foreground">
+            <span className="text-[15px] font-mono tabular-nums shrink-0 mt-0.5 text-muted-foreground">
               {formatTimeAgo(event.minutesAgo)}
             </span>
-            <span className="text-xs leading-relaxed font-mystic">
+            <span className="text-[15px] leading-relaxed font-mystic">
               {event.text}
             </span>
           </li>
         ))}
       </ul>
 
-      <p className="text-xs text-muted-foreground/60 leading-relaxed font-mono">
+      <p className="text-[15px] text-muted-foreground/60 leading-relaxed font-mono">
         {t("logCorrupted")}
       </p>
     </div>

@@ -42,8 +42,8 @@ export function AffinityBar({ characterId, points, compact = false }: AffinityBa
     return (
       <div className="w-full space-y-1">
         <div className="flex items-center justify-between">
-          <span className="text-xs text-muted-foreground">Lv.{level} {label}</span>
-          <span className="text-xs text-muted-foreground tabular-nums">
+          <span className="text-[15px] text-muted-foreground">Lv.{level} {label}</span>
+          <span className="text-[15px] text-muted-foreground tabular-nums">
             {points}{nextPoints != null ? `/${nextPoints}` : ""}
           </span>
         </div>
@@ -61,12 +61,12 @@ export function AffinityBar({ characterId, points, compact = false }: AffinityBa
     <div className="w-full space-y-1.5">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="rounded-full border border-border/40 bg-muted/30 px-2 py-0.5 text-xs font-semibold text-muted-foreground">
+          <span className="rounded-full border border-border/40 bg-muted/30 px-2 py-0.5 text-[15px] font-semibold text-muted-foreground">
             Lv.{level}
           </span>
-          <span className="text-xs text-foreground/70">{label}</span>
+          <span className="text-[15px] text-foreground/70">{label}</span>
         </div>
-        <span className="text-xs text-muted-foreground tabular-nums">
+        <span className="text-[15px] text-muted-foreground tabular-nums">
           {isMax ? "최대" : `${points} / ${nextPoints}`}
         </span>
       </div>

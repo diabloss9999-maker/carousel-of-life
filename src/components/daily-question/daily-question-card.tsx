@@ -130,7 +130,7 @@ export function DailyQuestionCard({ characterId, question }: DailyQuestionCardPr
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <span className={cn(
-                "rounded border px-2 py-0.5 text-xs font-bold tracking-widest uppercase",
+                "rounded border px-2 py-0.5 text-[15px] font-bold tracking-widest uppercase",
                 theme.badge, theme.badgeText,
               )}>
                 {worldLabel} · {worldSub}
@@ -140,14 +140,14 @@ export function DailyQuestionCard({ characterId, question }: DailyQuestionCardPr
               <p className={cn("font-mystic text-lg font-bold leading-none", theme.accent)}>
                 {name}
               </p>
-              <p className="text-xs text-muted-foreground mt-0.5">{title}</p>
+              <p className="text-[15px] text-muted-foreground mt-0.5">{title}</p>
             </div>
           </div>
 
           {/* 중간: 오늘의 질문 */}
           <div className="space-y-1">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground/50">{t("eyebrow")}</p>
-            <p className="font-mystic text-sm leading-relaxed text-foreground/90">
+            <p className="text-[15px] uppercase tracking-widest text-muted-foreground/50">{t("eyebrow")}</p>
+            <p className="font-mystic text-[15px] leading-relaxed text-foreground/90">
               {question}
             </p>
           </div>
@@ -159,7 +159,7 @@ export function DailyQuestionCard({ characterId, question }: DailyQuestionCardPr
             onClick={handleAnswer}
             disabled={isPending || clicked}
             className={cn(
-              "self-start gap-1.5 text-xs font-semibold",
+              "self-start gap-1.5 text-[15px] font-semibold",
               "bg-white/10 hover:bg-white/20 text-white border border-white/15 backdrop-blur",
             )}
           >

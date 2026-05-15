@@ -56,7 +56,7 @@ export default async function PricingPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="font-mystic text-3xl font-semibold">₩0</p>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-2 text-[15px]">
               <Bullet>{t("fortuneLine", { n: FREE_DAILY_LIMITS.fortune })}</Bullet>
               <Bullet>{t("tarotOneLine", { n: FREE_DAILY_LIMITS.tarot })}</Bullet>
               <Bullet>{t("chatLine", { n: FREE_DAILY_LIMITS.chat })}</Bullet>
@@ -95,7 +95,7 @@ export default async function PricingPage() {
                 {t("perMonth")}
               </span>
             </p>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-2 text-[15px]">
               <Bullet>{t("fortuneLine", { n: LITE_DAILY_LIMITS.fortune })}</Bullet>
               <Bullet>{t("tarotLine", { n: LITE_DAILY_LIMITS.tarot })}</Bullet>
               <Bullet>{t("chatLine", { n: LITE_DAILY_LIMITS.chat })}</Bullet>
@@ -126,7 +126,7 @@ export default async function PricingPage() {
         {/* Pro plan */}
         <Card className="app-surface ring-2 ring-primary/40 relative overflow-hidden">
           <div className="absolute top-0 right-0">
-            <div className="flex items-center gap-1 bg-primary text-primary-foreground text-xs font-bold px-3 py-1.5 rounded-bl-xl">
+            <div className="flex items-center gap-1 bg-primary text-primary-foreground text-[15px] font-bold px-3 py-1.5 rounded-bl-xl">
               <Crown className="h-3.5 w-3.5" aria-hidden />
               {t("recommended")}
             </div>
@@ -148,7 +148,7 @@ export default async function PricingPage() {
                 {t("perMonth")}
               </span>
             </p>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-2 text-[15px]">
               <Bullet>{t("fortuneLine", { n: PRO_DAILY_LIMITS.fortune })}</Bullet>
               <Bullet>{t("bulletTarotCeltic", { n: PRO_DAILY_LIMITS.tarot })}</Bullet>
               <Bullet>{t("chatLine", { n: PRO_DAILY_LIMITS.chat })}</Bullet>
@@ -177,7 +177,7 @@ export default async function PricingPage() {
         </Card>
       </div>
 
-      <p className="mt-6 text-center text-xs text-muted-foreground">
+      <p className="mt-6 text-center text-[15px] text-muted-foreground">
         {t("footer")}
       </p>
     </main>

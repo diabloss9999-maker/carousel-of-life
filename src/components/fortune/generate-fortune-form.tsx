@@ -81,13 +81,13 @@ export function GenerateFortuneForm({
         {/* 콘텐츠 */}
         <div className="flex flex-1 flex-col justify-between gap-4 p-4 sm:p-5">
           <div className="space-y-1">
-            <p className="text-xs text-muted-foreground/50 uppercase tracking-widest">
+            <p className="text-[15px] text-muted-foreground/50 uppercase tracking-widest">
               {name} · {title}
             </p>
             <p className="font-mystic text-base font-semibold text-foreground/90 leading-snug">
               {line}
             </p>
-            <p className="text-xs text-muted-foreground/60">{sub}</p>
+            <p className="text-[15px] text-muted-foreground/60">{sub}</p>
           </div>
 
           <form action={formAction}>

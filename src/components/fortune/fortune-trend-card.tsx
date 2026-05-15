@@ -77,10 +77,10 @@ export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
     <div className="rounded-xl border border-border/30 bg-card/50 backdrop-blur px-4 pt-3 pb-2 space-y-2">
       {/* 헤더 */}
       <div className="flex items-center justify-between">
-        <span className="font-mystic text-sm font-medium text-foreground/80">
+        <span className="font-mystic text-[15px] font-medium text-foreground/80">
           {t("lastNDays", { n })}
         </span>
-        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+        <div className="flex items-center gap-3 text-[15px] text-muted-foreground">
           {trend.average !== null && (
             <span className="tabular-nums">
               {t("avgScore", { n: trend.average })}
@@ -155,7 +155,7 @@ export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
             <span
               key={p.date}
               className={cn(
-                "text-xs tabular-nums leading-none",
+                "text-[15px] tabular-nums leading-none",
                 isLast ? "text-foreground/80 font-medium" : "text-muted-foreground/65",
               )}
             >

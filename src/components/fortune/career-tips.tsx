@@ -98,7 +98,7 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" aria-hidden />
             {t("title")}
-            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-xs font-medium text-primary">
+            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[15px] font-medium text-primary">
               {tPrem("lightBadge")}
             </span>
           </CardTitle>
@@ -108,7 +108,7 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
             {lockBullets.map((line) => (
               <div key={line} className="flex items-start gap-2">
                 <span className="mt-1 h-4 w-4 rounded-full bg-accent/30 flex-shrink-0" />
-                <p className="text-sm font-medium">{line}</p>
+                <p className="text-[15px] font-medium">{line}</p>
               </div>
             ))}
           </div>
@@ -133,10 +133,10 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-[15px] text-muted-foreground">
             {t("lockBody")}
           </p>
-          {error && <p className="text-xs text-destructive">{error}</p>}
+          {error && <p className="text-[15px] text-destructive">{error}</p>}
           <Button
             onClick={handleGenerate}
             disabled={isPending}
@@ -190,7 +190,7 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
       <CardContent className="space-y-6">
         {/* ① 에너지 리포트 */}
         <section className="space-y-3">
-          <h3 className="font-mystic flex items-center gap-2 text-sm font-semibold">
+          <h3 className="font-mystic flex items-center gap-2 text-[15px] font-semibold">
             <Zap className="h-4 w-4 text-primary" aria-hidden />
             {t("energy")}
           </h3>
@@ -201,7 +201,7 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
               { label: t("energyDrive"), value: report.energy.drive },
             ].map((item) => (
               <div key={item.label} className="space-y-1">
-                <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center justify-between text-[15px]">
                   <span className="text-muted-foreground">{item.label}</span>
                   <span className="font-medium">{item.value}</span>
                 </div>
@@ -209,7 +209,7 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
               </div>
             ))}
           </div>
-          <div className="rounded-md bg-destructive/5 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+          <div className="rounded-md bg-destructive/5 px-3 py-2 text-[15px] leading-relaxed text-muted-foreground">
             <span className="font-semibold text-destructive">{t("avoid")} </span>
             {report.energy.avoid}
           </div>
@@ -217,19 +217,19 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
 
         {/* ② 최적 업무 타이밍 */}
         <section className="space-y-2">
-          <h3 className="font-mystic flex items-center gap-2 text-sm font-semibold">
+          <h3 className="font-mystic flex items-center gap-2 text-[15px] font-semibold">
             <Clock className="h-4 w-4 text-primary" aria-hidden />
             {t("timing")}
           </h3>
           <div className="rounded-md bg-primary/5 px-3 py-2.5">
-            <p className="text-sm font-medium text-primary">
+            <p className="text-[15px] font-medium text-primary">
               {t("periodGood", { period: periodLabel })}
             </p>
-            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+            <p className="mt-1 text-[15px] leading-relaxed text-muted-foreground">
               {report.timing.periodDesc}
             </p>
           </div>
-          <p className="text-xs leading-relaxed text-muted-foreground">
+          <p className="text-[15px] leading-relaxed text-muted-foreground">
             <span className="font-semibold">{t("meetings")} </span>
             {report.timing.meetingTip}
           </p>
@@ -237,7 +237,7 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
 
         {/* ③ 이번 주 직장 흐름 */}
         <section className="space-y-3">
-          <h3 className="font-mystic flex items-center gap-2 text-sm font-semibold">
+          <h3 className="font-mystic flex items-center gap-2 text-[15px] font-semibold">
             <CalendarDays className="h-4 w-4 text-primary" aria-hidden />
             {t("weekly")}
           </h3>
@@ -261,14 +261,14 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
                     <span
                       className={
                         isToday
-                          ? "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground"
-                          : "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-border/60 text-xs font-medium text-muted-foreground"
+                          ? "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary text-[15px] font-bold text-primary-foreground"
+                          : "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-border/60 text-[15px] font-medium text-muted-foreground"
                       }
                     >
                       {dayLabel}
                     </span>
                     <div className="flex-1 space-y-1">
-                      <div className="flex items-center justify-between text-xs">
+                      <div className="flex items-center justify-between text-[15px]">
                         <span
                           className={
                             isToday
@@ -293,15 +293,15 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
 
         {/* ④ 관계 운 */}
         <section className="space-y-2">
-          <h3 className="font-mystic flex items-center gap-2 text-sm font-semibold">
+          <h3 className="font-mystic flex items-center gap-2 text-[15px] font-semibold">
             <Users className="h-4 w-4 text-primary" aria-hidden />
             {t("relation")}
           </h3>
           <div
             className={
               report.relationship.isGoodToAsk
-                ? "flex items-center gap-2 rounded-md bg-primary/10 px-3 py-2 text-sm font-medium text-primary"
-                : "flex items-center gap-2 rounded-md bg-muted/40 px-3 py-2 text-sm font-medium text-muted-foreground"
+                ? "flex items-center gap-2 rounded-md bg-primary/10 px-3 py-2 text-[15px] font-medium text-primary"
+                : "flex items-center gap-2 rounded-md bg-muted/40 px-3 py-2 text-[15px] font-medium text-muted-foreground"
             }
           >
             {report.relationship.isGoodToAsk ? (
@@ -316,7 +316,7 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
               </>
             )}
           </div>
-          <ul className="space-y-1.5 text-xs leading-relaxed text-muted-foreground">
+          <ul className="space-y-1.5 text-[15px] leading-relaxed text-muted-foreground">
             <li>
               <span className="font-semibold text-foreground">{t("boss")} </span>
               {report.relationship.bossAdvice}
@@ -334,21 +334,21 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
 
         {/* ⑤ 직장에서 예쁨받는 방법 3가지 */}
         <section className="space-y-3">
-          <h3 className="font-mystic flex items-center gap-2 text-sm font-semibold">
+          <h3 className="font-mystic flex items-center gap-2 text-[15px] font-semibold">
             <Sparkles className="h-4 w-4 text-primary" aria-hidden />
             {t("loved")}
           </h3>
           <ol className="space-y-3">
             {report.tips.map((tip, i) => (
               <li key={i} className="flex items-start gap-3">
-                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/15 text-xs font-bold text-primary">
+                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/15 text-[15px] font-bold text-primary">
                   {i + 1}
                 </span>
                 <div>
-                  <p className="font-mystic text-sm font-semibold">
+                  <p className="font-mystic text-[15px] font-semibold">
                     {tip.title}
                   </p>
-                  <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+                  <p className="mt-0.5 text-[15px] leading-relaxed text-muted-foreground">
                     {tip.description}
                   </p>
                 </div>

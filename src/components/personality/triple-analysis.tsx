@@ -62,7 +62,7 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" />
             {t("title")}
-            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-xs font-medium text-primary">
+            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[15px] font-medium text-primary">
               {tPrem("lightBadge")}
             </span>
           </CardTitle>
@@ -70,7 +70,7 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
         <CardContent className="space-y-3">
           <div className="blur-[3px] select-none pointer-events-none space-y-2">
             {lockBullets.map((line) => (
-              <p key={line} className="text-sm">{line}</p>
+              <p key={line} className="text-[15px]">{line}</p>
             ))}
           </div>
           <Button asChild size="sm" className="w-full">
@@ -100,20 +100,20 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
               <div className="relative h-9 w-6 overflow-hidden rounded-lg shadow-sm">
                 <CharacterImage character={character} fill className="object-cover object-top" sizes="24px" />
               </div>
-              <p className="font-mystic text-xs font-semibold text-foreground/70">{charName}</p>
+              <p className="font-mystic text-[15px] font-semibold text-foreground/70">{charName}</p>
             </div>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="rounded-xl border border-accent/25 bg-accent/5 p-4 space-y-1.5">
-            <p className="text-xs font-semibold text-accent uppercase tracking-wide">
+            <p className="text-[15px] font-semibold text-accent uppercase tracking-wide">
               {t("convergence")}
             </p>
             <p className="font-mystic leading-relaxed">{data.convergence}</p>
           </div>
 
           <div className="rounded-xl border border-primary/25 bg-primary/5 p-4 space-y-1.5">
-            <p className="text-xs font-semibold text-primary uppercase tracking-wide">
+            <p className="text-[15px] font-semibold text-primary uppercase tracking-wide">
               {t("contradiction")}
             </p>
             <p className="font-mystic leading-relaxed">{data.contradiction}</p>
@@ -121,13 +121,13 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
 
           <div className="rounded-xl border border-border/60 bg-card/40 p-4 space-y-3">
             <div className="space-y-1.5">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+              <p className="text-[15px] font-semibold text-muted-foreground uppercase tracking-wide">
                 {t("trueNature")}
               </p>
               <p className="font-mystic leading-relaxed">{data.trueNature}</p>
             </div>
             <div className="border-t border-border/40 pt-3 space-y-1.5">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+              <p className="text-[15px] font-semibold text-muted-foreground uppercase tracking-wide">
                 {t("uniqueStrength")}
               </p>
               <p className="font-mystic leading-relaxed">
@@ -149,11 +149,11 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        <p className="text-xs text-muted-foreground">
+        <p className="text-[15px] text-muted-foreground">
           {t("lockBody")}
         </p>
         {errorMsg ? (
-          <p className="text-xs text-destructive">{errorMsg}</p>
+          <p className="text-[15px] text-destructive">{errorMsg}</p>
         ) : null}
         <Button
           onClick={handleGenerate}

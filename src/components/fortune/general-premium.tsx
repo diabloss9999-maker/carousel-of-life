@@ -159,7 +159,7 @@ function RadarChart({
             textAnchor="middle"
             dominantBaseline="central"
             style={{
-              fontSize: "12px",
+              fontSize: "15px",
               fontFamily: "var(--font-sans)",
               fill: "rgba(251,191,36,0.85)",
             }}
@@ -203,7 +203,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" aria-hidden />
             {t("title")}
-            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-xs font-medium text-primary">
+            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[15px] font-medium text-primary">
               {tPrem("lightBadge")}
             </span>
           </CardTitle>
@@ -213,7 +213,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
             {lockBullets.map((line) => (
               <div key={line} className="flex items-start gap-2">
                 <span className="mt-1 h-4 w-4 flex-shrink-0 rounded-full bg-accent/30" />
-                <p className="text-sm font-medium">{line}</p>
+                <p className="text-[15px] font-medium">{line}</p>
               </div>
             ))}
           </div>
@@ -238,10 +238,10 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-[15px] text-muted-foreground">
             {t("lockBody")}
           </p>
-          {error && <p className="text-xs text-destructive">{error}</p>}
+          {error && <p className="text-[15px] text-destructive">{error}</p>}
           <Button
             onClick={handleGenerate}
             disabled={isPending}
@@ -276,7 +276,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
       <CardContent className="space-y-6">
         {/* ① 시간대별 운세 */}
         <section className="space-y-3">
-          <h3 className="font-mystic flex items-center gap-2 text-sm font-semibold">
+          <h3 className="font-mystic flex items-center gap-2 text-[15px] font-semibold">
             <Clock className="h-4 w-4 text-primary" aria-hidden />
             {t("section1")}
           </h3>
@@ -288,10 +288,10 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
                   key={i}
                   className="space-y-2 rounded-xl border border-border/40 bg-card/40 p-3"
                 >
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-[15px] text-muted-foreground">
                     {slot.label}
                   </p>
-                  <p className="font-mystic text-sm font-bold text-primary">
+                  <p className="font-mystic text-[15px] font-bold text-primary">
                     {slot.keyword}
                   </p>
                   <div className="h-1.5 w-full overflow-hidden rounded-full bg-border/40">
@@ -300,7 +300,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
                       style={{ width: `${pct}%` }}
                     />
                   </div>
-                  <p className="text-xs leading-relaxed text-muted-foreground">
+                  <p className="text-[15px] leading-relaxed text-muted-foreground">
                     {slot.advice}
                   </p>
                 </div>
@@ -311,7 +311,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
 
         {/* ② 운세 레이더 차트 */}
         <section className="space-y-3">
-          <h3 className="font-mystic flex items-center gap-2 text-sm font-semibold">
+          <h3 className="font-mystic flex items-center gap-2 text-[15px] font-semibold">
             <Radar className="h-4 w-4 text-primary" aria-hidden />
             {t("section2")}
           </h3>
@@ -320,36 +320,36 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
 
         {/* ③ DO / DON'T */}
         <section className="space-y-3">
-          <h3 className="font-mystic flex items-center gap-2 text-sm font-semibold">
+          <h3 className="font-mystic flex items-center gap-2 text-[15px] font-semibold">
             <ListChecks className="h-4 w-4 text-primary" aria-hidden />
             {t("section3")}
           </h3>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
-              <p className="text-xs font-semibold text-emerald-400">
+              <p className="text-[15px] font-semibold text-emerald-400">
                 {t("doToday")}
               </p>
               {data.doList.map((item, i) => (
                 <div key={i} className="flex items-start gap-1.5">
-                  <span className="mt-0.5 flex-shrink-0 text-xs text-emerald-400">
+                  <span className="mt-0.5 flex-shrink-0 text-[15px] text-emerald-400">
                     •
                   </span>
-                  <p className="text-xs leading-relaxed text-muted-foreground">
+                  <p className="text-[15px] leading-relaxed text-muted-foreground">
                     {item}
                   </p>
                 </div>
               ))}
             </div>
             <div className="space-y-2">
-              <p className="text-xs font-semibold text-red-400">
+              <p className="text-[15px] font-semibold text-red-400">
                 {t("dontToday")}
               </p>
               {data.dontList.map((item, i) => (
                 <div key={i} className="flex items-start gap-1.5">
-                  <span className="mt-0.5 flex-shrink-0 text-xs text-red-400">
+                  <span className="mt-0.5 flex-shrink-0 text-[15px] text-red-400">
                     •
                   </span>
-                  <p className="text-xs leading-relaxed text-muted-foreground">
+                  <p className="text-[15px] leading-relaxed text-muted-foreground">
                     {item}
                   </p>
                 </div>

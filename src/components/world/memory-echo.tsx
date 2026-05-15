@@ -70,7 +70,7 @@ export function MemoryEcho() {
         pointerEvents: "none",
         opacity: fadingOut ? 0 : 1,
         transition: "opacity 1.4s ease-out",
-        fontSize: "12px",
+        fontSize: "15px",
         letterSpacing: "0.16em",
         color: "var(--ritual-muted, rgba(48,39,55,0.36))",
         fontFamily: "var(--font-serif)",

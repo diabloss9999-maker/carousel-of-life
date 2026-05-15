@@ -34,11 +34,11 @@ export default function GlobalErrorBoundary({
         <h1 className="font-mystic text-3xl font-semibold tracking-tight text-foreground">
           {t("errorTitle")}
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-[15px] text-muted-foreground">
           {t("errorBody")}
         </p>
         {error.digest ? (
-          <code className="rounded-md bg-muted/30 px-3 py-1 text-xs text-muted-foreground">
+          <code className="rounded-md bg-muted/30 px-3 py-1 text-[15px] text-muted-foreground">
             {error.digest}
           </code>
         ) : null}

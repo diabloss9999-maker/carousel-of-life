@@ -93,11 +93,11 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
             <CardTitle className="font-mystic text-xl text-foreground">
               {t("heading")}
             </CardTitle>
-            <CardDescription className="text-xs text-muted-foreground">
+            <CardDescription className="text-[15px] text-muted-foreground">
               {t("subheading")}
             </CardDescription>
           </div>
-          <div className="hidden rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-foreground/80 sm:block">
+          <div className="hidden rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[15px] font-medium text-foreground/80 sm:block">
             四柱
           </div>
         </div>
@@ -117,10 +117,10 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
                 className="relative flex min-w-0 flex-col items-center gap-2 rounded-xl border border-amber-200/65 bg-white/42 px-1.5 py-3 text-center shadow-[inset_0_1px_0_rgb(255_255_255/0.55),0_10px_30px_oklch(0.18_0.04_55/0.08)] dark:border-amber-200/10 dark:bg-white/[0.045] sm:gap-3 sm:px-3 sm:py-4"
               >
                 <div className="space-y-0.5">
-                  <span className="block text-xs font-semibold text-foreground">
+                  <span className="block text-[15px] font-semibold text-foreground">
                     {t(labelKey.label as "pillarYear" | "pillarMonth" | "pillarDay" | "pillarHour")}
                   </span>
-                  <span className="block text-xs text-muted-foreground">
+                  <span className="block text-[15px] text-muted-foreground">
                     {t(labelKey.desc as "pillarYearSub" | "pillarMonthSub" | "pillarDaySub" | "pillarHourSub")}
                   </span>
                 </div>
@@ -159,12 +159,12 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
         </div>
 
         {!pillars.hour ? (
-          <p className="mt-4 rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-center text-xs text-muted-foreground">
+          <p className="mt-4 rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-center text-[15px] text-muted-foreground">
             {t("hourEmpty")}
           </p>
         ) : null}
 
-        <p className="mt-3 text-center text-xs text-muted-foreground">
+        <p className="mt-3 text-center text-[15px] text-muted-foreground">
           {t("tapHint")}
         </p>
       </CardContent>
@@ -269,7 +269,7 @@ function CharPopover({
       className={cn(
         "absolute left-1/2 z-30 w-56 -translate-x-1/2",
         opensAbove ? "bottom-full mb-2" : "top-full mt-2",
-        "rounded-xl border border-amber-200/70 bg-amber-50/95 p-3 text-left text-xs text-stone-800",
+        "rounded-xl border border-amber-200/70 bg-amber-50/95 p-3 text-left text-[15px] text-stone-800",
         "shadow-2xl shadow-stone-950/15 backdrop-blur-md dark:border-amber-200/15 dark:bg-stone-950/95 dark:text-amber-50",
       )}
     >
@@ -287,15 +287,15 @@ function CharPopover({
         <span className="font-mystic text-2xl font-semibold leading-none">
           {meaning.char}
         </span>
-        <span className="text-sm text-stone-500 dark:text-amber-100/60">
+        <span className="text-[15px] text-stone-500 dark:text-amber-100/60">
           {meaning.ko}
         </span>
-        <span className="ml-auto rounded-full bg-amber-200/45 px-2 py-0.5 text-xs text-amber-900 dark:bg-amber-200/10 dark:text-amber-100/80">
+        <span className="ml-auto rounded-full bg-amber-200/45 px-2 py-0.5 text-[15px] text-amber-900 dark:bg-amber-200/10 dark:text-amber-100/80">
           {kind === "stem" ? t("popoverStem") : t("popoverBranch")}
         </span>
       </div>
 
-      <dl className="mt-2 grid grid-cols-2 gap-x-2 gap-y-1 text-xs">
+      <dl className="mt-2 grid grid-cols-2 gap-x-2 gap-y-1 text-[15px]">
         <div className="flex items-center gap-1">
           <dt className="text-stone-500 dark:text-amber-100/50">{t("yinYang")}</dt>
           <dd className="font-medium">{polarityLabel}</dd>
@@ -323,7 +323,7 @@ function CharPopover({
         )}
       </dl>
 
-      <p className="mt-2 text-xs leading-relaxed text-stone-600 dark:text-amber-100/65">
+      <p className="mt-2 text-[15px] leading-relaxed text-stone-600 dark:text-amber-100/65">
         {kind === "branch" ? tm(`branch_${meaning.char}_description`) : tm(`stem_${meaning.char}_description`)}
       </p>
     </div>
@@ -347,7 +347,7 @@ function CardImg({ src, alt, char, active }: { src: string; alt: string; char: s
 function CharEmpty() {
   return (
     <div className="mx-auto flex aspect-[2/3] w-full max-w-[88px] items-center justify-center rounded-xl border border-dashed border-amber-300/45 bg-white/25 dark:border-amber-200/15 dark:bg-white/[0.03] sm:max-w-[120px]">
-      <span className="text-xs text-stone-400 dark:text-amber-100/35">·</span>
+      <span className="text-[15px] text-stone-400 dark:text-amber-100/35">·</span>
     </div>
   );
 }

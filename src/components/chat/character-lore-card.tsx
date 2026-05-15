@@ -167,7 +167,7 @@ export function CharacterLoreCard({
           aria-hidden
           className="h-5 w-5 opacity-40"
         />
-        <p className="text-xs text-muted-foreground/50 tracking-widest uppercase">
+        <p className="text-[15px] text-muted-foreground/50 tracking-widest uppercase">
           {tLore("sectionTitle")}
         </p>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -223,7 +223,7 @@ export function CharacterLoreCard({
                 >
                   {worldLabel}
                 </span>
-                <span className="ml-2 text-xs tracking-widest text-muted-foreground/70 uppercase">
+                <span className="ml-2 text-[15px] tracking-widest text-muted-foreground/70 uppercase">
                   {deco.worldSub}
                 </span>
               </div>
@@ -240,7 +240,7 @@ export function CharacterLoreCard({
                 {/* 도입부 */}
                 <p
                   className={cn(
-                    "font-mystic text-sm font-semibold leading-relaxed pt-4",
+                    "font-mystic text-[15px] font-semibold leading-relaxed pt-4",
                     deco.accent,
                   )}
                 >
@@ -250,7 +250,7 @@ export function CharacterLoreCard({
                 {/* 본문 단락 */}
                 <div className="space-y-3">
                   {paragraphs.map((p, j) => (
-                    <p key={j} className="text-sm leading-loose text-foreground/70">
+                    <p key={j} className="text-[15px] leading-loose text-foreground/70">
                       {p}
                     </p>
                   ))}
@@ -258,20 +258,20 @@ export function CharacterLoreCard({
 
                 {/* 인물 요약 */}
                 <div className="space-y-2 border-t border-white/5 pt-4">
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground/65 mb-3">
+                  <p className="text-[15px] uppercase tracking-widest text-muted-foreground/65 mb-3">
                     {tLore("figuresLabel")}
                   </p>
                   {figures.map((f) => (
                     <div key={f.id} className="flex gap-3">
                       <span
                         className={cn(
-                          "font-mystic text-sm font-bold flex-shrink-0 w-10",
+                          "font-mystic text-[15px] font-bold flex-shrink-0 w-10",
                           deco.accent,
                         )}
                       >
                         {f.name}
                       </span>
-                      <p className="text-sm text-muted-foreground/65 leading-relaxed">
+                      <p className="text-[15px] text-muted-foreground/65 leading-relaxed">
                         {f.line}
                       </p>
                     </div>
@@ -279,7 +279,7 @@ export function CharacterLoreCard({
                 </div>
 
                 {/* 마무리 */}
-                <p className="font-mystic text-xs italic text-muted-foreground/50 border-t border-white/5 pt-4 leading-relaxed">
+                <p className="font-mystic text-[15px] italic text-muted-foreground/50 border-t border-white/5 pt-4 leading-relaxed">
                   {closing}
                 </p>
 
@@ -288,7 +288,7 @@ export function CharacterLoreCard({
                   {theme.split(" · ").map((t) => (
                     <span
                       key={t}
-                      className="rounded-full border border-white/10 bg-white/5 px-3 py-0.5 text-xs text-muted-foreground/50"
+                      className="rounded-full border border-white/10 bg-white/5 px-3 py-0.5 text-[15px] text-muted-foreground/50"
                     >
                       {t}
                     </span>
@@ -297,7 +297,7 @@ export function CharacterLoreCard({
 
                 {/* ── 캐릭터 스토리 챕터 (호감도 잠금/해금) ─────────── */}
                 <div className="space-y-3 border-t border-white/5 pt-5">
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground/65">
+                  <p className="text-[15px] uppercase tracking-widest text-muted-foreground/65">
                     {tLore("charactersSection")}
                   </p>
 
@@ -408,15 +408,15 @@ function CharacterStoryAccordion({
         className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left"
       >
         <div className="flex items-center gap-3">
-          <span className={cn("font-mystic font-bold text-sm", accent)}>
+          <span className={cn("font-mystic font-bold text-[15px]", accent)}>
             {characterName}
           </span>
-          <span className="text-xs text-muted-foreground/60">
+          <span className="text-[15px] text-muted-foreground/60">
             {characterTitle}
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-xs tabular-nums text-muted-foreground/65">
+          <span className="text-[15px] tabular-nums text-muted-foreground/65">
             Lv.{level} · {unlockedCount}/10
           </span>
           <ChevronDown
@@ -431,7 +431,7 @@ function CharacterStoryAccordion({
       {isOpen && (
         <div className="px-4 pb-4 pt-1 space-y-1.5 border-t border-white/5">
           {!hasContent ? (
-            <p className="text-xs text-muted-foreground/60 italic py-3">
+            <p className="text-[15px] text-muted-foreground/60 italic py-3">
               {tLore("lockedStory")}
             </p>
           ) : (
@@ -493,11 +493,11 @@ function TruthRouteSection({
   return (
     <div className={cn("rounded-xl border-2 mt-2", border)}>
       <div className="px-4 py-3 border-b border-white/5">
-        <p className={cn("font-mystic text-xs font-bold uppercase tracking-widest", accent)}>
+        <p className={cn("font-mystic text-[15px] font-bold uppercase tracking-widest", accent)}>
           {tLore("truthRoute")}
         </p>
         {!unlocked && (
-          <p className="text-xs text-muted-foreground/55 mt-1 flex items-center gap-1.5">
+          <p className="text-[15px] text-muted-foreground/55 mt-1 flex items-center gap-1.5">
             <Lock className="h-3 w-3" aria-hidden />
             {lore.truthRoute.unlockHint}
           </p>
@@ -517,7 +517,7 @@ function TruthRouteSection({
             unlocked ? "cursor-pointer" : "cursor-not-allowed opacity-50",
           )}
         >
-          <span className="text-xs font-medium text-foreground/85">
+          <span className="text-[15px] font-medium text-foreground/85">
             {lore.truthRoute.title}
           </span>
           {unlocked ? (
@@ -549,7 +549,7 @@ function TruthRouteSection({
             unlocked ? "cursor-pointer" : "cursor-not-allowed opacity-50",
           )}
         >
-          <span className="text-xs font-medium text-foreground/85">
+          <span className="text-[15px] font-medium text-foreground/85">
             {tLore("finalChapterPrefix")} · {lore.finalChapter.title}
           </span>
           {unlocked ? (
@@ -566,7 +566,7 @@ function TruthRouteSection({
         {unlocked && openSec === "final" && (
           <div className="px-2 py-2 space-y-3">
             <ChapterBody body={lore.finalChapter.body} />
-            <p className={cn("font-mystic text-xs italic leading-relaxed border-t border-white/5 pt-3", accent)}>
+            <p className={cn("font-mystic text-[15px] italic leading-relaxed border-t border-white/5 pt-3", accent)}>
               {lore.finalChapter.ending}
             </p>
           </div>
@@ -630,7 +630,7 @@ function ChapterRow({
         <div className="flex items-center gap-2.5 min-w-0">
           <span
             className={cn(
-              "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-xs tabular-nums font-bold",
+              "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-[15px] tabular-nums font-bold",
               unlocked
                 ? "bg-white/10 text-foreground/80"
                 : "bg-white/5 text-muted-foreground/40",
@@ -639,11 +639,11 @@ function ChapterRow({
             {chapter.number}
           </span>
           {unlocked ? (
-            <span className="text-xs font-medium text-foreground/85 truncate">
+            <span className="text-[15px] font-medium text-foreground/85 truncate">
               {chapter.title}
             </span>
           ) : (
-            <span className="text-xs text-muted-foreground/50 flex items-center gap-1.5">
+            <span className="text-[15px] text-muted-foreground/50 flex items-center gap-1.5">
               <Lock className="h-3 w-3" aria-hidden />
               {tLore("chapterUnlockHint", { level: chapter.number })}
             </span>
@@ -711,7 +711,7 @@ function ChapterBody({ body }: { body: string }) {
       {paragraphs.map((p, i) => (
         <p
           key={i}
-          className="text-xs leading-loose text-foreground/70 whitespace-pre-wrap"
+          className="text-[15px] leading-loose text-foreground/70 whitespace-pre-wrap"
         >
           {p}
         </p>

@@ -21,7 +21,7 @@ export function FormMessage({ state }: { state: FormMessageState }) {
     <div
       role={state.kind === "error" ? "alert" : "status"}
       className={cn(
-        "flex items-start gap-2 rounded-md border px-3 py-2 text-sm",
+        "flex items-start gap-2 rounded-md border px-3 py-2 text-[15px]",
         state.kind === "error"
           ? "border-destructive/40 bg-destructive/10 text-destructive"
           : "border-accent/40 bg-accent/10 text-accent-foreground",

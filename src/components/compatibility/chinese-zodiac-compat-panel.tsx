@@ -63,7 +63,7 @@ export function ChineseZodiacCompatPanel({
           <CalendarDays className="h-5 w-5 text-accent" aria-hidden />
           {t("heading")}
         </CardTitle>
-        <CardDescription className="text-xs">
+        <CardDescription className="text-[15px]">
           {t("body")}
         </CardDescription>
       </CardHeader>
@@ -77,7 +77,7 @@ export function ChineseZodiacCompatPanel({
                 type="button"
                 onClick={() => setPartner(z.id)}
                 className={cn(
-                  "rounded-xl border px-3 py-3 text-center text-sm transition-all",
+                  "rounded-xl border px-3 py-3 text-center text-[15px] transition-all",
                   selected
                     ? "border-primary bg-primary/15 text-primary"
                     : "border-border/60 bg-card/40 hover:-translate-y-0.5 hover:bg-card/80",
@@ -87,7 +87,7 @@ export function ChineseZodiacCompatPanel({
                 aria-pressed={selected}
               >
                 <span className="block text-base">{z.animal}</span>
-                <span className="mt-0.5 block text-xs text-muted-foreground">
+                <span className="mt-0.5 block text-[15px] text-muted-foreground">
                   {tName(z.id)}
                 </span>
               </button>
@@ -99,12 +99,12 @@ export function ChineseZodiacCompatPanel({
           <div className="space-y-3 rounded-xl border border-border/60 bg-card/40 p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 flex-wrap">
-                <p className="font-mystic text-sm text-muted-foreground">
+                <p className="font-mystic text-[15px] text-muted-foreground">
                   {tName(result.me.id)} × {tName(result.partner.id)}
                 </p>
                 <span
                   className={cn(
-                    "rounded-full px-2 py-0.5 text-xs font-medium",
+                    "rounded-full px-2 py-0.5 text-[15px] font-medium",
                     RELATION_TONE[result.relationKind],
                   )}
                 >
@@ -116,12 +116,12 @@ export function ChineseZodiacCompatPanel({
             <p className="font-mystic text-base font-medium leading-relaxed">
               {result.headline}
             </p>
-            <p className="font-mystic whitespace-pre-line text-sm leading-relaxed text-foreground/85">
+            <p className="font-mystic whitespace-pre-line text-[15px] leading-relaxed text-foreground/85">
               {result.detail}
             </p>
           </div>
         ) : (
-          <p className="rounded-xl border border-dashed border-border/60 bg-card/30 p-4 text-center text-sm text-muted-foreground">
+          <p className="rounded-xl border border-dashed border-border/60 bg-card/30 p-4 text-center text-[15px] text-muted-foreground">
             {t("body")}
           </p>
         )}
@@ -142,7 +142,7 @@ function ScoreBadge({ score }: { score: number }) {
   return (
     <span
       className={cn(
-        "rounded-full px-3 py-0.5 font-mystic text-sm font-medium",
+        "rounded-full px-3 py-0.5 font-mystic text-[15px] font-medium",
         tone,
       )}
     >

@@ -56,12 +56,12 @@ function FortuneRow({
         <BadgeIcon icon={<Sun className="h-4 w-4" />} tone="primary" />
         <div className="flex-1 min-w-0 space-y-1.5">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-xs uppercase tracking-wide text-muted-foreground">
+            <span className="text-[15px] uppercase tracking-wide text-muted-foreground">
               {label} · {localizedDate(new Date(item.createdAt), locale)}
             </span>
           </div>
           <p className="font-mystic font-medium leading-snug">{item.title}</p>
-          <p className="text-sm text-muted-foreground line-clamp-2">
+          <p className="text-[15px] text-muted-foreground line-clamp-2">
             {item.content}
           </p>
         </div>
@@ -101,18 +101,18 @@ function TarotRow({
       <CardContent className="p-4 flex items-start gap-4">
         <BadgeIcon icon={<Sparkles className="h-4 w-4" />} tone="accent" />
         <div className="flex-1 min-w-0 space-y-1.5">
-          <span className="text-xs uppercase tracking-wide text-muted-foreground">
+          <span className="text-[15px] uppercase tracking-wide text-muted-foreground">
             {spreadLabel} · {localizedDate(new Date(item.createdAt), locale)}
           </span>
           <p className="font-mystic font-medium leading-snug truncate">
             {cardSummary}
           </p>
           {item.question ? (
-            <p className="text-xs italic text-muted-foreground/80">
+            <p className="text-[15px] italic text-muted-foreground/80">
               “{item.question}”
             </p>
           ) : null}
-          <p className="text-sm text-muted-foreground line-clamp-2">{preview}</p>
+          <p className="text-[15px] text-muted-foreground line-clamp-2">{preview}</p>
         </div>
       </CardContent>
     </Card>
@@ -132,14 +132,14 @@ function CompatibilityRow({
         <BadgeIcon icon={<Heart className="h-4 w-4" />} tone="primary" />
         <div className="flex-1 min-w-0 space-y-1.5">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-xs uppercase tracking-wide text-muted-foreground">
+            <span className="text-[15px] uppercase tracking-wide text-muted-foreground">
               {t("itemCompat", { date: localizedDate(new Date(item.createdAt), locale) })}
             </span>
           </div>
           <p className="font-mystic font-medium leading-snug">
             {t("itemCompatTitle", { partner: item.partnerName })}
           </p>
-          <p className="text-sm text-muted-foreground line-clamp-2">
+          <p className="text-[15px] text-muted-foreground line-clamp-2">
             {item.summary}
           </p>
         </div>

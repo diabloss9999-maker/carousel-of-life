@@ -42,7 +42,7 @@ export function CompatibilityForm() {
           <Heart className="h-5 w-5 text-accent" aria-hidden />
           {t("heading")}
         </CardTitle>
-        <CardDescription className="text-xs">
+        <CardDescription className="text-[15px]">
           {t("body")}
         </CardDescription>
       </CardHeader>
@@ -152,7 +152,7 @@ export function CompatibilityForm() {
           ) : null}
 
           {state.kind === "done" ? (
-            <p className="text-xs text-center text-emerald-500 font-medium">
+            <p className="text-[15px] text-center text-emerald-500 font-medium">
               {t("doneNotice")}
             </p>
           ) : null}

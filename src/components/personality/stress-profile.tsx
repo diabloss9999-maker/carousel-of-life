@@ -65,7 +65,7 @@ export function StressProfile({ subscribed }: StressProfileProps) {
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" />
             {t("title")}
-            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-xs font-medium text-primary">
+            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[15px] font-medium text-primary">
               {tPrem("lightBadge")}
             </span>
           </CardTitle>
@@ -73,7 +73,7 @@ export function StressProfile({ subscribed }: StressProfileProps) {
         <CardContent className="space-y-3">
           <div className="blur-[3px] select-none pointer-events-none space-y-2">
             {lockBullets.map((line) => (
-              <p key={line} className="text-sm">{line}</p>
+              <p key={line} className="text-[15px]">{line}</p>
             ))}
           </div>
           <Button asChild size="sm" className="w-full">
@@ -98,13 +98,13 @@ export function StressProfile({ subscribed }: StressProfileProps) {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <p className="text-xs font-semibold text-destructive uppercase tracking-wide flex items-center gap-1.5">
+            <p className="text-[15px] font-semibold text-destructive uppercase tracking-wide flex items-center gap-1.5">
               <AlertTriangle className="h-3.5 w-3.5" /> {t("triggers")}
             </p>
             <ul className="space-y-2">
               {data.triggers.map((trigger, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm">
-                  <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-destructive/15 text-xs font-bold text-destructive">
+                <li key={i} className="flex items-start gap-2 text-[15px]">
+                  <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-destructive/15 text-[15px] font-bold text-destructive">
                     {i + 1}
                   </span>
                   <span className="leading-relaxed">{trigger}</span>
@@ -114,7 +114,7 @@ export function StressProfile({ subscribed }: StressProfileProps) {
           </div>
 
           <div className="rounded-xl border border-border/60 bg-card/40 p-4 space-y-1.5">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+            <p className="text-[15px] font-semibold text-muted-foreground uppercase tracking-wide">
               {t("collapsePattern")}
             </p>
             <p className="font-mystic leading-relaxed">
@@ -123,13 +123,13 @@ export function StressProfile({ subscribed }: StressProfileProps) {
           </div>
 
           <div className="rounded-xl border border-accent/25 bg-accent/5 p-4 space-y-2">
-            <p className="text-xs font-semibold text-accent uppercase tracking-wide">
+            <p className="text-[15px] font-semibold text-accent uppercase tracking-wide">
               {t("recoveryTips")}
             </p>
             <ol className="space-y-2">
               {data.recoveryTips.map((tip, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm">
-                  <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-accent/20 text-xs font-bold text-accent">
+                <li key={i} className="flex items-start gap-2 text-[15px]">
+                  <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-accent/20 text-[15px] font-bold text-accent">
                     {i + 1}
                   </span>
                   <span className="leading-relaxed">{tip}</span>
@@ -141,10 +141,10 @@ export function StressProfile({ subscribed }: StressProfileProps) {
           <div className="flex items-start gap-2 rounded-xl border border-primary/25 bg-primary/5 p-3">
             <TriangleAlert className="h-4 w-4 flex-shrink-0 text-primary mt-0.5" />
             <div>
-              <p className="text-xs font-semibold text-primary uppercase tracking-wide">
+              <p className="text-[15px] font-semibold text-primary uppercase tracking-wide">
                 {t("warningSign")}
               </p>
-              <p className="mt-0.5 text-sm leading-relaxed">
+              <p className="mt-0.5 text-[15px] leading-relaxed">
                 {data.warningSign}
               </p>
             </div>
@@ -163,11 +163,11 @@ export function StressProfile({ subscribed }: StressProfileProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        <p className="text-xs text-muted-foreground">
+        <p className="text-[15px] text-muted-foreground">
           {t("lockBody")}
         </p>
         {errorMsg ? (
-          <p className="text-xs text-destructive">{errorMsg}</p>
+          <p className="text-[15px] text-destructive">{errorMsg}</p>
         ) : null}
         <Button
           onClick={handleGenerate}

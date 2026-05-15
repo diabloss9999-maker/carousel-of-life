@@ -45,7 +45,7 @@ export async function CategoryTabs({ current, subscribed = false }: CategoryTabs
             key={cat.id}
             href={{ pathname: "/today", query: { category: cat.id } }}
             className={cn(
-              "relative flex items-center gap-1 rounded-full px-3.5 py-2 text-sm transition-all",
+              "relative flex items-center gap-1 rounded-full px-3.5 py-2 text-[15px] transition-all",
               isActive
                 ? "bg-primary text-primary-foreground shadow-sm"
                 : "text-muted-foreground hover:bg-card/70 hover:text-foreground",
@@ -56,7 +56,7 @@ export async function CategoryTabs({ current, subscribed = false }: CategoryTabs
             {isPremium && (
               <span
                 className={cn(
-                  "rounded-full px-1.5 py-0.5 text-xs font-bold tracking-wide",
+                  "rounded-full px-1.5 py-0.5 text-[15px] font-bold tracking-wide",
                   isActive
                     ? "bg-white/25 text-white"
                     : locked

@@ -57,7 +57,7 @@ export function ProfileEditForm({
       className="space-y-4 pt-2"
     >
       <div className="flex items-center justify-between">
-        <p className="text-sm font-medium">{t("profileEdit")}</p>
+        <p className="text-[15px] font-medium">{t("profileEdit")}</p>
         <button
           type="button"
           onClick={() => setEditing(false)}

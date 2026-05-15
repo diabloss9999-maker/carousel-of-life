@@ -71,13 +71,13 @@ export async function TodaySummary({ fortunes }: TodaySummaryProps) {
             >
               <Card className="app-surface h-full transition group-hover:border-primary/40 group-focus-visible:ring-2 group-focus-visible:ring-primary/40">
                 <CardContent className="space-y-2 p-4">
-                  <span className="text-xs uppercase tracking-wider text-muted-foreground">
+                  <span className="text-[15px] uppercase tracking-wider text-muted-foreground">
                     {label}
                   </span>
                   <p className="font-mystic line-clamp-1 text-base font-semibold leading-snug">
                     {fortune.title}
                   </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-[15px] text-muted-foreground">
                     {t("viewMore")}
                   </p>
                 </CardContent>

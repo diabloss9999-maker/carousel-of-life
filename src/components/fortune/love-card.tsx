@@ -49,15 +49,15 @@ export function LoveCard({ subscribed }: LoveCardProps) {
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" />
             {t("title")}
-            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-xs font-medium text-primary">
+            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[15px] font-medium text-primary">
               {tPrem("lightBadge")}
             </span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="blur-[3px] select-none pointer-events-none space-y-2">
-            <p className="text-sm">{t("lockBullet1")}</p>
-            <p className="text-sm">{t("lockBullet2")}</p>
+            <p className="text-[15px]">{t("lockBullet1")}</p>
+            <p className="text-[15px]">{t("lockBullet2")}</p>
           </div>
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
@@ -82,33 +82,33 @@ export function LoveCard({ subscribed }: LoveCardProps) {
         <CardContent className="space-y-5">
           {/* 오늘의 한마디 */}
           <div className="rounded-xl border border-accent/25 bg-accent/5 p-4 space-y-2">
-            <p className="text-xs font-semibold text-accent uppercase tracking-wide">
+            <p className="text-[15px] font-semibold text-accent uppercase tracking-wide">
               {t("todayLine")}
             </p>
             <p className="font-mystic text-base leading-relaxed">
               {data.message.text}
             </p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-[15px] text-muted-foreground">
               {data.message.situation}
             </p>
           </div>
 
           {/* 매력 팁 3가지 */}
           <div className="space-y-3">
-            <p className="text-xs font-semibold text-primary uppercase tracking-wide">
+            <p className="text-[15px] font-semibold text-primary uppercase tracking-wide">
               {t("charmTip")}
             </p>
             <ol className="space-y-3">
               {data.charmTips.map((tip, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/15 text-xs font-bold text-primary">
+                  <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/15 text-[15px] font-bold text-primary">
                     {i + 1}
                   </span>
                   <div>
-                    <p className="font-mystic text-sm font-semibold">
+                    <p className="font-mystic text-[15px] font-semibold">
                       {tip.title}
                     </p>
-                    <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+                    <p className="mt-0.5 text-[15px] leading-relaxed text-muted-foreground">
                       {tip.description}
                     </p>
                   </div>
@@ -130,11 +130,11 @@ export function LoveCard({ subscribed }: LoveCardProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        <p className="text-xs text-muted-foreground">
+        <p className="text-[15px] text-muted-foreground">
           {t("lockBody")}
         </p>
         {errorMsg ? (
-          <p className="text-xs text-destructive">{errorMsg}</p>
+          <p className="text-[15px] text-destructive">{errorMsg}</p>
         ) : null}
         <Button
           onClick={handleGenerate}

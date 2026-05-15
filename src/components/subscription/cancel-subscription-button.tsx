@@ -43,10 +43,10 @@ export function CancelSubscriptionButton() {
 
   return (
     <div className="flex flex-col gap-2 rounded-2xl bg-muted/30 p-3">
-      <p className="text-xs text-muted-foreground">
+      <p className="text-[15px] text-muted-foreground">
         {t("body")}
       </p>
-      {error ? <p className="text-xs text-destructive">{error}</p> : null}
+      {error ? <p className="text-[15px] text-destructive">{error}</p> : null}
       <div className="flex gap-2">
         <Button
           variant="destructive"

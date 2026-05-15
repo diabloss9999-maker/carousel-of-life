@@ -57,7 +57,7 @@ export function MbtiCompatPanel({ myMbti }: MbtiCompatPanelProps) {
           <BookHeart className="h-5 w-5 text-accent" aria-hidden />
           {t("heading")}
         </CardTitle>
-        <CardDescription className="text-xs">
+        <CardDescription className="text-[15px]">
           {t("body")}
         </CardDescription>
       </CardHeader>
@@ -74,7 +74,7 @@ export function MbtiCompatPanel({ myMbti }: MbtiCompatPanelProps) {
               className="uppercase"
             />
             {manualMe && !MBTI_PATTERN.test(manualMe.toUpperCase()) ? (
-              <p className="text-xs text-destructive">
+              <p className="text-[15px] text-destructive">
                 {t("myMbtiHint")}
               </p>
             ) : null}
@@ -82,7 +82,7 @@ export function MbtiCompatPanel({ myMbti }: MbtiCompatPanelProps) {
         ) : null}
 
         <div>
-          <p className="mb-2 text-xs text-muted-foreground">{t("partnerMbti")}</p>
+          <p className="mb-2 text-[15px] text-muted-foreground">{t("partnerMbti")}</p>
           <div className="grid grid-cols-4 gap-2">
             {MBTI_TYPES.map((type) => {
               const selected = partner === type;
@@ -92,7 +92,7 @@ export function MbtiCompatPanel({ myMbti }: MbtiCompatPanelProps) {
                   type="button"
                   onClick={() => setPartner(type)}
                   className={cn(
-                    "rounded-xl border px-2 py-3 text-center text-sm transition-all",
+                    "rounded-xl border px-2 py-3 text-center text-[15px] transition-all",
                     selected
                       ? "border-primary bg-primary/15 text-primary"
                       : "border-border/60 bg-card/40 hover:-translate-y-0.5 hover:bg-card/80",
@@ -102,7 +102,7 @@ export function MbtiCompatPanel({ myMbti }: MbtiCompatPanelProps) {
                   <span className="block font-mystic text-base font-semibold">
                     {type}
                   </span>
-                  <span className="mt-0.5 block text-xs text-muted-foreground">
+                  <span className="mt-0.5 block text-[15px] text-muted-foreground">
                     {tT(`${type}_nickname`)}
                   </span>
                 </button>
@@ -114,7 +114,7 @@ export function MbtiCompatPanel({ myMbti }: MbtiCompatPanelProps) {
         {result ? (
           <div className="space-y-3 rounded-xl border border-border/60 bg-card/40 p-4">
             <div className="flex items-center justify-between">
-              <p className="font-mystic text-sm text-muted-foreground">
+              <p className="font-mystic text-[15px] text-muted-foreground">
                 {result.me.type} × {result.partner.type}
               </p>
               <ScoreBadge score={result.score} />
@@ -122,12 +122,12 @@ export function MbtiCompatPanel({ myMbti }: MbtiCompatPanelProps) {
             <p className="font-mystic text-base font-medium leading-relaxed">
               {result.headline}
             </p>
-            <p className="font-mystic whitespace-pre-line text-sm leading-relaxed text-foreground/85">
+            <p className="font-mystic whitespace-pre-line text-[15px] leading-relaxed text-foreground/85">
               {result.detail}
             </p>
           </div>
         ) : (
-          <p className="rounded-xl border border-dashed border-border/60 bg-card/30 p-4 text-center text-sm text-muted-foreground">
+          <p className="rounded-xl border border-dashed border-border/60 bg-card/30 p-4 text-center text-[15px] text-muted-foreground">
             {t("pickPartner")}
           </p>
         )}
@@ -148,7 +148,7 @@ function ScoreBadge({ score }: { score: number }) {
   return (
     <span
       className={cn(
-        "rounded-full px-3 py-0.5 font-mystic text-sm font-medium",
+        "rounded-full px-3 py-0.5 font-mystic text-[15px] font-medium",
         tone,
       )}
     >

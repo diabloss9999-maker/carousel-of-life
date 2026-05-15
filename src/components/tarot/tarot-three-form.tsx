@@ -57,7 +57,7 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          <ul className="space-y-1.5 text-sm text-muted-foreground">
+          <ul className="space-y-1.5 text-[15px] text-muted-foreground">
             <li>· {t("threeBullet1")}</li>
             <li>· {t("threeBullet2")}</li>
             <li>· {t("threeBullet3")}</li>
@@ -131,12 +131,12 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
               disabled={isPending}
             />
             <div className="flex items-center justify-between gap-2 px-1">
-              <p className="text-xs text-muted-foreground">
+              <p className="text-[15px] text-muted-foreground">
                 {t("threeQuestionHint")}
               </p>
               <span
                 className={cn(
-                  "text-xs tabular-nums shrink-0",
+                  "text-[15px] tabular-nums shrink-0",
                   charsLeft <= 0
                     ? "text-destructive font-medium"
                     : charsLeft <= 10

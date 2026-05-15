@@ -90,7 +90,7 @@ function FallbackCard({
         <p className="font-mystic text-base sm:text-lg font-semibold leading-tight">
           {primary}
         </p>
-        <p className="text-xs text-muted-foreground tracking-wide">{secondary}</p>
+        <p className="text-[15px] text-muted-foreground tracking-wide">{secondary}</p>
       </div>
       <Sparkles
         className="h-5 w-5 text-accent self-end rotate-180"
@@ -113,7 +113,7 @@ export function CardOrientationBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium shadow-sm",
+        "inline-flex items-center rounded-full border px-3 py-1 text-[15px] font-medium shadow-sm",
         isReversed
           ? "border-destructive bg-destructive text-white"
           : "border-primary/60 bg-primary text-primary-foreground",

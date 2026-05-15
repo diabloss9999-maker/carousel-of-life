@@ -63,7 +63,7 @@ export default async function CompatibilityPage() {
         <h1 className="font-mystic text-3xl font-semibold tracking-tight sm:text-4xl">
           {t("title")}
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-[15px] text-muted-foreground">
           {t("description")}
         </p>
       </header>

@@ -62,7 +62,7 @@ export function DeepReadingButton({ locked }: DeepReadingButtonProps) {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          <ul className="space-y-1.5 text-sm text-muted-foreground">
+          <ul className="space-y-1.5 text-[15px] text-muted-foreground">
             {lockBullets.map((line) => (
               <li key={line}>· {line}</li>
             ))}
@@ -110,7 +110,7 @@ export function DeepReadingButton({ locked }: DeepReadingButtonProps) {
             </>
           )}
         </Button>
-        {error ? <p className="text-sm text-destructive">{error}</p> : null}
+        {error ? <p className="text-[15px] text-destructive">{error}</p> : null}
       </CardContent>
     </Card>
   );

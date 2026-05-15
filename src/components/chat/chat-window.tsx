@@ -291,7 +291,7 @@ export function ChatWindow({
       </div>
 
       {isQuotaError ? (
-        <div className="flex flex-col gap-2 rounded-xl border border-amber-400/30 bg-amber-50/5 px-3 py-2 text-sm text-amber-300/90">
+        <div className="flex flex-col gap-2 rounded-xl border border-amber-400/30 bg-amber-50/5 px-3 py-2 text-[15px] text-amber-300/90">
           <span>{t("quotaExceeded")}</span>
           <Button asChild size="sm" variant="outline">
             <Link href={ROUTES.pricing}>{t("upgradeChatCta")}</Link>
@@ -324,7 +324,7 @@ export function ChatWindow({
             maxLength={MAX_MESSAGE_LENGTH}
             rows={1}
             autoFocus
-            className="ritual-chat-textarea resize-none outline-none leading-relaxed text-sm py-3 px-4 rounded-[20px]"
+            className="ritual-chat-textarea resize-none outline-none leading-relaxed text-[15px] py-3 px-4 rounded-[20px]"
             style={{
               minHeight: "48px",
               maxHeight: "120px",
@@ -359,7 +359,7 @@ export function ChatWindow({
         <div className="flex items-center justify-end px-1">
           <span
             className={cn(
-              "text-xs tabular-nums",
+              "text-[15px] tabular-nums",
               charsLeft <= 0
                 ? "text-destructive font-medium"
                 : charsLeft <= 10
@@ -397,7 +397,7 @@ function EmptyState({ characterId }: { characterId?: string }) {
       <p className="font-mystic text-base font-semibold text-foreground/70">
         {lines.line1}
       </p>
-      <p className="text-xs text-muted-foreground/50 leading-relaxed">
+      <p className="text-[15px] text-muted-foreground/50 leading-relaxed">
         {lines.line2}
       </p>
     </div>

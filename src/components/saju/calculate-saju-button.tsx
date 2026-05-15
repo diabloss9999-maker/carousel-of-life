@@ -50,7 +50,7 @@ export function CalculateSajuButton() {
           </>
         )}
       </Button>
-      {error ? <p className="text-sm text-destructive">{error}</p> : null}
+      {error ? <p className="text-[15px] text-destructive">{error}</p> : null}
     </div>
   );
 }

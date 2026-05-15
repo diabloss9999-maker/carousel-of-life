@@ -73,7 +73,7 @@ export function GoogleButton({ label, className }: GoogleButtonProps) {
       onClick={handleClick}
       disabled={isPending}
       className={cn(
-        "flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-black/15 bg-white px-4 text-sm font-semibold text-black/80 shadow-sm transition-opacity",
+        "flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-black/15 bg-white px-4 text-[15px] font-semibold text-black/80 shadow-sm transition-opacity",
         "hover:opacity-90 active:opacity-80",
         "disabled:cursor-not-allowed disabled:opacity-60",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 focus-visible:ring-offset-2",

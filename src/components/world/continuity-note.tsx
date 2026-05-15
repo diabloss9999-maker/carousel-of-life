@@ -60,7 +60,7 @@ export function ContinuityNote({ streakDays }: ContinuityNoteProps) {
         transform: "translateX(-50%)",
         zIndex: 8,
         pointerEvents: "none",
-        fontSize: "12px",
+        fontSize: "15px",
         letterSpacing: "0.12em",
         color: "var(--ritual-muted, rgba(48,39,55,0.35))",
         fontFamily: "var(--font-serif)",

@@ -130,7 +130,7 @@ export function RuneDrawForm({ subscribed }: Props) {
           <div className="space-y-1.5">
             <Label htmlFor="rune-question">
               질문{" "}
-              <span className="text-muted-foreground text-xs">(선택)</span>
+              <span className="text-muted-foreground text-[15px]">(선택)</span>
             </Label>
             <Input
               id="rune-question"
@@ -143,12 +143,12 @@ export function RuneDrawForm({ subscribed }: Props) {
               disabled={isBusy}
             />
             <div className="flex items-center justify-between gap-2 px-1">
-              <p className="text-muted-foreground text-xs">
+              <p className="text-muted-foreground text-[15px]">
                 비워두면 오늘의 전반적 흐름을 봅니다.
               </p>
               <span
                 className={cn(
-                  "shrink-0 text-xs tabular-nums",
+                  "shrink-0 text-[15px] tabular-nums",
                   charsLeft <= 0
                     ? "text-destructive font-medium"
                     : charsLeft <= 10
@@ -188,18 +188,18 @@ export function RuneDrawForm({ subscribed }: Props) {
             />
             <Label
               htmlFor="reversed-toggle"
-              className="cursor-pointer text-sm font-normal"
+              className="cursor-pointer text-[15px] font-normal"
             >
               역방향(머크스타브) 사용
             </Label>
-            <span className="ml-auto text-xs text-muted-foreground">
+            <span className="ml-auto text-[15px] text-muted-foreground">
               불변룬 9개는 항상 정방향
             </span>
           </div>
 
           {blockedByPremium ? (
             <div className="rounded-lg border border-amber-400/30 bg-amber-50/5 p-3">
-              <p className="text-xs leading-relaxed text-amber-300/90">
+              <p className="text-[15px] leading-relaxed text-amber-300/90">
                 <Lock className="mr-1 inline-block h-3.5 w-3.5" aria-hidden />
                 이 스프레드는 라이트 구독자 전용이에요.
               </p>

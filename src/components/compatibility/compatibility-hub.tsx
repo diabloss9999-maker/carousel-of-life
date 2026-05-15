@@ -59,7 +59,7 @@ export function CompatibilityHub({
               type="button"
               onClick={() => setActive(tab.id)}
               className={cn(
-                "flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-2 text-xs font-medium transition-colors sm:px-3 sm:text-sm",
+                "flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-2 text-[15px] font-medium transition-colors sm:px-3 sm:text-[15px]",
                 selected
                   ? "bg-primary text-primary-foreground shadow"
                   : "text-muted-foreground hover:bg-card/70 hover:text-foreground",

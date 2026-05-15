@@ -15,7 +15,7 @@ export default async function NotFound() {
         <h1 className="font-mystic text-2xl font-semibold tracking-tight">
           {t("notFoundTitle")}
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-[15px] text-muted-foreground">
           {t("notFoundBody")}
         </p>
         <Button asChild size="lg">

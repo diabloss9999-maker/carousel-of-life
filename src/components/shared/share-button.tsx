@@ -132,12 +132,12 @@ export function ShareButton({
           <button
             type="button"
             onClick={handleKakaoChat}
-            className="flex w-full items-center gap-2.5 px-4 py-3 text-sm text-left hover:bg-accent/50 transition-colors border-b border-border/40"
+            className="flex w-full items-center gap-2.5 px-4 py-3 text-[15px] text-left hover:bg-accent/50 transition-colors border-b border-border/40"
           >
             <span className="text-base leading-none" />
             <div>
-              <p className="font-medium text-xs">카카오 오픈채팅에 공유</p>
-              <p className="text-xs text-muted-foreground mt-0.5">텍스트 복사 후 채팅방 오픈</p>
+              <p className="font-medium text-[15px]">카카오 오픈채팅에 공유</p>
+              <p className="text-[15px] text-muted-foreground mt-0.5">텍스트 복사 후 채팅방 오픈</p>
             </div>
           </button>
 
@@ -145,12 +145,12 @@ export function ShareButton({
           <button
             type="button"
             onClick={handleNativeShare}
-            className="flex w-full items-center gap-2.5 px-4 py-3 text-sm text-left hover:bg-accent/50 transition-colors border-b border-border/40"
+            className="flex w-full items-center gap-2.5 px-4 py-3 text-[15px] text-left hover:bg-accent/50 transition-colors border-b border-border/40"
           >
             <MessageCircle className="h-4 w-4 text-yellow-400 flex-shrink-0" aria-hidden />
             <div>
-              <p className="font-medium text-xs">카카오톡으로 공유</p>
-              <p className="text-xs text-muted-foreground mt-0.5">친구·채팅방에 직접 공유</p>
+              <p className="font-medium text-[15px]">카카오톡으로 공유</p>
+              <p className="text-[15px] text-muted-foreground mt-0.5">친구·채팅방에 직접 공유</p>
             </div>
           </button>
 
@@ -158,12 +158,12 @@ export function ShareButton({
           <button
             type="button"
             onClick={handleCopyLink}
-            className="flex w-full items-center gap-2.5 px-4 py-3 text-sm text-left hover:bg-accent/50 transition-colors"
+            className="flex w-full items-center gap-2.5 px-4 py-3 text-[15px] text-left hover:bg-accent/50 transition-colors"
           >
             <Copy className="h-4 w-4 text-muted-foreground flex-shrink-0" aria-hidden />
             <div>
-              <p className="font-medium text-xs">링크 복사</p>
-              <p className="text-xs text-muted-foreground mt-0.5">텍스트를 클립보드에 복사</p>
+              <p className="font-medium text-[15px]">링크 복사</p>
+              <p className="text-[15px] text-muted-foreground mt-0.5">텍스트를 클립보드에 복사</p>
             </div>
           </button>
         </div>

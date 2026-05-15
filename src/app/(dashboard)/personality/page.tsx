@@ -40,7 +40,7 @@ export default async function PersonalityPage() {
       <Card className="app-surface">
         <CardHeader className="pb-2">
           <CardTitle className="font-mystic text-lg">{tPage("title")}</CardTitle>
-          <CardDescription className="text-xs">
+          <CardDescription className="text-[15px]">
             {profile.mbti
               ? tPage("bodyWithProfile")
               : tPage("bodyNoProfile")}

@@ -245,7 +245,7 @@ export function CollectionView({
         <h2 className="font-mystic text-lg font-semibold text-foreground sm:text-xl">
           {t("heading")}
         </h2>
-        <p className="text-xs tabular-nums text-muted-foreground">
+        <p className="text-[15px] tabular-nums text-muted-foreground">
           {t("ownedFraction", { owned: ownedAll, total: totalAll })}
         </p>
       </div>
@@ -358,7 +358,7 @@ function GachaPanel({
         <h2 className="font-mystic text-xl font-semibold text-foreground sm:text-2xl">
           {t("drawAction")}
         </h2>
-        <p className="text-xs text-muted-foreground sm:text-sm">
+        <p className="text-[15px] text-muted-foreground sm:text-[15px]">
           {subscribed
             ? t("subDescSubscribed")
             : t("subDescFree")}
@@ -385,7 +385,7 @@ function GachaPanel({
           >
             <div className="flex flex-col items-center gap-2 text-amber-200">
               <Sparkles className="h-9 w-9 opacity-90" aria-hidden />
-              <span className="font-mystic text-sm tracking-widest">
+              <span className="font-mystic text-[15px] tracking-widest">
                 FORTUNE
               </span>
             </div>
@@ -415,7 +415,7 @@ function GachaPanel({
             )}
             {pulled ? (
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent px-2 py-2 text-center">
-                <p className="line-clamp-1 text-xs font-medium text-white">
+                <p className="line-clamp-1 text-[15px] font-medium text-white">
                   {displayName(pulled.card, locale)}
                 </p>
               </div>
@@ -429,22 +429,22 @@ function GachaPanel({
         {pulled ? (
           <>
             {pulled.isNew ? (
-              <p className="text-sm font-semibold text-primary">
+              <p className="text-[15px] font-semibold text-primary">
                 {t("resultNew")}
               </p>
             ) : (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-[15px] text-muted-foreground">
                 {t("dupeDetailLine")}
               </p>
             )}
             {pulled.chatBonus > 0 ? (
-              <p className="font-mystic text-sm text-accent">
+              <p className="font-mystic text-[15px] text-accent">
                 {t("resultBonus", { n: pulled.chatBonus })}
               </p>
             ) : null}
           </>
         ) : (
-          <p className="text-xs text-muted-foreground">
+          <p className="text-[15px] text-muted-foreground">
             {t("resultIdle")}
           </p>
         )}
@@ -462,7 +462,7 @@ function GachaPanel({
           {buttonLabel}
         </Button>
         {!subscribed && exhausted ? (
-          <p className="text-xs text-muted-foreground">
+          <p className="text-[15px] text-muted-foreground">
             {t("upgradeHint", { n: GACHA_DAILY_LIMITS.lite })}
           </p>
         ) : null}
@@ -489,7 +489,7 @@ function TabButton({ active, onClick, label, owned, total }: TabButtonProps) {
       type="button"
       onClick={onClick}
       className={cn(
-        "flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 py-1.5 text-xs font-medium transition-all",
+        "flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[15px] font-medium transition-all",
         active
           ? "border-primary/60 bg-primary/15 text-primary shadow-inner"
           : "border-border/55 bg-card/50 text-muted-foreground hover:bg-card/80 hover:text-foreground",
@@ -498,7 +498,7 @@ function TabButton({ active, onClick, label, owned, total }: TabButtonProps) {
       <span>{label}</span>
       <span
         className={cn(
-          "tabular-nums text-xs",
+          "tabular-nums text-[15px]",
           active ? "text-primary/80" : "text-muted-foreground/70",
         )}
       >
@@ -561,7 +561,7 @@ function CardCell({ card, owned, onClick }: CardCellProps) {
         className="object-cover transition-transform duration-300 group-hover:scale-105"
       />
       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent px-1.5 py-1.5 text-center">
-        <span className="line-clamp-1 text-xs font-medium text-white">
+        <span className="line-clamp-1 text-[15px] font-medium text-white">
           {cardName}
         </span>
       </div>
@@ -637,17 +637,17 @@ function CardDetailDialog({ card, onClose }: CardDetailDialogProps) {
               {cardName}
             </h3>
             {locale !== "en" && card.nameEn ? (
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
+              <p className="text-[15px] uppercase tracking-wider text-muted-foreground">
                 {card.nameEn}
               </p>
             ) : locale === "en" && card.nameEn && card.nameKo !== card.nameEn ? (
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
+              <p className="text-[15px] uppercase tracking-wider text-muted-foreground">
                 {card.nameKo}
               </p>
             ) : null}
             <span
               className={cn(
-                "inline-block rounded-full px-2.5 py-0.5 text-xs font-medium",
+                "inline-block rounded-full px-2.5 py-0.5 text-[15px] font-medium",
                 card.rarity === "legendary" &&
                   "bg-amber-200/30 text-amber-800 dark:bg-amber-300/15 dark:text-amber-200",
                 card.rarity === "rare" &&
@@ -660,7 +660,7 @@ function CardDetailDialog({ card, onClose }: CardDetailDialogProps) {
             </span>
           </div>
 
-          <p className="text-center text-sm leading-relaxed text-muted-foreground">
+          <p className="text-center text-[15px] leading-relaxed text-muted-foreground">
             {card.description}
           </p>
         </div>

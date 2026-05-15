@@ -31,13 +31,13 @@ export async function QuotaBar({
           <div className="flex items-center gap-3">
             <Crown className="h-5 w-5 text-accent" aria-hidden />
             <div className="space-y-0.5">
-              <p className="font-mystic text-sm font-medium">{t("proActive")}</p>
-              <p className="text-xs text-muted-foreground">
+              <p className="font-mystic text-[15px] font-medium">{t("proActive")}</p>
+              <p className="text-[15px] text-muted-foreground">
                 {t("proSub")}
               </p>
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-3 sm:gap-5 text-xs">
+          <div className="grid grid-cols-3 gap-3 sm:gap-5 text-[15px]">
             <UnlimitedItem label={t("fortune")} used={fortuneCount} />
             <UnlimitedItem label={t("tarot")} used={tarotCount} />
             <UnlimitedItem label={t("chat")} used={chatCount} />
@@ -53,13 +53,13 @@ export async function QuotaBar({
         <div className="flex items-center justify-between gap-4 flex-wrap mb-3">
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-primary" aria-hidden />
-            <p className="font-mystic text-sm font-medium">{t("lightPlan")}</p>
+            <p className="font-mystic text-[15px] font-medium">{t("lightPlan")}</p>
           </div>
           <Button asChild size="sm" variant="ghost">
             <Link href={ROUTES.pricing}>{t("upgradePro")}</Link>
           </Button>
         </div>
-        <div className="grid grid-cols-3 gap-4 sm:gap-6 text-sm">
+        <div className="grid grid-cols-3 gap-4 sm:gap-6 text-[15px]">
           <Item
             label={t("fortune")}
             used={fortuneCount}
@@ -83,7 +83,7 @@ export async function QuotaBar({
   return (
     <div className="app-surface rounded-xl p-4">
       <div className="flex items-center justify-between gap-4 flex-wrap">
-        <div className="grid grid-cols-3 gap-4 sm:gap-6 text-sm flex-1 min-w-0">
+        <div className="grid grid-cols-3 gap-4 sm:gap-6 text-[15px] flex-1 min-w-0">
           <Item
             label={t("fortune")}
             used={fortuneCount}
@@ -112,7 +112,7 @@ function Item({
   const exhausted = used >= max;
   return (
     <div className="space-y-1">
-      <div className="flex items-center justify-between text-xs text-muted-foreground">
+      <div className="flex items-center justify-between text-[15px] text-muted-foreground">
         <span>{label}</span>
         <span className={exhausted ? "text-destructive font-medium" : ""}>
           {used}/{max}

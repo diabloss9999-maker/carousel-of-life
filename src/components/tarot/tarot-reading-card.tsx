@@ -71,11 +71,11 @@ export async function TarotReadingCard({ reading }: TarotReadingCardProps) {
               <CharacterImage character={character} fill className="object-cover object-top" sizes="56px" quality={90} />
             </div>
             <div>
-              <p className="font-mystic text-sm font-semibold text-foreground">{charName}</p>
-              <p className="text-xs text-muted-foreground">{charTitle}</p>
+              <p className="font-mystic text-[15px] font-semibold text-foreground">{charName}</p>
+              <p className="text-[15px] text-muted-foreground">{charTitle}</p>
             </div>
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-[15px] text-muted-foreground">
             {localeDateStr}
           </p>
         </div>

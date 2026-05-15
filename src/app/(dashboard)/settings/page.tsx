@@ -52,7 +52,7 @@ export default async function SettingsPage() {
         <h1 className="font-mystic text-3xl font-semibold tracking-tight">
           {t("heading")}
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-[15px] text-muted-foreground">
           {t("subheading")}
         </p>
       </header>
@@ -77,14 +77,14 @@ export default async function SettingsPage() {
             />
             {t("membership")}
           </CardTitle>
-          <CardDescription className="text-xs">
+          <CardDescription className="text-[15px]">
             {subscribed ? t("lightActive") : t("freeMembership")}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           {subscribed && subscription ? (
             <>
-              <div className="rounded-2xl bg-muted/30 p-3 text-sm">
+              <div className="rounded-2xl bg-muted/30 p-3 text-[15px]">
                 <Row
                   label={t("nextBilling")}
                   value={
@@ -96,7 +96,7 @@ export default async function SettingsPage() {
                   }
                 />
                 {subscription.cancelAtPeriodEnd ? (
-                  <p className="mt-2 text-xs text-muted-foreground">
+                  <p className="mt-2 text-[15px] text-muted-foreground">
                     {t("autoExpireNote")}
                   </p>
                 ) : null}
@@ -120,11 +120,11 @@ export default async function SettingsPage() {
             <User className="h-5 w-5 text-primary" aria-hidden />
             {t("myInfo")}
           </CardTitle>
-          <CardDescription className="text-xs">
+          <CardDescription className="text-[15px]">
             {t("myInfoHelp")}
           </CardDescription>
         </CardHeader>
-        <CardContent className="text-sm">
+        <CardContent className="text-[15px]">
           <Row label={t("labelName")} value={profile.displayName ?? "—"} />
           <Row label={t("labelEmail")} value={user.email ?? "—"} />
           <Row
@@ -152,7 +152,7 @@ export default async function SettingsPage() {
             <Archive className="h-5 w-5 text-primary" aria-hidden />
             {t("fateLog")}
           </CardTitle>
-          <CardDescription className="text-xs">
+          <CardDescription className="text-[15px]">
             {t("fateLogHelp")}
           </CardDescription>
         </CardHeader>
@@ -170,7 +170,7 @@ export default async function SettingsPage() {
             <MessageCircleHeart className="h-5 w-5 text-primary" aria-hidden />
             {t("feedbackCta")}
           </CardTitle>
-          <CardDescription className="text-xs">
+          <CardDescription className="text-[15px]">
             {t("feedbackBody")}
           </CardDescription>
         </CardHeader>
@@ -187,7 +187,7 @@ export default async function SettingsPage() {
         </CardContent>
       </Card>
 
-      <p className="text-center text-xs text-muted-foreground/60">
+      <p className="text-center text-[15px] text-muted-foreground/60">
         {profile.displayName
           ? t("greetingNamed", { name: profile.displayName })
           : t("greetingAnon")}
@@ -199,8 +199,8 @@ export default async function SettingsPage() {
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between border-b border-border/30 py-2 last:border-0">
-      <dt className="text-xs text-muted-foreground">{label}</dt>
-      <dd className="font-medium text-sm">{value}</dd>
+      <dt className="text-[15px] text-muted-foreground">{label}</dt>
+      <dd className="font-medium text-[15px]">{value}</dd>
     </div>
   );
 }

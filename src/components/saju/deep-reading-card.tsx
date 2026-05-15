@@ -76,8 +76,8 @@ export function DeepReadingCard({ reading }: DeepReadingCardProps) {
                 <CharacterImage character={character} fill className="object-cover object-top" sizes="56px" quality={90} />
               </div>
               <div>
-                <p className="font-mystic text-sm font-semibold text-foreground">{charName}</p>
-                <p className="text-xs text-muted-foreground">{charTitle}</p>
+                <p className="font-mystic text-[15px] font-semibold text-foreground">{charName}</p>
+                <p className="text-[15px] text-muted-foreground">{charTitle}</p>
               </div>
             </div>
           </div>
@@ -103,7 +103,7 @@ export function DeepReadingCard({ reading }: DeepReadingCardProps) {
               <CardTitle className="font-mystic flex items-center gap-2 text-lg">
                 <Icon className={`h-5 w-5 ${s.tone}`} aria-hidden />
                 {t(s.titleKey as "section1Title" | "section2Title" | "section3Title" | "section4Title" | "section5Title" | "section6Title" | "section7Title")}
-                <span className="text-xs text-muted-foreground/70 font-normal">
+                <span className="text-[15px] text-muted-foreground/70 font-normal">
                   {t(s.descKey as "section1Sub" | "section2Sub" | "section3Sub" | "section4Sub" | "section5Sub" | "section6Sub" | "section7Sub")}
                 </span>
               </CardTitle>
@@ -147,7 +147,7 @@ function PillarBreakdownCard({ breakdown }: PillarBreakdownCardProps) {
         <CardTitle className="font-mystic flex items-center gap-2 text-lg">
           <Compass className="h-5 w-5 text-accent" aria-hidden />
           {t("eightChars")}
-          <span className="text-xs text-muted-foreground/70 font-normal">
+          <span className="text-[15px] text-muted-foreground/70 font-normal">
             {t("whyEight")}
           </span>
         </CardTitle>
@@ -168,20 +168,20 @@ function PillarBreakdownCard({ breakdown }: PillarBreakdownCardProps) {
               </div>
               {stem && (
                 <div className="space-y-0.5">
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground/65">
+                  <p className="text-[15px] uppercase tracking-widest text-muted-foreground/65">
                     {t("stemRevealed")}
                   </p>
-                  <p className="font-mystic whitespace-pre-line text-sm leading-relaxed text-foreground/85">
+                  <p className="font-mystic whitespace-pre-line text-[15px] leading-relaxed text-foreground/85">
                     {stem}
                   </p>
                 </div>
               )}
               {branch && (
                 <div className="space-y-0.5 pt-1">
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground/65">
+                  <p className="text-[15px] uppercase tracking-widest text-muted-foreground/65">
                     {t("branchHidden")}
                   </p>
-                  <p className="font-mystic whitespace-pre-line text-sm leading-relaxed text-foreground/85">
+                  <p className="font-mystic whitespace-pre-line text-[15px] leading-relaxed text-foreground/85">
                     {branch}
                   </p>
                 </div>
@@ -192,10 +192,10 @@ function PillarBreakdownCard({ breakdown }: PillarBreakdownCardProps) {
 
         {breakdown.summary && (
           <div className="space-y-1 border-t border-white/5 pt-4">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground/65">
+            <p className="text-[15px] uppercase tracking-widest text-muted-foreground/65">
               {t("eightSummary")}
             </p>
-            <p className="font-mystic whitespace-pre-line text-sm leading-relaxed text-foreground/90 italic">
+            <p className="font-mystic whitespace-pre-line text-[15px] leading-relaxed text-foreground/90 italic">
               {breakdown.summary}
             </p>
           </div>

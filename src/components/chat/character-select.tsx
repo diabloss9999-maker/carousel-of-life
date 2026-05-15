@@ -100,7 +100,7 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
 
   return (
     <div className="space-y-8">
-      <p className="text-center text-sm text-muted-foreground">
+      <p className="text-center text-[15px] text-muted-foreground">
         {tCat("askToday")}
       </p>
 
@@ -116,10 +116,10 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
             <div className="flex items-center gap-3">
               <div className={cn("h-2 w-2 rounded-full flex-shrink-0", deco.dot)} />
               <div className="flex items-baseline gap-2">
-                <span className={cn("font-mystic text-sm font-bold tracking-wider", deco.text)}>
+                <span className={cn("font-mystic text-[15px] font-bold tracking-wider", deco.text)}>
                   {label}
                 </span>
-                <span className="text-xs tracking-widest text-muted-foreground/50 uppercase">
+                <span className="text-[15px] tracking-widest text-muted-foreground/50 uppercase">
                   {sub}
                 </span>
               </div>
@@ -168,7 +168,7 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                       )}
                       {/* 전문 배지 */}
                       <div className="absolute top-1.5 left-1.5">
-                        <span className="rounded-md bg-black/60 backdrop-blur-sm px-1.5 py-0.5 text-xs font-medium text-white/70 leading-none">
+                        <span className="rounded-md bg-black/60 backdrop-blur-sm px-1.5 py-0.5 text-[15px] font-medium text-white/70 leading-none">
                           {specialty}
                         </span>
                       </div>
@@ -176,14 +176,14 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
 
                     {/* 이름 + 직함 */}
                     <div className="w-full space-y-1">
-                      <p className="font-mystic font-bold text-sm leading-tight text-foreground/95">
+                      <p className="font-mystic font-bold text-[15px] leading-tight text-foreground/95">
                         {name}
                       </p>
-                      <p className="text-xs text-muted-foreground/70 leading-tight">
+                      <p className="text-[15px] text-muted-foreground/70 leading-tight">
                         {title}
                       </p>
                       {/* 훅 — 데스크탑에서만 */}
-                      <p className="hidden sm:block text-xs text-foreground/80 leading-snug font-mystic italic">
+                      <p className="hidden sm:block text-[15px] text-foreground/80 leading-snug font-mystic italic">
                         &ldquo;{hook}&rdquo;
                       </p>
                       {/* 친밀도 */}

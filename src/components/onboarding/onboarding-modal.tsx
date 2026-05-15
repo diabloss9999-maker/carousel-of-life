@@ -152,7 +152,7 @@ export function OnboardingModal() {
           {/* 세계 라벨 — step 2~4 */}
           {worldLabel && subtitle && (
             <span className={cn(
-              "rounded-full border px-4 py-1 text-xs font-bold tracking-widest uppercase",
+              "rounded-full border px-4 py-1 text-[15px] font-bold tracking-widest uppercase",
               step === 1
                 ? "border-violet-500/40 text-violet-400"
                 : step === 2
@@ -166,7 +166,7 @@ export function OnboardingModal() {
           {/* 제목 */}
           <div className="space-y-1">
             {subtitle && !worldLabel && (
-              <p className="text-xs tracking-widest text-white/40 uppercase">{subtitle}</p>
+              <p className="text-[15px] tracking-widest text-white/40 uppercase">{subtitle}</p>
             )}
             <h2 className={cn(
               "font-mystic text-3xl font-bold leading-tight whitespace-pre-line",
@@ -197,10 +197,10 @@ export function OnboardingModal() {
                         quality={80}
                       />
                       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-1.5 py-2">
-                        <p className="font-mystic text-xs font-bold text-white">{name}</p>
+                        <p className="font-mystic text-[15px] font-bold text-white">{name}</p>
                       </div>
                     </div>
-                    <p className="text-xs text-white/50 leading-tight">{hook}</p>
+                    <p className="text-[15px] text-white/50 leading-tight">{hook}</p>
                   </div>
                 );
               })}
@@ -208,7 +208,7 @@ export function OnboardingModal() {
           )}
 
           {/* 설명 */}
-          <p className="text-sm text-white/65 leading-relaxed whitespace-pre-line">
+          <p className="text-[15px] text-white/65 leading-relaxed whitespace-pre-line">
             {desc}
           </p>
 

@@ -27,13 +27,13 @@ export default async function ArchivePage() {
   return (
     <div className="space-y-8">
       <header className="space-y-2">
-        <p className="text-xs uppercase tracking-widest text-muted-foreground/70">
+        <p className="text-[15px] uppercase tracking-widest text-muted-foreground/70">
           경계(境界) · 존재의 기록
         </p>
         <h1 className="font-mystic text-4xl font-semibold tracking-tight">
           기억 보관소
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-[15px] text-muted-foreground">
           세계가 당신에 대해 기억하고 있는 것들.
         </p>
       </header>

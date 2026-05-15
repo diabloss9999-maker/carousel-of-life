@@ -69,8 +69,8 @@ export default async function TarotPage() {
           <div className="space-y-6">
             {/* 타로 유래 */}
             <div className="rounded-2xl border border-amber-200/20 bg-amber-50/5 px-5 py-4 space-y-2 backdrop-blur-sm">
-              <p className="font-mystic text-sm font-semibold text-amber-300/90">{tPage("tarotOrigin")}</p>
-              <p className="text-xs leading-relaxed text-muted-foreground">
+              <p className="font-mystic text-[15px] font-semibold text-amber-300/90">{tPage("tarotOrigin")}</p>
+              <p className="text-[15px] leading-relaxed text-muted-foreground">
                 {tPage("tarotOriginBody")}
               </p>
             </div>
@@ -105,8 +105,8 @@ export default async function TarotPage() {
           <div className="space-y-6">
             {/* 르노르망 유래 */}
             <div className="rounded-2xl border border-amber-200/20 bg-amber-50/5 px-5 py-4 space-y-2 backdrop-blur-sm">
-              <p className="font-mystic text-sm font-semibold text-amber-300/90">🌙 {tPage("lenormandOrigin")}</p>
-              <p className="text-xs leading-relaxed text-muted-foreground">
+              <p className="font-mystic text-[15px] font-semibold text-amber-300/90">🌙 {tPage("lenormandOrigin")}</p>
+              <p className="text-[15px] leading-relaxed text-muted-foreground">
                 {tPage("lenormandOriginBody")}
               </p>
             </div>
@@ -134,10 +134,10 @@ export default async function TarotPage() {
           <div className="space-y-6">
             {/* 룬 유래 */}
             <div className="rounded-2xl border border-amber-200/20 bg-amber-50/5 px-5 py-4 space-y-2 backdrop-blur-sm">
-              <p className="font-mystic text-sm font-semibold text-amber-300/90">
+              <p className="font-mystic text-[15px] font-semibold text-amber-300/90">
                 ᚠ {tPage("runeOrigin")}
               </p>
-              <p className="text-xs leading-relaxed text-muted-foreground">
+              <p className="text-[15px] leading-relaxed text-muted-foreground">
                 {tPage("runeOriginBody")}
               </p>
             </div>

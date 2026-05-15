@@ -85,8 +85,8 @@ export default async function ChatSessionPage({
           />
         </div>
         <div>
-          <p className="font-mystic font-bold text-sm">{character.name}</p>
-          <p className="text-xs text-muted-foreground">{character.title}</p>
+          <p className="font-mystic font-bold text-[15px]">{character.name}</p>
+          <p className="text-[15px] text-muted-foreground">{character.title}</p>
         </div>
       </div>
 
@@ -105,8 +105,8 @@ export default async function ChatSessionPage({
             />
           </div>
           <div className="text-center space-y-2 shrink-0 w-full">
-            <p className="font-mystic font-bold text-sm text-foreground/90">{character.name}</p>
-            <p className="text-xs text-muted-foreground">{character.title}</p>
+            <p className="font-mystic font-bold text-[15px] text-foreground/90">{character.name}</p>
+            <p className="text-[15px] text-muted-foreground">{character.title}</p>
             <AffinityBar characterId={charId} points={affinityPoints} compact />
           </div>
         </div>

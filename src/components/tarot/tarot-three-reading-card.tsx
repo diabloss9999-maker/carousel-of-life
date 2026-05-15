@@ -58,7 +58,7 @@ export async function TarotThreeReadingCard({ reading }: TarotThreeReadingCardPr
   return (
     <Card className="app-surface ring-1 ring-accent/15">
       <CardHeader className="space-y-3">
-        <p className="text-xs uppercase tracking-wider text-muted-foreground">
+        <p className="text-[15px] uppercase tracking-wider text-muted-foreground">
           {localeDateStr} · {t("spreadThreeLabel")}
         </p>
         {reading.question ? (
@@ -77,10 +77,10 @@ export async function TarotThreeReadingCard({ reading }: TarotThreeReadingCardPr
             const card = cards[i];
             return (
               <div key={pos.key} className="flex flex-col items-center gap-4">
-                <div className="flex items-center gap-1.5 text-sm font-medium text-accent">
+                <div className="flex items-center gap-1.5 text-[15px] font-medium text-accent">
                   <Icon className="h-4 w-4" aria-hidden />
                   <span className="font-mystic">{pos.label}</span>
-                  <span className="text-xs text-muted-foreground/70 font-normal">{pos.desc}</span>
+                  <span className="text-[15px] text-muted-foreground/70 font-normal">{pos.desc}</span>
                 </div>
                 <div className="flex flex-col items-center gap-2">
                   <TarotCardDisplay
@@ -92,7 +92,7 @@ export async function TarotThreeReadingCard({ reading }: TarotThreeReadingCardPr
                   />
                   <CardOrientationBadge isReversed={card.isReversed} />
                 </div>
-                <p className="font-mystic whitespace-pre-line leading-relaxed text-sm text-foreground/85 text-center md:text-left">
+                <p className="font-mystic whitespace-pre-line leading-relaxed text-[15px] text-foreground/85 text-center md:text-left">
                   {parsed[POSITION_KEYS[i]]}
                 </p>
               </div>
@@ -101,7 +101,7 @@ export async function TarotThreeReadingCard({ reading }: TarotThreeReadingCardPr
         </div>
 
         <div className="space-y-2 rounded-xl border border-accent/25 bg-accent/10 p-5 shadow-sm">
-          <div className="flex items-center gap-1.5 text-sm font-medium text-accent">
+          <div className="flex items-center gap-1.5 text-[15px] font-medium text-accent">
             <Sparkles className="h-4 w-4" aria-hidden />
             <span className="font-mystic">{t("synthesis")}</span>
           </div>

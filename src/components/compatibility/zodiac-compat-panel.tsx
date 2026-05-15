@@ -42,7 +42,7 @@ export function ZodiacCompatPanel({ myZodiac }: ZodiacCompatPanelProps) {
           <Sparkles className="h-5 w-5 text-accent" aria-hidden />
           {t("heading")}
         </CardTitle>
-        <CardDescription className="text-xs">
+        <CardDescription className="text-[15px]">
           {t("yourSignIs", { sign: tName(myInfo.id) })} · {t("pickPartner")}
         </CardDescription>
       </CardHeader>
@@ -56,7 +56,7 @@ export function ZodiacCompatPanel({ myZodiac }: ZodiacCompatPanelProps) {
                 type="button"
                 onClick={() => setPartner(z.id)}
                 className={cn(
-                  "rounded-xl border px-3 py-3 text-center text-sm transition-all",
+                  "rounded-xl border px-3 py-3 text-center text-[15px] transition-all",
                   selected
                     ? "border-primary bg-primary/15 text-primary"
                     : "border-border/60 bg-card/40 hover:-translate-y-0.5 hover:bg-card/80",
@@ -64,7 +64,7 @@ export function ZodiacCompatPanel({ myZodiac }: ZodiacCompatPanelProps) {
                 aria-pressed={selected}
               >
                 <span className="block font-medium">{tName(z.id)}</span>
-                <span className="mt-1 block text-xs text-muted-foreground">
+                <span className="mt-1 block text-[15px] text-muted-foreground">
                   {tDate(z.id)}
                 </span>
               </button>
@@ -75,7 +75,7 @@ export function ZodiacCompatPanel({ myZodiac }: ZodiacCompatPanelProps) {
         {result ? (
           <div className="space-y-3 rounded-xl border border-border/60 bg-card/40 p-4">
             <div className="flex items-center justify-between">
-              <p className="font-mystic text-sm text-muted-foreground">
+              <p className="font-mystic text-[15px] text-muted-foreground">
                 {tName(result.me.id)} × {tName(result.partner.id)}
               </p>
               <ScoreBadge score={result.score} />
@@ -83,12 +83,12 @@ export function ZodiacCompatPanel({ myZodiac }: ZodiacCompatPanelProps) {
             <p className="font-mystic text-base font-medium leading-relaxed">
               {result.headline}
             </p>
-            <p className="font-mystic whitespace-pre-line text-sm leading-relaxed text-foreground/85">
+            <p className="font-mystic whitespace-pre-line text-[15px] leading-relaxed text-foreground/85">
               {result.detail}
             </p>
           </div>
         ) : (
-          <p className="rounded-xl border border-dashed border-border/60 bg-card/30 p-4 text-center text-sm text-muted-foreground">
+          <p className="rounded-xl border border-dashed border-border/60 bg-card/30 p-4 text-center text-[15px] text-muted-foreground">
             {t("pickPartner")}
           </p>
         )}
@@ -109,7 +109,7 @@ function ScoreBadge({ score }: { score: number }) {
   return (
     <span
       className={cn(
-        "rounded-full px-3 py-0.5 font-mystic text-sm font-medium",
+        "rounded-full px-3 py-0.5 font-mystic text-[15px] font-medium",
         tone,
       )}
     >

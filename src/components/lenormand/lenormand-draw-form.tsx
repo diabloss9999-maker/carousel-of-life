@@ -130,7 +130,7 @@ export function LenormandDrawForm({ subscribed }: Props) {
           <div className="space-y-1.5">
             <Label htmlFor="len-question">
               질문{" "}
-              <span className="text-muted-foreground text-xs">(선택)</span>
+              <span className="text-muted-foreground text-[15px]">(선택)</span>
             </Label>
             <Input
               id="len-question"
@@ -143,12 +143,12 @@ export function LenormandDrawForm({ subscribed }: Props) {
               disabled={isBusy}
             />
             <div className="flex items-center justify-between gap-2 px-1">
-              <p className="text-muted-foreground text-xs">
+              <p className="text-muted-foreground text-[15px]">
                 비워두면 그냥 한 장을 뽑을 수 있어요.
               </p>
               <span
                 className={cn(
-                  "shrink-0 text-xs tabular-nums",
+                  "shrink-0 text-[15px] tabular-nums",
                   charsLeft <= 0
                     ? "text-destructive font-medium"
                     : charsLeft <= 10
@@ -190,7 +190,7 @@ export function LenormandDrawForm({ subscribed }: Props) {
                     disabled={isBusy || blockedByPremium}
                     className="accent-accent"
                   />
-                  <span className="text-sm">남성 (신사 카드)</span>
+                  <span className="text-[15px]">남성 (신사 카드)</span>
                 </label>
                 <label className="flex cursor-pointer items-center gap-2">
                   <input
@@ -200,10 +200,10 @@ export function LenormandDrawForm({ subscribed }: Props) {
                     disabled={isBusy || blockedByPremium}
                     className="accent-accent"
                   />
-                  <span className="text-sm">여성 (숙녀 카드)</span>
+                  <span className="text-[15px]">여성 (숙녀 카드)</span>
                 </label>
               </div>
-              <p className="text-muted-foreground text-xs">
+              <p className="text-muted-foreground text-[15px]">
                 질문자 본인을 상징할 카드를 골라요. 28번 신사 또는 29번 숙녀
                 카드를 기준점으로 삼습니다.
               </p>
@@ -212,7 +212,7 @@ export function LenormandDrawForm({ subscribed }: Props) {
 
           {blockedByPremium ? (
             <div className="rounded-lg border border-amber-400/30 bg-amber-50/5 p-3">
-              <p className="text-xs leading-relaxed text-amber-300/90">
+              <p className="text-[15px] leading-relaxed text-amber-300/90">
                 <Lock className="mr-1 inline-block h-3.5 w-3.5" aria-hidden />
                 이 스프레드는 라이트 구독자 전용이에요.
               </p>

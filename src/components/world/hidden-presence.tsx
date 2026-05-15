@@ -171,7 +171,7 @@ export function HiddenPresence() {
         <p
           style={{
             fontFamily: "var(--font-serif)",
-            fontSize: "12px",
+            fontSize: "15px",
             letterSpacing: "0.34em",
             color: "rgba(180,160,180,0.32)",
             margin: 0,

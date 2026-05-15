@@ -55,9 +55,9 @@ export function CardDivinationTabs({
                   : "text-muted-foreground hover:bg-card/70 hover:text-foreground",
               )}
             >
-              <span className="text-sm font-medium whitespace-nowrap">{tab.label}</span>
+              <span className="text-[15px] font-medium whitespace-nowrap">{tab.label}</span>
               <span className={cn(
-                "text-xs whitespace-nowrap leading-none mt-0.5",
+                "text-[15px] whitespace-nowrap leading-none mt-0.5",
                 isActive ? "text-primary-foreground/70" : "text-muted-foreground/50",
               )}>{tab.desc}</span>
             </button>

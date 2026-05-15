@@ -65,7 +65,7 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
           <h2 className="font-mystic text-2xl font-semibold">
             {t("chooseTitle")}
           </h2>
-          <p className="text-xs text-muted-foreground leading-relaxed max-w-md mx-auto">
+          <p className="text-[15px] text-muted-foreground leading-relaxed max-w-md mx-auto">
             {t("chooseSubtitle")}
           </p>
         </div>
@@ -91,7 +91,7 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
             <p className="font-mystic text-lg font-semibold">
               {t("chooseUseSaved", { type: currentType })}
             </p>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-[15px] text-muted-foreground mt-1">
               {t("chooseUseSavedHint")}
             </p>
           </button>
@@ -113,7 +113,7 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
             <p className="font-mystic text-lg font-semibold">
               {t("chooseRetake")}
             </p>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-[15px] text-muted-foreground mt-1">
               {t("chooseRetakeHint")}
             </p>
           </button>
@@ -164,13 +164,13 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
           <h2 className="font-mystic text-2xl font-semibold">
             {t("startTitle")}
           </h2>
-          <p className="text-muted-foreground text-sm leading-relaxed">
+          <p className="text-muted-foreground text-[15px] leading-relaxed">
             {t("startBody1")}
             <br />
             {t("startBody2")}
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-3 text-xs text-muted-foreground">
+        <div className="grid grid-cols-3 gap-3 text-[15px] text-muted-foreground">
           <div className="rounded-xl border border-border/40 bg-card/50 p-3 space-y-1">
             <p>{t("duration")}</p>
           </div>
@@ -212,7 +212,7 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
     <div className="space-y-6">
       {/* 진행 바 */}
       <div className="space-y-1.5">
-        <div className="flex justify-between text-xs text-muted-foreground">
+        <div className="flex justify-between text-[15px] text-muted-foreground">
           <span>{current + 1} / {QUESTIONS.length}</span>
           <span>{Math.round(progress)}%</span>
         </div>
@@ -280,7 +280,7 @@ function ChoiceButton({
       type="button"
       onClick={onClick}
       className={cn(
-        "flex items-start gap-3 rounded-xl border px-4 py-4 text-left text-sm transition-all",
+        "flex items-start gap-3 rounded-xl border px-4 py-4 text-left text-[15px] transition-all",
         "hover:border-primary/60 hover:bg-primary/5",
         selected
           ? "border-primary bg-primary/10 font-medium"
@@ -289,7 +289,7 @@ function ChoiceButton({
     >
       <span
         className={cn(
-          "flex-shrink-0 h-6 w-6 rounded-full border text-xs font-bold flex items-center justify-center mt-0.5",
+          "flex-shrink-0 h-6 w-6 rounded-full border text-[15px] font-bold flex items-center justify-center mt-0.5",
           selected
             ? "border-primary bg-primary text-primary-foreground"
             : "border-border/60 text-muted-foreground",
@@ -342,8 +342,8 @@ function ResultCard({
             {info.type}
           </p>
           <p className="font-mystic text-lg font-medium">{tT(`${info.type}_nickname`)}</p>
-          <p className="text-xs text-muted-foreground/70 italic">{tT(`${info.type}_imageRole`)}</p>
-          <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mt-1">
+          <p className="text-[15px] text-muted-foreground/70 italic">{tT(`${info.type}_imageRole`)}</p>
+          <p className="text-[15px] text-muted-foreground leading-relaxed max-w-xs mt-1">
             {tT(`${info.type}_summary`)}
           </p>
         </div>
@@ -352,7 +352,7 @@ function ResultCard({
       {/* 축별 퍼센트 바 */}
       {axes && (
         <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
-          <h3 className="font-mystic font-semibold text-sm">{t("strengthsHeading")}</h3>
+          <h3 className="font-mystic font-semibold text-[15px]">{t("strengthsHeading")}</h3>
           <div className="space-y-3">
             {AXIS_CONFIG.map(({ axis, aKey, bKey }) => {
               const ax = axes[axis];
@@ -364,7 +364,7 @@ function ResultCard({
               const pct = ax.pct;
               return (
                 <div key={axis} className="space-y-1">
-                  <div className="flex justify-between text-xs text-muted-foreground">
+                  <div className="flex justify-between text-[15px] text-muted-foreground">
                     <span className={cn(isA ? "text-primary font-semibold" : "")}>{labelA}</span>
                     <span className={cn(!isA ? "text-primary font-semibold" : "")}>{labelB}</span>
                   </div>
@@ -377,7 +377,7 @@ function ResultCard({
                       style={{ width: `${pct}%` }}
                     />
                   </div>
-                  <p className="text-xs text-center text-muted-foreground">
+                  <p className="text-[15px] text-center text-muted-foreground">
                     {winnerLabel} {pct}%
                   </p>
                 </div>
@@ -389,10 +389,10 @@ function ResultCard({
 
       {/* 어울리는 직업 */}
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
-        <h3 className="font-mystic font-semibold text-sm">{t("careersHeading")}</h3>
+        <h3 className="font-mystic font-semibold text-[15px]">{t("careersHeading")}</h3>
         <div className="flex flex-wrap gap-1.5">
           {suitableJobs.map((job) => (
-            <span key={job} className="rounded-full bg-primary/10 border border-primary/25 px-2.5 py-0.5 text-xs text-primary font-medium">
+            <span key={job} className="rounded-full bg-primary/10 border border-primary/25 px-2.5 py-0.5 text-[15px] text-primary font-medium">
               {job}
             </span>
           ))}
@@ -401,18 +401,18 @@ function ResultCard({
 
       {/* 상세 설명 */}
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
-        <h3 className="font-mystic font-semibold text-sm">{t("iAm")}</h3>
-        <p className="text-sm text-muted-foreground leading-relaxed">
+        <h3 className="font-mystic font-semibold text-[15px]">{t("iAm")}</h3>
+        <p className="text-[15px] text-muted-foreground leading-relaxed">
           {tT(`${info.type}_description`)}
         </p>
       </div>
 
       {/* 강점 */}
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
-        <h3 className="font-mystic font-semibold text-sm text-accent">{t("strengths")}</h3>
+        <h3 className="font-mystic font-semibold text-[15px] text-accent">{t("strengths")}</h3>
         <ul className="space-y-1.5">
           {strengths.map((s) => (
-            <li key={s} className="flex items-center gap-2 text-sm">
+            <li key={s} className="flex items-center gap-2 text-[15px]">
               <span className="h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
               {s}
             </li>
@@ -422,10 +422,10 @@ function ResultCard({
 
       {/* 주의점 */}
       <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
-        <h3 className="font-mystic font-semibold text-sm text-muted-foreground">{t("cautions")}</h3>
+        <h3 className="font-mystic font-semibold text-[15px] text-muted-foreground">{t("cautions")}</h3>
         <ul className="space-y-1.5">
           {cautions.map((c) => (
-            <li key={c} className="flex items-center gap-2 text-sm text-muted-foreground">
+            <li key={c} className="flex items-center gap-2 text-[15px] text-muted-foreground">
               <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/50 flex-shrink-0" />
               {c}
             </li>
@@ -437,7 +437,7 @@ function ResultCard({
       <div className="grid grid-cols-2 gap-3">
         {/* 잘 맞는 유형 */}
         <div className="space-y-2">
-          <h3 className="font-mystic font-semibold text-sm text-center">💞 {t("compatible")}</h3>
+          <h3 className="font-mystic font-semibold text-[15px] text-center">💞 {t("compatible")}</h3>
           <div className="flex justify-center gap-2">
             {info.compatibleWith.map((typeCode) => {
               return (
@@ -445,8 +445,8 @@ function ResultCard({
                   <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-primary/40">
                     <Image src={`/mbti/${typeCode}.png`} alt={typeCode} fill className="object-cover" sizes="96px" />
                   </div>
-                  <p className="font-mystic text-xs font-bold text-primary">{typeCode}</p>
-                  <p className="text-xs text-muted-foreground text-center leading-tight">{tT(`${typeCode}_nickname`)}</p>
+                  <p className="font-mystic text-[15px] font-bold text-primary">{typeCode}</p>
+                  <p className="text-[15px] text-muted-foreground text-center leading-tight">{tT(`${typeCode}_nickname`)}</p>
                 </div>
               );
             })}
@@ -455,7 +455,7 @@ function ResultCard({
 
         {/* 주의가 필요한 유형 */}
         <div className="space-y-2">
-          <h3 className="font-mystic font-semibold text-sm text-center">{t("caution")}</h3>
+          <h3 className="font-mystic font-semibold text-[15px] text-center">{t("caution")}</h3>
           <div className="flex justify-center gap-2">
             {info.incompatibleWith.map((typeCode) => {
               return (
@@ -463,8 +463,8 @@ function ResultCard({
                   <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-destructive/40 grayscale-[30%]">
                     <Image src={`/mbti/${typeCode}.png`} alt={typeCode} fill className="object-cover" sizes="96px" />
                   </div>
-                  <p className="font-mystic text-xs font-bold text-destructive">{typeCode}</p>
-                  <p className="text-xs text-muted-foreground text-center leading-tight">{tT(`${typeCode}_nickname`)}</p>
+                  <p className="font-mystic text-[15px] font-bold text-destructive">{typeCode}</p>
+                  <p className="text-[15px] text-muted-foreground text-center leading-tight">{tT(`${typeCode}_nickname`)}</p>
                 </div>
               );
             })}
@@ -472,7 +472,7 @@ function ResultCard({
         </div>
       </div>
 
-      <p className="text-center text-xs text-muted-foreground">
+      <p className="text-center text-[15px] text-muted-foreground">
         {t("resultIntegration")}
       </p>
 

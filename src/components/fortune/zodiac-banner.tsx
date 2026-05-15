@@ -43,15 +43,15 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
         {/* 이름 + 날짜 */}
         <div className="text-center space-y-1">
           <p className="font-mystic text-xl font-bold text-foreground/90">{mainLabel}</p>
-          <p className="text-sm text-muted-foreground">{z.en}</p>
-          <p className="text-xs text-muted-foreground/80">{tDate(z.id)}</p>
+          <p className="text-[15px] text-muted-foreground">{z.en}</p>
+          <p className="text-[15px] text-muted-foreground/80">{tDate(z.id)}</p>
         </div>
 
         {/* 잘 맞는(왼쪽) / 주의(오른쪽) */}
         <div className="w-full grid grid-cols-2 gap-3">
           {/* 잘 맞는 별자리 */}
           <div className="space-y-2">
-            <p className="text-xs font-semibold text-center text-foreground/80 tracking-wide">{t("compatible")}</p>
+            <p className="text-[15px] font-semibold text-center text-foreground/80 tracking-wide">{t("compatible")}</p>
             <div className="flex justify-center gap-2">
               {z.compatible.map((name) => {
                 const id = ZODIAC_NAME_TO_ID[name];
@@ -61,7 +61,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
                     <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-primary/40">
                       <Image src={`/zodiac/${id}.png`} alt={label} fill className="object-cover" sizes="96px" />
                     </div>
-                    <span className="text-xs font-medium text-primary text-center">{label}</span>
+                    <span className="text-[15px] font-medium text-primary text-center">{label}</span>
                   </div>
                 );
               })}
@@ -70,7 +70,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
 
           {/* 주의가 필요한 별자리 */}
           <div className="space-y-2">
-            <p className="text-xs font-semibold text-center text-foreground/80 tracking-wide">{t("caution")}</p>
+            <p className="text-[15px] font-semibold text-center text-foreground/80 tracking-wide">{t("caution")}</p>
             <div className="flex justify-center gap-2">
               {z.incompatible.map((name) => {
                 const id = ZODIAC_NAME_TO_ID[name];
@@ -80,7 +80,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
                     <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-destructive/40 grayscale-[30%]">
                       <Image src={`/zodiac/${id}.png`} alt={label} fill className="object-cover" sizes="96px" />
                     </div>
-                    <span className="text-xs font-medium text-destructive text-center">{label}</span>
+                    <span className="text-[15px] font-medium text-destructive text-center">{label}</span>
                   </div>
                 );
               })}
@@ -104,13 +104,13 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
         {/* 이름 + 연도 */}
         <div className="text-center space-y-1">
           <p className="font-mystic text-xl font-bold text-foreground/90">{mainLabel}</p>
-          <p className="text-xs text-muted-foreground/60 leading-relaxed">{cz.yearExample}</p>
+          <p className="text-[15px] text-muted-foreground/60 leading-relaxed">{cz.yearExample}</p>
         </div>
 
         {/* 잘 맞는(왼쪽) / 주의(오른쪽) */}
         <div className="w-full grid grid-cols-2 gap-3">
           <div className="space-y-2">
-            <p className="text-xs font-semibold text-center text-foreground/80 tracking-wide">{t("compatible")}</p>
+            <p className="text-[15px] font-semibold text-center text-foreground/80 tracking-wide">{t("compatible")}</p>
             <div className="flex justify-center gap-2">
               {cz.compatible.map((name) => {
                 const id = CZ_NAME_TO_ID[name];
@@ -120,7 +120,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
                     <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-primary/40">
                       <Image src={`/chinese-zodiac/${id}.png`} alt={label} fill className="object-cover" sizes="96px" />
                     </div>
-                    <span className="text-xs font-medium text-primary text-center">{label}</span>
+                    <span className="text-[15px] font-medium text-primary text-center">{label}</span>
                   </div>
                 );
               })}
@@ -128,7 +128,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
           </div>
 
           <div className="space-y-2">
-            <p className="text-xs font-semibold text-center text-foreground/80 tracking-wide">{t("caution")}</p>
+            <p className="text-[15px] font-semibold text-center text-foreground/80 tracking-wide">{t("caution")}</p>
             <div className="flex justify-center gap-2">
               {cz.incompatible.map((name) => {
                 const id = CZ_NAME_TO_ID[name];
@@ -138,7 +138,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
                     <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-destructive/40 grayscale-[30%]">
                       <Image src={`/chinese-zodiac/${id}.png`} alt={label} fill className="object-cover" sizes="96px" />
                     </div>
-                    <span className="text-xs font-medium text-destructive text-center">{label}</span>
+                    <span className="text-[15px] font-medium text-destructive text-center">{label}</span>
                   </div>
                 );
               })}

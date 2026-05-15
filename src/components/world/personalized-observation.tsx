@@ -47,7 +47,7 @@ export function PersonalizedObservation() {
   if (!line) return null;
 
   return (
-    <p className="text-xs text-muted-foreground/60 italic font-mystic leading-relaxed">
+    <p className="text-[15px] text-muted-foreground/60 italic font-mystic leading-relaxed">
       &ldquo;{line}&rdquo;
     </p>
   );

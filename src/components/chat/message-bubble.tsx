@@ -86,7 +86,7 @@ export function MessageBubble({ role, content, isStreaming, cards }: MessageBubb
             {cards.map((card, i) => (
               <div key={`${card.id}-${i}`} className="flex flex-col items-center gap-1">
                 {card.position && (
-                  <p className="text-xs text-muted-foreground">{card.position}</p>
+                  <p className="text-[15px] text-muted-foreground">{card.position}</p>
                 )}
                 <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-lg ring-1 ring-border/40">
                   <Image
@@ -97,7 +97,7 @@ export function MessageBubble({ role, content, isStreaming, cards }: MessageBubb
                     sizes="96px"
                   />
                 </div>
-                <p className="text-xs text-center text-foreground/70 font-medium">
+                <p className="text-[15px] text-center text-foreground/70 font-medium">
                   {card.nameKo}
                   {card.isReversed ? " ⤵" : ""}
                 </p>

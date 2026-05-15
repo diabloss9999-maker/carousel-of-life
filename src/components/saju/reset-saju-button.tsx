@@ -43,7 +43,7 @@ export function ResetSajuButton() {
         )}
         {t("resetCta")}
       </Button>
-      {error ? <p className="text-xs text-destructive">{error}</p> : null}
+      {error ? <p className="text-[15px] text-destructive">{error}</p> : null}
     </div>
   );
 }

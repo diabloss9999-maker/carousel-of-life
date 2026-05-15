@@ -42,7 +42,7 @@ export function DesktopNav() {
               aria-current={isActive ? "page" : undefined}
               aria-label={`${label} — ${item.description}`}
               title={item.description}
-              className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold transition-all"
+              className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[15px] font-semibold transition-all"
               style={
                 isActive
                   ? {

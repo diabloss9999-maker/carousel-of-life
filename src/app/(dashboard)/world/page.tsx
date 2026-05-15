@@ -27,13 +27,13 @@ export default function WorldPage() {
   return (
     <div className="space-y-10">
       <header className="space-y-2">
-        <p className="text-xs uppercase tracking-widest text-muted-foreground/70">
+        <p className="text-[15px] uppercase tracking-widest text-muted-foreground/70">
           경계(境界) · 공동 관측
         </p>
         <h1 className="font-mystic text-4xl font-semibold tracking-tight">
           세계의 흐름
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-[15px] text-muted-foreground">
           오늘은 모두에게 같은 한 줄이 들립니다.
         </p>
       </header>
@@ -42,7 +42,7 @@ export default function WorldPage() {
         <div
           className="app-surface rounded-[var(--ritual-radius)] px-6 py-8 sm:px-8 sm:py-10"
         >
-          <p className="text-xs uppercase tracking-widest text-muted-foreground/70">
+          <p className="text-[15px] uppercase tracking-widest text-muted-foreground/70">
             오늘의 관측
           </p>
           <p
@@ -55,7 +55,7 @@ export default function WorldPage() {
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="app-surface rounded-[var(--ritual-radius)] px-5 py-6">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground/70">
+            <p className="text-[15px] uppercase tracking-widest text-muted-foreground/70">
               오늘 깨어 있는 존재
             </p>
             <p
@@ -64,13 +64,13 @@ export default function WorldPage() {
             >
               {entityName}
             </p>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <p className="mt-2 text-[15px] text-muted-foreground">
               {entityName}가 오늘 자주 깨어 있습니다.
             </p>
           </div>
 
           <div className="app-surface rounded-[var(--ritual-radius)] px-5 py-6">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground/70">
+            <p className="text-[15px] uppercase tracking-widest text-muted-foreground/70">
               오늘의 결
             </p>
             <p
@@ -79,7 +79,7 @@ export default function WorldPage() {
             >
               {moodLabel}
             </p>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <p className="mt-2 text-[15px] text-muted-foreground">
               {moodNarrative}
             </p>
           </div>
@@ -89,10 +89,10 @@ export default function WorldPage() {
           className="app-surface rounded-[var(--ritual-radius)] px-5 py-6"
           aria-live="polite"
         >
-          <p className="text-xs uppercase tracking-widest text-muted-foreground/70">
+          <p className="text-[15px] uppercase tracking-widest text-muted-foreground/70">
             세계의 메모
           </p>
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
             오늘의 결과 깨어 있는 존재는 같은 날 모든 관측자에게 동일하게
             전해집니다. 내일이 되면 흐름은 조용히 다시 짜입니다.
           </p>

@@ -101,13 +101,13 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" />
             {t("title")}
-            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-xs font-medium text-primary">
+            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[15px] font-medium text-primary">
               {tPrem("lightBadge")}
             </span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <div className="pointer-events-none select-none space-y-1.5 text-sm text-muted-foreground blur-[3px]">
+          <div className="pointer-events-none select-none space-y-1.5 text-[15px] text-muted-foreground blur-[3px]">
             <p>{t("lockBullet1")}</p>
             <p>{t("lockBullet2")}</p>
           </div>
@@ -126,7 +126,7 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
   if (!hasSaju) {
     return (
       <Card className="app-surface">
-        <CardContent className="py-6 text-center text-sm text-muted-foreground">
+        <CardContent className="py-6 text-center text-[15px] text-muted-foreground">
           {t("emptyMessage")}
         </CardContent>
       </Card>
@@ -178,7 +178,7 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
               >
                 {data.todayPillar}
               </p>
-              <p className="mt-0.5 text-xs text-muted-foreground">
+              <p className="mt-0.5 text-[15px] text-muted-foreground">
                 {t(ENERGY_LABEL_KEY[energyKey])}
               </p>
             </div>
@@ -193,7 +193,7 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
                   : "neutral";
                 const labelKey = RELATION_LABEL_KEY[colorKey];
                 return (
-                  <div key={i} className="flex items-start gap-2 text-xs">
+                  <div key={i} className="flex items-start gap-2 text-[15px]">
                     <span
                       className={cn(
                         "mt-0.5 flex-shrink-0 font-bold",
@@ -212,20 +212,20 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
           )}
 
           {/* 핵심 메시지 */}
-          <p className="font-mystic text-sm leading-relaxed">
+          <p className="font-mystic text-[15px] leading-relaxed">
             {data.mainMessage}
           </p>
 
           {/* 조언 */}
           <div className="space-y-1.5 rounded-xl bg-white/8 px-3 py-2.5">
-            <p className="text-xs font-semibold text-accent">{t("advice")}</p>
-            <p className="text-xs leading-relaxed text-muted-foreground">
+            <p className="text-[15px] font-semibold text-accent">{t("advice")}</p>
+            <p className="text-[15px] leading-relaxed text-muted-foreground">
               {data.advice}
             </p>
           </div>
 
           {/* 좋은 시간 + 주의 */}
-          <div className="grid grid-cols-2 gap-2 text-xs">
+          <div className="grid grid-cols-2 gap-2 text-[15px]">
             <div className="rounded-lg border border-emerald-400/20 bg-emerald-400/8 px-2.5 py-2">
               <p className="mb-0.5 font-semibold text-emerald-400">{t("luckyHour")}</p>
               <p className="text-muted-foreground">{data.luckyTime}</p>
@@ -251,7 +251,7 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <p className="text-xs text-destructive">{result.message}</p>
+          <p className="text-[15px] text-destructive">{result.message}</p>
           <Button
             onClick={handleGenerate}
             disabled={isPending}
@@ -275,7 +275,7 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-[15px] text-muted-foreground">
           {t("body")}
         </p>
         <Button

@@ -70,7 +70,7 @@ export function OnboardingForm({
             type="time"
             disabled={isPending}
           />
-          <p className="text-xs text-muted-foreground">
+          <p className="text-[15px] text-muted-foreground">
             {t("birthTimeHelp")}
           </p>
         </div>
@@ -159,7 +159,7 @@ export function OnboardingForm({
         )}
       </Button>
 
-      <p className="text-center text-xs text-muted-foreground">
+      <p className="text-center text-[15px] text-muted-foreground">
         {t("privacy")}
       </p>
     </form>

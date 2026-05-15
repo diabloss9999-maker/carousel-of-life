@@ -184,7 +184,7 @@ export function SessionFade() {
         style={{
           color: "rgba(246,239,220,0.62)",
           fontFamily: "var(--font-serif)",
-          fontSize: "13px",
+          fontSize: "15px",
           letterSpacing: "0.12em",
           textAlign: "center",
           padding: "0 24px",

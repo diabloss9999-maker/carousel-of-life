@@ -35,7 +35,7 @@ export async function PremiumFortuneGate({ category }: PremiumFortuneGateProps) 
         <CardTitle className="font-mystic text-center text-xl">
           {copy.title}
         </CardTitle>
-        <CardDescription className="text-center text-sm leading-relaxed">
+        <CardDescription className="text-center text-[15px] leading-relaxed">
           {copy.description}
         </CardDescription>
       </CardHeader>
@@ -46,7 +46,7 @@ export async function PremiumFortuneGate({ category }: PremiumFortuneGateProps) 
             {t("subscribeCta")}
           </Link>
         </Button>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-[15px] text-muted-foreground">
           {t("footer")}
         </p>
       </CardContent>

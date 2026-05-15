@@ -31,14 +31,14 @@ export default async function HistoryPage() {
         <div className="flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/icons/eye-orbit.svg" alt="" aria-hidden className="h-8 w-8 opacity-60" />
-          <p className="text-xs uppercase tracking-widest text-muted-foreground/70">
+          <p className="text-[15px] uppercase tracking-widest text-muted-foreground/70">
             {t("category")}
           </p>
         </div>
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
           {t("heading")}
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-[15px] text-muted-foreground">
           {t("metaDescription")}
         </p>
       </header>

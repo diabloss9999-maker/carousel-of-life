@@ -67,8 +67,8 @@ export function LenormandReadingCard({ reading }: Props) {
             <CharacterImage character={character} fill className="object-cover object-top" sizes="56px" quality={90} />
           </div>
           <div>
-            <p className="font-mystic text-sm font-semibold text-foreground">{character.name}</p>
-            <p className="text-xs text-muted-foreground">{character.title}</p>
+            <p className="font-mystic text-[15px] font-semibold text-foreground">{character.name}</p>
+            <p className="text-[15px] text-muted-foreground">{character.title}</p>
           </div>
         </div>
         {/* 카드 레이아웃 — 스프레드별 분기 */}
@@ -96,8 +96,8 @@ export function LenormandReadingCard({ reading }: Props) {
                         sizes="(max-width:640px) 96px, 112px"
                       />
                     </div>
-                    <p className="text-center text-xs text-muted-foreground">{nineLabel(i)}</p>
-                    <p className="text-center text-xs font-medium text-foreground/80">{card.nameKo}</p>
+                    <p className="text-center text-[15px] text-muted-foreground">{nineLabel(i)}</p>
+                    <p className="text-center text-[15px] font-medium text-foreground/80">{card.nameKo}</p>
                   </div>
                 );
               })}
@@ -128,7 +128,7 @@ export function LenormandReadingCard({ reading }: Props) {
                           sizes="(max-width: 640px) 12vw, 80px"
                         />
                       </div>
-                      <p className="text-center text-xs text-muted-foreground">
+                      <p className="text-center text-[15px] text-muted-foreground">
                         {card.nameKo}
                       </p>
                     </div>
@@ -138,7 +138,7 @@ export function LenormandReadingCard({ reading }: Props) {
             </div>
             {cards.length > 32 ? (
               <div className="border-t border-border/30 pt-2">
-                <p className="mb-1 text-center text-xs text-muted-foreground">
+                <p className="mb-1 text-center text-[15px] text-muted-foreground">
                   🌙 영혼 카드
                 </p>
                 <div className="mx-auto grid max-w-[220px] grid-cols-4 gap-1">
@@ -163,7 +163,7 @@ export function LenormandReadingCard({ reading }: Props) {
                             sizes="(max-width: 640px) 22vw, 100px"
                           />
                         </div>
-                        <p className="text-center text-xs text-muted-foreground">
+                        <p className="text-center text-[15px] text-muted-foreground">
                           {card.nameKo}
                         </p>
                       </div>
@@ -192,7 +192,7 @@ export function LenormandReadingCard({ reading }: Props) {
                       sizes="(max-width:640px) 176px, 224px"
                     />
                   </div>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-[15px] text-muted-foreground">
                     {POSITION_LABEL[entry.position] ?? entry.position}
                   </p>
                 </div>
@@ -201,7 +201,7 @@ export function LenormandReadingCard({ reading }: Props) {
           </div>
         )}
         {reading.question ? (
-          <p className="text-center text-xs text-muted-foreground">
+          <p className="text-center text-[15px] text-muted-foreground">
             “{reading.question}”
           </p>
         ) : null}
@@ -210,7 +210,7 @@ export function LenormandReadingCard({ reading }: Props) {
         <p className="font-mystic whitespace-pre-line leading-relaxed text-foreground/90">
           {reading.interpretation}
         </p>
-        <p className="text-right text-xs text-muted-foreground">
+        <p className="text-right text-[15px] text-muted-foreground">
           {new Date(reading.createdAt).toLocaleDateString("ko-KR")}
         </p>
       </CardContent>

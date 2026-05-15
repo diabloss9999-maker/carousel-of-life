@@ -55,7 +55,7 @@ export function TwoPersonCompat({ subscribed }: TwoPersonCompatProps) {
             <UsersRound className="h-5 w-5 text-accent" aria-hidden />
             {t("heading")}
           </CardTitle>
-          <CardDescription className="text-xs">
+          <CardDescription className="text-[15px]">
             {t("body")}
           </CardDescription>
         </CardHeader>
@@ -152,7 +152,7 @@ function PersonFieldset({ title, prefix, disabled }: PersonFieldsetProps) {
 
   return (
     <fieldset className="space-y-4 rounded-xl border border-border/60 bg-card/40 p-4">
-      <legend className="font-mystic px-2 text-sm font-semibold">
+      <legend className="font-mystic px-2 text-[15px] font-semibold">
         {title}
       </legend>
 
@@ -245,12 +245,12 @@ function TwoPersonResultCard({ result }: TwoPersonResultProps) {
           <p className="font-mystic text-base flex items-center gap-2">
             <Heart className="h-4 w-4 text-accent" aria-hidden />
             <span>{result.aName}</span>
-            <span className="text-xs text-muted-foreground font-normal">
+            <span className="text-[15px] text-muted-foreground font-normal">
               ({result.aBirthDate})
             </span>
             <span className="text-muted-foreground">×</span>
             <span>{result.bName}</span>
-            <span className="text-xs text-muted-foreground font-normal">
+            <span className="text-[15px] text-muted-foreground font-normal">
               ({result.bBirthDate})
             </span>
           </p>
@@ -275,7 +275,7 @@ function TwoPersonResultCard({ result }: TwoPersonResultProps) {
 
     return (
       <div className="space-y-1">
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
+        <div className="flex items-center justify-between text-[15px] text-muted-foreground">
           <span>{t("score")}</span>
           <span className="font-mystic font-semibold text-foreground">
             {clamped} / 100
@@ -308,7 +308,7 @@ function ScoreBadge({ score }: { score: number }) {
   return (
     <span
       className={cn(
-        "rounded-full px-3 py-0.5 font-mystic text-sm font-medium",
+        "rounded-full px-3 py-0.5 font-mystic text-[15px] font-medium",
         tone,
       )}
       aria-label={t("scoreUnit", { n: score })}

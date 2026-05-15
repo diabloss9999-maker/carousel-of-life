@@ -67,7 +67,7 @@ export function CompatPurpose(props: CompatPurposeProps) {
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" />
             {t("title")}
-            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-xs font-medium text-primary">
+            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[15px] font-medium text-primary">
               {tPrem("lightBadge")}
             </span>
           </CardTitle>
@@ -75,7 +75,7 @@ export function CompatPurpose(props: CompatPurposeProps) {
         <CardContent className="space-y-3">
           <div className="blur-[3px] select-none pointer-events-none space-y-2">
             {lockBullets.map((line) => (
-              <p key={line} className="text-sm">{line}</p>
+              <p key={line} className="text-[15px]">{line}</p>
             ))}
           </div>
           <Button asChild size="sm" className="w-full">
@@ -118,18 +118,18 @@ export function CompatPurpose(props: CompatPurposeProps) {
 
           <div className="grid gap-2 sm:grid-cols-2">
             <div className="rounded-xl border border-accent/25 bg-accent/5 p-3">
-              <p className="text-xs font-semibold text-accent uppercase tracking-wide">
+              <p className="text-[15px] font-semibold text-accent uppercase tracking-wide">
                 {t("bestKey")}
               </p>
-              <p className="mt-1 font-mystic text-sm font-semibold">
+              <p className="mt-1 font-mystic text-[15px] font-semibold">
                 {data.bestPurpose}
               </p>
             </div>
             <div className="rounded-xl border border-destructive/25 bg-destructive/5 p-3">
-              <p className="text-xs font-semibold text-destructive uppercase tracking-wide">
+              <p className="text-[15px] font-semibold text-destructive uppercase tracking-wide">
                 {t("worstKey")}
               </p>
-              <p className="mt-1 font-mystic text-sm font-semibold">
+              <p className="mt-1 font-mystic text-[15px] font-semibold">
                 {data.worstPurpose}
               </p>
             </div>
@@ -152,11 +152,11 @@ export function CompatPurpose(props: CompatPurposeProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        <p className="text-xs text-muted-foreground">
+        <p className="text-[15px] text-muted-foreground">
           {t("lockBody")}
         </p>
         {errorMsg ? (
-          <p className="text-xs text-destructive">{errorMsg}</p>
+          <p className="text-[15px] text-destructive">{errorMsg}</p>
         ) : null}
         <Button
           onClick={handleGenerate}
@@ -187,7 +187,7 @@ function PurposeGauge({ label, score }: { label: string; score: number }) {
 
   return (
     <div className="space-y-1">
-      <div className="flex items-center justify-between text-xs">
+      <div className="flex items-center justify-between text-[15px]">
         <span className="font-mystic font-medium">{label}</span>
         <span className="font-mystic font-semibold">{clamped} / 100</span>
       </div>

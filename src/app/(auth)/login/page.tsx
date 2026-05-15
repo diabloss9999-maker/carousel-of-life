@@ -31,7 +31,7 @@ export default async function LoginPage() {
       <CardContent className="space-y-3">
         <KakaoButton label={t("kakaoLogin")} />
         <GoogleButton label={t("googleLogin")} />
-        <p className="pt-2 text-center text-xs text-muted-foreground">
+        <p className="pt-2 text-center text-[15px] text-muted-foreground">
           {t("firstVisitHint")}
         </p>
       </CardContent>

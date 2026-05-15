@@ -72,14 +72,14 @@ export function LottoGenerator({ fortune, subscribed }: LottoGeneratorProps) {
       <CardHeader className="space-y-1">
         <div className="flex items-center gap-2">
           <Crown className="h-4 w-4 text-accent" aria-hidden />
-          <span className="text-xs font-medium uppercase tracking-wider text-accent">
+          <span className="text-[15px] font-medium uppercase tracking-wider text-accent">
             {tPrem("lightBadge")}
           </span>
         </div>
         <h2 className="font-mystic text-xl font-semibold leading-snug tracking-tight">
           {t("title")}
         </h2>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-[15px] text-muted-foreground">
           {t("subtitle")}
         </p>
       </CardHeader>
@@ -122,14 +122,14 @@ export function LottoGenerator({ fortune, subscribed }: LottoGeneratorProps) {
               </div>
             ) : (
               <div className="space-y-3 text-center">
-                <p className="text-xs text-muted-foreground">
+                <p className="text-[15px] text-muted-foreground">
                   {t("fixedNote", { score: fortune.score })}
                 </p>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setRevealed(false)}
-                  className="text-xs"
+                  className="text-[15px]"
                 >
                   {t("againCta")}
                 </Button>
@@ -146,7 +146,7 @@ export function LottoGenerator({ fortune, subscribed }: LottoGeneratorProps) {
               <p className="font-mystic text-base font-medium">
                 {t("lockedTitle")}
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-[15px] text-muted-foreground">
                 {t("lockedBody")}
               </p>
             </div>

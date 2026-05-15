@@ -113,7 +113,7 @@ export function LuckyInfo({ color, number, direction }: LuckyInfoProps) {
           style={{ backgroundColor: colorHex }}
           aria-hidden="true"
         />
-        <span className="font-mystic text-sm font-semibold text-foreground/90 sm:text-base">
+        <span className="font-mystic text-[15px] font-semibold text-foreground/90 sm:text-base">
           {color ?? "—"}
         </span>
       </LuckyTile>
@@ -142,7 +142,7 @@ export function LuckyInfo({ color, number, direction }: LuckyInfoProps) {
             —
           </span>
         )}
-        <span className="font-mystic text-sm font-semibold text-foreground/90 sm:text-base">
+        <span className="font-mystic text-[15px] font-semibold text-foreground/90 sm:text-base">
           {direction ?? "—"}
         </span>
       </LuckyTile>
@@ -161,7 +161,7 @@ function LuckyTile({ label, children }: LuckyTileProps) {
       <div className="flex flex-1 flex-col items-center justify-center gap-1.5">
         {children}
       </div>
-      <span className="text-xs uppercase tracking-wider text-muted-foreground sm:text-xs">
+      <span className="text-[15px] uppercase tracking-wider text-muted-foreground sm:text-[15px]">
         {label}
       </span>
     </div>
