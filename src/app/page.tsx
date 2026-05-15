@@ -123,9 +123,9 @@ export default async function HomePage() {
           {t("intro")}
         </p>
 
-        {/* 1차 CTA — 무료 시작 (primary) + 유료 플랜 (배경 없는 outline) */}
-        <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 mt-2 w-full sm:w-auto max-w-sm sm:max-w-none">
-          <Button asChild size="lg" className="min-w-44 shadow-lg">
+        {/* 1차 CTA: 지금 무료로 시작하기 (primary) → 그 아래 유료 플랜 보기 (배경 없는 outline) */}
+        <div className="flex flex-col gap-3 mt-2 w-full max-w-sm">
+          <Button asChild size="lg" className="shadow-lg">
             <Link href={ROUTES.login}>
               {t("startFree")}
               <ArrowRight className="h-4 w-4" aria-hidden />
@@ -135,22 +135,11 @@ export default async function HomePage() {
             asChild
             size="lg"
             variant="outline"
-            className="min-w-44 border-white/50 bg-transparent hover:bg-white/10"
+            className="border-white/50 bg-transparent hover:bg-white/10"
           >
             <Link href={ROUTES.pricing}>{t("viewPricing")}</Link>
           </Button>
         </div>
-
-        {/* 보조: 이미 계정 있으면 로그인 */}
-        <p className="text-[15px] text-foreground/70 drop-shadow-sm">
-          {t("alreadyMember")}{" "}
-          <Link
-            href={ROUTES.login}
-            className="font-semibold text-foreground underline underline-offset-4 hover:text-primary"
-          >
-            {t("loginLink")}
-          </Link>
-        </p>
 
         {/* 스크롤 아래로 힌트 */}
         <div
