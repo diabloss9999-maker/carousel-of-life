@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
 import type { Character } from "@/lib/chat/characters";
 import { useCharacterImage } from "@/hooks/use-character-image";
@@ -66,8 +67,10 @@ export function CharacterImage({
 
   const mergedClass = className;
 
-  // 영상이 준비된 캐릭터는 video 로 렌더 — poster 로 정적 이미지가 먼저 깔린 뒤
-  // 영상이 로드되면 자연스럽게 교체된다.
+  // 영상이 준비된 캐릭터는 video 로 렌더.
+  // - 평소엔 poster 정적 이미지가 보임 (재생 정지 상태)
+  // - 마우스 호버 시에만 재생, 떼면 첫 프레임으로 리셋
+  // - 모바일(hover 없음)에선 poster 이미지가 그대로 표시됨
   if (videoBase) {
     const videoStyle: React.CSSProperties = fill
       ? {
@@ -80,22 +83,15 @@ export function CharacterImage({
       : mergedStyle;
 
     return (
-      <video
-        aria-label={imageAlt}
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="metadata"
+      <CharacterVideo
+        base={videoBase}
         poster={src}
+        ariaLabel={imageAlt}
         className={mergedClass || undefined}
         style={videoStyle}
         width={fill ? undefined : (width ?? DEFAULT_WIDTH)}
         height={fill ? undefined : (height ?? DEFAULT_HEIGHT)}
-      >
-        <source src={`${videoBase}.webm`} type="video/webm" />
-        <source src={`${videoBase}.mp4`} type="video/mp4" />
-      </video>
+      />
     );
   }
 
@@ -126,5 +122,68 @@ export function CharacterImage({
       quality={quality}
       style={mergedStyle}
     />
+  );
+}
+
+/**
+ * 호버 시에만 재생되는 캐릭터 video.
+ * - 평소: poster 정적 이미지, video 정지 상태
+ * - mouseEnter: play()
+ * - mouseLeave: pause() + currentTime=0 으로 첫 프레임 복귀
+ */
+interface CharacterVideoProps {
+  base: string;
+  poster: string;
+  ariaLabel: string;
+  className?: string;
+  style?: React.CSSProperties;
+  width?: number;
+  height?: number;
+}
+
+function CharacterVideo({
+  base,
+  poster,
+  ariaLabel,
+  className,
+  style,
+  width,
+  height,
+}: CharacterVideoProps) {
+  const ref = useRef<HTMLVideoElement>(null);
+
+  function handleEnter() {
+    const v = ref.current;
+    if (!v) return;
+    // 일부 브라우저(특히 사파리)에서 autoplay 정책에 따라 play() 가 Promise 거부할 수 있음 — silent catch.
+    void v.play().catch(() => undefined);
+  }
+
+  function handleLeave() {
+    const v = ref.current;
+    if (!v) return;
+    v.pause();
+    v.currentTime = 0;
+  }
+
+  return (
+    <video
+      ref={ref}
+      aria-label={ariaLabel}
+      loop
+      muted
+      playsInline
+      preload="metadata"
+      poster={poster}
+      className={className}
+      style={style}
+      width={width}
+      height={height}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+    >
+      <source src={`${base}.webm`} type="video/webm" />
+      <source src={`${base}.mp4`} type="video/mp4" />
+    </video>
   );
 }
