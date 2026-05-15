@@ -116,7 +116,9 @@
   },
   "landing": {
     "tagline": "The flow of stars, the revelation of cards, and your Four Pillars tell today's fate.",
+    "intro": "Nine AI shamans weave together pillars, tarot, and personality to read your day. Every day: 2 fortunes, 1 tarot card, 10 shaman messages — all free.",
     "freeHint": "Every day: 2 fortunes, 1 tarot card, 10 shaman messages — all free.",
+    "startFree": "Start free",
     "viewPricing": "See Plans",
     "valueProps": {
       "heading": "Why Carousel of Life",

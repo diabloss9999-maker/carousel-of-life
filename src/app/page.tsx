@@ -94,8 +94,8 @@ export default async function HomePage() {
         className="pointer-events-none fixed inset-0 -z-[5] bg-gradient-to-t from-background/30 via-transparent to-background/15"
       />
 
-      <section className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-start gap-7 px-6 pt-20 pb-40 text-center sm:justify-center sm:pt-12 sm:pb-12">
-<h1 className="font-mystic text-balance text-5xl font-semibold leading-tight tracking-tight text-foreground sm:text-6xl drop-shadow-[0_2px_8px_rgba(60,30,100,0.3)]">
+      <section className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-start gap-6 px-6 pt-20 pb-40 text-center sm:justify-center sm:pt-12 sm:pb-12">
+        <h1 className="font-mystic text-balance text-5xl font-semibold leading-tight tracking-tight text-foreground sm:text-6xl drop-shadow-[0_2px_8px_rgba(60,30,100,0.3)]">
           {siteConfig.name}
         </h1>
 
@@ -103,16 +103,28 @@ export default async function HomePage() {
           {t("tagline")}
         </p>
 
-        <p className="text-[15px] text-foreground/85 drop-shadow-sm mt-2">
-          {t("freeHint")}
+        {/* 페이지 설명 — 앱이 무엇을 하는지 한 단락 */}
+        <p className="text-balance text-[15px] leading-relaxed text-foreground/85 drop-shadow-sm max-w-lg">
+          {t("intro")}
         </p>
 
-        <Link
-          href={ROUTES.pricing}
-          className="text-[15px] text-foreground/80 underline underline-offset-4 hover:text-foreground"
-        >
-          {t("viewPricing")}
-        </Link>
+        {/* 두 CTA 나란히 — 무료 시작 + 유료 플랜 보기 */}
+        <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 mt-2">
+          <Button asChild size="lg" className="min-w-44 shadow-lg">
+            <Link href={ROUTES.login}>
+              {t("startFree")}
+              <ArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
+          </Button>
+          <Button
+            asChild
+            size="lg"
+            variant="outline"
+            className="min-w-44 border-white/40 bg-white/25 backdrop-blur-md hover:bg-white/35"
+          >
+            <Link href={ROUTES.pricing}>{t("viewPricing")}</Link>
+          </Button>
+        </div>
       </section>
 
       <ValuePropsSection />
