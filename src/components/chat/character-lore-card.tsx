@@ -145,10 +145,13 @@ export function CharacterLoreCard({
   adminMode = false,
 }: CharacterLoreCardProps) {
   const [openWorldIdx, setOpenWorldIdx] = useState<number | null>(null);
-  /** 동시에 한 캐릭터의 스토리만 펼치도록 부모에서 단일 상태로 관리. */
-  const [openCharacterId, setOpenCharacterId] = useState<CharacterId | null>(
-    null,
-  );
+  /**
+   * 동시에 한 캐릭터의 스토리만 펼치도록 부모에서 단일 상태로 관리.
+   * 동양 카테고리는 셋이 묶여 단일 행으로 표시되므로 그 행을 식별하기 위한
+   * 가상 키 "eastern-merged" 를 함께 허용한다.
+   */
+  type OpenStoryKey = CharacterId | "eastern-merged" | null;
+  const [openCharacterId, setOpenCharacterId] = useState<OpenStoryKey>(null);
 
   const tLore = useTranslations("worldLore");
   const tCat = useTranslations("characterSelect");
@@ -298,28 +301,51 @@ export function CharacterLoreCard({
                   ))}
                 </div>
 
-                {/* ── 캐릭터 스토리 챕터 (호감도 잠금/해금) ─────────── */}
+                {/* ── 캐릭터 스토리 챕터 (호감도 잠금/해금) ───────────
+                    동양은 셋이 같은 챕터를 공유하므로 한 줄만 렌더하고
+                    헤더는 "소령 · 현도 · 흑랑" 통합 라벨로 표시한다.
+                    진척도는 셋 중 최댓값 (한 명만 깊이 친해져도 모두 잠금 해제). */}
                 <div className="space-y-3 border-t border-white/5 pt-5">
                   <p className="text-[15px] uppercase tracking-widest text-muted-foreground/65">
                     {tLore("charactersSection")}
                   </p>
 
-                  {characterIds.map((id) => (
+                  {deco.world === "동양" ? (
                     <CharacterStoryAccordion
-                      key={id}
-                      characterId={id}
+                      key="eastern-merged"
+                      characterId={characterIds[0]}
+                      mergedCharacterIds={characterIds}
                       affinities={affinities}
                       accent={deco.accent}
                       adminMode={adminMode}
-                      chapters={stories[id]}
-                      isOpen={openCharacterId === id}
+                      chapters={stories[characterIds[0]]}
+                      isOpen={openCharacterId === "eastern-merged"}
                       onToggle={() =>
                         setOpenCharacterId(
-                          openCharacterId === id ? null : id,
+                          openCharacterId === "eastern-merged"
+                            ? null
+                            : "eastern-merged",
                         )
                       }
                     />
-                  ))}
+                  ) : (
+                    characterIds.map((id) => (
+                      <CharacterStoryAccordion
+                        key={id}
+                        characterId={id}
+                        affinities={affinities}
+                        accent={deco.accent}
+                        adminMode={adminMode}
+                        chapters={stories[id]}
+                        isOpen={openCharacterId === id}
+                        onToggle={() =>
+                          setOpenCharacterId(
+                            openCharacterId === id ? null : id,
+                          )
+                        }
+                      />
+                    ))
+                  )}
                 </div>
 
                 {/* ── 진실 루트 + 최종 챕터 ───────────────────────── */}
@@ -346,6 +372,12 @@ export function CharacterLoreCard({
 
 interface CharacterStoryAccordionProps {
   characterId: CharacterId;
+  /**
+   * 여러 캐릭터를 하나의 행으로 묶어 표시할 때 사용. 비어있으면 단일 캐릭터 모드.
+   * 진척도(level/unlockedCount) 는 묶인 캐릭터들 중 최댓값을 사용.
+   * 헤더 라벨은 "이름1 · 이름2 · 이름3" 형태로 표시.
+   */
+  mergedCharacterIds?: CharacterId[];
   affinities: Record<string, number>;
   accent: string;
   adminMode: boolean;
@@ -358,6 +390,7 @@ interface CharacterStoryAccordionProps {
 
 function CharacterStoryAccordion({
   characterId,
+  mergedCharacterIds,
   affinities,
   accent,
   adminMode,
@@ -371,12 +404,24 @@ function CharacterStoryAccordion({
 
   const tChar = useTranslations("characters");
   const tLore = useTranslations("worldLore");
-  const characterName = tChar(`${characterId}.name`);
-  const characterTitle = tChar(`${characterId}.title`);
-  const { level, unlockedCount } = getCharacterStatus(
-    characterId,
-    affinities,
-    adminMode,
+
+  // 통합 모드면 헤더에 모든 캐릭터 이름·title 노출, 진척도는 최댓값 사용.
+  const idsForHeader = mergedCharacterIds && mergedCharacterIds.length > 0
+    ? mergedCharacterIds
+    : [characterId];
+  const characterName = idsForHeader
+    .map((id) => tChar(`${id}.name`))
+    .join(" · ");
+  const characterTitle = idsForHeader.length > 1
+    ? "" // 통합 모드에선 title 생략 — 이름들만으로 충분
+    : tChar(`${characterId}.title`);
+  const statuses = idsForHeader.map((id) =>
+    getCharacterStatus(id, affinities, adminMode),
+  );
+  const level = statuses.reduce((max, s) => Math.max(max, s.level), 0);
+  const unlockedCount = statuses.reduce(
+    (max, s) => Math.max(max, s.unlockedCount),
+    0,
   );
   const hasContent = chapters.length > 0;
 
