@@ -133,22 +133,20 @@ body.ritual-night {
   background: url("/backgrounds/night.png") center / cover no-repeat fixed !important;
 }
 
-/* ─── 야간 모드: 모든 텍스트 강제 검정 ───
-   사용자 요청: 밤일 때도 글씨 전부 검정. CSS 변수만으로는 명시적 흰색 클래스
-   (text-white, text-zinc-50 등)를 못 덮어서 광범위 catchall 추가. */
-body[data-time="night"] *,
-body.ritual-night * {
+/* ─── 글로벌: 모든 텍스트 강제 검정 (낮·밤 무관) ───
+   사용자 요청: 글씨색 전부 검정. CSS 변수만으로는 명시적 흰색 클래스
+   (text-white, text-zinc-50 등)와 인라인 color 를 못 덮어서 광범위 catchall.
+   야간 모드 변경 시에도 catchall 이 그대로 적용된다 (selector 가 더 광범위). */
+body,
+body * {
   color: rgba(0, 0, 0, 0.92) !important;
 }
-/* 단, primary·destructive 버튼처럼 색배경 위 inverse 텍스트는 흰색 유지 — 가독성. */
-body[data-time="night"] .text-primary-foreground,
-body[data-time="night"] .text-destructive-foreground,
-body[data-time="night"] .text-accent-foreground,
-body[data-time="night"] [data-keep-color],
-body.ritual-night .text-primary-foreground,
-body.ritual-night .text-destructive-foreground,
-body.ritual-night .text-accent-foreground,
-body.ritual-night [data-keep-color] {
+/* 단, primary·destructive·accent 버튼처럼 색배경 위 inverse 텍스트는 흰색 유지 — 가독성.
+   data-keep-color 속성으로 개별 element 도 옵트인 가능. */
+body .text-primary-foreground,
+body .text-destructive-foreground,
+body .text-accent-foreground,
+body [data-keep-color] {
   color: rgba(255, 255, 255, 0.95) !important;
 }
 
