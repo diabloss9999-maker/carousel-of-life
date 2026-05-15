@@ -9,7 +9,7 @@
  *
  * 현재 상태:
  *   - 이세계 (카엘·루나·라엘): 전체 30챕터 + 진실 루트 + 최종 챕터 완성
- *   - 동양 (소령·현도·귀염): 추후 작성
+ *   - 동양 (소령·현도·흑랑): 추후 작성
  *   - 북유럽 (외르문드·비요른·헬가): 추후 작성
  */
 import type { CharacterCategory, CharacterId } from "@/lib/chat/characters";

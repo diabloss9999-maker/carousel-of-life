@@ -86,7 +86,7 @@ export function computeEntityMood(opts: {
       return base < 4 ? "calm" : "protective";
     }
     case "gwiyeom": {
-      // 귀염 — 예측불가. 자주 변동.
+      // 흑랑 — 예측불가. 자주 변동.
       if (fractureLevel >= 4) return seed < 0.3 ? "silent" : "curious";
       if (repeatedQuestionCount >= 3) return "distant";
       return base < 1

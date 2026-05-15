@@ -1,7 +1,7 @@
 /**
  * 오늘의 경계 카드 — 하루 결산 공유 이미지.
  *
- * GET /api/share/boundary?mood=tough&char=귀염&crack=2
+ * GET /api/share/boundary?mood=tough&char=흑랑&crack=2
  *     &pattern=달카드3번&date=2026.05.12
  *
  * "이거 본 사람 있음?" 을 유도하는 공유 카드.

@@ -17,11 +17,11 @@ const EVENT_TEMPLATES: { text: string; tone: WorldEvent["tone"] }[] = [
   { text: "라엘이 흐름을 안정시키려 하고 있습니다.", tone: "normal" },
   { text: "소령의 방울이 잠시 울렸습니다.", tone: "normal" },
   { text: "현도가 천기의 어긋남을 감지했습니다.", tone: "warning" },
-  { text: "귀염이 새로운 거래를 제안했습니다.", tone: "normal" },
+  { text: "흑랑이 새로운 거래를 제안했습니다.", tone: "normal" },
   // 충돌
   { text: "루나와 라엘의 충돌이 감지되었습니다.", tone: "warning" },
   { text: "카엘이 라엘의 봉인을 의심하기 시작했습니다.", tone: "warning" },
-  { text: "귀염과 현도가 같은 흐름을 두고 다투었습니다.", tone: "warning" },
+  { text: "흑랑과 현도가 같은 흐름을 두고 다투었습니다.", tone: "warning" },
   // 균열
   { text: "균열 수치가 비정상적으로 상승했습니다.", tone: "critical" },
   { text: "경계 너머에서 응답이 새어 나왔습니다.", tone: "critical" },

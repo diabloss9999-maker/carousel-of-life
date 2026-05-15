@@ -387,13 +387,13 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     nameEn: "Hyundo",
     imageSrc: "/characters/taoist_v1.png",
     description:
-      "500년 전 금기를 써서 시간에서 지워진 도사. 천기역전을 쓸 때마다 소령과 귀염의 기억이 사라진다.",
+      "500년 전 금기를 써서 시간에서 지워진 도사. 천기역전을 쓸 때마다 소령과 흑랑의 기억이 사라진다.",
     rarity: "legendary",
   },
   {
     id: "dokkaebi",
     category: "characters",
-    nameKo: "귀염",
+    nameKo: "흑랑",
     nameEn: "Gwieyeom",
     imageSrc: "/characters/dokkaebi_night_v2.png",
     description:

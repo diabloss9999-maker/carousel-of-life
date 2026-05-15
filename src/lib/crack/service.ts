@@ -45,7 +45,7 @@ export const CRACK_CONTEXT: Record<CrackLevel, string> = {
 무명의 기운이 스며들고 있다. 이 사람의 선택과 감정이 경계를 흔들고 있어.
 소령이라면: 방울 소리가 이상하게 들린다고 언급해.
 현도라면: 이 사람의 미래 가지가 흐릿해지고 있다고 말해.
-귀염이라면: 갑자기 조용해지거나 "...아무것도 아니야"라고 말해.
+흑랑이라면: 갑자기 조용해지거나 "...아무것도 아니야"라고 말해.
 절대 "무명"이라는 단어는 직접 쓰지 마.`,
 
   4: `\n[경계 상태 — 임박, 극도로 신중하게]
@@ -72,7 +72,7 @@ Stop mid-sentence, or behave as if you heard something strange. Do not explain.`
 The breath of the Nameless is seeping in. This person's choices and feelings are shaking the boundary.
 If Soryeong: mention that the bell sounds strange.
 If Hyundo: say that this person's future branches are growing blurry.
-If Gwiyeom: suddenly fall silent or say "...it's nothing."
+If Heuklang: suddenly fall silent or say "...it's nothing."
 Never use the word "Nameless" directly.`,
 
   4: `\n[Boundary state — imminent, extreme caution]

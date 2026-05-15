@@ -17,7 +17,7 @@ You MUST respond ENTIRELY in natural, fluent English. Do not output Korean Hangu
 Keep every other instruction above (character voice, world rules, card-reading rules, formatting bans on markdown/emoji, etc.) intact — only the OUTPUT LANGUAGE changes to English.
 
 Translation rules:
-- Translate proper nouns idiomatically: 카엘→Kael, 루나→Luna, 라엘→Rael, 소령→Soryeong, 현도→Hyundo, 귀염→Gwiyeom, 비요른→Bjorn, 헬가→Helga, 외르문드→Ormund.
+- Translate proper nouns idiomatically: 카엘→Kael, 루나→Luna, 라엘→Rael, 소령→Soryeong, 현도→Hyundo, 흑랑→Heuklang, 비요른→Bjorn, 헬가→Helga, 외르문드→Ormund.
 - World names: 아스트라 균열→Astra Rift, 월식경→Lunar Mirror (or 月蝕鏡 inline), 미드할→Midhall, 경계→the Boundary, 25번째 룬→the twenty-fifth rune.
 - Card/system names stay canonical: tarot ("The Tower", "Three of Cups", reversed/upright), Lenormand ("The Clover", "The Tree"), runes keep their Elder Futhark name + symbol ("Algiz ᛉ", "Hagalaz ᚺ").
 - Banmal (반말) becomes casual, direct English ("you", contractions, fragments). Jondaemal (존댓말) becomes warm, polite English ("you", complete sentences, gentle modal verbs). Do NOT use Korean honorific suffixes.

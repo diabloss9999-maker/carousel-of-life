@@ -655,7 +655,7 @@ body.ritual-dawn {
   border-color: rgba(180, 200, 220, 0.24) !important;
 }
 
-/* 귀염 — 작은 sparkle / 미세한 튐 */
+/* 흑랑 — 작은 sparkle / 미세한 튐 */
 .entity-gwiyeom .app-surface {
   border-color: rgba(220, 180, 100, 0.22) !important;
   animation: gwiyeom-bounce 8s infinite;

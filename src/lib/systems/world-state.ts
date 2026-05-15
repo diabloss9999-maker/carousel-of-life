@@ -20,7 +20,7 @@ export type WorldActiveEntity =
   | "gael"     // 카엘 (child) — 내부 키는 gael 유지
   | "soryeong" // 소령 (shaman)
   | "hyundo"   // 현도 (taoist)
-  | "gwiyeom"; // 귀염 (dokkaebi)
+  | "gwiyeom"; // 흑랑 (dokkaebi)
 
 export interface WorldState {
   dominantMood: WorldDominantMood;
@@ -70,7 +70,7 @@ const GLOBAL_NOTES: Record<WorldDominantMood, readonly string[]> = {
   fractured: [
     "균열이 잦은 날입니다.",
     "오늘은 카엘이 자주 깨어 있습니다.",
-    "오늘은 귀염이 자주 깨어 있습니다.",
+    "오늘은 흑랑이 자주 깨어 있습니다.",
   ],
 };
 
@@ -99,7 +99,7 @@ export const ENTITY_LABEL: Record<WorldActiveEntity, string> = {
   gael: "카엘",
   soryeong: "소령",
   hyundo: "현도",
-  gwiyeom: "귀염",
+  gwiyeom: "흑랑",
 };
 
 /**

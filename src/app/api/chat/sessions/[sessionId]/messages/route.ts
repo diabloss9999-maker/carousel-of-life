@@ -54,7 +54,7 @@ const bodySchema = z.object({
  *  선     (-1): 소령 · 헬가
  *  중립    (0): 루나 · 현도 · 외르문드
  *  악     (+1): 카엘 · 비요른
- *  강한 악 (+2): 귀염
+ *  강한 악 (+2): 흑랑
  */
 const CHARACTER_CRACK_DELTA: Record<CharacterId, number> = {
   sage:       -2, // 라엘 — 강한 선
@@ -65,7 +65,7 @@ const CHARACTER_CRACK_DELTA: Record<CharacterId, number> = {
   god:         0, // 외르문드
   child:      +1, // 카엘
   hunter:     +1, // 비요른
-  dokkaebi:   +2, // 귀염 — 강한 악
+  dokkaebi:   +2, // 흑랑 — 강한 악
 };
 
 /**
