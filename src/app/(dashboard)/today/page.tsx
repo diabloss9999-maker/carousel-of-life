@@ -42,7 +42,6 @@ import { getCrackScore } from "@/lib/crack/service";
 import { getHomeHiddenText } from "@/lib/observe/hidden-events";
 import { CrackAtmosphere } from "@/components/crack/crack-atmosphere";
 import { WorldStatusPanel } from "@/components/world/world-status-panel";
-import { EventLogFeed } from "@/components/world/event-log-feed";
 import { checkInStreak } from "@/lib/streak/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { formatKoreanDate } from "@/lib/utils";
@@ -169,8 +168,6 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
 
       {/* 오늘 기분 — 운세 생성 전부터 페이지 진입 시 바로 입력 가능 */}
       <MoodCapture todayMood={todayMood?.mood ?? null} source="today_top" />
-
-      <EventLogFeed crackLevel={crackData.level} />
 
       {/* 주술사 호출 — 먼저 말을 건다 */}
       <ShamanCall />
