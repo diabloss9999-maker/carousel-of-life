@@ -90,7 +90,7 @@ export async function generateTripleAnalysisAction(): Promise<TripleAnalysisStat
     const userPrompt = `사용자 정보:
 - 생년월일: ${profile.birthDate}
 - 성별: ${profile.gender}
-- MBTI: ${profile.mbti}
+- 성격유형: ${profile.mbti}
 - 별자리: ${zodiac.ko} (${zodiac.dateRange})
 - ${sajuLine}
 
@@ -178,7 +178,7 @@ export async function generateStressProfileAction(): Promise<StressProfileState>
     const userPrompt = `사용자 정보:
 - 생년월일: ${profile.birthDate}
 - 성별: ${profile.gender}
-- MBTI: ${profile.mbti}
+- 성격유형: ${profile.mbti}
 
 [지시]
 ${profile.mbti} 유형이 스트레스를 받을 때 어떻게 무너지는지 + 빠른 회복법을 분석해줘.
@@ -263,7 +263,7 @@ export async function generateCareerFitAction(): Promise<CareerFitState> {
     const userPrompt = `사용자 정보:
 - 생년월일: ${profile.birthDate}
 - 성별: ${profile.gender}
-- MBTI: ${profile.mbti}
+- 성격유형: ${profile.mbti}
 
 [지시]
 ${profile.mbti} 유형 기반으로 어떤 업무 환경·직군이 잘 맞는지 심층 리포트를 작성해줘.

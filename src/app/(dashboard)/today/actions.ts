@@ -134,7 +134,7 @@ function todayWeekdayKst(): (typeof WEEKDAY_ENUMS)[number] {
  * 직장 운세 라이트 전용 — 4개 섹션 종합 리포트(에너지/타이밍/주간흐름/관계운) + 팁 3가지를 AI로 생성한다.
  *
  * - 라이트 구독자에게만 동작한다.
- * - 사용자 MBTI/생년월일/성별을 기반으로 개인화된 리포트를 생성한다.
+ * - 사용자 성격유형/생년월일/성별을 기반으로 개인화된 리포트를 생성한다.
  * - 동일 일자에 이미 생성된 리포트가 있으면 캐시를 재사용한다.
  */
 export async function generateCareerTipsAction(): Promise<CareerTipsState> {
@@ -173,13 +173,13 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
     // AI 생성
     const mbti = profile.mbti ?? "알 수 없음";
     const userPrompt = `사용자 정보:
-- MBTI: ${mbti}
+- 성격유형: ${mbti}
 - 생년월일: ${profile.birthDate}
 - 성별: ${profile.gender}
 - 오늘 날짜: ${today} (요일코드: ${weekday})
 
 이 사용자의 오늘 직장 운세 종합 리포트를 작성해줘.
-구체적이고 실천 가능하게, 이 사람의 MBTI 성격과 오늘 요일을 반영해서 작성해.
+구체적이고 실천 가능하게, 이 사람의 성격유형과 오늘 요일을 반영해서 작성해.
 모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
 
 반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력.
@@ -264,7 +264,7 @@ export interface HealthWorkoutState {
  * 건강 운세 라이트 — 오늘의 맞춤 맨몸 운동 3가지를 AI 로 생성한다.
  *
  * - 라이트 구독자에게만 동작한다.
- * - MBTI/생년월일/성별 기반 맞춤 추천.
+ * - 성격유형/생년월일/성별 기반 맞춤 추천.
  * - 동일 일자 캐시 재사용.
  */
 export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState> {
@@ -297,7 +297,7 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
 
     const mbti = profile.mbti ?? "알 수 없음";
     const userPrompt = `사용자 정보:
-- MBTI: ${mbti}
+- 성격유형: ${mbti}
 - 생년월일: ${profile.birthDate}
 - 성별: ${profile.gender}
 
@@ -375,7 +375,7 @@ export interface StudyTipsState {
 }
 
 /**
- * 학업 운세 라이트 — MBTI 맞춤 집중력 팁 3가지를 AI 로 생성한다.
+ * 학업 운세 라이트 — 성격유형 맞춤 집중력 팁 3가지를 AI 로 생성한다.
  *
  * - 라이트 구독자에게만 동작한다.
  * - 동일 일자 캐시 재사용.
@@ -410,11 +410,11 @@ export async function generateStudyTipsAction(): Promise<StudyTipsState> {
 
     const mbti = profile.mbti ?? "알 수 없음";
     const userPrompt = `사용자 정보:
-- MBTI: ${mbti}
+- 성격유형: ${mbti}
 - 생년월일: ${profile.birthDate}
 - 성별: ${profile.gender}
 
-이 사람의 MBTI 성격에 맞는 "집중력 높이는 공부 팁" 3가지를 알려줘.
+이 사람의 성격유형에 맞는 "집중력 높이는 공부 팁" 3가지를 알려줘.
 구체적이고 바로 실천 가능한 방법으로.
 모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
 
@@ -472,7 +472,7 @@ export interface LovePremiumState {
 }
 
 /**
- * 사랑 운세 라이트 — 오늘 전할 한마디 + MBTI 기반 매력 팁 3가지를 AI 로 생성한다.
+ * 사랑 운세 라이트 — 오늘 전할 한마디 + 성격유형 기반 매력 팁 3가지를 AI 로 생성한다.
  *
  * - 라이트 구독자에게만 동작한다.
  * - 동일 일자 캐시 재사용.
@@ -507,7 +507,7 @@ export async function generateLovePremiumAction(): Promise<LovePremiumState> {
 
     const mbti = profile.mbti ?? "알 수 없음";
     const userPrompt = `사용자 정보:
-- MBTI: ${mbti}
+- 성격유형: ${mbti}
 - 생년월일: ${profile.birthDate}
 - 성별: ${profile.gender}
 
@@ -604,7 +604,7 @@ export async function generateGeneralPremiumAction(): Promise<GeneralPremiumStat
 
     const mbti = profile.mbti ?? "알 수 없음";
     const userPrompt = `사용자 정보:
-- MBTI: ${mbti}
+- 성격유형: ${mbti}
 - 생년월일: ${profile.birthDate}
 - 성별: ${profile.gender}
 

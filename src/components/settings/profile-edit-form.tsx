@@ -82,7 +82,7 @@ export function ProfileEditForm({
 
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
-          <Label htmlFor="edit-mbti">MBTI</Label>
+          <Label htmlFor="edit-mbti">{tForm("mbti")}</Label>
           <Input
             id="edit-mbti"
             name="mbti"

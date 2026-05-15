@@ -845,10 +845,10 @@
   },
   "studyReport": {
     "title": "Tips to sharpen focus",
-    "lockBody": "Study strategy and environment design tailored to your MBTI.",
+    "lockBody": "Study strategy and environment design tailored to your personality type.",
     "lockBullet1": "Subjects you'll absorb best today",
     "lockBullet2": "Optimal study time",
-    "lockBullet3": "MBTI-tailored study method",
+    "lockBullet3": "Personality-tailored study method",
     "getTipsCta": "Get tips"
   },
   "loveReport": {
@@ -1206,6 +1206,7 @@
     "genderMale": "Male",
     "genderFemale": "Female",
     "genderOther": "Other",
+    "mbti": "Personality type",
     "mbtiPlaceholder": "e.g., ENFP",
     "upgradeCta": "Go Light for unlimited",
     "doneNotice": "✓ Done! Check today's bond below.",
@@ -1238,12 +1239,12 @@
   },
   "mbtiCompat": {
     "heading": "Personality bond",
-    "body": "Pick two MBTI types and compare their fit.",
-    "myMbti": "My MBTI",
+    "body": "Pick two personality types and compare their fit.",
+    "myMbti": "My type",
     "myMbtiPlaceholder": "e.g., ENFP",
     "myMbtiHint": "Enter exactly four letters (e.g., INFJ).",
-    "partnerMbti": "Partner's MBTI",
-    "pickPartner": "Pick the partner's MBTI.",
+    "partnerMbti": "Partner type",
+    "pickPartner": "Pick your partner type.",
     "score": "{n} pts"
   },
   "compatibilityCard": {

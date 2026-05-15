@@ -126,7 +126,7 @@ export function CompatibilityForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="partnerMbti">MBTI</Label>
+            <Label htmlFor="partnerMbti">{t("mbti")}</Label>
             <Input
               id="partnerMbti"
               name="partnerMbti"

@@ -845,10 +845,10 @@
   },
   "studyReport": {
     "title": "집중력 높이는 공부 팁",
-    "lockBody": "나의 MBTI 성격에 맞는 학습 전략 + 환경 조성법.",
+    "lockBody": "나의 성격유형에 맞는 학습 전략 + 환경 조성법.",
     "lockBullet1": "오늘 가장 잘 흡수되는 과목",
     "lockBullet2": "최적 학습 시간",
-    "lockBullet3": "MBTI 맞춤 학습법",
+    "lockBullet3": "성격유형 맞춤 학습법",
     "getTipsCta": "팁 받기"
   },
   "loveReport": {
@@ -1206,6 +1206,7 @@
     "genderMale": "남",
     "genderFemale": "여",
     "genderOther": "기타",
+    "mbti": "성격유형",
     "mbtiPlaceholder": "예: ENFP",
     "upgradeCta": "라이트로 무제한",
     "doneNotice": "✓ 완료! 아래 오늘의 궁합을 확인해줘.",
@@ -1238,12 +1239,12 @@
   },
   "mbtiCompat": {
     "heading": "성격유형 궁합",
-    "body": "MBTI 두 유형을 골라 어울림을 비교해봐.",
-    "myMbti": "내 MBTI",
+    "body": "성격유형 두 가지를 골라 어울림을 비교해봐.",
+    "myMbti": "내 성격유형",
     "myMbtiPlaceholder": "예: ENFP",
     "myMbtiHint": "네 글자만 입력해 (예: INFJ)",
-    "partnerMbti": "상대 MBTI",
-    "pickPartner": "상대 MBTI 를 골라봐.",
+    "partnerMbti": "상대 성격유형",
+    "pickPartner": "상대 성격유형을 골라봐.",
     "score": "{n}점"
   },
   "compatibilityCard": {

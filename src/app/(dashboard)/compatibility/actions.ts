@@ -45,7 +45,7 @@ const partnerSchema = z.object({
     .string()
     .trim()
     .toUpperCase()
-    .regex(MBTI_PATTERN, "MBTI 네 글자를 정확히 적어줘.")
+    .regex(MBTI_PATTERN, "성격유형 네 글자를 정확히 적어줘.")
     .optional()
     .or(z.literal("")),
 });
@@ -144,7 +144,7 @@ const twoPersonSchema = z.object({
     .string()
     .trim()
     .toUpperCase()
-    .regex(MBTI_PATTERN, "첫 번째 사람의 MBTI 네 글자를 정확히 적어줘.")
+    .regex(MBTI_PATTERN, "첫 번째 사람의 성격유형 네 글자를 정확히 적어줘.")
     .optional()
     .or(z.literal("")),
   bName: z.string().min(1, "두 번째 사람의 이름을 알려줘.").max(40),
@@ -157,7 +157,7 @@ const twoPersonSchema = z.object({
     .string()
     .trim()
     .toUpperCase()
-    .regex(MBTI_PATTERN, "두 번째 사람의 MBTI 네 글자를 정확히 적어줘.")
+    .regex(MBTI_PATTERN, "두 번째 사람의 성격유형 네 글자를 정확히 적어줘.")
     .optional()
     .or(z.literal("")),
 });
@@ -288,13 +288,13 @@ function describePair(opts: {
   lines.push(`이름: ${opts.aName}`);
   lines.push(`생년월일: ${opts.aBirthDate}`);
   if (opts.aGender) lines.push(`성별: ${opts.aGender}`);
-  if (opts.aMbti) lines.push(`MBTI: ${opts.aMbti}`);
+  if (opts.aMbti) lines.push(`성격유형: ${opts.aMbti}`);
   lines.push("");
   lines.push(`[B]`);
   lines.push(`이름: ${opts.bName}`);
   lines.push(`생년월일: ${opts.bBirthDate}`);
   if (opts.bGender) lines.push(`성별: ${opts.bGender}`);
-  if (opts.bMbti) lines.push(`MBTI: ${opts.bMbti}`);
+  if (opts.bMbti) lines.push(`성격유형: ${opts.bMbti}`);
   return lines.join("\n");
 }
 
@@ -331,7 +331,7 @@ export async function generateCompatPurposeAction(
 
 [지시]
 두 사람이 각각 다른 관계 목적(연애·결혼·비즈니스·친구)에서 얼마나 잘 맞는지 0~100점으로 분석해줘.
-사주·별자리·MBTI(있다면)를 종합적으로 고려해.
+사주·별자리·성격유형(있다면)를 종합적으로 고려해.
 모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
 
 반드시 아래 JSON 형식으로만 응답해. 마크다운·설명 없이 JSON만:
@@ -457,8 +457,8 @@ export async function generateCompatTodayAction(
     })();
 
     const mbtiLine: string[] = [];
-    if (aMbti) mbtiLine.push(`A MBTI: ${aMbti}`);
-    if (bMbti) mbtiLine.push(`B MBTI: ${bMbti}`);
+    if (aMbti) mbtiLine.push(`A 성격유형: ${aMbti}`);
+    if (bMbti) mbtiLine.push(`B 성격유형: ${bMbti}`);
 
     const userPrompt = `[A] ${aName}
 [B] ${bName}

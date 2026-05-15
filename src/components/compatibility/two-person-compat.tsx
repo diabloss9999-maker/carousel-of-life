@@ -215,7 +215,7 @@ function PersonFieldset({ title, prefix, disabled }: PersonFieldsetProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor={id("Mbti")}>MBTI</Label>
+        <Label htmlFor={id("Mbti")}>{tForm("mbti")}</Label>
         <Input
           id={id("Mbti")}
           name={name("Mbti")}
