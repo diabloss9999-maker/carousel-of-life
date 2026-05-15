@@ -23,14 +23,14 @@ export function CrackAtmosphere({
   const t = useTranslations("crackAtmosphere");
   if (crackLevel < 2) {
     return (
-      <p className="text-[10px] uppercase tracking-widest text-muted-foreground/50">
+      <p className="text-xs uppercase tracking-widest text-muted-foreground/50">
         {t("boundaryWithDate", { date: todayStr })}
       </p>
     );
   }
 
   return (
-    <p className="text-[10px] uppercase tracking-widest text-muted-foreground/50">
+    <p className="text-xs uppercase tracking-widest text-muted-foreground/50">
       <GlitchText crackLevel={crackLevel} probability={0.25}>
         {t("boundaryShort")}
       </GlitchText>

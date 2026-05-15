@@ -40,7 +40,7 @@ function WorkoutList({
               {i + 1}
             </span>
             <p className="font-mystic font-semibold text-sm">{w.name}</p>
-            <span className="ml-auto rounded-full bg-accent/15 px-2 py-0.5 text-[10px] text-accent font-medium">
+            <span className="ml-auto rounded-full bg-accent/15 px-2 py-0.5 text-xs text-accent font-medium">
               {w.reps}
             </span>
           </div>
@@ -89,7 +89,7 @@ export function HealthWorkout({ subscribed }: HealthWorkoutProps) {
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" aria-hidden />
             {t("title")}
-            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
+            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-xs font-medium text-primary">
               {tPrem("lightBadge")}
             </span>
           </CardTitle>

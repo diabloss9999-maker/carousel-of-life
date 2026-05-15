@@ -50,11 +50,11 @@ export function MoodCapture({ todayMood, source = "fortune" }: MoodCaptureProps)
   return (
     <div className="rounded-xl border border-border/20 bg-muted/10 px-4 py-3 space-y-2">
       <div className="flex items-center justify-between">
-        <p className="text-[11px] text-muted-foreground/60 tracking-wide">
+        <p className="text-xs text-muted-foreground/60 tracking-wide">
           {t("moodPrompt")}
         </p>
         {done && (
-          <span className="flex items-center gap-1 text-[10px] text-muted-foreground/50">
+          <span className="flex items-center gap-1 text-xs text-muted-foreground/50">
             <Check className="h-3 w-3" />
             {t("moodSaved")}
           </span>
@@ -84,7 +84,7 @@ export function MoodCapture({ todayMood, source = "fortune" }: MoodCaptureProps)
               )}
             >
               <span className="text-sm font-bold leading-none">{symbol}</span>
-              <span className="text-[9px] leading-none">{label}</span>
+              <span className="text-xs leading-none">{label}</span>
             </button>
           );
         })}

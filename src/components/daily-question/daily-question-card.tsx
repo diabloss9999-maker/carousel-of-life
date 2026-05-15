@@ -130,7 +130,7 @@ export function DailyQuestionCard({ characterId, question }: DailyQuestionCardPr
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <span className={cn(
-                "rounded border px-2 py-0.5 text-[9px] font-bold tracking-widest uppercase",
+                "rounded border px-2 py-0.5 text-xs font-bold tracking-widest uppercase",
                 theme.badge, theme.badgeText,
               )}>
                 {worldLabel} · {worldSub}
@@ -140,13 +140,13 @@ export function DailyQuestionCard({ characterId, question }: DailyQuestionCardPr
               <p className={cn("font-mystic text-lg font-bold leading-none", theme.accent)}>
                 {name}
               </p>
-              <p className="text-[10px] text-muted-foreground mt-0.5">{title}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{title}</p>
             </div>
           </div>
 
           {/* 중간: 오늘의 질문 */}
           <div className="space-y-1">
-            <p className="text-[9px] uppercase tracking-widest text-muted-foreground/50">{t("eyebrow")}</p>
+            <p className="text-xs uppercase tracking-widest text-muted-foreground/50">{t("eyebrow")}</p>
             <p className="font-mystic text-sm leading-relaxed text-foreground/90">
               {question}
             </p>

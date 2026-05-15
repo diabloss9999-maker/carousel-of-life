@@ -56,7 +56,7 @@ export async function CategoryTabs({ current, subscribed = false }: CategoryTabs
             {isPremium && (
               <span
                 className={cn(
-                  "rounded-full px-1.5 py-0.5 text-[9px] font-bold tracking-wide",
+                  "rounded-full px-1.5 py-0.5 text-xs font-bold tracking-wide",
                   isActive
                     ? "bg-white/25 text-white"
                     : locked

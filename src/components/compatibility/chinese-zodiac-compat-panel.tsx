@@ -87,7 +87,7 @@ export function ChineseZodiacCompatPanel({
                 aria-pressed={selected}
               >
                 <span className="block text-base">{z.animal}</span>
-                <span className="mt-0.5 block text-[10px] text-muted-foreground">
+                <span className="mt-0.5 block text-xs text-muted-foreground">
                   {tName(z.id)}
                 </span>
               </button>
@@ -104,7 +104,7 @@ export function ChineseZodiacCompatPanel({
                 </p>
                 <span
                   className={cn(
-                    "rounded-full px-2 py-0.5 text-[10px] font-medium",
+                    "rounded-full px-2 py-0.5 text-xs font-medium",
                     RELATION_TONE[result.relationKind],
                   )}
                 >

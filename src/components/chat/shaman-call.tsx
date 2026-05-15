@@ -86,7 +86,7 @@ export function ShamanCall() {
           <span className="font-mystic text-sm font-bold text-foreground">
             {name}
           </span>
-          <span className="text-[10px] text-muted-foreground">
+          <span className="text-xs text-muted-foreground">
             · {title}
           </span>
         </div>

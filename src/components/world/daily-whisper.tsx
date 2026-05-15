@@ -60,7 +60,7 @@ export function DailyWhisper() {
         zIndex: 8,
         pointerEvents: "none",
         opacity: 0,
-        fontSize: "11px",
+        fontSize: "12px",
         letterSpacing: "0.14em",
         color: "var(--ritual-muted, rgba(48,39,55,0.30))",
         fontFamily: "var(--font-serif)",

@@ -155,7 +155,7 @@ export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
             <span
               key={p.date}
               className={cn(
-                "text-[8px] tabular-nums leading-none",
+                "text-xs tabular-nums leading-none",
                 isLast ? "text-foreground/80 font-medium" : "text-muted-foreground/65",
               )}
             >

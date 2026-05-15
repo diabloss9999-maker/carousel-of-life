@@ -69,15 +69,15 @@ function RuneCell({
           sizes="(max-width: 640px) 176px, 224px"
         />
       </div>
-      <p className="text-center text-[9px] text-muted-foreground">
+      <p className="text-center text-xs text-muted-foreground">
         {entry.position}
       </p>
-      <p className="text-center text-[9px] font-medium text-foreground/80">
+      <p className="text-center text-xs font-medium text-foreground/80">
         {rune.symbol} {rune.nameKo}
         {entry.isReversed ? " ⤵" : ""}
       </p>
       {entry.isReversed ? (
-        <span className="text-[8px] text-amber-300/80">역방향</span>
+        <span className="text-xs text-amber-300/80">역방향</span>
       ) : null}
     </div>
   );

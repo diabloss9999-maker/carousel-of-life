@@ -71,7 +71,7 @@ export function ObservationFailureNote() {
         right: "6vw",
         zIndex: 8,
         pointerEvents: "none",
-        fontSize: "11px",
+        fontSize: "12px",
         letterSpacing: "0.14em",
         color: "rgba(180,180,200,0.46)",
         fontFamily: "var(--font-serif)",

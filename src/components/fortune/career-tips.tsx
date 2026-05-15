@@ -98,7 +98,7 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" aria-hidden />
             {t("title")}
-            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
+            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-xs font-medium text-primary">
               {tPrem("lightBadge")}
             </span>
           </CardTitle>
@@ -261,8 +261,8 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
                     <span
                       className={
                         isToday
-                          ? "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground"
-                          : "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-border/60 text-[11px] font-medium text-muted-foreground"
+                          ? "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground"
+                          : "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-border/60 text-xs font-medium text-muted-foreground"
                       }
                     >
                       {dayLabel}

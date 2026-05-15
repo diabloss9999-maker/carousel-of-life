@@ -482,7 +482,7 @@ body.ritual-night .ritual-chat-textarea {
   border: 1px solid rgba(122,169,161,0.28);
   background: rgba(255,255,255,0.08);
   color: rgba(246,239,220,0.72);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.08em;
 }
 .ritual-status-badge::before {

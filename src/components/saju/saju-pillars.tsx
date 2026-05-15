@@ -97,7 +97,7 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
               {t("subheading")}
             </CardDescription>
           </div>
-          <div className="hidden rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-medium text-foreground/80 sm:block">
+          <div className="hidden rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-foreground/80 sm:block">
             四柱
           </div>
         </div>
@@ -117,10 +117,10 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
                 className="relative flex min-w-0 flex-col items-center gap-2 rounded-xl border border-amber-200/65 bg-white/42 px-1.5 py-3 text-center shadow-[inset_0_1px_0_rgb(255_255_255/0.55),0_10px_30px_oklch(0.18_0.04_55/0.08)] dark:border-amber-200/10 dark:bg-white/[0.045] sm:gap-3 sm:px-3 sm:py-4"
               >
                 <div className="space-y-0.5">
-                  <span className="block text-[11px] font-semibold text-foreground">
+                  <span className="block text-xs font-semibold text-foreground">
                     {t(labelKey.label as "pillarYear" | "pillarMonth" | "pillarDay" | "pillarHour")}
                   </span>
-                  <span className="block text-[10px] text-muted-foreground">
+                  <span className="block text-xs text-muted-foreground">
                     {t(labelKey.desc as "pillarYearSub" | "pillarMonthSub" | "pillarDaySub" | "pillarHourSub")}
                   </span>
                 </div>
@@ -164,7 +164,7 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
           </p>
         ) : null}
 
-        <p className="mt-3 text-center text-[11px] text-muted-foreground">
+        <p className="mt-3 text-center text-xs text-muted-foreground">
           {t("tapHint")}
         </p>
       </CardContent>
@@ -290,12 +290,12 @@ function CharPopover({
         <span className="text-sm text-stone-500 dark:text-amber-100/60">
           {meaning.ko}
         </span>
-        <span className="ml-auto rounded-full bg-amber-200/45 px-2 py-0.5 text-[10px] text-amber-900 dark:bg-amber-200/10 dark:text-amber-100/80">
+        <span className="ml-auto rounded-full bg-amber-200/45 px-2 py-0.5 text-xs text-amber-900 dark:bg-amber-200/10 dark:text-amber-100/80">
           {kind === "stem" ? t("popoverStem") : t("popoverBranch")}
         </span>
       </div>
 
-      <dl className="mt-2 grid grid-cols-2 gap-x-2 gap-y-1 text-[11px]">
+      <dl className="mt-2 grid grid-cols-2 gap-x-2 gap-y-1 text-xs">
         <div className="flex items-center gap-1">
           <dt className="text-stone-500 dark:text-amber-100/50">{t("yinYang")}</dt>
           <dd className="font-medium">{polarityLabel}</dd>
@@ -323,7 +323,7 @@ function CharPopover({
         )}
       </dl>
 
-      <p className="mt-2 text-[11px] leading-relaxed text-stone-600 dark:text-amber-100/65">
+      <p className="mt-2 text-xs leading-relaxed text-stone-600 dark:text-amber-100/65">
         {kind === "branch" ? tm(`branch_${meaning.char}_description`) : tm(`stem_${meaning.char}_description`)}
       </p>
     </div>

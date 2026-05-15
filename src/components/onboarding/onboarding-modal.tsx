@@ -200,7 +200,7 @@ export function OnboardingModal() {
                         <p className="font-mystic text-xs font-bold text-white">{name}</p>
                       </div>
                     </div>
-                    <p className="text-[10px] text-white/50 leading-tight">{hook}</p>
+                    <p className="text-xs text-white/50 leading-tight">{hook}</p>
                   </div>
                 );
               })}

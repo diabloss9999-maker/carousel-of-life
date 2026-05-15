@@ -132,7 +132,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           {(() => {
             const hidden = getHomeHiddenText(crackData.level, locale);
             return hidden ? (
-              <p className="text-[9px] text-muted-foreground/50 tracking-widest mt-0.5 font-mystic italic">
+              <p className="text-xs text-muted-foreground/50 tracking-widest mt-0.5 font-mystic italic">
                 {hidden}
               </p>
             ) : null;
@@ -180,7 +180,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
         >
           <BookMarked className="h-4 w-4 text-accent" aria-hidden />
           <span className="font-mystic text-sm font-semibold">{tExtras("archive")}</span>
-          <span className="text-[10px] text-muted-foreground leading-tight">{tExtras("archiveSub")}</span>
+          <span className="text-xs text-muted-foreground leading-tight">{tExtras("archiveSub")}</span>
         </Link>
         <Link
           href={ROUTES.world as Route}
@@ -188,7 +188,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
         >
           <Globe2 className="h-4 w-4 text-accent" aria-hidden />
           <span className="font-mystic text-sm font-semibold">{tExtras("world")}</span>
-          <span className="text-[10px] text-muted-foreground leading-tight">{tExtras("worldSub")}</span>
+          <span className="text-xs text-muted-foreground leading-tight">{tExtras("worldSub")}</span>
         </Link>
         <Link
           href={ROUTES.history}
@@ -197,7 +197,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           <div className="flex items-center gap-2 w-full">
             <Flame className="h-4 w-4 text-accent" aria-hidden />
             {streakResult.bonusGachaCredits > 0 && (
-              <span className="ml-auto flex items-center gap-0.5 rounded-full bg-primary/15 px-1.5 py-0.5 text-[9px] font-bold text-primary">
+              <span className="ml-auto flex items-center gap-0.5 rounded-full bg-primary/15 px-1.5 py-0.5 text-xs font-bold text-primary">
                 <Gift className="h-2.5 w-2.5" aria-hidden />
                 +{streakResult.bonusGachaCredits}
               </span>
@@ -206,7 +206,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           <span className="font-mystic text-sm font-semibold tabular-nums">
             {tExtras("streakDaysRow", { n: streakResult.currentStreak })}
           </span>
-          <span className="text-[10px] text-muted-foreground leading-tight">
+          <span className="text-xs text-muted-foreground leading-tight">
             {streakResult.currentStreak >= 3 ? tExtras("streakActive") : tExtras("streakNew")}
           </span>
         </Link>

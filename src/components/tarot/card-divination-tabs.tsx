@@ -57,7 +57,7 @@ export function CardDivinationTabs({
             >
               <span className="text-sm font-medium whitespace-nowrap">{tab.label}</span>
               <span className={cn(
-                "text-[9px] whitespace-nowrap leading-none mt-0.5",
+                "text-xs whitespace-nowrap leading-none mt-0.5",
                 isActive ? "text-primary-foreground/70" : "text-muted-foreground/50",
               )}>{tab.desc}</span>
             </button>

@@ -168,7 +168,7 @@ function PillarBreakdownCard({ breakdown }: PillarBreakdownCardProps) {
               </div>
               {stem && (
                 <div className="space-y-0.5">
-                  <p className="text-[11px] uppercase tracking-widest text-muted-foreground/65">
+                  <p className="text-xs uppercase tracking-widest text-muted-foreground/65">
                     {t("stemRevealed")}
                   </p>
                   <p className="font-mystic whitespace-pre-line text-sm leading-relaxed text-foreground/85">
@@ -178,7 +178,7 @@ function PillarBreakdownCard({ breakdown }: PillarBreakdownCardProps) {
               )}
               {branch && (
                 <div className="space-y-0.5 pt-1">
-                  <p className="text-[11px] uppercase tracking-widest text-muted-foreground/65">
+                  <p className="text-xs uppercase tracking-widest text-muted-foreground/65">
                     {t("branchHidden")}
                   </p>
                   <p className="font-mystic whitespace-pre-line text-sm leading-relaxed text-foreground/85">
@@ -192,7 +192,7 @@ function PillarBreakdownCard({ breakdown }: PillarBreakdownCardProps) {
 
         {breakdown.summary && (
           <div className="space-y-1 border-t border-white/5 pt-4">
-            <p className="text-[10px] uppercase tracking-widest text-muted-foreground/65">
+            <p className="text-xs uppercase tracking-widest text-muted-foreground/65">
               {t("eightSummary")}
             </p>
             <p className="font-mystic whitespace-pre-line text-sm leading-relaxed text-foreground/90 italic">

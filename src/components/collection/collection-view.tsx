@@ -462,7 +462,7 @@ function GachaPanel({
           {buttonLabel}
         </Button>
         {!subscribed && exhausted ? (
-          <p className="text-[11px] text-muted-foreground">
+          <p className="text-xs text-muted-foreground">
             {t("upgradeHint", { n: GACHA_DAILY_LIMITS.lite })}
           </p>
         ) : null}
@@ -498,7 +498,7 @@ function TabButton({ active, onClick, label, owned, total }: TabButtonProps) {
       <span>{label}</span>
       <span
         className={cn(
-          "tabular-nums text-[10px]",
+          "tabular-nums text-xs",
           active ? "text-primary/80" : "text-muted-foreground/70",
         )}
       >
@@ -561,7 +561,7 @@ function CardCell({ card, owned, onClick }: CardCellProps) {
         className="object-cover transition-transform duration-300 group-hover:scale-105"
       />
       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent px-1.5 py-1.5 text-center">
-        <span className="line-clamp-1 text-[11px] font-medium text-white">
+        <span className="line-clamp-1 text-xs font-medium text-white">
           {cardName}
         </span>
       </div>
@@ -647,7 +647,7 @@ function CardDetailDialog({ card, onClose }: CardDetailDialogProps) {
             ) : null}
             <span
               className={cn(
-                "inline-block rounded-full px-2.5 py-0.5 text-[10px] font-medium",
+                "inline-block rounded-full px-2.5 py-0.5 text-xs font-medium",
                 card.rarity === "legendary" &&
                   "bg-amber-200/30 text-amber-800 dark:bg-amber-300/15 dark:text-amber-200",
                 card.rarity === "rare" &&

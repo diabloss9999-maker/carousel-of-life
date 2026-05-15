@@ -36,7 +36,7 @@ export function WorldStatusPanel({ crackScore, crackLevel }: WorldStatusPanelPro
     <div className="app-surface rounded-2xl p-4 sm:p-5 space-y-3">
       <div className="flex items-baseline justify-between gap-2">
         <div className="space-y-0.5">
-          <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
+          <p className="text-xs uppercase tracking-widest text-muted-foreground">
             {t("worldStatusLabel")}
           </p>
           <p className="font-mystic text-sm font-semibold text-foreground">
@@ -51,7 +51,7 @@ export function WorldStatusPanel({ crackScore, crackLevel }: WorldStatusPanelPro
           >
             {percent}%
           </p>
-          <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
+          <p className="text-xs uppercase tracking-widest text-muted-foreground">
             {label}
           </p>
         </div>
@@ -83,7 +83,7 @@ function PanelMessage({ crackLevel }: { crackLevel: number }) {
     : crackLevel >= 2 ? t("panelFractureMsg")
     : t("panelStableMsg");
   return (
-    <p className="text-[11px] text-muted-foreground leading-relaxed font-mystic italic">
+    <p className="text-xs text-muted-foreground leading-relaxed font-mystic italic">
       {msg}
     </p>
   );

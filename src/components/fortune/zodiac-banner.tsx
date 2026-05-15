@@ -61,7 +61,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
                     <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-primary/40">
                       <Image src={`/zodiac/${id}.png`} alt={label} fill className="object-cover" sizes="96px" />
                     </div>
-                    <span className="text-[11px] font-medium text-primary text-center">{label}</span>
+                    <span className="text-xs font-medium text-primary text-center">{label}</span>
                   </div>
                 );
               })}
@@ -80,7 +80,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
                     <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-destructive/40 grayscale-[30%]">
                       <Image src={`/zodiac/${id}.png`} alt={label} fill className="object-cover" sizes="96px" />
                     </div>
-                    <span className="text-[11px] font-medium text-destructive text-center">{label}</span>
+                    <span className="text-xs font-medium text-destructive text-center">{label}</span>
                   </div>
                 );
               })}
@@ -120,7 +120,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
                     <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-primary/40">
                       <Image src={`/chinese-zodiac/${id}.png`} alt={label} fill className="object-cover" sizes="96px" />
                     </div>
-                    <span className="text-[11px] font-medium text-primary text-center">{label}</span>
+                    <span className="text-xs font-medium text-primary text-center">{label}</span>
                   </div>
                 );
               })}
@@ -138,7 +138,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
                     <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-destructive/40 grayscale-[30%]">
                       <Image src={`/chinese-zodiac/${id}.png`} alt={label} fill className="object-cover" sizes="96px" />
                     </div>
-                    <span className="text-[11px] font-medium text-destructive text-center">{label}</span>
+                    <span className="text-xs font-medium text-destructive text-center">{label}</span>
                   </div>
                 );
               })}

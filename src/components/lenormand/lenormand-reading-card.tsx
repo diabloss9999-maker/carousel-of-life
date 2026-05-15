@@ -96,8 +96,8 @@ export function LenormandReadingCard({ reading }: Props) {
                         sizes="(max-width:640px) 96px, 112px"
                       />
                     </div>
-                    <p className="text-center text-[10px] text-muted-foreground">{nineLabel(i)}</p>
-                    <p className="text-center text-[10px] font-medium text-foreground/80">{card.nameKo}</p>
+                    <p className="text-center text-xs text-muted-foreground">{nineLabel(i)}</p>
+                    <p className="text-center text-xs font-medium text-foreground/80">{card.nameKo}</p>
                   </div>
                 );
               })}
@@ -128,7 +128,7 @@ export function LenormandReadingCard({ reading }: Props) {
                           sizes="(max-width: 640px) 12vw, 80px"
                         />
                       </div>
-                      <p className="text-center text-[8px] text-muted-foreground">
+                      <p className="text-center text-xs text-muted-foreground">
                         {card.nameKo}
                       </p>
                     </div>
@@ -138,7 +138,7 @@ export function LenormandReadingCard({ reading }: Props) {
             </div>
             {cards.length > 32 ? (
               <div className="border-t border-border/30 pt-2">
-                <p className="mb-1 text-center text-[10px] text-muted-foreground">
+                <p className="mb-1 text-center text-xs text-muted-foreground">
                   🌙 영혼 카드
                 </p>
                 <div className="mx-auto grid max-w-[220px] grid-cols-4 gap-1">
@@ -163,7 +163,7 @@ export function LenormandReadingCard({ reading }: Props) {
                             sizes="(max-width: 640px) 22vw, 100px"
                           />
                         </div>
-                        <p className="text-center text-[8px] text-muted-foreground">
+                        <p className="text-center text-xs text-muted-foreground">
                           {card.nameKo}
                         </p>
                       </div>
@@ -192,7 +192,7 @@ export function LenormandReadingCard({ reading }: Props) {
                       sizes="(max-width:640px) 176px, 224px"
                     />
                   </div>
-                  <p className="text-[11px] text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {POSITION_LABEL[entry.position] ?? entry.position}
                   </p>
                 </div>

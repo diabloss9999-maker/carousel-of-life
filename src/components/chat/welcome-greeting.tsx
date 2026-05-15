@@ -111,7 +111,7 @@ function GreetingCard({
         <p
           style={{
             margin: 0,
-            fontSize: "11px",
+            fontSize: "12px",
             letterSpacing: "0.16em",
             color: "var(--ritual-muted, rgba(255,255,255,0.62))",
             fontFamily: "var(--font-serif)",

@@ -168,7 +168,7 @@ export function EntityWhisper({ characterId }: EntityWhisperProps) {
             zIndex: 9,
             pointerEvents: "none",
             opacity: 0,
-            fontSize: "11px",
+            fontSize: "12px",
             letterSpacing: "0.12em",
             color: "rgba(246,239,220,0.26)",
             fontFamily: "var(--font-serif)",

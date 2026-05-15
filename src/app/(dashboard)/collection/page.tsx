@@ -64,7 +64,7 @@ export default async function CollectionPage() {
                 {TOTAL_CARDS}
               </span>
             </p>
-            <p className="text-[11px] text-muted-foreground">소장 카드</p>
+            <p className="text-xs text-muted-foreground">소장 카드</p>
           </div>
         </div>
 
@@ -81,7 +81,7 @@ export default async function CollectionPage() {
             style={{ width: `${percent}%` }}
           />
         </div>
-        <p className="text-right text-[11px] tabular-nums text-muted-foreground">
+        <p className="text-right text-xs tabular-nums text-muted-foreground">
           {percent}% 달성
         </p>
       </header>

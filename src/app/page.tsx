@@ -264,7 +264,7 @@ async function PreviewSection() {
           <CardHeader className="space-y-2">
             <div className="flex items-center justify-between">
               <CardTitle className="text-base">타로 한 장</CardTitle>
-              <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] text-muted-foreground">
+              <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                 예시
               </span>
             </div>
@@ -293,7 +293,7 @@ async function PreviewSection() {
           <CardHeader className="space-y-2">
             <div className="flex items-center justify-between">
               <CardTitle className="text-base">오늘의 운세</CardTitle>
-              <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] text-muted-foreground">
+              <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                 예시
               </span>
             </div>
@@ -311,7 +311,7 @@ async function PreviewSection() {
               {["회복", "기다림", "별빛"].map((k) => (
                 <span
                   key={k}
-                  className="rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] text-primary"
+                  className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs text-primary"
                 >
                   #{k}
                 </span>

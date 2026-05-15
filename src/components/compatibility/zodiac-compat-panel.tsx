@@ -64,7 +64,7 @@ export function ZodiacCompatPanel({ myZodiac }: ZodiacCompatPanelProps) {
                 aria-pressed={selected}
               >
                 <span className="block font-medium">{tName(z.id)}</span>
-                <span className="mt-1 block text-[10px] text-muted-foreground">
+                <span className="mt-1 block text-xs text-muted-foreground">
                   {tDate(z.id)}
                 </span>
               </button>

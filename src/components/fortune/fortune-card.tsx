@@ -137,7 +137,7 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
             <p className="font-mystic text-sm font-semibold text-foreground/90">
               {name}
             </p>
-            <p className="text-[10px] text-muted-foreground">{title}</p>
+            <p className="text-xs text-muted-foreground">{title}</p>
           </div>
           <span className="ml-auto text-xs text-muted-foreground">{label}</span>
         </div>

@@ -49,7 +49,7 @@ export function SessionDrawer({ sessions }: SessionDrawerProps) {
           <span className="font-mystic text-sm text-muted-foreground/70">
             {t("drawerTitle")}
           </span>
-          <span className="rounded-full bg-muted/40 px-2 py-0.5 text-[10px] text-muted-foreground/80 tabular-nums">
+          <span className="rounded-full bg-muted/40 px-2 py-0.5 text-xs text-muted-foreground/80 tabular-nums">
             {sessions.length}
           </span>
         </div>
@@ -96,7 +96,7 @@ export function SessionDrawer({ sessions }: SessionDrawerProps) {
                   <p className="font-mystic text-sm font-medium truncate text-foreground/85">
                     {s.title}
                   </p>
-                  <p className="text-[10px] text-muted-foreground/50">
+                  <p className="text-xs text-muted-foreground/50">
                     {char?.name ?? ""} · {formatKoreanDate(new Date(s.lastMessageAt))}
                   </p>
                 </div>

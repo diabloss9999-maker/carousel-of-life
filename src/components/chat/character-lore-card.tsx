@@ -223,7 +223,7 @@ export function CharacterLoreCard({
                 >
                   {worldLabel}
                 </span>
-                <span className="ml-2 text-[10px] tracking-widest text-muted-foreground/70 uppercase">
+                <span className="ml-2 text-xs tracking-widest text-muted-foreground/70 uppercase">
                   {deco.worldSub}
                 </span>
               </div>
@@ -258,7 +258,7 @@ export function CharacterLoreCard({
 
                 {/* 인물 요약 */}
                 <div className="space-y-2 border-t border-white/5 pt-4">
-                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground/65 mb-3">
+                  <p className="text-xs uppercase tracking-widest text-muted-foreground/65 mb-3">
                     {tLore("figuresLabel")}
                   </p>
                   {figures.map((f) => (
@@ -288,7 +288,7 @@ export function CharacterLoreCard({
                   {theme.split(" · ").map((t) => (
                     <span
                       key={t}
-                      className="rounded-full border border-white/10 bg-white/5 px-3 py-0.5 text-[10px] text-muted-foreground/50"
+                      className="rounded-full border border-white/10 bg-white/5 px-3 py-0.5 text-xs text-muted-foreground/50"
                     >
                       {t}
                     </span>
@@ -297,7 +297,7 @@ export function CharacterLoreCard({
 
                 {/* ── 캐릭터 스토리 챕터 (호감도 잠금/해금) ─────────── */}
                 <div className="space-y-3 border-t border-white/5 pt-5">
-                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground/65">
+                  <p className="text-xs uppercase tracking-widest text-muted-foreground/65">
                     {tLore("charactersSection")}
                   </p>
 
@@ -411,12 +411,12 @@ function CharacterStoryAccordion({
           <span className={cn("font-mystic font-bold text-sm", accent)}>
             {characterName}
           </span>
-          <span className="text-[10px] text-muted-foreground/60">
+          <span className="text-xs text-muted-foreground/60">
             {characterTitle}
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[10px] tabular-nums text-muted-foreground/65">
+          <span className="text-xs tabular-nums text-muted-foreground/65">
             Lv.{level} · {unlockedCount}/10
           </span>
           <ChevronDown
@@ -497,7 +497,7 @@ function TruthRouteSection({
           {tLore("truthRoute")}
         </p>
         {!unlocked && (
-          <p className="text-[10px] text-muted-foreground/55 mt-1 flex items-center gap-1.5">
+          <p className="text-xs text-muted-foreground/55 mt-1 flex items-center gap-1.5">
             <Lock className="h-3 w-3" aria-hidden />
             {lore.truthRoute.unlockHint}
           </p>
@@ -630,7 +630,7 @@ function ChapterRow({
         <div className="flex items-center gap-2.5 min-w-0">
           <span
             className={cn(
-              "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-[10px] tabular-nums font-bold",
+              "flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-xs tabular-nums font-bold",
               unlocked
                 ? "bg-white/10 text-foreground/80"
                 : "bg-white/5 text-muted-foreground/40",

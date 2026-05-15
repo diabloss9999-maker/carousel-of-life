@@ -377,7 +377,7 @@ function ResultCard({
                       style={{ width: `${pct}%` }}
                     />
                   </div>
-                  <p className="text-[11px] text-center text-muted-foreground">
+                  <p className="text-xs text-center text-muted-foreground">
                     {winnerLabel} {pct}%
                   </p>
                 </div>
@@ -445,8 +445,8 @@ function ResultCard({
                   <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-primary/40">
                     <Image src={`/mbti/${typeCode}.png`} alt={typeCode} fill className="object-cover" sizes="96px" />
                   </div>
-                  <p className="font-mystic text-[11px] font-bold text-primary">{typeCode}</p>
-                  <p className="text-[10px] text-muted-foreground text-center leading-tight">{tT(`${typeCode}_nickname`)}</p>
+                  <p className="font-mystic text-xs font-bold text-primary">{typeCode}</p>
+                  <p className="text-xs text-muted-foreground text-center leading-tight">{tT(`${typeCode}_nickname`)}</p>
                 </div>
               );
             })}
@@ -463,8 +463,8 @@ function ResultCard({
                   <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-destructive/40 grayscale-[30%]">
                     <Image src={`/mbti/${typeCode}.png`} alt={typeCode} fill className="object-cover" sizes="96px" />
                   </div>
-                  <p className="font-mystic text-[11px] font-bold text-destructive">{typeCode}</p>
-                  <p className="text-[10px] text-muted-foreground text-center leading-tight">{tT(`${typeCode}_nickname`)}</p>
+                  <p className="font-mystic text-xs font-bold text-destructive">{typeCode}</p>
+                  <p className="text-xs text-muted-foreground text-center leading-tight">{tT(`${typeCode}_nickname`)}</p>
                 </div>
               );
             })}

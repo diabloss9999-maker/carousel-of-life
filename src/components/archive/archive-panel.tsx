@@ -50,7 +50,7 @@ function ArchiveCard({ title, body, aged, ancient }: ArchiveCardProps) {
     .join(" ");
   return (
     <div className={classes}>
-      <p className="text-[10px] uppercase tracking-widest text-muted-foreground/70">
+      <p className="text-xs uppercase tracking-widest text-muted-foreground/70">
         {title}
       </p>
       <p className="text-sm leading-relaxed text-foreground/85">{body}</p>
@@ -83,7 +83,7 @@ export function ArchivePanel({ affinities, crackLevel }: ArchivePanelProps) {
       {isDawn ? (
         <p
           aria-hidden
-          className="text-[11px] tracking-[0.18em] text-muted-foreground/60 italic"
+          className="text-xs tracking-[0.18em] text-muted-foreground/60 italic"
         >
           {t("dawnRecordOpen")}
         </p>
@@ -148,7 +148,7 @@ export function ArchivePanel({ affinities, crackLevel }: ArchivePanelProps) {
       </div>
 
       <div className="app-surface rounded-xl p-4 space-y-1.5">
-        <p className="text-[10px] uppercase tracking-widest text-muted-foreground/70">
+        <p className="text-xs uppercase tracking-widest text-muted-foreground/70">
           {t("result")}
         </p>
         <p className="font-mystic text-lg tracking-tight text-foreground/90">

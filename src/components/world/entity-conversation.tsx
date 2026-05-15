@@ -148,7 +148,7 @@ export function EntityConversation() {
           style={{
             margin: 0,
             fontFamily: "var(--font-serif)",
-            fontSize: "11px",
+            fontSize: "12px",
             letterSpacing: "0.10em",
             color: "var(--ritual-muted, rgba(48,39,55,0.55))",
             lineHeight: 1.7,

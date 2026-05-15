@@ -27,7 +27,7 @@ export default async function ArchivePage() {
   return (
     <div className="space-y-8">
       <header className="space-y-2">
-        <p className="text-[10px] uppercase tracking-widest text-muted-foreground/70">
+        <p className="text-xs uppercase tracking-widest text-muted-foreground/70">
           경계(境界) · 존재의 기록
         </p>
         <h1 className="font-mystic text-4xl font-semibold tracking-tight">

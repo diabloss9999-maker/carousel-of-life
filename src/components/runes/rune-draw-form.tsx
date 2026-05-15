@@ -192,7 +192,7 @@ export function RuneDrawForm({ subscribed }: Props) {
             >
               역방향(머크스타브) 사용
             </Label>
-            <span className="ml-auto text-[10px] text-muted-foreground">
+            <span className="ml-auto text-xs text-muted-foreground">
               불변룬 9개는 항상 정방향
             </span>
           </div>

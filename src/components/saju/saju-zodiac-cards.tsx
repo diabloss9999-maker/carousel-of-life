@@ -56,7 +56,7 @@ export function SajuZodiacCards({ pillars }: SajuZodiacCardsProps) {
       <div className="grid grid-cols-4 gap-3">
         {entries.map(({ key, labelKey, branch, info }) => (
           <div key={key} className="flex flex-col items-center gap-2 text-center">
-            <span className="text-[11px] font-medium text-muted-foreground">
+            <span className="text-xs font-medium text-muted-foreground">
               {t(labelKey)}
             </span>
 
@@ -74,7 +74,7 @@ export function SajuZodiacCards({ pillars }: SajuZodiacCardsProps) {
               <p className="font-mystic text-sm font-semibold leading-none">
                 {branch}
               </p>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 {info.ko}
               </p>
             </div>

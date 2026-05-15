@@ -159,7 +159,7 @@ function RadarChart({
             textAnchor="middle"
             dominantBaseline="central"
             style={{
-              fontSize: "9px",
+              fontSize: "12px",
               fontFamily: "var(--font-sans)",
               fill: "rgba(251,191,36,0.85)",
             }}
@@ -203,7 +203,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" aria-hidden />
             {t("title")}
-            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
+            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-xs font-medium text-primary">
               {tPrem("lightBadge")}
             </span>
           </CardTitle>
@@ -288,7 +288,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
                   key={i}
                   className="space-y-2 rounded-xl border border-border/40 bg-card/40 p-3"
                 >
-                  <p className="text-[10px] text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {slot.label}
                   </p>
                   <p className="font-mystic text-sm font-bold text-primary">
@@ -300,7 +300,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
                       style={{ width: `${pct}%` }}
                     />
                   </div>
-                  <p className="text-[10px] leading-relaxed text-muted-foreground">
+                  <p className="text-xs leading-relaxed text-muted-foreground">
                     {slot.advice}
                   </p>
                 </div>

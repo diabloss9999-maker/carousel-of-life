@@ -35,7 +35,7 @@ export function LanguageToggle() {
       aria-label={t("languageToggle")}
       title={`${t("languageToggle")} → ${LOCALE_SHORT[nextLocale]}`}
       className={cn(
-        "inline-flex h-8 items-center gap-1 rounded-full px-2.5 text-[11px] font-semibold transition-opacity",
+        "inline-flex h-8 items-center gap-1 rounded-full px-2.5 text-xs font-semibold transition-opacity",
         "disabled:opacity-50",
       )}
       style={{

@@ -62,7 +62,7 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" />
             {t("title")}
-            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
+            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-xs font-medium text-primary">
               {tPrem("lightBadge")}
             </span>
           </CardTitle>
@@ -100,7 +100,7 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
               <div className="relative h-9 w-6 overflow-hidden rounded-lg shadow-sm">
                 <CharacterImage character={character} fill className="object-cover object-top" sizes="24px" />
               </div>
-              <p className="font-mystic text-[10px] font-semibold text-foreground/70">{charName}</p>
+              <p className="font-mystic text-xs font-semibold text-foreground/70">{charName}</p>
             </div>
           </div>
         </CardHeader>

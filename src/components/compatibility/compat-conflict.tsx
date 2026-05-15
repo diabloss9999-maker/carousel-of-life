@@ -71,7 +71,7 @@ export function CompatConflict(props: CompatConflictProps) {
           <CardTitle className="font-mystic flex items-center gap-2 text-base">
             <Lock className="h-4 w-4 text-accent" />
             {t("title")}
-            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
+            <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-xs font-medium text-primary">
               {tPrem("lightBadge")}
             </span>
           </CardTitle>
@@ -110,7 +110,7 @@ export function CompatConflict(props: CompatConflictProps) {
             <ul className="space-y-2">
               {data.triggers.map((trigger, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm">
-                  <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-destructive/15 text-[10px] font-bold text-destructive">
+                  <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-destructive/15 text-xs font-bold text-destructive">
                     {i + 1}
                   </span>
                   <span className="leading-relaxed">{trigger}</span>

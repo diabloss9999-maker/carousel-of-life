@@ -117,7 +117,7 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
             <p className="font-mystic text-xl font-semibold text-foreground/90">{t("heading")}</p>
             <p className="text-xs text-muted-foreground mt-0.5">{t("subheading", { total })}</p>
           </div>
-          <span className="text-[11px] text-muted-foreground/50 font-medium">五行</span>
+          <span className="text-xs text-muted-foreground/50 font-medium">五行</span>
         </div>
 
         {/* 원형 게이지 5개 */}
@@ -146,7 +146,7 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
                 <div className="text-center">
                   <p
                     className={cn(
-                      "font-mystic text-[11px] font-semibold leading-none",
+                      "font-mystic text-xs font-semibold leading-none",
                       isEmpty ? "text-muted-foreground/60" : el.textClass,
                     )}
                   >
@@ -169,23 +169,23 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
         {/* 강한/약한 기운 */}
         <div className="flex gap-3">
           <div className="flex-1 rounded-xl bg-white/10 backdrop-blur border border-white/20 px-3 py-2.5">
-            <p className="text-[10px] text-muted-foreground/80 mb-1.5">{t("strong")}</p>
+            <p className="text-xs text-muted-foreground/80 mb-1.5">{t("strong")}</p>
             <div className="flex items-center gap-1.5">
               <span className={cn("h-2 w-2 rounded-full flex-shrink-0", strongest.dotClass)} />
               <span className={cn("font-mystic font-bold text-sm", strongest.textClass)}>
                 {strongestLabel}
               </span>
-              <span className="text-[10px] text-muted-foreground/70">{strongest.hanja}</span>
+              <span className="text-xs text-muted-foreground/70">{strongest.hanja}</span>
             </div>
           </div>
           <div className="flex-1 rounded-xl bg-white/10 backdrop-blur border border-white/20 px-3 py-2.5">
-            <p className="text-[10px] text-muted-foreground/80 mb-1.5">{t("weak")}</p>
+            <p className="text-xs text-muted-foreground/80 mb-1.5">{t("weak")}</p>
             <div className="flex items-center gap-1.5">
               <span className={cn("h-2 w-2 rounded-full flex-shrink-0 opacity-50", weakest.dotClass)} />
               <span className={cn("font-mystic font-semibold text-sm opacity-60", weakest.textClass)}>
                 {weakestLabel}
               </span>
-              <span className="text-[10px] text-muted-foreground/65">{weakest.hanja}</span>
+              <span className="text-xs text-muted-foreground/65">{weakest.hanja}</span>
             </div>
           </div>
         </div>

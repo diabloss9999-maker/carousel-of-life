@@ -161,7 +161,7 @@ function LuckyTile({ label, children }: LuckyTileProps) {
       <div className="flex flex-1 flex-col items-center justify-center gap-1.5">
         {children}
       </div>
-      <span className="text-[11px] uppercase tracking-wider text-muted-foreground sm:text-xs">
+      <span className="text-xs uppercase tracking-wider text-muted-foreground sm:text-xs">
         {label}
       </span>
     </div>
