@@ -13,7 +13,9 @@ const DEFAULT_HEIGHT = 900;
  * 값은 확장자 없는 베이스 경로 — `.webm` 과 `.mp4` 두 파일을 모두 가리킨다.
  */
 const VIDEO_BY_CHARACTER: Record<string, string> = {
-  runeshaman: "/characters/videos/runeshaman",
+  runeshaman: "/characters/videos/runeshaman", // 헬가 — 룬을 새기는 자
+  god:        "/characters/videos/god",        // 외르문드 — 북방의 신
+  hunter:     "/characters/videos/hunter",     // 비요른 — 야성의 사냥꾼
 };
 
 interface CharacterImageProps {
