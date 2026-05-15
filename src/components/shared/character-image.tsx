@@ -17,6 +17,7 @@ const VIDEO_BY_CHARACTER: Record<string, string> = {
   runeshaman: "/characters/videos/runeshaman", // 헬가 — 룬을 새기는 자
   god:        "/characters/videos/god",        // 외르문드 — 북방의 신
   hunter:     "/characters/videos/hunter",     // 비요른 — 야성의 사냥꾼
+  shaman:     "/characters/videos/shaman",     // 소령 — 접신의 무녀
 };
 
 interface CharacterImageProps {
