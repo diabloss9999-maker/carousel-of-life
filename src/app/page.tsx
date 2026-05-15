@@ -21,6 +21,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { KakaoButton } from "@/components/auth/kakao-button";
+import {
+  CHARACTERS,
+  CHARACTERS_BY_CATEGORY,
+  type CharacterId,
+} from "@/lib/chat/characters";
 import { ROUTES } from "@/lib/constants";
 import { siteConfig } from "@/config/site";
 
@@ -145,6 +150,7 @@ export default async function HomePage() {
       </section>
 
       <ValuePropsSection />
+      <OraclesSection />
       <HowToPlaySection />
       <PreviewSection />
       <FaqSection />
@@ -208,6 +214,105 @@ async function ValuePropsSection() {
         ))}
       </div>
     </section>
+  );
+}
+
+/** 9명 주술사 캐릭터 쇼케이스. 3 카테고리 × 3명 = 3×3 grid. */
+async function OraclesSection() {
+  const t = await getTranslations("landing.oracles");
+  const tChar = await getTranslations("characters");
+
+  const categories: { key: "이세계" | "동양" | "북유럽"; label: string }[] = [
+    { key: "이세계", label: "이세계" },
+    { key: "동양", label: "동양" },
+    { key: "북유럽", label: "북방" },
+  ];
+
+  return (
+    <section className="relative z-10 mx-auto max-w-5xl space-y-8 px-6 pt-12 sm:pt-16">
+      <div className="space-y-2 text-center">
+        <h2 className="font-mystic text-2xl font-semibold sm:text-3xl">
+          {t("heading")}
+        </h2>
+        <p className="text-[15px] text-muted-foreground leading-relaxed max-w-xl mx-auto">
+          {t("subheading")}
+        </p>
+      </div>
+
+      <div className="space-y-8">
+        {categories.map(({ key, label }) => (
+          <div key={key} className="space-y-3">
+            <p className="font-mystic text-base font-semibold uppercase tracking-widest text-foreground/60 text-center sm:text-left">
+              {label}
+            </p>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {CHARACTERS_BY_CATEGORY[key].map((id) => (
+                <OracleCard
+                  key={id}
+                  id={id}
+                  name={tChar(`${id}.name`)}
+                  title={tChar(`${id}.title`)}
+                  hook={tChar(`${id}.hook`)}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex justify-center pt-2">
+        <Button asChild size="lg" className="shadow-lg">
+          <Link href={ROUTES.login}>
+            {t("cta")}
+            <ArrowRight className="h-4 w-4" aria-hidden />
+          </Link>
+        </Button>
+      </div>
+    </section>
+  );
+}
+
+function OracleCard({
+  id,
+  name,
+  title,
+  hook,
+}: {
+  id: CharacterId;
+  name: string;
+  title: string;
+  hook: string;
+}) {
+  // 낮 이미지를 카드용으로 사용 (랜딩은 밝은 톤 강조).
+  const imageSrc = CHARACTERS[id].imageSrcDay;
+
+  return (
+    <Card className="app-surface overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-xl">
+      <div className="relative aspect-[3/4] w-full overflow-hidden">
+        <Image
+          src={imageSrc}
+          alt={name}
+          fill
+          sizes="(max-width: 640px) 100vw, 320px"
+          className="object-cover object-top"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent"
+        />
+        <div className="absolute bottom-0 left-0 right-0 p-4 space-y-0.5 text-white">
+          <p className="font-mystic text-lg font-semibold drop-shadow">
+            {name}
+          </p>
+          <p className="text-[15px] text-white/85 drop-shadow">{title}</p>
+        </div>
+      </div>
+      <CardContent className="p-4">
+        <p className="font-mystic text-[15px] leading-relaxed text-foreground/85 italic">
+          “{hook}”
+        </p>
+      </CardContent>
+    </Card>
   );
 }
 
