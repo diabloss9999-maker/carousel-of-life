@@ -1339,7 +1339,13 @@
     "compatible": "잘 맞는",
     "caution": "주의",
     "resultIntegration": "이 결과는 운세·타로·사주 풀이에 자동 반영돼.",
-    "retestCta": "다시 테스트하기"
+    "retestCta": "다시 테스트하기",
+    "chooseTitle": "어떻게 알아볼까?",
+    "chooseSubtitle": "이미 알고 있는 유형이면 그대로 보고, 직접 측정하고 싶으면 20문항 테스트로 진행해.",
+    "chooseUseSaved": "입력한 {type} 으로 보기",
+    "chooseUseSavedHint": "가입할 때 적어둔 유형",
+    "chooseRetake": "직접 테스트로 측정하기",
+    "chooseRetakeHint": "20문항 · 3~5분"
   },
   "careerFit": {
     "title": "직업 적성 심층 리포트",

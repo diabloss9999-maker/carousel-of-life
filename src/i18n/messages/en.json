@@ -1339,7 +1339,13 @@
     "compatible": "Good match",
     "caution": "Caution",
     "resultIntegration": "This result is woven into your fortunes, tarot, and pillar readings automatically.",
-    "retestCta": "Retake the test"
+    "retestCta": "Retake the test",
+    "chooseTitle": "How would you like to find out?",
+    "chooseSubtitle": "If you already know your type, use the one you entered. Or take the 20-question test to measure it yourself.",
+    "chooseUseSaved": "Use the {type} you entered",
+    "chooseUseSavedHint": "The type you wrote at sign-up",
+    "chooseRetake": "Take the test myself",
+    "chooseRetakeHint": "20 questions · 3–5 min"
   },
   "careerFit": {
     "title": "Career fit — deep report",

@@ -9,7 +9,7 @@
 
 import Image from "next/image";
 import { useState, useTransition } from "react";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight, ClipboardList, UserCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
@@ -29,16 +29,98 @@ interface PersonalityTestProps {
 }
 
 export function PersonalityTest({ currentType }: PersonalityTestProps) {
+  // 사용자가 가입 시 MBTI 를 입력했으면 진입 화면에서 두 옵션 카드를 보여준다.
+  // - "saved": 입력한 유형으로 결과 카드 보기
+  // - "test":  직접 20문항 테스트 진행
+  // 입력 없으면 바로 테스트 안내 화면.
+  const [viewMode, setViewMode] = useState<"choose" | "saved" | "test">(
+    currentType ? "choose" : "test",
+  );
   const [started, setStarted] = useState(false);
   const [answers, setAnswers] = useState<(Choice | null)[]>(
     Array(20).fill(null),
   );
   const [current, setCurrent] = useState(0); // 현재 문항 인덱스
-  const [resultType, setResultType] = useState<string | null>(currentType);
+  const [resultType, setResultType] = useState<string | null>(null);
   const [axes, setAxes] = useState<Record<string, AxisResult> | null>(null);
   const [isPending, startTransition] = useTransition();
   const t = useTranslations("personalityTest");
   const tQ = useTranslations("personalityQuestions");
+
+  /** "다시 측정하기" 또는 처음 테스트로 진입 */
+  function resetToTest() {
+    setViewMode("test");
+    setStarted(true);
+    setAnswers(Array(20).fill(null));
+    setCurrent(0);
+    setResultType(null);
+    setAxes(null);
+  }
+
+  /** 진입 시 두 옵션 화면. currentType 이 있을 때만 표시. */
+  if (viewMode === "choose" && currentType) {
+    return (
+      <div className="space-y-5 py-6">
+        <div className="text-center space-y-1.5">
+          <h2 className="font-mystic text-2xl font-semibold">
+            {t("chooseTitle")}
+          </h2>
+          <p className="text-xs text-muted-foreground leading-relaxed max-w-md mx-auto">
+            {t("chooseSubtitle")}
+          </p>
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          {/* 입력한 유형으로 보기 */}
+          <button
+            type="button"
+            onClick={() => {
+              setResultType(currentType);
+              setViewMode("saved");
+            }}
+            className={cn(
+              "group rounded-2xl border bg-card/50 p-5 text-left transition-all",
+              "border-primary/40 ring-1 ring-primary/20",
+              "hover:border-primary hover:bg-primary/5 hover:-translate-y-0.5",
+            )}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <UserCheck className="h-5 w-5 text-primary" aria-hidden />
+              <ChevronRight className="h-4 w-4 text-muted-foreground/60 group-hover:text-primary group-hover:translate-x-0.5 transition-all" aria-hidden />
+            </div>
+            <p className="font-mystic text-lg font-semibold">
+              {t("chooseUseSaved", { type: currentType })}
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              {t("chooseUseSavedHint")}
+            </p>
+          </button>
+
+          {/* 직접 측정하기 */}
+          <button
+            type="button"
+            onClick={() => resetToTest()}
+            className={cn(
+              "group rounded-2xl border bg-card/50 p-5 text-left transition-all",
+              "border-border/40",
+              "hover:border-accent hover:bg-accent/5 hover:-translate-y-0.5",
+            )}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <ClipboardList className="h-5 w-5 text-accent" aria-hidden />
+              <ChevronRight className="h-4 w-4 text-muted-foreground/60 group-hover:text-accent group-hover:translate-x-0.5 transition-all" aria-hidden />
+            </div>
+            <p className="font-mystic text-lg font-semibold">
+              {t("chooseRetake")}
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              {t("chooseRetakeHint")}
+            </p>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   /** 선택지 클릭 시 호출. */
   function handleSelect(choice: Choice) {
@@ -67,22 +149,10 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
     }
   }
 
-  /** 결과 화면 (테스트 완료 후 or 기존 결과) */
+  /** 결과 화면 (테스트 완료 후 or 입력한 유형으로 보기) */
   if (resultType && !started) {
     const info = TYPE_INFO[resultType as keyof typeof TYPE_INFO];
-    return (
-      <ResultCard
-        info={info}
-        axes={axes}
-        onRetest={() => {
-          setStarted(true);
-          setAnswers(Array(20).fill(null));
-          setCurrent(0);
-          setResultType(null);
-          setAxes(null);
-        }}
-      />
-    );
+    return <ResultCard info={info} axes={axes} onRetest={resetToTest} />;
   }
 
   /** 시작 전 화면 */
@@ -131,19 +201,7 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
   /** 결과가 나온 직후 (테스트 완료) */
   if (resultType) {
     const info = TYPE_INFO[resultType as keyof typeof TYPE_INFO];
-    return (
-      <ResultCard
-        info={info}
-        axes={axes}
-        onRetest={() => {
-          setStarted(true);
-          setAnswers(Array(20).fill(null));
-          setCurrent(0);
-          setResultType(null);
-          setAxes(null);
-        }}
-      />
-    );
+    return <ResultCard info={info} axes={axes} onRetest={resetToTest} />;
   }
 
   /** 테스트 진행 화면 */
