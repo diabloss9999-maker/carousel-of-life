@@ -17,6 +17,7 @@ import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
 import { getTodayCharacter } from "@/lib/daily-question/rotation";
 import { calculateSaju } from "@/lib/saju/calculate";
 import { getOrCreateDeepReading } from "@/lib/saju/deep-reading";
+import { annotateHanjaDeep } from "@/lib/saju/hanja-annotate";
 import { getDayPillar } from "@/lib/saju/iljin";
 import {
   analyzeDayRelationship,
@@ -221,6 +222,12 @@ ${relText}
 
 위 분석을 바탕으로 오늘 이 사람의 일진을 해석해줘.
 모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼. 예언 투 금지.
+
+[한자 표기 규칙 — 매우 중요]
+응답에 천간(甲乙丙丁戊己庚辛壬癸)·지지(子丑寅卯辰巳午未申酉戌亥)·오행(木火土金水)·음양(陰陽) 한자가 등장할 때는 반드시 한자 바로 뒤에 한글 음을 괄호로 병기한다. 한국인 대부분이 한자를 못 읽기 때문.
+예: 甲(갑), 子(자), 庚辛(경신), 木(목), 陽(양), 辛未(신미)일
+한자만 단독으로 쓰지 말 것.
+
 마크다운 없이 JSON만. overallEnergy 는 locale 무관 영문 enum 으로:
 {
   "todayPillar": "${todayPillar.stemHanja}${todayPillar.branchHanja}일",
@@ -231,7 +238,7 @@ ${relText}
   "caution": "주의할 것 한 문장"
 }`;
 
-    const aiOutput = await generateJson({
+    const rawAiOutput = await generateJson({
       schema: iljinAiSchema,
       userPrompt,
       model: AI_MODELS.premium,
@@ -239,6 +246,9 @@ ${relText}
       systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
       locale: await getLocale(),
     });
+
+    // 한자 옆에 한글 음 자동 병기 (AI 프롬프트로도 지시하지만 보안망).
+    const aiOutput: IljinAiOutput = annotateHanjaDeep(rawAiOutput);
 
     const saveData = { aiOutput, relationships };
 

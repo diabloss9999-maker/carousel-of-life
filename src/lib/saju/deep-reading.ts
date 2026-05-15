@@ -16,6 +16,7 @@ import { buildSajuDeepPrompt } from "@/lib/ai/prompts";
 import { sajuDeepAiSchema, type SajuDeepAiOutput } from "@/lib/ai/types";
 import { AI_LIMITS, AI_MODELS } from "@/lib/constants";
 import { ensureSajuCalculated } from "@/lib/saju/calculate";
+import { annotateHanjaDeep } from "@/lib/saju/hanja-annotate";
 import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
 import { getTodayCharacterByCategory } from "@/lib/daily-question/rotation";
 
@@ -96,9 +97,12 @@ export async function getOrCreateDeepReading(
     };
   }
 
-  // 4) profile 에 캐시.
+  // 4) 한자 옆에 한글 음 자동 병기 — AI 가 프롬프트 지시 어겨도 보안망.
+  const annotated = annotateHanjaDeep(aiOutput);
+
+  // 5) profile 에 캐시.
   const reading: SajuDeepReading = {
-    ...aiOutput,
+    ...annotated,
     model: AI_MODELS.premium,
     createdAt: new Date().toISOString(),
   };
