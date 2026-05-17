@@ -20,6 +20,7 @@ import {
   SajuPillars,
   type SajuPillarsValue,
 } from "@/components/saju/saju-pillars";
+import { PageBg } from "@/components/layout/page-bg";
 import { requireProfile } from "@/lib/auth/get-user";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { asSajuDeepReading } from "@/lib/saju/deep-reading";
@@ -90,6 +91,7 @@ export default async function SajuPage() {
 
   return (
     <div className="space-y-8">
+      <PageBg src="/backgrounds/saju.png" />
       <header className="space-y-2">
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
           {t("title")}
