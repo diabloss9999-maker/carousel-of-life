@@ -365,7 +365,7 @@
     "proDesc": "넉넉한 한도로 모든 풀이를 받을 수 있어요.",
     "tarotOneLine": "타로 한 장 일일 {n}회",
     "perMonth": "/ 월",
-    "bulletZodiac": "별자리·십이간지 운세",
+    "bulletZodiac": "별자리·띠별 운세",
     "bulletTarotThree": "타로 3장 스프레드",
     "bulletCompat": "궁합 풀이",
     "bulletTarotCeltic": "타로 일일 {n}회 (켈틱 크로스 포함)",
@@ -623,7 +623,7 @@
     "categoryStudy": "공부 운",
     "categoryWealth": "재물 운",
     "categoryZodiac": "별자리 운세",
-    "categoryChineseZodiac": "십이간지 운세"
+    "categoryChineseZodiac": "띠별 운세"
   },
   "premiumReports": {
     "loading": "분석 중…",
@@ -824,7 +824,7 @@
     "compatibilityError": "궁합을 풀이하는 중 오류가 생겼어: {message}",
     "compatFreeExceeded": "오늘 무료 궁합은 {n}회까지야. 라이트로 더 많이 풀어볼래?",
     "categoryInvalid": "카테고리가 올바르지 않아요.",
-    "zodiacPremiumOnly": "별자리·십이간지 운세는 라이트 전용이에요.",
+    "zodiacPremiumOnly": "별자리·띠별 운세는 라이트 전용이에요.",
     "fortuneQuotaExceeded": "오늘의 운세 한도({n}회)를 모두 사용했어요.",
     "tarotQuotaExceeded": "오늘의 타로 한도({n}회)를 모두 사용했어요.",
     "tarotThreePremium": "3장 스프레드는 라이트 멤버십에서 만나볼 수 있어.",
@@ -1028,12 +1028,12 @@
   "premiumGate": {
     "zodiacTitle": "별자리 운세 — 라이트 전용",
     "zodiacBody": "별자리 운세는 라이트 구독자만 받을 수 있어. 매일 12별자리 중 너의 별자리 운세를 새로 적어줘.",
-    "chineseTitle": "십이간지 운세 — 라이트 전용",
-    "chineseBody": "십이간지 운세는 라이트 구독자만 받을 수 있어. 매일 12간지 중 너의 띠 운세를 새로 적어줘.",
+    "chineseTitle": "띠별 운세 — 라이트 전용",
+    "chineseBody": "띠별 운세는 라이트 구독자만 받을 수 있어. 매일 너의 띠에 맞춰 흐름을 새로 적어줘.",
     "fallbackTitle": "라이트 전용",
     "fallbackBody": "이 운세는 라이트 구독자 전용이야.",
     "subscribeCta": "라이트 구독하기",
-    "footer": "구독 시 별자리·십이간지·라이트 전용 사주 풀이까지 모두 매일 받을 수 있어."
+    "footer": "구독 시 별자리·띠별 운세·라이트 전용 사주 풀이까지 모두 매일 받을 수 있어."
   },
   "fortuneTrend": {
     "lastNDays": "최근 {n}일 흐름",
@@ -1103,7 +1103,7 @@
     "copyHealth": "오늘의 건강·컨디션 흐름을 살펴줄게.",
     "copyStudy": "오늘의 공부·집중 흐름을 짚어줄게.",
     "copyZodiac": "오늘의 별자리 흐름을 읽어줄게.",
-    "copyChineseZodiac": "오늘의 십이간지 흐름을 짚어줄게."
+    "copyChineseZodiac": "오늘의 띠별 흐름을 짚어줄게."
   },
   "tarotPage": {
     "metaTitle": "점술",
