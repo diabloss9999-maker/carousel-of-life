@@ -154,15 +154,15 @@ body .on-character-image * {
   color: rgba(255, 255, 255, 0.95) !important;
 }
 
-/* White Glass 카드 — v4: 가독성 확보를 위해 불투명도·블러 강화 */
+/* Frosted Glass 카드 — v5: 진짜 frosted 효과. 흰 톤 최소화 + 블러 강화로 배경이 흐리게 비치게 */
 :is(.app-surface) {
-  border: 1px solid rgba(255,255,255,0.26) !important;
-  background: rgba(255,255,255,0.18) !important;
+  border: 1px solid rgba(255,255,255,0.18) !important;
+  background: rgba(255,255,255,0.05) !important;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.24),
-    0 8px 32px rgba(0,0,0,0.26) !important;
-  backdrop-filter: blur(28px) saturate(140%) !important;
-  -webkit-backdrop-filter: blur(28px) saturate(140%) !important;
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    0 8px 32px rgba(0,0,0,0.22) !important;
+  backdrop-filter: blur(36px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(150%) !important;
   color: var(--foreground) !important;
 }
 
@@ -613,14 +613,14 @@ body.ritual-night .ritual-chat-textarea {
   }
 }
 
-/* 밤 모드 — html.night. 흰 톤 유지하면서 불투명도만 보강 (catchall 검정 텍스트와 대비) */
+/* 밤 모드 — html.night. 투명 frosted, 블러만 강하게 */
 html.night .app-surface {
-  background: rgba(255,255,255,0.22) !important;
+  background: rgba(255,255,255,0.04) !important;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.20),
-    0 10px 36px rgba(0,0,0,0.36) !important;
-  backdrop-filter: blur(28px) saturate(140%) !important;
-  -webkit-backdrop-filter: blur(28px) saturate(140%) !important;
+    inset 0 1px 0 rgba(255,255,255,0.10),
+    0 10px 36px rgba(0,0,0,0.32) !important;
+  backdrop-filter: blur(40px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(40px) saturate(150%) !important;
 }
 
 html.night body[data-time="night"] {
@@ -629,10 +629,10 @@ html.night body[data-time="night"] {
 
 /* ===== 새벽 모드 (02~04시 KST) ===== */
 body.ritual-dawn .app-surface {
-  background: rgba(120, 100, 160, 0.20) !important;
+  background: rgba(120, 100, 160, 0.06) !important;
   box-shadow:
-    inset 0 1px 0 rgba(180, 150, 230, 0.20),
-    0 8px 32px rgba(0, 0, 0, 0.26) !important;
+    inset 0 1px 0 rgba(180, 150, 230, 0.14),
+    0 8px 32px rgba(0, 0, 0, 0.22) !important;
 }
 
 body.ritual-dawn {
