@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ChatWindow, type InitialMessage } from "@/components/chat/chat-window";
 import { AffinityBar } from "@/components/affinity/affinity-bar";
 import { CharacterImage } from "@/components/shared/character-image";
+import { CharacterBg } from "@/components/layout/character-bg";
 import { EntityWhisper } from "@/components/fracture/entity-whisper";
 import { requireProfile } from "@/lib/auth/get-user";
 import {
@@ -58,6 +59,7 @@ export default async function ChatSessionPage({
 
   return (
     <div className={`entity-${entityKey} space-y-4`}>
+      <CharacterBg characterId={charId} />
       <EntityWhisper characterId={charId} />
       {/* 헤더: 뒤로가기 + 제목 */}
       <header className="flex items-center justify-between gap-2">
