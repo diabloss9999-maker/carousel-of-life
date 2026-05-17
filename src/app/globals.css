@@ -639,6 +639,12 @@ body.ritual-dawn {
   filter: brightness(0.96) saturate(0.92);
 }
 
+/* ===== 캐릭터 전용 대화창 배경 — body:has() 로 entity 활성 시에만 적용 ===== */
+/* 카엘(child) 과 대화 중 — 고딕한 분위기로 전환 */
+body:has(.entity-gael) {
+  background: url("/backgrounds/kael.png") center / cover no-repeat fixed !important;
+}
+
 /* ===== 존재 활성 테마 — 카드 border 미세 색감 (9명) ===== */
 .entity-luna .app-surface { border-color: rgba(180, 150, 230, 0.28) !important; }
 .entity-rael .app-surface { border-color: rgba(200, 220, 255, 0.26) !important; }
