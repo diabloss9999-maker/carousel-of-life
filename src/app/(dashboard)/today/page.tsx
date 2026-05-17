@@ -41,7 +41,6 @@ import { MoodCapture } from "@/components/mood/mood-capture";
 import { getCrackScore } from "@/lib/crack/service";
 import { getHomeHiddenText } from "@/lib/observe/hidden-events";
 import { CrackAtmosphere } from "@/components/crack/crack-atmosphere";
-import { WorldStatusPanel } from "@/components/world/world-status-panel";
 import { checkInStreak } from "@/lib/streak/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { formatKoreanDate } from "@/lib/utils";
@@ -162,9 +161,6 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           tier={tier}
         />
       </div>
-
-      {/* 오늘의 세계 상태 — 균열 측정 + 관측 로그 */}
-      <WorldStatusPanel crackScore={crackData.score} crackLevel={crackData.level} />
 
       {/* 오늘 기분 — 운세 생성 전부터 페이지 진입 시 바로 입력 가능 */}
       <MoodCapture todayMood={todayMood?.mood ?? null} source="today_top" />
