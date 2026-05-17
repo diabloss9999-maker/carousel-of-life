@@ -13,6 +13,7 @@ import { TarotReadingCard } from "@/components/tarot/tarot-reading-card";
 import { TarotThreeForm } from "@/components/tarot/tarot-three-form";
 import { TarotThreeReadingCard } from "@/components/tarot/tarot-three-reading-card";
 import { QuotaBar } from "@/components/fortune/quota-bar";
+import { PageBg } from "@/components/layout/page-bg";
 import { requireProfile } from "@/lib/auth/get-user";
 import { getTodayLenormandReadings } from "@/lib/lenormand/service";
 import {
@@ -46,6 +47,7 @@ export default async function TarotPage() {
 
   return (
     <div className="space-y-8">
+      <PageBg src="/backgrounds/tarot.png" />
       <header className="space-y-2">
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
           {tTarot("title")}
