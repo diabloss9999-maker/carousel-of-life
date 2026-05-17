@@ -152,31 +152,36 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
         </div>
       </header>
 
-      {/* 일일 사용량 — 페이지 진입 시 즉시 보이도록 헤더 바로 아래에 고정 배치 */}
-      <div className="rounded-2xl ring-1 ring-primary/25 shadow-lg shadow-primary/5">
-        <QuotaBar
-          fortuneCount={usage.fortuneCount}
-          tarotCount={usage.tarotCount}
-          chatCount={usage.chatCount}
-          tier={tier}
-        />
-      </div>
+      {/* 일일 사용량 — QuotaBar 자체에 app-surface 가 있어 외부 래퍼 제거 */}
+      <QuotaBar
+        fortuneCount={usage.fortuneCount}
+        tarotCount={usage.tarotCount}
+        chatCount={usage.chatCount}
+        tier={tier}
+      />
 
       {/* 오늘 기분 — 운세 생성 전부터 페이지 진입 시 바로 입력 가능 */}
       <MoodCapture todayMood={todayMood?.mood ?? null} source="today_top" />
 
-      {/* 주술사 호출 — 먼저 말을 건다 */}
-      <ShamanCall />
-
-      {/* 성격유형 진입 — 운세 안의 보조 카드 */}
-      <Link
-        href={ROUTES.personality as Route}
-        className="app-surface rounded-xl p-3 sm:p-4 flex flex-col items-start gap-1.5 transition-transform hover:-translate-y-0.5"
-      >
-        <Brain className="h-4 w-4 text-accent" aria-hidden />
-        <span className="font-mystic text-[15px] font-semibold">{tExtras("persona")}</span>
-        <span className="text-[15px] text-muted-foreground leading-tight">{tExtras("personaSub")}</span>
-      </Link>
+      {/* 주술사 호출 + 성격유형 진입 — 같은 가로 카드 톤이라 한 줄로 짝지움 */}
+      <div className="grid gap-3 sm:grid-cols-2">
+        <ShamanCall />
+        <Link
+          href={ROUTES.personality as Route}
+          className="app-surface group flex items-center gap-3 rounded-2xl p-3 sm:p-4 text-left transition-transform hover:-translate-y-0.5"
+        >
+          <div className="flex h-14 w-10 sm:h-16 sm:w-12 flex-shrink-0 items-center justify-center rounded-lg ring-1 ring-white/20 bg-accent/10 shadow-md">
+            <Brain className="h-5 w-5 text-accent" aria-hidden />
+          </div>
+          <div className="flex-1 min-w-0 space-y-0.5">
+            <p className="font-mystic text-[15px] font-bold text-foreground">{tExtras("persona")}</p>
+            <p className="text-[15px] text-foreground/85 leading-snug">{tExtras("personaSub")}</p>
+          </div>
+          <div className="text-muted-foreground group-hover:text-foreground transition-colors">
+            <span className="font-mystic text-base">→</span>
+          </div>
+        </Link>
+      </div>
 
       <CategoryTabs current={category} subscribed={subscribed} />
 
