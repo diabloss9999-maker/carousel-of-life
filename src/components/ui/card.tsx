@@ -9,7 +9,9 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-xl text-card-foreground app-surface",
+      // backdrop-blur-xl 는 Tailwind 가 직접 emit 해서 빌드를 안전하게 통과한다.
+      // (커스텀 CSS 의 backdrop-filter 는 Lightning CSS 가 stripping)
+      "rounded-xl text-card-foreground app-surface backdrop-blur-xl",
       className,
     )}
     {...props}
