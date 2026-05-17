@@ -4,7 +4,9 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Sparkles, User } from "lucide-react";
 
+import { ShareButton } from "@/components/shared/share-button";
 import { cn } from "@/lib/utils";
+import type { CharacterId } from "@/lib/chat/characters";
 
 export interface DrawnCardMeta {
   id: string;
@@ -15,12 +17,22 @@ export interface DrawnCardMeta {
   position?: string;
 }
 
+/** 어시스턴트 메시지를 공유 카드로 만들기 위한 데이터. 직전 user 질문과 함께 묶인다. */
+export interface ShareInfo {
+  characterId: CharacterId;
+  characterName: string;
+  question: string;
+  locale?: "ko" | "en";
+}
+
 interface MessageBubbleProps {
   role: "user" | "assistant";
   content: string;
   isStreaming?: boolean;
   /** 점술 요청 시 뽑힌 카드 메타데이터 */
   cards?: DrawnCardMeta[];
+  /** 어시스턴트 메시지가 공유 가능할 때 — 직전 user 질문 등 메타데이터 */
+  share?: ShareInfo;
 }
 
 /** 마크다운 기호 및 과도한 빈 줄 제거. */
@@ -58,11 +70,29 @@ function useTypewriter(target: string, isStreaming: boolean) {
   return isStreaming ? target.slice(0, revealed) : target;
 }
 
-export function MessageBubble({ role, content, isStreaming, cards }: MessageBubbleProps) {
+/** 텍스트를 카드/링크에 박을 수 있게 줄여서 인코딩한다. */
+function clipForShare(text: string, max: number): string {
+  const trimmed = text.replace(/\s+/g, " ").trim();
+  return trimmed.length > max ? trimmed.slice(0, max - 1).trimEnd() + "…" : trimmed;
+}
+
+function buildShareUrl(share: ShareInfo, answer: string): string {
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://carouseloflife.com";
+  const sp = new URLSearchParams({
+    c: share.characterId,
+    q: clipForShare(share.question, 70),
+    a: clipForShare(answer, 200),
+  });
+  if (share.locale) sp.set("locale", share.locale);
+  return `${origin}/share?${sp.toString()}`;
+}
+
+export function MessageBubble({ role, content, isStreaming, cards, share }: MessageBubbleProps) {
   const isAssistant = role === "assistant";
   const cleaned = cleanContent(content);
   const displayed = useTypewriter(cleaned, !!isStreaming);
   const isCursorVisible = isStreaming && displayed.length >= cleaned.length;
+  const canShare = isAssistant && !isStreaming && !!share && cleaned.length > 0;
 
   return (
     <div className={cn("flex gap-2", isAssistant ? "flex-row" : "flex-row-reverse")}>
@@ -115,6 +145,21 @@ export function MessageBubble({ role, content, isStreaming, cards }: MessageBubb
             )}
           </p>
         </div>
+
+        {/* 어시스턴트 응답이 끝난 직후의 공유 affordance */}
+        {canShare && share && (
+          <div className="flex justify-end">
+            <ShareButton
+              title={`${share.characterName}이(가) 풀어준 이야기`}
+              text={cleaned}
+              url={buildShareUrl(share, cleaned)}
+              label="공유"
+              variant="ghost"
+              size="sm"
+              className="text-[15px] text-muted-foreground/80 hover:text-foreground"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
