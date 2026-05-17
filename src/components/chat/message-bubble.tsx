@@ -76,15 +76,26 @@ function clipForShare(text: string, max: number): string {
   return trimmed.length > max ? trimmed.slice(0, max - 1).trimEnd() + "…" : trimmed;
 }
 
-function buildShareUrl(share: ShareInfo, answer: string): string {
-  const origin = typeof window !== "undefined" ? window.location.origin : "https://carouseloflife.com";
+function buildShareParams(share: ShareInfo, answer: string): URLSearchParams {
   const sp = new URLSearchParams({
     c: share.characterId,
     q: clipForShare(share.question, 70),
     a: clipForShare(answer, 200),
   });
   if (share.locale) sp.set("locale", share.locale);
-  return `${origin}/share?${sp.toString()}`;
+  return sp;
+}
+
+function getOrigin(): string {
+  return typeof window !== "undefined" ? window.location.origin : "https://carouseloflife.com";
+}
+
+function buildShareUrl(share: ShareInfo, answer: string): string {
+  return `${getOrigin()}/share?${buildShareParams(share, answer).toString()}`;
+}
+
+function buildShareImageUrl(share: ShareInfo, answer: string): string {
+  return `${getOrigin()}/api/share/chat?${buildShareParams(share, answer).toString()}`;
 }
 
 export function MessageBubble({ role, content, isStreaming, cards, share }: MessageBubbleProps) {
@@ -153,6 +164,7 @@ export function MessageBubble({ role, content, isStreaming, cards, share }: Mess
               title={`${share.characterName}이(가) 풀어준 이야기`}
               text={cleaned}
               url={buildShareUrl(share, cleaned)}
+              imageUrl={buildShareImageUrl(share, cleaned)}
               label="공유"
               variant="ghost"
               size="sm"

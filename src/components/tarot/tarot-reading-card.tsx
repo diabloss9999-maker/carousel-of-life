@@ -103,25 +103,33 @@ export async function TarotReadingCard({ reading }: TarotReadingCardProps) {
             {reading.interpretation}
           </p>
           <div className="flex items-center justify-end gap-2">
-            <SaveImageButton
-              imageUrl={`/api/share/tarot?${new URLSearchParams({
+            {(() => {
+              const tarotShareImageUrl = `/api/share/tarot?${new URLSearchParams({
                 card:     cardName,
                 reversed: String(card?.isReversed ?? false),
                 summary:  reading.interpretation.slice(0, 60),
                 spread:   locale === "en" ? "1 card" : "한 장",
                 date:     localeDateStr,
                 locale,
-              })}`}
-              filename={t("shareFilename", { date: dateForFile })}
-            />
-            <ShareButton
-              title={t("shareTitleOne", { card: cardName })}
-              text={t("shareTextOne", {
-                card: cardName,
-                orient,
-                summary: reading.interpretation,
-              }) + (reading.question ? `\n\nQ. ${reading.question}` : "")}
-            />
+              })}`;
+              return (
+                <>
+                  <SaveImageButton
+                    imageUrl={tarotShareImageUrl}
+                    filename={t("shareFilename", { date: dateForFile })}
+                  />
+                  <ShareButton
+                    title={t("shareTitleOne", { card: cardName })}
+                    text={t("shareTextOne", {
+                      card: cardName,
+                      orient,
+                      summary: reading.interpretation,
+                    }) + (reading.question ? `\n\nQ. ${reading.question}` : "")}
+                    imageUrl={tarotShareImageUrl}
+                  />
+                </>
+              );
+            })()}
           </div>
         </div>
       </CardContent>

@@ -195,6 +195,7 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
               number: fortune.luckyNumber ?? "—",
               direction: fortune.luckyDirection ?? "—",
             })}
+            imageUrl={buildShareImageUrl()}
           />
         </div>
       </CardContent>
