@@ -45,7 +45,7 @@ function RuneCell({
     size === "lg"
       ? "w-44 sm:w-56"
       : size === "sm"
-        ? "w-24 sm:w-28"
+        ? "w-32 sm:w-36"
         : "w-44 sm:w-56";
 
   return (

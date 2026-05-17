@@ -87,13 +87,13 @@ export function LenormandReadingCard({ reading }: Props) {
                       isCenter && "ring-2 ring-amber-400/60",
                     )}
                   >
-                    <div className="relative w-24 sm:w-28 aspect-[2/3] overflow-hidden rounded-xl border border-border/40">
+                    <div className="relative w-32 sm:w-36 aspect-[2/3] overflow-hidden rounded-xl border border-border/40">
                       <Image
                         src={card.imageSrc}
                         alt={card.nameKo}
                         fill
                         className="object-cover"
-                        sizes="(max-width:640px) 96px, 112px"
+                        sizes="(max-width:640px) 128px, 144px"
                       />
                     </div>
                     <p className="text-center text-[15px] text-muted-foreground">{nineLabel(i)}</p>
