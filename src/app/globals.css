@@ -646,12 +646,10 @@ body.ritual-dawn {
   border-color: rgba(220, 140, 100, 0.24) !important;
 }
 
-/* 소령 — 세피아 / 오래된 기록 분위기 */
+/* 소령 — 세피아 / 오래된 기록 분위기 (frosted 베이스 유지, 색조만 그라데이션) */
 .entity-soryeong .app-surface {
   border-color: rgba(190, 160, 110, 0.26) !important;
-  background:
-    linear-gradient(180deg, rgba(255, 245, 220, 0.08), rgba(180, 140, 90, 0.06)),
-    rgba(255, 255, 255, 0.08) !important;
+  background: linear-gradient(180deg, rgba(255, 245, 220, 0.08), rgba(180, 140, 90, 0.06)) !important;
 }
 
 /* 현도 — 차가운 회색 / 차분 */
@@ -671,28 +669,22 @@ body.ritual-dawn {
   98% { transform: translateY(0); }
 }
 
-/* 외르문드 — 차가운 푸른 빛 / 신탁의 거리감 */
+/* 외르문드 — 차가운 푸른 빛 / 신탁의 거리감 (frosted 유지) */
 .entity-ormund .app-surface {
   border-color: rgba(160, 200, 240, 0.26) !important;
-  background:
-    linear-gradient(180deg, rgba(180, 210, 255, 0.06), rgba(60, 90, 150, 0.04)),
-    rgba(255, 255, 255, 0.08) !important;
+  background: linear-gradient(180deg, rgba(180, 210, 255, 0.06), rgba(60, 90, 150, 0.04)) !important;
 }
 
-/* 비요른 — 어두운 흙·가죽 / 야성 */
+/* 비요른 — 어두운 흙·가죽 / 야성 (frosted 유지) */
 .entity-bjorn .app-surface {
   border-color: rgba(160, 130, 100, 0.24) !important;
-  background:
-    linear-gradient(180deg, rgba(110, 90, 70, 0.06), rgba(60, 50, 40, 0.04)),
-    rgba(255, 255, 255, 0.08) !important;
+  background: linear-gradient(180deg, rgba(110, 90, 70, 0.06), rgba(60, 50, 40, 0.04)) !important;
 }
 
-/* 헬가 — 룬의 푸른빛 / 미세한 빛 떨림 */
+/* 헬가 — 룬의 푸른빛 / 미세한 빛 떨림 (frosted 유지) */
 .entity-helga .app-surface {
   border-color: rgba(150, 160, 230, 0.26) !important;
-  background:
-    linear-gradient(180deg, rgba(140, 160, 240, 0.06), rgba(80, 90, 180, 0.04)),
-    rgba(255, 255, 255, 0.08) !important;
+  background: linear-gradient(180deg, rgba(140, 160, 240, 0.06), rgba(80, 90, 180, 0.04)) !important;
   animation: helga-rune-flicker 9s infinite;
 }
 @keyframes helga-rune-flicker {
