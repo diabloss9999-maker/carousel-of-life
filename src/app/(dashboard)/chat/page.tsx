@@ -8,12 +8,11 @@ import { QuotaBar } from "@/components/fortune/quota-bar";
 import { CharacterSelect } from "@/components/chat/character-select";
 import { SessionDrawer } from "@/components/chat/session-drawer";
 import { requireProfile } from "@/lib/auth/get-user";
-import { isAdmin } from "@/lib/auth/admin";
 import { listTodaySessions } from "@/lib/chat/service";
 import { getSubscriptionTier } from "@/lib/payment/subscription-state";
 import { getAllAffinities } from "@/lib/affinity/service";
 import { getTodayUsage } from "@/lib/usage/quota";
-import { CharacterLoreCard } from "@/components/chat/character-lore-card";
+import { WorldTeaserBanner } from "@/components/chat/world-teaser-banner";
 import { WelcomeGreeting } from "@/components/chat/welcome-greeting";
 import { getTranslations } from "next-intl/server";
 
@@ -23,8 +22,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ChatPage() {
-  const { user, profile } = await requireProfile();
-  const adminMode = isAdmin(user.email);
+  const { profile } = await requireProfile();
   const t = await getTranslations("chat");
 
   const [sessions, usage, tier, affinityRows] = await Promise.all([
@@ -61,7 +59,7 @@ export default async function ChatPage() {
         />
       </div>
 
-      <CharacterLoreCard affinities={affinities} adminMode={adminMode} />
+      <WorldTeaserBanner />
 
       <Card className="app-surface">
         <CardContent className="pt-5">

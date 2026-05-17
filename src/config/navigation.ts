@@ -10,6 +10,7 @@ import {
   Heart,
   Brain,
   Library,
+  Book,
   Settings,
   type LucideIcon,
 } from "lucide-react";
@@ -19,7 +20,7 @@ import { ROUTES } from "@/lib/constants";
 export interface NavItem {
   href: Route;
   /** i18n 메시지 키 — `nav.{key}` 로 번역 lookup. */
-  labelKey: "fortune" | "oracle" | "tarot" | "pillars" | "bond" | "persona" | "archive" | "settings";
+  labelKey: "fortune" | "oracle" | "tarot" | "pillars" | "bond" | "persona" | "archive" | "stories" | "settings";
   /** 호버 툴팁·aria-label 보조 텍스트로 노출되는 풀이 (한국어 톤). */
   description: string;
   icon: LucideIcon;
@@ -39,5 +40,6 @@ export const mainNav: NavItem[] = [
   { href: ROUTES.compatibility,        labelKey: "bond",     description: "궁합 — 사람과 사람 사이의 이어짐",      icon: Heart,         iconSrc: "/nav/nav_compat.svg",      authOnly: true },
   { href: ROUTES.personality as Route, labelKey: "persona",  description: "성격유형 — 당신을 이루는 속의 무늬",    icon: Brain,         iconSrc: "/nav/nav_personality.svg", authOnly: true },
   { href: ROUTES.collection as Route,  labelKey: "archive",  description: "도감 — 지나온 날들의 자국",             icon: Library,       iconSrc: "/nav/nav_collection.svg",  authOnly: true },
+  { href: ROUTES.stories as Route,     labelKey: "stories",  description: "주술사들의 이야기 — 친밀도로 풀리는 챕터", icon: Book,                                              authOnly: true },
   { href: ROUTES.settings,             labelKey: "settings", description: "설정 — 오늘 남기는 말",                 icon: Settings,      iconSrc: "/nav/nav_settings.svg",    authOnly: true },
 ];

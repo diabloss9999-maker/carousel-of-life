@@ -123,6 +123,7 @@ export const ROUTES = {
   collection: "/collection",
   archive: "/archive",
   world: "/world",
+  stories: "/stories",
   settings: "/settings",
   pricing: "/pricing",
   authCallback: "/auth/callback",
