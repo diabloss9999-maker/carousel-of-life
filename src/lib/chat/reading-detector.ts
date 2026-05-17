@@ -164,9 +164,23 @@ const CARD_REQUEST_PATTERNS: { type: ReadingType; regex: RegExp }[] = [
   { type: "lenormand1", regex: /르노르망.*뽑|르노르망.*봐|르노르망.*줘|르노.*뽑|르노.*봐/i },
 ];
 
-function matchIntent(message: string): ReadingType | null {
+/** 카드 종류 없이 그냥 다시/또/한번 더 뽑아달라는 일반 재추첨 표현 */
+const GENERIC_REDRAW_REGEX =
+  /(다시\s*뽑|또\s*뽑|또\s*한\s*장|한\s*번\s*더\s*뽑|한장\s*더|다른\s*거.*뽑|새\s*카드|새\s*룬|리딩\s*다시|점\s*다시)/i;
+
+function matchIntent(
+  message: string,
+  characterId?: CharacterId,
+): ReadingType | null {
+  // 1) 명시적 패턴 먼저
   for (const { type, regex } of CARD_REQUEST_PATTERNS) {
     if (regex.test(message)) return type;
+  }
+  // 2) 일반 재추첨 표현 — 캐릭터의 기본 점술로 폴백
+  if (characterId && GENERIC_REDRAW_REGEX.test(message)) {
+    const allowed = ALLOWED_READINGS[characterId];
+    if (allowed.has("tarot1")) return "tarot1"; // 이세계
+    if (allowed.has("rune1")) return "rune1";   // 북유럽
   }
   return null;
 }
@@ -219,7 +233,7 @@ export function resolveReadingFlow(
   const allowed = ALLOWED_READINGS[characterId];
 
   // 1) 현재 메시지에서 의도 감지
-  const currentIntent = matchIntent(currentMessage);
+  const currentIntent = matchIntent(currentMessage, characterId);
   if (currentIntent) {
     if (!allowed.has(currentIntent)) {
       // 권한 밖 — 캐릭터 프롬프트가 자연스럽게 거절
@@ -244,7 +258,7 @@ export function resolveReadingFlow(
     return { kind: "none" };
   }
 
-  const prevIntent = matchIntent(prevUser.content);
+  const prevIntent = matchIntent(prevUser.content, characterId);
   if (!prevIntent || !allowed.has(prevIntent)) return { kind: "none" };
 
   // last AI 가 이미 카드를 그렸으면 다시 안 그림
