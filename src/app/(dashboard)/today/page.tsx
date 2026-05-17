@@ -36,8 +36,6 @@ import {
   getSubscriptionTier,
   hasActiveSubscription,
 } from "@/lib/payment/subscription-state";
-import { getTodayMood } from "@/lib/mood/service";
-import { MoodCapture } from "@/components/mood/mood-capture";
 import { getCrackScore } from "@/lib/crack/service";
 import { getHomeHiddenText } from "@/lib/observe/hidden-events";
 import { CrackAtmosphere } from "@/components/crack/crack-atmosphere";
@@ -79,14 +77,12 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
   const tExtras = await getTranslations("todayExtras");
   const locale = await getLocale();
 
-  const [fortune, usage, subscribed, tier, streakResult, todayMood, crackData] = await Promise.all([
+  const [fortune, usage, subscribed, tier, streakResult, crackData] = await Promise.all([
     getDailyFortune(profile.userId, category),
     getTodayUsage(profile.userId),
     hasActiveSubscription(profile.userId),
     getSubscriptionTier(profile.userId),
     checkInStreak(profile.userId),
-    // 모든 탭에서 오늘 기분을 조회 — MoodCapture 가 페이지 상단 고정이라 탭 무관 일관성 유지.
-    getTodayMood(profile.userId),
     getCrackScore(profile.userId),
   ]);
 
@@ -159,9 +155,6 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
         chatCount={usage.chatCount}
         tier={tier}
       />
-
-      {/* 오늘 기분 — 운세 생성 전부터 페이지 진입 시 바로 입력 가능 */}
-      <MoodCapture todayMood={todayMood?.mood ?? null} source="today_top" />
 
       {/* 주술사 호출 + 성격유형 진입 — 같은 가로 카드 톤이라 한 줄로 짝지움 */}
       <div className="grid gap-3 sm:grid-cols-2">
