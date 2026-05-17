@@ -12,10 +12,20 @@ import Image from "next/image";
 
 import type { CharacterId } from "@/lib/chat/characters";
 
-/** 캐릭터별 배경 이미지. 준비된 캐릭터만 키 등록. */
-const CHARACTER_BG: Partial<Record<CharacterId, string>> = {
-  child: "/backgrounds/kael.png",
-  // 추후 다른 캐릭터들도 같은 패턴으로 추가
+/** 캐릭터별 배경 이미지. 9명 모두 등록 완료. */
+const CHARACTER_BG: Record<CharacterId, string> = {
+  // 이세계
+  child:      "/backgrounds/child.png",      // 카엘
+  witch:      "/backgrounds/witch.png",      // 루나
+  sage:       "/backgrounds/sage.png",       // 라엘
+  // 동양
+  shaman:     "/backgrounds/shaman.png",     // 소령
+  taoist:     "/backgrounds/taoist.png",     // 현도
+  dokkaebi:   "/backgrounds/dokkaebi.png",   // 흑랑
+  // 북방
+  hunter:     "/backgrounds/hunter.png",     // 비요른
+  runeshaman: "/backgrounds/runeshaman.png", // 헬가
+  god:        "/backgrounds/god.png",        // 외르문드
 };
 
 interface CharacterBgProps {
@@ -24,7 +34,6 @@ interface CharacterBgProps {
 
 export function CharacterBg({ characterId }: CharacterBgProps) {
   const src = CHARACTER_BG[characterId];
-  if (!src) return null;
 
   return (
     <div
