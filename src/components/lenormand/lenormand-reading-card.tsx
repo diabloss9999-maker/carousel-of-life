@@ -183,13 +183,13 @@ export function LenormandReadingCard({ reading }: Props) {
                   key={`${entry.position}-${entry.id}`}
                   className="flex flex-col items-center gap-1"
                 >
-                  <div className="relative w-44 sm:w-56 aspect-[2/3] overflow-hidden rounded-xl border border-border/40">
+                  <div className="relative w-52 sm:w-64 aspect-[2/3] overflow-hidden rounded-xl border border-white/20 shadow-[0_22px_60px_rgb(0_0_0/0.22)]">
                     <Image
                       src={card.imageSrc}
                       alt={card.nameKo}
                       fill
                       className="object-cover"
-                      sizes="(max-width:640px) 176px, 224px"
+                      sizes="(max-width:640px) 208px, 256px"
                     />
                   </div>
                   <p className="text-[15px] text-muted-foreground">

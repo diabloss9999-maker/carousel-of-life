@@ -41,12 +41,17 @@ function RuneCell({
   const rune = RUNE_BY_ID[entry.runeId];
   if (!rune) return null;
 
+  // lg(단장) 만 타로 단장처럼 한 단계 더 크고 강한 그림자.
   const widthClass =
     size === "lg"
-      ? "w-44 sm:w-56"
+      ? "w-52 sm:w-64"
       : size === "sm"
         ? "w-32 sm:w-36"
         : "w-44 sm:w-56";
+  const cardStyles =
+    size === "lg"
+      ? "rounded-xl border border-white/20 shadow-[0_22px_60px_rgb(0_0_0/0.22)]"
+      : "rounded-lg border border-border/40";
 
   return (
     <div
@@ -57,7 +62,8 @@ function RuneCell({
     >
       <div
         className={cn(
-          "relative aspect-[2/3] overflow-hidden rounded-lg border border-border/40",
+          "relative aspect-[2/3] overflow-hidden",
+          cardStyles,
           widthClass,
         )}
       >
@@ -66,7 +72,7 @@ function RuneCell({
           alt={`${rune.name} (${rune.nameKo})`}
           fill
           className={cn("object-cover", entry.isReversed && "rotate-180")}
-          sizes="(max-width: 640px) 176px, 224px"
+          sizes={size === "lg" ? "(max-width: 640px) 208px, 256px" : "(max-width: 640px) 176px, 224px"}
         />
       </div>
       <p className="text-center text-[15px] text-muted-foreground">
