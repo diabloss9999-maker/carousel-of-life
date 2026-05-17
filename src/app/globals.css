@@ -154,17 +154,15 @@ body .on-character-image * {
   color: rgba(255, 255, 255, 0.95) !important;
 }
 
-/* Frosted Glass 카드 — v6: backdrop-filter 가 빌드 단계에서 !important 와 같이
-   stripping 되는 문제 회피. 셀렉터 단순화 + !important 제거. 배경 일러스트가
-   흐리게 비치는 진짜 frosted 효과. */
+/* Frosted Glass 카드 — v7: .ritual-message 의 backdrop-filter 가 빌드를 통과한
+   유일한 케이스라서 같은 형태로 단순화. saturate() · -webkit prefix 제거. */
 .app-surface {
   border: 1px solid rgba(255,255,255,0.18);
   background: rgba(255,255,255,0.05);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.12),
     0 8px 32px rgba(0,0,0,0.22);
-  backdrop-filter: blur(36px) saturate(150%);
-  -webkit-backdrop-filter: blur(36px) saturate(150%);
+  backdrop-filter: blur(28px);
   color: var(--foreground);
 }
 
@@ -615,14 +613,13 @@ body.ritual-night .ritual-chat-textarea {
   }
 }
 
-/* 밤 모드 — html.night. 투명 frosted, 블러만 강하게. !important 빼고 selector 만으로 우선순위. */
+/* 밤 모드 — html.night. 단순 blur 만. */
 html.night .app-surface {
   background: rgba(255,255,255,0.04);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.10),
     0 10px 36px rgba(0,0,0,0.32);
-  backdrop-filter: blur(40px) saturate(150%);
-  -webkit-backdrop-filter: blur(40px) saturate(150%);
+  backdrop-filter: blur(32px);
 }
 
 html.night body[data-time="night"] {
