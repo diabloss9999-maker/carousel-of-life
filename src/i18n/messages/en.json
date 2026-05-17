@@ -5,7 +5,6 @@
     "tarot": "Tarot",
     "pillars": "Pillars",
     "bond": "Bond",
-    "persona": "Persona",
     "archive": "Archive",
     "settings": "Settings"
   },
@@ -887,6 +886,8 @@
     "streakDaysRow": "{n}-day streak",
     "streakActive": "Your flow is keeping up",
     "streakNew": "Your record is building up",
+    "persona": "Persona",
+    "personaSub": "The pattern within you",
     "navTopAria": "Top navigation",
     "navBottomAria": "Bottom navigation"
   },

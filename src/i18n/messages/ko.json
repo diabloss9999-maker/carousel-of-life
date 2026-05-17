@@ -5,7 +5,6 @@
     "tarot": "점술",
     "pillars": "사주",
     "bond": "궁합",
-    "persona": "성격유형",
     "archive": "도감",
     "settings": "설정"
   },
@@ -887,6 +886,8 @@
     "streakDaysRow": "{n}일 연속",
     "streakActive": "흐름이 이어지고 있어요",
     "streakNew": "기록이 쌓이고 있어요",
+    "persona": "성격유형",
+    "personaSub": "당신을 이루는 무늬",
     "navTopAria": "상단 메뉴",
     "navBottomAria": "하단 메뉴"
   },

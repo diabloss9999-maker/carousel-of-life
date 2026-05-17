@@ -16,7 +16,7 @@ import { StudyTips } from "@/components/fortune/study-tips";
 
 import Link from "next/link";
 import type { Route } from "next";
-import { BookMarked, Globe2, Flame, Gift } from "lucide-react";
+import { BookMarked, Globe2, Flame, Gift, Brain } from "lucide-react";
 import { GenerateFortuneForm } from "@/components/fortune/generate-fortune-form";
 import { QuotaBar } from "@/components/fortune/quota-bar";
 import { TodaySummary } from "@/components/fortune/today-summary";
@@ -172,8 +172,8 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
       {/* 주술사 호출 — 먼저 말을 건다 */}
       <ShamanCall />
 
-      {/* 보관 · 세계 · 연속 흐름 — 메뉴바 대체 진입 카드 */}
-      <div className="grid grid-cols-3 gap-3">
+      {/* 보관 · 세계 · 연속 흐름 · 성격유형 — 메뉴바 대체 진입 카드 */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Link
           href={ROUTES.archive as Route}
           className="app-surface rounded-xl p-3 sm:p-4 flex flex-col items-start gap-1.5 transition-transform hover:-translate-y-0.5"
@@ -209,6 +209,14 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           <span className="text-[15px] text-muted-foreground leading-tight">
             {streakResult.currentStreak >= 3 ? tExtras("streakActive") : tExtras("streakNew")}
           </span>
+        </Link>
+        <Link
+          href={ROUTES.personality as Route}
+          className="app-surface rounded-xl p-3 sm:p-4 flex flex-col items-start gap-1.5 transition-transform hover:-translate-y-0.5"
+        >
+          <Brain className="h-4 w-4 text-accent" aria-hidden />
+          <span className="font-mystic text-[15px] font-semibold">{tExtras("persona")}</span>
+          <span className="text-[15px] text-muted-foreground leading-tight">{tExtras("personaSub")}</span>
         </Link>
       </div>
 
