@@ -10,6 +10,7 @@ import { CompatibilityHub } from "@/components/compatibility/compatibility-hub";
 import { MbtiCompatPanel } from "@/components/compatibility/mbti-compat-panel";
 import { TwoPersonCompat } from "@/components/compatibility/two-person-compat";
 import { ZodiacCompatPanel } from "@/components/compatibility/zodiac-compat-panel";
+import { PageBg } from "@/components/layout/page-bg";
 import { requireProfile } from "@/lib/auth/get-user";
 import { getTodayCompatibility } from "@/lib/compatibility/service";
 import { getChineseZodiac, getZodiacSign } from "@/lib/fortunes/zodiac";
@@ -59,6 +60,7 @@ export default async function CompatibilityPage() {
 
   return (
     <div className="space-y-8">
+      <PageBg src="/backgrounds/compatibility.png" />
       <header className="space-y-2">
         <h1 className="font-mystic text-3xl font-semibold tracking-tight sm:text-4xl">
           {t("title")}
