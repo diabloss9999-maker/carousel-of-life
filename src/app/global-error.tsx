@@ -8,6 +8,8 @@
  * 쿠키에서 직접 locale 을 읽어 정적 메시지 맵을 사용합니다.
  */
 
+import { useEffect } from "react";
+
 const MESSAGES = {
   ko: {
     title: "별의 흐름이 완전히 멈췄어요",
@@ -36,6 +38,13 @@ export default function GlobalError({
 }) {
   const locale = detectLocale();
   const t = MESSAGES[locale];
+  useEffect(() => {
+    console.error("[GlobalError]", {
+      message: error.message,
+      digest: error.digest,
+      stack: error.stack,
+    });
+  }, [error]);
   return (
     <html lang={locale}>
       <body

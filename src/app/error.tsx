@@ -20,9 +20,12 @@ export default function GlobalErrorBoundary({
   const t = useTranslations("appShell");
 
   useEffect(() => {
-    if (process.env.NODE_ENV !== "production") {
-      console.error("[GlobalErrorBoundary]", error);
-    }
+    // Vercel Logs 가 잡을 수 있게 항상 로깅. digest 로 서버 로그와 매칭 가능.
+    console.error("[ErrorBoundary]", {
+      message: error.message,
+      digest: error.digest,
+      stack: error.stack,
+    });
   }, [error]);
 
   return (

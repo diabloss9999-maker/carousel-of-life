@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Toaster } from "sonner";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { TimeAwareBg } from "@/components/layout/time-aware-bg";
@@ -89,6 +91,9 @@ export default async function RootLayout({
             />
           </ThemeProvider>
         </NextIntlClientProvider>
+        {/* Vercel observability — 트래픽·Core Web Vitals 측정. Pro 플랜이면 활성화. */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
