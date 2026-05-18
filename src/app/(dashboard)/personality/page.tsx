@@ -11,6 +11,7 @@ import { CareerFit } from "@/components/personality/career-fit";
 import { PersonalityTest } from "@/components/personality/personality-test";
 import { StressProfile } from "@/components/personality/stress-profile";
 import { TripleAnalysis } from "@/components/personality/triple-analysis";
+import { PageBg } from "@/components/layout/page-bg";
 import { requireProfile } from "@/lib/auth/get-user";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { getTranslations } from "next-intl/server";
@@ -28,6 +29,7 @@ export default async function PersonalityPage() {
 
   return (
     <div className="space-y-8">
+      <PageBg src="/backgrounds/personality.png" />
       <header className="space-y-2">
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
           {t("title")}
