@@ -36,6 +36,43 @@ export interface RateLimitResult {
 }
 
 /**
+ * AI 생성 호출 종류별 분당 한도. 서버 액션에서 enforceAiRateLimit 으로 검사.
+ *
+ * - 채팅은 별도(20/분, 라우트 단에서) — 여기엔 안 들어감.
+ * - 운세/사주/타로/궁합/성격 분석 등 한 번에 큰 토큰 쓰는 호출들은 더 빡빡하게.
+ */
+const AI_RATE_LIMITS: Record<string, { max: number; windowMs: number }> = {
+  fortune:     { max: 8,  windowMs: 60_000 },
+  saju:        { max: 5,  windowMs: 60_000 },
+  personality: { max: 5,  windowMs: 60_000 },
+  compatibility: { max: 8, windowMs: 60_000 },
+  tarot:       { max: 10, windowMs: 60_000 },
+};
+
+export class RateLimitedError extends Error {
+  constructor(public retryAfterSec: number) {
+    super(`Rate limited. Retry in ${retryAfterSec}s.`);
+    this.name = "RateLimitedError";
+  }
+}
+
+/**
+ * AI 생성 server action 진입부에서 호출. 초과 시 RateLimitedError 던짐.
+ * action 은 이를 잡아 사용자에게 "잠시 후 다시 시도" 메시지 반환.
+ */
+export function enforceAiRateLimit(
+  userId: string,
+  kind: keyof typeof AI_RATE_LIMITS,
+): void {
+  const cfg = AI_RATE_LIMITS[kind];
+  if (!cfg) return;
+  const result = checkRateLimit(`ai:${kind}:${userId}`, cfg.max, cfg.windowMs);
+  if (!result.ok) {
+    throw new RateLimitedError(result.retryAfterSec ?? 60);
+  }
+}
+
+/**
  * 키별로 windowMs 동안 max 회까지 허용.
  *
  * @param key      식별자 (예: `chat:${userId}`)

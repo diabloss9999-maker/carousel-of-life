@@ -12,6 +12,7 @@ import { z } from "zod";
 import { db } from "@/db";
 import { dailyIljin, profiles } from "@/db/schema";
 import { requireProfile } from "@/lib/auth/get-user";
+import { enforceAiRateLimit, RateLimitedError } from "@/lib/rate-limit/in-memory";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
 import { getTodayCharacter } from "@/lib/daily-question/rotation";
@@ -96,6 +97,15 @@ export interface DeepReadingState {
  */
 export async function generateDeepReadingAction(): Promise<DeepReadingState> {
   const { profile } = await requireProfile();
+
+  try {
+    enforceAiRateLimit(profile.userId, "saju");
+  } catch (e) {
+    if (e instanceof RateLimitedError) {
+      return { kind: "error", message: `잠시 후 다시 시도해줘. (${e.retryAfterSec}s)` };
+    }
+    throw e;
+  }
 
   const subscribed = await hasActiveSubscription(profile.userId);
   if (!subscribed) {

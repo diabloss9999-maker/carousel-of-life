@@ -18,6 +18,7 @@ import {
 } from "@/db/schema";
 import { getLocale, getTranslations } from "next-intl/server";
 import { requireProfile } from "@/lib/auth/get-user";
+import { enforceAiRateLimit, RateLimitedError } from "@/lib/rate-limit/in-memory";
 import { generateJson } from "@/lib/ai/generate";
 import {
   careerReportSchema,
@@ -80,6 +81,18 @@ export async function generateFortuneAction(
   }
 
   const { profile } = await requireProfile();
+
+  try {
+    enforceAiRateLimit(profile.userId, "fortune");
+  } catch (e) {
+    if (e instanceof RateLimitedError) {
+      return {
+        kind: "error",
+        message: `너무 빠르게 호출하고 있어. ${e.retryAfterSec}초 뒤에 다시 시도해줘.`,
+      };
+    }
+    throw e;
+  }
 
   // 별자리·십이간지 라이트 게이트.
   if (PREMIUM_FORTUNE_CATEGORIES.has(parsed.data)) {

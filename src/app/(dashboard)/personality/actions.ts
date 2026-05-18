@@ -19,6 +19,7 @@ import {
 } from "@/db/schema";
 import { getLocale, getTranslations } from "next-intl/server";
 import { requireProfile } from "@/lib/auth/get-user";
+import { enforceAiRateLimit, RateLimitedError } from "@/lib/rate-limit/in-memory";
 import { generateJson } from "@/lib/ai/generate";
 import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
 import { getTodayCharacter } from "@/lib/daily-question/rotation";
@@ -56,6 +57,14 @@ export interface TripleAnalysisState {
 export async function generateTripleAnalysisAction(): Promise<TripleAnalysisState> {
   try {
     const { profile } = await requireProfile();
+    try {
+      enforceAiRateLimit(profile.userId, "personality");
+    } catch (e) {
+      if (e instanceof RateLimitedError) {
+        return { kind: "error", message: `잠시 후 다시 시도해줘. (${e.retryAfterSec}s)` };
+      }
+      throw e;
+    }
     const subscribed = await hasActiveSubscription(profile.userId);
     const tErr = await errMessages();
     if (!subscribed) {
