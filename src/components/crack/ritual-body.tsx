@@ -56,7 +56,7 @@ function applyTimeClass(body: HTMLElement, crackLevel: CrackLevel) {
   body.setAttribute("data-time", isDay ? "day" : "night");
 
   // 인라인 style로 직접 지정 — CSS 클래스 캐스케이드 충돌 방지
-  body.style.backgroundImage = `url('/backgrounds/${isDay ? "day" : "night"}.png')`;
+  body.style.backgroundImage = `url('/backgrounds/${isDay ? "day" : "night"}.webp')`;
   body.style.backgroundSize = "cover";
   body.style.backgroundPosition = "center";
   body.style.backgroundRepeat = "no-repeat";

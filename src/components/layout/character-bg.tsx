@@ -15,17 +15,17 @@ import type { CharacterId } from "@/lib/chat/characters";
 /** 캐릭터별 배경 이미지. 9명 모두 등록 완료. */
 const CHARACTER_BG: Record<CharacterId, string> = {
   // 이세계
-  child:      "/backgrounds/child.png",      // 카엘
-  witch:      "/backgrounds/witch.png",      // 루나
-  sage:       "/backgrounds/sage.png",       // 라엘
+  child:      "/backgrounds/child.webp",      // 카엘
+  witch:      "/backgrounds/witch.webp",      // 루나
+  sage:       "/backgrounds/sage.webp",       // 라엘
   // 동양
-  shaman:     "/backgrounds/shaman.png",     // 소령
-  taoist:     "/backgrounds/taoist.png",     // 현도
-  dokkaebi:   "/backgrounds/dokkaebi.png",   // 흑랑
+  shaman:     "/backgrounds/shaman.webp",     // 소령
+  taoist:     "/backgrounds/taoist.webp",     // 현도
+  dokkaebi:   "/backgrounds/dokkaebi.webp",   // 흑랑
   // 북방
-  hunter:     "/backgrounds/hunter.png",     // 비요른
-  runeshaman: "/backgrounds/runeshaman.png", // 헬가
-  god:        "/backgrounds/god.png",        // 외르문드
+  hunter:     "/backgrounds/hunter.webp",     // 비요른
+  runeshaman: "/backgrounds/runeshaman.webp", // 헬가
+  god:        "/backgrounds/god.webp",        // 외르문드
 };
 
 interface CharacterBgProps {

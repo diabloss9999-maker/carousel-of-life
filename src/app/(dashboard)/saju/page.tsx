@@ -91,7 +91,7 @@ export default async function SajuPage() {
 
   return (
     <div className="space-y-8">
-      <PageBg src="/backgrounds/saju.png" />
+      <PageBg src="/backgrounds/saju.webp" />
       <header className="space-y-2">
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
           {t("title")}

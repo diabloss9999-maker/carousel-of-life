@@ -47,7 +47,7 @@ export default async function TarotPage() {
 
   return (
     <div className="space-y-8">
-      <PageBg src="/backgrounds/tarot.png" />
+      <PageBg src="/backgrounds/tarot.webp" />
       <header className="space-y-2">
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
           {tTarot("title")}

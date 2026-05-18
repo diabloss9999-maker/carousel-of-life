@@ -60,7 +60,7 @@ export default async function CompatibilityPage() {
 
   return (
     <div className="space-y-8">
-      <PageBg src="/backgrounds/compatibility.png" />
+      <PageBg src="/backgrounds/compatibility.webp" />
       <header className="space-y-2">
         <h1 className="font-mystic text-3xl font-semibold tracking-tight sm:text-4xl">
           {t("title")}

@@ -111,7 +111,7 @@ body.ritual-day {
   --ritual-text: rgba(0, 0, 0, 0.88);
   --ritual-muted: rgba(0, 0, 0, 0.55);
   color: rgba(0, 0, 0, 0.88) !important;
-  background: url("/backgrounds/day.png") center / cover no-repeat fixed;
+  background: url("/backgrounds/day.webp") center / cover no-repeat fixed;
 }
 
 /* 밤 배경 — 검정 텍스트 (사용자 요청: 밤에도 글씨 전부 검정) */
@@ -130,7 +130,7 @@ body.ritual-night {
   --ritual-text: rgba(0, 0, 0, 0.92);
   --ritual-muted: rgba(0, 0, 0, 0.62);
   color: rgba(0, 0, 0, 0.92) !important;
-  background: url("/backgrounds/night.png") center / cover no-repeat fixed !important;
+  background: url("/backgrounds/night.webp") center / cover no-repeat fixed !important;
 }
 
 /* ─── 글로벌: 모든 텍스트 강제 검정 (낮·밤 무관) ───
@@ -624,7 +624,7 @@ html.night .app-surface {
 }
 
 html.night body[data-time="night"] {
-  background-image: url("/backgrounds/night.png");
+  background-image: url("/backgrounds/night.webp");
 }
 
 /* ===== 새벽 모드 (02~04시 KST) ===== */
