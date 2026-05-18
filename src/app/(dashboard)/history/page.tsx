@@ -29,7 +29,6 @@ export default async function HistoryPage() {
     <div className="space-y-8">
       <header className="space-y-2">
         <div className="flex items-center gap-3">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/icons/eye-orbit.svg" alt="" aria-hidden className="h-8 w-8 opacity-60" />
           <p className="text-[15px] uppercase tracking-widest text-muted-foreground/70">
             {t("category")}

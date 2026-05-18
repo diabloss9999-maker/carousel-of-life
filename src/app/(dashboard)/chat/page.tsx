@@ -41,7 +41,6 @@ export default async function ChatPage() {
       <WelcomeGreeting />
       <header className="space-y-3">
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl flex items-center gap-3">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/icons/whisper-hand.svg" alt="" aria-hidden className="h-8 w-8 opacity-60" />
           {t("title")}
         </h1>

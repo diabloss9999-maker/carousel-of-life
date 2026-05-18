@@ -62,7 +62,7 @@ export function StreakBadge({ checkIn }: StreakBadgeProps) {
         {isHot ? (
           <Flame className="h-4 w-4 animate-pulse" aria-hidden />
         ) : (
-          // eslint-disable-next-line @next/next/no-img-element
+           
           <img src="/icons/fracture-mark.svg" alt="" aria-hidden className="h-4 w-4 opacity-60" />
         )}
         <span>{t("badgeLabel", { n: currentStreak })}</span>

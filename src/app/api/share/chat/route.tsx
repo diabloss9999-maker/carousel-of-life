@@ -120,7 +120,6 @@ export async function GET(req: NextRequest) {
               flexShrink: 0,
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={portraitUrl}
               alt={character.name}

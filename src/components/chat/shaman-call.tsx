@@ -39,7 +39,7 @@ export function ShamanCall() {
     setCharId(id);
     const lines = tCall.raw(id) as string[];
     const picked = lines[Math.floor(Math.random() * lines.length)] ?? "";
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+     
     setLine(picked);
   }, [tCall]);
 

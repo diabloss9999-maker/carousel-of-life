@@ -100,7 +100,6 @@ export function DailyQuestionCard({ characterId, question }: DailyQuestionCardPr
         )}
       />
       {/* 세계관 아이콘 — 우상단 장식 */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/icons/moon-signal.svg"
         alt=""

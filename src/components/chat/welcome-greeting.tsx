@@ -40,7 +40,7 @@ export function WelcomeGreeting() {
     // 캐릭터별 3개 인사 중 무작위 1개 — i18n 번역에서 가져온다.
     const lines = tGreetings.raw(pickedId) as string[];
     const picked = lines[Math.floor(Math.random() * lines.length)] ?? "";
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+     
     setLine(picked);
     try { window.sessionStorage.setItem(SESSION_KEY, "1"); } catch {}
 

@@ -115,7 +115,6 @@ export default async function SharePage({
 
         {/* OG 카드 미리보기 — 같은 이미지를 페이지 안에서도 보여준다 */}
         <div className="w-full aspect-square overflow-hidden rounded-3xl border border-border/40 shadow-2xl">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={ogUrl}
             alt={subLabel}

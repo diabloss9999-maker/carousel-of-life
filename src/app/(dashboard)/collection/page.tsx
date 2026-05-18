@@ -46,7 +46,6 @@ export default async function CollectionPage() {
         <div className="flex items-end justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-0.5">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/icons/memory-vessel.svg" alt="" aria-hidden className="h-6 w-6 opacity-60" />
               <h1 className="font-mystic text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
                 {t("title")}

@@ -168,7 +168,6 @@ export function CharacterLoreCard({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-center gap-2">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/icons/sealed-ring.svg"
           alt=""
@@ -178,7 +177,6 @@ export function CharacterLoreCard({
         <p className="text-[15px] text-muted-foreground/50 tracking-widest uppercase">
           {tLore("sectionTitle")}
         </p>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/icons/sealed-ring.svg"
           alt=""
