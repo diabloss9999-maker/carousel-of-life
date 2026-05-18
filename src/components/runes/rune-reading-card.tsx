@@ -101,7 +101,7 @@ export function RuneReadingCard({ reading }: Props) {
   const character = CHARACTERS[charId];
 
   return (
-    <Card className="app-surface">
+    <Card className="app-surface" data-capture-root>
       <CardHeader className="space-y-3 pb-3">
         {/* 캐릭터 배지 */}
         <div className="flex items-center gap-3">

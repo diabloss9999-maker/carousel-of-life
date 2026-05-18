@@ -63,7 +63,7 @@ export async function TarotReadingCard({ reading }: TarotReadingCardProps) {
   const dateForFile = new Date(reading.createdAt).toISOString().slice(0, 10);
 
   return (
-    <Card className="app-surface">
+    <Card className="app-surface" data-capture-root>
       <CardHeader className="space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">

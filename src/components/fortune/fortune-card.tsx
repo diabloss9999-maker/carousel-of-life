@@ -120,7 +120,7 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
   }
 
   return (
-    <Card className={`app-surface ring-1 ${borderColor}`}>
+    <Card className={`app-surface ring-1 ${borderColor}`} data-capture-root>
       <CardHeader className="space-y-3 pb-3">
         {/* 캐릭터 헤더 */}
         <div className="flex items-center gap-3">

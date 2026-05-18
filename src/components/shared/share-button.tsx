@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Check, Copy, Share2 } from "lucide-react";
+import { toPng } from "html-to-image";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -122,14 +123,30 @@ export function ShareButton({
    */
   async function handleInstagramShare() {
     setOpen(false);
-    if (!imageUrl) return;
 
+    // 1) data-capture-root 가 조상에 있으면 화면 그대로 캡처 — 사용자 기대치
+    // 2) 없으면 imageUrl 폴백
     let blob: Blob | null = null;
     try {
-      const res = await fetch(imageUrl);
-      blob = await res.blob();
+      const captureNode = ref.current?.closest<HTMLElement>("[data-capture-root]");
+      if (captureNode) {
+        const dataUrl = await toPng(captureNode, {
+          pixelRatio: 2,
+          cacheBust: true,
+        });
+        blob = await (await fetch(dataUrl)).blob();
+      } else if (imageUrl) {
+        blob = await (await fetch(imageUrl)).blob();
+      }
     } catch {
-      // 네트워크 실패 — 캡션이라도 복사
+      // 캡처 실패 — 캡션이라도 복사
+      await copyToClipboard();
+      setStatus("copied");
+      setTimeout(() => setStatus("idle"), 2000);
+      return;
+    }
+
+    if (!blob) {
       await copyToClipboard();
       setStatus("copied");
       setTimeout(() => setStatus("idle"), 2000);

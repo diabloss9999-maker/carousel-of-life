@@ -56,7 +56,7 @@ export async function TarotThreeReadingCard({ reading }: TarotThreeReadingCardPr
   );
 
   return (
-    <Card className="app-surface ring-1 ring-accent/15">
+    <Card className="app-surface ring-1 ring-accent/15" data-capture-root>
       <CardHeader className="space-y-3">
         <p className="text-[15px] uppercase tracking-wider text-muted-foreground">
           {localeDateStr} · {t("spreadThreeLabel")}

@@ -1,16 +1,23 @@
 "use client";
 
 /**
- * 이미지 저장 버튼 — 공유 다이얼로그 없이 바로 다운로드.
+ * 이미지 저장 버튼.
+ *
+ * 캡처 방식:
+ * 1) data-capture-root 가 가까운 DOM 조상에 있으면 → html-to-image 로 그 노드를
+ *    실제로 캡처해 PNG 다운로드 (사용자가 화면에서 보는 그대로).
+ * 2) 없으면 imageUrl 을 그대로 fetch + 다운로드 (구버전 OG 이미지 폴백).
  */
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Download, Loader2 } from "lucide-react";
+import { toPng } from "html-to-image";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface SaveImageButtonProps {
-  imageUrl: string;
+  /** 폴백 OG 이미지 URL — DOM 캡처가 불가능할 때 사용. */
+  imageUrl?: string;
   filename?: string;
   className?: string;
 }
@@ -21,16 +28,37 @@ export function SaveImageButton({
   className,
 }: SaveImageButtonProps) {
   const [status, setStatus] = useState<"idle" | "loading" | "done">("idle");
+  const btnRef = useRef<HTMLButtonElement>(null);
 
   async function handleSave() {
     if (status === "loading") return;
     setStatus("loading");
 
     try {
-      const res = await fetch(imageUrl);
-      const blob = await res.blob();
+      const captureNode = btnRef.current?.closest<HTMLElement>("[data-capture-root]");
 
-      // 항상 직접 다운로드 (공유 다이얼로그 없음)
+      let blob: Blob | null = null;
+
+      if (captureNode) {
+        // 화면 그대로 캡처 — DPR 2x 로 선명하게.
+        const dataUrl = await toPng(captureNode, {
+          pixelRatio: 2,
+          cacheBust: true,
+          backgroundColor: undefined, // 카드 자체 배경 유지
+        });
+        const res = await fetch(dataUrl);
+        blob = await res.blob();
+      } else if (imageUrl) {
+        // 폴백: 서버 OG 이미지 다운로드
+        const res = await fetch(imageUrl);
+        blob = await res.blob();
+      }
+
+      if (!blob) {
+        setStatus("idle");
+        return;
+      }
+
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -49,6 +77,7 @@ export function SaveImageButton({
 
   return (
     <Button
+      ref={btnRef}
       type="button"
       variant="outline"
       size="sm"
