@@ -52,8 +52,8 @@ export type SubscriptionTier = "free" | "lite" | "pro";
 export async function getSubscriptionTier(
   userId: string,
 ): Promise<SubscriptionTier> {
-  // 프로모션 — 무료 개방일엔 모든 사용자에게 PRO 한도·기능 적용.
-  if (isFreeAccessDay()) return "pro";
+  // 무료 개방일에도 한도는 사용자 본래 티어 유지. premium 카테고리 게이트만
+  // hasActiveSubscription 으로 해제하고, 일일 한도는 free/lite 그대로 동작.
   const now = new Date();
   const [row] = await db
     .select({ lsVariantId: subscriptions.lsVariantId })
