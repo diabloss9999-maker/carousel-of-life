@@ -10,6 +10,7 @@ import { and, eq, inArray, gt, or, isNull } from "drizzle-orm";
 import { db } from "@/db";
 import { subscriptions, type Subscription } from "@/db/schema";
 import { serverEnv } from "@/lib/env";
+import { isFreeAccessDay } from "@/lib/payment/promo";
 
 /**
  * 사용자가 활성 구독을 갖고 있는지.
@@ -18,6 +19,8 @@ import { serverEnv } from "@/lib/env";
  * - current_period_ends_at 이 미래이거나 null
  */
 export async function hasActiveSubscription(userId: string): Promise<boolean> {
+  // 프로모션 — 무료 개방일엔 모든 사용자가 활성 구독자로 동작.
+  if (isFreeAccessDay()) return true;
   const now = new Date();
   const [row] = await db
     .select({ id: subscriptions.id })
@@ -49,6 +52,8 @@ export type SubscriptionTier = "free" | "lite" | "pro";
 export async function getSubscriptionTier(
   userId: string,
 ): Promise<SubscriptionTier> {
+  // 프로모션 — 무료 개방일엔 모든 사용자에게 PRO 한도·기능 적용.
+  if (isFreeAccessDay()) return "pro";
   const now = new Date();
   const [row] = await db
     .select({ lsVariantId: subscriptions.lsVariantId })

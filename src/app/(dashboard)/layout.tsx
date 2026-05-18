@@ -4,6 +4,7 @@ import { LogOut } from "lucide-react";
 import { TimeAwareHeader } from "@/components/layout/time-aware-header";
 import { DesktopNav } from "@/components/layout/desktop-nav";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { PromoBanner } from "@/components/layout/promo-banner";
 import { MusicToggle } from "@/components/effects/music-toggle";
 import { LanguageToggle } from "@/components/layout/language-toggle";
 import { getTranslations } from "next-intl/server";
@@ -87,6 +88,8 @@ export default async function DashboardLayout({
           </div>
         </div>
       </TimeAwareHeader>
+
+      <PromoBanner />
 
       <main className="flex-1">
         <div className="mx-auto w-full max-w-6xl px-safe-4 py-7 sm:px-safe-6 md:py-10">
