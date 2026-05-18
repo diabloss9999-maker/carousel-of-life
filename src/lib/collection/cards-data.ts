@@ -344,7 +344,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     category: "characters",
     nameKo: "루나",
     nameEn: "Luna",
-    imageSrc: "/characters/witch_night_v2.png",
+    imageSrc: "/characters/witch_night_v2.webp",
     description:
       "달빛 아래 수정구슬을 응시하며 운명을 읽는 달빛의 마녀. 어둠 속에서 가장 선명하게 진실을 본다.",
     rarity: "legendary",
@@ -354,7 +354,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     category: "characters",
     nameKo: "카엘",
     nameEn: "Kael",
-    imageSrc: "/characters/child_v2.png",
+    imageSrc: "/characters/child_v2.webp",
     description:
       "운명과의 계약서를 손에 쥔 악마 계약자. 냉정하고 정확하게 진실만을 말한다.",
     rarity: "legendary",
@@ -364,7 +364,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     category: "characters",
     nameKo: "라엘",
     nameEn: "Rael",
-    imageSrc: "/characters/sage_night_v2.png",
+    imageSrc: "/characters/sage_night_v2.webp",
     description:
       "하늘의 뜻을 전하는 천상의 대리인. 빛과 희망의 언어로 당신의 길을 밝혀준다.",
     rarity: "legendary",
@@ -375,7 +375,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     category: "characters",
     nameKo: "소령",
     nameEn: "Soryeong",
-    imageSrc: "/characters/shaman_v1.png",
+    imageSrc: "/characters/shaman_v1.webp",
     description:
       "한 번 죽었다 신들에게 되살린 접신의 무녀. 인간도 신도 아닌 경계의 존재로, 신령의 목소리를 모두 들을 수 있다.",
     rarity: "legendary",
@@ -385,7 +385,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     category: "characters",
     nameKo: "현도",
     nameEn: "Hyundo",
-    imageSrc: "/characters/taoist_v1.png",
+    imageSrc: "/characters/taoist_v1.webp",
     description:
       "500년 전 금기를 써서 시간에서 지워진 도사. 천기역전을 쓸 때마다 소령과 흑랑의 기억이 사라진다.",
     rarity: "legendary",
@@ -395,7 +395,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     category: "characters",
     nameKo: "흑랑",
     nameEn: "Gwieyeom",
-    imageSrc: "/characters/dokkaebi_night_v2.png",
+    imageSrc: "/characters/dokkaebi_night_v2.webp",
     description:
       "소령을 살리기 위해 스스로 귀왕이 된 도깨비. 진짜 이름을 잃었고, 그 사실을 소령은 모른다.",
     rarity: "legendary",
@@ -406,7 +406,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     category: "characters",
     nameKo: "외르문드",
     nameEn: "Ormund",
-    imageSrc: "/characters/god_night.png",
+    imageSrc: "/characters/god_night.webp",
     description:
       "폭풍 끝에서 호른을 부는 자. 마지막 별 「에인하르」를 자기 몸 안에 품은 채로 늙지도 죽지도 못한다.",
     rarity: "legendary",
@@ -416,7 +416,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     category: "characters",
     nameKo: "비요른",
     nameEn: "Bjorn",
-    imageSrc: "/characters/hunter_night.png",
+    imageSrc: "/characters/hunter_night.webp",
     description:
       "북방 늑대 부족의 사냥꾼. 신을 죽이기 위해 태어난 「검은 숲의 왕」의 마지막 후손 — 손등에 짐승의 룬이 자라난다.",
     rarity: "legendary",
@@ -426,7 +426,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     category: "characters",
     nameKo: "헬가",
     nameEn: "Helga",
-    imageSrc: "/characters/runeshaman_night.png",
+    imageSrc: "/characters/runeshaman_night.webp",
     description:
       "24개 고대 룬을 모두 다루는 부족 최고의 룬샤먼. 룬의 대가로 인간의 언어를 잊어가지만 누군가의 운명만은 마지막까지 새기려 한다.",
     rarity: "legendary",

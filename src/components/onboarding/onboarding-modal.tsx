@@ -35,9 +35,9 @@ const STEPS_META = [
     bg: "from-[#0d0818] via-[#1a0a30] to-[#0a0520]",
     accent: "text-violet-400",
     characters: [
-      { id: "child" as CharId, img: "/characters/child_v2.png", color: "ring-red-800/50" },
-      { id: "witch" as CharId, img: "/characters/witch_night_v2.png", color: "ring-blue-800/50" },
-      { id: "sage" as CharId,  img: "/characters/sage_night_v2.png",  color: "ring-amber-700/50" },
+      { id: "child" as CharId, img: "/characters/child_v2.webp", color: "ring-red-800/50" },
+      { id: "witch" as CharId, img: "/characters/witch_night_v2.webp", color: "ring-blue-800/50" },
+      { id: "sage" as CharId,  img: "/characters/sage_night_v2.webp",  color: "ring-amber-700/50" },
     ],
   },
   {
@@ -47,9 +47,9 @@ const STEPS_META = [
     bg: "from-[#050d08] via-[#0a1a10] to-[#030a06]",
     accent: "text-emerald-400",
     characters: [
-      { id: "shaman" as CharId,   img: "/characters/shaman_v1.png",   color: "ring-rose-800/50" },
-      { id: "taoist" as CharId,   img: "/characters/taoist_v1.png",   color: "ring-cyan-800/50" },
-      { id: "dokkaebi" as CharId, img: "/characters/dokkaebi_night_v2.png", color: "ring-purple-800/50" },
+      { id: "shaman" as CharId,   img: "/characters/shaman_v1.webp",   color: "ring-rose-800/50" },
+      { id: "taoist" as CharId,   img: "/characters/taoist_v1.webp",   color: "ring-cyan-800/50" },
+      { id: "dokkaebi" as CharId, img: "/characters/dokkaebi_night_v2.webp", color: "ring-purple-800/50" },
     ],
   },
   {
@@ -59,9 +59,9 @@ const STEPS_META = [
     bg: "from-[#050a18] via-[#0a1428] to-[#020612]",
     accent: "text-sky-300",
     characters: [
-      { id: "god" as CharId,        img: "/characters/god_night.png",        color: "ring-sky-800/50" },
-      { id: "hunter" as CharId,     img: "/characters/hunter_night.png",     color: "ring-stone-700/50" },
-      { id: "runeshaman" as CharId, img: "/characters/runeshaman_night.png", color: "ring-indigo-800/50" },
+      { id: "god" as CharId,        img: "/characters/god_night.webp",        color: "ring-sky-800/50" },
+      { id: "hunter" as CharId,     img: "/characters/hunter_night.webp",     color: "ring-stone-700/50" },
+      { id: "runeshaman" as CharId, img: "/characters/runeshaman_night.webp", color: "ring-indigo-800/50" },
     ],
   },
   {
