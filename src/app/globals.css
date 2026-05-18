@@ -222,6 +222,13 @@ body .on-character-image * {
     border-color: var(--color-border);
   }
 
+  /* 키보드 포커스 표시 — 마우스 클릭엔 안 보이고 Tab 으로 진입할 때만 노출. */
+  :focus-visible {
+    outline: 2px solid oklch(0.74 0.13 82);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
   html {
     color-scheme: light;
     background: transparent;

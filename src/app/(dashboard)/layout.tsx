@@ -91,7 +91,7 @@ export default async function DashboardLayout({
 
       <PromoBanner />
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <div className="mx-auto w-full max-w-6xl px-safe-4 py-7 sm:px-safe-6 md:py-10">
           {children}
         </div>
