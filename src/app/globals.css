@@ -149,6 +149,7 @@ body .text-primary-foreground,
 body .text-destructive-foreground,
 body .text-accent-foreground,
 body [data-keep-color],
+body [data-keep-color] *,
 body .on-character-image,
 body .on-character-image * {
   color: rgba(255, 255, 255, 0.95) !important;

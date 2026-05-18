@@ -114,7 +114,7 @@ export function SajuPillars({ pillars }: SajuPillarsProps) {
             return (
               <div
                 key={key}
-                className="relative flex min-w-0 flex-col items-center gap-2 rounded-xl border border-amber-200/65 bg-white/42 px-1.5 py-3 text-center shadow-[inset_0_1px_0_rgb(255_255_255/0.55),0_10px_30px_oklch(0.18_0.04_55/0.08)] dark:border-amber-200/10 dark:bg-white/[0.045] sm:gap-3 sm:px-3 sm:py-4"
+                className="relative flex min-w-0 flex-col items-center gap-2 rounded-xl border border-amber-200/65 bg-white/42 px-1.5 py-3 text-center shadow-[inset_0_1px_0_rgb(255_255_255/0.55),0_10px_30px_oklch(0.18_0.04_55/0.08)] backdrop-blur-md dark:border-amber-200/30 dark:bg-white/25 sm:gap-3 sm:px-3 sm:py-4"
               >
                 <div className="space-y-0.5">
                   <span className="block text-[15px] font-semibold text-foreground">
@@ -266,6 +266,7 @@ function CharPopover({
     <div
       id={id}
       role="dialog"
+      data-keep-color
       className={cn(
         "absolute left-1/2 z-30 w-56 -translate-x-1/2",
         opensAbove ? "bottom-full mb-2" : "top-full mt-2",
