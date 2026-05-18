@@ -92,7 +92,7 @@ const structuredData = {
 export default async function HomePage() {
   const t = await getTranslations("landing");
   return (
-    <main className="relative min-h-screen">
+    <main className="relative min-h-dvh">
       <script
         type="application/ld+json"
         // 정적 객체를 직렬화하는 표준 JSON-LD 패턴. </script> 시퀀스를 이스케이프해 인젝션 방지.
@@ -109,7 +109,7 @@ export default async function HomePage() {
         className="pointer-events-none fixed inset-0 -z-[5] bg-gradient-to-t from-background/30 via-transparent to-background/15"
       />
 
-      <section className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-start gap-6 px-6 pt-20 pb-40 text-center sm:justify-center sm:pt-12 sm:pb-12">
+      <section className="relative z-10 mx-auto flex min-h-dvh max-w-3xl flex-col items-center justify-start gap-6 px-6 pt-20 pb-40 text-center sm:justify-center sm:pt-12 sm:pb-12">
         <h1 className="font-mystic text-balance text-5xl font-semibold leading-tight tracking-tight text-foreground sm:text-6xl drop-shadow-[0_2px_8px_rgba(60,30,100,0.3)]">
           {siteConfig.name}
         </h1>

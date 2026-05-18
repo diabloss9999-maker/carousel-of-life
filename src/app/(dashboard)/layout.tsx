@@ -42,7 +42,7 @@ export default async function DashboardLayout({
   const streakDays = streakRow?.currentStreak ?? 0;
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-dvh flex-col">
       <RitualBody crackLevel={crackData.level} />
 
       <TimeAwareHeader

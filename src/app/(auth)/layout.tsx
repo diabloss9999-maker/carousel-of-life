@@ -9,7 +9,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center px-6 py-12">
+    <main className="relative flex min-h-dvh flex-col items-center justify-center px-6 py-12">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,rgba(155,109,225,0.12),transparent_60%)]"

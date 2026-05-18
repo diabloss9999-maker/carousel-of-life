@@ -142,7 +142,7 @@ export function OnboardingModal() {
         <button
           type="button"
           onClick={dismiss}
-          className="absolute right-4 top-4 z-10 rounded-full p-1.5 text-white/40 hover:text-white/80 transition-colors"
+          className="absolute right-3 top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full text-white/50 hover:text-white/90 transition-colors"
           aria-label={t("skip")}
         >
           <X className="h-4 w-4" />
