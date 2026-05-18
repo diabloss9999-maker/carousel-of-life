@@ -124,6 +124,7 @@ export const ROUTES = {
   archive: "/archive",
   world: "/world",
   stories: "/stories",
+  palm: "/palm",
   settings: "/settings",
   pricing: "/pricing",
   authCallback: "/auth/callback",

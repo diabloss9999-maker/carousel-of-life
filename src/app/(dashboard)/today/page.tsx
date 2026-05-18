@@ -16,7 +16,7 @@ import { StudyTips } from "@/components/fortune/study-tips";
 
 import Link from "next/link";
 import type { Route } from "next";
-import { Brain } from "lucide-react";
+import { Brain, Hand } from "lucide-react";
 import { GenerateFortuneForm } from "@/components/fortune/generate-fortune-form";
 import { QuotaBar } from "@/components/fortune/quota-bar";
 import { TodaySummary } from "@/components/fortune/today-summary";
@@ -175,6 +175,22 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           </div>
         </Link>
       </div>
+
+      <Link
+        href={ROUTES.palm as Route}
+        className="app-surface group flex items-center gap-3 rounded-2xl p-3 sm:p-4 text-left transition-transform hover:-translate-y-0.5"
+      >
+        <div className="flex h-14 w-10 sm:h-16 sm:w-12 flex-shrink-0 items-center justify-center rounded-lg ring-1 ring-white/20 bg-accent/10 shadow-md">
+          <Hand className="h-5 w-5 text-accent" aria-hidden />
+        </div>
+        <div className="flex-1 min-w-0 space-y-0.5">
+          <p className="font-mystic text-[15px] font-bold text-foreground">손금 풀이</p>
+          <p className="text-[15px] text-foreground/85 leading-snug">손바닥 사진 한 장이면 돼</p>
+        </div>
+        <div className="text-muted-foreground group-hover:text-foreground transition-colors">
+          <span className="font-mystic text-base">→</span>
+        </div>
+      </Link>
 
       <CategoryTabs current={category} subscribed={subscribed} />
 

@@ -47,6 +47,8 @@ const AI_RATE_LIMITS: Record<string, { max: number; windowMs: number }> = {
   personality: { max: 5,  windowMs: 60_000 },
   compatibility: { max: 8, windowMs: 60_000 },
   tarot:       { max: 10, windowMs: 60_000 },
+  /** 손금 — Vision API 비싸서 빡빡하게 분당 2회. */
+  palm:        { max: 2,  windowMs: 60_000 },
 };
 
 export class RateLimitedError extends Error {
