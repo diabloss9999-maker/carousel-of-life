@@ -211,7 +211,7 @@ export function ShareButton({
       </Button>
 
       {open && (
-        <div className="absolute right-0 bottom-full mb-2 z-50 w-56 rounded-xl border border-border/60 bg-popover shadow-xl overflow-hidden">
+        <div className="absolute right-0 bottom-full mb-2 z-50 w-56 rounded-xl border border-border/60 bg-white shadow-xl overflow-hidden">
           {/* ① X(트위터) */}
           <button
             type="button"
