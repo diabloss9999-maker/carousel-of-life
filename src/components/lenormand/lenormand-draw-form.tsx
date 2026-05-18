@@ -115,7 +115,7 @@ export function LenormandDrawForm({ subscribed }: Props) {
               style={{ animationDelay: `${i * 0.04}s` }}
             >
               <Image
-                src="/collection/card_back_lenormand.png"
+                src="/collection/card_back_lenormand.webp"
                 alt="르노르망 카드 뒷면"
                 width={144}
                 height={216}

@@ -552,7 +552,7 @@ async function PreviewSection() {
           <CardContent className="space-y-3">
             <div className="mx-auto h-44 w-28 overflow-hidden rounded-lg ring-1 ring-border">
               <Image
-                src="/tarot/the_star.png"
+                src="/tarot/the_star.webp"
                 alt="타로 The Star 카드"
                 width={224}
                 height={352}

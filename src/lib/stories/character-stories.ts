@@ -2806,7 +2806,7 @@ export function getChapterImageSrc(
     return null;
   }
   const folder = SHARED_STORY_FOLDER[characterId] ?? characterId;
-  return `/stories/${folder}/ch${chapterNumber}.png`;
+  return `/stories/${folder}/ch${chapterNumber}.webp`;
 }
 
 // ═════════════════════════════════════════════════════════════════════════════

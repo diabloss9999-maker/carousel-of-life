@@ -209,14 +209,14 @@ function Char({ value, kind, id, active, onToggle }: CharProps) {
       >
         {/* 지지 — 십이간지 이미지 */}
         {zodiacId && zodiacInfo ? (
-          <CardImg src={`/chinese-zodiac/${zodiacId}.png`} alt={tCzName(zodiacInfo.id)} char={value} active={active} />
+          <CardImg src={`/chinese-zodiac/${zodiacId}.webp`} alt={tCzName(zodiacInfo.id)} char={value} active={active} />
         ) : stemImgId ? (
           /* 천간 — 천간 이미지 */
-          <CardImg src={`/cheongan/${stemImgId}.png`} alt={ko || value} char={value} active={active} />
+          <CardImg src={`/cheongan/${stemImgId}.webp`} alt={ko || value} char={value} active={active} />
         ) : (
           /* 천간 자리에 지지 글자 → 십이간지 이미지 */
           <CardImg
-            src={`/chinese-zodiac/${stemZodiacId ?? BRANCH_TO_ZODIAC[value]}.png`}
+            src={`/chinese-zodiac/${stemZodiacId ?? BRANCH_TO_ZODIAC[value]}.webp`}
             alt={stemZodiacInfo ? tCzName(stemZodiacInfo.id) : value}
             char={value}
             active={active}

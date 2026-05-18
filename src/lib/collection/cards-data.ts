@@ -258,7 +258,7 @@ function toTarotMeta(card: TarotCard): CollectionCardMeta {
     category: "tarot",
     nameKo: card.nameKo,
     nameEn: card.nameEn,
-    imageSrc: `/tarot/${card.id}.png`,
+    imageSrc: `/tarot/${card.id}.webp`,
     description,
     rarity,
   };
@@ -275,7 +275,7 @@ export const MBTI_CARDS: CollectionCardMeta[] = MBTI_ORDER.map((type) => {
     category: "mbti",
     nameKo: `${type} · ${trait.nameKo}`,
     nameEn: type,
-    imageSrc: `/mbti/${type}.png`,
+    imageSrc: `/mbti/${type}.webp`,
     description: trait.description,
     rarity: "rare",
   };
@@ -299,7 +299,7 @@ export const CHINESE_ZODIAC_CARDS: CollectionCardMeta[] = CHINESE_ZODIAC_LIST.ma
     category: "chineseZodiac",
     nameKo: c.ko,
     nameEn: c.id,
-    imageSrc: `/chinese-zodiac/${c.id}.png`,
+    imageSrc: `/chinese-zodiac/${c.id}.webp`,
     description: CHINESE_ZODIAC_TRAITS[c.id] ?? `${c.animal}의 기운을 담은 띠.`,
     rarity: "rare",
   }),
@@ -327,7 +327,7 @@ export const CHEONGAN_CARDS: CollectionCardMeta[] = CHEONGAN_ORDER.map(
       category: "cheongan",
       nameKo: meaning ? `${char} · ${meaning.ko}` : char,
       nameEn: id,
-      imageSrc: `/cheongan/${id}.png`,
+      imageSrc: `/cheongan/${id}.webp`,
       description: meaning
         ? `${meaning.symbol}. ${meaning.description}`
         : "천간의 한 글자.",
@@ -478,14 +478,14 @@ export const CATEGORY_META: Record<
   CollectionCategory,
   { label: string; emoji: string; cardBackSrc: string }
 > = {
-  tarot:         { label: "타로",    emoji: "", cardBackSrc: "/collection/card_back_tarot.png" },
-  mbti:          { label: "MBTI",   emoji: "", cardBackSrc: "/collection/card_back_mbti.png" },
-  zodiac:        { label: "별자리",  emoji: "", cardBackSrc: "/collection/card_back_zodiac.png" },
-  chineseZodiac: { label: "십이간지",emoji: "", cardBackSrc: "/collection/card_back_chinese_zodiac.png" },
-  cheongan:      { label: "천간",    emoji: "", cardBackSrc: "/collection/card_back_cheongan.png" },
-  characters:    { label: "주술사",  emoji: "", cardBackSrc: "/collection/card_back_characters.png" },
-  lenormand:     { label: "르노르망",emoji: "", cardBackSrc: "/collection/card_back_lenormand.png" },
-  runes:         { label: "룬",      emoji: "", cardBackSrc: "/collection/card_back_runes.png" },
+  tarot:         { label: "타로",    emoji: "", cardBackSrc: "/collection/card_back_tarot.webp" },
+  mbti:          { label: "MBTI",   emoji: "", cardBackSrc: "/collection/card_back_mbti.webp" },
+  zodiac:        { label: "별자리",  emoji: "", cardBackSrc: "/collection/card_back_zodiac.webp" },
+  chineseZodiac: { label: "십이간지",emoji: "", cardBackSrc: "/collection/card_back_chinese_zodiac.webp" },
+  cheongan:      { label: "천간",    emoji: "", cardBackSrc: "/collection/card_back_cheongan.webp" },
+  characters:    { label: "주술사",  emoji: "", cardBackSrc: "/collection/card_back_characters.webp" },
+  lenormand:     { label: "르노르망",emoji: "", cardBackSrc: "/collection/card_back_lenormand.webp" },
+  runes:         { label: "룬",      emoji: "", cardBackSrc: "/collection/card_back_runes.webp" },
 };
 
 /** 전체 카드 수 (197장 — 이세계 3 + 동양 3 + 북방 3 주술사). */

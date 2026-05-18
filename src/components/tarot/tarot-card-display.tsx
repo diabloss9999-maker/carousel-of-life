@@ -3,7 +3,7 @@
 /**
  * 타로 카드 시각적 표시 컴포넌트.
  *
- * - 이미지가 있으면 next/image 로 렌더링 (public/tarot/{id}.png)
+ * - 이미지가 있으면 next/image 로 렌더링 (public/tarot/{id}.webp)
  * - 이미지 로드 실패 / id 없음 → 텍스트 폴백 카드
  * - 역방향(isReversed) 은 래퍼를 rotate-180 하여 표현
  */
@@ -32,7 +32,7 @@ export function TarotCardDisplay({
   className,
 }: TarotCardDisplayProps) {
   const [imgError, setImgError] = useState(false);
-  const src = `/tarot/${id}.png`;
+  const src = `/tarot/${id}.webp`;
   const t = useTranslations("tarotForm");
   const locale = useLocale();
   const displayName = locale === "en" && nameEn ? nameEn : nameKo;

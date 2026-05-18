@@ -330,7 +330,7 @@ function ResultCard({
         {/* MBTI 카드 이미지 */}
         <div className="relative w-44 sm:w-52 aspect-[2/3] overflow-hidden rounded-2xl shadow-xl">
           <Image
-            src={`/mbti/${info.type}.png`}
+            src={`/mbti/${info.type}.webp`}
             alt={info.type}
             fill
             className="object-cover"
@@ -443,7 +443,7 @@ function ResultCard({
               return (
                 <div key={typeCode} className="flex flex-col items-center gap-1">
                   <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-primary/40">
-                    <Image src={`/mbti/${typeCode}.png`} alt={typeCode} fill className="object-cover" sizes="96px" />
+                    <Image src={`/mbti/${typeCode}.webp`} alt={typeCode} fill className="object-cover" sizes="96px" />
                   </div>
                   <p className="font-mystic text-[15px] font-bold text-primary">{typeCode}</p>
                   <p className="text-[15px] text-muted-foreground text-center leading-tight">{tT(`${typeCode}_nickname`)}</p>
@@ -461,7 +461,7 @@ function ResultCard({
               return (
                 <div key={typeCode} className="flex flex-col items-center gap-1">
                   <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-destructive/40 grayscale-[30%]">
-                    <Image src={`/mbti/${typeCode}.png`} alt={typeCode} fill className="object-cover" sizes="96px" />
+                    <Image src={`/mbti/${typeCode}.webp`} alt={typeCode} fill className="object-cover" sizes="96px" />
                   </div>
                   <p className="font-mystic text-[15px] font-bold text-destructive">{typeCode}</p>
                   <p className="text-[15px] text-muted-foreground text-center leading-tight">{tT(`${typeCode}_nickname`)}</p>

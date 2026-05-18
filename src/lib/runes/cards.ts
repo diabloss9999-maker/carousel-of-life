@@ -50,7 +50,7 @@ export const RUNE_DECK: RuneCard[] = [
       "재물의 손실이나 에너지 낭비. 탐욕이 화를 부를 수 있는 시기.",
     keywordsUpright: ["풍요", "재물", "번영", "에너지", "성취"],
     keywordsReversed: ["손실", "탐욕", "낭비", "욕망"],
-    imageSrc: "/runes/01_Fehu.png",
+    imageSrc: "/runes/01_Fehu.webp",
   },
   {
     id: 2,
@@ -65,7 +65,7 @@ export const RUNE_DECK: RuneCard[] = [
       "힘의 오용이나 저하. 고집스러움이 장애를 만드는 상황.",
     keywordsUpright: ["힘", "건강", "야성", "의지", "변화"],
     keywordsReversed: ["약함", "고집", "오용", "저항"],
-    imageSrc: "/runes/02_Uruz.png",
+    imageSrc: "/runes/02_Uruz.webp",
   },
   {
     id: 3,
@@ -80,7 +80,7 @@ export const RUNE_DECK: RuneCard[] = [
       "자기 파괴적 충동. 위험에 무방비로 노출되거나 충동적 행동.",
     keywordsUpright: ["보호", "방어", "충격", "변화", "힘"],
     keywordsReversed: ["위험", "충동", "파괴", "무방비"],
-    imageSrc: "/runes/03_Thurisaz.png",
+    imageSrc: "/runes/03_Thurisaz.webp",
   },
   {
     id: 4,
@@ -95,7 +95,7 @@ export const RUNE_DECK: RuneCard[] = [
       "소통의 단절이나 거짓 메시지. 기만이나 혼란의 정보.",
     keywordsUpright: ["지혜", "영감", "소통", "신성", "메시지"],
     keywordsReversed: ["기만", "단절", "혼란", "거짓"],
-    imageSrc: "/runes/04_Ansuz.png",
+    imageSrc: "/runes/04_Ansuz.webp",
   },
   {
     id: 5,
@@ -110,7 +110,7 @@ export const RUNE_DECK: RuneCard[] = [
       "여정의 지연이나 방향 상실. 잘못된 결정이나 통제 불능의 상황.",
     keywordsUpright: ["여정", "리듬", "방향", "이동", "흐름"],
     keywordsReversed: ["지연", "방향상실", "혼돈", "통제불능"],
-    imageSrc: "/runes/05_Raidho.png",
+    imageSrc: "/runes/05_Raidho.webp",
   },
   {
     id: 6,
@@ -125,7 +125,7 @@ export const RUNE_DECK: RuneCard[] = [
       "창의력의 소멸. 지식의 오용이나 관계·프로젝트의 종료.",
     keywordsUpright: ["창조", "지식", "기술", "통찰", "열정"],
     keywordsReversed: ["소멸", "무지", "종료", "오용"],
-    imageSrc: "/runes/06_Kenaz.png",
+    imageSrc: "/runes/06_Kenaz.webp",
   },
   {
     id: 7,
@@ -139,7 +139,7 @@ export const RUNE_DECK: RuneCard[] = [
     meaningReversed: null,
     keywordsUpright: ["선물", "교환", "균형", "관계", "나눔"],
     keywordsReversed: [],
-    imageSrc: "/runes/07_Gebo.png",
+    imageSrc: "/runes/07_Gebo.webp",
   },
   {
     id: 8,
@@ -154,7 +154,7 @@ export const RUNE_DECK: RuneCard[] = [
       "기쁨의 방해. 조화의 깨짐이나 실망, 미뤄지는 성공.",
     keywordsUpright: ["기쁨", "조화", "행복", "번영", "성취"],
     keywordsReversed: ["불화", "실망", "지연", "슬픔"],
-    imageSrc: "/runes/08_Wunjo.png",
+    imageSrc: "/runes/08_Wunjo.webp",
   },
 
   // Heimdall의 에트 (9~16)
@@ -170,7 +170,7 @@ export const RUNE_DECK: RuneCard[] = [
     meaningReversed: null,
     keywordsUpright: ["시련", "파괴", "변화", "정화", "충격"],
     keywordsReversed: [],
-    imageSrc: "/runes/09_Hagalaz.png",
+    imageSrc: "/runes/09_Hagalaz.webp",
   },
   {
     id: 10,
@@ -184,7 +184,7 @@ export const RUNE_DECK: RuneCard[] = [
     meaningReversed: null,
     keywordsUpright: ["필요", "저항", "인내", "제약", "단련"],
     keywordsReversed: [],
-    imageSrc: "/runes/10_Nauthiz.png",
+    imageSrc: "/runes/10_Nauthiz.webp",
   },
   {
     id: 11,
@@ -198,7 +198,7 @@ export const RUNE_DECK: RuneCard[] = [
     meaningReversed: null,
     keywordsUpright: ["정지", "얼음", "성찰", "기다림", "동결"],
     keywordsReversed: [],
-    imageSrc: "/runes/11_Isa.png",
+    imageSrc: "/runes/11_Isa.webp",
   },
   {
     id: 12,
@@ -212,7 +212,7 @@ export const RUNE_DECK: RuneCard[] = [
     meaningReversed: null,
     keywordsUpright: ["수확", "순환", "결실", "시간", "인과"],
     keywordsReversed: [],
-    imageSrc: "/runes/12_Jera.png",
+    imageSrc: "/runes/12_Jera.webp",
   },
   {
     id: 13,
@@ -226,7 +226,7 @@ export const RUNE_DECK: RuneCard[] = [
     meaningReversed: null,
     keywordsUpright: ["지속성", "생명력", "연결", "강인함", "변환"],
     keywordsReversed: [],
-    imageSrc: "/runes/13_Eihwaz.png",
+    imageSrc: "/runes/13_Eihwaz.webp",
   },
   {
     id: 14,
@@ -241,7 +241,7 @@ export const RUNE_DECK: RuneCard[] = [
       "숨겨진 위험이나 불운. 비밀이 드러나는 충격적 상황.",
     keywordsUpright: ["비밀", "운명", "기회", "신비", "우연"],
     keywordsReversed: ["불운", "폭로", "위험", "혼돈"],
-    imageSrc: "/runes/14_Perthro.png",
+    imageSrc: "/runes/14_Perthro.webp",
   },
   {
     id: 15,
@@ -256,7 +256,7 @@ export const RUNE_DECK: RuneCard[] = [
       "보호의 약화. 위험에 노출되거나 본능적 직관을 무시하는 상황.",
     keywordsUpright: ["보호", "방어", "안전", "직관", "신성"],
     keywordsReversed: ["취약", "위험", "무방비", "무시"],
-    imageSrc: "/runes/15_Algiz.png",
+    imageSrc: "/runes/15_Algiz.webp",
   },
   {
     id: 16,
@@ -270,7 +270,7 @@ export const RUNE_DECK: RuneCard[] = [
     meaningReversed: null,
     keywordsUpright: ["승리", "태양", "성공", "빛", "에너지"],
     keywordsReversed: [],
-    imageSrc: "/runes/16_Sowilo.png",
+    imageSrc: "/runes/16_Sowilo.webp",
   },
 
   // Tyr의 에트 (17~24)
@@ -287,7 +287,7 @@ export const RUNE_DECK: RuneCard[] = [
       "불의나 패배. 희생의 오용이나 명예의 손상.",
     keywordsUpright: ["정의", "희생", "용기", "전사", "명예"],
     keywordsReversed: ["불의", "패배", "비겁", "손상"],
-    imageSrc: "/runes/17_Tiwaz.png",
+    imageSrc: "/runes/17_Tiwaz.webp",
   },
   {
     id: 18,
@@ -302,7 +302,7 @@ export const RUNE_DECK: RuneCard[] = [
       "성장의 방해. 불안정하거나 돌봄이 부족한 환경.",
     keywordsUpright: ["양육", "성장", "재생", "시작", "보살핌"],
     keywordsReversed: ["방해", "불안정", "부족", "정체"],
-    imageSrc: "/runes/18_Berkano.png",
+    imageSrc: "/runes/18_Berkano.webp",
   },
   {
     id: 19,
@@ -317,7 +317,7 @@ export const RUNE_DECK: RuneCard[] = [
       "신뢰의 깨짐. 파트너십의 불화나 방향의 불일치.",
     keywordsUpright: ["파트너십", "신뢰", "협력", "여정", "조화"],
     keywordsReversed: ["불화", "배신", "불일치", "단절"],
-    imageSrc: "/runes/19_Ehwaz.png",
+    imageSrc: "/runes/19_Ehwaz.webp",
   },
   {
     id: 20,
@@ -332,7 +332,7 @@ export const RUNE_DECK: RuneCard[] = [
       "자기중심성이나 고립. 사회적 단절이나 자아의 왜곡.",
     keywordsUpright: ["인간성", "자아", "공동체", "잠재력", "실현"],
     keywordsReversed: ["고립", "왜곡", "자만", "단절"],
-    imageSrc: "/runes/20_Mannaz.png",
+    imageSrc: "/runes/20_Mannaz.webp",
   },
   {
     id: 21,
@@ -347,7 +347,7 @@ export const RUNE_DECK: RuneCard[] = [
       "감정의 범람이나 혼란. 직관이 흐려지거나 두려움에 압도되는 상황.",
     keywordsUpright: ["흐름", "직관", "감정", "치유", "무의식"],
     keywordsReversed: ["범람", "혼란", "두려움", "압도"],
-    imageSrc: "/runes/21_Laguz.png",
+    imageSrc: "/runes/21_Laguz.webp",
   },
   {
     id: 22,
@@ -361,7 +361,7 @@ export const RUNE_DECK: RuneCard[] = [
     meaningReversed: null,
     keywordsUpright: ["잠재력", "씨앗", "완성", "축적", "준비"],
     keywordsReversed: [],
-    imageSrc: "/runes/22_Ingwaz.png",
+    imageSrc: "/runes/22_Ingwaz.webp",
   },
   {
     id: 23,
@@ -375,7 +375,7 @@ export const RUNE_DECK: RuneCard[] = [
     meaningReversed: null,
     keywordsUpright: ["돌파", "전환", "각성", "새벽", "전체성"],
     keywordsReversed: [],
-    imageSrc: "/runes/23_Dagaz.png",
+    imageSrc: "/runes/23_Dagaz.webp",
   },
   {
     id: 24,
@@ -390,7 +390,7 @@ export const RUNE_DECK: RuneCard[] = [
       "유산의 갈등이나 단절. 과거에 집착하거나 뿌리로부터 소외된 상황.",
     keywordsUpright: ["유산", "고향", "뿌리", "조상", "소속"],
     keywordsReversed: ["집착", "단절", "소외", "갈등"],
-    imageSrc: "/runes/24_Othala.png",
+    imageSrc: "/runes/24_Othala.webp",
   },
 ];
 

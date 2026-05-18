@@ -74,7 +74,7 @@ function drawTarot(count: 1 | 3): DrawnCard[] {
     id: card.id,
     nameKo: card.nameKo,
     nameEn: card.nameEn,
-    imageSrc: `/tarot/${card.id}.png`,
+    imageSrc: `/tarot/${card.id}.webp`,
     isReversed: Math.random() < 0.35,
     position: positions[i],
   }));

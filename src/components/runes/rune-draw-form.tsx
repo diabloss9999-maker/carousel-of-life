@@ -115,7 +115,7 @@ export function RuneDrawForm({ subscribed }: Props) {
               style={{ animationDelay: `${i * 0.04}s` }}
             >
               <Image
-                src="/collection/card_back_runes.png"
+                src="/collection/card_back_runes.webp"
                 alt="룬 카드 뒷면"
                 width={144}
                 height={216}

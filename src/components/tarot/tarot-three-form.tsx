@@ -105,7 +105,7 @@ export function TarotThreeForm({ subscribed }: TarotThreeFormProps) {
               }}
             >
               <Image
-                src="/tarot/card_back.png"
+                src="/tarot/card_back.webp"
                 alt={t("cardBackAlt")}
                 width={448}
                 height={672}

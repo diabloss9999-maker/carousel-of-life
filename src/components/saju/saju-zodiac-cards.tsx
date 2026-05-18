@@ -62,7 +62,7 @@ export function SajuZodiacCards({ pillars }: SajuZodiacCardsProps) {
 
             <div className="relative w-full aspect-[2/3] overflow-hidden rounded-xl shadow-md">
               <Image
-                src={`/chinese-zodiac/${info.id}.png`}
+                src={`/chinese-zodiac/${info.id}.webp`}
                 alt={info.ko}
                 fill
                 className="object-cover"

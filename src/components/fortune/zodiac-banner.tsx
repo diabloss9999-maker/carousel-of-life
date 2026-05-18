@@ -37,7 +37,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
       <div className="flex flex-col items-center gap-5">
         {/* 메인 카드 */}
         <div className="relative w-36 sm:w-44 aspect-[2/3] overflow-hidden rounded-2xl shadow-xl">
-          <Image src={`/zodiac/${z.id}.png`} alt={mainLabel} fill className="object-cover" priority />
+          <Image src={`/zodiac/${z.id}.webp`} alt={mainLabel} fill className="object-cover" priority />
         </div>
 
         {/* 이름 + 날짜 */}
@@ -59,7 +59,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
                 return (
                   <div key={name} className="flex flex-col items-center gap-1">
                     <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-primary/40">
-                      <Image src={`/zodiac/${id}.png`} alt={label} fill className="object-cover" sizes="96px" />
+                      <Image src={`/zodiac/${id}.webp`} alt={label} fill className="object-cover" sizes="96px" />
                     </div>
                     <span className="text-[15px] font-medium text-primary text-center">{label}</span>
                   </div>
@@ -78,7 +78,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
                 return (
                   <div key={name} className="flex flex-col items-center gap-1">
                     <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-destructive/40 grayscale-[30%]">
-                      <Image src={`/zodiac/${id}.png`} alt={label} fill className="object-cover" sizes="96px" />
+                      <Image src={`/zodiac/${id}.webp`} alt={label} fill className="object-cover" sizes="96px" />
                     </div>
                     <span className="text-[15px] font-medium text-destructive text-center">{label}</span>
                   </div>
@@ -98,7 +98,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
       <div className="flex flex-col items-center gap-5">
         {/* 메인 카드 */}
         <div className="relative w-36 sm:w-44 aspect-[2/3] overflow-hidden rounded-2xl shadow-xl">
-          <Image src={`/chinese-zodiac/${cz.id}.png`} alt={mainLabel} fill className="object-cover" priority />
+          <Image src={`/chinese-zodiac/${cz.id}.webp`} alt={mainLabel} fill className="object-cover" priority />
         </div>
 
         {/* 이름 + 연도 */}
@@ -118,7 +118,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
                 return (
                   <div key={name} className="flex flex-col items-center gap-1">
                     <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-primary/40">
-                      <Image src={`/chinese-zodiac/${id}.png`} alt={label} fill className="object-cover" sizes="96px" />
+                      <Image src={`/chinese-zodiac/${id}.webp`} alt={label} fill className="object-cover" sizes="96px" />
                     </div>
                     <span className="text-[15px] font-medium text-primary text-center">{label}</span>
                   </div>
@@ -136,7 +136,7 @@ export function ZodiacBanner({ category, birthDate }: ZodiacBannerProps) {
                 return (
                   <div key={name} className="flex flex-col items-center gap-1">
                     <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-destructive/40 grayscale-[30%]">
-                      <Image src={`/chinese-zodiac/${id}.png`} alt={label} fill className="object-cover" sizes="96px" />
+                      <Image src={`/chinese-zodiac/${id}.webp`} alt={label} fill className="object-cover" sizes="96px" />
                     </div>
                     <span className="text-[15px] font-medium text-destructive text-center">{label}</span>
                   </div>

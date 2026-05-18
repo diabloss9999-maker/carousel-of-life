@@ -120,7 +120,7 @@ export function TarotDrawForm() {
               style={{ animationDelay: `${i * 0.04}s` }}
             >
               <Image
-                src="/tarot/card_back.png"
+                src="/tarot/card_back.webp"
                 alt={t("cardBackAlt")}
                 width={144}
                 height={216}
