@@ -11,6 +11,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { z } from "zod";
 
 import { requireProfile } from "@/lib/auth/get-user";
+import { checkRateLimit } from "@/lib/rate-limit/in-memory";
 import { streamChat } from "@/lib/ai/stream";
 import {
   prepareSendMessage,
@@ -103,6 +104,23 @@ export async function POST(
   }
 
   const { profile } = await requireProfile();
+
+  // 분당 burst 제한 — 사용자당 20회/분. 일일 quota 와는 별개의 abuse 차단.
+  const rl = checkRateLimit(`chat:${profile.userId}`, 20, 60_000);
+  if (!rl.ok) {
+    return new NextResponse(
+      JSON.stringify({
+        error: { code: API_ERROR_CODES.QUOTA_EXCEEDED, message: "너무 빠르게 보내고 있어. 잠시 후 다시 보내줘." },
+      }),
+      {
+        status: 429,
+        headers: {
+          "Content-Type": "application/json",
+          "Retry-After": String(rl.retryAfterSec ?? 60),
+        },
+      },
+    );
+  }
 
   const prepared = await prepareSendMessage({
     sessionId,
