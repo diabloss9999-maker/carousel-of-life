@@ -111,17 +111,17 @@ export async function analyzePalmAction(
     throw e;
   }
 
-  // 일일 한도 차감 — 손금은 운세 카운터(fortune) 와 같이 묶어 관리.
-  // LITE+ 전용이므로 실제 max 는 LITE/PRO 한도가 자동 적용됨.
+  // 일일 한도 차감 — 손금은 별도 카운터 (라이트 3회/일, 프로 5회/일).
+  // 무료는 max=0 으로 무조건 한도 초과 (라이트+ 가드는 위에서 이미 통과).
   const quota = await checkAndIncrementQuota({
     userId: profile.userId,
-    kind: "fortune",
-    max: FREE_DAILY_LIMITS.fortune,
+    kind: "palm",
+    max: FREE_DAILY_LIMITS.palm,
   });
   if (!quota.ok) {
     return {
       kind: "error",
-      message: `오늘의 운세 한도(${quota.max}회)를 모두 사용했어. 내일 다시 만나.`,
+      message: `오늘의 손금 풀이 한도(${quota.max}회)를 모두 사용했어. 내일 다시 만나.`,
     };
   }
 

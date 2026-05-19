@@ -543,6 +543,7 @@ export const usageQuotas = pgTable(
     fortuneCount: integer("fortune_count").notNull().default(0),
     tarotCount: integer("tarot_count").notNull().default(0),
     chatCount: integer("chat_count").notNull().default(0),
+    palmCount: integer("palm_count").notNull().default(0),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),

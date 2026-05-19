@@ -14,7 +14,7 @@ import { LITE_DAILY_LIMITS, PRO_DAILY_LIMITS } from "@/lib/constants";
 import { getSubscriptionTier } from "@/lib/payment/subscription-state";
 import { createClient } from "@/lib/supabase/server";
 
-export type QuotaKind = "fortune" | "tarot" | "chat";
+export type QuotaKind = "fortune" | "tarot" | "chat" | "palm";
 
 export interface QuotaResult {
   ok: boolean;
@@ -84,6 +84,7 @@ export async function getTodayUsage(userId: string): Promise<{
   fortuneCount: number;
   tarotCount: number;
   chatCount: number;
+  palmCount: number;
 }> {
   const today = new Date().toLocaleDateString("sv-SE", {
     timeZone: "Asia/Seoul",
@@ -94,6 +95,7 @@ export async function getTodayUsage(userId: string): Promise<{
       fortuneCount: usageQuotas.fortuneCount,
       tarotCount: usageQuotas.tarotCount,
       chatCount: usageQuotas.chatCount,
+      palmCount: usageQuotas.palmCount,
     })
     .from(usageQuotas)
     .where(
@@ -106,6 +108,7 @@ export async function getTodayUsage(userId: string): Promise<{
       fortuneCount: 0,
       tarotCount: 0,
       chatCount: 0,
+      palmCount: 0,
     }
   );
 }

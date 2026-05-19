@@ -100,6 +100,7 @@ export default async function PricingPage() {
               <Bullet>{t("fortuneLine", { n: LITE_DAILY_LIMITS.fortune })}</Bullet>
               <Bullet>{t("tarotLine", { n: LITE_DAILY_LIMITS.tarot })}</Bullet>
               <Bullet>{t("chatLine", { n: LITE_DAILY_LIMITS.chat })}</Bullet>
+              <Bullet>{t("palmLine", { n: LITE_DAILY_LIMITS.palm })}</Bullet>
               <Bullet>{t("bulletZodiac")}</Bullet>
               <Bullet>{t("bulletTarotThree")}</Bullet>
               <Bullet>{t("bulletCompat")}</Bullet>
@@ -157,6 +158,7 @@ export default async function PricingPage() {
               <Bullet>{t("fortuneLine", { n: PRO_DAILY_LIMITS.fortune })}</Bullet>
               <Bullet>{t("bulletTarotCeltic", { n: PRO_DAILY_LIMITS.tarot })}</Bullet>
               <Bullet>{t("chatLine", { n: PRO_DAILY_LIMITS.chat })}</Bullet>
+              <Bullet>{t("palmLine", { n: PRO_DAILY_LIMITS.palm })}</Bullet>
               <Bullet>{t("bulletZodiac")}</Bullet>
               <Bullet>{t("bulletLenormand")}</Bullet>
               <Bullet>{t("bulletRunes")}</Bullet>

@@ -9,6 +9,7 @@ export const FREE_DAILY_LIMITS = {
   fortune: 2,
   tarot: 1,
   chat: 10,
+  palm: 0, // 손금은 라이트+ 전용
 } as const;
 
 /** 라이트 구독자 일일 한도 (₩4,900). */
@@ -16,6 +17,7 @@ export const LITE_DAILY_LIMITS = {
   fortune: 10,
   tarot: 10,
   chat: 50,
+  palm: 3,
 } as const;
 
 /** 프로 구독자 일일 한도 (₩9,900). */
@@ -23,6 +25,7 @@ export const PRO_DAILY_LIMITS = {
   fortune: 20,
   tarot: 20,
   chat: 120,
+  palm: 5,
 } as const;
 
 /** 가챠 일일 한도 (티어별). */

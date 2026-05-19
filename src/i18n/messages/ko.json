@@ -372,7 +372,8 @@
     "bulletLenormand": "르노르망 9장·그랑 타블로",
     "bulletRunes": "룬 5장·9장 스프레드",
     "bulletSajuDeep": "사주 심층 분석 (평생 보관)",
-    "bulletGacha": "카드 가챠 매일 3장"
+    "bulletGacha": "카드 가챠 매일 3장",
+    "palmLine": "손금 풀이 일일 {n}회"
   },
   "settingsPage": {
     "heading": "내 자리",
