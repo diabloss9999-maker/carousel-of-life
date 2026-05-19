@@ -35,9 +35,17 @@ interface MessageBubbleProps {
   share?: ShareInfo;
 }
 
-/** 마크다운 기호 및 과도한 빈 줄 제거. */
+/**
+ * 마크다운 기호·과도한 빈 줄 제거 + AI 가 누설한 시스템 마커 strip.
+ *
+ * 시스템 마커(`[지금 막 ... 뽑혔어]`)는 AI 에게만 주는 신호이고
+ * 사용자 화면에 절대 노출되면 안 된다. 프롬프트 단에서 금지하고 있지만
+ * 모델이 가끔 그대로 옮기는 경우가 있어 출력 필터로도 한 번 더 막는다.
+ */
 function cleanContent(text: string): string {
   return text
+    .replace(/\[\s*지금 막[^\]]*뽑혔[^\]]*\]/g, "")
+    .replace(/\[\s*just drew[^\]]*\]/gi, "")
     .replace(/\*\*(.*?)\*\*/g, "$1")
     .replace(/\*(.*?)\*/g, "$1")
     .replace(/^#{1,6}\s+/gm, "")
