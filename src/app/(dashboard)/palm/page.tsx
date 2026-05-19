@@ -26,7 +26,7 @@ export default async function PalmPage() {
           손금 풀이
         </h1>
         <p className="text-[15px] text-muted-foreground">
-          이세계 주술사가 너의 손바닥에 새겨진 선을 읽어줘. 사진은 분석 즉시 폐기돼.
+          이세계 주술사가 너의 손바닥에 새겨진 선을 읽어줘.
         </p>
       </header>
 
