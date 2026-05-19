@@ -6,19 +6,37 @@
  *
  * 책임:
  * - 미러 도메인을 canonical URL 로 301 리다이렉트 (SEO 분산 방지)
+ * - /api/* state-changing 요청 CSRF 보호 (Origin 검사)
  * - Supabase 세션 갱신
  * - 보호된 라우트 접근 제어
  */
 import { NextResponse, type NextRequest } from "next/server";
 
 import { updateSession } from "@/lib/supabase/middleware";
+import { siteConfig } from "@/config/site";
 
 const CANONICAL_HOST = "carouseloflife.com";
 
+const MUTATING_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
+
+/** CSRF 허용 출처 — siteConfig.url + www + (dev: localhost). */
+function getAllowedOrigins(): Set<string> {
+  const set = new Set<string>([
+    siteConfig.url,
+    siteConfig.url.replace("://", "://www."),
+  ]);
+  if (process.env.NODE_ENV !== "production") {
+    set.add("http://localhost:3000");
+    set.add("http://127.0.0.1:3000");
+  }
+  return set;
+}
+
 export async function proxy(request: NextRequest) {
   const host = request.headers.get("host") ?? "";
+  const { pathname } = request.nextUrl;
 
-  // 비-canonical 호스트로 들어왔으면 canonical 로 301 redirect.
+  // 1) 비-canonical 호스트로 들어왔으면 canonical 로 301 redirect.
   // 대상: 모든 *.vercel.app 별칭 + www.{CANONICAL_HOST} 서브도메인.
   // localhost / *.local / canonical 호스트는 통과.
   if (
@@ -33,6 +51,25 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url, 301);
   }
 
+  // 2) CSRF — /api/* state-changing 요청 Origin 검사. webhook 은 자체 HMAC.
+  if (
+    pathname.startsWith("/api/") &&
+    !pathname.startsWith("/api/webhooks/") &&
+    MUTATING_METHODS.has(request.method)
+  ) {
+    const origin = request.headers.get("origin");
+    if (origin) {
+      const allowed = getAllowedOrigins();
+      if (!allowed.has(origin)) {
+        return new NextResponse(
+          JSON.stringify({ error: "Forbidden: invalid origin" }),
+          { status: 403, headers: { "Content-Type": "application/json" } },
+        );
+      }
+    }
+  }
+
+  // 3) Supabase 세션 갱신
   return updateSession(request);
 }
 
