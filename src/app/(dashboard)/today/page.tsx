@@ -13,9 +13,6 @@ import { LoveCard } from "@/components/fortune/love-card";
 import { PremiumFortuneGate } from "@/components/fortune/premium-fortune-gate";
 import { StudyTips } from "@/components/fortune/study-tips";
 
-import Link from "next/link";
-import type { Route } from "next";
-import { Brain, Hand } from "lucide-react";
 import { GenerateFortuneForm } from "@/components/fortune/generate-fortune-form";
 import { QuotaBar } from "@/components/fortune/quota-bar";
 import { TodaySummary } from "@/components/fortune/today-summary";
@@ -73,7 +70,6 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
   const { profile } = await requireProfile();
   const t = await getTranslations("today");
   const tNav = await getTranslations("nav");
-  const tExtras = await getTranslations("todayExtras");
   const locale = await getLocale();
 
   const [fortune, usage, subscribed, tier, streakResult, crackData] = await Promise.all([
@@ -155,41 +151,8 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
         tier={tier}
       />
 
-      {/* 주술사 호출 + 성격유형 진입 — 같은 가로 카드 톤이라 한 줄로 짝지움 */}
-      <div className="grid gap-3 sm:grid-cols-2">
-        <ShamanCall />
-        <Link
-          href={ROUTES.personality as Route}
-          className="app-surface group flex items-center gap-3 rounded-2xl p-3 sm:p-4 text-left transition-transform hover:-translate-y-0.5"
-        >
-          <div className="flex h-14 w-10 sm:h-16 sm:w-12 flex-shrink-0 items-center justify-center rounded-lg ring-1 ring-white/20 bg-accent/10 shadow-md">
-            <Brain className="h-5 w-5 text-accent" aria-hidden />
-          </div>
-          <div className="flex-1 min-w-0 space-y-0.5">
-            <p className="font-mystic text-[15px] font-bold text-foreground">{tExtras("persona")}</p>
-            <p className="text-[15px] text-foreground/85 leading-snug">{tExtras("personaSub")}</p>
-          </div>
-          <div className="text-muted-foreground group-hover:text-foreground transition-colors">
-            <span className="font-mystic text-base">→</span>
-          </div>
-        </Link>
-      </div>
-
-      <Link
-        href={ROUTES.palm as Route}
-        className="app-surface group flex items-center gap-3 rounded-2xl p-3 sm:p-4 text-left transition-transform hover:-translate-y-0.5"
-      >
-        <div className="flex h-14 w-10 sm:h-16 sm:w-12 flex-shrink-0 items-center justify-center rounded-lg ring-1 ring-white/20 bg-accent/10 shadow-md">
-          <Hand className="h-5 w-5 text-accent" aria-hidden />
-        </div>
-        <div className="flex-1 min-w-0 space-y-0.5">
-          <p className="font-mystic text-[15px] font-bold text-foreground">손금 풀이</p>
-          <p className="text-[15px] text-foreground/85 leading-snug">손바닥 사진 한 장이면 돼</p>
-        </div>
-        <div className="text-muted-foreground group-hover:text-foreground transition-colors">
-          <span className="font-mystic text-base">→</span>
-        </div>
-      </Link>
+      {/* 주술사 호출 */}
+      <ShamanCall />
 
       {/* 별자리·십이간지 — 비구독자: 라이트 잠금 */}
       {isPremiumCategory && !subscribed ? (

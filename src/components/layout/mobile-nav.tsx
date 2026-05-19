@@ -136,7 +136,13 @@ function ExpandedPanel({
         onClick={onClose}
         className="fixed inset-0 z-[-1] bg-black/30"
       />
-      <ul className="app-surface mb-2 rounded-2xl p-1.5">
+      <ul
+        className="app-surface mb-2 rounded-2xl p-1.5"
+        style={{
+          backdropFilter: "blur(28px)",
+          WebkitBackdropFilter: "blur(28px)",
+        }}
+      >
         {group.children.map((child) => {
           const active = isLeafActive(child, pathname, search, hash);
           return (

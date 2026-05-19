@@ -174,6 +174,12 @@ function GroupDropdown({
         <div
           role="menu"
           className="app-surface absolute left-1/2 top-full z-50 mt-1.5 min-w-[160px] -translate-x-1/2 overflow-hidden rounded-2xl"
+          style={{
+            // .app-surface 의 backdrop-filter 가 Tailwind 4 / Lightning CSS
+            // 일부 환경에서 누락되는 케이스가 있어 인라인으로 강제 보정.
+            backdropFilter: "blur(28px)",
+            WebkitBackdropFilter: "blur(28px)",
+          }}
         >
           <ul className="py-1.5">
             {group.children.map((child) => {
