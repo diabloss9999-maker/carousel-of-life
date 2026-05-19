@@ -154,7 +154,7 @@ function ExpandedPanel({
                       }
                     : { color: NAV_MUTED }
                 }
-                onClick={onClose}
+                onClick={(e) => handleLeafClick(e, child.href as string, onClose)}
               >
                 {tNav(child.labelKey)}
               </Link>
@@ -232,6 +232,26 @@ function NavGroupTile({
       </span>
     </button>
   );
+}
+
+/**
+ * Next.js Link 가 같은 경로 + 다른 해시(/tarot#lenormand) 로 이동할 때
+ * hashchange 이벤트를 안정적으로 발사 못 시킴 → 같은 경로면 직접 해시 갱신.
+ */
+function handleLeafClick(
+  e: React.MouseEvent<HTMLAnchorElement>,
+  href: string,
+  closeMenu: () => void,
+) {
+  closeMenu();
+  if (!href.includes("#")) return;
+  if (typeof window === "undefined") return;
+  const [path, h] = href.split("#");
+  if (window.location.pathname !== path) return;
+  e.preventDefault();
+  if (window.location.hash !== `#${h}`) {
+    window.location.hash = h;
+  }
 }
 
 function IconBubble({ iconSrc, isActive }: { iconSrc?: string; isActive: boolean }) {
