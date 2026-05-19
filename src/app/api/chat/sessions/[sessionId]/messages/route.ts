@@ -182,7 +182,14 @@ export async function POST(
       cardSystemInject = decision.promptInjection;
     } else if (decision.kind === "draw") {
       reading = decision.reading;
-      cardSystemInject = `\n\n[카드 읽기 — 지금 즉시 실행]\n${reading.promptText}`;
+      cardSystemInject =
+        `\n\n[카드 읽기 — 지금 즉시 실행 / 최우선 지시]\n` +
+        `${reading.promptText}\n\n` +
+        `절대 금지 (이 응답에서):\n` +
+        `- "흩어진 카드가 다시 모이고 있어" / "바람이 다시 모인다" / "잠시…" 류의 setup 문구\n` +
+        `- "가장 알고 싶은 게 뭐야?" / "무엇을 알고 싶지?" 류의 setup 질문\n` +
+        `- 대괄호로 시작하는 시스템 라벨 ("[지금 막 …]" 등) 의 응답 노출\n` +
+        `반드시: 응답 첫 문장에 카드 이름 + 정/역방향을 박고, 바로 그 카드의 의미를 캐릭터 목소리로 해석. 사용자 상황과 연결해 마무리 질문 1개.`;
     }
   } catch {
     /* 점술 흐름 판정 실패 시 무시하고 일반 대화로 진행 */
