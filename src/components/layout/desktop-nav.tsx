@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ChevronDown } from "lucide-react";
 
@@ -123,18 +123,32 @@ function GroupDropdown({
   hash: string;
 }) {
   const [open, setOpen] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  // 바깥 클릭/ESC 시 닫기 — 사용자가 항목을 고르거나 명시적으로 닫을 때까지 유지.
+  useEffect(() => {
+    if (!open) return;
+    function onDocClick(e: MouseEvent) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
+      }
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("mousedown", onDocClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDocClick);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
 
   return (
-    <div
-      className="relative"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-      onFocus={() => setOpen(true)}
-      onBlur={(e) => {
-        // 포커스가 그룹 내부로 옮겨가면 닫지 않기.
-        if (!e.currentTarget.contains(e.relatedTarget as Node)) setOpen(false);
-      }}
-    >
+    <div className="relative" ref={wrapperRef}>
       <button
         type="button"
         aria-expanded={open}
@@ -181,6 +195,7 @@ function GroupDropdown({
                         ? { color: "#1a1a1a", background: "rgba(0,0,0,0.06)", fontWeight: 700 }
                         : { color: "#3a3a3a" }
                     }
+                    onClick={() => setOpen(false)}
                     onMouseEnter={(e) => {
                       if (!active) {
                         e.currentTarget.style.background = "rgba(0,0,0,0.05)";
