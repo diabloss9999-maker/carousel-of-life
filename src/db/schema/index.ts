@@ -421,9 +421,18 @@ export const subscriptions = pgTable(
     userId: uuid("user_id")
       .notNull()
       .references(() => authUsers.id, { onDelete: "cascade" }),
-    lsSubscriptionId: text("ls_subscription_id").notNull().unique(),
-    lsCustomerId: text("ls_customer_id").notNull(),
-    lsVariantId: text("ls_variant_id").notNull(),
+    /** 결제 PG 식별 — 'lemonsqueezy' | 'toss'. 마이그 0005 추가. */
+    provider: text("provider").notNull().default("lemonsqueezy"),
+    // ── LS 컬럼 (provider='lemonsqueezy' 일 때만 채워짐) ──
+    lsSubscriptionId: text("ls_subscription_id").unique(),
+    lsCustomerId: text("ls_customer_id"),
+    lsVariantId: text("ls_variant_id"),
+    // ── Toss 컬럼 (provider='toss' 일 때만 채워짐) ──
+    tossBillingKey: text("toss_billing_key").unique(),
+    tossCustomerKey: text("toss_customer_key"),
+    tossCardCompany: text("toss_card_company"),
+    tossCardNumberMasked: text("toss_card_number_masked"),
+    // ── 공통 ──
     status: subscriptionStatusEnum("status").notNull(),
     currentPeriodStartsAt: timestamp("current_period_starts_at", {
       withTimezone: true,
@@ -477,6 +486,45 @@ export const purchases = pgTable(
 
 export type Purchase = typeof purchases.$inferSelect;
 export type NewPurchase = typeof purchases.$inferInsert;
+
+// =============================================================================
+// toss_payments - 토스 정기결제 청구 이력 (마이그 0005)
+// =============================================================================
+
+export const tossPayments = pgTable(
+  "toss_payments",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    subscriptionId: uuid("subscription_id").references(
+      () => subscriptions.id,
+      { onDelete: "set null" },
+    ),
+    paymentKey: text("payment_key").notNull().unique(),
+    orderId: text("order_id").notNull().unique(),
+    amount: integer("amount").notNull(),
+    /** 'DONE' | 'CANCELED' | 'ABORTED' 등. */
+    status: text("status").notNull(),
+    method: text("method"),
+    approvedAt: timestamp("approved_at", { withTimezone: true }),
+    canceledAt: timestamp("canceled_at", { withTimezone: true }),
+    cancelReason: text("cancel_reason"),
+    /** 토스 응답 원본 (분쟁 시 증빙). */
+    rawResponse: jsonb("raw_response"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    index("toss_payments_user_id_idx").on(t.userId),
+    index("toss_payments_subscription_id_idx").on(t.subscriptionId),
+  ],
+);
+
+export type TossPayment = typeof tossPayments.$inferSelect;
+export type NewTossPayment = typeof tossPayments.$inferInsert;
 
 // =============================================================================
 // usage_quotas - 일일 사용량 (무료 한도 추적)

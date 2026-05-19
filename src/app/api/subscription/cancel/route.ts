@@ -41,6 +41,13 @@ export async function POST() {
   }
 
   try {
+    // LS 구독만 여기서 처리. Toss 구독은 /api/billing/cancel 사용 (마이그 0005 후).
+    if (!active.lsSubscriptionId) {
+      return NextResponse.json(
+        { ok: false, error: { code: "NOT_LEMONSQUEEZY_SUBSCRIPTION" } },
+        { status: 400 },
+      );
+    }
     await cancelSubscription(active.lsSubscriptionId);
   } catch (e) {
     const tErr = await getTranslations("actionErrors");
