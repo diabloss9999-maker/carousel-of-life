@@ -90,27 +90,50 @@ export async function getTodayUsage(userId: string): Promise<{
     timeZone: "Asia/Seoul",
   });
 
-  const [row] = await db
-    .select({
-      fortuneCount: usageQuotas.fortuneCount,
-      tarotCount: usageQuotas.tarotCount,
-      chatCount: usageQuotas.chatCount,
-      palmCount: usageQuotas.palmCount,
-    })
-    .from(usageQuotas)
-    .where(
-      and(eq(usageQuotas.userId, userId), eq(usageQuotas.usageDate, today)),
-    )
-    .limit(1);
+  // palm_count 는 마이그레이션 0006 적용 전엔 DB 에 없을 수 있으니
+  // 핵심 카운터 SELECT 가 실패해도 0 으로 폴백 (페이지 전체가 죽지 않게).
+  try {
+    const [row] = await db
+      .select({
+        fortuneCount: usageQuotas.fortuneCount,
+        tarotCount: usageQuotas.tarotCount,
+        chatCount: usageQuotas.chatCount,
+        palmCount: usageQuotas.palmCount,
+      })
+      .from(usageQuotas)
+      .where(
+        and(eq(usageQuotas.userId, userId), eq(usageQuotas.usageDate, today)),
+      )
+      .limit(1);
 
-  return (
-    row ?? {
-      fortuneCount: 0,
-      tarotCount: 0,
-      chatCount: 0,
+    return (
+      row ?? {
+        fortuneCount: 0,
+        tarotCount: 0,
+        chatCount: 0,
+        palmCount: 0,
+      }
+    );
+  } catch {
+    // 옛 스키마(palm_count 컬럼 없음) 폴백 — 핵심 3개만 다시 시도.
+    const [row] = await db
+      .select({
+        fortuneCount: usageQuotas.fortuneCount,
+        tarotCount: usageQuotas.tarotCount,
+        chatCount: usageQuotas.chatCount,
+      })
+      .from(usageQuotas)
+      .where(
+        and(eq(usageQuotas.userId, userId), eq(usageQuotas.usageDate, today)),
+      )
+      .limit(1);
+    return {
+      fortuneCount: row?.fortuneCount ?? 0,
+      tarotCount: row?.tarotCount ?? 0,
+      chatCount: row?.chatCount ?? 0,
       palmCount: 0,
-    }
-  );
+    };
+  }
 }
 
 /**
