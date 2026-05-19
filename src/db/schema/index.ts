@@ -85,6 +85,8 @@ export const subscriptionStatusEnum = pgEnum("subscription_status", [
   "paused",
   "cancelled",
   "expired",
+  /** 결제 실패 — 토스 정기결제 갱신 실패 시. cron 이 재시도. (마이그 0005) */
+  "past_due",
 ]);
 
 export const purchaseStatusEnum = pgEnum("purchase_status", [

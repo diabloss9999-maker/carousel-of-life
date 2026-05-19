@@ -14,6 +14,9 @@ ALTER TABLE public.subscriptions
   ALTER COLUMN ls_customer_id DROP NOT NULL,
   ALTER COLUMN ls_variant_id DROP NOT NULL;
 
+-- subscription_status enum 에 past_due 추가 (토스 정기결제 실패 상태)
+ALTER TYPE subscription_status ADD VALUE IF NOT EXISTS 'past_due';
+
 -- 토스 빌링 정보
 ALTER TABLE public.subscriptions
   ADD COLUMN IF NOT EXISTS toss_billing_key text UNIQUE,
