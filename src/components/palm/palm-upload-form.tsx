@@ -9,7 +9,7 @@
  * - 캐릭터 선택 (이세계 3인)
  */
 
-import { useActionState, useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Camera, Loader2, Sparkles, Upload, X } from "lucide-react";
 
@@ -74,6 +74,18 @@ export function PalmUploadForm() {
   const [question, setQuestion] = useState("");
   const [error, setError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  // 터치 디바이스(모바일) 감지 — 카메라 버튼 노출 여부.
+  // (pointer: coarse) 는 터치 입력 우선이라는 의미라 폰·태블릿에서 true.
+  const [isTouch, setIsTouch] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(pointer: coarse)");
+    setIsTouch(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsTouch(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   async function handleFile(file: File) {
     setError(null);
@@ -164,24 +176,29 @@ export function PalmUploadForm() {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-2">
-                <label className="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border/50 p-6 cursor-pointer hover:bg-card/30 transition-colors">
-                  <Camera className="h-6 w-6 text-muted-foreground" aria-hidden />
-                  <span className="text-[15px] text-muted-foreground">카메라</span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    capture="environment"
-                    className="hidden"
-                    onChange={(e) => {
-                      const f = e.target.files?.[0];
-                      if (f) handleFile(f);
-                    }}
-                  />
-                </label>
+              <div className={isTouch ? "grid grid-cols-2 gap-2" : "grid grid-cols-1 gap-2"}>
+                {/* 카메라 — 터치 디바이스(폰·태블릿)에서만. 데스크탑은 갤러리만. */}
+                {isTouch && (
+                  <label className="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border/50 p-6 cursor-pointer hover:bg-card/30 transition-colors">
+                    <Camera className="h-6 w-6 text-muted-foreground" aria-hidden />
+                    <span className="text-[15px] text-muted-foreground">카메라</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      className="hidden"
+                      onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        if (f) handleFile(f);
+                      }}
+                    />
+                  </label>
+                )}
                 <label className="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border/50 p-6 cursor-pointer hover:bg-card/30 transition-colors">
                   <Upload className="h-6 w-6 text-muted-foreground" aria-hidden />
-                  <span className="text-[15px] text-muted-foreground">갤러리</span>
+                  <span className="text-[15px] text-muted-foreground">
+                    {isTouch ? "갤러리" : "사진 업로드"}
+                  </span>
                   <input
                     ref={fileRef}
                     type="file"
