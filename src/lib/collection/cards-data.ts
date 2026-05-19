@@ -54,18 +54,18 @@ export interface CollectionCardMeta {
 
 /** 별자리 → public/zodiac 의 실제 파일명 매핑. */
 const ZODIAC_FILENAME: Record<string, string> = {
-  aries: "01_양자리_ARIES.png",
-  taurus: "02_황소자리_TAURUS.png",
-  gemini: "03_쌍둥이자리_GEMINI.png",
-  cancer: "04_게자리_CANCER.png",
-  leo: "05_사자자리_LEO.png",
-  virgo: "06_처녀자리_VIRGO.png",
-  libra: "07_천칭자리_LIBRA.png",
-  scorpio: "08_전갈자리_SCORPIO.png",
-  sagittarius: "09_사수자리_SAGITTARIUS.png",
-  capricorn: "10_염소자리_CAPRICORN.png",
-  aquarius: "11_물병자리_AQUARIUS.png",
-  pisces: "12_물고기자리_PISCES.png",
+  aries: "01_양자리_ARIES.webp",
+  taurus: "02_황소자리_TAURUS.webp",
+  gemini: "03_쌍둥이자리_GEMINI.webp",
+  cancer: "04_게자리_CANCER.webp",
+  leo: "05_사자자리_LEO.webp",
+  virgo: "06_처녀자리_VIRGO.webp",
+  libra: "07_천칭자리_LIBRA.webp",
+  scorpio: "08_전갈자리_SCORPIO.webp",
+  sagittarius: "09_사수자리_SAGITTARIUS.webp",
+  capricorn: "10_염소자리_CAPRICORN.webp",
+  aquarius: "11_물병자리_AQUARIUS.webp",
+  pisces: "12_물고기자리_PISCES.webp",
 };
 
 /** 별자리 한 줄 특징. */
