@@ -78,10 +78,11 @@ export const mainNav: NavEntry[] = [
     icon: Compass,
     defaultHref: "/saju" as Route,
     children: [
-      { type: "leaf", href: "/saju"          as Route, labelKey: "saju" },
-      { type: "leaf", href: "/palm"          as Route, labelKey: "palm" },
-      { type: "leaf", href: "/compatibility" as Route, labelKey: "compatibility" },
-      { type: "leaf", href: "/personality"   as Route, labelKey: "personality" },
+      { type: "leaf", href: "/saju"                          as Route, labelKey: "saju" },
+      { type: "leaf", href: "/palm"                          as Route, labelKey: "palm" },
+      { type: "leaf", href: "/compatibility"                 as Route, labelKey: "compatibility" },
+      { type: "leaf", href: "/personality"                   as Route, labelKey: "personality" },
+      { type: "leaf", href: "/today?category=chinese_zodiac" as Route, labelKey: "chineseZodiac" },
     ],
   },
   {

@@ -23,7 +23,8 @@
     "saju": "Pillars",
     "palm": "Palmistry",
     "compatibility": "Compatibility",
-    "personality": "Personality"
+    "personality": "Personality",
+    "chineseZodiac": "Chinese Zodiac"
   },
   "common": {
     "logout": "Log out",

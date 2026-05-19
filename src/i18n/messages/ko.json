@@ -23,7 +23,8 @@
     "saju": "사주팔자",
     "palm": "손금풀이",
     "compatibility": "궁합",
-    "personality": "성격유형"
+    "personality": "성격유형",
+    "chineseZodiac": "띠별 운세"
   },
   "common": {
     "logout": "로그아웃",
