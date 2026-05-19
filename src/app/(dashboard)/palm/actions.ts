@@ -24,6 +24,8 @@ import {
   PALM_ENABLED_CHARACTERS,
 } from "@/lib/palm/service";
 import type { CharacterId } from "@/lib/chat/characters";
+import { checkAndIncrementQuota } from "@/lib/usage/quota";
+import { FREE_DAILY_LIMITS } from "@/lib/constants";
 
 /** 손금 액션 상태 — UI 가 결과 표시·에러 분기에 사용. */
 export type PalmActionState =
@@ -107,6 +109,20 @@ export async function analyzePalmAction(
       };
     }
     throw e;
+  }
+
+  // 일일 한도 차감 — 손금은 운세 카운터(fortune) 와 같이 묶어 관리.
+  // LITE+ 전용이므로 실제 max 는 LITE/PRO 한도가 자동 적용됨.
+  const quota = await checkAndIncrementQuota({
+    userId: profile.userId,
+    kind: "fortune",
+    max: FREE_DAILY_LIMITS.fortune,
+  });
+  if (!quota.ok) {
+    return {
+      kind: "error",
+      message: `오늘의 운세 한도(${quota.max}회)를 모두 사용했어. 내일 다시 만나.`,
+    };
   }
 
   // 이미지 base64 인코딩 — 메모리에만 유지, 즉시 사용 후 폐기.
