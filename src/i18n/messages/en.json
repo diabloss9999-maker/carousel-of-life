@@ -375,6 +375,10 @@
     "bulletGacha": "Card gacha · 3 daily draws",
     "palmLine": "Palm reading · {n} per day"
   },
+  "tierBadge": {
+    "lite": "LITE",
+    "pro": "PRO"
+  },
   "settingsPage": {
     "heading": "My space",
     "subheading": "Manage your plan and details.",

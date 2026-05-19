@@ -27,6 +27,7 @@ interface CategoryTabsProps {
 export async function CategoryTabs({ current, subscribed = false }: CategoryTabsProps) {
   const t = await getTranslations("fortuneCard");
   const tToday = await getTranslations("today");
+  const tTier = await getTranslations("tierBadge");
   return (
     <nav
       aria-label={tToday("title")}
@@ -64,7 +65,7 @@ export async function CategoryTabs({ current, subscribed = false }: CategoryTabs
                       : "bg-primary/15 text-primary",
                 )}
               >
-                PRO
+                {tTier("lite")}
               </span>
             )}
           </Link>

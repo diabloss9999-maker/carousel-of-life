@@ -375,6 +375,10 @@
     "bulletGacha": "카드 가챠 매일 3장",
     "palmLine": "손금 풀이 일일 {n}회"
   },
+  "tierBadge": {
+    "lite": "라이트",
+    "pro": "프로"
+  },
   "settingsPage": {
     "heading": "내 자리",
     "subheading": "멤버십과 정보를 관리해요.",
