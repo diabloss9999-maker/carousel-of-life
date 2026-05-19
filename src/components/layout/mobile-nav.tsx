@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
 import { ChevronUp } from "lucide-react";
 
@@ -35,13 +36,17 @@ export function MobileNav() {
   }, []);
   const search = params.toString();
 
-  // 어떤 그룹이 열려있는지 (한 번에 하나만).
   const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const tileRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
-  // pathname 바뀌면 열린 그룹 닫기.
   useEffect(() => {
     setOpenGroup(null);
   }, [pathname, search, hash]);
+
+  const activeGroup =
+    openGroup
+      ? (mainNav.find((e) => e.type === "group" && e.id === openGroup) as NavGroup | undefined)
+      : undefined;
 
   return (
     <nav
@@ -60,10 +65,11 @@ export function MobileNav() {
         paddingTop: 8,
       }}
     >
-      {/* 그룹 확장 패널 — 활성 그룹의 children 을 위쪽으로 띄움 */}
-      {openGroup && (
-        <ExpandedPanel
-          group={mainNav.find((e) => e.type === "group" && e.id === openGroup) as NavGroup}
+      {/* 그룹 시트는 body 직속으로 띄움 (헤더/푸터 backdrop-filter 회피) */}
+      {activeGroup && (
+        <ExpandedPanelPortal
+          group={activeGroup}
+          tileRef={tileRefs.current[activeGroup.id] ?? null}
           onClose={() => setOpenGroup(null)}
           tNav={tNav}
           pathname={pathname}
@@ -96,10 +102,14 @@ export function MobileNav() {
           return (
             <NavGroupTile
               key={entry.id}
+              groupId={entry.id}
               label={tNav(entry.labelKey)}
               iconSrc={entry.iconSrc}
               isActive={active}
               isOpen={isOpen}
+              registerRef={(el) => {
+                tileRefs.current[entry.id] = el;
+              }}
               onToggle={() =>
                 setOpenGroup((cur) => (cur === entry.id ? null : entry.id))
               }
@@ -111,9 +121,10 @@ export function MobileNav() {
   );
 }
 
-/* ── 그룹 확장 패널 ─────────────────────────────────────── */
-function ExpandedPanel({
+/* ── Portal 시트 — body 직속, 진짜 backdrop-filter 작동 ────── */
+function ExpandedPanelPortal({
   group,
+  tileRef,
   onClose,
   tNav,
   pathname,
@@ -121,26 +132,72 @@ function ExpandedPanel({
   hash,
 }: {
   group: NavGroup;
+  tileRef: HTMLButtonElement | null;
   onClose: () => void;
   tNav: (k: string) => string;
   pathname: string;
   search: string;
   hash: string;
 }) {
-  return (
+  const [mounted, setMounted] = useState(false);
+  const [coords, setCoords] = useState<{ bottom: number; left: number; width: number } | null>(null);
+
+  useEffect(() => setMounted(true), []);
+
+  const updatePosition = () => {
+    if (!tileRef) return;
+    const r = tileRef.getBoundingClientRect();
+    setCoords({
+      // 타일 위쪽으로 시트가 뜸 (8px 띄움).
+      bottom: window.innerHeight - r.top + 8,
+      left: r.left + r.width / 2,
+      width: 200,
+    });
+  };
+
+  useLayoutEffect(() => {
+    updatePosition();
+    window.addEventListener("scroll", updatePosition, true);
+    window.addEventListener("resize", updatePosition);
+    return () => {
+      window.removeEventListener("scroll", updatePosition, true);
+      window.removeEventListener("resize", updatePosition);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tileRef]);
+
+  if (!mounted || !coords) return null;
+
+  return createPortal(
     <>
-      {/* 백드롭 — 바깥 탭 시 닫힘 */}
+      {/* 백드롭 */}
       <button
         type="button"
         aria-label="close"
         onClick={onClose}
-        className="fixed inset-0 z-[-1] bg-black/30"
+        style={{
+          position: "fixed",
+          inset: 0,
+          background: "rgba(0,0,0,0.30)",
+          zIndex: 90,
+        }}
       />
       <ul
-        className="app-surface mb-2 rounded-2xl p-1.5"
+        className="overflow-hidden rounded-2xl"
         style={{
+          position: "fixed",
+          bottom: coords.bottom,
+          left: coords.left,
+          transform: "translateX(-50%)",
+          zIndex: 100,
+          minWidth: coords.width,
+          background: "rgba(20, 16, 28, 0.45)",
+          border: "1px solid rgba(255,255,255,0.18)",
+          boxShadow:
+            "inset 0 1px 0 rgba(255,255,255,0.12), 0 -12px 40px rgba(0,0,0,0.45)",
           backdropFilter: "blur(28px)",
           WebkitBackdropFilter: "blur(28px)",
+          padding: "6px",
         }}
       >
         {group.children.map((child) => {
@@ -154,11 +211,11 @@ function ExpandedPanel({
                 style={
                   active
                     ? {
-                        color: NAV_ACTIVE,
-                        background: "rgba(255,255,255,0.10)",
+                        color: "rgba(255,255,255,1)",
+                        background: "rgba(255,255,255,0.12)",
                         fontWeight: 700,
                       }
-                    : { color: NAV_MUTED }
+                    : { color: "rgba(255,255,255,0.82)" }
                 }
                 onClick={(e) => handleLeafClick(e, child.href as string, onClose)}
               >
@@ -168,7 +225,8 @@ function ExpandedPanel({
           );
         })}
       </ul>
-    </>
+    </>,
+    document.body,
   );
 }
 
@@ -202,22 +260,28 @@ function NavTile({
   );
 }
 
-/* ── 그룹 타일 (탭 시 위쪽 시트 열림) ─────────────────────── */
+/* ── 그룹 타일 ──────────────────────────────────────────── */
 function NavGroupTile({
+  groupId,
   label,
   iconSrc,
   isActive,
   isOpen,
   onToggle,
+  registerRef,
 }: {
+  groupId: string;
   label: string;
   iconSrc?: string;
   isActive: boolean;
   isOpen: boolean;
   onToggle: () => void;
+  registerRef: (el: HTMLButtonElement | null) => void;
 }) {
   return (
     <button
+      ref={registerRef}
+      data-group={groupId}
       type="button"
       onClick={onToggle}
       aria-expanded={isOpen}
@@ -240,10 +304,7 @@ function NavGroupTile({
   );
 }
 
-/**
- * Next.js Link 가 같은 경로 + 다른 해시(/tarot#lenormand) 로 이동할 때
- * hashchange 이벤트를 안정적으로 발사 못 시킴 → 같은 경로면 직접 해시 갱신.
- */
+/* ── 해시 링크 핸들러 ──────────────────────────────────── */
 function handleLeafClick(
   e: React.MouseEvent<HTMLAnchorElement>,
   href: string,

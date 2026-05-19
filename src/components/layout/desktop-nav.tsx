@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
 import { ChevronDown } from "lucide-react";
 
@@ -25,7 +26,6 @@ export function DesktopNav() {
   const tNav = useTranslations("nav");
   const tExtras = useTranslations("todayExtras");
 
-  // 해시는 useSearchParams 로 추적 안 되니까 자체 상태로 관리.
   const [hash, setHash] = useState("");
   useEffect(() => {
     setHash(window.location.hash);
@@ -104,7 +104,7 @@ function LeafLink({
   );
 }
 
-/* ── group dropdown (hover or click) ────────────────────── */
+/* ── group dropdown — Portal 로 body 직속 렌더 ───────────── */
 function GroupDropdown({
   group,
   isActive,
@@ -123,18 +123,43 @@ function GroupDropdown({
   hash: string;
 }) {
   const [open, setOpen] = useState(false);
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  // 바깥 클릭/ESC 시 닫기 — 사용자가 항목을 고르거나 명시적으로 닫을 때까지 유지.
+  // 포털 마운트 가드 (SSR).
+  useEffect(() => setMounted(true), []);
+
+  // 버튼 위치 계산 — 드롭다운을 버튼 아래 가운데에 띄우기.
+  const updatePosition = () => {
+    if (!buttonRef.current) return;
+    const r = buttonRef.current.getBoundingClientRect();
+    setCoords({
+      top: r.bottom + 6,
+      left: r.left + r.width / 2,
+    });
+  };
+
+  useLayoutEffect(() => {
+    if (!open) return;
+    updatePosition();
+    window.addEventListener("scroll", updatePosition, true);
+    window.addEventListener("resize", updatePosition);
+    return () => {
+      window.removeEventListener("scroll", updatePosition, true);
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, [open]);
+
+  // 바깥 클릭 / ESC 닫기.
   useEffect(() => {
     if (!open) return;
     function onDocClick(e: MouseEvent) {
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(e.target as Node)
-      ) {
-        setOpen(false);
-      }
+      const t = e.target as Node;
+      if (buttonRef.current?.contains(t)) return;
+      if (menuRef.current?.contains(t)) return;
+      setOpen(false);
     }
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") setOpen(false);
@@ -148,8 +173,9 @@ function GroupDropdown({
   }, [open]);
 
   return (
-    <div className="relative" ref={wrapperRef}>
+    <div className="relative">
       <button
+        ref={buttonRef}
         type="button"
         aria-expanded={open}
         aria-haspopup="menu"
@@ -170,58 +196,73 @@ function GroupDropdown({
         />
       </button>
 
-      {open && (
-        <div
-          role="menu"
-          className="app-surface absolute left-1/2 top-full z-50 mt-1.5 min-w-[160px] -translate-x-1/2 overflow-hidden rounded-2xl"
-          style={{
-            // .app-surface 의 backdrop-filter 가 Tailwind 4 / Lightning CSS
-            // 일부 환경에서 누락되는 케이스가 있어 인라인으로 강제 보정.
-            backdropFilter: "blur(28px)",
-            WebkitBackdropFilter: "blur(28px)",
-          }}
-        >
-          <ul className="py-1.5">
-            {group.children.map((child) => {
-              const active = isLeafActive(child, pathname, search, hash);
-              return (
-                <li key={child.href as string} role="none">
-                  <Link
-                    href={child.href}
-                    role="menuitem"
-                    aria-current={active ? "page" : undefined}
-                    className="block px-4 py-2 text-[15px] font-medium transition-colors"
-                    style={
-                      active
-                        ? {
-                            color: NAV_ACTIVE_CLR,
-                            background: "rgba(255,255,255,0.10)",
-                            fontWeight: 700,
-                          }
-                        : { color: NAV_MUTED }
-                    }
-                    onClick={(e) => handleLeafClick(e, child.href as string, () => setOpen(false))}
-                    onMouseEnter={(e) => {
-                      if (!active) {
-                        e.currentTarget.style.background = "rgba(255,255,255,0.06)";
-                        e.currentTarget.style.color = NAV_ACTIVE_CLR;
+      {mounted && open && coords &&
+        createPortal(
+          <div
+            ref={menuRef}
+            role="menu"
+            className="overflow-hidden rounded-2xl"
+            style={{
+              position: "fixed",
+              top: coords.top,
+              left: coords.left,
+              transform: "translateX(-50%)",
+              zIndex: 100,
+              minWidth: 160,
+              // 헤더의 backdrop-filter 안 탔으니까 진짜로 페이지 본문을 blur 함.
+              background: "rgba(20, 16, 28, 0.45)",
+              border: "1px solid rgba(255,255,255,0.18)",
+              boxShadow:
+                "inset 0 1px 0 rgba(255,255,255,0.12), 0 12px 40px rgba(0,0,0,0.45)",
+              backdropFilter: "blur(28px)",
+              WebkitBackdropFilter: "blur(28px)",
+              color: "rgba(255,255,255,0.92)",
+            }}
+          >
+            <ul className="py-1.5">
+              {group.children.map((child) => {
+                const active = isLeafActive(child, pathname, search, hash);
+                return (
+                  <li key={child.href as string} role="none">
+                    <Link
+                      href={child.href}
+                      role="menuitem"
+                      aria-current={active ? "page" : undefined}
+                      className="block px-4 py-2 text-[15px] font-medium transition-colors"
+                      style={
+                        active
+                          ? {
+                              color: "rgba(255,255,255,1)",
+                              background: "rgba(255,255,255,0.12)",
+                              fontWeight: 700,
+                            }
+                          : { color: "rgba(255,255,255,0.82)" }
                       }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!active) {
-                        e.currentTarget.style.background = "transparent";
-                        e.currentTarget.style.color = NAV_MUTED;
+                      onClick={(e) =>
+                        handleLeafClick(e, child.href as string, () => setOpen(false))
                       }
-                    }}
-                  >
-                    {tNav(child.labelKey)}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
+                      onMouseEnter={(e) => {
+                        if (!active) {
+                          e.currentTarget.style.background = "rgba(255,255,255,0.08)";
+                          e.currentTarget.style.color = "rgba(255,255,255,1)";
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!active) {
+                          e.currentTarget.style.background = "transparent";
+                          e.currentTarget.style.color = "rgba(255,255,255,0.82)";
+                        }
+                      }}
+                    >
+                      {tNav(child.labelKey)}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
@@ -241,10 +282,10 @@ function handleLeafClick(
   if (!href.includes("#")) return;
   if (typeof window === "undefined") return;
   const [path, h] = href.split("#");
-  if (window.location.pathname !== path) return; // 다른 경로면 Next.js Link 가 정상 처리
+  if (window.location.pathname !== path) return;
   e.preventDefault();
   if (window.location.hash !== `#${h}`) {
-    window.location.hash = h; // native hashchange 이벤트 발사
+    window.location.hash = h;
   }
 }
 
