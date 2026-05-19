@@ -5,7 +5,6 @@ export const maxDuration = 30;
 import { redirect } from "next/navigation";
 
 import { CareerTips } from "@/components/fortune/career-tips";
-import { CategoryTabs } from "@/components/fortune/category-tabs";
 import { FortuneCard } from "@/components/fortune/fortune-card";
 import { GeneralPremium } from "@/components/fortune/general-premium";
 import { HealthWorkout } from "@/components/fortune/health-workout";
@@ -191,8 +190,6 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           <span className="font-mystic text-base">→</span>
         </div>
       </Link>
-
-      <CategoryTabs current={category} subscribed={subscribed} />
 
       {/* 별자리·십이간지 — 비구독자: 라이트 잠금 */}
       {isPremiumCategory && !subscribed ? (
