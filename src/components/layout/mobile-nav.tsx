@@ -1,10 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { ChevronUp } from "lucide-react";
 
-import { mainNav, type NavItem } from "@/config/navigation";
+import {
+  mainNav,
+  isGroupActive,
+  isLeafActive,
+  type NavGroup,
+  type NavLeaf,
+} from "@/config/navigation";
 import { cn } from "@/lib/utils";
 
 const NAV_ACTIVE   = "var(--nav-active)";
@@ -14,8 +22,26 @@ const NAV_SURFACE2 = "rgba(255,255,255,0.08)";
 
 export function MobileNav() {
   const pathname = usePathname();
+  const params = useSearchParams();
   const tNav = useTranslations("nav");
   const tExtras = useTranslations("todayExtras");
+
+  const [hash, setHash] = useState("");
+  useEffect(() => {
+    setHash(window.location.hash);
+    const onHash = () => setHash(window.location.hash);
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+  const search = params.toString();
+
+  // 어떤 그룹이 열려있는지 (한 번에 하나만).
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
+
+  // pathname 바뀌면 열린 그룹 닫기.
+  useEffect(() => {
+    setOpenGroup(null);
+  }, [pathname, search, hash]);
 
   return (
     <nav
@@ -34,49 +60,50 @@ export function MobileNav() {
         paddingTop: 8,
       }}
     >
+      {/* 그룹 확장 패널 — 활성 그룹의 children 을 위쪽으로 띄움 */}
+      {openGroup && (
+        <ExpandedPanel
+          group={mainNav.find((e) => e.type === "group" && e.id === openGroup) as NavGroup}
+          onClose={() => setOpenGroup(null)}
+          tNav={tNav}
+          pathname={pathname}
+          search={search}
+          hash={hash}
+        />
+      )}
+
       <div
         className={cn(
           "flex items-stretch",
           "overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
         )}
       >
-        {mainNav.map((item) => {
-          const isActive =
-            pathname === item.href ||
-            (item.href !== "/" && pathname.startsWith(item.href));
-
-          const label = tNav(item.labelKey);
+        {mainNav.map((entry) => {
+          if (entry.type === "leaf") {
+            const active = isLeafActive(entry, pathname, search, hash);
+            return (
+              <NavTile
+                key={entry.href as string}
+                href={entry.href}
+                label={tNav(entry.labelKey)}
+                iconSrc={entry.iconSrc}
+                isActive={active}
+              />
+            );
+          }
+          const active = isGroupActive(entry, pathname, search, hash);
+          const isOpen = openGroup === entry.id;
           return (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={isActive ? "page" : undefined}
-              aria-label={`${label} — ${item.description}`}
-              title={item.description}
-              className="flex min-w-[56px] flex-1 shrink-0 flex-col items-center justify-center gap-[3px] min-h-[52px] px-1 transition-colors duration-150"
-              style={{ color: isActive ? NAV_ACTIVE : NAV_MUTED }}
-            >
-              {/* 아이콘 컨테이너 */}
-              <span
-                className="flex h-7 w-7 items-center justify-center rounded-full transition-all duration-150"
-                style={
-                  isActive
-                    ? {
-                        background: "rgba(116,86,64,0.12)",
-                        boxShadow: "0 0 18px rgba(185,143,75,0.18)",
-                        color: "var(--nav-active)",
-                      }
-                    : {}
-                }
-              >
-                <NavIcon item={item} size={22} />
-              </span>
-
-              <span className="max-w-[64px] truncate text-center font-semibold tracking-tight leading-none"
-                style={{ fontSize: 10 }}>
-                {label}
-              </span>
-            </Link>
+            <NavGroupTile
+              key={entry.id}
+              label={tNav(entry.labelKey)}
+              iconSrc={entry.iconSrc}
+              isActive={active}
+              isOpen={isOpen}
+              onToggle={() =>
+                setOpenGroup((cur) => (cur === entry.id ? null : entry.id))
+              }
+            />
           );
         })}
       </div>
@@ -84,28 +111,166 @@ export function MobileNav() {
   );
 }
 
-function NavIcon({ item, size }: { item: NavItem; size: number }) {
-  if (item.iconSrc) {
-    return (
-      <span
-        aria-hidden
-        style={{
-          display: "block",
-          width: size,
-          height: size,
-          backgroundColor: "currentColor",
-          maskImage: `url(${item.iconSrc})`,
-          maskSize: "contain",
-          maskRepeat: "no-repeat",
-          maskPosition: "center",
-          WebkitMaskImage: `url(${item.iconSrc})`,
-          WebkitMaskSize: "contain",
-          WebkitMaskRepeat: "no-repeat",
-          WebkitMaskPosition: "center",
-        }}
+/* ── 그룹 확장 패널 ─────────────────────────────────────── */
+function ExpandedPanel({
+  group,
+  onClose,
+  tNav,
+  pathname,
+  search,
+  hash,
+}: {
+  group: NavGroup;
+  onClose: () => void;
+  tNav: (k: string) => string;
+  pathname: string;
+  search: string;
+  hash: string;
+}) {
+  return (
+    <>
+      {/* 백드롭 — 바깥 탭 시 닫힘 */}
+      <button
+        type="button"
+        aria-label="close"
+        onClick={onClose}
+        className="fixed inset-0 z-[-1] bg-black/30"
       />
-    );
-  }
-  const Icon = item.icon;
-  return <Icon style={{ width: size, height: size }} aria-hidden />;
+      <ul
+        className="mb-2 rounded-2xl border p-1.5"
+        style={{
+          background: "rgba(20,16,28,0.92)",
+          borderColor: "var(--header-border)",
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
+        }}
+      >
+        {group.children.map((child) => {
+          const active = isLeafActive(child, pathname, search, hash);
+          return (
+            <li key={child.href as string}>
+              <Link
+                href={child.href}
+                aria-current={active ? "page" : undefined}
+                className="block rounded-xl px-4 py-2.5 text-[15px] font-medium transition-colors"
+                style={
+                  active
+                    ? { color: NAV_ACTIVE, background: "rgba(255,255,255,0.08)" }
+                    : { color: NAV_MUTED }
+                }
+                onClick={onClose}
+              >
+                {tNav(child.labelKey)}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  );
+}
+
+/* ── 단일 leaf 타일 ──────────────────────────────────────── */
+function NavTile({
+  href,
+  label,
+  iconSrc,
+  isActive,
+}: {
+  href: NavLeaf["href"];
+  label: string;
+  iconSrc?: string;
+  isActive: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      aria-current={isActive ? "page" : undefined}
+      className="flex min-w-[56px] flex-1 shrink-0 flex-col items-center justify-center gap-[3px] min-h-[52px] px-1 transition-colors duration-150"
+      style={{ color: isActive ? NAV_ACTIVE : NAV_MUTED }}
+    >
+      <IconBubble iconSrc={iconSrc} isActive={isActive} />
+      <span
+        className="max-w-[64px] truncate text-center font-semibold tracking-tight leading-none"
+        style={{ fontSize: 10 }}
+      >
+        {label}
+      </span>
+    </Link>
+  );
+}
+
+/* ── 그룹 타일 (탭 시 위쪽 시트 열림) ─────────────────────── */
+function NavGroupTile({
+  label,
+  iconSrc,
+  isActive,
+  isOpen,
+  onToggle,
+}: {
+  label: string;
+  iconSrc?: string;
+  isActive: boolean;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-expanded={isOpen}
+      className="flex min-w-[56px] flex-1 shrink-0 flex-col items-center justify-center gap-[3px] min-h-[52px] px-1 transition-colors duration-150"
+      style={{ color: isActive || isOpen ? NAV_ACTIVE : NAV_MUTED }}
+    >
+      <IconBubble iconSrc={iconSrc} isActive={isActive || isOpen} />
+      <span
+        className="max-w-[64px] truncate text-center font-semibold tracking-tight leading-none flex items-center gap-0.5"
+        style={{ fontSize: 10 }}
+      >
+        {label}
+        <ChevronUp
+          className="h-2.5 w-2.5 transition-transform"
+          style={{ transform: isOpen ? "none" : "rotate(180deg)" }}
+          aria-hidden
+        />
+      </span>
+    </button>
+  );
+}
+
+function IconBubble({ iconSrc, isActive }: { iconSrc?: string; isActive: boolean }) {
+  return (
+    <span
+      className="flex h-7 w-7 items-center justify-center rounded-full transition-all duration-150"
+      style={
+        isActive
+          ? {
+              background: "rgba(116,86,64,0.12)",
+              boxShadow: "0 0 18px rgba(185,143,75,0.18)",
+              color: "var(--nav-active)",
+            }
+          : {}
+      }
+    >
+      {iconSrc ? (
+        <span
+          aria-hidden
+          style={{
+            display: "block",
+            width: 22,
+            height: 22,
+            backgroundColor: "currentColor",
+            maskImage: `url(${iconSrc})`,
+            maskSize: "contain",
+            maskRepeat: "no-repeat",
+            maskPosition: "center",
+            WebkitMaskImage: `url(${iconSrc})`,
+            WebkitMaskSize: "contain",
+            WebkitMaskRepeat: "no-repeat",
+            WebkitMaskPosition: "center",
+          }}
+        />
+      ) : null}
+    </span>
+  );
 }

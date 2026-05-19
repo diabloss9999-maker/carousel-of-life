@@ -2,8 +2,11 @@
 
 /**
  * 카드 점술 탭 — 타로 / 르노르망 / 룬 등 여러 점술 시스템을 한 페이지에서 전환.
+ *
+ * URL 해시(#tarot, #lenormand, #runes) 로 초기 탭 결정 + hashchange 시 동기화.
+ * 메뉴 드롭다운에서 /tarot#lenormand 같이 직접 진입 가능.
  */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 
@@ -11,6 +14,10 @@ import { cn } from "@/lib/utils";
 
 const TAB_IDS = ["tarot", "lenormand", "runes"] as const;
 type TabId = (typeof TAB_IDS)[number];
+
+function isTabId(v: string): v is TabId {
+  return (TAB_IDS as readonly string[]).includes(v);
+}
 
 interface Props {
   tarotPanel: ReactNode;
@@ -25,6 +32,25 @@ export function CardDivinationTabs({
 }: Props) {
   const [active, setActive] = useState<TabId>("tarot");
   const t = useTranslations("cardTabs");
+
+  // 초기 해시 + 이후 hashchange 동기화.
+  useEffect(() => {
+    const sync = () => {
+      const h = window.location.hash.slice(1);
+      if (isTabId(h)) setActive(h);
+    };
+    sync();
+    window.addEventListener("hashchange", sync);
+    return () => window.removeEventListener("hashchange", sync);
+  }, []);
+
+  // 탭 변경 시 URL 해시도 업데이트 (뒤로가기 / 새로고침 시 보존).
+  const select = (id: TabId) => {
+    setActive(id);
+    if (typeof window !== "undefined" && window.location.hash !== `#${id}`) {
+      history.replaceState(null, "", `#${id}`);
+    }
+  };
 
   const tabs: { id: TabId; label: string; desc: string }[] = [
     { id: "tarot",     label: t("tarot"),     desc: t("tarotDesc") },
@@ -47,7 +73,7 @@ export function CardDivinationTabs({
               role="tab"
               aria-selected={isActive}
               type="button"
-              onClick={() => setActive(tab.id)}
+              onClick={() => select(tab.id)}
               className={cn(
                 "flex flex-1 flex-col items-center justify-center rounded-full px-3 py-2 transition-colors",
                 isActive
