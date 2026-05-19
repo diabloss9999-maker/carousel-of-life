@@ -128,12 +128,11 @@ export function OnboardingModal() {
       {/* 배경 오버레이 */}
       <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
 
-      {/* 모달 */}
+      {/* 모달 — 흰 배경 통일 (catchall 검정 텍스트와 대비) */}
       <div
         className={cn(
           "relative z-10 w-full max-w-lg overflow-hidden rounded-3xl shadow-2xl",
-          "bg-gradient-to-b border border-white/8",
-          current.bg,
+          "bg-white border border-zinc-200",
           animating && "opacity-0 scale-95",
           "transition-all duration-200",
         )}
@@ -142,7 +141,7 @@ export function OnboardingModal() {
         <button
           type="button"
           onClick={dismiss}
-          className="absolute right-3 top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full text-white/50 hover:text-white/90 transition-colors"
+          className="absolute right-3 top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full text-zinc-400 hover:text-zinc-700 transition-colors"
           aria-label={t("skip")}
         >
           <X className="h-4 w-4" />
@@ -166,12 +165,9 @@ export function OnboardingModal() {
           {/* 제목 */}
           <div className="space-y-1">
             {subtitle && !worldLabel && (
-              <p className="text-[15px] tracking-widest text-white/40 uppercase">{subtitle}</p>
+              <p className="text-[15px] tracking-widest text-zinc-500 uppercase">{subtitle}</p>
             )}
-            <h2 className={cn(
-              "font-mystic text-3xl font-bold leading-tight whitespace-pre-line",
-              current.accent,
-            )}>
+            <h2 className="font-mystic text-3xl font-bold leading-tight whitespace-pre-line text-zinc-900">
               {title}
             </h2>
           </div>
@@ -200,7 +196,7 @@ export function OnboardingModal() {
                         <p className="font-mystic text-[15px] font-bold text-white">{name}</p>
                       </div>
                     </div>
-                    <p className="text-[15px] text-white/50 leading-tight">{hook}</p>
+                    <p className="text-[15px] text-zinc-600 leading-tight">{hook}</p>
                   </div>
                 );
               })}
@@ -208,7 +204,7 @@ export function OnboardingModal() {
           )}
 
           {/* 설명 */}
-          <p className="text-[15px] text-white/65 leading-relaxed whitespace-pre-line">
+          <p className="text-[15px] text-zinc-700 leading-relaxed whitespace-pre-line">
             {desc}
           </p>
 
@@ -220,10 +216,10 @@ export function OnboardingModal() {
                 className={cn(
                   "h-1 rounded-full transition-all duration-300",
                   i === step
-                    ? "w-6 bg-white/70"
+                    ? "w-6 bg-zinc-700"
                     : i < step
-                      ? "w-2 bg-white/30"
-                      : "w-2 bg-white/15",
+                      ? "w-2 bg-zinc-400"
+                      : "w-2 bg-zinc-200",
                 )}
               />
             ))}
@@ -233,7 +229,7 @@ export function OnboardingModal() {
           <Button
             size="lg"
             onClick={next}
-            className="w-full gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur"
+            className="w-full gap-2"
           >
             {step < STEPS_META.length - 1 ? (
               <>
