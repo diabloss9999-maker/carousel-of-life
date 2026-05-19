@@ -916,10 +916,10 @@
   },
   "quotaBar": {
     "proActive": "프로 사용 중",
-    "proSub": "운세·타로·문답 모두 넉넉한 한도로 받고 있어.",
+    "proSub": "운세·점술&사주·질문 모두 넉넉한 한도로 받고 있어.",
     "fortune": "운세",
-    "tarot": "타로",
-    "chat": "문답",
+    "tarot": "점술&사주",
+    "chat": "질문",
     "lightPlan": "라이트 플랜",
     "upgradePro": "프로로 업그레이드",
     "upgrade": "업그레이드"

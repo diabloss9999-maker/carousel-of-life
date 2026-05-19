@@ -916,10 +916,10 @@
   },
   "quotaBar": {
     "proActive": "Pro active",
-    "proSub": "Fortunes, tarot, and chat all on the highest limits.",
+    "proSub": "Fortune, Divination & Saju, Questions — all on highest limits.",
     "fortune": "Fortune",
-    "tarot": "Tarot",
-    "chat": "Chat",
+    "tarot": "Divination & Saju",
+    "chat": "Questions",
     "lightPlan": "Light plan",
     "upgradePro": "Upgrade to Pro",
     "upgrade": "Upgrade"
