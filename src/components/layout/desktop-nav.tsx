@@ -173,12 +173,7 @@ function GroupDropdown({
       {open && (
         <div
           role="menu"
-          className="absolute left-1/2 top-full z-50 mt-1.5 min-w-[160px] -translate-x-1/2 overflow-hidden rounded-2xl border shadow-xl"
-          style={{
-            background: "#ffffff",
-            borderColor: "rgba(0,0,0,0.08)",
-            boxShadow: "0 10px 32px rgba(0,0,0,0.18)",
-          }}
+          className="app-surface absolute left-1/2 top-full z-50 mt-1.5 min-w-[160px] -translate-x-1/2 overflow-hidden rounded-2xl"
         >
           <ul className="py-1.5">
             {group.children.map((child) => {
@@ -192,20 +187,24 @@ function GroupDropdown({
                     className="block px-4 py-2 text-[15px] font-medium transition-colors"
                     style={
                       active
-                        ? { color: "#1a1a1a", background: "rgba(0,0,0,0.06)", fontWeight: 700 }
-                        : { color: "#3a3a3a" }
+                        ? {
+                            color: NAV_ACTIVE_CLR,
+                            background: "rgba(255,255,255,0.10)",
+                            fontWeight: 700,
+                          }
+                        : { color: NAV_MUTED }
                     }
                     onClick={() => setOpen(false)}
                     onMouseEnter={(e) => {
                       if (!active) {
-                        e.currentTarget.style.background = "rgba(0,0,0,0.05)";
-                        e.currentTarget.style.color = "#1a1a1a";
+                        e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+                        e.currentTarget.style.color = NAV_ACTIVE_CLR;
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!active) {
                         e.currentTarget.style.background = "transparent";
-                        e.currentTarget.style.color = "#3a3a3a";
+                        e.currentTarget.style.color = NAV_MUTED;
                       }
                     }}
                   >

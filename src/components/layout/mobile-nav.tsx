@@ -136,14 +136,7 @@ function ExpandedPanel({
         onClick={onClose}
         className="fixed inset-0 z-[-1] bg-black/30"
       />
-      <ul
-        className="mb-2 rounded-2xl border p-1.5"
-        style={{
-          background: "#ffffff",
-          borderColor: "rgba(0,0,0,0.08)",
-          boxShadow: "0 -8px 32px rgba(0,0,0,0.18)",
-        }}
-      >
+      <ul className="app-surface mb-2 rounded-2xl p-1.5">
         {group.children.map((child) => {
           const active = isLeafActive(child, pathname, search, hash);
           return (
@@ -154,8 +147,12 @@ function ExpandedPanel({
                 className="block rounded-xl px-4 py-2.5 text-[15px] font-medium transition-colors"
                 style={
                   active
-                    ? { color: "#1a1a1a", background: "rgba(0,0,0,0.06)", fontWeight: 700 }
-                    : { color: "#3a3a3a" }
+                    ? {
+                        color: NAV_ACTIVE,
+                        background: "rgba(255,255,255,0.10)",
+                        fontWeight: 700,
+                      }
+                    : { color: NAV_MUTED }
                 }
                 onClick={onClose}
               >
