@@ -154,7 +154,10 @@ export function ChatWindow({
 
       if (!res.ok) {
         const json = await res.json().catch(() => null);
-        const isQuota = json?.error?.code === "quota_exceeded";
+        // 서버는 API_ERROR_CODES.QUOTA_EXCEEDED ("QUOTA_EXCEEDED" 대문자) 를 반환.
+        // 과거 lowercase 비교 버그 때문에 quota UI 가 안 떴음 — 둘 다 허용.
+        const code = String(json?.error?.code ?? "").toLowerCase();
+        const isQuota = code === "quota_exceeded";
         // 한도 초과는 그대로, 그 외 오류는 캐릭터 변명으로 대체
         if (isQuota) {
           setError("quota");
