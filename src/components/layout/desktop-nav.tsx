@@ -201,7 +201,7 @@ function GroupDropdown({
           <div
             ref={menuRef}
             role="menu"
-            className="overflow-hidden rounded-2xl"
+            className="app-surface overflow-hidden rounded-2xl"
             style={{
               position: "fixed",
               top: coords.top,
@@ -209,14 +209,11 @@ function GroupDropdown({
               transform: "translateX(-50%)",
               zIndex: 100,
               minWidth: 160,
-              // 헤더의 backdrop-filter 안 탔으니까 진짜로 페이지 본문을 blur 함.
-              background: "rgba(20, 16, 28, 0.45)",
-              border: "1px solid rgba(255,255,255,0.18)",
-              boxShadow:
-                "inset 0 1px 0 rgba(255,255,255,0.12), 0 12px 40px rgba(0,0,0,0.45)",
+              // Portal 로 body 직속이라 헤더 backdrop-filter 영향 X
+              // → .app-surface 의 backdrop-filter 가 진짜로 페이지를 blur.
+              // 일부 환경에서 클래스 backdrop-filter 가 누락될 수 있으니 인라인도 추가.
               backdropFilter: "blur(28px)",
               WebkitBackdropFilter: "blur(28px)",
-              color: "rgba(255,255,255,0.92)",
             }}
           >
             <ul className="py-1.5">
@@ -232,25 +229,25 @@ function GroupDropdown({
                       style={
                         active
                           ? {
-                              color: "rgba(255,255,255,1)",
-                              background: "rgba(255,255,255,0.12)",
+                              color: NAV_ACTIVE_CLR,
+                              background: "rgba(255,255,255,0.10)",
                               fontWeight: 700,
                             }
-                          : { color: "rgba(255,255,255,0.82)" }
+                          : { color: NAV_MUTED }
                       }
                       onClick={(e) =>
                         handleLeafClick(e, child.href as string, () => setOpen(false))
                       }
                       onMouseEnter={(e) => {
                         if (!active) {
-                          e.currentTarget.style.background = "rgba(255,255,255,0.08)";
-                          e.currentTarget.style.color = "rgba(255,255,255,1)";
+                          e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+                          e.currentTarget.style.color = NAV_ACTIVE_CLR;
                         }
                       }}
                       onMouseLeave={(e) => {
                         if (!active) {
                           e.currentTarget.style.background = "transparent";
-                          e.currentTarget.style.color = "rgba(255,255,255,0.82)";
+                          e.currentTarget.style.color = NAV_MUTED;
                         }
                       }}
                     >

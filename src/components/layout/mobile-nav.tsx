@@ -183,7 +183,7 @@ function ExpandedPanelPortal({
         }}
       />
       <ul
-        className="overflow-hidden rounded-2xl"
+        className="app-surface overflow-hidden rounded-2xl"
         style={{
           position: "fixed",
           bottom: coords.bottom,
@@ -191,13 +191,10 @@ function ExpandedPanelPortal({
           transform: "translateX(-50%)",
           zIndex: 100,
           minWidth: coords.width,
-          background: "rgba(20, 16, 28, 0.45)",
-          border: "1px solid rgba(255,255,255,0.18)",
-          boxShadow:
-            "inset 0 1px 0 rgba(255,255,255,0.12), 0 -12px 40px rgba(0,0,0,0.45)",
+          padding: "6px",
+          // 인라인 backdrop-filter 도 같이 — Tailwind/Lightning CSS 빠짐 케이스 보정.
           backdropFilter: "blur(28px)",
           WebkitBackdropFilter: "blur(28px)",
-          padding: "6px",
         }}
       >
         {group.children.map((child) => {
@@ -211,11 +208,11 @@ function ExpandedPanelPortal({
                 style={
                   active
                     ? {
-                        color: "rgba(255,255,255,1)",
-                        background: "rgba(255,255,255,0.12)",
+                        color: NAV_ACTIVE,
+                        background: "rgba(255,255,255,0.10)",
                         fontWeight: 700,
                       }
-                    : { color: "rgba(255,255,255,0.82)" }
+                    : { color: NAV_MUTED }
                 }
                 onClick={(e) => handleLeafClick(e, child.href as string, onClose)}
               >
