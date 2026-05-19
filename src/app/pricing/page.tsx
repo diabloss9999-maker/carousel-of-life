@@ -21,6 +21,7 @@ import {
 import { getUser } from "@/lib/auth/get-user";
 import { getSubscriptionTier } from "@/lib/payment/subscription-state";
 import { formatKRW } from "@/lib/utils";
+import { SubscribeCta } from "@/components/payment/subscribe-cta";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("pricing");
@@ -116,9 +117,13 @@ export default async function PricingPage() {
                 <Link href={ROUTES.login}>{t("ctaLightStart")}</Link>
               </Button>
             ) : (
-              <Button asChild className="w-full" variant="secondary">
-                <a href="/api/checkout">{t("ctaLightStart")}</a>
-              </Button>
+              <SubscribeCta
+                plan="lite"
+                userId={user.id}
+                email={user.email ?? ""}
+                label={t("ctaLightStart")}
+                variant="secondary"
+              />
             )}
           </CardContent>
         </Card>
@@ -169,9 +174,12 @@ export default async function PricingPage() {
                 <Link href={ROUTES.login}>{t("ctaProStart")}</Link>
               </Button>
             ) : (
-              <Button asChild className="w-full">
-                <a href="/api/checkout/pro">{t("ctaProStart")}</a>
-              </Button>
+              <SubscribeCta
+                plan="pro"
+                userId={user.id}
+                email={user.email ?? ""}
+                label={t("ctaProStart")}
+              />
             )}
           </CardContent>
         </Card>
