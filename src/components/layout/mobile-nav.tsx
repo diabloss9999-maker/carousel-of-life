@@ -139,10 +139,9 @@ function ExpandedPanel({
       <ul
         className="mb-2 rounded-2xl border p-1.5"
         style={{
-          background: "rgba(20,16,28,0.92)",
-          borderColor: "var(--header-border)",
-          backdropFilter: "blur(18px)",
-          WebkitBackdropFilter: "blur(18px)",
+          background: "#ffffff",
+          borderColor: "rgba(0,0,0,0.08)",
+          boxShadow: "0 -8px 32px rgba(0,0,0,0.18)",
         }}
       >
         {group.children.map((child) => {
@@ -155,8 +154,8 @@ function ExpandedPanel({
                 className="block rounded-xl px-4 py-2.5 text-[15px] font-medium transition-colors"
                 style={
                   active
-                    ? { color: NAV_ACTIVE, background: "rgba(255,255,255,0.08)" }
-                    : { color: NAV_MUTED }
+                    ? { color: "#1a1a1a", background: "rgba(0,0,0,0.06)", fontWeight: 700 }
+                    : { color: "#3a3a3a" }
                 }
                 onClick={onClose}
               >

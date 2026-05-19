@@ -161,10 +161,9 @@ function GroupDropdown({
           role="menu"
           className="absolute left-1/2 top-full z-50 mt-1.5 min-w-[160px] -translate-x-1/2 overflow-hidden rounded-2xl border shadow-xl"
           style={{
-            background: "var(--surface, rgba(20,16,28,0.96))",
-            borderColor: "var(--header-border)",
-            backdropFilter: "blur(18px)",
-            WebkitBackdropFilter: "blur(18px)",
+            background: "#ffffff",
+            borderColor: "rgba(0,0,0,0.08)",
+            boxShadow: "0 10px 32px rgba(0,0,0,0.18)",
           }}
         >
           <ul className="py-1.5">
@@ -179,14 +178,20 @@ function GroupDropdown({
                     className="block px-4 py-2 text-[15px] font-medium transition-colors"
                     style={
                       active
-                        ? { color: NAV_ACTIVE_CLR, background: "rgba(255,255,255,0.08)" }
-                        : { color: NAV_MUTED }
+                        ? { color: "#1a1a1a", background: "rgba(0,0,0,0.06)", fontWeight: 700 }
+                        : { color: "#3a3a3a" }
                     }
                     onMouseEnter={(e) => {
-                      if (!active) e.currentTarget.style.color = NAV_ACTIVE_CLR;
+                      if (!active) {
+                        e.currentTarget.style.background = "rgba(0,0,0,0.05)";
+                        e.currentTarget.style.color = "#1a1a1a";
+                      }
                     }}
                     onMouseLeave={(e) => {
-                      if (!active) e.currentTarget.style.color = NAV_MUTED;
+                      if (!active) {
+                        e.currentTarget.style.background = "transparent";
+                        e.currentTarget.style.color = "#3a3a3a";
+                      }
                     }}
                   >
                     {tNav(child.labelKey)}
