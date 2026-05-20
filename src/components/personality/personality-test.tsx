@@ -171,13 +171,13 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
           </p>
         </div>
         <div className="grid grid-cols-3 gap-3 text-[15px] text-muted-foreground">
-          <div className="rounded-xl border border-border/40 bg-card/50 p-3 space-y-1">
+          <div className="rounded-xl app-surface p-3 space-y-1">
             <p>{t("duration")}</p>
           </div>
-          <div className="rounded-xl border border-border/40 bg-card/50 p-3 space-y-1">
+          <div className="rounded-xl app-surface p-3 space-y-1">
             <p>{t("questionCount")}</p>
           </div>
-          <div className="rounded-xl border border-border/40 bg-card/50 p-3 space-y-1">
+          <div className="rounded-xl app-surface p-3 space-y-1">
             <p>{t("typeCount")}</p>
           </div>
         </div>
@@ -225,7 +225,7 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
       </div>
 
       {/* 문항 카드 */}
-      <div className="rounded-2xl border border-border/40 bg-card/60 p-6 backdrop-blur space-y-6">
+      <div className="rounded-2xl app-surface p-6 backdrop-blur space-y-6">
         <p className="font-mystic text-lg font-medium leading-relaxed text-center">
           {t("questionPrefix", { n: current + 1 })}
         </p>
@@ -351,7 +351,7 @@ function ResultCard({
 
       {/* 축별 퍼센트 바 */}
       {axes && (
-        <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
+        <div className="rounded-xl app-surface p-4 space-y-3">
           <h3 className="font-mystic font-semibold text-[15px]">{t("strengthsHeading")}</h3>
           <div className="space-y-3">
             {AXIS_CONFIG.map(({ axis, aKey, bKey }) => {
@@ -388,7 +388,7 @@ function ResultCard({
       )}
 
       {/* 어울리는 직업 */}
-      <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
+      <div className="rounded-xl app-surface p-4 space-y-2">
         <h3 className="font-mystic font-semibold text-[15px]">{t("careersHeading")}</h3>
         <div className="flex flex-wrap gap-1.5">
           {suitableJobs.map((job) => (
@@ -400,7 +400,7 @@ function ResultCard({
       </div>
 
       {/* 상세 설명 */}
-      <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
+      <div className="rounded-xl app-surface p-4 space-y-2">
         <h3 className="font-mystic font-semibold text-[15px]">{t("iAm")}</h3>
         <p className="text-[15px] text-muted-foreground leading-relaxed whitespace-pre-line">
           {tT(`${info.type}_description`)}
@@ -408,7 +408,7 @@ function ResultCard({
       </div>
 
       {/* 강점 */}
-      <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
+      <div className="rounded-xl app-surface p-4 space-y-3">
         <h3 className="font-mystic font-semibold text-[15px] text-accent">{t("strengths")}</h3>
         <ul className="space-y-1.5">
           {strengths.map((s) => (
@@ -421,7 +421,7 @@ function ResultCard({
       </div>
 
       {/* 주의점 */}
-      <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
+      <div className="rounded-xl app-surface p-4 space-y-3">
         <h3 className="font-mystic font-semibold text-[15px] text-muted-foreground">{t("cautions")}</h3>
         <ul className="space-y-1.5">
           {cautions.map((c) => (

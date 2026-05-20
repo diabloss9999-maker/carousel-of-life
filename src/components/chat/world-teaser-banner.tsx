@@ -20,7 +20,7 @@ export function WorldTeaserBanner() {
   return (
     <Link
       href={ROUTES.stories as Route}
-      className="group block rounded-2xl border border-border/40 bg-card/40 backdrop-blur-sm px-5 py-4 transition-colors hover:border-accent/40 hover:bg-card/60"
+      className="group block rounded-2xl border app-surface px-5 py-4 transition-colors hover:border-accent/40 hover:bg-card/60"
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
         {/* 3개 카테고리 훅 */}

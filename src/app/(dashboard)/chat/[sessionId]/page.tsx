@@ -77,7 +77,7 @@ export default async function ChatSessionPage({
       </header>
 
       {/* 모바일: 캐릭터 컴팩트 뱃지 */}
-      <div className="flex md:hidden items-center gap-3 rounded-xl border border-border/30 bg-card/30 px-3 py-2 backdrop-blur">
+      <div className="flex md:hidden items-center gap-3 rounded-xl app-surface px-3 py-2 backdrop-blur">
         <div className="relative w-10 h-14 overflow-hidden rounded-lg flex-shrink-0 ring-1 ring-border/40">
           <CharacterImage
             character={character}

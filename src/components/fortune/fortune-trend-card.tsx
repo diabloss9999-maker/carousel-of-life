@@ -74,7 +74,7 @@ export function FortuneTrendCard({ trend }: FortuneTrendCardProps) {
   }
 
   return (
-    <div className="rounded-xl border border-border/30 bg-card/50 backdrop-blur px-4 pt-3 pb-2 space-y-2">
+    <div className="rounded-xl border app-surface px-4 pt-3 pb-2 space-y-2">
       {/* 헤더 */}
       <div className="flex items-center justify-between">
         <span className="font-mystic text-[15px] font-medium text-foreground/80">

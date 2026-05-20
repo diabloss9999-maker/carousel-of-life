@@ -46,7 +46,7 @@ export function CompatibilityHub({
       <div
         role="tablist"
         aria-label={t("aria")}
-        className="flex gap-1 overflow-x-auto rounded-full border border-border/60 bg-card/40 p-1 backdrop-blur"
+        className="flex gap-1 overflow-x-auto rounded-full app-surface p-1 backdrop-blur"
       >
         {tabs.map((tab) => {
           const Icon = tab.icon;

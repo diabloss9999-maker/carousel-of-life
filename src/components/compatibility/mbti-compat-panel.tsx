@@ -112,7 +112,7 @@ export function MbtiCompatPanel({ myMbti }: MbtiCompatPanelProps) {
         </div>
 
         {result ? (
-          <div className="space-y-3 rounded-xl border border-border/60 bg-card/40 p-4">
+          <div className="space-y-3 rounded-xl app-surface p-4">
             <div className="flex items-center justify-between">
               <p className="font-mystic text-[15px] text-muted-foreground">
                 {result.me.type} × {result.partner.type}

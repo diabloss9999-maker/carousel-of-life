@@ -33,7 +33,7 @@ function WorkoutList({
       {list.map((w, i) => (
         <div
           key={i}
-          className="space-y-2 rounded-xl border border-border/40 bg-card/40 p-4"
+          className="space-y-2 rounded-xl app-surface p-4"
         >
           <div className="flex items-center gap-2">
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/15 text-[15px] font-bold text-primary flex-shrink-0">

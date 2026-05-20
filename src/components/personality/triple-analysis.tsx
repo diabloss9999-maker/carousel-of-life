@@ -119,7 +119,7 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
             <p className="font-mystic leading-relaxed">{data.contradiction}</p>
           </div>
 
-          <div className="rounded-xl border border-border/60 bg-card/40 p-4 space-y-3">
+          <div className="rounded-xl app-surface p-4 space-y-3">
             <div className="space-y-1.5">
               <p className="text-[15px] font-semibold text-muted-foreground uppercase tracking-wide">
                 {t("trueNature")}

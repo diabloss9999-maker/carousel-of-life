@@ -61,8 +61,8 @@ export default async function SettingsPage() {
       <Card
         className={
           subscribed
-            ? "border-accent/30 bg-card/60 backdrop-blur ring-1 ring-accent/20"
-            : "border-border/40 bg-card/50 backdrop-blur"
+            ? "app-surface ring-1 ring-accent/20"
+            : "app-surface"
         }
       >
         <CardHeader className="pb-3">
@@ -146,7 +146,7 @@ export default async function SettingsPage() {
       </Card>
 
       {/* History card */}
-      <Card className="border-border/40 bg-card/50 backdrop-blur">
+      <Card className="app-surface">
         <CardHeader className="pb-3">
           <CardTitle className="font-mystic flex items-center gap-2 text-lg">
             <Archive className="h-5 w-5 text-primary" aria-hidden />
@@ -164,7 +164,7 @@ export default async function SettingsPage() {
       </Card>
 
       {/* Feedback card */}
-      <Card className="border-border/40 bg-card/50 backdrop-blur">
+      <Card className="app-surface">
         <CardHeader className="pb-3">
           <CardTitle className="font-mystic flex items-center gap-2 text-lg">
             <MessageCircleHeart className="h-5 w-5 text-primary" aria-hidden />

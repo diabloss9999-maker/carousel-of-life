@@ -177,7 +177,7 @@ export function RuneDrawForm({ subscribed }: Props) {
             </Select>
           </div>
 
-          <div className="flex items-center gap-3 rounded-lg border border-border/40 bg-card/30 px-3 py-2">
+          <div className="flex items-center gap-3 rounded-lg app-surface px-3 py-2">
             <input
               type="checkbox"
               id="reversed-toggle"

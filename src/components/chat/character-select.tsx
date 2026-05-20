@@ -148,7 +148,7 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                       "disabled:opacity-60 disabled:cursor-not-allowed",
                       isSelected
                         ? CHAR_SELECTED[id]
-                        : cn("border-border/30 bg-card/30 backdrop-blur", CHAR_ACCENT[id]),
+                        : cn("app-surface", CHAR_ACCENT[id]),
                     )}
                   >
                     {/* 캐릭터 이미지 */}

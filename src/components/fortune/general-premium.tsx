@@ -286,7 +286,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
               return (
                 <div
                   key={i}
-                  className="space-y-2 rounded-xl border border-border/40 bg-card/40 p-3"
+                  className="space-y-2 rounded-xl app-surface p-3"
                 >
                   <p className="text-[15px] text-muted-foreground">
                     {slot.label}

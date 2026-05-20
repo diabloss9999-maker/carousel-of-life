@@ -229,7 +229,7 @@ export function PalmUploadForm() {
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="예: 올해 연애운이 궁금해"
-              className="w-full rounded-xl border border-border/40 bg-card/30 px-3 py-2 text-[15px] focus:outline-none focus:ring-2 focus:ring-primary/40"
+              className="w-full rounded-xl app-surface px-3 py-2 text-[15px] focus:outline-none focus:ring-2 focus:ring-primary/40"
             />
           </div>
 

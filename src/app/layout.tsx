@@ -89,10 +89,17 @@ export default async function RootLayout({
             <Toaster
               position="top-center"
               theme="dark"
-              richColors
               toastOptions={{
+                // 사이트 전반 frosted glass 톤(.app-surface) 와 통일.
                 style: {
                   fontFamily: "var(--font-sans), system-ui",
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.18)",
+                  boxShadow:
+                    "inset 0 1px 0 rgba(255,255,255,0.12), 0 8px 32px rgba(0,0,0,0.22)",
+                  backdropFilter: "blur(28px)",
+                  WebkitBackdropFilter: "blur(28px)",
+                  color: "rgba(255,255,255,0.92)",
                 },
               }}
             />

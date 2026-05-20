@@ -138,7 +138,7 @@ export function CareerFit({ subscribed }: CareerFitProps) {
             </div>
           </div>
 
-          <div className="rounded-xl border border-border/60 bg-card/40 p-4 space-y-1.5">
+          <div className="rounded-xl app-surface p-4 space-y-1.5">
             <p className="text-[15px] font-semibold text-muted-foreground uppercase tracking-wide">
               {t("workStyle")}
             </p>

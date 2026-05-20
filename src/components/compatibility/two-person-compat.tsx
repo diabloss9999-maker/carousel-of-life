@@ -151,7 +151,7 @@ function PersonFieldset({ title, prefix, disabled }: PersonFieldsetProps) {
   const tForm = useTranslations("compatibilityForm");
 
   return (
-    <fieldset className="space-y-4 rounded-xl border border-border/60 bg-card/40 p-4">
+    <fieldset className="space-y-4 rounded-xl app-surface p-4">
       <legend className="font-mystic px-2 text-[15px] font-semibold">
         {title}
       </legend>
