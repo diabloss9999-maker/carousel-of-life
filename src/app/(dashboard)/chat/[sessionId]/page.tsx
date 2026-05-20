@@ -21,7 +21,7 @@ import { characterToEntityKey } from "@/lib/systems/entity-mood";
 
 export const metadata: Metadata = {
   title: "대화",
-  description: "주술사와의 문답.",
+  description: "점술사와의 문답.",
 };
 
 interface ChatSessionPageProps {

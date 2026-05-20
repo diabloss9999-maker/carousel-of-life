@@ -1,5 +1,5 @@
 /**
- * 주술사 문답 (채팅) 비즈니스 로직.
+ * 점술사 문답 (채팅) 비즈니스 로직.
  *
  * - 세션은 무한 생성 가능
  * - 메시지(질문) 단위로 일일 한도 체크
@@ -58,7 +58,7 @@ export async function createSession(opts: {
 /**
  * 해당 캐릭터의 가장 최근 세션을 찾아 이어가거나, 없으면 새로 만든다.
  *
- * 동일 주술사를 다시 선택했을 때 이전 대화를 자연스럽게 이어가기 위함.
+ * 동일 점술사를 다시 선택했을 때 이전 대화를 자연스럽게 이어가기 위함.
  */
 export async function findOrCreateSessionForCharacter(opts: {
   userId: string;

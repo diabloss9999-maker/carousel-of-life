@@ -31,7 +31,7 @@ const I18N_KO = {
   scoreUnit: "점",
   defaultTitle: "오늘의 흐름",
   defaultCategory: "운세",
-  defaultChar: "주술사",
+  defaultChar: "점술사",
   luckyColor: "행운의 색",
   luckyNumber: "행운의 숫자",
   luckyDirection: "행운의 방향",

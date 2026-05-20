@@ -9,7 +9,7 @@ export const maxDuration = 30;
 export const metadata: Metadata = {
   title: "손금 풀이",
   description:
-    "손바닥 사진을 올리면 이세계 주술사가 손금을 읽어줘요. 분석 후 사진은 즉시 폐기.",
+    "손바닥 사진을 올리면 이세계 점술사가 손금을 읽어줘요. 분석 후 사진은 즉시 폐기.",
 };
 
 export default async function PalmPage() {
@@ -26,7 +26,7 @@ export default async function PalmPage() {
           손금 풀이
         </h1>
         <p className="text-[15px] text-muted-foreground">
-          이세계 주술사가 너의 손바닥에 새겨진 선을 읽어줘.
+          이세계 점술사가 너의 손바닥에 새겨진 선을 읽어줘.
         </p>
       </header>
 

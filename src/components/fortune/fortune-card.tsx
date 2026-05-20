@@ -54,7 +54,7 @@ const CHARACTER_BORDER: Record<CharacterId, string> = {
 };
 
 /**
- * 운세 카테고리에 따라 해설 주술사를 결정.
+ * 운세 카테고리에 따라 해설 점술사를 결정.
  * - zodiac (별자리)          → 북유럽
  * - chinese_zodiac (십이간지) → 동양
  * - 그 외                    → 9명 전체 풀
@@ -72,7 +72,7 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  // 운세 카테고리·날짜 기반으로 해설 주술사 결정 (생성 시점 로직과 동일)
+  // 운세 카테고리·날짜 기반으로 해설 점술사 결정 (생성 시점 로직과 동일)
   const charId = pickFortuneCharacter(fortune.category, fortune.fortuneDate);
   const character = CHARACTERS[charId];
   const borderColor = CHARACTER_BORDER[charId] ?? "ring-border/40";

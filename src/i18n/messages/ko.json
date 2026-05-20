@@ -1,7 +1,7 @@
 {
   "nav": {
     "fortune": "운세",
-    "oracle": "주술사",
+    "oracle": "점술사",
     "tarot": "점술",
     "pillars": "사주",
     "bond": "궁합",
@@ -71,8 +71,8 @@
     "imminent": "임박"
   },
   "chat": {
-    "title": "주술사",
-    "description": "아홉 주술사 중 한 명을 골라. 이세계의 카드, 동양의 사주·천기, 북방의 룬 — 어느 결을 가진 자든 너의 운명을 이미 알고 있어.",
+    "title": "점술사",
+    "description": "아홉 점술사 중 한 명을 골라. 이세계의 카드, 동양의 사주·천기, 북방의 룬 — 어느 결을 가진 자든 너의 운명을 이미 알고 있어.",
     "placeholderDefault": "물어봐...",
     "loreSectionTitle": "세계관 이야기",
     "charactersSection": "캐릭터 스토리",
@@ -103,11 +103,11 @@
   },
   "compatibility": {
     "title": "궁합",
-    "description": "두 사람의 사주·별자리·띠·성격이 어떻게 얽혀 있는지 주술사가 읽어줄게."
+    "description": "두 사람의 사주·별자리·띠·성격이 어떻게 얽혀 있는지 점술사가 읽어줄게."
   },
   "personality": {
     "title": "성격유형",
-    "description": "20문항으로 나의 본성을 알아봐. 결과는 주술사 채팅·운세·타로 풀이에 자동 반영돼."
+    "description": "20문항으로 나의 본성을 알아봐. 결과는 점술사 채팅·운세·타로 풀이에 자동 반영돼."
   },
   "collection": {
     "title": "도감",
@@ -133,8 +133,8 @@
   },
   "landing": {
     "tagline": "별의 흐름과 카드의 계시, 그리고 사주팔자가 오늘의 운명을 들려줘요.",
-    "intro": "AI 주술사 9명이 사주·타로·성격유형을 통합해 매일의 운명을 풀이해드려요.\n매일 무료로 운세 2회, 타로 1장, 주술사 문답 10회를 받을 수 있어요.",
-    "freeHint": "매일 무료로 운세 2회, 타로 1장, 주술사 문답 10회를 받을 수 있어요.",
+    "intro": "AI 점술사 9명이 사주·타로·성격유형을 통합해 매일의 운명을 풀이해드려요.\n매일 무료로 운세 2회, 타로 1장, 점술사 문답 10회를 받을 수 있어요.",
+    "freeHint": "매일 무료로 운세 2회, 타로 1장, 점술사 문답 10회를 받을 수 있어요.",
     "startFree": "지금 무료로 시작하기",
     "viewPricing": "유료 플랜 보기",
     "kakaoStart": "카카오로 1초 만에 시작",
@@ -145,10 +145,10 @@
       "subheading": "다른 운세 서비스와 다른 세 가지",
       "v1Title": "사주 + 타로 + 성격유형 통합",
       "v1Body": "다른 곳은 하나만 봅니다. 우리는 세 가지 시선으로 같은 흐름을 읽어드려요.",
-      "v2Title": "AI 주술사와의 대화",
-      "v2Body": "단순 풀이가 아니라 아홉 명의 주술사가 각자의 방식으로 답해줍니다.",
+      "v2Title": "AI 점술사와의 대화",
+      "v2Body": "단순 풀이가 아니라 아홉 명의 점술사가 각자의 방식으로 답해줍니다.",
       "v3Title": "매일 무료로 받는 흐름",
-      "v3Body": "가입만 하면 매일 운세 2회·타로 1장·주술사 문답 10회를 무료로."
+      "v3Body": "가입만 하면 매일 운세 2회·타로 1장·점술사 문답 10회를 무료로."
     },
     "plansSection": {
       "heading": "원하는 만큼 깊이 들어가세요",
@@ -156,17 +156,17 @@
       "badgePopular": "인기"
     },
     "oracles": {
-      "heading": "오늘 당신을 찾아올 아홉 주술사",
-      "subheading": "매일 한 명의 주술사가 당신을 맞이해요. 친밀도가 쌓이면 새로운 이야기가 열려요.",
-      "cta": "지금 무료로 시작해서 첫 주술사를 만나보세요"
+      "heading": "오늘 당신을 찾아올 아홉 점술사",
+      "subheading": "매일 한 명의 점술사가 당신을 맞이해요. 친밀도가 쌓이면 새로운 이야기가 열려요.",
+      "cta": "지금 무료로 시작해서 첫 점술사를 만나보세요"
     },
     "howToPlay": {
       "heading": "이렇게 즐기세요",
-      "subheading": "주술사와 친해질수록 더 많은 이야기가 열려요",
-      "tip1Title": "주술사와 대화하기",
-      "tip1Body": "매일 아홉 명 중 한 명의 주술사가 찾아와요. 운세든 고민이든 평소 못 한 말이든 — 자유롭게 물어보세요.",
+      "subheading": "점술사와 친해질수록 더 많은 이야기가 열려요",
+      "tip1Title": "점술사와 대화하기",
+      "tip1Body": "매일 아홉 명 중 한 명의 점술사가 찾아와요. 운세든 고민이든 평소 못 한 말이든 — 자유롭게 물어보세요.",
       "tip2Title": "친밀도가 쌓이면 스토리가 열려요",
-      "tip2Body": "대화를 이어갈수록 그 주술사와의 친밀도가 올라가요. 레벨이 오를 때마다 숨겨진 사연과 본심이 차근차근 펼쳐져요.",
+      "tip2Body": "대화를 이어갈수록 그 점술사와의 친밀도가 올라가요. 레벨이 오를 때마다 숨겨진 사연과 본심이 차근차근 펼쳐져요.",
       "tip3Title": "꿀팁: 카드 뽑기는 마지막에",
       "tip3Body": "카드를 뽑으면 등급에 따라 그날 쓴 문답 횟수를 1~7회까지 되돌려줘요.\n문답을 먼저 다 쓰고 카드를 뽑으면 보너스를 가장 알차게 받을 수 있어요."
     },
@@ -290,7 +290,7 @@
     "start": "시작하기",
     "step1Title": "세 개의 세계가\n당신을 부른다",
     "step1Subtitle": "인생의 회전목마",
-    "step1Desc": "이세계의 주술사, 동양의 신령, 북방의 룬샤먼.\n아홉 존재가 당신의 사주와 운명을 이미 알고 있다.",
+    "step1Desc": "이세계의 점술사, 동양의 신령, 북방의 룬샤먼.\n아홉 존재가 당신의 사주와 운명을 이미 알고 있다.",
     "step2Title": "아스트라 균열",
     "step2Subtitle": "ASTRA RIFT",
     "step2Desc": "인간의 감정과 기억이 만들어낸 심연에서 태어난 세 존재.\n타로와 카드로 당신의 흐름을 읽는다.",
@@ -301,7 +301,7 @@
     "step4Subtitle": "MIDHALL",
     "step4Desc": "차갑고 거친 북방. 24개 고대 룬으로 이루어진 운명.\n룬과 자국으로 당신의 흐름을 읽는다.",
     "step5Title": "오늘, 누가 당신의\n이야기를 들어줄까",
-    "step5Desc": "매일 새로운 주술사가 당신에게 먼저 말을 건다.\n운세·타로·사주·궁합·룬 — 모든 걸 그들이 읽어준다."
+    "step5Desc": "매일 새로운 점술사가 당신에게 먼저 말을 건다.\n운세·타로·사주·궁합·룬 — 모든 걸 그들이 읽어준다."
   },
   "appShell": {
     "errorTitle": "별의 흐름이 잠시 흐려졌어요",
@@ -325,7 +325,7 @@
   },
   "onboardingForm": {
     "name": "이름",
-    "namePlaceholder": "주술사가 부를 당신의 이름",
+    "namePlaceholder": "점술사가 부를 당신의 이름",
     "birthDate": "생년월일",
     "birthTime": "태어난 시각",
     "birthTimeHelp": "모르면 비워두세요. 시주 추정은 생략됩니다.",
@@ -360,10 +360,10 @@
     "recommended": "추천",
     "fortuneLine": "오늘의 운세 일일 {n}회",
     "tarotLine": "타로 일일 {n}회",
-    "chatLine": "주술사 문답 일일 {n}회",
+    "chatLine": "점술사 문답 일일 {n}회",
     "fortuneUnlimited": "오늘의 운세 넉넉히",
     "tarotUnlimited": "타로 넉넉히",
-    "chatUnlimited": "주술사 문답 넉넉히",
+    "chatUnlimited": "점술사 문답 넉넉히",
     "premiumReports": "라이트 전용 리포트 (커리어·건강·공부·사랑)",
     "compatibilityUnlimited": "궁합 넉넉히",
     "ctaFreeStart": "무료로 시작",
@@ -668,7 +668,7 @@
     "category": "경계(境界) · 기억의 층",
     "heading": "운명 로그",
     "emptyTitle": "아직 흔적이 없어.",
-    "emptyBody": "운세를 보거나 주술사와 대화하면 여기에 기록이 남아요.",
+    "emptyBody": "운세를 보거나 점술사와 대화하면 여기에 기록이 남아요.",
     "myStory": "나의 서사",
     "crackStatus": "균열 상태",
     "recordedAt": "기록한 날",
@@ -875,7 +875,7 @@
     "chatBodyInvalid": "본문이 올바르지 않아요.",
     "chatMessageRequired": "질문을 입력해줘.",
     "chatMessageTooLong": "질문은 100자 이내로 짧게 부탁해.",
-    "fortuneAiFailed": "주술사가 풀이를 적지 못했어요: {message}",
+    "fortuneAiFailed": "점술사가 풀이를 적지 못했어요: {message}",
     "fortuneSajuFailed": "사주를 풀이할 별의 흐름을 읽지 못했어요: {message}",
     "tarotAiFailed": "타로의 계시를 읽지 못했어요: {message}",
     "lenormandAiFailed": "르노르망의 메시지를 읽지 못했어요: {message}",
@@ -1493,7 +1493,7 @@
   "personalityTest": {
     "startTitle": "나는 어떤 유형일까?",
     "startBody1": "20문항으로 나의 본성을 알아봐.",
-    "startBody2": "결과는 주술사 채팅·운세·타로 풀이에 자동 반영돼.",
+    "startBody2": "결과는 점술사 채팅·운세·타로 풀이에 자동 반영돼.",
     "duration": "약 3~5분",
     "questionCount": "20문항",
     "typeCount": "16가지 유형",
@@ -1579,7 +1579,7 @@
   },
   "shareCard": {
     "fortuneTitle": "오늘의 흐름",
-    "fortuneFallbackName": "주술사",
+    "fortuneFallbackName": "점술사",
     "appName": "인생의 회전목마",
     "luckyColor": "행운의 색",
     "luckyNumber": "행운의 숫자",

@@ -43,7 +43,7 @@ const I18N_KO_B = {
   appName: "인생의 회전목마",
   today: "오늘",
   readBy: (name: string) => `${name}이 읽어줬어`,
-  defaultChar: "주술사",
+  defaultChar: "점술사",
 };
 const I18N_EN_B = {
   appName: "Carousel of Life",

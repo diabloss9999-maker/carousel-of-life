@@ -187,7 +187,7 @@ export async function GET(req: NextRequest) {
         >
           <span style={{ fontSize: 20, color: theme.sub, letterSpacing: 1 }}>carouseloflife.com</span>
           <span style={{ fontSize: 18, color: theme.sub, letterSpacing: 2 }}>
-            {locale === "en" ? "Ask your oracle" : "너만의 주술사에게 물어봐"}
+            {locale === "en" ? "Ask your oracle" : "너만의 점술사에게 물어봐"}
           </span>
         </div>
       </div>

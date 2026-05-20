@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   // 랜딩은 사이트 기본 타이틀 그대로 노출 (template 우회).
   title: { absolute: `${siteConfig.name} — ${siteConfig.tagline}` },
   description:
-    "AI 가 사주팔자·타로·성격유형을 통합해 매일의 운명을 풀이해드려요. 가입 후 매일 무료로 운세 2회·타로 1장·주술사 문답 10회를 받아볼 수 있어요.",
+    "AI 가 사주팔자·타로·성격유형을 통합해 매일의 운명을 풀이해드려요. 가입 후 매일 무료로 운세 2회·타로 1장·점술사 문답 10회를 받아볼 수 있어요.",
   alternates: {
     canonical: "/",
   },
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
 const LANDING_FAQS: { q: string; a: string }[] = [
   {
     q: "정말 무료인가요?",
-    a: "네. 가입만 하면 매일 운세 2회·타로 1장·주술사 문답 10회를 무료로 받으실 수 있어요. 더 많은 풀이를 원하시면 라이트·프로 멤버십을 확인해주세요.",
+    a: "네. 가입만 하면 매일 운세 2회·타로 1장·점술사 문답 10회를 무료로 받으실 수 있어요. 더 많은 풀이를 원하시면 라이트·프로 멤버십을 확인해주세요.",
   },
   {
     q: "사주 정보는 어떻게 입력하나요?",
@@ -107,7 +107,7 @@ const structuredData = {
         "@type": "Offer",
         price: "0",
         priceCurrency: "KRW",
-        description: "무료 가입 후 매일 운세 2회·타로 1장·주술사 문답 10회 제공",
+        description: "무료 가입 후 매일 운세 2회·타로 1장·점술사 문답 10회 제공",
       },
     },
     {
@@ -252,7 +252,7 @@ async function ValuePropsSection() {
   );
 }
 
-/** 9명 주술사 캐릭터 쇼케이스. 3 카테고리 × 3명 = 3×3 grid. */
+/** 9명 점술사 캐릭터 쇼케이스. 3 카테고리 × 3명 = 3×3 grid. */
 async function OraclesSection() {
   const t = await getTranslations("landing.oracles");
   const tChar = await getTranslations("characters");

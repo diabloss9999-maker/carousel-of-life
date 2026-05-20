@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * 채팅 진입 시 무작위 주술사 환영 인사.
+ * 채팅 진입 시 무작위 점술사 환영 인사.
  * 세션당 1회 (sessionStorage).
  */
 import Image from "next/image";

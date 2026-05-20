@@ -1,8 +1,8 @@
 "use client";
 
 /**
- * 흐름 페이지에서 주술사가 먼저 말을 걸어오는 카드.
- * 클릭하면 해당 주술사와의 대화 세션을 생성/이어서 /chat/[id] 로 이동.
+ * 흐름 페이지에서 점술사가 먼저 말을 걸어오는 카드.
+ * 클릭하면 해당 점술사와의 대화 세션을 생성/이어서 /chat/[id] 로 이동.
  */
 import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";

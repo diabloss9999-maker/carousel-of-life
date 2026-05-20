@@ -54,7 +54,7 @@ export async function generateMetadata({
   const description =
     locale === "en"
       ? "An AI oracle reading from Carousel of Life. Ask yours."
-      : "인생의 회전목마에서 받은 주술사의 풀이. 너도 한 번 물어봐.";
+      : "인생의 회전목마에서 받은 점술사의 풀이. 너도 한 번 물어봐.";
 
   const ogUrl = buildOgUrl(sp);
 

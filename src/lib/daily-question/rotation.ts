@@ -10,7 +10,7 @@ const CHARACTER_ROTATION: CharacterId[] = [
   "god", "hunter", "runeshaman",
 ];
 
-/** 카테고리별 캐릭터 풀 — 각 점술 영역 전용 해설 주술사. */
+/** 카테고리별 캐릭터 풀 — 각 점술 영역 전용 해설 점술사. */
 const ROTATION_BY_CATEGORY: Record<CharacterCategory, CharacterId[]> = {
   이세계: ["child", "witch", "sage"],
   동양:   ["shaman", "taoist", "dokkaebi"],

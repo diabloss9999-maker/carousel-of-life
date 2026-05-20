@@ -121,7 +121,7 @@ export function PalmUploadForm() {
         <CardContent className="space-y-5">
           {/* 캐릭터 선택 */}
           <div className="space-y-2">
-            <label className="text-[15px] font-medium">풀이해줄 주술사</label>
+            <label className="text-[15px] font-medium">풀이해줄 점술사</label>
             <div className="grid grid-cols-3 gap-2">
               {PALM_CHARS.map((id) => {
                 const c = CHARACTERS[id];
@@ -278,7 +278,7 @@ export function PalmUploadForm() {
               {isPending ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                  주술사가 손금을 읽는 중...
+                  점술사가 손금을 읽는 중...
                 </>
               ) : (
                 <>

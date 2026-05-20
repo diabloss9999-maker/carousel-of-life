@@ -17,7 +17,7 @@ import { WelcomeGreeting } from "@/components/chat/welcome-greeting";
 import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
-  title: "주술사",
+  title: "점술사",
   description: "사주를 아는 친구에게 궁금한 걸 물어봐요.",
 };
 

@@ -151,7 +151,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
         tier={tier}
       />
 
-      {/* 주술사 호출 */}
+      {/* 점술사 호출 */}
       <ShamanCall />
 
       {/* 별자리·십이간지 — 비구독자: 라이트 잠금 */}

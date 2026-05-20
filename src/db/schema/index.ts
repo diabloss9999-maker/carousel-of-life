@@ -194,7 +194,7 @@ export const tarotReadings = pgTable(
      * 예: [{ position: "past", cardId: "the_fool", isReversed: false }, ...]
      */
     cards: jsonb("cards").notNull(),
-    /** 주술사 풀이 본문. */
+    /** 점술사 풀이 본문. */
     interpretation: text("interpretation").notNull(),
     model: text("model").notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
@@ -363,7 +363,7 @@ export const chatSessions = pgTable(
       .references(() => authUsers.id, { onDelete: "cascade" }),
     /** AI 가 대화 초입에 자동 생성하는 짧은 제목. */
     title: text("title").notNull().default("새로운 문답"),
-    /** 선택된 주술사 캐릭터 ID. null 이면 기본값(witch) 사용. */
+    /** 선택된 점술사 캐릭터 ID. null 이면 기본값(witch) 사용. */
     character: text("character").default("witch"),
     lastMessageAt: timestamp("last_message_at", { withTimezone: true })
       .notNull()

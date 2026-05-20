@@ -7,7 +7,7 @@
  * - 별자리 12장
  * - 십이간지 12장
  * - 천간 10장
- * - 주술사 9장 (이세계 3 · 동양 3 · 북방 3)
+ * - 점술사 9장 (이세계 3 · 동양 3 · 북방 3)
  *
  * 발견 여부는 service.ts 가 기존 사용자 데이터(profiles, tarotReadings,
  * chatSessions)에서 계산한다. 이 파일은 카드의 표시 정보만을 담는다.
@@ -336,7 +336,7 @@ export const CHEONGAN_CARDS: CollectionCardMeta[] = CHEONGAN_ORDER.map(
   },
 );
 
-/** 주술사 캐릭터 9장 메타데이터 — 이세계 3 + 동양 3 + 북방 3. */
+/** 점술사 캐릭터 9장 메타데이터 — 이세계 3 + 동양 3 + 북방 3. */
 export const CHARACTER_CARDS: CollectionCardMeta[] = [
   // 이세계
   {
@@ -483,12 +483,12 @@ export const CATEGORY_META: Record<
   zodiac:        { label: "별자리",  emoji: "", cardBackSrc: "/collection/card_back_zodiac.webp" },
   chineseZodiac: { label: "십이간지",emoji: "", cardBackSrc: "/collection/card_back_chinese_zodiac.webp" },
   cheongan:      { label: "천간",    emoji: "", cardBackSrc: "/collection/card_back_cheongan.webp" },
-  characters:    { label: "주술사",  emoji: "", cardBackSrc: "/collection/card_back_characters.webp" },
+  characters:    { label: "점술사",  emoji: "", cardBackSrc: "/collection/card_back_characters.webp" },
   lenormand:     { label: "르노르망",emoji: "", cardBackSrc: "/collection/card_back_lenormand.webp" },
   runes:         { label: "룬",      emoji: "", cardBackSrc: "/collection/card_back_runes.webp" },
 };
 
-/** 전체 카드 수 (197장 — 이세계 3 + 동양 3 + 북방 3 주술사). */
+/** 전체 카드 수 (197장 — 이세계 3 + 동양 3 + 북방 3 점술사). */
 export const TOTAL_CARDS =
   TAROT_CARDS.length +
   MBTI_CARDS.length +

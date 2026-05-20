@@ -500,8 +500,8 @@ export interface ChatEnrichment {
 }
 
 /**
- * AI 주술사 채팅 첫 턴에 전달되는 풍부한 사용자 컨텍스트.
- * 알고 있는 모든 정보를 주술사에게 넘긴다.
+ * AI 점술사 채팅 첫 턴에 전달되는 풍부한 사용자 컨텍스트.
+ * 알고 있는 모든 정보를 점술사에게 넘긴다.
  */
 export function buildChatContext(
   profile: BuildContextOptions["profile"],

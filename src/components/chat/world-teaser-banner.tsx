@@ -37,7 +37,7 @@ export function WorldTeaserBanner() {
 
         {/* CTA */}
         <span className="flex items-center gap-1.5 text-[15px] text-muted-foreground/90 group-hover:text-foreground sm:shrink-0">
-          9 주술사 · 90 챕터의 이야기
+          9 점술사 · 90 챕터의 이야기
           <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
         </span>
       </div>

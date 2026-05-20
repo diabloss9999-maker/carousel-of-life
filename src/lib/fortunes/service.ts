@@ -106,7 +106,7 @@ export async function getOrCreateDailyFortune(opts: {
   let aiOutput;
   try {
     /**
-     * 카테고리별 해설 주술사 분기.
+     * 카테고리별 해설 점술사 분기.
      * - 별자리 (zodiac)        → 북유럽 (외르문드·비요른·헬가)
      * - 십이간지 (chinese_zodiac) → 동양 (소령·현도·흑랑)
      * - 그 외 카테고리         → 9명 전체 풀에서 일일 순환
