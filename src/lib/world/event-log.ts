@@ -15,7 +15,7 @@ const EVENT_TEMPLATES: { text: string; tone: WorldEvent["tone"] }[] = [
   { text: "카엘이 봉인 구역으로 향했습니다.", tone: "warning" },
   { text: "루나가 새벽 기록을 다시 열었습니다.", tone: "normal" },
   { text: "라엘이 흐름을 안정시키려 하고 있습니다.", tone: "normal" },
-  { text: "소령의 방울이 잠시 울렸습니다.", tone: "normal" },
+  { text: "소율의 방울이 잠시 울렸습니다.", tone: "normal" },
   { text: "현도가 천기의 어긋남을 감지했습니다.", tone: "warning" },
   { text: "흑랑이 새로운 거래를 제안했습니다.", tone: "normal" },
   // 충돌

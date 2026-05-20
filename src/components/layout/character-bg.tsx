@@ -19,7 +19,7 @@ const CHARACTER_BG: Record<CharacterId, string> = {
   witch:      "/backgrounds/witch.webp",      // 루나
   sage:       "/backgrounds/sage.webp",       // 라엘
   // 동양
-  shaman:     "/backgrounds/shaman.webp",     // 소령
+  shaman:     "/backgrounds/shaman.webp",     // 소율
   taoist:     "/backgrounds/taoist.webp",     // 현도
   dokkaebi:   "/backgrounds/dokkaebi.webp",   // 흑랑
   // 북방

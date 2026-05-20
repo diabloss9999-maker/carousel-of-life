@@ -18,7 +18,7 @@ export type WorldActiveEntity =
   | "luna"     // 루나 (witch)
   | "rael"     // 라엘 (sage)
   | "gael"     // 카엘 (child) — 내부 키는 gael 유지
-  | "soryeong" // 소령 (shaman)
+  | "soryeong" // 소율 (shaman)
   | "hyundo"   // 현도 (taoist)
   | "gwiyeom"; // 흑랑 (dokkaebi)
 
@@ -97,7 +97,7 @@ export const ENTITY_LABEL: Record<WorldActiveEntity, string> = {
   luna: "루나",
   rael: "라엘",
   gael: "카엘",
-  soryeong: "소령",
+  soryeong: "소율",
   hyundo: "현도",
   gwiyeom: "흑랑",
 };

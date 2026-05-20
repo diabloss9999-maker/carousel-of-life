@@ -52,14 +52,14 @@ const bodySchema = z.object({
  * 캐릭터별 메시지당 균열 변동량 — 선·악 스펙트럼.
  *
  *  강한 선 (-2): 라엘
- *  선     (-1): 소령 · 헬가
+ *  선     (-1): 소율 · 헬가
  *  중립    (0): 루나 · 현도 · 외르문드
  *  악     (+1): 카엘 · 비요른
  *  강한 악 (+2): 흑랑
  */
 const CHARACTER_CRACK_DELTA: Record<CharacterId, number> = {
   sage:       -2, // 라엘 — 강한 선
-  shaman:     -1, // 소령
+  shaman:     -1, // 소율
   runeshaman: -1, // 헬가
   witch:       0, // 루나
   taoist:      0, // 현도

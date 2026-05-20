@@ -75,7 +75,7 @@ export function computeEntityMood(opts: {
       return base < 2 ? "calm" : base < 4 ? "curious" : "distant";
     }
     case "soryeong": {
-      // 소령 — 기록자. 오래된 기록 모드. fractureLevel 높으면 distant.
+      // 소율 — 기록자. 오래된 기록 모드. fractureLevel 높으면 distant.
       if (fractureLevel >= 4) return "distant";
       if (isNight) return "calm";
       return base < 3 ? "calm" : "curious";

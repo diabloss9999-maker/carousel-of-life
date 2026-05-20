@@ -373,7 +373,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
   {
     id: "shaman",
     category: "characters",
-    nameKo: "소령",
+    nameKo: "소율",
     nameEn: "Soryeong",
     imageSrc: "/characters/shaman_v1.webp",
     description:
@@ -387,7 +387,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     nameEn: "Hyundo",
     imageSrc: "/characters/taoist_v1.webp",
     description:
-      "500년 전 금기를 써서 시간에서 지워진 도사. 천기역전을 쓸 때마다 소령과 흑랑의 기억이 사라진다.",
+      "500년 전 금기를 써서 시간에서 지워진 도사. 천기역전을 쓸 때마다 소율과 흑랑의 기억이 사라진다.",
     rarity: "legendary",
   },
   {
@@ -397,7 +397,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     nameEn: "Gwieyeom",
     imageSrc: "/characters/dokkaebi_night_v2.webp",
     description:
-      "소령을 살리기 위해 스스로 귀왕이 된 도깨비. 진짜 이름을 잃었고, 그 사실을 소령은 모른다.",
+      "소율을 살리기 위해 스스로 귀왕이 된 도깨비. 진짜 이름을 잃었고, 그 사실을 소율은 모른다.",
     rarity: "legendary",
   },
   // 북방 — 《죽은 별의 밤》

@@ -653,7 +653,7 @@ body.ritual-dawn {
   border-color: rgba(220, 140, 100, 0.24) !important;
 }
 
-/* 소령 — 세피아 / 오래된 기록 분위기 (frosted 베이스 유지, 색조만 그라데이션) */
+/* 소율 — 세피아 / 오래된 기록 분위기 (frosted 베이스 유지, 색조만 그라데이션) */
 .entity-soryeong .app-surface {
   border-color: rgba(190, 160, 110, 0.26) !important;
   background: linear-gradient(180deg, rgba(255, 245, 220, 0.08), rgba(180, 140, 90, 0.06)) !important;

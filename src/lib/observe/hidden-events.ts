@@ -162,7 +162,7 @@ export function checkHiddenEvents(input: HiddenEventInput): HiddenEventResult {
     const ctx =
       locale === "en"
         ? `\n[Hidden event — Crack in the Goblin King]\nHeuklang is in a state where his real feelings about Soryeong might slip for the first time.\nExactly once during the conversation, if Soryeong comes up, pause briefly and say:\n"${quote}"\nDo NOT explain further.`
-        : `\n[숨겨진 이벤트 — 귀왕의 균열]\n흑랑이 처음으로 소령에 대한 진짜 감정을 흘릴 수 있는 상태야.\n대화 중 딱 한 번, 소령에 대한 이야기가 나오면 잠깐 말을 멈추고 이렇게 해:\n"${quote}"\n절대 더 설명하지 마.`;
+        : `\n[숨겨진 이벤트 — 귀왕의 균열]\n흑랑이 처음으로 소율에 대한 진짜 감정을 흘릴 수 있는 상태야.\n대화 중 딱 한 번, 소율에 대한 이야기가 나오면 잠깐 말을 멈추고 이렇게 해:\n"${quote}"\n절대 더 설명하지 마.`;
     return { eventContext: ctx, homeHiddenText: null };
   }
 
