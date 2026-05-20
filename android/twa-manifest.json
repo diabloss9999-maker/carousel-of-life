@@ -1,0 +1,60 @@
+{
+  "packageId": "com.carouseloflife.app",
+  "host": "carouseloflife.com",
+  "name": "인생의 회전목마",
+  "launcherName": "회전목마",
+  "display": "standalone",
+  "themeColor": "#0d0a14",
+  "navigationColor": "#0d0a14",
+  "navigationColorDark": "#0d0a14",
+  "navigationDividerColor": "#0d0a14",
+  "navigationDividerColorDark": "#0d0a14",
+  "backgroundColor": "#0d0a14",
+  "enableNotifications": false,
+  "startUrl": "/today",
+  "iconUrl": "https://carouseloflife.com/icons-pwa/icon-512.png",
+  "maskableIconUrl": "https://carouseloflife.com/icons-pwa/icon-512-maskable.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./android.keystore",
+    "alias": "android"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [
+    {
+      "name": "오늘의 운세",
+      "shortName": "운세",
+      "url": "/today",
+      "iconUrl": "https://carouseloflife.com/icons-pwa/icon-192.png"
+    },
+    {
+      "name": "점술사와 대화",
+      "shortName": "점술사",
+      "url": "/chat",
+      "iconUrl": "https://carouseloflife.com/icons-pwa/icon-192.png"
+    },
+    {
+      "name": "사주팔자",
+      "shortName": "사주",
+      "url": "/saju",
+      "iconUrl": "https://carouseloflife.com/icons-pwa/icon-192.png"
+    }
+  ],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://carouseloflife.com/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {
+    "locationDelegation": { "enabled": false },
+    "playBilling": { "enabled": false }
+  },
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://carouseloflife.com/",
+  "minSdkVersion": 23,
+  "orientation": "portrait"
+}

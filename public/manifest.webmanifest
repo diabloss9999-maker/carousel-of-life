@@ -6,16 +6,59 @@
   "start_url": "/today",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
   "theme_color": "#0d0a14",
   "background_color": "#0d0a14",
   "categories": ["lifestyle", "entertainment"],
+  "id": "/today",
   "icons": [
     {
       "src": "/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icons-pwa/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons-pwa/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons-pwa/icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons-pwa/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "오늘의 운세",
+      "url": "/today",
+      "description": "오늘의 운세를 받아요"
+    },
+    {
+      "name": "점술사와 대화",
+      "url": "/chat",
+      "description": "9명의 점술사와 대화"
+    },
+    {
+      "name": "사주팔자",
+      "url": "/saju",
+      "description": "사주 풀이"
     }
   ]
 }

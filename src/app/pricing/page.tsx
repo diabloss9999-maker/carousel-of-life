@@ -22,6 +22,7 @@ import { getUser } from "@/lib/auth/get-user";
 import { getSubscriptionTier } from "@/lib/payment/subscription-state";
 import { formatKRW } from "@/lib/utils";
 import { SubscribeCta } from "@/components/payment/subscribe-cta";
+import { ExternalPaymentNotice } from "@/components/payment/external-payment-notice";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("pricing");
@@ -190,6 +191,10 @@ export default async function PricingPage() {
       <p className="mt-6 text-center text-[15px] text-muted-foreground">
         {t("footer")}
       </p>
+
+      <div className="mt-8">
+        <ExternalPaymentNotice />
+      </div>
     </main>
   );
 }

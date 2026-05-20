@@ -41,12 +41,27 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# capacitor android (실제 안드로이드 빌드 산출물 제외)
+# android (TWA + Capacitor 공통 — 빌드 산출물·키스토어 제외)
 /android/app/build
 /android/build
 /android/.gradle
 /android/local.properties
 /android/captures
+# Bubblewrap 산출물 (빌드 시 생성됨)
+/android/app-release-signed.aab
+/android/app-release-signed.apk
+/android/app-release-unsigned.apk
+/android/app/
+/android/gradle/
+/android/gradlew
+/android/gradlew.bat
+/android/build.gradle
+/android/settings.gradle
+/android/store_icon.png
+# 키스토어 — 절대 commit 금지! 분실 시 앱 업데이트 영원히 불가.
+/android/*.keystore
+/android/*.jks
+/android/signing-key-info.txt
 
 # IDE
 .idea
