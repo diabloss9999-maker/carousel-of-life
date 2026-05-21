@@ -423,17 +423,23 @@ export const subscriptions = pgTable(
     userId: uuid("user_id")
       .notNull()
       .references(() => authUsers.id, { onDelete: "cascade" }),
-    /** 결제 PG 식별 — 'lemonsqueezy' | 'toss'. 마이그 0005 추가. */
+    /** 결제 PG 식별 — 'lemonsqueezy' | 'toss' | 'portone'. */
     provider: text("provider").notNull().default("lemonsqueezy"),
     // ── LS 컬럼 (provider='lemonsqueezy' 일 때만 채워짐) ──
     lsSubscriptionId: text("ls_subscription_id").unique(),
     lsCustomerId: text("ls_customer_id"),
     lsVariantId: text("ls_variant_id"),
-    // ── Toss 컬럼 (provider='toss' 일 때만 채워짐) ──
+    // ── Toss 컬럼 (provider='toss' 일 때만 채워짐, 마이그 0005) ──
     tossBillingKey: text("toss_billing_key").unique(),
     tossCustomerKey: text("toss_customer_key"),
     tossCardCompany: text("toss_card_company"),
     tossCardNumberMasked: text("toss_card_number_masked"),
+    // ── PortOne 컬럼 (provider='portone' 일 때만 채워짐, 마이그 0007) ──
+    portoneBillingKey: text("portone_billing_key").unique(),
+    portoneCustomerId: text("portone_customer_id"),
+    portoneChannelKey: text("portone_channel_key"),
+    portoneCardCompany: text("portone_card_company"),
+    portoneCardNumberMasked: text("portone_card_number_masked"),
     // ── 공통 ──
     status: subscriptionStatusEnum("status").notNull(),
     currentPeriodStartsAt: timestamp("current_period_starts_at", {
@@ -527,6 +533,51 @@ export const tossPayments = pgTable(
 
 export type TossPayment = typeof tossPayments.$inferSelect;
 export type NewTossPayment = typeof tossPayments.$inferInsert;
+
+// =============================================================================
+// portone_payments - PortOne 정기결제 청구 이력 (마이그 0007)
+// =============================================================================
+
+export const portonePayments = pgTable(
+  "portone_payments",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    subscriptionId: uuid("subscription_id").references(
+      () => subscriptions.id,
+      { onDelete: "set null" },
+    ),
+    /** PortOne 의 결제 ID (paymentId). 자체 생성·전달. */
+    paymentId: text("payment_id").notNull().unique(),
+    /** 우리 시스템의 주문 ID (orderId). 자체 생성. */
+    orderId: text("order_id").notNull().unique(),
+    /** PortOne 거래 ID (자동 발급). */
+    txId: text("tx_id"),
+    amount: integer("amount").notNull(),
+    /** 'PAID' | 'CANCELLED' | 'PARTIAL_CANCELLED' | 'FAILED' 등. */
+    status: text("status").notNull(),
+    method: text("method"),
+    /** 백엔드 PG 식별 (kg_inicis, kcp, toss, nice 등). */
+    pgProvider: text("pg_provider"),
+    paidAt: timestamp("paid_at", { withTimezone: true }),
+    cancelledAt: timestamp("cancelled_at", { withTimezone: true }),
+    cancelReason: text("cancel_reason"),
+    /** PortOne 응답 원본 (분쟁 시 증빙). */
+    rawResponse: jsonb("raw_response"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    index("portone_payments_user_id_idx").on(t.userId),
+    index("portone_payments_subscription_id_idx").on(t.subscriptionId),
+  ],
+);
+
+export type PortonePayment = typeof portonePayments.$inferSelect;
+export type NewPortonePayment = typeof portonePayments.$inferInsert;
 
 // =============================================================================
 // usage_quotas - 일일 사용량 (무료 한도 추적)
@@ -990,6 +1041,8 @@ export const allTables = {
   chatMessages,
   subscriptions,
   purchases,
+  tossPayments,
+  portonePayments,
   usageQuotas,
   webhookEvents,
   savedPartners,

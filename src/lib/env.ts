@@ -29,12 +29,17 @@ const serverSchema = z.object({
     z.string().min(1).optional(),
   ),
   LEMONSQUEEZY_PRO_VARIANT_ID: emptyToUndef(z.string().min(1).optional()),
-  /** TossPayments — 한국 PG 로 마이그레이션 (LS 와 병행 후 교체). */
+  /** TossPayments — 한국 PG (직접 연동). */
   TOSS_SECRET_KEY: emptyToUndef(z.string().min(1).optional()),
   TOSS_WEBHOOK_SECRET: emptyToUndef(z.string().min(1).optional()),
   /** 라이트/프로 상품 가격 (KRW, 정기결제 청구 금액). */
   TOSS_LITE_PRICE_KRW: emptyToUndef(z.string().regex(/^\d+$/).optional()),
   TOSS_PRO_PRICE_KRW: emptyToUndef(z.string().regex(/^\d+$/).optional()),
+  /** PortOne (포트원) — 한국 PG 통합 게이트웨이. 백엔드 PG 자동 라우팅. */
+  PORTONE_API_SECRET: emptyToUndef(z.string().min(1).optional()),
+  PORTONE_WEBHOOK_SECRET: emptyToUndef(z.string().min(1).optional()),
+  PORTONE_LITE_PRICE_KRW: emptyToUndef(z.string().regex(/^\d+$/).optional()),
+  PORTONE_PRO_PRICE_KRW: emptyToUndef(z.string().regex(/^\d+$/).optional()),
   KAKAO_CLIENT_ID: emptyToUndef(z.string().min(1).optional()),
   KAKAO_CLIENT_SECRET: emptyToUndef(z.string().min(1).optional()),
   NODE_ENV: z
@@ -51,6 +56,10 @@ const clientSchema = z.object({
   NEXT_PUBLIC_APP_NAME: emptyToUndef(z.string().default("인생의 회전목마")),
   /** 토스 위젯용 클라이언트 키 (공개 OK). */
   NEXT_PUBLIC_TOSS_CLIENT_KEY: emptyToUndef(z.string().min(1).optional()),
+  /** 포트원 V2 — 상점 ID (공개 OK). */
+  NEXT_PUBLIC_PORTONE_STORE_ID: emptyToUndef(z.string().min(1).optional()),
+  /** 포트원 V2 — 채널 키 (백엔드 PG 별로 다름, 공개 OK). */
+  NEXT_PUBLIC_PORTONE_CHANNEL_KEY: emptyToUndef(z.string().min(1).optional()),
 });
 
 const clientEnvRaw = {
@@ -59,6 +68,8 @@ const clientEnvRaw = {
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
   NEXT_PUBLIC_TOSS_CLIENT_KEY: process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY,
+  NEXT_PUBLIC_PORTONE_STORE_ID: process.env.NEXT_PUBLIC_PORTONE_STORE_ID,
+  NEXT_PUBLIC_PORTONE_CHANNEL_KEY: process.env.NEXT_PUBLIC_PORTONE_CHANNEL_KEY,
 };
 
 const parsedClient = clientSchema.safeParse(clientEnvRaw);

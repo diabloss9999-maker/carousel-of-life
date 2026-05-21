@@ -17,15 +17,22 @@
  *   기반 Bearer 토큰을 보낸다. 환경변수 CRON_SECRET 이 설정되어 있으면 검증.
  */
 import { NextResponse, type NextRequest } from "next/server";
-import { and, eq, lte } from "drizzle-orm";
+import { and, eq, lte, or } from "drizzle-orm";
 
 import { db } from "@/db";
-import { subscriptions, tossPayments } from "@/db/schema";
+import { subscriptions, tossPayments, portonePayments } from "@/db/schema";
 import {
   buildSubscriptionOrderId,
   chargeWithBillingKey,
   TossError,
 } from "@/lib/payment/toss";
+import {
+  chargeWithBillingKey as portoneCharge,
+  buildPaymentId as portoneBuildPaymentId,
+  buildOrderId as portoneBuildOrderId,
+  userIdToCustomerId as portoneCustomerIdFor,
+  PortOneError,
+} from "@/lib/payment/portone";
 import { SUBSCRIPTION } from "@/lib/constants";
 
 export const runtime = "nodejs";
@@ -50,7 +57,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
-  // 만료 임박 (24시간 이내) + active + 취소 예약 안 됨 + 토스 구독
+  // 만료 임박 (24시간 이내) + active + 취소 예약 안 됨 + 한국 PG (toss·portone) 구독
   const cutoff = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
   const due = await db
@@ -58,7 +65,10 @@ export async function GET(req: NextRequest) {
     .from(subscriptions)
     .where(
       and(
-        eq(subscriptions.provider, "toss"),
+        or(
+          eq(subscriptions.provider, "toss"),
+          eq(subscriptions.provider, "portone"),
+        ),
         eq(subscriptions.status, "active"),
         eq(subscriptions.cancelAtPeriodEnd, false),
         lte(subscriptions.currentPeriodEndsAt, cutoff),
@@ -68,18 +78,47 @@ export async function GET(req: NextRequest) {
   const outcomes: ChargeOutcome[] = [];
 
   for (const sub of due) {
-    // 안전 체크 — 빌링키와 customerKey 가 있어야 청구 가능
-    if (!sub.tossBillingKey || !sub.tossCustomerKey) {
-      outcomes.push({
+    try {
+      if (sub.provider === "portone") {
+        await chargePortOneSub(sub);
+        outcomes.push({ subscriptionId: sub.id, ok: true });
+      } else if (sub.provider === "toss") {
+        await chargeTossSub(sub);
+        outcomes.push({ subscriptionId: sub.id, ok: true });
+      } else {
+        outcomes.push({
+          subscriptionId: sub.id,
+          ok: false,
+          reason: "UNKNOWN_PROVIDER",
+        });
+      }
+    } catch (e) {
+      const code =
+        e instanceof TossError
+          ? e.code
+          : e instanceof PortOneError
+            ? (e.code ?? "PORTONE_ERROR")
+            : "UNKNOWN_ERROR";
+      console.error("[charge-subscriptions] failed", {
         subscriptionId: sub.id,
-        ok: false,
-        reason: "MISSING_BILLING_KEY",
+        provider: sub.provider,
+        code,
+        message: e instanceof Error ? e.message : String(e),
       });
-      continue;
+      await db
+        .update(subscriptions)
+        .set({ status: "past_due", updatedAt: new Date() })
+        .where(eq(subscriptions.id, sub.id));
+      outcomes.push({ subscriptionId: sub.id, ok: false, reason: String(code) });
     }
+  }
 
-    // 플랜 추론 — masked card 만 갖고는 못 하므로 결제 이력의 마지막 금액으로 (단순화)
-    // 라이트 4900 / 프로 9900. 분기 안 되면 라이트로 폴백.
+  async function chargeTossSub(
+    sub: typeof subscriptions.$inferSelect,
+  ): Promise<void> {
+    if (!sub.tossBillingKey || !sub.tossCustomerKey) {
+      throw new Error("MISSING_BILLING_KEY: 토스 빌링키 누락");
+    }
     const lastPayment = await db
       .select({ amount: tossPayments.amount })
       .from(tossPayments)
@@ -93,57 +132,99 @@ export async function GET(req: NextRequest) {
     const orderId = buildSubscriptionOrderId(sub.userId);
     const orderName = `${planLabel} 정기 결제 (${lastAmount.toLocaleString()}원)`;
 
-    try {
-      const charge = await chargeWithBillingKey({
-        billingKey: sub.tossBillingKey,
-        customerKey: sub.tossCustomerKey,
-        amount: lastAmount,
-        orderId,
-        orderName,
-      });
+    const charge = await chargeWithBillingKey({
+      billingKey: sub.tossBillingKey,
+      customerKey: sub.tossCustomerKey,
+      amount: lastAmount,
+      orderId,
+      orderName,
+    });
 
-      // 결제 이력 저장 + 구독 기간 연장
-      await db.insert(tossPayments).values({
-        userId: sub.userId,
-        subscriptionId: sub.id,
-        paymentKey: charge.paymentKey,
-        orderId: charge.orderId,
-        amount: charge.totalAmount,
-        status: charge.status,
-        method: charge.method,
-        approvedAt: charge.approvedAt ? new Date(charge.approvedAt) : null,
-        rawResponse: charge as unknown as Record<string, unknown>,
-      });
+    await db.insert(tossPayments).values({
+      userId: sub.userId,
+      subscriptionId: sub.id,
+      paymentKey: charge.paymentKey,
+      orderId: charge.orderId,
+      amount: charge.totalAmount,
+      status: charge.status,
+      method: charge.method,
+      approvedAt: charge.approvedAt ? new Date(charge.approvedAt) : null,
+      rawResponse: charge as unknown as Record<string, unknown>,
+    });
 
-      const nextEnd = new Date(sub.currentPeriodEndsAt ?? new Date());
-      nextEnd.setMonth(nextEnd.getMonth() + 1);
+    const nextEnd = new Date(sub.currentPeriodEndsAt ?? new Date());
+    nextEnd.setMonth(nextEnd.getMonth() + 1);
+    await db
+      .update(subscriptions)
+      .set({
+        currentPeriodStartsAt: sub.currentPeriodEndsAt,
+        currentPeriodEndsAt: nextEnd,
+        updatedAt: new Date(),
+      })
+      .where(eq(subscriptions.id, sub.id));
+  }
 
-      await db
-        .update(subscriptions)
-        .set({
-          currentPeriodStartsAt: sub.currentPeriodEndsAt,
-          currentPeriodEndsAt: nextEnd,
-          updatedAt: new Date(),
-        })
-        .where(eq(subscriptions.id, sub.id));
-
-      outcomes.push({ subscriptionId: sub.id, ok: true });
-    } catch (e) {
-      const code =
-        e instanceof TossError ? e.code : "UNKNOWN_ERROR";
-      console.error("[charge-subscriptions] failed", {
-        subscriptionId: sub.id,
-        code,
-        message: e instanceof Error ? e.message : String(e),
-      });
-      // past_due 표시 — 다음 cron 에서 재시도. 며칠 연속 실패 시 cancelled 처리는
-      // 별도 정책으로 (예: 3회 실패 → cancelled).
-      await db
-        .update(subscriptions)
-        .set({ status: "past_due", updatedAt: new Date() })
-        .where(eq(subscriptions.id, sub.id));
-      outcomes.push({ subscriptionId: sub.id, ok: false, reason: code });
+  async function chargePortOneSub(
+    sub: typeof subscriptions.$inferSelect,
+  ): Promise<void> {
+    if (!sub.portoneBillingKey) {
+      throw new PortOneError("PortOne 빌링키 누락");
     }
+    const lastPayment = await db
+      .select({ amount: portonePayments.amount })
+      .from(portonePayments)
+      .where(eq(portonePayments.subscriptionId, sub.id))
+      .orderBy(portonePayments.createdAt)
+      .limit(1);
+    const lastAmount =
+      lastPayment[0]?.amount ?? SUBSCRIPTION.lite.monthlyPriceKRW;
+    const planLabel =
+      lastAmount === SUBSCRIPTION.pro.monthlyPriceKRW ? "프로" : "라이트";
+
+    const paymentId = portoneBuildPaymentId(sub.userId);
+    const orderId = portoneBuildOrderId(
+      sub.userId,
+      lastAmount === SUBSCRIPTION.pro.monthlyPriceKRW ? "pro" : "lite",
+    );
+    const customerId =
+      sub.portoneCustomerId ?? portoneCustomerIdFor(sub.userId);
+
+    const charge = await portoneCharge({
+      paymentId,
+      billingKey: sub.portoneBillingKey,
+      orderName: `${planLabel} 정기 결제 (${lastAmount.toLocaleString()}원)`,
+      amountKRW: lastAmount,
+      customer: { id: customerId },
+    });
+
+    if (charge.status !== "PAID") {
+      throw new PortOneError(`결제 상태 비정상: ${charge.status}`, undefined, charge.status);
+    }
+
+    await db.insert(portonePayments).values({
+      userId: sub.userId,
+      subscriptionId: sub.id,
+      paymentId,
+      orderId,
+      txId: charge.pgTxId ?? null,
+      amount: lastAmount,
+      status: charge.status,
+      method: charge.method?.type ?? null,
+      pgProvider: charge.pgProvider ?? null,
+      paidAt: charge.paidAt ? new Date(charge.paidAt) : new Date(),
+      rawResponse: charge as unknown as Record<string, unknown>,
+    });
+
+    const nextEnd = new Date(sub.currentPeriodEndsAt ?? new Date());
+    nextEnd.setMonth(nextEnd.getMonth() + 1);
+    await db
+      .update(subscriptions)
+      .set({
+        currentPeriodStartsAt: sub.currentPeriodEndsAt,
+        currentPeriodEndsAt: nextEnd,
+        updatedAt: new Date(),
+      })
+      .where(eq(subscriptions.id, sub.id));
   }
 
   return NextResponse.json({

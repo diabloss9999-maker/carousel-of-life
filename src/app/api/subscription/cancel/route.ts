@@ -41,9 +41,9 @@ export async function POST() {
   }
 
   try {
-    // provider 별 분기 — LS 는 외부 API 호출, Toss 는 DB 플래그만 (cron 이 처리).
-    if (active.provider === "toss") {
-      // Toss: 빌링키 자체는 유지, cancelAtPeriodEnd 만 설정. 다음 cron 자동 청구 안 함.
+    // provider 별 분기 — LS 는 외부 API 호출, 한국 PG (toss·portone) 는 DB 플래그만 (cron 이 처리).
+    if (active.provider === "toss" || active.provider === "portone") {
+      // 한국 PG: 빌링키 자체는 유지, cancelAtPeriodEnd 만 설정. 다음 cron 자동 청구 안 함.
       // 실제 DB 업데이트는 아래 공통 코드가 처리.
     } else if (active.lsSubscriptionId) {
       await cancelSubscription(active.lsSubscriptionId);
