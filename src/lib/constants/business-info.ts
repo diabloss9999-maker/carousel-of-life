@@ -24,6 +24,11 @@ export const BUSINESS_INFO = {
   addressEn:
     "#803, 105-Dong, 21 Dongil-ro 213-gil, Nowon-gu, Seoul 01766, Republic of Korea",
   email: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "diabloss9999@gmail.com",
+  /**
+   * 사업장 연락처 — 통신판매업·PG 가맹점 심사상 필수 표시 항목.
+   * 개인사업자는 유선번호 대신 본인 휴대폰 번호 표기도 인정됨.
+   */
+  phone: process.env.NEXT_PUBLIC_BUSINESS_PHONE || "010-9426-9495",
   hosting: "Vercel Inc.",
 } as const;
 

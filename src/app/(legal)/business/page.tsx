@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { LegalProse } from "@/components/legal/legal-prose";
 import { BUSINESS_INFO } from "@/lib/constants/business-info";
 
-const LAST_MODIFIED = "2026년 5월 15일";
+const LAST_MODIFIED = "2026년 5월 21일";
 
 export const metadata: Metadata = {
   title: "사업자정보 · 인생의 회전목마",
@@ -19,6 +19,7 @@ export default function BusinessPage() {
     { label: "사업자등록번호", value: BUSINESS_INFO.businessNumber },
     { label: "통신판매업 신고번호", value: BUSINESS_INFO.ecommerceNumber },
     { label: "사업장 주소", value: BUSINESS_INFO.address },
+    { label: "사업장 연락처", value: BUSINESS_INFO.phone },
     { label: "고객문의 이메일", value: BUSINESS_INFO.email },
     { label: "호스팅 서비스 제공자", value: BUSINESS_INFO.hosting },
   ];

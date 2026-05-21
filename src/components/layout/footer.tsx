@@ -42,6 +42,7 @@ export function Footer() {
               value={BUSINESS_INFO.ecommerceNumber}
             />
             <BusinessRow label="주소" value={BUSINESS_INFO.address} />
+            <BusinessRow label="연락처" value={BUSINESS_INFO.phone} />
             <BusinessRow label="이메일" value={BUSINESS_INFO.email} />
             <BusinessRow label="호스팅" value={BUSINESS_INFO.hosting} />
           </dl>

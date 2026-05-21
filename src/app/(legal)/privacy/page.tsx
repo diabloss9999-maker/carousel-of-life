@@ -173,7 +173,8 @@ export default function PrivacyPage() {
         <h2>9. 개인정보 보호책임자</h2>
         <ul>
           <li>책임자: {BUSINESS_INFO.ownerName}</li>
-          <li>연락처: {BUSINESS_INFO.email}</li>
+          <li>전화: {BUSINESS_INFO.phone}</li>
+          <li>이메일: {BUSINESS_INFO.email}</li>
         </ul>
         <p>
           개인정보 처리에 관한 문의·불만 처리·피해구제 등에 관한 사항은 위
