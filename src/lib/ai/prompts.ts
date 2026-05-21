@@ -38,6 +38,22 @@ export function buildUserContext({ profile }: BuildContextOptions): string {
   if (profile.mbti) lines.push(`MBTI: ${profile.mbti}`);
   if (profile.birthPlace) lines.push(`출생지: ${profile.birthPlace}`);
 
+  // 사주 8자가 계산되어 있으면 명시적으로 박아서 AI 가 개인화에 활용.
+  // 형태: { year: {stem, branch}, month, day, hour } (각 한자 1자)
+  if (profile.sajuPillars && typeof profile.sajuPillars === "object") {
+    const p = profile.sajuPillars as {
+      year?: { stem?: string; branch?: string };
+      month?: { stem?: string; branch?: string };
+      day?: { stem?: string; branch?: string };
+      hour?: { stem?: string; branch?: string };
+    };
+    const fmt = (col?: { stem?: string; branch?: string }) =>
+      col?.stem && col?.branch ? `${col.stem}${col.branch}` : "?";
+    const pillarLine = `사주 8자: 년주 ${fmt(p.year)} · 월주 ${fmt(p.month)} · 일주 ${fmt(p.day)} · 시주 ${fmt(p.hour)}`;
+    lines.push(pillarLine);
+    if (p.day?.stem) lines.push(`일간(日干): ${p.day.stem} — 이 사람의 본질`);
+  }
+
   return lines.join("\n");
 }
 
@@ -213,12 +229,16 @@ export function buildDailyFortunePrompt(opts: {
     : `이 사람의 사주와 ${opts.fortuneDate} 의 일진을 살펴 ${label}을(를) 풀이해.`;
 
   // 매일 결정적으로 다른 "오늘의 결" 강제 주입.
-  // 종합운세는 사용자별로도 살짝 다르게 — birthDate + displayName 으로 personal seed 추가.
-  const personalSeed = `${opts.profile.birthDate ?? ""}|${opts.profile.displayName ?? ""}`;
-  const seedKey =
-    opts.category === "general"
-      ? `${opts.fortuneDate}|${personalSeed}`
-      : `${opts.fortuneDate}|${opts.category}`;
+  // 모든 카테고리에 사용자별 seed 적용 — 같은 날 다른 사용자는 다른 결.
+  // birthDate + birthTime + displayName + mbti 조합으로 충분히 고유한 seed.
+  const personalSeed = [
+    opts.profile.birthDate ?? "",
+    opts.profile.birthTime ?? "",
+    opts.profile.displayName ?? "",
+    opts.profile.mbti ?? "",
+    opts.profile.gender ?? "",
+  ].join("|");
+  const seedKey = `${opts.fortuneDate}|${opts.category}|${personalSeed}`;
   const todayTone = dailyToneFor(seedKey);
   const differentiation = CATEGORY_DIFFERENTIATION[opts.category];
 
@@ -239,6 +259,14 @@ ${differentiation}
 [지시]
 ${basis}
 ${voice.tone} 어조로 전달해.
+
+**개인화 — 반드시 지킬 것**:
+- 이 사람의 생년월일·태어난 시각·성별·MBTI·이름이 결과에 명확히 반영되어야 해.
+- 일반적·추상적 문장 ("좋은 하루가 될 거예요" 등) 만 쓰면 실패 — 이 사람의 사주 8자에서 일주(日柱)·일간(日干)을 보고, 오행 분포·강한 십성을 읽어서 그 사람만의 결을 짚어줘.
+- MBTI 가 있으면 그 유형의 사고·감정 패턴과 오늘의 흐름을 연결.
+- 다른 사람과 다른 결이 나와야 해. 같은 날에도 사람마다 다른 응답이어야 함.
+
+**다양성 — 반드시 지킬 것**:
 "오늘의 결" (${todayTone}) 을 풀이의 중심 정서로 삼아. 이걸 문장에 그대로 박지 말고, 그 결이 자연스럽게 글의 무게·시선·강조에서 드러나도록 써.
 이전 다른 날의 운세와 톤이 겹치면 안 돼 — 매일 다른 결로 사용자가 새로움을 느껴야 해.
 
