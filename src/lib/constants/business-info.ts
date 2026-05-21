@@ -17,7 +17,12 @@ export const BUSINESS_INFO = {
     process.env.NEXT_PUBLIC_ECOMMERCE_NUMBER || "제 2026-서울노원-0765 호",
   address:
     process.env.NEXT_PUBLIC_BUSINESS_ADDRESS ||
-    "서울특별시 노원구 동일로213길 21, 105동 803호",
+    "서울특별시 노원구 동일로213길 21, 105동 803호 (01766)",
+  /** 우편번호 단독 (해외 양식·운송장 등에 활용). */
+  postalCode: "01766",
+  /** 해외 등록·운송 등에 사용할 영문 주소. */
+  addressEn:
+    "#803, 105-Dong, 21 Dongil-ro 213-gil, Nowon-gu, Seoul 01766, Republic of Korea",
   email: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "diabloss9999@gmail.com",
   hosting: "Vercel Inc.",
 } as const;
