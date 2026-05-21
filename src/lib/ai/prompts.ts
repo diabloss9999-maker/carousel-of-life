@@ -130,6 +130,72 @@ type CharacterFortuneId = keyof typeof CHARACTER_FORTUNE_VOICE;
  * 오늘의 운세 사용자 프롬프트.
  * characterId 를 받아 해당 캐릭터의 목소리로 운세를 전달한다.
  */
+/**
+ * 그날의 "결" 키워드 풀.
+ *
+ * 같은 날·같은 사용자에게는 항상 같은 키워드가 선택되도록 deterministic hash 로
+ * 골라서 매일 강제로 다른 결을 갖게 한다. AI 가 사주 정보만 보고 매일 비슷한
+ * 톤을 반복하는 걸 방지.
+ */
+const DAILY_TONES = [
+  "관계의 결",
+  "결정의 결",
+  "휴식의 결",
+  "도전의 결",
+  "성장의 결",
+  "회복의 결",
+  "정리의 결",
+  "재발견의 결",
+  "마주침의 결",
+  "기다림의 결",
+  "용기의 결",
+  "조용함의 결",
+  "전환의 결",
+  "축적의 결",
+  "방향 전환의 결",
+  "내면 응시의 결",
+  "외부 확장의 결",
+  "낯섦의 결",
+  "익숙함의 결",
+  "균형의 결",
+  "위험의 결",
+  "보호의 결",
+  "신뢰의 결",
+  "의심의 결",
+  "사소함의 결",
+  "큰 흐름의 결",
+  "흩어짐의 결",
+  "모임의 결",
+] as const;
+
+/**
+ * 카테고리별 "이 카테고리에서만 가능한 시야" — 종합운세가 다른 카테고리의 합으로
+ * 떨어지지 않도록 명시적으로 차별화.
+ */
+const CATEGORY_DIFFERENTIATION: Record<FortuneCategory, string> = {
+  general:
+    "오늘의 큰 결·메타 시야. 사랑/돈/일/건강/공부 같은 개별 영역의 합산이 아니라, " +
+    "그 모든 것을 묶는 '오늘 너의 결' 자체를 짚어. 구체적 영역 언급은 최소화하고 큰 흐름과 정서·내면 신호에 집중해.",
+  love: "관계·감정·사랑·소속감의 결. 일·돈·건강 영역은 거의 언급하지 마.",
+  money: "재물·금전 흐름·물질적 안정의 결. 다른 영역 언급 최소화.",
+  career: "일·사명·직업적 결정·인정의 결. 다른 영역 언급 최소화.",
+  health: "몸·에너지·생활 리듬·휴식의 결. 다른 영역 언급 최소화.",
+  study: "집중력·지식 흡수·정신적 정리의 결. 다른 영역 언급 최소화.",
+  zodiac: "별자리의 고유 성향 + 오늘 별의 흐름. 사주는 보조로만.",
+  chinese_zodiac: "띠 동물의 본성 + 오늘 띠 운행. 사주는 보조로만.",
+};
+
+/** Deterministic hash — 같은 날·같은 사용자엔 항상 같은 키. */
+function dailyToneFor(seedKey: string): string {
+  let h = 2166136261;
+  for (let i = 0; i < seedKey.length; i++) {
+    h ^= seedKey.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  const idx = Math.abs(h) % DAILY_TONES.length;
+  return DAILY_TONES[idx];
+}
+
 export function buildDailyFortunePrompt(opts: {
   profile: BuildContextOptions["profile"];
   category: FortuneCategory;
@@ -146,6 +212,16 @@ export function buildDailyFortunePrompt(opts: {
     ? `${label} 기반으로 풀이해. 사주 대신 ${label}의 특성과 오늘의 기운을 읽어.`
     : `이 사람의 사주와 ${opts.fortuneDate} 의 일진을 살펴 ${label}을(를) 풀이해.`;
 
+  // 매일 결정적으로 다른 "오늘의 결" 강제 주입.
+  // 종합운세는 사용자별로도 살짝 다르게 — birthDate + displayName 으로 personal seed 추가.
+  const personalSeed = `${opts.profile.birthDate ?? ""}|${opts.profile.displayName ?? ""}`;
+  const seedKey =
+    opts.category === "general"
+      ? `${opts.fortuneDate}|${personalSeed}`
+      : `${opts.fortuneDate}|${opts.category}`;
+  const todayTone = dailyToneFor(seedKey);
+  const differentiation = CATEGORY_DIFFERENTIATION[opts.category];
+
   return `[캐릭터 설정]
 ${voice.persona}
 
@@ -155,10 +231,18 @@ ${ctx}
 [풀이 대상]
 - 날짜: ${opts.fortuneDate}
 - 카테고리: ${label}
+- 오늘의 결(시스템이 미리 정함): ${todayTone}
+
+[카테고리 차별화 — 반드시 지킬 것]
+${differentiation}
 
 [지시]
 ${basis}
-${voice.tone} 어조로 전달해. 다음 JSON 스키마를 정확히 따라 단 하나의 JSON 객체로만 응답해. 마크다운·코드펜스 없이 JSON 만.
+${voice.tone} 어조로 전달해.
+"오늘의 결" (${todayTone}) 을 풀이의 중심 정서로 삼아. 이걸 문장에 그대로 박지 말고, 그 결이 자연스럽게 글의 무게·시선·강조에서 드러나도록 써.
+이전 다른 날의 운세와 톤이 겹치면 안 돼 — 매일 다른 결로 사용자가 새로움을 느껴야 해.
+
+다음 JSON 스키마를 정확히 따라 단 하나의 JSON 객체로만 응답해. 마크다운·코드펜스 없이 JSON 만.
 
 {
   "score": 1-100 사이 정수 (운세 점수. 솔직하게. 좋은 날 75-90, 보통 45-74, 힘든 날 20-44),
