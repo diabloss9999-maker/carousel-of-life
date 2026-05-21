@@ -23,6 +23,7 @@ import { getSubscriptionTier } from "@/lib/payment/subscription-state";
 import { formatKRW } from "@/lib/utils";
 import { SubscribeCta } from "@/components/payment/subscribe-cta";
 import { ExternalPaymentNotice } from "@/components/payment/external-payment-notice";
+import { PaymentPendingNotice } from "@/components/payment/payment-pending-notice";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("pricing");
@@ -38,6 +39,14 @@ export default async function PricingPage() {
   const tier = user ? await getSubscriptionTier(user.id) : "free";
   const t = await getTranslations("pricing");
 
+  // 결제 활성화 여부 — 환경변수 검증 (server-side, 보안 OK)
+  const portOneReady =
+    !!process.env.NEXT_PUBLIC_PORTONE_STORE_ID &&
+    !!process.env.NEXT_PUBLIC_PORTONE_CHANNEL_KEY;
+  const tossReady = !!process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
+  const lsReady = !!process.env.LEMONSQUEEZY_API_KEY;
+  const paymentReady = portOneReady || tossReady || lsReady;
+
   return (
     <main className="mx-auto w-full max-w-5xl px-6 py-16">
       <header className="mb-10 text-center space-y-2">
@@ -48,6 +57,13 @@ export default async function PricingPage() {
           {t("h1Sub")}
         </p>
       </header>
+
+      {/* 결제 준비 중이면 안내 배너 */}
+      {!paymentReady ? (
+        <div className="mb-8">
+          <PaymentPendingNotice />
+        </div>
+      ) : null}
 
       <div className="grid gap-6 sm:grid-cols-3">
         {/* Free plan */}
@@ -125,6 +141,7 @@ export default async function PricingPage() {
                 email={user.email ?? ""}
                 label={t("ctaLightStart")}
                 variant="secondary"
+                legacyLemonSqueezyEnabled={lsReady}
               />
             )}
           </CardContent>
@@ -182,6 +199,7 @@ export default async function PricingPage() {
                 userId={user.id}
                 email={user.email ?? ""}
                 label={t("ctaProStart")}
+                legacyLemonSqueezyEnabled={lsReady}
               />
             )}
           </CardContent>

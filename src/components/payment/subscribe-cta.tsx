@@ -6,7 +6,8 @@
  * 우선순위:
  *   1. PortOne   (NEXT_PUBLIC_PORTONE_STORE_ID + NEXT_PUBLIC_PORTONE_CHANNEL_KEY)
  *   2. Toss      (NEXT_PUBLIC_TOSS_CLIENT_KEY)
- *   3. Lemon Squeezy (기본 폴백)
+ *   3. Lemon Squeezy (LEMONSQUEEZY_API_KEY 가 서버에 있을 때만)
+ *   4. 모두 비활성화면 "결제 준비 중" 비활성 버튼
  *
  * 환경변수만 설정하면 자동 전환. 코드 변경 불필요.
  */
@@ -26,6 +27,8 @@ interface SubscribeCtaProps {
   label: string;
   /** 디자인 — 라이트는 secondary, 프로는 primary. */
   variant?: "default" | "secondary";
+  /** LS 결제 가능 여부 — 서버에서 환경변수 확인해 전달. */
+  legacyLemonSqueezyEnabled?: boolean;
 }
 
 export function SubscribeCta({
@@ -35,6 +38,7 @@ export function SubscribeCta({
   displayName,
   label,
   variant,
+  legacyLemonSqueezyEnabled = false,
 }: SubscribeCtaProps) {
   const usePortOne =
     !!clientEnv.NEXT_PUBLIC_PORTONE_STORE_ID &&
@@ -70,11 +74,26 @@ export function SubscribeCta({
     );
   }
 
-  // 3순위(폴백): LS — 마이그 cutover 전 또는 한국 PG 키 없을 때
-  const href = plan === "pro" ? "/api/checkout/pro" : "/api/checkout";
+  // 3순위(폴백): LS — 서버에서 활성화된 경우에만
+  if (legacyLemonSqueezyEnabled) {
+    const href = plan === "pro" ? "/api/checkout/pro" : "/api/checkout";
+    return (
+      <Button asChild className="w-full" variant={variant}>
+        <Link href={href}>{label}</Link>
+      </Button>
+    );
+  }
+
+  // 4순위: 모든 결제 비활성 — 사용자에게 명시적 안내
   return (
-    <Button asChild className="w-full" variant={variant}>
-      <Link href={href}>{label}</Link>
+    <Button
+      type="button"
+      className="w-full"
+      variant={variant}
+      disabled
+      title="결제 시스템 오픈 준비 중입니다."
+    >
+      곧 오픈해요
     </Button>
   );
 }
