@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { LegalProse } from "@/components/legal/legal-prose";
 import { BUSINESS_INFO } from "@/lib/constants/business-info";
 
-const LAST_MODIFIED = "2026년 5월 15일";
+const LAST_MODIFIED = "2026년 5월 21일";
 
 export const metadata: Metadata = {
   title: "개인정보처리방침 · 인생의 회전목마",
@@ -48,6 +48,14 @@ export default function PrivacyPage() {
         <ul>
           <li>접속 IP, 쿠키, 서비스 이용 기록(접속 일시 등)</li>
           <li>점술사와의 채팅 내용 (서비스 품질 개선 및 친밀도 시스템 운영)</li>
+        </ul>
+        <h3>손금 풀이 시 일시 처리 항목 (영구 저장 X)</h3>
+        <ul>
+          <li>
+            손바닥 사진 (이용자가 손금 풀이 기능 사용 시) — Anthropic Vision
+            API 로 분석 호출 후 메모리에서 즉시 폐기되며, 회사 데이터베이스나
+            저장소에 영구 보관하지 않습니다.
+          </li>
         </ul>
       </section>
 
@@ -143,6 +151,12 @@ export default function PrivacyPage() {
           위 권리 행사는 회사 고객문의 이메일(
           <strong>{BUSINESS_INFO.email}</strong>)로 요청하시면 지체 없이
           조치하겠습니다.
+        </p>
+        <h3>앱 내 직접 삭제</h3>
+        <p>
+          이용자는 앱 내 <strong>설정 → 계정 관리 → 계정 삭제</strong> 메뉴에서
+          본인 계정과 관련 모든 데이터를 직접 영구 삭제할 수 있습니다. 진행 중인
+          유료 구독이 있다면 자동으로 취소됩니다.
         </p>
       </section>
 

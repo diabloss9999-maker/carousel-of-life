@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { CancelSubscriptionButton } from "@/components/subscription/cancel-subscription-button";
 import { ProfileEditForm } from "@/components/settings/profile-edit-form";
+import { DeleteAccountButton } from "@/components/settings/delete-account-button";
 import { ROUTES } from "@/lib/constants";
 import { requireProfile } from "@/lib/auth/get-user";
 import {
@@ -184,6 +185,21 @@ export default async function SettingsPage() {
               {t("openChatCta")}
             </a>
           </Button>
+        </CardContent>
+      </Card>
+
+      {/* 계정 삭제 — Google Play 데이터 안전 섹션 필수 */}
+      <Card className="app-surface">
+        <CardHeader className="pb-3">
+          <CardTitle className="font-mystic text-lg text-muted-foreground">
+            계정 관리
+          </CardTitle>
+          <CardDescription className="text-[15px]">
+            계정과 모든 데이터를 영구 삭제할 수 있어요.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <DeleteAccountButton userEmail={user.email ?? ""} />
         </CardContent>
       </Card>
 

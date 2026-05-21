@@ -62,6 +62,8 @@ next-env.d.ts
 /android/*.keystore
 /android/*.jks
 /android/signing-key-info.txt
+# 자동 캡처 스크린샷 (소스에 두지 말고 별도 보관)
+/android/screenshots
 
 # IDE
 .idea
