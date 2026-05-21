@@ -14,7 +14,8 @@ export const BUSINESS_INFO = {
   ecommerceNumber:
     process.env.NEXT_PUBLIC_ECOMMERCE_NUMBER || "제 2026-서울노원-0765 호",
   address:
-    process.env.NEXT_PUBLIC_BUSINESS_ADDRESS || "[사업장 주소 준비 중]",
+    process.env.NEXT_PUBLIC_BUSINESS_ADDRESS ||
+    "서울특별시 노원구 동일로213길 21, 105동 803호",
   email: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "diabloss9999@gmail.com",
   hosting: "Vercel Inc.",
 } as const;
