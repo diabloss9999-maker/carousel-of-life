@@ -9,6 +9,8 @@
 export const BUSINESS_INFO = {
   serviceName: "인생의 회전목마",
   companyName: "레오나르도코드",
+  /** 해외 등록·D-U-N-S·Google Play Console 게시자명용 영문 표기. */
+  companyNameEn: "Leonardo Code",
   ownerName: process.env.NEXT_PUBLIC_OWNER_NAME || "최영탁",
   businessNumber: "859-35-01908",
   ecommerceNumber:
