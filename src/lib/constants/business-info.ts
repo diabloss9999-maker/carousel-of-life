@@ -12,7 +12,7 @@ export const BUSINESS_INFO = {
   ownerName: process.env.NEXT_PUBLIC_OWNER_NAME || "최영탁",
   businessNumber: "859-35-01908",
   ecommerceNumber:
-    process.env.NEXT_PUBLIC_ECOMMERCE_NUMBER || "[통신판매업 신고번호 준비 중]",
+    process.env.NEXT_PUBLIC_ECOMMERCE_NUMBER || "제 2026-서울노원-0765 호",
   address:
     process.env.NEXT_PUBLIC_BUSINESS_ADDRESS || "[사업장 주소 준비 중]",
   email: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "diabloss9999@gmail.com",
