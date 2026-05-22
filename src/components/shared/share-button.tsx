@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Check, Copy, Share2 } from "lucide-react";
+import { Check, Copy, MessageCircle, Share2 } from "lucide-react";
 import { toPng } from "html-to-image";
 
 import { Button } from "@/components/ui/button";
@@ -99,6 +99,37 @@ export function ShareButton({
     await copyToClipboard();
     setStatus("copied");
     setTimeout(() => setStatus("idle"), 2000);
+  }
+
+  /**
+   * 시스템 공유 시트 — 모바일이면 카카오톡·메신저·메일 등 모두 노출.
+   * Web Share API 사용. 데스크탑은 지원 안 함 (브라우저 대부분 모바일만 노출).
+   */
+  async function handleSystemShare() {
+    setOpen(false);
+    if (typeof navigator === "undefined" || !navigator.share) {
+      // 데스크탑이거나 미지원 — 링크 복사로 폴백
+      await copyToClipboard();
+      setStatus("copied");
+      setTimeout(() => setStatus("idle"), 2000);
+      return;
+    }
+    try {
+      await navigator.share({
+        title,
+        text: shareText,
+        url: shareUrl,
+      });
+      setStatus("shared");
+      setTimeout(() => setStatus("idle"), 2000);
+    } catch (e) {
+      // 사용자 취소는 무시
+      if (e instanceof Error && e.name === "AbortError") return;
+      // 실패 시 링크 복사
+      await copyToClipboard();
+      setStatus("copied");
+      setTimeout(() => setStatus("idle"), 2000);
+    }
   }
 
   /** X(트위터) 인텐트 — 새 창에 작성 화면 열림. url 은 og:image 가 잡힌 share 페이지. */
@@ -228,8 +259,21 @@ export function ShareButton({
       </Button>
 
       {open && (
-        <div className="absolute right-0 bottom-full mb-2 z-50 w-56 rounded-xl border border-border/60 bg-white shadow-xl overflow-hidden">
-          {/* ① X(트위터) */}
+        <div className="absolute right-0 bottom-full mb-2 z-50 w-60 rounded-xl border border-border/60 bg-white shadow-xl overflow-hidden">
+          {/* ① 카카오톡·메신저 — 모바일 시스템 공유 시트 */}
+          <button
+            type="button"
+            onClick={handleSystemShare}
+            className="flex w-full items-center gap-2.5 px-4 py-3 text-[15px] text-left hover:bg-accent/50 transition-colors border-b border-border/40"
+          >
+            <MessageCircle className="h-4 w-4 text-yellow-500 flex-shrink-0" aria-hidden />
+            <div>
+              <p className="font-medium text-[15px]">카카오톡·메신저로 공유</p>
+              <p className="text-[15px] text-muted-foreground mt-0.5">모바일에서 앱 선택 시트가 열려요</p>
+            </div>
+          </button>
+
+          {/* ② X(트위터) */}
           <button
             type="button"
             onClick={handleXShare}
