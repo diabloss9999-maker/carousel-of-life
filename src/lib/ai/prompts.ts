@@ -623,6 +623,100 @@ export interface ChatEnrichment {
 }
 
 /**
+ * 꿈해몽 프롬프트 — 사용자 꿈 내용 + 사주를 결합해 의미·길흉·조언을 풀이.
+ *
+ * 동양 점술사(현도·소율) 톤이 자연스러움. 시스템 프롬프트에서 캐릭터 매핑.
+ */
+export function buildDreamReadingPrompt(opts: {
+  profile: BuildContextOptions["profile"];
+  dreamContent: string;
+  mood?: "bright" | "dark" | "weird" | "neutral";
+}): string {
+  const ctx = buildUserContext({ profile: opts.profile });
+  const moodLabel =
+    opts.mood === "bright" ? "밝고 따뜻한 분위기"
+    : opts.mood === "dark" ? "어둡고 무거운 분위기"
+    : opts.mood === "weird" ? "기괴하거나 비현실적인 분위기"
+    : "특별한 분위기 없음 (중립)";
+
+  return `[질문자 정보]
+${ctx}
+
+[꿈 내용]
+${opts.dreamContent}
+
+[꿈의 분위기]
+${moodLabel}
+
+[지시]
+이 꿈을 풀이해줘. 동양 해몽서·민간 해석·상징의 의미를 종합하되, 가장 중요한 건
+**질문자의 사주(일간·오행)와 이 꿈이 어떻게 연결되는지**야. 일반적인 꿈사전 검색
+결과 같은 풀이는 실패. 이 사람만의 맥락에서 풀어야 해.
+
+해석 가이드:
+1. 꿈의 핵심 상징 1-2개 추출 (예: 물·뱀·돈·돌아간 사람 등)
+2. 동양 해몽서 기준 일반적 의미
+3. 질문자 사주와의 연결 — 일간이 ${"수"}이면 물 꿈은 강한 의미, 화면 약한 의미 등
+4. 길흉 판단 (good / caution / bad / neutral)
+5. 오늘·이번 주에 해볼 만한 행동 권유 (구체적으로)
+
+반드시 아래 JSON 형식만:
+{
+  "summary": "한 줄 핵심 (40자 이내)",
+  "fortune": "good" | "caution" | "bad" | "neutral",
+  "meaning": "꿈의 의미 — 상징·해석 결합 (4-6문장)",
+  "sajuConnection": "이 사람 사주와 꿈의 연결 (3-5문장, 일간·오행 직접 언급)",
+  "advice": "오늘 또는 이번 주 행동 권유 (2-3문장)"
+}`;
+}
+
+/**
+ * 이름풀이 프롬프트 — 한글 또는 한자 이름을 사주와 결합해 분석.
+ */
+export function buildNameReadingPrompt(opts: {
+  profile: BuildContextOptions["profile"];
+  /** 풀이할 이름 (한글 또는 한자, 본인 또는 타인). */
+  targetName: string;
+  /** 한자 표기 (선택). */
+  hanja?: string | null;
+  /** 본인 이름인지 다른 사람 이름인지. */
+  isOwnName: boolean;
+}): string {
+  const ctx = buildUserContext({ profile: opts.profile });
+  const hanjaLine = opts.hanja ? `\n한자 표기: ${opts.hanja}` : "";
+  const targetLabel = opts.isOwnName ? "본인 이름" : "타인 이름";
+
+  return `[질문자 정보]
+${ctx}
+
+[풀이 대상]
+${targetLabel}: ${opts.targetName}${hanjaLine}
+
+[지시]
+이 이름을 풀이해줘. 한자 의미·획수·오행 + 질문자 사주와의 상생/상극을 분석한다.
+
+해석 가이드:
+1. 이름의 한자 의미 (한자 있으면 그대로, 없으면 한글 발음의 일반적 의미 추정)
+2. 획수 분석 — 자원오행(字源五行) 또는 발음오행
+3. 질문자 사주(일간·오행 분포)와의 조화:
+   - 부족한 오행 보충하는가? (상생)
+   - 강한 오행 더 키우는가? (상극·과한 흐름)
+4. 사회운·재물운·건강운 흐름
+5. 본인 이름이면: "이 이름으로 어떻게 살아가는 게 좋은가" 조언
+   타인 이름이면: "이 사람과의 관계에서 어떤 결이 있는가" 조언
+
+반드시 아래 JSON 형식만:
+{
+  "summary": "한 줄 핵심 (40자 이내)",
+  "score": 1-100 정수 (사주와의 조화도),
+  "meaning": "한자·발음·획수 분석 (4-6문장)",
+  "sajuHarmony": "사주와의 상생/상극 (4-6문장, 일간·오행 직접 언급)",
+  "fortune": "사회·재물·건강운 (3-5문장)",
+  "advice": "권유·주의 사항 (2-3문장)"
+}`;
+}
+
+/**
  * AI 점술사 채팅 첫 턴에 전달되는 풍부한 사용자 컨텍스트.
  * 알고 있는 모든 정보를 점술사에게 넘긴다.
  */

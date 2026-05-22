@@ -301,3 +301,35 @@ export const iljinAiSchema = z.object({
   caution: z.string().min(1).max(300),
 });
 export type IljinAiOutput = z.infer<typeof iljinAiSchema>;
+
+/** 꿈해몽 풀이 AI 응답. */
+export const dreamReadingAiSchema = z.object({
+  /** 한 줄 핵심 요약 (40자 이내). */
+  summary: z.string().min(1).max(80),
+  /** 길흉 — 좋음/주의/나쁨/중립. */
+  fortune: z.enum(["good", "caution", "bad", "neutral"]),
+  /** 꿈의 의미 — 사주·상징·동양 해석 기반. */
+  meaning: z.string().min(1).max(1500),
+  /** 사용자 사주와의 연결 — 일간·오행과 어떻게 이어지는지. */
+  sajuConnection: z.string().min(1).max(800),
+  /** 행동 권유 — 오늘·이번 주에 해볼 만한 것. */
+  advice: z.string().min(1).max(600),
+});
+export type DreamReadingAiOutput = z.infer<typeof dreamReadingAiSchema>;
+
+/** 이름풀이 AI 응답. */
+export const nameReadingAiSchema = z.object({
+  /** 한 줄 요약 (40자 이내). */
+  summary: z.string().min(1).max(80),
+  /** 전체 평가 점수 (1-100). */
+  score: z.number().int().min(1).max(100),
+  /** 한자/한글 의미 분석. */
+  meaning: z.string().min(1).max(1000),
+  /** 사주(일간·오행)와의 상생/상극. */
+  sajuHarmony: z.string().min(1).max(800),
+  /** 운세 흐름 (사회운·재물운·건강운). */
+  fortune: z.string().min(1).max(1000),
+  /** 권유·주의 사항. */
+  advice: z.string().min(1).max(600),
+});
+export type NameReadingAiOutput = z.infer<typeof nameReadingAiSchema>;
