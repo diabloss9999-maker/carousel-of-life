@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { LuckyInfo } from "@/components/fortune/lucky-info";
 import { SaveImageButton } from "@/components/shared/save-image-button";
 import { ShareButton } from "@/components/shared/share-button";
+import { ShareFortuneLink } from "@/components/fortune/share-fortune-link";
 import type { DailyFortune } from "@/db/schema";
 import { type FortuneCategoryId } from "@/lib/constants";
 import { CHARACTERS, type CharacterId } from "@/lib/chat/characters";
@@ -180,10 +181,15 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
           </Button>
         </div>
 
-        <div className="flex items-center justify-end gap-2">
+        <div className="flex flex-wrap items-center justify-end gap-2">
           <SaveImageButton
             imageUrl={buildShareImageUrl()}
             filename={t("shareFilename", { label })}
+          />
+          <ShareFortuneLink
+            fortuneId={fortune.id}
+            shareTitle={`[${label}] ${fortune.title}`}
+            shareText={`${fortune.title} — 친구가 별의 흐름을 보냈어요`}
           />
           <ShareButton
             title={`[${label}] ${fortune.title}`}

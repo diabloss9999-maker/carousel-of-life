@@ -618,6 +618,43 @@ export type PushSubscription = typeof pushSubscriptions.$inferSelect;
 export type NewPushSubscription = typeof pushSubscriptions.$inferInsert;
 
 // =============================================================================
+// shared_fortunes - 운세 공유 페이지 봉인 (마이그 0010)
+//
+// 본인의 운세를 짧은 토큰으로 봉인 → /share/fortune/[id] 공개 페이지 노출.
+// 친구가 카카오톡으로 받은 링크를 누르면 운세 미리보기 + 가입 CTA 가 보임.
+// 가입 시 invited_by 자동 적용 → 친구 초대 보상과 연동.
+// =============================================================================
+
+export const sharedFortunes = pgTable(
+  "shared_fortunes",
+  {
+    /** 10자 base62 short token. URL-safe, 추측 불가. */
+    id: text("id").primaryKey(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    category: fortuneCategoryEnum("category").notNull(),
+    /**
+     * 운세 스냅샷 (운세가 갱신되어도 공유 페이지는 그대로 유지).
+     * shape: { title, content, score, luckyColor, luckyNumber, luckyDirection,
+     *          fortuneDate, character: { id, name, title } }
+     */
+    snapshot: jsonb("snapshot").notNull(),
+    /** 노출 시 공유자 이름 노출 여부. 기본 false (익명). */
+    showDisplayName: boolean("show_display_name").notNull().default(false),
+    /** 조회수 누적 — 가벼운 분석. */
+    views: integer("views").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("shared_fortunes_user_id_idx").on(t.userId)],
+);
+
+export type SharedFortune = typeof sharedFortunes.$inferSelect;
+export type NewSharedFortune = typeof sharedFortunes.$inferInsert;
+
+// =============================================================================
 // usage_quotas - 일일 사용량 (무료 한도 추적)
 // =============================================================================
 
@@ -1095,6 +1132,8 @@ export const allTables = {
   personalityTripleAnalysis,
   personalityStressProfile,
   personalityCareerFit,
+  pushSubscriptions,
+  sharedFortunes,
 } as const;
 
 // `sql` re-export — RLS 마이그레이션에서 raw SQL 작성 시 활용.
