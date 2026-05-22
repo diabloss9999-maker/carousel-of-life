@@ -11,6 +11,7 @@
  */
 import { useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import type { Route } from "next";
 import { Loader2, Lock, Mail } from "lucide-react";
 import { toast } from "sonner";
 
@@ -66,8 +67,8 @@ export function EmailLoginForm({ className }: EmailLoginFormProps) {
           toast.success("가입 완료. 잠시만요…");
           const ref = params.get("ref");
           const url = ref
-            ? `${ROUTES.onboarding}?ref=${ref}`
-            : ROUTES.onboarding;
+            ? (`${ROUTES.onboarding}?ref=${encodeURIComponent(ref)}` as Route)
+            : (ROUTES.onboarding as Route);
           router.replace(url);
         } else {
           toast.success(
