@@ -63,6 +63,12 @@ export async function GET(request: NextRequest) {
   });
 
   if (!result.ok) {
+    // 이미 구독 중인 경우 — 결제창 진입 자체가 우회 흔적이므로 settings 로 안내
+    if (result.code === "ALREADY_SUBSCRIBED") {
+      return NextResponse.redirect(
+        new URL("/settings?already=1", request.url),
+      );
+    }
     return NextResponse.redirect(
       new URL(
         `/pricing?billingError=${encodeURIComponent(result.code)}&billingMsg=${encodeURIComponent(result.message)}`,

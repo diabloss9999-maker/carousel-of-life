@@ -11,12 +11,14 @@
  */
 import "server-only";
 
+import { and, eq, gt, inArray, isNull, or } from "drizzle-orm";
 
 import { db } from "@/db";
 import { subscriptions, portonePayments } from "@/db/schema";
 import {
   getBillingKeyByIssueId,
   chargeWithBillingKey,
+  deleteBillingKey,
   buildPaymentId,
   buildOrderId,
   userIdToCustomerId,
@@ -51,8 +53,40 @@ export async function createPortOneSubscription(opts: {
 }): Promise<CreatePortOneSubscriptionResult> {
   const { userId, email, displayName, plan, issueId } = opts;
 
-  // 중복 가입 자체는 막지 않음 (LS·Toss·PortOne 병행 가능성).
-  // 추후 same-provider 중복 활성 구독 차단을 원하면 여기서 SELECT 추가.
+  // 0) 이미 활성 구독이 있는지 사전 체크 (이중 결제 방지).
+  //    있으면 빌링키만 발급된 상태이므로 즉시 삭제하고 ALREADY_SUBSCRIBED 반환.
+  const now0 = new Date();
+  const [active] = await db
+    .select({ id: subscriptions.id })
+    .from(subscriptions)
+    .where(
+      and(
+        eq(subscriptions.userId, userId),
+        inArray(subscriptions.status, ["active", "on_trial"]),
+        or(
+          isNull(subscriptions.currentPeriodEndsAt),
+          gt(subscriptions.currentPeriodEndsAt, now0),
+        ),
+      ),
+    )
+    .limit(1);
+
+  if (active) {
+    // 발급된 빌링키 즉시 삭제 (PortOne 측 orphan 방지). 실패해도 결과엔 영향 없음.
+    try {
+      const issued = await getBillingKeyByIssueId(issueId);
+      if (issued.status === "ISSUED" && issued.billingKey) {
+        await deleteBillingKey(issued.billingKey).catch(() => undefined);
+      }
+    } catch {
+      /* 무시 */
+    }
+    return {
+      ok: false,
+      code: "ALREADY_SUBSCRIBED",
+      message: "이미 활성 멤버십이 있어요. 설정 페이지에서 확인해 주세요.",
+    };
+  }
 
   // 1) 빌링키 발급 결과 검증
   let billingKey: string;
