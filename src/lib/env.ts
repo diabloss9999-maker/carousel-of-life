@@ -22,14 +22,7 @@ const serverSchema = z.object({
   DATABASE_URL: emptyToUndef(z.string().url().optional()),
   SUPABASE_SERVICE_ROLE_KEY: emptyToUndef(z.string().min(1).optional()),
   ANTHROPIC_API_KEY: emptyToUndef(z.string().min(1).optional()),
-  LEMONSQUEEZY_API_KEY: emptyToUndef(z.string().min(1).optional()),
-  LEMONSQUEEZY_STORE_ID: emptyToUndef(z.string().min(1).optional()),
-  LEMONSQUEEZY_WEBHOOK_SECRET: emptyToUndef(z.string().min(1).optional()),
-  LEMONSQUEEZY_SUBSCRIPTION_VARIANT_ID: emptyToUndef(
-    z.string().min(1).optional(),
-  ),
-  LEMONSQUEEZY_PRO_VARIANT_ID: emptyToUndef(z.string().min(1).optional()),
-  /** TossPayments — 한국 PG (직접 연동). */
+  /** TossPayments — 한국 PG (직접 연동, 폴백). */
   TOSS_SECRET_KEY: emptyToUndef(z.string().min(1).optional()),
   TOSS_WEBHOOK_SECRET: emptyToUndef(z.string().min(1).optional()),
   /** 라이트/프로 상품 가격 (KRW, 정기결제 청구 금액). */

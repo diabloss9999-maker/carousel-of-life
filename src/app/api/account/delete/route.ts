@@ -22,7 +22,6 @@ import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { db } from "@/db";
 import { subscriptions } from "@/db/schema";
 import { and, eq, inArray } from "drizzle-orm";
-import { cancelSubscription } from "@/lib/payment/lemonsqueezy";
 import { API_ERROR_CODES } from "@/types/api";
 
 export const runtime = "nodejs";
@@ -66,29 +65,23 @@ export async function POST(request: Request) {
     );
   }
 
-  // 3. 활성 구독 즉시 취소 (LS 외부 API 호출, Toss 는 cancel flag 만)
+  // 3. 활성 구독 상태만 cancelled 로 flag — PortOne/Toss 모두 빌링키 자체가
+  //    auth.users CASCADE 로 사라지므로 외부 API 호출 불필요.
   try {
-    const activeSubs = await db
-      .select()
-      .from(subscriptions)
+    await db
+      .update(subscriptions)
+      .set({
+        status: "cancelled",
+        cancelAtPeriodEnd: true,
+        endedAt: new Date(),
+        updatedAt: new Date(),
+      })
       .where(
         and(
           eq(subscriptions.userId, user.id),
           inArray(subscriptions.status, ["active", "on_trial"]),
         ),
       );
-
-    for (const sub of activeSubs) {
-      // LS 구독은 외부 API 로 즉시 취소 (실패해도 계정 삭제는 진행)
-      if (sub.provider === "lemonsqueezy" && sub.lsSubscriptionId) {
-        try {
-          await cancelSubscription(sub.lsSubscriptionId);
-        } catch (e) {
-          console.error("[delete-account] LS cancel failed", e);
-        }
-      }
-      // Toss 는 별도 외부 API 호출 불필요 — 빌링키 자체가 폐기됨
-    }
   } catch (e) {
     console.error("[delete-account] subscription cancel error", e);
     // 구독 취소 실패해도 계정 삭제는 진행 (사용자가 명시적으로 요청한 경우)

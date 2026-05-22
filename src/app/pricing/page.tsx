@@ -44,8 +44,7 @@ export default async function PricingPage() {
     !!process.env.NEXT_PUBLIC_PORTONE_STORE_ID &&
     !!process.env.NEXT_PUBLIC_PORTONE_CHANNEL_KEY;
   const tossReady = !!process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
-  const lsReady = !!process.env.LEMONSQUEEZY_API_KEY;
-  const paymentReady = portOneReady || tossReady || lsReady;
+  const paymentReady = portOneReady || tossReady;
 
   return (
     <main className="mx-auto w-full max-w-5xl px-6 py-16">
@@ -141,7 +140,6 @@ export default async function PricingPage() {
                 email={user.email ?? ""}
                 label={t("ctaLightStart")}
                 variant="secondary"
-                legacyLemonSqueezyEnabled={lsReady}
               />
             )}
           </CardContent>
@@ -199,7 +197,6 @@ export default async function PricingPage() {
                 userId={user.id}
                 email={user.email ?? ""}
                 label={t("ctaProStart")}
-                legacyLemonSqueezyEnabled={lsReady}
               />
             )}
           </CardContent>
