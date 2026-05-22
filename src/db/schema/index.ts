@@ -123,6 +123,13 @@ export const profiles = pgTable("profiles", {
    * { personality, strengths, cautions, loveStyle, careerFit, healthCare, lifeFlow, model, createdAt }
    */
   sajuDeepReading: jsonb("saju_deep_reading"),
+  /**
+   * 초대한 사용자의 user_id. 가입 시 ?ref= 쿼리로 들어온 경우 기록 (마이그 0008).
+   * 자기 자신은 기록 불가 (애플리케이션 레벨 검증).
+   */
+  invitedBy: uuid("invited_by").references(() => authUsers.id, {
+    onDelete: "set null",
+  }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),

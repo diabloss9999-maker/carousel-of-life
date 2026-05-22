@@ -5,12 +5,14 @@
  */
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 import { z } from "zod";
 
 import { db } from "@/db";
 import { profiles } from "@/db/schema";
 import { ROUTES } from "@/lib/constants";
 import { requireUser } from "@/lib/auth/get-user";
+import { userIdFromCode, validateRefCode } from "@/lib/invites/service";
 
 export interface OnboardingFormState {
   kind: "idle" | "error";
@@ -76,6 +78,21 @@ export async function onboardingAction(
   const mbti = parsed.data.mbti ? parsed.data.mbti.toUpperCase() : null;
   const birthPlace = parsed.data.birthPlace || null;
 
+  // 친구 초대 추적 — carousel_ref 쿠키에서 초대자 코드 → user_id 변환
+  let invitedBy: string | null = null;
+  try {
+    const cookieStore = await cookies();
+    const refCookie = cookieStore.get("carousel_ref")?.value;
+    if (refCookie && validateRefCode(refCookie, user.id)) {
+      const inviter = await userIdFromCode(refCookie);
+      if (inviter && inviter !== user.id) {
+        invitedBy = inviter;
+      }
+    }
+  } catch {
+    // 초대 추적 실패해도 가입은 진행
+  }
+
   try {
     await db
       .insert(profiles)
@@ -88,6 +105,7 @@ export async function onboardingAction(
         gender,
         mbti,
         birthPlace,
+        invitedBy,
       })
       .onConflictDoUpdate({
         target: profiles.userId,
@@ -99,6 +117,7 @@ export async function onboardingAction(
           gender,
           mbti,
           birthPlace,
+          // invitedBy 는 onConflict 에서 갱신 X — 한 번 가입한 사용자는 초대자 정보 고정.
         },
       });
   } catch (e) {

@@ -1,6 +1,6 @@
 import type { Metadata, Route } from "next";
 import Link from "next/link";
-import { Archive, Crown, MessageCircleHeart, User } from "lucide-react";
+import { Archive, Crown, MessageCircleHeart, User, UserPlus } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
@@ -14,12 +14,15 @@ import {
 import { CancelSubscriptionButton } from "@/components/subscription/cancel-subscription-button";
 import { ProfileEditForm } from "@/components/settings/profile-edit-form";
 import { DeleteAccountButton } from "@/components/settings/delete-account-button";
+import { InviteCard } from "@/components/settings/invite-card";
 import { ROUTES } from "@/lib/constants";
 import { requireProfile } from "@/lib/auth/get-user";
 import {
   getLatestSubscription,
   hasActiveSubscription,
 } from "@/lib/payment/subscription-state";
+import { buildInviteUrl, getInviteStats } from "@/lib/invites/service";
+import { siteConfig } from "@/config/site";
 import { formatKoreanDate } from "@/lib/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -31,6 +34,8 @@ export default async function SettingsPage() {
   const { user, profile } = await requireProfile();
   const subscribed = await hasActiveSubscription(user.id);
   const subscription = await getLatestSubscription(user.id);
+  const inviteStats = await getInviteStats(user.id);
+  const inviteUrl = buildInviteUrl(user.id, siteConfig.url);
   const t = await getTranslations("settingsPage");
 
   const calendarLabel =
@@ -161,6 +166,25 @@ export default async function SettingsPage() {
           <Button asChild variant="outline" size="sm" className="w-full">
             <Link href={ROUTES.history as Route}>{t("fateLogCta")}</Link>
           </Button>
+        </CardContent>
+      </Card>
+
+      {/* Friend invite card */}
+      <Card className="app-surface">
+        <CardHeader className="pb-3">
+          <CardTitle className="font-mystic flex items-center gap-2 text-lg">
+            <UserPlus className="h-5 w-5 text-primary" aria-hidden />
+            친구 초대
+          </CardTitle>
+          <CardDescription className="text-[15px]">
+            친구를 별의 흐름에 초대해보세요.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <InviteCard
+            inviteUrl={inviteUrl}
+            invitedCount={inviteStats.count}
+          />
         </CardContent>
       </Card>
 
