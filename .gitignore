@@ -76,3 +76,5 @@ next-env.d.ts
 .vercel
 logo-source.png
 .git-commit-msg.txt
+
+lint-report.txt

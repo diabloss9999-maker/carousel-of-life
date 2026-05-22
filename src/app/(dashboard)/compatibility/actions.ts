@@ -10,6 +10,10 @@ import { z } from "zod";
 import { requireProfile } from "@/lib/auth/get-user";
 import { createCompatibility } from "@/lib/compatibility/service";
 import { generateJson } from "@/lib/ai/generate";
+import {
+  enforceAiRateLimit,
+  RateLimitedError,
+} from "@/lib/rate-limit/in-memory";
 import { buildTwoPersonCompatPrompt } from "@/lib/ai/prompts";
 import {
   compatibilityAiSchema,
@@ -91,6 +95,19 @@ export async function submitCompatibilityAction(
       kind: "error",
       message: tErr("authError", { message: e instanceof Error ? e.message : tErr("reloginRequired") }),
     };
+  }
+
+  // 분당 burst 차단 (10회/분)
+  try {
+    enforceAiRateLimit(profile.userId, "compatibility");
+  } catch (e) {
+    if (e instanceof RateLimitedError) {
+      return {
+        kind: "error",
+        message: `너무 빠르게 호출하고 있어. ${e.retryAfterSec}초 뒤에 다시 시도해줘.`,
+      };
+    }
+    throw e;
   }
 
   let result;
