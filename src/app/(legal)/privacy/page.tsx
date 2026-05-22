@@ -115,11 +115,18 @@ export default function PrivacyPage() {
             함께 전송하지 않습니다.
           </li>
           <li>
-            <strong>Lemon Squeezy (Cromorich Studio Ltd.)</strong> — 결제 처리
-            (추후 변경될 수 있음)
+            <strong>㈜NHN KCP</strong> — 카드 결제 처리 (PG)
+          </li>
+          <li>
+            <strong>㈜아임포트(PortOne)</strong> — 결제 게이트웨이 (가맹점·PG
+            간 결제 정보 중계)
           </li>
           <li>
             <strong>Kakao Corp.</strong> — 카카오 OAuth 로그인 (이용자가 카카오
+            로그인을 선택한 경우)
+          </li>
+          <li>
+            <strong>Google LLC</strong> — 구글 OAuth 로그인 (이용자가 구글
             로그인을 선택한 경우)
           </li>
         </ul>
