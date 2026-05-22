@@ -54,6 +54,17 @@ export function buildUserContext({ profile }: BuildContextOptions): string {
     if (p.day?.stem) lines.push(`일간(日干): ${p.day.stem} — 이 사람의 본질`);
   }
 
+  // 모든 풀이 (운세·타로·르노르망·룬·궁합·심층사주) 에 자동 적용되는 개인화 강제 지시.
+  // 같은 카드·같은 날에도 사용자별로 다른 풀이가 나오도록 AI 에게 명확히 요구.
+  lines.push("");
+  lines.push("[개인화 — 반드시 지킬 것]");
+  lines.push(
+    "위 사주(일주·일간) · MBTI · 생년월일 · 이름을 풀이에 직접 반영해. " +
+      "일반적·추상적 문장 (예: '오늘 좋은 일이 있을 거예요') 만 나열하면 실패. " +
+      "이 사람의 사주 글자·MBTI 패턴을 짚어 그 사람만의 결을 만들어야 함. " +
+      "다른 사람과 응답이 비슷하게 나오면 안 됨.",
+  );
+
   return lines.join("\n");
 }
 
