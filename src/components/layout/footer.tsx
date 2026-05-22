@@ -29,20 +29,22 @@ export function Footer() {
             </p>
           </div>
 
-          {/* 2) 사업자 정보 */}
+          {/* 2) 사업자 정보 — NHN KCP 가맹점 심사 필수 6항목 모두 노출.
+                  순서: 상호 → 대표 → 사업자등록번호 → 통신판매신고번호
+                       → 사업장 주소 → 전화번호 */}
           <dl className="space-y-1.5 text-[15px] leading-relaxed text-foreground/80">
             <BusinessRow label="상호" value={BUSINESS_INFO.companyName} />
-            <BusinessRow label="대표자" value={BUSINESS_INFO.ownerName} />
+            <BusinessRow label="대표" value={BUSINESS_INFO.ownerName} />
             <BusinessRow
               label="사업자등록번호"
               value={BUSINESS_INFO.businessNumber}
             />
             <BusinessRow
-              label="통신판매업"
+              label="통신판매업신고번호"
               value={BUSINESS_INFO.ecommerceNumber}
             />
-            <BusinessRow label="주소" value={BUSINESS_INFO.address} />
-            <BusinessRow label="연락처" value={BUSINESS_INFO.phone} />
+            <BusinessRow label="사업장 주소" value={BUSINESS_INFO.address} />
+            <BusinessRow label="전화번호" value={BUSINESS_INFO.phone} />
             <BusinessRow label="이메일" value={BUSINESS_INFO.email} />
             <BusinessRow label="호스팅" value={BUSINESS_INFO.hosting} />
           </dl>

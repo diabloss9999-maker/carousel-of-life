@@ -25,14 +25,9 @@ const serverSchema = z.object({
   /** TossPayments — 한국 PG (직접 연동, 폴백). */
   TOSS_SECRET_KEY: emptyToUndef(z.string().min(1).optional()),
   TOSS_WEBHOOK_SECRET: emptyToUndef(z.string().min(1).optional()),
-  /** 라이트/프로 상품 가격 (KRW, 정기결제 청구 금액). */
-  TOSS_LITE_PRICE_KRW: emptyToUndef(z.string().regex(/^\d+$/).optional()),
-  TOSS_PRO_PRICE_KRW: emptyToUndef(z.string().regex(/^\d+$/).optional()),
   /** PortOne (포트원) — 한국 PG 통합 게이트웨이. 백엔드 PG 자동 라우팅. */
   PORTONE_API_SECRET: emptyToUndef(z.string().min(1).optional()),
   PORTONE_WEBHOOK_SECRET: emptyToUndef(z.string().min(1).optional()),
-  PORTONE_LITE_PRICE_KRW: emptyToUndef(z.string().regex(/^\d+$/).optional()),
-  PORTONE_PRO_PRICE_KRW: emptyToUndef(z.string().regex(/^\d+$/).optional()),
   /** Web Push (VAPID) — 푸시 알림 인증. mailto: 와 함께 사용. */
   VAPID_PRIVATE_KEY: emptyToUndef(z.string().min(1).optional()),
   VAPID_SUBJECT: emptyToUndef(z.string().min(1).optional()),

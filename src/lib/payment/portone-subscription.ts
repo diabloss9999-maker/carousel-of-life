@@ -22,7 +22,7 @@ import {
   userIdToCustomerId,
   PortOneError,
 } from "@/lib/payment/portone";
-import { serverEnv } from "@/lib/env";
+import { SUBSCRIPTION } from "@/lib/constants";
 
 export type CreatePortOneSubscriptionResult =
   | {
@@ -83,11 +83,13 @@ export async function createPortOneSubscription(opts: {
     };
   }
 
-  // 2) 첫 달 즉시 청구
+  // 2) 첫 달 즉시 청구.
+  //    SUBSCRIPTION 상수를 직접 사용 — UI 노출가 = 결제 금액 보장
+  //    (NHN KCP 가맹점 심사 6번: "사이트 노출 금액 = 결제창 금액" 일치 요건).
   const amount =
     plan === "pro"
-      ? Number(serverEnv.PORTONE_PRO_PRICE_KRW ?? "9900")
-      : Number(serverEnv.PORTONE_LITE_PRICE_KRW ?? "4900");
+      ? SUBSCRIPTION.pro.monthlyPriceKRW
+      : SUBSCRIPTION.lite.monthlyPriceKRW;
   const orderName =
     plan === "pro"
       ? "인생의 회전목마 — 프로 멤버십"

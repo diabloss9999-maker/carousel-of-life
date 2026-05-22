@@ -207,10 +207,59 @@ export default async function PricingPage() {
         {t("footer")}
       </p>
 
+      {/* 구매·결제 안내 — NHN KCP 가맹점 심사 4번/5번 요건 충족용 명시.
+          상품 가격·결제 절차·취소·환불 흐름을 상세 페이지에 명문화. */}
+      <section
+        aria-labelledby="purchase-guide-heading"
+        className="mt-12 rounded-2xl border border-border/40 bg-card/40 p-6 space-y-4"
+      >
+        <h2
+          id="purchase-guide-heading"
+          className="font-mystic text-xl font-semibold"
+        >
+          구매·결제 안내
+        </h2>
+        <dl className="space-y-3 text-[15px] leading-relaxed">
+          <PurchaseRow
+            label="결제 수단"
+            value="신용카드 / 체크카드 (NHN KCP 가맹 — 국내 카드사 전체 지원)"
+          />
+          <PurchaseRow
+            label="결제 방식"
+            value="월 자동 정기결제 (빌링키 방식). 매월 같은 날짜에 자동 청구됩니다."
+          />
+          <PurchaseRow
+            label="구매 절차"
+            value="① 위에서 라이트 또는 프로 상품 선택 → ② [결제하기] 버튼 클릭 → ③ NHN KCP 결제창에서 카드 정보 입력 → ④ 결제 완료 즉시 멤버십 활성화."
+          />
+          <PurchaseRow
+            label="결제 금액"
+            value={`상기 표시된 금액(라이트 ${formatKRW(SUBSCRIPTION.lite.monthlyPriceKRW)} / 프로 ${formatKRW(SUBSCRIPTION.pro.monthlyPriceKRW)})이 결제창에서 청구되는 실 금액과 동일합니다.`}
+          />
+          <PurchaseRow
+            label="해지 및 환불"
+            value="설정 페이지에서 언제든 자동결제 해지 가능. 환불 정책은 환불정책 페이지를 참고해 주세요."
+          />
+          <PurchaseRow
+            label="상품 제공 사업자"
+            value="레오나르도코드 (사업자등록번호 859-35-01908, 통신판매업신고 제 2026-서울노원-0765 호)"
+          />
+        </dl>
+      </section>
+
       <div className="mt-8">
         <ExternalPaymentNotice />
       </div>
     </main>
+  );
+}
+
+function PurchaseRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="grid grid-cols-1 gap-1 sm:grid-cols-[8rem,1fr] sm:gap-3">
+      <dt className="font-medium text-muted-foreground">{label}</dt>
+      <dd className="text-foreground/90 break-keep">{value}</dd>
+    </div>
   );
 }
 
