@@ -6,7 +6,7 @@
  */
 import "server-only";
 
-import { and, count, desc, eq, gte, sql } from "drizzle-orm";
+import { and, desc, eq, gte } from "drizzle-orm";
 import { chatSessions } from "@/db/schema";
 
 import { db } from "@/db";
@@ -234,13 +234,11 @@ export async function getFateSummary(
 ): Promise<FateSummary> {
   const since30 = todayMinus(30);
 
-  const [moodRows, affinityRows, tarotRows, sessionRows, runeRows, lenormandRows] =
+  const [moodRows, tarotRows, sessionRows, runeRows, lenormandRows] =
     await Promise.all([
       db.select().from(moodEntries)
         .where(and(eq(moodEntries.userId, userId), gte(moodEntries.createdAt, since30)))
         .orderBy(desc(moodEntries.createdAt)).limit(30),
-      db.select().from(characterAffinities)
-        .where(eq(characterAffinities.userId, userId)),
       db.select().from(tarotReadings)
         .where(and(eq(tarotReadings.userId, userId), gte(tarotReadings.createdAt, since30)))
         .limit(30),

@@ -15,6 +15,7 @@ import {
   type NavLeaf,
 } from "@/config/navigation";
 import { cn } from "@/lib/utils";
+import { useLocationHash } from "@/hooks/use-location-hash";
 
 const NAV_ACTIVE   = "var(--nav-active)";
 const NAV_MUTED    = "var(--nav-muted)";
@@ -27,13 +28,7 @@ export function MobileNav() {
   const tNav = useTranslations("nav");
   const tExtras = useTranslations("todayExtras");
 
-  const [hash, setHash] = useState("");
-  useEffect(() => {
-    setHash(window.location.hash);
-    const onHash = () => setHash(window.location.hash);
-    window.addEventListener("hashchange", onHash);
-    return () => window.removeEventListener("hashchange", onHash);
-  }, []);
+  const hash = useLocationHash();
   const search = params.toString();
 
   const [openGroup, setOpenGroup] = useState<string | null>(null);

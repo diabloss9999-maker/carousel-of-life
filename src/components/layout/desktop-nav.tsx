@@ -14,6 +14,7 @@ import {
   type NavGroup,
   type NavLeaf,
 } from "@/config/navigation";
+import { useLocationHash } from "@/hooks/use-location-hash";
 
 /** Light Ritual 네비 색상 */
 const NAV_ACTIVE_BG  = "rgba(255,255,255,0.14)";
@@ -26,14 +27,8 @@ export function DesktopNav() {
   const tNav = useTranslations("nav");
   const tExtras = useTranslations("todayExtras");
 
-  const [hash, setHash] = useState("");
-  useEffect(() => {
-    setHash(window.location.hash);
-    const onHash = () => setHash(window.location.hash);
-    window.addEventListener("hashchange", onHash);
-    return () => window.removeEventListener("hashchange", onHash);
-  }, []);
-
+  // useSyncExternalStore 기반 — setState-in-effect 안티패턴 회피.
+  const hash = useLocationHash();
   const search = params.toString();
 
   return (

@@ -109,7 +109,7 @@ async function handleTransactionEvent(
 
   let newStatus: string;
   let cancelledAt: Date | null = null;
-  let cancelReason: string | null = null;
+  const cancelReason: string | null = null;
 
   if (eventType === "Transaction.Paid") {
     newStatus = "PAID";

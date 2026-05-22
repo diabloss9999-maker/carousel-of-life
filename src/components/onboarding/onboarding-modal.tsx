@@ -6,7 +6,6 @@
  */
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { ChevronRight, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -82,7 +81,6 @@ export function OnboardingModal() {
   const [visible, setVisible] = useState(false);
   const [step, setStep] = useState(0);
   const [animating, setAnimating] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     if (typeof window === "undefined") return;

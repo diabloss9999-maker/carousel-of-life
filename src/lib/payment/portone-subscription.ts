@@ -11,7 +11,6 @@
  */
 import "server-only";
 
-import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { subscriptions, portonePayments } from "@/db/schema";
@@ -52,14 +51,8 @@ export async function createPortOneSubscription(opts: {
 }): Promise<CreatePortOneSubscriptionResult> {
   const { userId, email, displayName, plan, issueId } = opts;
 
-  // 0) 이미 활성 구독이 있으면 중복 방지
-  const [existing] = await db
-    .select({ id: subscriptions.id })
-    .from(subscriptions)
-    .where(eq(subscriptions.userId, userId))
-    .limit(1);
-  // 중복 가입 자체는 막지 않음 (LS·Toss·PortOne 병행 가능성). 다만 same provider
-  // 활성 구독이 있으면 막고 싶으면 추가 검증. 여기선 그냥 진행.
+  // 중복 가입 자체는 막지 않음 (LS·Toss·PortOne 병행 가능성).
+  // 추후 same-provider 중복 활성 구독 차단을 원하면 여기서 SELECT 추가.
 
   // 1) 빌링키 발급 결과 검증
   let billingKey: string;

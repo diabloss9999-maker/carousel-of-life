@@ -48,7 +48,7 @@ function analyzeMoods(moods: MoodEntry[]): {
  */
 export function buildObservationContext(input: ObservationInput): string {
   const { characterId, hourKst, recentMoods, currentStreak, wasReset } = input;
-  const { darkDays, brightDays, latestMood } = analyzeMoods(recentMoods);
+  const { darkDays, brightDays } = analyzeMoods(recentMoods);
 
   const isNight = hourKst >= 22 || hourKst <= 3;
   const isDark = darkDays >= 3;

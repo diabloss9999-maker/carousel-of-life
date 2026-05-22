@@ -23,7 +23,7 @@ import {
   type PartnerInfo,
 } from "@/lib/ai/prompts";
 import { compatibilityAiSchema } from "@/lib/ai/types";
-import { AI_LIMITS, AI_MODELS } from "@/lib/constants";
+import { AI_MODELS } from "@/lib/constants";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { ensureSajuCalculated } from "@/lib/saju/calculate";
 

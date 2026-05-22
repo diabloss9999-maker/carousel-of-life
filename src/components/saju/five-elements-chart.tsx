@@ -40,7 +40,7 @@ interface GaugeRingProps {
   textClass: string;
 }
 
-function GaugeRing({ pct, stroke, glow, isStrongest, isEmpty, hanja, textClass }: GaugeRingProps) {
+function GaugeRing({ pct, stroke, glow, isStrongest, isEmpty, hanja }: Omit<GaugeRingProps, "textClass">) {
   const offset = CIRC * (1 - pct / 100);
 
   return (
@@ -139,7 +139,6 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
                     isStrongest={isStrongest}
                     isEmpty={isEmpty}
                     hanja={el.hanja}
-                    textClass={el.textClass}
                   />
                 </div>
                 {/* 이름 + 숫자 */}
