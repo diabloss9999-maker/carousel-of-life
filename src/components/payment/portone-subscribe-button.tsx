@@ -6,6 +6,11 @@
  * @portone/browser-sdk/v2 의 `requestIssueBillingKey` 호출 →
  * 결제창 띄움 → 성공 시 redirectUrl 로 issueId 전달 →
  * /api/billing/portone/callback 가 빌링키 검증 + 첫 청구 처리.
+ *
+ * 다중 결제수단 지원:
+ *   - 기본: NEXT_PUBLIC_PORTONE_CHANNEL_KEY (KCP 카드)
+ *   - channelKey prop 으로 override 가능 (카카오페이 등 다른 PG 채널)
+ *   - billingKeyMethod / easyPayProvider 로 결제 방식 분기
  */
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -23,6 +28,22 @@ interface PortOneSubscribeButtonProps {
   label: string;
   className?: string;
   variant?: "default" | "secondary";
+  /**
+   * 특정 채널 키 명시. 비어있으면 NEXT_PUBLIC_PORTONE_CHANNEL_KEY (KCP 카드).
+   * 카카오페이/네이버페이 등 별도 채널 호출 시 해당 채널 키 전달.
+   */
+  channelKey?: string;
+  /**
+   * 결제 방식. 기본 "CARD" (KCP 카드 채널용).
+   * 카카오페이/네이버페이는 "EASY_PAY" + easyPayProvider 지정.
+   */
+  billingKeyMethod?: "CARD" | "EASY_PAY";
+  /**
+   * 간편결제 제공자. billingKeyMethod="EASY_PAY" 일 때만 의미 있음.
+   */
+  easyPayProvider?: "KAKAOPAY" | "NAVERPAY" | "SAMSUNGPAY";
+  /** 버튼 좌측에 표시할 아이콘 (선택). */
+  icon?: React.ReactNode;
 }
 
 function buildIssueId(userId: string): string {
@@ -41,13 +62,18 @@ export function PortOneSubscribeButton({
   label,
   className,
   variant = "default",
+  channelKey: channelKeyOverride,
+  billingKeyMethod = "CARD",
+  easyPayProvider,
+  icon,
 }: PortOneSubscribeButtonProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
   const storeId = clientEnv.NEXT_PUBLIC_PORTONE_STORE_ID;
-  const channelKey = clientEnv.NEXT_PUBLIC_PORTONE_CHANNEL_KEY;
+  const channelKey =
+    channelKeyOverride ?? clientEnv.NEXT_PUBLIC_PORTONE_CHANNEL_KEY;
 
   function handleClick() {
     if (!storeId || !channelKey) {
@@ -70,10 +96,11 @@ export function PortOneSubscribeButton({
       const redirectUrl = `${origin}/api/billing/portone/callback?plan=${plan}&issueId=${encodeURIComponent(issueId)}`;
 
       try {
-        const response = await PortOne.requestIssueBillingKey({
+        // 카드(KCP)와 간편결제(카카오페이 등)는 호출 옵션이 달라 분기.
+        // PortOne SDK 타입 안정성 위해 각각 별도 호출.
+        const baseOptions = {
           storeId,
           channelKey,
-          billingKeyMethod: "CARD",
           issueId,
           issueName,
           customer: {
@@ -82,7 +109,18 @@ export function PortOneSubscribeButton({
             email,
           },
           redirectUrl,
-        });
+        };
+        const response =
+          billingKeyMethod === "EASY_PAY" && easyPayProvider
+            ? await PortOne.requestIssueBillingKey({
+                ...baseOptions,
+                billingKeyMethod: "EASY_PAY",
+                easyPay: { easyPayProvider },
+              })
+            : await PortOne.requestIssueBillingKey({
+                ...baseOptions,
+                billingKeyMethod: "CARD",
+              });
 
         // SDK 가 redirect 모드면 response 가 undefined (페이지가 redirectUrl 로 이동).
         // popup/iframe 모드면 response.billingKey 가 직접 반환됨.
@@ -120,7 +158,9 @@ export function PortOneSubscribeButton({
       >
         {isPending ? (
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-        ) : null}
+        ) : (
+          icon ?? null
+        )}
         {label}
       </Button>
       {error ? (

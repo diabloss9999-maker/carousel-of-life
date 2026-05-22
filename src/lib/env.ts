@@ -49,8 +49,16 @@ const clientSchema = z.object({
   NEXT_PUBLIC_TOSS_CLIENT_KEY: emptyToUndef(z.string().min(1).optional()),
   /** 포트원 V2 — 상점 ID (공개 OK). */
   NEXT_PUBLIC_PORTONE_STORE_ID: emptyToUndef(z.string().min(1).optional()),
-  /** 포트원 V2 — 채널 키 (백엔드 PG 별로 다름, 공개 OK). */
+  /** 포트원 V2 — KCP 카드 채널 키 (백엔드 PG 별로 다름, 공개 OK). */
   NEXT_PUBLIC_PORTONE_CHANNEL_KEY: emptyToUndef(z.string().min(1).optional()),
+  /**
+   * 포트원 V2 — 카카오페이 정기결제 채널 키 (공개 OK).
+   * 비어 있으면 /pricing 에 카카오페이 버튼이 노출되지 않음.
+   * 카카오페이 가맹 승인 후 PortOne 콘솔에서 채널 추가 → 발급받은 키 등록.
+   */
+  NEXT_PUBLIC_PORTONE_CHANNEL_KEY_KAKAO: emptyToUndef(
+    z.string().min(1).optional(),
+  ),
   /** VAPID 공개 키 — 브라우저 PushManager.subscribe 에 사용 (공개 OK). */
   NEXT_PUBLIC_VAPID_PUBLIC_KEY: emptyToUndef(z.string().min(1).optional()),
 });
@@ -63,6 +71,8 @@ const clientEnvRaw = {
   NEXT_PUBLIC_TOSS_CLIENT_KEY: process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY,
   NEXT_PUBLIC_PORTONE_STORE_ID: process.env.NEXT_PUBLIC_PORTONE_STORE_ID,
   NEXT_PUBLIC_PORTONE_CHANNEL_KEY: process.env.NEXT_PUBLIC_PORTONE_CHANNEL_KEY,
+  NEXT_PUBLIC_PORTONE_CHANNEL_KEY_KAKAO:
+    process.env.NEXT_PUBLIC_PORTONE_CHANNEL_KEY_KAKAO,
   NEXT_PUBLIC_VAPID_PUBLIC_KEY: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
 };
 
