@@ -6,7 +6,7 @@ import { BUSINESS_INFO } from "@/lib/constants/business-info";
 const LAST_MODIFIED = "2026년 5월 21일";
 
 export const metadata: Metadata = {
-  title: "사업자정보 · 인생의 회전목마",
+  title: "사업자정보",
   description: "통신판매업자 정보 공시.",
 };
 

@@ -6,7 +6,7 @@ import { BUSINESS_INFO } from "@/lib/constants/business-info";
 const LAST_MODIFIED = "2026년 5월 15일";
 
 export const metadata: Metadata = {
-  title: "환불정책 · 인생의 회전목마",
+  title: "환불정책",
   description: "인생의 회전목마 결제 환불 정책 안내.",
 };
 
