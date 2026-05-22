@@ -587,6 +587,37 @@ export type PortonePayment = typeof portonePayments.$inferSelect;
 export type NewPortonePayment = typeof portonePayments.$inferInsert;
 
 // =============================================================================
+// push_subscriptions - 웹푸시 알림 구독 (마이그 0009)
+// =============================================================================
+
+export const pushSubscriptions = pgTable(
+  "push_subscriptions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    /** 브라우저별 endpoint (Push 서버 URL). 같은 사용자도 디바이스마다 다름. */
+    endpoint: text("endpoint").notNull().unique(),
+    /** PushSubscription.keys.p256dh */
+    p256dh: text("p256dh").notNull(),
+    /** PushSubscription.keys.auth */
+    auth: text("auth").notNull(),
+    /** 마지막 발송 시각. 갱신 시 업데이트. */
+    lastSentAt: timestamp("last_sent_at", { withTimezone: true }),
+    /** 에러 카운터 — 일정 횟수 이상 실패 시 자동 제거 대상. */
+    errorCount: integer("error_count").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("push_subscriptions_user_id_idx").on(t.userId)],
+);
+
+export type PushSubscription = typeof pushSubscriptions.$inferSelect;
+export type NewPushSubscription = typeof pushSubscriptions.$inferInsert;
+
+// =============================================================================
 // usage_quotas - 일일 사용량 (무료 한도 추적)
 // =============================================================================
 

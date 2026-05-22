@@ -1,6 +1,6 @@
 import type { Metadata, Route } from "next";
 import Link from "next/link";
-import { Archive, Crown, MessageCircleHeart, User, UserPlus } from "lucide-react";
+import { Archive, Bell, Crown, MessageCircleHeart, User, UserPlus } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,7 @@ import { CancelSubscriptionButton } from "@/components/subscription/cancel-subsc
 import { ProfileEditForm } from "@/components/settings/profile-edit-form";
 import { DeleteAccountButton } from "@/components/settings/delete-account-button";
 import { InviteCard } from "@/components/settings/invite-card";
+import { PushToggle } from "@/components/settings/push-toggle";
 import { ROUTES } from "@/lib/constants";
 import { requireProfile } from "@/lib/auth/get-user";
 import {
@@ -185,6 +186,22 @@ export default async function SettingsPage() {
             inviteUrl={inviteUrl}
             invitedCount={inviteStats.count}
           />
+        </CardContent>
+      </Card>
+
+      {/* Push notification card */}
+      <Card className="app-surface">
+        <CardHeader className="pb-3">
+          <CardTitle className="font-mystic flex items-center gap-2 text-lg">
+            <Bell className="h-5 w-5 text-primary" aria-hidden />
+            매일 알림
+          </CardTitle>
+          <CardDescription className="text-[15px]">
+            아침마다 별의 흐름을 알림으로 받아볼 수 있어요.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <PushToggle />
         </CardContent>
       </Card>
 

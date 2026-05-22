@@ -40,6 +40,9 @@ const serverSchema = z.object({
   PORTONE_WEBHOOK_SECRET: emptyToUndef(z.string().min(1).optional()),
   PORTONE_LITE_PRICE_KRW: emptyToUndef(z.string().regex(/^\d+$/).optional()),
   PORTONE_PRO_PRICE_KRW: emptyToUndef(z.string().regex(/^\d+$/).optional()),
+  /** Web Push (VAPID) — 푸시 알림 인증. mailto: 와 함께 사용. */
+  VAPID_PRIVATE_KEY: emptyToUndef(z.string().min(1).optional()),
+  VAPID_SUBJECT: emptyToUndef(z.string().min(1).optional()),
   KAKAO_CLIENT_ID: emptyToUndef(z.string().min(1).optional()),
   KAKAO_CLIENT_SECRET: emptyToUndef(z.string().min(1).optional()),
   NODE_ENV: z
@@ -60,6 +63,8 @@ const clientSchema = z.object({
   NEXT_PUBLIC_PORTONE_STORE_ID: emptyToUndef(z.string().min(1).optional()),
   /** 포트원 V2 — 채널 키 (백엔드 PG 별로 다름, 공개 OK). */
   NEXT_PUBLIC_PORTONE_CHANNEL_KEY: emptyToUndef(z.string().min(1).optional()),
+  /** VAPID 공개 키 — 브라우저 PushManager.subscribe 에 사용 (공개 OK). */
+  NEXT_PUBLIC_VAPID_PUBLIC_KEY: emptyToUndef(z.string().min(1).optional()),
 });
 
 const clientEnvRaw = {
@@ -70,6 +75,7 @@ const clientEnvRaw = {
   NEXT_PUBLIC_TOSS_CLIENT_KEY: process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY,
   NEXT_PUBLIC_PORTONE_STORE_ID: process.env.NEXT_PUBLIC_PORTONE_STORE_ID,
   NEXT_PUBLIC_PORTONE_CHANNEL_KEY: process.env.NEXT_PUBLIC_PORTONE_CHANNEL_KEY,
+  NEXT_PUBLIC_VAPID_PUBLIC_KEY: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
 };
 
 const parsedClient = clientSchema.safeParse(clientEnvRaw);
