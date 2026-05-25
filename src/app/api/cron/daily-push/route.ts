@@ -67,14 +67,22 @@ const TEASER_MESSAGES: ReadonlyArray<{ title: string; body: string }> = [
   { title: "오늘의 별이 떴어요", body: "들어와서 오늘의 운세를 받아가세요." },
 ];
 
-/** 날짜 기반 인덱스 — 같은 날은 같은 메시지. */
-function pickTeaser(): { title: string; body: string } {
-  const now = new Date();
-  const dayOfYear = Math.floor(
-    (now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) /
-      (1000 * 60 * 60 * 24),
-  );
-  return TEASER_MESSAGES[dayOfYear % TEASER_MESSAGES.length];
+/** userId + 날짜 기반 결정론적 해시. 같은 날도 사용자별로 다른 메시지. */
+function hashUserDay(userId: string, dayOfYear: number): number {
+  let hash = dayOfYear;
+  for (let i = 0; i < userId.length; i += 1) {
+    hash = (hash * 31 + userId.charCodeAt(i)) >>> 0;
+  }
+  return hash;
+}
+
+function dayOfYear(now: Date): number {
+  const start = new Date(now.getFullYear(), 0, 0);
+  return Math.floor((now.getTime() - start.getTime()) / 86_400_000);
+}
+
+function pickTeaserFor(userId: string, day: number): { title: string; body: string } {
+  return TEASER_MESSAGES[hashUserDay(userId, day) % TEASER_MESSAGES.length];
 }
 
 export async function GET(req: NextRequest) {
@@ -82,20 +90,22 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
-  const teaser = pickTeaser();
-  const payload: PushPayload = {
-    title: teaser.title,
-    body: teaser.body,
-    url: "/today",
-    tag: `daily-${new Date().toISOString().slice(0, 10)}`,
-    renotify: false,
-  };
+  const today = new Date();
+  const day = dayOfYear(today);
+  const dateTag = `daily-${today.toISOString().slice(0, 10)}`;
 
-  const result = await sendToAll(payload);
-
-  return NextResponse.json({
-    ok: true,
-    payload: { title: payload.title, body: payload.body },
-    ...result,
+  // 사용자별 다른 teaser 배정 — 친구끼리 비교해도 같은 메시지 안 나옴
+  const result = await sendToAll((userId) => {
+    const teaser = pickTeaserFor(userId, day);
+    const payload: PushPayload = {
+      title: teaser.title,
+      body: teaser.body,
+      url: "/today",
+      tag: dateTag,
+      renotify: false,
+    };
+    return payload;
   });
+
+  return NextResponse.json({ ok: true, ...result });
 }

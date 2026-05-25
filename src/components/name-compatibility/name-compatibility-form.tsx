@@ -162,11 +162,11 @@ function ResultCard({
         </p>
         <div className="flex items-baseline justify-center gap-2 pt-2">
           <span
-            className={`font-mystic text-6xl font-bold tracking-tight ${tone.text}`}
+            className={`font-mystic text-5xl font-bold tracking-tight sm:text-6xl ${tone.text}`}
           >
             {result.score}
           </span>
-          <span className="font-mystic text-2xl text-muted-foreground">%</span>
+          <span className="font-mystic text-xl text-muted-foreground sm:text-2xl">%</span>
         </div>
         <p className="text-center text-[15px] font-mystic font-semibold text-foreground/90 pt-1">
           {result.label}

@@ -70,7 +70,11 @@ export async function getSubscriptionTier(
 ): Promise<SubscriptionTier> {
   const now = new Date();
   const [sub] = await db
-    .select({ id: subscriptions.id, provider: subscriptions.provider })
+    .select({
+      id: subscriptions.id,
+      provider: subscriptions.provider,
+      planKey: subscriptions.planKey,
+    })
     .from(subscriptions)
     .where(
       and(
@@ -86,6 +90,10 @@ export async function getSubscriptionTier(
     .limit(1);
 
   if (!sub) return "free";
+
+  // 1) plan_key 가 있으면 그게 우선 — 가격 변동 안전
+  if (sub.planKey === "pro") return "pro";
+  if (sub.planKey === "lite") return "lite";
 
   const proPrice = SUBSCRIPTION.pro.monthlyPriceKRW;
 

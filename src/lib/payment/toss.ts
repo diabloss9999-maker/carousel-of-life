@@ -214,7 +214,11 @@ export function userIdToCustomerKey(userId: string): string {
 
 /**
  * 고유 주문 ID 생성 — 토스 spec: 6~64자, 영문/숫자/-/_ 만.
- * 형식: `sub-{userId8}-{yyyymmdd}-{random4}` (멱등성: 같은 날 같은 user 면 같은 ID)
+ *
+ * 결정론적 — 같은 user · 같은 날엔 항상 같은 ID 가 나옴 → cron 재실행 시
+ * Toss 측에서 자동 중복 차단. (Math.random() 제거)
+ *
+ * 같은 사용자가 같은 날 여러 번 결제를 시도해도 멱등성 보장. 다른 날엔 다른 ID.
  */
 export function buildSubscriptionOrderId(
   userId: string,
@@ -225,8 +229,7 @@ export function buildSubscriptionOrderId(
     String(date.getMonth() + 1).padStart(2, "0") +
     String(date.getDate()).padStart(2, "0");
   const userPart = userId.replace(/-/g, "").slice(0, 8);
-  const random = Math.random().toString(36).slice(2, 6);
-  return `sub-${userPart}-${ymd}-${random}`;
+  return `sub-${userPart}-${ymd}`;
 }
 
 export { TossError };

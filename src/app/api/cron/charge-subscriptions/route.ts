@@ -105,11 +105,25 @@ export async function GET(req: NextRequest) {
         code,
         message: e instanceof Error ? e.message : String(e),
       });
+      // past_due 재시도 한도 — 이미 past_due 상태로 재진입했다면 자동 취소.
+      // (currentPeriodEndsAt 이 만료되었는데도 재청구 실패 시 무한 재시도 방지)
+      const now = new Date();
+      const periodEnd = sub.currentPeriodEndsAt;
+      const alreadyExpired = periodEnd ? periodEnd < now : false;
+      const shouldCancel = sub.status === "past_due" && alreadyExpired;
       await db
         .update(subscriptions)
-        .set({ status: "past_due", updatedAt: new Date() })
+        .set({
+          status: shouldCancel ? "cancelled" : "past_due",
+          ...(shouldCancel ? { endedAt: now, cancelAtPeriodEnd: true } : {}),
+          updatedAt: now,
+        })
         .where(eq(subscriptions.id, sub.id));
-      outcomes.push({ subscriptionId: sub.id, ok: false, reason: String(code) });
+      outcomes.push({
+        subscriptionId: sub.id,
+        ok: false,
+        reason: shouldCancel ? `${code}_CANCELLED` : String(code),
+      });
     }
   }
 
@@ -140,17 +154,20 @@ export async function GET(req: NextRequest) {
       orderName,
     });
 
-    await db.insert(tossPayments).values({
-      userId: sub.userId,
-      subscriptionId: sub.id,
-      paymentKey: charge.paymentKey,
-      orderId: charge.orderId,
-      amount: charge.totalAmount,
-      status: charge.status,
-      method: charge.method,
-      approvedAt: charge.approvedAt ? new Date(charge.approvedAt) : null,
-      rawResponse: charge as unknown as Record<string, unknown>,
-    });
+    await db
+      .insert(tossPayments)
+      .values({
+        userId: sub.userId,
+        subscriptionId: sub.id,
+        paymentKey: charge.paymentKey,
+        orderId: charge.orderId,
+        amount: charge.totalAmount,
+        status: charge.status,
+        method: charge.method,
+        approvedAt: charge.approvedAt ? new Date(charge.approvedAt) : null,
+        rawResponse: charge as unknown as Record<string, unknown>,
+      })
+      .onConflictDoNothing({ target: tossPayments.orderId });
 
     const nextEnd = new Date(sub.currentPeriodEndsAt ?? new Date());
     nextEnd.setMonth(nextEnd.getMonth() + 1);
@@ -204,19 +221,23 @@ export async function GET(req: NextRequest) {
       throw new PortOneError(`결제 상태 비정상: ${charge.status}`, undefined, charge.status);
     }
 
-    await db.insert(portonePayments).values({
-      userId: sub.userId,
-      subscriptionId: sub.id,
-      paymentId,
-      orderId,
-      txId: charge.pgTxId ?? null,
-      amount: lastAmount,
-      status: charge.status,
-      method: charge.method?.type ?? null,
-      pgProvider: charge.pgProvider ?? null,
-      paidAt: charge.paidAt ? new Date(charge.paidAt) : new Date(),
-      rawResponse: charge as unknown as Record<string, unknown>,
-    });
+    // ON CONFLICT — 결정론적 paymentId 라 cron 재실행 시 중복 INSERT 방지
+    await db
+      .insert(portonePayments)
+      .values({
+        userId: sub.userId,
+        subscriptionId: sub.id,
+        paymentId,
+        orderId,
+        txId: charge.pgTxId ?? null,
+        amount: lastAmount,
+        status: charge.status,
+        method: charge.method?.type ?? null,
+        pgProvider: charge.pgProvider ?? null,
+        paidAt: charge.paidAt ? new Date(charge.paidAt) : new Date(),
+        rawResponse: charge as unknown as Record<string, unknown>,
+      })
+      .onConflictDoNothing({ target: portonePayments.paymentId });
 
     const nextEnd = new Date(sub.currentPeriodEndsAt ?? new Date());
     nextEnd.setMonth(nextEnd.getMonth() + 1);

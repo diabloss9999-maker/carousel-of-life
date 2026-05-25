@@ -253,7 +253,7 @@ function NavTile({
       <IconBubble iconSrc={iconSrc} isActive={isActive} />
       <span
         className="max-w-[64px] truncate text-center font-semibold tracking-tight leading-none"
-        style={{ fontSize: 10 }}
+        style={{ fontSize: 11 }}
       >
         {label}
       </span>
@@ -292,7 +292,7 @@ function NavGroupTile({
       <IconBubble iconSrc={iconSrc} isActive={isActive || isOpen} />
       <span
         className="max-w-[64px] truncate text-center font-semibold tracking-tight leading-none flex items-center gap-0.5"
-        style={{ fontSize: 10 }}
+        style={{ fontSize: 11 }}
       >
         {label}
         <ChevronUp

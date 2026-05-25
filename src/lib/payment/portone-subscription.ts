@@ -153,6 +153,33 @@ export async function createPortOneSubscription(opts: {
         message: `첫 청구 실패 (status: ${paymentResult.status})`,
       };
     }
+    // PG 응답 amount 검증 — 우리가 요청한 금액과 다르면 사기 시나리오
+    const paidAmount = paymentResult.amount?.total ?? amount;
+    if (paidAmount !== amount) {
+      console.error("[portone-subscription] amount mismatch", {
+        requested: amount,
+        paid: paidAmount,
+      });
+      // 보상 환불
+      try {
+        await cancelPayment({
+          paymentId,
+          reason: "결제 금액 불일치 (자동 환불)",
+        });
+      } catch {
+        /* 무시 */
+      }
+      try {
+        await deleteBillingKey(billingKey);
+      } catch {
+        /* 무시 */
+      }
+      return {
+        ok: false,
+        code: "CHARGE_FAILED",
+        message: `결제 금액 불일치 (요청 ${amount} / 응답 ${paidAmount})`,
+      };
+    }
   } catch (e) {
     return {
       ok: false,
@@ -180,6 +207,7 @@ export async function createPortOneSubscription(opts: {
         portoneChannelKey: channelKey ?? null,
         portoneCardCompany: cardCompany ?? null,
         portoneCardNumberMasked: cardNumberMasked ?? null,
+        planKey: plan,
         status: "active",
         currentPeriodStartsAt: now,
         currentPeriodEndsAt: periodEnd,

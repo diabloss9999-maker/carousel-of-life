@@ -13,6 +13,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { requireUser } from "@/lib/auth/get-user";
 import { createPortOneSubscription } from "@/lib/payment/portone-subscription";
+import { consumePendingBillingIssue } from "@/lib/payment/billing-issue";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -52,13 +53,30 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  // issueId↔userId 바인딩 검증 — pending_billing_issues 에서 소비.
+  // 다른 사용자가 내 카드로 구독 만드는 시나리오 차단.
+  const consume = await consumePendingBillingIssue({
+    issueId,
+    userId: user.id,
+  });
+  if (!consume.ok) {
+    return NextResponse.redirect(
+      new URL(
+        `/pricing?billingError=ISSUE_${consume.code}`,
+        request.url,
+      ),
+    );
+  }
+  // 검증된 plan 으로 강제 (URL 의 plan 파라미터 위조 방지)
+  const verifiedPlan = consume.plan;
+
   const displayName =
     (user.user_metadata?.display_name as string | undefined) ?? null;
   const result = await createPortOneSubscription({
     userId: user.id,
     email: user.email,
     displayName,
-    plan,
+    plan: verifiedPlan,
     issueId,
   });
 

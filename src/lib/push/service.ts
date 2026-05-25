@@ -117,6 +117,43 @@ async function sendToEndpoint(
   }
 }
 
+/** 동시 발송 limiter — 너무 많은 요청 동시에 보내면 PortOne·VAPID 측에서 throttle. */
+const CONCURRENCY = 25;
+
+async function sendBatch(
+  rows: Array<{
+    id: string;
+    endpoint: string;
+    p256dh: string;
+    auth: string;
+    errorCount: number;
+    userId: string;
+  }>,
+  resolve: (row: { userId: string }) => Promise<PushPayload | null> | PushPayload | null,
+): Promise<{ sent: number; gone: number; failed: number }> {
+  let sent = 0;
+  let gone = 0;
+  let failed = 0;
+
+  for (let i = 0; i < rows.length; i += CONCURRENCY) {
+    const chunk = rows.slice(i, i + CONCURRENCY);
+    const results = await Promise.allSettled(
+      chunk.map(async (row) => {
+        const payload = await resolve(row);
+        if (!payload) return null;
+        return sendToEndpoint(row, payload);
+      }),
+    );
+    for (const r of results) {
+      if (r.status !== "fulfilled" || !r.value) continue;
+      if (r.value.ok) sent += 1;
+      else if (r.value.gone) gone += 1;
+      else failed += 1;
+    }
+  }
+  return { sent, gone, failed };
+}
+
 /** 특정 사용자(모든 디바이스)에게 발송. */
 export async function sendToUser(
   userId: string,
@@ -126,19 +163,7 @@ export async function sendToUser(
     .select()
     .from(pushSubscriptions)
     .where(eq(pushSubscriptions.userId, userId));
-
-  let sent = 0;
-  let gone = 0;
-  let failed = 0;
-
-  for (const row of rows) {
-    const result = await sendToEndpoint(row, payload);
-    if (result.ok) sent += 1;
-    else if (result.gone) gone += 1;
-    else failed += 1;
-  }
-
-  return { sent, gone, failed };
+  return sendBatch(rows, () => payload);
 }
 
 /** 여러 사용자에게 일괄 발송 (cron 용). */
@@ -149,48 +174,29 @@ export async function sendToUsers(
   if (userIds.length === 0) {
     return { sent: 0, gone: 0, failed: 0, users: 0 };
   }
-
   const rows = await db
     .select()
     .from(pushSubscriptions)
     .where(inArray(pushSubscriptions.userId, userIds));
-
-  let sent = 0;
-  let gone = 0;
-  let failed = 0;
-
-  for (const row of rows) {
-    const result = await sendToEndpoint(row, payload);
-    if (result.ok) sent += 1;
-    else if (result.gone) gone += 1;
-    else failed += 1;
-  }
-
-  return { sent, gone, failed, users: userIds.length };
+  const result = await sendBatch(rows, () => payload);
+  return { ...result, users: userIds.length };
 }
 
 /** 모든 구독자에게 발송 (cron — 매일 운세 등). */
 export async function sendToAll(
-  payload: PushPayload | ((userId: string) => Promise<PushPayload | null> | PushPayload | null),
+  payload:
+    | PushPayload
+    | ((
+        userId: string,
+      ) => Promise<PushPayload | null> | PushPayload | null),
 ): Promise<{ sent: number; gone: number; failed: number; total: number }> {
   const rows = await db.select().from(pushSubscriptions);
-
-  let sent = 0;
-  let gone = 0;
-  let failed = 0;
-
-  for (const row of rows) {
-    const resolvedPayload =
-      typeof payload === "function" ? await payload(row.userId) : payload;
-    if (!resolvedPayload) continue;
-
-    const result = await sendToEndpoint(row, resolvedPayload);
-    if (result.ok) sent += 1;
-    else if (result.gone) gone += 1;
-    else failed += 1;
-  }
-
-  return { sent, gone, failed, total: rows.length };
+  const resolve =
+    typeof payload === "function"
+      ? (row: { userId: string }) => payload(row.userId)
+      : () => payload;
+  const result = await sendBatch(rows, resolve);
+  return { ...result, total: rows.length };
 }
 
 /** 특정 endpoint 한 개에 발송 (자기 자신 테스트용). */

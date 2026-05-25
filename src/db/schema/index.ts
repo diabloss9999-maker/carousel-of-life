@@ -432,6 +432,12 @@ export const subscriptions = pgTable(
       .references(() => authUsers.id, { onDelete: "cascade" }),
     /** 결제 PG 식별 — 'portone' | 'toss' | 'lemonsqueezy'(레거시). */
     provider: text("provider").notNull().default("portone"),
+    /**
+     * 'lite' | 'pro'. 가격 변동에 안전한 plan 식별자 (마이그 0012).
+     * subscription-state.getSubscriptionTier 가 이 값을 우선 사용 — payments.amount
+     * 비교는 폴백.
+     */
+    planKey: text("plan_key"),
     // ── LS 컬럼 (provider='lemonsqueezy' 일 때만 채워짐) ──
     lsSubscriptionId: text("ls_subscription_id").unique(),
     lsCustomerId: text("ls_customer_id"),
@@ -616,6 +622,32 @@ export const pushSubscriptions = pgTable(
 
 export type PushSubscription = typeof pushSubscriptions.$inferSelect;
 export type NewPushSubscription = typeof pushSubscriptions.$inferInsert;
+
+// =============================================================================
+// pending_billing_issues — issueId↔userId 사전 바인딩 (마이그 0012)
+//
+// PortOne 빌링키 발급 시작 시점에 INSERT, callback 진입 시 SELECT 로 검증.
+// callback URL 이 유출되어도 다른 사용자가 내 카드로 구독 못 만들게 방지.
+// =============================================================================
+
+export const pendingBillingIssues = pgTable(
+  "pending_billing_issues",
+  {
+    issueId: text("issue_id").primaryKey(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    plan: text("plan").notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    consumedAt: timestamp("consumed_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("pending_billing_issues_user_idx").on(t.userId)],
+);
+
+export type PendingBillingIssue = typeof pendingBillingIssues.$inferSelect;
 
 // =============================================================================
 // shared_fortunes - 운세 공유 페이지 봉인 (마이그 0010)
@@ -1134,6 +1166,7 @@ export const allTables = {
   personalityCareerFit,
   pushSubscriptions,
   sharedFortunes,
+  pendingBillingIssues,
 } as const;
 
 // `sql` re-export — RLS 마이그레이션에서 raw SQL 작성 시 활용.

@@ -46,8 +46,25 @@ interface PortOneSubscribeButtonProps {
   icon?: React.ReactNode;
 }
 
-function buildIssueId(userId: string): string {
-  return `bill-${userId.slice(0, 8)}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+/**
+ * 서버에서 issueId 발급받기 — pending_billing_issues 에 사전 등록되어 있어
+ * callback 진입 시 userId 검증이 가능해진다.
+ */
+async function fetchIssueId(plan: "lite" | "pro"): Promise<string | null> {
+  try {
+    const res = await fetch("/api/billing/portone/prepare", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ plan }),
+    });
+    const json = await res.json();
+    if (res.ok && json.ok && typeof json.data?.issueId === "string") {
+      return json.data.issueId;
+    }
+  } catch {
+    /* fall through */
+  }
+  return null;
 }
 
 function userIdToCustomerId(userId: string): string {
@@ -83,7 +100,12 @@ export function PortOneSubscribeButton({
     setError(null);
 
     startTransition(async () => {
-      const issueId = buildIssueId(userId);
+      // 서버에서 issueId 발급 — pending_billing_issues 에 사전 바인딩
+      const issueId = await fetchIssueId(plan);
+      if (!issueId) {
+        setError("결제 준비에 실패했어요. 잠시 후 다시 시도해 주세요.");
+        return;
+      }
       const customerId = userIdToCustomerId(userId);
       const issueName =
         plan === "pro"
