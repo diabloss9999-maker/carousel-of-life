@@ -59,7 +59,7 @@ async function captureCardAsBlob(
     const dataUrl = await toPng(captureNode, {
       pixelRatio: 2,
       cacheBust: true,
-      backgroundColor: "#1a1428",
+      backgroundColor: "#ffffff",
     });
     return await (await fetch(dataUrl)).blob();
   } catch {

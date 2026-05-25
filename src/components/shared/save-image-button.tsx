@@ -40,13 +40,13 @@ export function SaveImageButton({
       let blob: Blob | null = null;
 
       if (captureNode) {
-        // 캡처 모드 클래스 토글 — backdrop-blur·반투명 제거하고 불투명 배경 강제
+        // 캡처 모드 클래스 토글 — 흰색 배경 + 어두운 텍스트로 라이트 톤 전환
         captureNode.classList.add("is-capturing");
         try {
           const dataUrl = await toPng(captureNode, {
             pixelRatio: 2,
             cacheBust: true,
-            backgroundColor: "#1a1428",
+            backgroundColor: "#ffffff",
           });
           const res = await fetch(dataUrl);
           blob = await res.blob();
