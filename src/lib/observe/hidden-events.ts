@@ -85,19 +85,21 @@ const FULLMOON_LINES_EN: Record<string, string> = {
   shaman: "Full moon. The spirits are especially loud today. There may be more things clinging near you, too.",
 };
 
+// 모든 한 줄은 '인생의 회전목마' 세계관 톤으로 통일.
+// 무거운 단어(균열·무명·경계) 대신 회전목마·별·달빛 같은 부드러운 이미지로.
 const HOMETEXT_KO: Record<string, string> = {
-  midnight: "자정이다.",
-  fullMoon: "달이 가득 찼다.",
-  nameless: "무명이 가까워지고 있다.",
-  rifDeep:  "인생의 회전목마가 돌기 시작했다.",
-  boundary: "경계가 열려 있다.",
+  midnight: "회전목마가 한 바퀴를 마쳤다.",         // 자정
+  fullMoon: "달빛이 회전목마를 가득 비추고 있다.",  // 보름달
+  nameless: "별의 흐름이 거세지고 있다.",           // crack >= 4
+  rifDeep:  "인생의 회전목마가 돌기 시작했다.",     // crack = 3
+  boundary: "별이 가장 가깝게 내려와 있다.",        // 새벽 3시
 };
 const HOMETEXT_EN: Record<string, string> = {
-  midnight: "It is midnight.",
-  fullMoon: "The moon is full.",
-  nameless: "The Nameless draws near.",
+  midnight: "The carousel has completed one turn.",
+  fullMoon: "Moonlight fills the carousel.",
+  nameless: "The flow of stars grows stronger.",
   rifDeep:  "The carousel of life begins to turn.",
-  boundary: "The boundary is open.",
+  boundary: "The stars hang closest now.",
 };
 
 function pickLocale(locale: string | undefined): "ko" | "en" {
