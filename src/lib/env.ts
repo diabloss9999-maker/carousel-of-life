@@ -61,6 +61,12 @@ const clientSchema = z.object({
   ),
   /** VAPID 공개 키 — 브라우저 PushManager.subscribe 에 사용 (공개 OK). */
   NEXT_PUBLIC_VAPID_PUBLIC_KEY: emptyToUndef(z.string().min(1).optional()),
+  /**
+   * 카카오 Share SDK JavaScript 키 (공개 OK).
+   * 카카오 디벨로퍼 콘솔 → 앱 → 일반 → 앱 키 → JavaScript 키.
+   * 비어 있으면 카카오톡 공유는 Web Share API 폴백으로 동작.
+   */
+  NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY: emptyToUndef(z.string().min(1).optional()),
 });
 
 const clientEnvRaw = {
@@ -74,6 +80,8 @@ const clientEnvRaw = {
   NEXT_PUBLIC_PORTONE_CHANNEL_KEY_KAKAO:
     process.env.NEXT_PUBLIC_PORTONE_CHANNEL_KEY_KAKAO,
   NEXT_PUBLIC_VAPID_PUBLIC_KEY: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+  NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY:
+    process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY,
 };
 
 const parsedClient = clientSchema.safeParse(clientEnvRaw);

@@ -20,6 +20,10 @@
     {
       "path": "/api/cron/daily-push",
       "schedule": "0 23 * * *"
+    },
+    {
+      "path": "/api/cron/cleanup-share-images",
+      "schedule": "0 19 * * *"
     }
   ]
 }

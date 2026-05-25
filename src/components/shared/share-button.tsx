@@ -7,6 +7,8 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { clientEnv } from "@/lib/env";
+import { ensureKakaoInit, shareToKakao } from "@/lib/kakao/share";
 
 interface ShareButtonProps {
   title: string;
@@ -103,18 +105,18 @@ export function ShareButton({
   }
 
   /**
-   * 시스템 공유 시트 — 모바일이면 카카오톡·메신저·메일 등 모두 노출.
+   * 카카오톡·메신저 공유 — 화면 캡처 이미지 첨부.
    *
    * 흐름:
-   *   1) data-capture-root 가 조상에 있으면 화면 그대로 PNG 캡처
-   *   2) 모바일 + Web Share files 지원 → 이미지 첨부 공유 (카카오톡에 그
-   *      이미지가 그대로 전송됨 — OG 카드가 아닌 사용자가 본 화면)
-   *   3) 미지원/데스크탑 → 기존 URL+텍스트 공유 또는 클립보드 복사
+   *   1) data-capture-root 에서 화면 PNG 캡처
+   *   2) 카카오 SDK 사용 가능 → 이미지 업로드 → Kakao Share API (데스크탑·모바일 모두 자동)
+   *   3) 모바일 + Web Share files → 시스템 공유 시트 (카카오톡 외 메신저도 가능)
+   *   4) 미지원/데스크탑 → URL 공유 또는 클립보드 복사
    */
   async function handleSystemShare() {
     setOpen(false);
 
-    // 1) 화면 캡처 시도 (data-capture-root 안에 있을 때만)
+    // 1) 화면 캡처
     let blob: Blob | null = null;
     try {
       const captureNode = ref.current?.closest<HTMLElement>("[data-capture-root]");
@@ -126,11 +128,44 @@ export function ShareButton({
         blob = await (await fetch(dataUrl)).blob();
       }
     } catch {
-      // 캡처 실패 시 URL 공유로 자연 폴백
       blob = null;
     }
 
-    // 2) 모바일 + files 지원 → 이미지 첨부 공유
+    // 2) 카카오 SDK 우선 — 데스크탑·모바일 모두 카카오톡으로 자동 공유
+    if (
+      blob &&
+      clientEnv.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY &&
+      ensureKakaoInit()
+    ) {
+      try {
+        const fd = new FormData();
+        fd.append("file", new File([blob], "carousel-of-life.png", { type: "image/png" }));
+        const uploadRes = await fetch("/api/share/upload-image", {
+          method: "POST",
+          body: fd,
+        });
+        const uploadJson: { ok: boolean; data?: { url: string } } =
+          await uploadRes.json();
+        if (uploadRes.ok && uploadJson.ok && uploadJson.data?.url) {
+          const ok = shareToKakao({
+            title,
+            description: text.slice(0, 200),
+            imageUrl: uploadJson.data.url,
+            url: shareUrl,
+          });
+          if (ok) {
+            setStatus("shared");
+            setTimeout(() => setStatus("idle"), 2000);
+            return;
+          }
+        }
+      } catch (e) {
+        console.error("[kakao-share-flow]", e);
+        // 폴백 진행
+      }
+    }
+
+    // 3) 모바일 + Web Share files → 시스템 시트 (X·인스타·메일 등 함께 선택 가능)
     if (
       blob &&
       isMobileUA() &&
@@ -143,11 +178,7 @@ export function ShareButton({
       const nav = navigator as Navigator & {
         canShare?: (data: ShareData) => boolean;
       };
-      const shareData: ShareData = {
-        files: [file],
-        title,
-        text: shareText,
-      };
+      const shareData: ShareData = { files: [file], title, text: shareText };
       if (nav.canShare?.(shareData)) {
         try {
           await navigator.share(shareData);
@@ -156,29 +187,26 @@ export function ShareButton({
           return;
         } catch (e) {
           if (e instanceof Error && e.name === "AbortError") return;
-          // files 공유 실패 시 URL 공유로 폴백
         }
       }
     }
 
-    // 3) 폴백 — URL+텍스트 공유 또는 클립보드 복사
+    // 4) 폴백 — URL+텍스트 공유 또는 클립보드 복사
     if (typeof navigator === "undefined" || !navigator.share) {
       await copyToClipboard();
+      toast.success("링크와 텍스트를 복사했어요.");
       setStatus("copied");
       setTimeout(() => setStatus("idle"), 2000);
       return;
     }
     try {
-      await navigator.share({
-        title,
-        text: shareText,
-        url: shareUrl,
-      });
+      await navigator.share({ title, text: shareText, url: shareUrl });
       setStatus("shared");
       setTimeout(() => setStatus("idle"), 2000);
     } catch (e) {
       if (e instanceof Error && e.name === "AbortError") return;
       await copyToClipboard();
+      toast.success("링크와 텍스트를 복사했어요.");
       setStatus("copied");
       setTimeout(() => setStatus("idle"), 2000);
     }

@@ -10,6 +10,7 @@ import { TimeAwareBg } from "@/components/layout/time-aware-bg";
 import { Footer } from "@/components/layout/footer";
 import { AmbientTrack } from "@/components/effects/ambient-track";
 import { GlobalMusicToggle } from "@/components/effects/global-music-toggle";
+import { KakaoSdkScript } from "@/components/shared/kakao-sdk-script";
 import { defaultMetadata } from "@/config/site";
 
 import "./globals.css";
@@ -72,6 +73,9 @@ export default async function RootLayout({
         <TimeAwareBg />
         {/* 가독성 오버레이 */}
         <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 bg-white/10" />
+
+        {/* 카카오 Share SDK — 환경변수 있을 때만 로드 (트래픽 절약) */}
+        <KakaoSdkScript />
 
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider
