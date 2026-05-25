@@ -56,24 +56,18 @@ export async function createSession(opts: {
 }
 
 /**
- * 해당 캐릭터의 **오늘(KST)** 세션을 찾아 이어가거나, 없으면 새로 만든다.
+ * 해당 캐릭터의 가장 최근 세션을 찾아 이어가거나, 없으면 새로 만든다.
  *
- * 정책 — 하루 단위 마인드 리셋:
- *   · 어제 이전 세션은 이어가지 않음 (며칠 전 대화 컨텍스트가 오늘 답변에
- *     끼어들어 "방금 한 얘기" 처럼 어색해지는 것 방지)
- *   · 같은 날 안에서는 같은 캐릭터를 다시 선택해도 같은 세션을 이어감
- *   · 어제 이전 세션·메시지는 DB 에 그대로 보존 (히스토리/도감용)
+ * 동일 점술사를 다시 선택했을 때 이전 대화를 자연스럽게 이어가기 위함.
+ *
+ * 어제·며칠 전 세션도 이어감 — 단, prepareSendMessage 에서 시스템
+ * 프롬프트에 '시간 경과 메타' 를 주입해 AI 가 "이전 대화는 며칠 전 일"
+ * 이라고 인지하고 응답하도록 보정.
  */
 export async function findOrCreateSessionForCharacter(opts: {
   userId: string;
   character: string;
 }): Promise<{ session: ChatSession; resumed: boolean }> {
-  // KST 자정 (오늘 0시) 을 UTC 로 환산.
-  const todayKst = new Date().toLocaleDateString("sv-SE", {
-    timeZone: "Asia/Seoul",
-  });
-  const todayStartUtc = new Date(`${todayKst}T00:00:00+09:00`);
-
   const [recent] = await db
     .select()
     .from(chatSessions)
@@ -81,7 +75,6 @@ export async function findOrCreateSessionForCharacter(opts: {
       and(
         eq(chatSessions.userId, opts.userId),
         eq(chatSessions.character, opts.character),
-        gte(chatSessions.createdAt, todayStartUtc),
       ),
     )
     .orderBy(desc(chatSessions.createdAt))
@@ -177,6 +170,57 @@ export async function deleteSession(opts: {
     )
     .returning({ id: chatSessions.id });
   return result.length > 0;
+}
+
+/**
+ * 시간 경과 메타 생성 — 시스템 프롬프트에 매 턴 주입한다.
+ *
+ * 정책:
+ *   · 오늘 날짜는 항상 포함
+ *   · 마지막 어시스턴트 응답 이후 6시간 이상 경과 시 '시간 경과' 안내 추가
+ *   · AI 가 이전 대화를 기억하되 "방금 한 얘기" 처럼 응대하지 않도록 보정
+ */
+function buildTimeMeta(lastAssistantAt: Date | null): string {
+  const now = new Date();
+  const todayLabel = now.toLocaleDateString("ko-KR", {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "long",
+  });
+
+  let meta = `[오늘 날짜]\n${todayLabel}`;
+
+  if (!lastAssistantAt) return meta;
+
+  const elapsedMs = now.getTime() - lastAssistantAt.getTime();
+  const elapsedHours = elapsedMs / 3_600_000;
+  if (elapsedHours < 6) return meta;
+
+  const elapsedDays = Math.floor(elapsedHours / 24);
+  let gapLabel: string;
+  if (elapsedDays < 1) gapLabel = `${Math.round(elapsedHours)}시간 만`;
+  else if (elapsedDays === 1) gapLabel = "어제 이후 처음";
+  else if (elapsedDays < 7) gapLabel = `${elapsedDays}일 만`;
+  else if (elapsedDays < 30) gapLabel = `${Math.floor(elapsedDays / 7)}주 만`;
+  else gapLabel = `${Math.floor(elapsedDays / 30)}달 만`;
+
+  const lastDateLabel = lastAssistantAt.toLocaleDateString("ko-KR", {
+    timeZone: "Asia/Seoul",
+    month: "long",
+    day: "numeric",
+  });
+
+  meta += `\n\n[이전 대화 시점]`;
+  meta += `\n마지막 대화: ${lastDateLabel} — 지금은 ${gapLabel}의 대화.`;
+  meta += `\n\n[시간 인지 — 반드시 지킬 것]`;
+  meta += `\n이전 대화 내용을 자연스럽게 기억하되, 그 시점이 오늘이 아니라 ${gapLabel} 전이라는 점을 분명히 인지하고 응답해. ` +
+    `"방금 한 얘기" 처럼 말하지 마. ` +
+    `시간이 흘렀음을 자연스럽게 녹여서 — 예: "그때 너가 말했던 ~ 어떻게 됐어?", "${gapLabel} 전 우리 얘기했던…", "오랜만이네" 같은 식으로. ` +
+    `사용자가 그동안 어떻게 지냈는지에 대한 관심을 한 번은 표현해.`;
+
+  return meta;
 }
 
 /**
@@ -387,9 +431,21 @@ export async function prepareSendMessage(opts: {
     }
   }
 
-  const systemPrompt = isFirstTurn
-    ? buildCharacterSystemPrompt(characterId, userCtx)
-    : buildCharacterSystemPrompt(characterId, "");
+  // 시간 메타 — 매 턴 주입. 마지막 assistant 메시지(방금 저장한 user 메시지는 제외)
+  // 를 기준으로 경과 시간 계산.
+  const lastAssistant = history
+    .filter((m) => m.role === "assistant")
+    .at(-1);
+  const lastAssistantAt = lastAssistant?.createdAt ?? null;
+  const timeMeta = buildTimeMeta(lastAssistantAt);
+
+  // 첫 턴: 풀 컨텍스트 + 시간 메타
+  // 그 외: 시간 메타만 (사용자 정보는 첫 턴에 이미 전달됨)
+  const combinedCtx = isFirstTurn
+    ? `${userCtx}\n\n${timeMeta}`.trim()
+    : timeMeta;
+
+  const systemPrompt = buildCharacterSystemPrompt(characterId, combinedCtx);
 
   // 첫 턴이면 자동으로 제목도 짧게.
   if (isFirstTurn) {
