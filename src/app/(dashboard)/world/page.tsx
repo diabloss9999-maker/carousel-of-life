@@ -12,13 +12,17 @@ import {
   MOOD_NARRATIVE,
   getTodayWorldState,
 } from "@/lib/systems/world-state";
+import { requireProfile } from "@/lib/auth/get-user";
 
 export const metadata: Metadata = {
   title: "세계의 흐름",
   description: "오늘의 공동 관측 — 세계가 모두에게 들려주는 한 줄.",
 };
 
-export default function WorldPage() {
+export default async function WorldPage() {
+  // 인증·온보딩 가드 — 다른 dashboard 페이지와 일관성 유지
+  await requireProfile();
+
   const state = getTodayWorldState();
   const entityName = ENTITY_LABEL[state.activeEntity];
   const moodLabel = MOOD_LABEL[state.dominantMood];

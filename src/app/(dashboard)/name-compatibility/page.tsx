@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
-import { requireUser } from "@/lib/auth/get-user";
-import { getProfile } from "@/lib/auth/get-user";
+import { requireProfile } from "@/lib/auth/get-user";
 import { NameCompatibilityForm } from "@/components/name-compatibility/name-compatibility-form";
 
 export const metadata: Metadata = {
@@ -11,8 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function NameCompatibilityPage() {
-  const user = await requireUser();
-  const profile = await getProfile(user.id);
+  const { profile } = await requireProfile();
 
   return (
     <div className="mx-auto w-full max-w-3xl space-y-6">
@@ -26,7 +24,7 @@ export default async function NameCompatibilityPage() {
         </p>
       </header>
 
-      <NameCompatibilityForm defaultMyName={profile?.displayName ?? ""} />
+      <NameCompatibilityForm defaultMyName={profile.displayName ?? ""} />
     </div>
   );
 }

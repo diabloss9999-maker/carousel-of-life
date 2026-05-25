@@ -39,7 +39,12 @@ interface PortOneWebhookPayload {
 function verifySignature(rawBody: string, header: string | null): boolean {
   const secret = serverEnv.PORTONE_WEBHOOK_SECRET;
   if (!secret) {
-    console.warn("[portone webhook] PORTONE_WEBHOOK_SECRET 미설정 — 검증 생략");
+    // production 에선 secret 필수 — fail-closed
+    if (process.env.NODE_ENV === "production") {
+      console.error("[portone webhook] PORTONE_WEBHOOK_SECRET 미설정 (production)");
+      return false;
+    }
+    console.warn("[portone webhook] PORTONE_WEBHOOK_SECRET 미설정 — dev 검증 생략");
     return true;
   }
   if (!header) return false;
@@ -151,8 +156,10 @@ async function handleTransactionEvent(
 }
 
 async function handleBillingKeyDeleted(billingKey: string): Promise<void> {
+  // 빌링키만 폐기. 사용자의 잔여 구독 기간은 유지하되 다음 갱신을 막는다.
+  // status='cancelled' 즉시 변경은 사용자 잔여 기간을 무시하게 되므로 지양.
   await db
     .update(subscriptions)
-    .set({ status: "cancelled", cancelAtPeriodEnd: true, endedAt: new Date() })
+    .set({ cancelAtPeriodEnd: true, updatedAt: new Date() })
     .where(eq(subscriptions.portoneBillingKey, billingKey));
 }

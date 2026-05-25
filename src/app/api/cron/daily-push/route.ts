@@ -24,7 +24,8 @@ export const dynamic = "force-dynamic";
 /** Vercel Cron 인증. CRON_SECRET 미설정이면 검증 생략. */
 function isAuthorizedCron(req: NextRequest): boolean {
   const secret = process.env.CRON_SECRET;
-  if (!secret) return true;
+  // production 에선 secret 필수. 미설정 시 fail-closed (외부에서 호출 불가).
+  if (!secret) return process.env.NODE_ENV !== "production";
   const auth = req.headers.get("authorization");
   return auth === `Bearer ${secret}`;
 }

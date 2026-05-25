@@ -28,7 +28,7 @@ import {
 } from "@/lib/payment/toss";
 import {
   chargeWithBillingKey as portoneCharge,
-  buildPaymentId as portoneBuildPaymentId,
+  buildRecurringPaymentId as portoneBuildRecurringPaymentId,
   buildOrderId as portoneBuildOrderId,
   userIdToCustomerId as portoneCustomerIdFor,
   PortOneError,
@@ -38,10 +38,10 @@ import { SUBSCRIPTION } from "@/lib/constants";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-/** Vercel Cron 인증. CRON_SECRET 미설정이면 검증 생략 (개발). */
+/** Vercel Cron 인증. production 에서는 secret 필수. */
 function isAuthorizedCron(req: NextRequest): boolean {
   const secret = process.env.CRON_SECRET;
-  if (!secret) return true; // dev
+  if (!secret) return process.env.NODE_ENV !== "production";
   const auth = req.headers.get("authorization");
   return auth === `Bearer ${secret}`;
 }
@@ -181,7 +181,10 @@ export async function GET(req: NextRequest) {
     const planLabel =
       lastAmount === SUBSCRIPTION.pro.monthlyPriceKRW ? "프로" : "라이트";
 
-    const paymentId = portoneBuildPaymentId(sub.userId);
+    // 결정론적 paymentId — 같은 구독·같은 갱신 주기엔 같은 ID 사용.
+    // cron 재실행/중복 호출 시 PortOne 측에서 자동으로 중복 청구 차단.
+    const periodEnd = sub.currentPeriodEndsAt ?? new Date();
+    const paymentId = portoneBuildRecurringPaymentId(sub.id, periodEnd);
     const orderId = portoneBuildOrderId(
       sub.userId,
       lastAmount === SUBSCRIPTION.pro.monthlyPriceKRW ? "pro" : "lite",

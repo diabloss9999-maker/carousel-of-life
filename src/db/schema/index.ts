@@ -430,8 +430,8 @@ export const subscriptions = pgTable(
     userId: uuid("user_id")
       .notNull()
       .references(() => authUsers.id, { onDelete: "cascade" }),
-    /** 결제 PG 식별 — 'lemonsqueezy' | 'toss' | 'portone'. */
-    provider: text("provider").notNull().default("lemonsqueezy"),
+    /** 결제 PG 식별 — 'portone' | 'toss' | 'lemonsqueezy'(레거시). */
+    provider: text("provider").notNull().default("portone"),
     // ── LS 컬럼 (provider='lemonsqueezy' 일 때만 채워짐) ──
     lsSubscriptionId: text("ls_subscription_id").unique(),
     lsCustomerId: text("ls_customer_id"),

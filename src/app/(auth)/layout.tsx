@@ -1,7 +1,9 @@
+import { Suspense } from "react";
 import Link from "next/link";
 
 import { ROUTES } from "@/lib/constants";
 import { siteConfig } from "@/config/site";
+import { RefCapture } from "@/components/invites/ref-capture";
 
 export default function AuthLayout({
   children,
@@ -10,6 +12,11 @@ export default function AuthLayout({
 }) {
   return (
     <main className="relative flex min-h-dvh flex-col items-center justify-center px-6 py-12">
+      {/* 친구초대 ref 쿼리 캡처 — /login·/signup 직접 진입자도 어트리뷰션 보존 */}
+      <Suspense fallback={null}>
+        <RefCapture />
+      </Suspense>
+
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,rgba(155,109,225,0.12),transparent_60%)]"

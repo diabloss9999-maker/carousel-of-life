@@ -245,6 +245,24 @@ export function buildPaymentId(userId: string): string {
   return `pay-${userId.slice(0, 8)}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
+/**
+ * Cron 자동 갱신용 결정론적 paymentId.
+ *
+ * 같은 구독·같은 갱신 주기에 대해선 매번 같은 ID 가 생성되어야 PortOne 의
+ * 멱등성이 보장된다 (재시도해도 한 번만 청구).
+ *   - subId: subscriptions.id
+ *   - periodEnd: 갱신 직전의 currentPeriodEndsAt (YYYYMMDD)
+ */
+export function buildRecurringPaymentId(
+  subId: string,
+  periodEnd: Date,
+): string {
+  const yyyymmdd = periodEnd
+    .toLocaleDateString("sv-SE", { timeZone: "Asia/Seoul" })
+    .replace(/-/g, "");
+  return `pay-recur-${subId.slice(0, 8)}-${yyyymmdd}`;
+}
+
 export function buildOrderId(userId: string, plan: "lite" | "pro"): string {
   return `order-${plan}-${userId.slice(0, 8)}-${Date.now()}`;
 }

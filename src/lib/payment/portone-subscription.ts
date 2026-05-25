@@ -18,6 +18,7 @@ import { subscriptions, portonePayments } from "@/db/schema";
 import {
   getBillingKeyByIssueId,
   chargeWithBillingKey,
+  cancelPayment,
   deleteBillingKey,
   buildPaymentId,
   buildOrderId,
@@ -208,7 +209,25 @@ export async function createPortOneSubscription(opts: {
       amount,
     };
   } catch (e) {
-    console.error("[portone-subscription] DB insert failed", e);
+    console.error("[portone-subscription] DB insert failed — 보상 환불 시도", e);
+    // 사용자 돈만 빠지고 시스템엔 흔적 없는 상황 방지 — 자동 환불.
+    try {
+      await cancelPayment({
+        paymentId,
+        reason: "DB 저장 실패에 의한 자동 환불",
+      });
+    } catch (refundErr) {
+      console.error(
+        "[portone-subscription] 보상 환불 실패 — 수동 조치 필요",
+        { paymentId, billingKey, refundErr },
+      );
+    }
+    // 빌링키도 정리 (남겨두면 다음 cron 에서 또 사용)
+    try {
+      await deleteBillingKey(billingKey);
+    } catch {
+      /* 무시 */
+    }
     return {
       ok: false,
       code: "DB_FAILED",

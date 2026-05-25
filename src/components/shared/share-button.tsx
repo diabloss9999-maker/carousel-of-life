@@ -447,7 +447,7 @@ export function ShareButton({
       </Button>
 
       {open && (
-        <div className="absolute right-0 bottom-full mb-2 z-50 w-60 rounded-xl border border-border/60 bg-white shadow-xl overflow-hidden">
+        <div className="absolute right-0 bottom-full mb-2 z-50 w-60 rounded-xl border border-border/60 bg-popover text-popover-foreground shadow-xl overflow-hidden backdrop-blur-md">
           {/* ① 카카오톡·메신저 — 모바일 시스템 공유 시트 */}
           <button
             type="button"

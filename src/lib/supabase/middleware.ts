@@ -9,14 +9,28 @@ import { NextResponse, type NextRequest } from "next/server";
 import { ROUTES } from "@/lib/constants";
 import { clientEnv } from "@/lib/env";
 
+/**
+ * 인증 필수 라우트. (dashboard) 그룹 안의 모든 페이지 포함.
+ * 새 페이지 추가 시 여기 함께 등록.
+ */
 const PROTECTED_PREFIXES = [
-  ROUTES.today,
-  ROUTES.chat,
-  ROUTES.tarot,
-  ROUTES.saju,
-  ROUTES.compatibility,
-  ROUTES.settings,
-  ROUTES.onboarding,
+  "/archive",
+  "/chat",
+  "/collection",
+  "/compatibility",
+  "/dream",
+  "/history",
+  "/name-compatibility",
+  "/name-reading",
+  "/onboarding",
+  "/palm",
+  "/personality",
+  "/saju",
+  "/settings",
+  "/stories",
+  "/tarot",
+  "/today",
+  "/world",
 ];
 
 const AUTH_ONLY_PREFIXES = [ROUTES.login, ROUTES.signup];

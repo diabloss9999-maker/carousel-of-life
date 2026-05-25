@@ -128,7 +128,8 @@ export function calculateNameCompatibility(
     throw new Error("이름에서 자음을 찾지 못했어요. 한글 이름을 확인해 주세요.");
   }
 
-  // 3) 인접 합산 → 자리수만 → 길이 2 까지 반복
+  // 3) 인접 합산 → 자리수만 → 길이 2 까지 반복.
+  //    개별 숫자가 두 자리 이상이면 한 번 더 줄여 score 가 99 를 넘지 않게 보장.
   while (nums.length > 2) {
     const next: number[] = [];
     for (let i = 0; i < nums.length - 1; i += 1) {
@@ -136,8 +137,11 @@ export function calculateNameCompatibility(
     }
     nums = next;
   }
-  // 길이 1 이면 한 자리 — 앞에 0 패딩
+  // 길이가 2 인 경우에도 각 자리수가 10 이상일 수 있어 안전하게 % 10 적용
+  // (이름이 매우 짧고 자음 합이 큰 케이스 — 예: "흥" 5획, "훈" 6획 → [5, 6] OK,
+  //  하지만 입력 조합에 따라 [11, 13] 같은 케이스 발생 가능)
   if (nums.length === 1) nums = [0, nums[0]];
+  nums = [nums[0] % 10, nums[1] % 10];
 
   const score = nums[0] * 10 + nums[1];
   const { label, tone } = gradeOf(score);
