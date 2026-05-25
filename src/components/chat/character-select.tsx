@@ -126,9 +126,10 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
               <div className={cn("flex-1 h-px", deco.border, "border-t")} />
             </div>
 
-            {/* 캐릭터 카드 그리드 — 모바일 2열, 태블릿 이상 3열.
-                3열이면 카드 폭이 좁아 친밀도 라벨이 글자 단위로 깨짐. */}
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-3">
+            {/* 캐릭터 카드 그리드.
+                · 모바일 (< sm): 1열, 가로 레이아웃 (좌측 큰 이미지 + 우측 정보)
+                · sm 이상      : 3열, 세로 레이아웃 (이미지 위 + 정보 아래) */}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-3">
               {ids.map((id) => {
                 const char = CHARACTERS[id];
                 const isLoading = isPending && selected === id;
@@ -145,22 +146,26 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                     onClick={() => handleSelect(id)}
                     disabled={isPending}
                     className={cn(
-                      "group relative flex flex-col items-center gap-2 rounded-2xl border ring-1 ring-transparent p-2 sm:p-3 text-center transition-all duration-200",
+                      "group relative flex items-stretch gap-3 sm:flex-col sm:items-center sm:gap-2",
+                      "rounded-2xl border ring-1 ring-transparent p-3 sm:p-3",
+                      "text-left sm:text-center transition-all duration-200",
                       "disabled:opacity-60 disabled:cursor-not-allowed",
                       isSelected
                         ? CHAR_SELECTED[id]
                         : cn("app-surface", CHAR_ACCENT[id]),
                     )}
                   >
-                    {/* 캐릭터 이미지 */}
-                    <div className="relative w-full overflow-hidden rounded-xl shadow-md">
+                    {/* 캐릭터 이미지
+                        모바일: 좌측 고정 너비 (w-32 = 128px) · 세로형 비율
+                        sm+ : 카드 전체 폭 */}
+                    <div className="relative w-32 shrink-0 sm:w-full overflow-hidden rounded-xl shadow-md">
                       <CharacterImage
                         character={char}
                         width={600}
                         height={900}
                         quality={95}
-                        className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
-                        sizes="(max-width: 640px) 45vw, (max-width: 1024px) 25vw, 220px"
+                        className="h-auto w-full transition-transform duration-300 group-hover:scale-[1.03]"
+                        sizes="(max-width: 640px) 128px, (max-width: 1024px) 25vw, 220px"
                       />
                       {isLoading && (
                         <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-xl">
@@ -175,16 +180,16 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                       </div>
                     </div>
 
-                    {/* 이름 + 직함 */}
-                    <div className="w-full space-y-1">
-                      <p className="font-mystic font-bold text-[15px] leading-tight text-foreground/95">
+                    {/* 이름 + 직함 + 훅 + 친밀도 */}
+                    <div className="flex min-w-0 flex-1 flex-col justify-center gap-1.5 sm:w-full sm:flex-none sm:justify-start sm:gap-1">
+                      <p className="font-mystic font-bold text-base leading-tight text-foreground/95 sm:text-[15px]">
                         {name}
                       </p>
                       <p className="text-[15px] text-muted-foreground/70 leading-tight">
                         {title}
                       </p>
-                      {/* 훅 — 데스크탑에서만 */}
-                      <p className="hidden sm:block text-[15px] text-foreground/80 leading-snug font-mystic italic">
+                      {/* 훅 — 모바일에서도 노출 (충분한 폭 확보됨) */}
+                      <p className="text-[15px] text-foreground/80 leading-snug font-mystic italic line-clamp-2 sm:line-clamp-none">
                         &ldquo;{hook}&rdquo;
                       </p>
                       {/* 친밀도 */}
