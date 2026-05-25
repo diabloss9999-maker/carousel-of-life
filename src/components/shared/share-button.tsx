@@ -103,12 +103,65 @@ export function ShareButton({
 
   /**
    * 시스템 공유 시트 — 모바일이면 카카오톡·메신저·메일 등 모두 노출.
-   * Web Share API 사용. 데스크탑은 지원 안 함 (브라우저 대부분 모바일만 노출).
+   *
+   * 흐름:
+   *   1) data-capture-root 가 조상에 있으면 화면 그대로 PNG 캡처
+   *   2) 모바일 + Web Share files 지원 → 이미지 첨부 공유 (카카오톡에 그
+   *      이미지가 그대로 전송됨 — OG 카드가 아닌 사용자가 본 화면)
+   *   3) 미지원/데스크탑 → 기존 URL+텍스트 공유 또는 클립보드 복사
    */
   async function handleSystemShare() {
     setOpen(false);
+
+    // 1) 화면 캡처 시도 (data-capture-root 안에 있을 때만)
+    let blob: Blob | null = null;
+    try {
+      const captureNode = ref.current?.closest<HTMLElement>("[data-capture-root]");
+      if (captureNode) {
+        const dataUrl = await toPng(captureNode, {
+          pixelRatio: 2,
+          cacheBust: true,
+        });
+        blob = await (await fetch(dataUrl)).blob();
+      }
+    } catch {
+      // 캡처 실패 시 URL 공유로 자연 폴백
+      blob = null;
+    }
+
+    // 2) 모바일 + files 지원 → 이미지 첨부 공유
+    if (
+      blob &&
+      isMobileUA() &&
+      typeof navigator !== "undefined" &&
+      "canShare" in navigator
+    ) {
+      const file = new File([blob], "carousel-of-life.png", {
+        type: "image/png",
+      });
+      const nav = navigator as Navigator & {
+        canShare?: (data: ShareData) => boolean;
+      };
+      const shareData: ShareData = {
+        files: [file],
+        title,
+        text: shareText,
+      };
+      if (nav.canShare?.(shareData)) {
+        try {
+          await navigator.share(shareData);
+          setStatus("shared");
+          setTimeout(() => setStatus("idle"), 2000);
+          return;
+        } catch (e) {
+          if (e instanceof Error && e.name === "AbortError") return;
+          // files 공유 실패 시 URL 공유로 폴백
+        }
+      }
+    }
+
+    // 3) 폴백 — URL+텍스트 공유 또는 클립보드 복사
     if (typeof navigator === "undefined" || !navigator.share) {
-      // 데스크탑이거나 미지원 — 링크 복사로 폴백
       await copyToClipboard();
       setStatus("copied");
       setTimeout(() => setStatus("idle"), 2000);
@@ -123,9 +176,7 @@ export function ShareButton({
       setStatus("shared");
       setTimeout(() => setStatus("idle"), 2000);
     } catch (e) {
-      // 사용자 취소는 무시
       if (e instanceof Error && e.name === "AbortError") return;
-      // 실패 시 링크 복사
       await copyToClipboard();
       setStatus("copied");
       setTimeout(() => setStatus("idle"), 2000);
@@ -269,7 +320,7 @@ export function ShareButton({
             <MessageCircle className="h-4 w-4 text-yellow-500 flex-shrink-0" aria-hidden />
             <div>
               <p className="font-medium text-[15px]">카카오톡·메신저로 공유</p>
-              <p className="text-[15px] text-muted-foreground mt-0.5">모바일에서 앱 선택 시트가 열려요</p>
+              <p className="text-[15px] text-muted-foreground mt-0.5">화면 그대로 이미지로 보내요</p>
             </div>
           </button>
 
