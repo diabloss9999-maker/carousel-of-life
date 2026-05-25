@@ -17,20 +17,29 @@ import {
   toggleAmbientMuted,
 } from "./ambient-store";
 
-/** 대시보드 라우트 prefix — 이 경로들에서는 글로벌 토글이 숨겨진다. */
+/**
+ * 대시보드 라우트 prefix — 이 경로들에서는 글로벌 토글이 숨겨진다.
+ * (src/app/(dashboard)/ 그룹 안의 모든 라우트와 일치해야 한다.
+ *  새 페이지 추가 시 여기 함께 추가.)
+ */
 const DASHBOARD_PREFIXES = [
-  "/today",
-  "/chat",
-  "/tarot",
-  "/saju",
-  "/personality",
-  "/history",
-  "/collection",
-  "/world",
-  "/settings",
-  "/onboarding",
-  "/compatibility",
   "/archive",
+  "/chat",
+  "/collection",
+  "/compatibility",
+  "/dream",
+  "/history",
+  "/name-compatibility",
+  "/name-reading",
+  "/onboarding",
+  "/palm",
+  "/personality",
+  "/saju",
+  "/settings",
+  "/stories",
+  "/tarot",
+  "/today",
+  "/world",
 ] as const;
 
 function isDashboardRoute(pathname: string): boolean {
