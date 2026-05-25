@@ -333,3 +333,14 @@ export const nameReadingAiSchema = z.object({
   advice: z.string().min(1).max(600),
 });
 export type NameReadingAiOutput = z.infer<typeof nameReadingAiSchema>;
+
+/** 이름 궁합 AI 응답 — 짧고 빠른 풀이. */
+export const nameCompatibilityAiSchema = z.object({
+  /** 한 줄 요약 (40자 이내). 점술사 톤. */
+  headline: z.string().min(1).max(80),
+  /** 본문 3-4줄 풀이 (두 이름의 결을 짚어주는). */
+  reading: z.string().min(1).max(500),
+  /** 권유 한 줄 — 두 사람에게 어떤 마음가짐이 좋을지. */
+  advice: z.string().min(1).max(200),
+});
+export type NameCompatibilityAiOutput = z.infer<typeof nameCompatibilityAiSchema>;

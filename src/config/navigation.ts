@@ -84,6 +84,7 @@ export const mainNav: NavEntry[] = [
       { type: "leaf", href: "/personality"                   as Route, labelKey: "personality" },
       { type: "leaf", href: "/dream"                         as Route, labelKey: "dream" },
       { type: "leaf", href: "/name-reading"                  as Route, labelKey: "nameReading" },
+      { type: "leaf", href: "/name-compatibility"            as Route, labelKey: "nameCompatibility" },
       { type: "leaf", href: "/today?category=chinese_zodiac" as Route, labelKey: "chineseZodiac" },
     ],
   },
