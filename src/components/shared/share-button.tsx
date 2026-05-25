@@ -48,6 +48,28 @@ function isMobileUA(): boolean {
 }
 
 /**
+ * data-capture-root 노드를 PNG 로 캡처. 알파 채널 문제 해결을 위해 캡처 직전
+ * is-capturing 클래스 추가로 불투명 다크 배경 강제 적용, 캡처 직후 클래스 제거.
+ */
+async function captureCardAsBlob(
+  captureNode: HTMLElement,
+): Promise<Blob | null> {
+  captureNode.classList.add("is-capturing");
+  try {
+    const dataUrl = await toPng(captureNode, {
+      pixelRatio: 2,
+      cacheBust: true,
+      backgroundColor: "#1a1428",
+    });
+    return await (await fetch(dataUrl)).blob();
+  } catch {
+    return null;
+  } finally {
+    captureNode.classList.remove("is-capturing");
+  }
+}
+
+/**
  * 결과 공유 버튼.
  *
  * 드롭다운 옵션:
@@ -116,20 +138,9 @@ export function ShareButton({
   async function handleSystemShare() {
     setOpen(false);
 
-    // 1) 화면 캡처
-    let blob: Blob | null = null;
-    try {
-      const captureNode = ref.current?.closest<HTMLElement>("[data-capture-root]");
-      if (captureNode) {
-        const dataUrl = await toPng(captureNode, {
-          pixelRatio: 2,
-          cacheBust: true,
-        });
-        blob = await (await fetch(dataUrl)).blob();
-      }
-    } catch {
-      blob = null;
-    }
+    // 1) 화면 캡처 (불투명 배경 강제 — 인스타·카카오톡에서 어두워지지 않게)
+    const captureNode = ref.current?.closest<HTMLElement>("[data-capture-root]");
+    const blob = captureNode ? await captureCardAsBlob(captureNode) : null;
 
     // 2) 카카오 SDK 우선 — 데스크탑·모바일 모두 카카오톡으로 자동 공유
     if (
@@ -229,20 +240,9 @@ export function ShareButton({
   async function handleXShare() {
     setOpen(false);
 
-    // 1) 화면 캡처
-    let blob: Blob | null = null;
-    try {
-      const captureNode = ref.current?.closest<HTMLElement>("[data-capture-root]");
-      if (captureNode) {
-        const dataUrl = await toPng(captureNode, {
-          pixelRatio: 2,
-          cacheBust: true,
-        });
-        blob = await (await fetch(dataUrl)).blob();
-      }
-    } catch {
-      blob = null;
-    }
+    // 1) 화면 캡처 (불투명 배경 강제)
+    const captureNode = ref.current?.closest<HTMLElement>("[data-capture-root]");
+    const blob = captureNode ? await captureCardAsBlob(captureNode) : null;
 
     // 2) 모바일 + Web Share files 지원 → 시스템 시트로 X 앱 호출
     if (
@@ -344,22 +344,21 @@ export function ShareButton({
   async function handleInstagramShare() {
     setOpen(false);
 
-    // 1) data-capture-root 가 조상에 있으면 화면 그대로 캡처 — 사용자 기대치
+    // 1) data-capture-root 가 조상에 있으면 화면 그대로 캡처 (불투명 배경 강제)
     // 2) 없으면 imageUrl 폴백
+    const captureNode = ref.current?.closest<HTMLElement>("[data-capture-root]");
     let blob: Blob | null = null;
-    try {
-      const captureNode = ref.current?.closest<HTMLElement>("[data-capture-root]");
-      if (captureNode) {
-        const dataUrl = await toPng(captureNode, {
-          pixelRatio: 2,
-          cacheBust: true,
-        });
-        blob = await (await fetch(dataUrl)).blob();
-      } else if (imageUrl) {
+    if (captureNode) {
+      blob = await captureCardAsBlob(captureNode);
+    } else if (imageUrl) {
+      try {
         blob = await (await fetch(imageUrl)).blob();
+      } catch {
+        blob = null;
       }
-    } catch {
-      // 캡처 실패 — 캡션이라도 복사
+    }
+
+    if (!blob) {
       await copyToClipboard();
       setStatus("copied");
       setTimeout(() => setStatus("idle"), 2000);

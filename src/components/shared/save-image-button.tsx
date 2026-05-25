@@ -40,14 +40,19 @@ export function SaveImageButton({
       let blob: Blob | null = null;
 
       if (captureNode) {
-        // 화면 그대로 캡처 — DPR 2x 로 선명하게.
-        const dataUrl = await toPng(captureNode, {
-          pixelRatio: 2,
-          cacheBust: true,
-          backgroundColor: undefined, // 카드 자체 배경 유지
-        });
-        const res = await fetch(dataUrl);
-        blob = await res.blob();
+        // 캡처 모드 클래스 토글 — backdrop-blur·반투명 제거하고 불투명 배경 강제
+        captureNode.classList.add("is-capturing");
+        try {
+          const dataUrl = await toPng(captureNode, {
+            pixelRatio: 2,
+            cacheBust: true,
+            backgroundColor: "#1a1428",
+          });
+          const res = await fetch(dataUrl);
+          blob = await res.blob();
+        } finally {
+          captureNode.classList.remove("is-capturing");
+        }
       } else if (imageUrl) {
         // 폴백: 서버 OG 이미지 다운로드
         const res = await fetch(imageUrl);

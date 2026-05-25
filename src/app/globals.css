@@ -167,6 +167,18 @@ body .on-character-image * {
   color: var(--foreground);
 }
 
+/* 캡처 모드 — html-to-image 가 카드 노드를 PNG 로 저장하기 직전에 추가되는 클래스.
+   backdrop-filter 와 반투명 배경은 캡처 시 alpha 채널로 남아 인스타 스토리·카카오톡에서
+   검은 배경이 비춰 보이는 문제 발생. 캡처 동안은 불투명 다크 보라 배경을 강제 적용하고
+   캡처 직후 클래스 제거. */
+.is-capturing,
+.is-capturing .app-surface,
+.app-surface.is-capturing {
+  background: #1a1428 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
