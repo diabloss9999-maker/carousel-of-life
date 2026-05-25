@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, Copy, MessageCircle, Share2 } from "lucide-react";
 import { toPng } from "html-to-image";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -183,15 +184,124 @@ export function ShareButton({
     }
   }
 
-  /** X(트위터) 인텐트 — 새 창에 작성 화면 열림. url 은 og:image 가 잡힌 share 페이지. */
-  function handleXShare() {
+  /**
+   * X(트위터) 공유 — 화면 캡처 이미지가 함께 가도록.
+   *
+   * 흐름:
+   *  1) data-capture-root 에서 PNG 캡처
+   *  2) 모바일 + Web Share files 지원 → 시스템 시트 (X 앱이 이미지 첨부된 채로 열림)
+   *  3) 데스크탑 또는 미지원
+   *     - 클립보드에 이미지 복사 시도 (ClipboardItem)
+   *     - 실패 시 이미지 다운로드
+   *     - X 인텐트 새 탭 열기 + 토스트 안내
+   *
+   * X 의 intent URL 자체는 이미지 자동 첨부를 지원하지 않으므로,
+   * 사용자가 X 작성창에서 Ctrl+V (또는 첨부 버튼) 해야 한다.
+   */
+  async function handleXShare() {
     setOpen(false);
+
+    // 1) 화면 캡처
+    let blob: Blob | null = null;
+    try {
+      const captureNode = ref.current?.closest<HTMLElement>("[data-capture-root]");
+      if (captureNode) {
+        const dataUrl = await toPng(captureNode, {
+          pixelRatio: 2,
+          cacheBust: true,
+        });
+        blob = await (await fetch(dataUrl)).blob();
+      }
+    } catch {
+      blob = null;
+    }
+
+    // 2) 모바일 + Web Share files 지원 → 시스템 시트로 X 앱 호출
+    if (
+      blob &&
+      isMobileUA() &&
+      typeof navigator !== "undefined" &&
+      "canShare" in navigator
+    ) {
+      const file = new File([blob], "carousel-of-life.png", {
+        type: "image/png",
+      });
+      const nav = navigator as Navigator & {
+        canShare?: (data: ShareData) => boolean;
+      };
+      const shareData: ShareData = { files: [file], title, text: xText };
+      if (nav.canShare?.(shareData)) {
+        try {
+          await navigator.share(shareData);
+          setStatus("shared");
+          setTimeout(() => setStatus("idle"), 2000);
+          return;
+        } catch (e) {
+          if (e instanceof Error && e.name === "AbortError") return;
+          // 폴백
+        }
+      }
+    }
+
+    // 3) 데스크탑/미지원 — 클립보드에 이미지 복사 시도 → X 인텐트 새 탭
+    let imageOnClipboard = false;
+    if (blob && typeof navigator !== "undefined" && navigator.clipboard) {
+      try {
+        const ClipboardItemCtor =
+          typeof window !== "undefined"
+            ? (window as unknown as { ClipboardItem?: typeof ClipboardItem })
+                .ClipboardItem
+            : undefined;
+        if (ClipboardItemCtor) {
+          await navigator.clipboard.write([
+            new ClipboardItemCtor({ "image/png": blob }),
+          ]);
+          imageOnClipboard = true;
+        }
+      } catch {
+        imageOnClipboard = false;
+      }
+    }
+
+    // 클립보드 복사 실패 시 이미지 다운로드로 폴백
+    if (!imageOnClipboard && blob) {
+      try {
+        const objectUrl = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = objectUrl;
+        a.download = "carousel-of-life.png";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(objectUrl);
+      } catch {
+        /* 다운로드 실패도 무시 — 텍스트만 X 인텐트로 */
+      }
+    }
+
+    // X 인텐트 열기
     const intent = new URL("https://twitter.com/intent/tweet");
     intent.searchParams.set("text", xText);
     intent.searchParams.set("url", shareUrl);
     window.open(intent.toString(), "_blank", "noopener,noreferrer");
-    setStatus("shared");
-    setTimeout(() => setStatus("idle"), 2000);
+
+    // 안내 토스트
+    if (blob) {
+      if (imageOnClipboard) {
+        toast.success(
+          "이미지를 클립보드에 복사했어요. X 작성창에서 Ctrl+V 로 붙여넣어주세요.",
+        );
+      } else {
+        toast.success(
+          "이미지를 저장했어요. X 작성창에서 사진 첨부 버튼으로 추가해주세요.",
+        );
+      }
+      setStatus("saved");
+      setTimeout(() => setStatus("idle"), 3000);
+    } else {
+      setStatus("shared");
+      setTimeout(() => setStatus("idle"), 2000);
+    }
   }
 
   /**
@@ -333,7 +443,7 @@ export function ShareButton({
             <XIcon className="h-4 w-4 text-foreground flex-shrink-0" />
             <div>
               <p className="font-medium text-[15px]">X(트위터)에 공유</p>
-              <p className="text-[15px] text-muted-foreground mt-0.5">작성창이 자동으로 열려요</p>
+              <p className="text-[15px] text-muted-foreground mt-0.5">화면 그대로 이미지로 보내요</p>
             </div>
           </button>
 
