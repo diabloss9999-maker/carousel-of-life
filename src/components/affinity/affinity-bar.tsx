@@ -41,10 +41,14 @@ export function AffinityBar({ characterId, points, compact = false }: AffinityBa
   if (compact) {
     return (
       <div className="w-full space-y-1">
-        <div className="flex items-center justify-between">
-          <span className="text-[15px] text-muted-foreground">Lv.{level} {label}</span>
-          <span className="text-[15px] text-muted-foreground tabular-nums">
-            {points}{nextPoints != null ? `/${nextPoints}` : ""}
+        <div className="flex items-center justify-between gap-1.5">
+          {/* min-w-0 + truncate: 좁은 카드에서 라벨이 글자 단위로 깨지는 것 방지 */}
+          <span className="min-w-0 flex-1 truncate text-[15px] text-muted-foreground">
+            Lv.{level} {label}
+          </span>
+          <span className="shrink-0 whitespace-nowrap text-[15px] text-muted-foreground tabular-nums">
+            {points}
+            {nextPoints != null ? `/${nextPoints}` : ""}
           </span>
         </div>
         <div className="h-1 w-full overflow-hidden rounded-full bg-muted/40">

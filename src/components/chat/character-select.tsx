@@ -126,8 +126,9 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
               <div className={cn("flex-1 h-px", deco.border, "border-t")} />
             </div>
 
-            {/* 캐릭터 카드 그리드 */}
-            <div className="grid grid-cols-3 gap-2 sm:gap-3">
+            {/* 캐릭터 카드 그리드 — 모바일 2열, 태블릿 이상 3열.
+                3열이면 카드 폭이 좁아 친밀도 라벨이 글자 단위로 깨짐. */}
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-3">
               {ids.map((id) => {
                 const char = CHARACTERS[id];
                 const isLoading = isPending && selected === id;

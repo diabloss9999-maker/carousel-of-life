@@ -142,11 +142,20 @@ function ExpandedPanelPortal({
   const updatePosition = () => {
     if (!tileRef) return;
     const r = tileRef.getBoundingClientRect();
+    const sheetWidth = 200;
+    const viewportMargin = 12;
+    const desiredCenter = r.left + r.width / 2;
+    // 좌/우 가장자리에서 화면 밖으로 튀어나가지 않도록 clamp.
+    // 첫 번째 (운세) 타일처럼 좌측에 붙어있으면 그대로 두면 -50% transform 시
+    // 시트가 화면 왼쪽으로 잘려 보인다 → 최소 left 보장.
+    const minCenter = viewportMargin + sheetWidth / 2;
+    const maxCenter = window.innerWidth - viewportMargin - sheetWidth / 2;
+    const clampedCenter = Math.min(Math.max(desiredCenter, minCenter), maxCenter);
     setCoords({
       // 타일 위쪽으로 시트가 뜸 (8px 띄움).
       bottom: window.innerHeight - r.top + 8,
-      left: r.left + r.width / 2,
-      width: 200,
+      left: clampedCenter,
+      width: sheetWidth,
     });
   };
 
