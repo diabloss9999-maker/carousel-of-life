@@ -89,14 +89,14 @@ const HOMETEXT_KO: Record<string, string> = {
   midnight: "자정이다.",
   fullMoon: "달이 가득 찼다.",
   nameless: "무명이 가까워지고 있다.",
-  rifDeep:  "균열이 깊어지고 있다.",
+  rifDeep:  "인생의 회전목마가 돌기 시작했다.",
   boundary: "경계가 열려 있다.",
 };
 const HOMETEXT_EN: Record<string, string> = {
   midnight: "It is midnight.",
   fullMoon: "The moon is full.",
   nameless: "The Nameless draws near.",
-  rifDeep:  "The fracture is deepening.",
+  rifDeep:  "The carousel of life begins to turn.",
   boundary: "The boundary is open.",
 };
 

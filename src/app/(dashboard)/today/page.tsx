@@ -135,11 +135,6 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           >
             {t("title")}
           </h1>
-          <p className="mt-1.5 text-[15px] text-muted-foreground">
-            {profile.displayName
-              ? t("subtitleWithName", { name: profile.displayName })
-              : t("subtitleNoName")}
-          </p>
         </div>
       </header>
 
