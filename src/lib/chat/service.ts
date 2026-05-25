@@ -56,14 +56,24 @@ export async function createSession(opts: {
 }
 
 /**
- * 해당 캐릭터의 가장 최근 세션을 찾아 이어가거나, 없으면 새로 만든다.
+ * 해당 캐릭터의 **오늘(KST)** 세션을 찾아 이어가거나, 없으면 새로 만든다.
  *
- * 동일 점술사를 다시 선택했을 때 이전 대화를 자연스럽게 이어가기 위함.
+ * 정책 — 하루 단위 마인드 리셋:
+ *   · 어제 이전 세션은 이어가지 않음 (며칠 전 대화 컨텍스트가 오늘 답변에
+ *     끼어들어 "방금 한 얘기" 처럼 어색해지는 것 방지)
+ *   · 같은 날 안에서는 같은 캐릭터를 다시 선택해도 같은 세션을 이어감
+ *   · 어제 이전 세션·메시지는 DB 에 그대로 보존 (히스토리/도감용)
  */
 export async function findOrCreateSessionForCharacter(opts: {
   userId: string;
   character: string;
 }): Promise<{ session: ChatSession; resumed: boolean }> {
+  // KST 자정 (오늘 0시) 을 UTC 로 환산.
+  const todayKst = new Date().toLocaleDateString("sv-SE", {
+    timeZone: "Asia/Seoul",
+  });
+  const todayStartUtc = new Date(`${todayKst}T00:00:00+09:00`);
+
   const [recent] = await db
     .select()
     .from(chatSessions)
@@ -71,6 +81,7 @@ export async function findOrCreateSessionForCharacter(opts: {
       and(
         eq(chatSessions.userId, opts.userId),
         eq(chatSessions.character, opts.character),
+        gte(chatSessions.createdAt, todayStartUtc),
       ),
     )
     .orderBy(desc(chatSessions.createdAt))
