@@ -127,9 +127,9 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
             </div>
 
             {/* 캐릭터 카드 그리드.
-                · 모바일 (< sm): 1열, 가로 레이아웃 (좌측 큰 이미지 + 우측 정보)
-                · sm 이상      : 3열, 세로 레이아웃 (이미지 위 + 정보 아래) */}
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-3">
+                · 모바일 (< sm): 1열, 큰 이미지 + 이름 + 직함만 (심플)
+                · sm 이상      : 3열, 이미지 + 모든 정보 (훅·친밀도 등) */}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-3">
               {ids.map((id) => {
                 const char = CHARACTERS[id];
                 const isLoading = isPending && selected === id;
@@ -146,9 +146,8 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                     onClick={() => handleSelect(id)}
                     disabled={isPending}
                     className={cn(
-                      "group relative flex items-stretch gap-3 sm:flex-col sm:items-center sm:gap-2",
-                      "rounded-2xl border ring-1 ring-transparent p-3 sm:p-3",
-                      "text-left sm:text-center transition-all duration-200",
+                      "group relative flex flex-col items-center gap-3 sm:gap-2",
+                      "rounded-2xl border ring-1 ring-transparent p-3 text-center transition-all duration-200",
                       "disabled:opacity-60 disabled:cursor-not-allowed",
                       isSelected
                         ? CHAR_SELECTED[id]
@@ -156,16 +155,15 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                     )}
                   >
                     {/* 캐릭터 이미지
-                        모바일: 좌측 고정 너비 (w-32 = 128px) · 세로형 비율
-                        sm+ : 카드 전체 폭 */}
-                    <div className="relative w-32 shrink-0 sm:w-full overflow-hidden rounded-xl shadow-md">
+                        모바일: 풀폭 + aspect-[4/5] (얼굴+상반신 중심 자름)
+                        sm+  : 원본 비율 그대로 (h-auto) */}
+                    <div className="relative w-full overflow-hidden rounded-xl shadow-md aspect-[4/5] sm:aspect-auto">
                       <CharacterImage
                         character={char}
-                        width={600}
-                        height={900}
+                        fill
                         quality={95}
-                        className="h-auto w-full transition-transform duration-300 group-hover:scale-[1.03]"
-                        sizes="(max-width: 640px) 128px, (max-width: 1024px) 25vw, 220px"
+                        className="transition-transform duration-300 group-hover:scale-[1.03] sm:!relative sm:!h-auto"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 25vw, 220px"
                       />
                       {isLoading && (
                         <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-xl">
@@ -173,31 +171,33 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                         </div>
                       )}
                       {/* 전문 배지 */}
-                      <div className="absolute top-1.5 left-1.5 on-character-image">
-                        <span className="rounded-md bg-black/60 backdrop-blur-sm px-1.5 py-0.5 text-[15px] font-medium leading-none">
+                      <div className="absolute top-2 left-2 on-character-image">
+                        <span className="rounded-md bg-black/60 backdrop-blur-sm px-2 py-0.5 text-[15px] font-medium leading-none">
                           {specialty}
                         </span>
                       </div>
                     </div>
 
-                    {/* 이름 + 직함 + 훅 + 친밀도 */}
-                    <div className="flex min-w-0 flex-1 flex-col justify-center gap-1.5 sm:w-full sm:flex-none sm:justify-start sm:gap-1">
-                      <p className="font-mystic font-bold text-base leading-tight text-foreground/95 sm:text-[15px]">
+                    {/* 이름 + 직함 — 모바일은 여기까지만 */}
+                    <div className="w-full space-y-1">
+                      <p className="font-mystic font-bold text-lg leading-tight text-foreground/95 sm:text-[15px]">
                         {name}
                       </p>
-                      <p className="text-[15px] text-muted-foreground/70 leading-tight">
+                      <p className="text-[15px] text-muted-foreground/80 leading-tight">
                         {title}
                       </p>
-                      {/* 훅 — 모바일에서도 노출 (충분한 폭 확보됨) */}
-                      <p className="text-[15px] text-foreground/80 leading-snug font-mystic italic line-clamp-2 sm:line-clamp-none">
+                      {/* 훅 — 데스크탑(sm+)에서만 */}
+                      <p className="hidden sm:block text-[15px] text-foreground/80 leading-snug font-mystic italic">
                         &ldquo;{hook}&rdquo;
                       </p>
-                      {/* 친밀도 */}
-                      <AffinityBar
-                        characterId={id}
-                        points={affinities[id] ?? 0}
-                        compact
-                      />
+                      {/* 친밀도 — 데스크탑(sm+)에서만 */}
+                      <div className="hidden sm:block">
+                        <AffinityBar
+                          characterId={id}
+                          points={affinities[id] ?? 0}
+                          compact
+                        />
+                      </div>
                     </div>
                   </button>
                 );
