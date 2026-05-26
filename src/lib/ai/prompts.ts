@@ -832,10 +832,11 @@ export function buildFlowerOraclePrompt(opts: {
   /** 오늘의 꽃 모드인지 자유 뽑기 모드인지. */
   mode: "daily" | "free";
 }): string {
-  // 꽃의 카테고리에 따라 풀이 점술사가 다름 — buildUserContext 도 그 world 로
+  // 꽃점은 어떤 카테고리든 한자·전문술어 노출 X 일관 정책 — 항상 이세계 톤으로
+  // 한국어 비유만 받음. 점술사 voice 는 살아있되 어휘는 부드럽고 따뜻.
   const ctx = buildUserContext({
     profile: opts.profile,
-    world: opts.flower.category,
+    world: "이세계",
   });
   const modeHint =
     opts.mode === "daily"
@@ -846,8 +847,7 @@ export function buildFlowerOraclePrompt(opts: {
 ${ctx}
 
 [오늘의 꽃]
-- 이름: ${opts.flower.koreanName} (${opts.flower.scientificName})
-- 결: ${opts.flower.category}
+- 이름: ${opts.flower.koreanName} (학명: ${opts.flower.scientificName})
 - 전통 꽃말: ${opts.flower.meaning}
 - 핵심 키워드: ${opts.flower.keywords.join(" · ")}
 - 계절감: ${opts.flower.season}
@@ -855,17 +855,33 @@ ${ctx}
 [모드]
 ${modeHint}
 
-[지시]
-이 꽃이 사용자에게 건네는 메시지를 짧고 따뜻하게 풀어줘.
-- 꽃말을 1차 의미로 깔되, 사용자 사주(일간·오행)·MBTI 와 자연스럽게 엮어서 그 사람만의 결로 만들 것.
-- 일반적·운명론적 진단 ("당신은 운명적으로…") 금지.
-- 너무 길게 늘이지 마. headline 한 줄 + 본문 3-4문장 + 행동 권유 1줄.
-- 점술사 캐릭터 voice 는 시스템 프롬프트가 결정 — 그 어미·톤을 그대로 유지.
+[꽃점 풀이 원칙 — 반드시 지킬 것]
+이 콘텐츠는 꽃점이야. 무게감이 아니라 위로·다정함이 우선이야.
+
+1) 순한글 — 한자·한자어·전문술어 금지.
+   금지: 乙木, 壬午, 일간, 오행, 천간, 지지, 식신, 정관, 운기, 발복, 만사형통 등.
+   허용: '부드러운 결', '맑은 마음', '오늘의 흐름', '따뜻한 빛' 처럼 한국어 비유.
+   학명(scientificName)도 본문에 굳이 쓰지 마. 꽃 이름은 한국어로만.
+
+2) 따뜻한 톤 — 다정한 친구가 건네는 한마디처럼.
+   금지: 단정·예언·운명론('당신은 ~한 사람입니다', '~할 것입니다').
+   권장: '~한 결이에요', '~해도 좋아요', '~하면 마음이 한결 가벼울 거예요'.
+   어미는 '~요' 체로 부드럽게.
+
+3) 꽃말과 사용자의 결을 자연스럽게 엮어.
+   꽃말 그대로 베끼지 말고, 사용자의 본질·이름·MBTI 한 조각을 살짝 가져와
+   "지금 너에게 이런 마음" 처럼 풀어줘.
+
+4) 짧고 단정하게.
+   headline 한 줄 (40자 이내) + 본문 3-4문장 + 행동 권유 1줄.
+
+5) 점술사 캐릭터 voice 는 너무 강하게 가져가지 마.
+   캐릭터 어미는 살리되 거칠거나 무거운 단어는 빼고 부드럽게.
 
 반드시 아래 JSON 형식만:
 {
-  "headline": "한 줄 핵심 (40자 이내, 점술사 톤)",
-  "reading": "본문 3-4문장 (꽃말 + 사주 결합)",
+  "headline": "한 줄 핵심 (40자 이내, 따뜻한 톤)",
+  "reading": "본문 3-4문장 (꽃말과 사용자의 결을 부드럽게)",
   "todayAction": "오늘 해볼 만한 작은 행동 한 줄"
 }`;
 }

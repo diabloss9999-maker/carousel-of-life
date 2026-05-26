@@ -375,9 +375,15 @@ export const FLOWERS_BY_CATEGORY: Record<FlowerCategory, FlowerCard[]> = {
   북유럽: FLOWERS.filter((f) => f.category === "북유럽"),
 };
 
-/** 카테고리별 풀이 점술사 매핑. */
+/**
+ * 카테고리별 풀이 점술사 — 꽃점은 따뜻한 톤이 어울리는 캐릭터로만 매핑.
+ *
+ * 북유럽 캐릭터들(비요른·헬가·외르문드)은 모두 거칠거나 무거운 톤이라
+ * 꽃의 부드러운 결과 어울리지 않음 → 북유럽 꽃은 라엘(천사 대리인, 따뜻한 톤)
+ * 이 풀이. 캐릭터 카테고리 정합성보다 사용자 경험 우선.
+ */
 export const FLOWER_CHARACTER_BY_CATEGORY = {
-  동양: "shaman",   // 소율 — 접신의 무녀
-  이세계: "witch",  // 루나 — 달의 마녀
-  북유럽: "god",    // 신 — 북유럽 신
+  동양: "shaman",   // 소율 — 접신의 무녀 (다정함)
+  이세계: "witch",  // 루나 — 달의 마녀 (감성적)
+  북유럽: "sage",   // 라엘 — 천사 대리인 (따뜻함)
 } as const;
