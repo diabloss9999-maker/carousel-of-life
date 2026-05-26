@@ -26,19 +26,19 @@
       "name": "오늘의 운세",
       "shortName": "운세",
       "url": "/today",
-      "iconUrl": "https://carouseloflife.com/icons-pwa/icon-192.png"
+      "chosenIconUrl": "https://carouseloflife.com/icons-pwa/icon-192.png"
     },
     {
       "name": "점술사와 대화",
       "shortName": "점술사",
       "url": "/chat",
-      "iconUrl": "https://carouseloflife.com/icons-pwa/icon-192.png"
+      "chosenIconUrl": "https://carouseloflife.com/icons-pwa/icon-192.png"
     },
     {
       "name": "사주팔자",
       "shortName": "사주",
       "url": "/saju",
-      "iconUrl": "https://carouseloflife.com/icons-pwa/icon-192.png"
+      "chosenIconUrl": "https://carouseloflife.com/icons-pwa/icon-192.png"
     }
   ],
   "generatorApp": "bubblewrap-cli",
