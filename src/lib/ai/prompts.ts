@@ -4,6 +4,15 @@
  * 사용자 컨텍스트를 받아 운세·타로·궁합 프롬프트를 일관된 형식으로 만든다.
  */
 import type { UserProfile } from "@/types";
+import { CHARACTERS, type CharacterId } from "@/lib/chat/characters";
+
+/** 캐릭터 ID → 세계관 카테고리 (사주 인용 정책 분기). */
+function worldOf(characterId: CharacterId | undefined): CharacterWorld {
+  if (!characterId) return "any";
+  const c = CHARACTERS[characterId];
+  if (!c) return "any";
+  return c.category as CharacterWorld;
+}
 
 interface BuildContextOptions {
   profile: Pick<
@@ -21,25 +30,41 @@ interface BuildContextOptions {
   };
 }
 
+/** 세계관 카테고리 — 캐릭터별 사주 인용 정책 분기. */
+export type CharacterWorld = "동양" | "이세계" | "북유럽" | "any";
+
 /**
  * 사용자 사주 컨텍스트를 사람이 읽을 수 있는 한국어 문단으로 변환.
+ *
+ * 캐릭터 카테고리(world)에 따라 사주 한자 노출 정책이 달라진다:
+ *   - "동양": 사주 8자 한자 그대로 노출 + 한자 사용 시 풀이 동반
+ *     (소율·현도·흑랑 — 사주·천기 전문)
+ *   - "이세계": 사주 한자 노출 X, 일간 특성만 한국어로 + 한자 직접 인용 금지
+ *     (루나·라엘·카엘 — 타로·카드 전문)
+ *   - "북유럽": 사주 한자 노출 X, 일간 특성만 한국어로 + 한자 직접 인용 금지
+ *     (신·헌터·룬샤먼 — 룬 전문)
+ *   - "any" / 기본: 동양과 동일 (사주 풀이·이름풀이 등 사주 중심 콘텐츠용)
  */
-export function buildUserContext({ profile }: BuildContextOptions): string {
+export function buildUserContext({
+  profile,
+  world = "any",
+}: BuildContextOptions & { world?: CharacterWorld }): string {
   const lines: string[] = [];
+  const isOriental = world === "동양" || world === "any";
+
   if (profile.displayName) lines.push(`이름: ${profile.displayName}`);
   lines.push(
     `생년월일: ${profile.birthDate} (${profile.calendarSystem === "lunar" ? "음력" : "양력"})`,
   );
   if (profile.birthTime) lines.push(`태어난 시각: ${profile.birthTime}`);
-  else lines.push(`태어난 시각: 모름 (시주는 비워서 풀이)`);
+  else lines.push(`태어난 시각: 모름`);
   lines.push(
     `성별: ${profile.gender === "male" ? "남성" : profile.gender === "female" ? "여성" : "기타"}`,
   );
   if (profile.mbti) lines.push(`MBTI: ${profile.mbti}`);
   if (profile.birthPlace) lines.push(`출생지: ${profile.birthPlace}`);
 
-  // 사주 8자가 계산되어 있으면 명시적으로 박아서 AI 가 개인화에 활용.
-  // 형태: { year: {stem, branch}, month, day, hour } (각 한자 1자)
+  // 사주 정보 노출 — world 별로 다름.
   if (profile.sajuPillars && typeof profile.sajuPillars === "object") {
     const p = profile.sajuPillars as {
       year?: { stem?: string; branch?: string };
@@ -47,43 +72,89 @@ export function buildUserContext({ profile }: BuildContextOptions): string {
       day?: { stem?: string; branch?: string };
       hour?: { stem?: string; branch?: string };
     };
-    const fmt = (col?: { stem?: string; branch?: string }) =>
-      col?.stem && col?.branch ? `${col.stem}${col.branch}` : "?";
-    const pillarLine = `사주 8자: 년주 ${fmt(p.year)} · 월주 ${fmt(p.month)} · 일주 ${fmt(p.day)} · 시주 ${fmt(p.hour)}`;
-    lines.push(pillarLine);
-    if (p.day?.stem) lines.push(`일간(日干): ${p.day.stem} — 이 사람의 본질`);
+
+    if (isOriental) {
+      // 동양 — 한자 그대로 노출
+      const fmt = (col?: { stem?: string; branch?: string }) =>
+        col?.stem && col?.branch ? `${col.stem}${col.branch}` : "?";
+      lines.push(
+        `사주 8자: 년주 ${fmt(p.year)} · 월주 ${fmt(p.month)} · 일주 ${fmt(p.day)} · 시주 ${fmt(p.hour)}`,
+      );
+      if (p.day?.stem) lines.push(`일간(日干): ${p.day.stem} — 이 사람의 본질`);
+    } else {
+      // 이세계·북유럽 — 한자 노출 안 함. 일간 특성만 한국어 비유로.
+      if (p.day?.stem) {
+        const trait = STEM_KOREAN_TRAIT[p.day.stem];
+        if (trait) {
+          lines.push(`타고난 본질(참고용): ${trait}`);
+        }
+      }
+    }
   }
 
-  // 모든 풀이 (운세·타로·르노르망·룬·궁합·심층사주) 에 자동 적용되는 개인화 강제 지시.
-  // 같은 카드·같은 날에도 사용자별로 다른 풀이가 나오도록 AI 에게 명확히 요구.
+  // 개인화 강제 지시 — 모든 풀이 공통
   lines.push("");
   lines.push("[개인화 — 반드시 지킬 것]");
-  lines.push(
-    "위 사주(일주·일간) · MBTI · 생년월일 · 이름을 풀이에 직접 반영해. " +
-      "일반적·추상적 문장 (예: '오늘 좋은 일이 있을 거예요') 만 나열하면 실패. " +
-      "이 사람의 사주 글자·MBTI 패턴을 짚어 그 사람만의 결을 만들어야 함. " +
-      "다른 사람과 응답이 비슷하게 나오면 안 됨.",
-  );
+  if (isOriental) {
+    lines.push(
+      "위 사주(일주·일간) · MBTI · 생년월일 · 이름을 풀이에 직접 반영해. " +
+        "일반적·추상적 문장만 나열하면 실패. " +
+        "이 사람의 사주 글자·MBTI 패턴을 짚어 그 사람만의 결을 만들어야 함. " +
+        "다른 사람과 응답이 비슷하게 나오면 안 됨.",
+    );
+  } else {
+    lines.push(
+      "위 정보(본질 특성 · MBTI · 생년월일 · 이름)를 풀이에 자연스럽게 녹여. " +
+        "일반적·추상적 문장만 나열하면 실패. " +
+        "이 사람만의 결을 만들되, 너의 세계관 안의 언어로 풀어야 함. " +
+        "다른 사람과 응답이 비슷하게 나오면 안 됨.",
+    );
+  }
 
-  // 한자·전문 술어 사용 규칙 — 일반 사용자도 읽을 수 있게.
-  // 모든 풀이에 공통 적용.
+  // 세계관별 한자·전문술어 정책
   lines.push("");
-  lines.push("[한자·전문술어 표기 — 반드시 지킬 것]");
-  lines.push(
-    "한자(천간지지·오행·사주 용어 등)를 본문에 쓸 때는 반드시 그 옆에 괄호로 한국어 풀이를 같이 적어. " +
-      "독자는 한자를 모르는 일반 한국인이라는 전제로 써야 함. " +
-      "예시: " +
-      "'乙木' → '乙木(을목 — 부드러운 나무)', " +
-      "'壬午' → '壬午(임오 — 임수+오화)', " +
-      "'月運' → '月運(월운 — 이번 달의 흐름)', " +
-      "'金克木' → '金克木(금극목 — 쇠가 나무를 누름)', " +
-      "'食神' → '食神(식신 — 표현하고 베푸는 기운)'. " +
-      "같은 한자가 한 문단 안에서 반복되면 두 번째부터는 한자만 써도 OK (이미 풀이를 본 셈). " +
-      "한자를 아예 쓰지 않고 한국어로만 풀어 써도 OK — 다만 한자를 쓸 거면 무조건 풀이 동반.",
-  );
+  if (isOriental) {
+    lines.push("[한자·전문술어 표기 — 반드시 지킬 것]");
+    lines.push(
+      "한자(천간지지·오행·사주 용어 등)를 본문에 쓸 때는 반드시 그 옆에 괄호로 한국어 풀이를 같이 적어. " +
+        "독자는 한자를 모르는 일반 한국인이라는 전제. " +
+        "예시: '乙木' → '乙木(을목 — 부드러운 나무)', '壬午' → '壬午(임오 — 임수+오화)'. " +
+        "같은 한자가 한 문단 안에서 반복되면 두 번째부터는 한자만 써도 OK. " +
+        "한자를 아예 쓰지 않고 한국어로만 풀어 써도 OK — 다만 한자를 쓸 거면 무조건 풀이 동반.",
+    );
+  } else {
+    lines.push("[세계관 일관성 — 반드시 지킬 것]");
+    lines.push(
+      "너는 동양 사주의 한자 용어(乙木·壬午·卯月·辛未·일간·월운 등)를 본문에 직접 인용하지 않아. " +
+        "그건 동양 점술사(소율·현도·흑랑)의 영역이고, 너의 세계관 결과 다르거든. " +
+        "사용자의 본질·기질은 너의 세계관 비유로 변환해서 표현해. " +
+        (world === "이세계"
+          ? "예: '카드의 결' '균열의 방향' '별자리의 잔향' '잊혀진 이름' '경계 너머의 기억' 같은 이세계 톤."
+          : "예: '룬의 결' '나무의 가지' '늑대 발자국' '북풍의 방향' '신의 눈빛' 같은 북유럽 톤.") +
+        " 한자 자체가 꼭 필요하면 그 자리만 한국어로 풀어 써. " +
+        "예: '乙木(을목)' 대신 '부드러운 나무 같은 결'. ",
+    );
+  }
 
   return lines.join("\n");
 }
+
+/**
+ * 천간(일간) 한자 → 한국어 비유 매핑.
+ * 이세계·북유럽 캐릭터 prompt 에 한자 노출 없이 본질만 전달.
+ */
+const STEM_KOREAN_TRAIT: Record<string, string> = {
+  甲: "곧게 뻗어 오르는 큰 나무 — 주도적이고 직진하는 결",
+  乙: "부드럽게 휘감으며 자라는 덩굴 같은 나무 — 유연하고 끈질긴 결",
+  丙: "한낮의 태양 — 밝고 적극적이며 빛으로 영향 주는 결",
+  丁: "촛불·등불의 불빛 — 섬세하고 따뜻하며 안으로 비추는 결",
+  戊: "넓고 든든한 큰 산 — 묵직하고 신뢰 있는 결",
+  己: "부드러운 흙·논밭 — 품어주고 길러주는 결",
+  庚: "단단한 쇠·칼 — 결단력 있고 곧은 결",
+  辛: "잘 다듬어진 보석·금속 — 섬세하고 예민하며 빛나는 결",
+  壬: "흐르는 큰 물·바다 — 깊고 자유로우며 흘러가는 결",
+  癸: "맑은 빗물·이슬 — 차분하고 부드러우며 스며드는 결",
+};
 
 /** 오늘의 운세 카테고리 ID. */
 export type FortuneCategory =
@@ -246,7 +317,10 @@ export function buildDailyFortunePrompt(opts: {
   fortuneDate: string;
   characterId?: CharacterFortuneId;
 }): string {
-  const ctx = buildUserContext({ profile: opts.profile });
+  const ctx = buildUserContext({
+    profile: opts.profile,
+    world: worldOf(opts.characterId as CharacterId | undefined),
+  });
   const label = FORTUNE_LABEL[opts.category];
   const charId = opts.characterId ?? "witch";
   const voice = CHARACTER_FORTUNE_VOICE[charId];
@@ -341,7 +415,8 @@ export function buildTarotSinglePrompt(opts: {
   question: string | null;
   card: { id: string; name: string; isReversed: boolean };
 }): string {
-  const ctx = buildUserContext({ profile: opts.profile });
+  // 타로 = 이세계 점술사 영역 (루나·라엘·카엘)
+  const ctx = buildUserContext({ profile: opts.profile, world: "이세계" });
   const orient = opts.card.isReversed ? "역방향(逆位)" : "정방향(正位)";
   const question = opts.question?.trim() || "(질문 없음 — 오늘의 한 장 가이드)";
 
@@ -384,7 +459,8 @@ export function buildTarotThreePrompt(opts: {
   question: string | null;
   cards: Array<{ id: string; name: string; isReversed: boolean }>;
 }): string {
-  const ctx = buildUserContext({ profile: opts.profile });
+  // 타로 = 이세계
+  const ctx = buildUserContext({ profile: opts.profile, world: "이세계" });
   const positions = ["과거", "현재", "미래"] as const;
   const cardLines = opts.cards
     .map((c, i) => {
@@ -455,7 +531,8 @@ export function buildCompatibilityPrompt(opts: {
   profile: BuildContextOptions["profile"];
   partner: PartnerInfo;
 }): string {
-  const meCtx = buildUserContext({ profile: opts.profile });
+  // 궁합 = 사주 기반 = 동양
+  const meCtx = buildUserContext({ profile: opts.profile, world: "동양" });
   const partnerLines: string[] = [];
   partnerLines.push(`이름: ${opts.partner.name}`);
   partnerLines.push(
@@ -550,7 +627,8 @@ ${relationLine}
 export function buildSajuDeepPrompt(
   profile: BuildContextOptions["profile"],
 ): string {
-  const ctx = buildUserContext({ profile });
+  // 사주 심층 = 동양
+  const ctx = buildUserContext({ profile, world: "동양" });
 
   // 이미 계산된 4 기둥이 있으면 컨텍스트에 직접 노출 — AI 가 글자별 풀이를 정확히 만들 수 있도록.
   const pillarsLines: string[] = [];
@@ -649,7 +727,8 @@ export function buildDreamReadingPrompt(opts: {
   dreamContent: string;
   mood?: "bright" | "dark" | "weird" | "neutral";
 }): string {
-  const ctx = buildUserContext({ profile: opts.profile });
+  // 꿈해몽 = 동양 점술사 영역
+  const ctx = buildUserContext({ profile: opts.profile, world: "동양" });
   const moodLabel =
     opts.mood === "bright" ? "밝고 따뜻한 분위기"
     : opts.mood === "dark" ? "어둡고 무거운 분위기"
@@ -699,7 +778,8 @@ export function buildNameReadingPrompt(opts: {
   /** 본인 이름인지 다른 사람 이름인지. */
   isOwnName: boolean;
 }): string {
-  const ctx = buildUserContext({ profile: opts.profile });
+  // 이름풀이 = 한자·획수·오행 분석 = 동양
+  const ctx = buildUserContext({ profile: opts.profile, world: "동양" });
   const hanjaLine = opts.hanja ? `\n한자 표기: ${opts.hanja}` : "";
   const targetLabel = opts.isOwnName ? "본인 이름" : "타인 이름";
 
@@ -752,7 +832,11 @@ export function buildFlowerOraclePrompt(opts: {
   /** 오늘의 꽃 모드인지 자유 뽑기 모드인지. */
   mode: "daily" | "free";
 }): string {
-  const ctx = buildUserContext({ profile: opts.profile });
+  // 꽃의 카테고리에 따라 풀이 점술사가 다름 — buildUserContext 도 그 world 로
+  const ctx = buildUserContext({
+    profile: opts.profile,
+    world: opts.flower.category,
+  });
   const modeHint =
     opts.mode === "daily"
       ? "오늘 하루를 읽어주는 톤. '오늘 하루는…' 같은 구체적 안내."
@@ -848,11 +932,13 @@ ${toneHint}
 export function buildChatContext(
   profile: BuildContextOptions["profile"],
   enrichment: ChatEnrichment = {},
+  /** 채팅 캐릭터 ID — 세계관별 사주 인용 정책 분기. */
+  characterId?: CharacterId,
 ): string {
   const lines: string[] = [];
 
   lines.push("[질문자 기본 정보]");
-  lines.push(buildUserContext({ profile }));
+  lines.push(buildUserContext({ profile, world: worldOf(characterId) }));
 
   // 사주 심층 분석
   if (enrichment.sajuDeep) {

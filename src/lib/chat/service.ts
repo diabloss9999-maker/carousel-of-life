@@ -424,10 +424,10 @@ export async function prepareSendMessage(opts: {
         observation:       observationCtx || null,
       };
 
-      userCtx = buildChatContext(profile, enrichment);
+      userCtx = buildChatContext(profile, enrichment, characterId);
     } catch {
       // enrichment 실패 시 기본 컨텍스트만 사용
-      userCtx = buildChatContext(profile, {});
+      userCtx = buildChatContext(profile, {}, characterId);
     }
   }
 
