@@ -62,10 +62,11 @@ export default async function CollectionPage() {
   );
 
   return (
-    // 도감 wrapper 에 text-white 박으면 inherit 으로 자식 텍스트 기본색이 흰색.
-    // .app-surface 가 var(--foreground)(어두운색) 을 상속시키는 문제를 잡는다.
-    // 다이얼로그 안 배지(amber/sky/stone) 는 자체 text-{color} 명시라 영향 없음.
-    <div className="space-y-7 text-white">
+    // 도감 wrapper 에 data-keep-color 박으면 globals.css 의 body * catchall
+    // (모든 텍스트 강제 검정 !important) 의 예외로 들어가 자식 모두 흰색.
+    // 다이얼로그 안 배지(amber/sky/stone) 는 자체 text-{color} 명시지만
+    // catchall 이 더 강해서 검정 — 이 wrapper 안에서는 모두 흰색으로 통일.
+    <div data-keep-color className="space-y-7">
       <header className="space-y-3">
         <div className="flex items-end justify-between gap-4">
           <div>
