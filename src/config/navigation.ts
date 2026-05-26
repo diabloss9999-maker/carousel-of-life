@@ -67,6 +67,7 @@ export const mainNav: NavEntry[] = [
       { type: "leaf", href: "/tarot#tarot"            as Route, labelKey: "tarot" },
       { type: "leaf", href: "/tarot#lenormand"        as Route, labelKey: "lenormand" },
       { type: "leaf", href: "/tarot#runes"            as Route, labelKey: "runes" },
+      { type: "leaf", href: "/flower-oracle"          as Route, labelKey: "flowerOracle" },
       { type: "leaf", href: "/today?category=zodiac"  as Route, labelKey: "zodiac" },
     ],
   },

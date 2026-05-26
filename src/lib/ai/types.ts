@@ -334,6 +334,17 @@ export const nameReadingAiSchema = z.object({
 });
 export type NameReadingAiOutput = z.infer<typeof nameReadingAiSchema>;
 
+/** 플로로랜시 (꽃점) AI 응답 — 부드러운 한 마디. */
+export const flowerOracleAiSchema = z.object({
+  /** 한 줄 헤드라인 (40자 이내, 점술사 톤). */
+  headline: z.string().min(1).max(80),
+  /** 본문 풀이 3-4문장 (꽃말 + 사주·MBTI 결합). */
+  reading: z.string().min(1).max(500),
+  /** 오늘의 행동 권유 한 줄. */
+  todayAction: z.string().min(1).max(150),
+});
+export type FlowerOracleAiOutput = z.infer<typeof flowerOracleAiSchema>;
+
 /** 이름 궁합 AI 응답 — 짧고 빠른 풀이. */
 export const nameCompatibilityAiSchema = z.object({
   /** 한 줄 요약 (40자 이내). 점술사 톤. */

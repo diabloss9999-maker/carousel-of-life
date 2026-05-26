@@ -28,6 +28,7 @@ const DASHBOARD_PREFIXES = [
   "/collection",
   "/compatibility",
   "/dream",
+  "/flower-oracle",
   "/history",
   "/name-compatibility",
   "/name-reading",

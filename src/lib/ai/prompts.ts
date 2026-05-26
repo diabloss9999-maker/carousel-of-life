@@ -734,6 +734,59 @@ ${targetLabel}: ${opts.targetName}${hanjaLine}
 }
 
 /**
+ * 플로로랜시 (꽃점) 풀이 prompt.
+ *
+ * 매일/뽑기마다 한 송이 꽃이 결정되고, 그 꽃의 꽃말 + 사용자 사주를 결합해
+ * 부드러운 한 마디를 만든다. 점술사 voice 는 시스템 프롬프트에서 결정.
+ */
+export function buildFlowerOraclePrompt(opts: {
+  profile: BuildContextOptions["profile"];
+  flower: {
+    koreanName: string;
+    scientificName: string;
+    category: "동양" | "이세계" | "북유럽";
+    meaning: string;
+    keywords: string[];
+    season: string;
+  };
+  /** 오늘의 꽃 모드인지 자유 뽑기 모드인지. */
+  mode: "daily" | "free";
+}): string {
+  const ctx = buildUserContext({ profile: opts.profile });
+  const modeHint =
+    opts.mode === "daily"
+      ? "오늘 하루를 읽어주는 톤. '오늘 하루는…' 같은 구체적 안내."
+      : "지금 이 순간 사용자가 알고 싶어 한 흐름을 읽어주는 톤.";
+
+  return `[질문자 정보]
+${ctx}
+
+[오늘의 꽃]
+- 이름: ${opts.flower.koreanName} (${opts.flower.scientificName})
+- 결: ${opts.flower.category}
+- 전통 꽃말: ${opts.flower.meaning}
+- 핵심 키워드: ${opts.flower.keywords.join(" · ")}
+- 계절감: ${opts.flower.season}
+
+[모드]
+${modeHint}
+
+[지시]
+이 꽃이 사용자에게 건네는 메시지를 짧고 따뜻하게 풀어줘.
+- 꽃말을 1차 의미로 깔되, 사용자 사주(일간·오행)·MBTI 와 자연스럽게 엮어서 그 사람만의 결로 만들 것.
+- 일반적·운명론적 진단 ("당신은 운명적으로…") 금지.
+- 너무 길게 늘이지 마. headline 한 줄 + 본문 3-4문장 + 행동 권유 1줄.
+- 점술사 캐릭터 voice 는 시스템 프롬프트가 결정 — 그 어미·톤을 그대로 유지.
+
+반드시 아래 JSON 형식만:
+{
+  "headline": "한 줄 핵심 (40자 이내, 점술사 톤)",
+  "reading": "본문 3-4문장 (꽃말 + 사주 결합)",
+  "todayAction": "오늘 해볼 만한 작은 행동 한 줄"
+}`;
+}
+
+/**
  * 이름 궁합 풀이 prompt — 알고리즘으로 계산된 점수 + 두 이름을 받아
  * 짧고 따뜻한 풀이를 만들어준다.
  *
