@@ -11,11 +11,11 @@
  *   - BillingKey.Deleted     — 빌링키 삭제
  *
  * 시그니처 검증:
- *   PortOne 은 webhook-signature 헤더에 HMAC-SHA256 (base64) 를 보냄.
- *   환경변수 PORTONE_WEBHOOK_SECRET 으로 검증. 빈 값이면 dev 단계라 검증 생략.
+ *   PortOne V2 는 standardwebhooks(svix) 표준 — webhook-id · webhook-timestamp ·
+ *   webhook-signature 헤더를 함께 본다. `@portone/server-sdk` 의 Webhook.verify 사용.
  */
 import { NextResponse, type NextRequest } from "next/server";
-import crypto from "crypto";
+import { Webhook } from "@portone/server-sdk";
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
@@ -36,35 +36,44 @@ interface PortOneWebhookPayload {
   };
 }
 
-function verifySignature(rawBody: string, header: string | null): boolean {
-  const secret = serverEnv.PORTONE_WEBHOOK_SECRET;
-  if (!secret) {
-    // production 에선 secret 필수 — fail-closed
-    if (process.env.NODE_ENV === "production") {
-      console.error("[portone webhook] PORTONE_WEBHOOK_SECRET 미설정 (production)");
-      return false;
-    }
-    console.warn("[portone webhook] PORTONE_WEBHOOK_SECRET 미설정 — dev 검증 생략");
-    return true;
-  }
-  if (!header) return false;
-  const hmac = crypto.createHmac("sha256", secret);
-  const digest = hmac.update(rawBody).digest("base64");
-  const a = Buffer.from(digest);
-  const b = Buffer.from(header);
-  if (a.length !== b.length) return false;
-  return crypto.timingSafeEqual(a, b);
-}
-
 export async function POST(req: NextRequest) {
   const rawBody = await req.text();
-  const sig = req.headers.get("webhook-signature") ?? req.headers.get("x-portone-signature");
+  const secret = serverEnv.PORTONE_WEBHOOK_SECRET;
 
-  if (!verifySignature(rawBody, sig)) {
-    return NextResponse.json(
-      { ok: false, error: "INVALID_SIGNATURE" },
-      { status: 401 },
-    );
+  // 1) 시그니처 검증 — PortOne 공식 SDK 의 Webhook.verify 사용.
+  //    내부적으로 standardwebhooks(svix) 표준:
+  //      · webhook-id · webhook-timestamp · webhook-signature 헤더 검증
+  //      · HMAC-SHA256({id}.{timestamp}.{body}) === signature
+  //      · timestamp ±5분 허용
+  //      · secret 이 whsec_ prefix 면 base64 decode
+  if (!secret) {
+    if (process.env.NODE_ENV === "production") {
+      console.error("[portone webhook] PORTONE_WEBHOOK_SECRET 미설정 (production)");
+      return NextResponse.json({ error: "no_secret" }, { status: 500 });
+    }
+    console.warn("[portone webhook] PORTONE_WEBHOOK_SECRET 미설정 — dev 검증 생략");
+  } else {
+    try {
+      // headers 객체를 plain 으로 변환 (case-insensitive)
+      const headersObj: Record<string, string> = {};
+      req.headers.forEach((v, k) => {
+        headersObj[k] = v;
+      });
+      await Webhook.verify(secret, rawBody, headersObj);
+    } catch (e) {
+      if (e instanceof Webhook.WebhookVerificationError) {
+        console.error("[portone webhook] signature 검증 실패", e.message);
+        return NextResponse.json(
+          { ok: false, error: "INVALID_SIGNATURE" },
+          { status: 401 },
+        );
+      }
+      console.error("[portone webhook] verify error", e);
+      return NextResponse.json(
+        { ok: false, error: "VERIFY_FAILED" },
+        { status: 401 },
+      );
+    }
   }
 
   let payload: PortOneWebhookPayload;
