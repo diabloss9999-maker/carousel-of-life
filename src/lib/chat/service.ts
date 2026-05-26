@@ -467,6 +467,9 @@ export async function prepareSendMessage(opts: {
 
 /**
  * AI 응답을 메시지로 저장 + 세션 last_message_at 업데이트.
+ *
+ * @param opts.cards 점술 요청 시 뽑힌 카드 메타. metadata.cards 로 저장돼
+ *   페이지 리로드 후에도 이미지가 유지된다.
  */
 export async function saveAssistantMessage(opts: {
   sessionId: string;
@@ -475,6 +478,14 @@ export async function saveAssistantMessage(opts: {
   inputTokens: number;
   outputTokens: number;
   model: string;
+  cards?: Array<{
+    id: string;
+    nameKo: string;
+    nameEn?: string;
+    imageSrc: string;
+    isReversed?: boolean;
+    position?: string;
+  }>;
 }): Promise<void> {
   await db.insert(chatMessages).values({
     sessionId: opts.sessionId,
@@ -484,6 +495,7 @@ export async function saveAssistantMessage(opts: {
     tokenInput: opts.inputTokens,
     tokenOutput: opts.outputTokens,
     model: opts.model,
+    metadata: opts.cards && opts.cards.length > 0 ? { cards: opts.cards } : null,
   });
 
   await db

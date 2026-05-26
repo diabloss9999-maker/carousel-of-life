@@ -67,6 +67,7 @@ const CATEGORY_ORDER: CollectionCategory[] = [
   "tarot",
   "lenormand",
   "runes",
+  "flowers",
   "chineseZodiac",
   "zodiac",
   "cheongan",
@@ -136,6 +137,7 @@ export function CollectionView({
       characters: { owned: 0, total: 0 },
       lenormand: { owned: 0, total: 0 },
       runes: { owned: 0, total: 0 },
+      flowers: { owned: 0, total: 0 },
     };
     for (const card of flatAll) {
       counts[card.category].total += 1;
@@ -153,7 +155,8 @@ export function CollectionView({
     tabCounts.cheongan.owned +
     tabCounts.characters.owned +
     tabCounts.lenormand.owned +
-    tabCounts.runes.owned;
+    tabCounts.runes.owned +
+    tabCounts.flowers.owned;
 
   // ESC 모달 닫기
   useEffect(() => {
@@ -242,10 +245,10 @@ export function CollectionView({
 
       {/* 진행도 표시 — 카테고리 탭 위 한 줄. */}
       <div className="flex items-end justify-between gap-3">
-        <h2 className="font-mystic text-lg font-semibold text-foreground sm:text-xl">
+        <h2 className="font-mystic text-lg font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)] sm:text-xl">
           {t("heading")}
         </h2>
-        <p className="text-[15px] tabular-nums text-muted-foreground">
+        <p className="text-[15px] tabular-nums text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
           {t("ownedFraction", { owned: ownedAll, total: totalAll })}
         </p>
       </div>
@@ -355,10 +358,10 @@ function GachaPanel({
   return (
     <div className="app-surface space-y-5 rounded-2xl border border-border/60 p-5 shadow-sm sm:p-7">
       <div className="flex flex-col items-center gap-1 text-center">
-        <h2 className="font-mystic text-xl font-semibold text-foreground sm:text-2xl">
+        <h2 className="font-mystic text-xl font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)] sm:text-2xl">
           {t("drawAction")}
         </h2>
-        <p className="text-[15px] text-muted-foreground sm:text-[15px]">
+        <p className="text-[15px] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] sm:text-[15px]">
           {subscribed
             ? t("subDescSubscribed")
             : t("subDescFree")}
@@ -429,22 +432,22 @@ function GachaPanel({
         {pulled ? (
           <>
             {pulled.isNew ? (
-              <p className="text-[15px] font-semibold text-primary">
+              <p className="text-[15px] font-semibold text-amber-200 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                 {t("resultNew")}
               </p>
             ) : (
-              <p className="text-[15px] text-muted-foreground">
+              <p className="text-[15px] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
                 {t("dupeDetailLine")}
               </p>
             )}
             {pulled.chatBonus > 0 ? (
-              <p className="font-mystic text-[15px] text-accent">
+              <p className="font-mystic text-[15px] text-amber-200 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
                 {t("resultBonus", { n: pulled.chatBonus })}
               </p>
             ) : null}
           </>
         ) : (
-          <p className="text-[15px] text-muted-foreground">
+          <p className="text-[15px] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
             {t("resultIdle")}
           </p>
         )}
@@ -462,7 +465,7 @@ function GachaPanel({
           {buttonLabel}
         </Button>
         {!subscribed && exhausted ? (
-          <p className="text-[15px] text-muted-foreground">
+          <p className="text-[15px] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
             {t("upgradeHint", { n: GACHA_DAILY_LIMITS.lite })}
           </p>
         ) : null}
@@ -489,17 +492,17 @@ function TabButton({ active, onClick, label, owned, total }: TabButtonProps) {
       type="button"
       onClick={onClick}
       className={cn(
-        "flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[15px] font-medium transition-all",
+        "flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[15px] font-medium transition-all drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]",
         active
-          ? "border-primary/60 bg-primary/15 text-primary shadow-inner"
-          : "border-border/55 bg-card/50 text-muted-foreground hover:bg-card/80 hover:text-foreground",
+          ? "border-white/70 bg-white/20 text-white shadow-inner"
+          : "border-white/30 bg-black/30 text-white/80 hover:bg-black/50 hover:text-white",
       )}
     >
       <span>{label}</span>
       <span
         className={cn(
           "tabular-nums text-[15px]",
-          active ? "text-primary/80" : "text-muted-foreground/70",
+          active ? "text-white/90" : "text-white/70",
         )}
       >
         {owned}/{total}
@@ -560,8 +563,8 @@ function CardCell({ card, owned, onClick }: CardCellProps) {
         sizes="(min-width: 1024px) 16vw, (min-width: 768px) 20vw, 33vw"
         className="object-cover transition-transform duration-300 group-hover:scale-105"
       />
-      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent px-1.5 py-1.5 text-center">
-        <span className="line-clamp-1 text-[15px] font-medium text-white">
+      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/55 to-transparent px-1.5 py-1.5 text-center">
+        <span className="line-clamp-1 text-[15px] font-medium text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
           {cardName}
         </span>
       </div>
@@ -598,7 +601,8 @@ function CardDetailDialog({ card, onClose }: CardDetailDialogProps) {
 
       <div
         className={cn(
-          "relative z-10 w-full max-w-md overflow-hidden rounded-2xl border bg-card shadow-2xl",
+          "relative z-10 w-full max-w-md overflow-hidden rounded-2xl border shadow-2xl",
+          "bg-[#1a1428]/95 backdrop-blur-md",
           RARITY_BORDER[card.rarity],
         )}
       >
@@ -632,35 +636,32 @@ function CardDetailDialog({ card, onClose }: CardDetailDialogProps) {
           <div className="space-y-1.5 text-center">
             <h3
               id="collection-card-title"
-              className="font-mystic text-xl font-semibold text-foreground"
+              className="font-mystic text-xl font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]"
             >
               {cardName}
             </h3>
             {locale !== "en" && card.nameEn ? (
-              <p className="text-[15px] uppercase tracking-wider text-muted-foreground">
+              <p className="text-[15px] uppercase tracking-wider text-white/75">
                 {card.nameEn}
               </p>
             ) : locale === "en" && card.nameEn && card.nameKo !== card.nameEn ? (
-              <p className="text-[15px] uppercase tracking-wider text-muted-foreground">
+              <p className="text-[15px] uppercase tracking-wider text-white/75">
                 {card.nameKo}
               </p>
             ) : null}
             <span
               className={cn(
                 "inline-block rounded-full px-2.5 py-0.5 text-[15px] font-medium",
-                card.rarity === "legendary" &&
-                  "bg-amber-200/30 text-amber-800 dark:bg-amber-300/15 dark:text-amber-200",
-                card.rarity === "rare" &&
-                  "bg-sky-200/30 text-sky-800 dark:bg-sky-300/15 dark:text-sky-200",
-                card.rarity === "common" &&
-                  "bg-stone-200/40 text-stone-700 dark:bg-stone-500/20 dark:text-stone-200",
+                card.rarity === "legendary" && "bg-amber-300/20 text-amber-200",
+                card.rarity === "rare" && "bg-sky-300/20 text-sky-200",
+                card.rarity === "common" && "bg-stone-400/20 text-stone-200",
               )}
             >
               {rarityLabels[card.rarity]}
             </span>
           </div>
 
-          <p className="text-center text-[15px] leading-relaxed text-muted-foreground">
+          <p className="text-center text-[15px] leading-relaxed text-white/85">
             {card.description}
           </p>
         </div>

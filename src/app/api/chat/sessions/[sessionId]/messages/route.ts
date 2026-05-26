@@ -165,7 +165,7 @@ export async function POST(
 
   const messages = prepared.messages;
 
-  // 점술 흐름 결정 — 2턴 분리 (1턴 defer / 2턴 실제 그리기)
+  // 점술 흐름 결정 — 의도 감지 시 즉시 카드를 그리고 해석에 주입.
   let reading: ReadingResult | null = null;
   let cardSystemInject = "";
   try {
@@ -177,10 +177,7 @@ export async function POST(
         content: m.content,
       })),
     );
-    if (decision.kind === "defer") {
-      // 카드는 안 그림 — AI 가 setup 질문 한 줄만 던지도록 유도
-      cardSystemInject = decision.promptInjection;
-    } else if (decision.kind === "draw") {
+    if (decision.kind === "draw") {
       reading = decision.reading;
       cardSystemInject =
         `\n\n[카드 읽기 — 지금 즉시 실행 / 최우선 지시]\n` +
@@ -249,6 +246,7 @@ export async function POST(
           inputTokens,
           outputTokens,
           model: AI_MODELS.chat,
+          cards: reading?.cards,
         }),
         addAffinityPoint(prepared.profile.userId, characterId),
         // 캐릭터 본질에 따른 균열 변동 — 선/악 스펙트럼.

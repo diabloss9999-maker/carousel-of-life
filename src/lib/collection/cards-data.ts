@@ -19,6 +19,7 @@ import { CHINESE_ZODIAC_LIST } from "@/lib/fortunes/zodiac";
 import { STEMS } from "@/lib/saju/meanings";
 import { LENORMAND_DECK } from "@/lib/lenormand/cards";
 import { RUNE_DECK } from "@/lib/runes/cards";
+import { FLOWERS } from "@/lib/flower-oracle/flowers";
 
 /** 카드 카테고리 식별자. */
 export type CollectionCategory =
@@ -29,7 +30,8 @@ export type CollectionCategory =
   | "cheongan"
   | "characters"
   | "lenormand"
-  | "runes";
+  | "runes"
+  | "flowers";
 
 /** 카드 희귀도 — UI 장식용. */
 export type CollectionRarity = "common" | "rare" | "legendary";
@@ -458,6 +460,32 @@ export const RUNE_COLLECTION_CARDS: CollectionCardMeta[] = RUNE_DECK.map(
   }),
 );
 
+/**
+ * 플로로랜시 꽃점 30종 메타데이터 (ID 충돌 방지를 위해 flower_ 접두어 사용).
+ *
+ * 희귀도: 사계절 피는 꽃 → legendary, 봄·가을 등 흔한 계절 → common,
+ *         겨울·여름 단일 계절 → rare.
+ */
+export const FLOWER_COLLECTION_CARDS: CollectionCardMeta[] = FLOWERS.map(
+  (flower) => {
+    const rarity: CollectionRarity =
+      flower.season === "사계"
+        ? "legendary"
+        : flower.season === "겨울" || flower.season === "여름"
+          ? "rare"
+          : "common";
+    return {
+      id: `flower_${flower.id}`,
+      category: "flowers" as CollectionCategory,
+      nameKo: flower.koreanName,
+      nameEn: flower.scientificName,
+      imageSrc: flower.image,
+      description: `${flower.meaning} · ${flower.keywords.join(" · ")}`,
+      rarity,
+    };
+  },
+);
+
 /** 카테고리별 메타데이터 묶음. */
 export const COLLECTION_BY_CATEGORY: Record<
   CollectionCategory,
@@ -471,6 +499,7 @@ export const COLLECTION_BY_CATEGORY: Record<
   characters: CHARACTER_CARDS,
   lenormand: LENORMAND_COLLECTION_CARDS,
   runes: RUNE_COLLECTION_CARDS,
+  flowers: FLOWER_COLLECTION_CARDS,
 };
 
 /** 카테고리 표시 정보. */
@@ -486,9 +515,10 @@ export const CATEGORY_META: Record<
   characters:    { label: "점술사",  emoji: "", cardBackSrc: "/collection/card_back_characters.webp" },
   lenormand:     { label: "르노르망",emoji: "", cardBackSrc: "/collection/card_back_lenormand.webp" },
   runes:         { label: "룬",      emoji: "", cardBackSrc: "/collection/card_back_runes.webp" },
+  flowers:       { label: "꽃점",    emoji: "", cardBackSrc: "/collection/card_back_flowers.png" },
 };
 
-/** 전체 카드 수 (197장 — 이세계 3 + 동양 3 + 북방 3 점술사). */
+/** 전체 카드 수 (227장 — 기존 197 + 꽃점 30). */
 export const TOTAL_CARDS =
   TAROT_CARDS.length +
   MBTI_CARDS.length +
@@ -497,10 +527,11 @@ export const TOTAL_CARDS =
   CHEONGAN_CARDS.length +
   CHARACTER_CARDS.length +
   LENORMAND_COLLECTION_CARDS.length +
-  RUNE_COLLECTION_CARDS.length;
+  RUNE_COLLECTION_CARDS.length +
+  FLOWER_COLLECTION_CARDS.length;
 
-if (TOTAL_CARDS !== 197) {
+if (TOTAL_CARDS !== 227) {
   throw new Error(
-    `컬렉션 카드 수 오류: 기대 197, 실제 ${TOTAL_CARDS}`,
+    `컬렉션 카드 수 오류: 기대 227, 실제 ${TOTAL_CARDS}`,
   );
 }

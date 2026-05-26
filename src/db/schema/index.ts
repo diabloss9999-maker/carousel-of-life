@@ -407,6 +407,11 @@ export const chatMessages = pgTable(
     tokenInput: integer("token_input"),
     tokenOutput: integer("token_output"),
     model: text("model"),
+    /**
+     * 메시지 부가 데이터 (예: 점술 카드 메타 — { cards: DrawnCardMeta[] }).
+     * 페이지 리로드 시에도 카드 이미지가 유지되도록 영속화.
+     */
+    metadata: jsonb("metadata").$type<Record<string, unknown> | null>(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),

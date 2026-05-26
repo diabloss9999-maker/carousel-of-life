@@ -48,11 +48,16 @@ export default async function ChatSessionPage({
     getAffinity(profile.userId, charId),
   ]);
 
-  const initial: InitialMessage[] = messages.map((m) => ({
-    id: m.id,
-    role: m.role as "user" | "assistant",
-    content: m.content,
-  }));
+  const initial: InitialMessage[] = messages.map((m) => {
+    const meta = m.metadata as { cards?: unknown } | null;
+    const rawCards = Array.isArray(meta?.cards) ? meta.cards : null;
+    return {
+      id: m.id,
+      role: m.role as "user" | "assistant",
+      content: m.content,
+      cards: rawCards as InitialMessage["cards"],
+    };
+  });
 
   const affinityPoints = affinityRow?.points ?? 0;
   const entityKey = characterToEntityKey(charId);

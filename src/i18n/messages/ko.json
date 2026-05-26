@@ -430,7 +430,7 @@
     "fateLogCta": "기록 보기",
     "feedbackCta": "운영자에게 의견 보내기",
     "openChatCta": "오픈채팅방 참여하기",
-    "greetingNamed": "{name}야, 오늘도 별이 함께해.",
+    "greetingNamed": "{name}, 오늘도 별이 함께해.",
     "greetingAnon": "친구야, 오늘도 별이 함께해.",
     "membership": "멤버십",
     "autoExpireNote": "이 날짜 이후 자동으로 만료돼.",

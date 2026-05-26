@@ -22,6 +22,8 @@ export interface InitialMessage {
   id: string;
   role: "user" | "assistant";
   content: string;
+  /** 점술 요청 시 DB 에 저장된 카드 메타 — 페이지 리로드 후에도 이미지 유지. */
+  cards?: DrawnCardMeta[] | null;
 }
 
 interface ChatWindowProps {
@@ -64,7 +66,14 @@ export function ChatWindow({
   onDeleteRequest,
 }: ChatWindowProps) {
   const router = useRouter();
-  const [messages, setMessages] = useState<DisplayMessage[]>(initialMessages);
+  const [messages, setMessages] = useState<DisplayMessage[]>(() =>
+    initialMessages.map((m) => ({
+      id: m.id,
+      role: m.role,
+      content: m.content,
+      cards: m.cards ?? undefined,
+    })),
+  );
   const [input, setInput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();

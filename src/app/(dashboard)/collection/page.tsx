@@ -1,20 +1,25 @@
 import type { Metadata } from "next";
 
 import { CollectionView } from "@/components/collection/collection-view";
-import { TOTAL_CARDS } from "@/lib/collection/cards-data";
+import {
+  COLLECTION_BY_CATEGORY,
+  TOTAL_CARDS,
+  type CollectionCategory,
+} from "@/lib/collection/cards-data";
 import {
   getOwnedCardIds,
   getOwnedCount,
   getTodayGachaStatus,
 } from "@/lib/collection/service";
 import { requireProfile } from "@/lib/auth/get-user";
+import { isAdmin } from "@/lib/auth/admin";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "도감",
   description:
-    "매일 카드 뽑기로 모으는 나만의 카드 도감 — 194장 컬렉션.",
+    "매일 카드 뽑기로 모으는 나만의 카드 도감 — 227장 컬렉션.",
 };
 
 /**
@@ -24,8 +29,9 @@ export const metadata: Metadata = {
  * - 131 장 중 사용자가 소장한 카드의 진행도와 그리드를 표시한다.
  */
 export default async function CollectionPage() {
-  const { profile } = await requireProfile();
+  const { user, profile } = await requireProfile();
   const subscribed = await hasActiveSubscription(profile.userId);
+  const adminMode = isAdmin(user.email);
   const t = await getTranslations("collection");
 
   const [status, ownedSet, ownedCount] = await Promise.all([
@@ -34,10 +40,25 @@ export default async function CollectionPage() {
     getOwnedCount(profile.userId),
   ]);
 
-  const ownedIds = Array.from(ownedSet);
+  // 마스터 운영자는 도감의 모든 카드를 소장 상태로 표시한다.
+  // (DB 데이터는 건드리지 않고 화면 노출만 전부 unlocked.)
+  let ownedIds: string[];
+  let displayOwnedCount: number;
+  if (adminMode) {
+    const allIds: string[] = [];
+    for (const cat of Object.keys(COLLECTION_BY_CATEGORY) as CollectionCategory[]) {
+      for (const card of COLLECTION_BY_CATEGORY[cat]) allIds.push(card.id);
+    }
+    ownedIds = allIds;
+    displayOwnedCount = TOTAL_CARDS;
+  } else {
+    ownedIds = Array.from(ownedSet);
+    displayOwnedCount = ownedCount;
+  }
+
   const percent = Math.min(
     100,
-    Math.round((ownedCount / TOTAL_CARDS) * 100),
+    Math.round((displayOwnedCount / TOTAL_CARDS) * 100),
   );
 
   return (
@@ -47,23 +68,25 @@ export default async function CollectionPage() {
           <div>
             <div className="flex items-center gap-2 mb-0.5">
               <img src="/icons/memory-vessel.svg" alt="" aria-hidden className="h-6 w-6 opacity-60" />
-              <h1 className="font-mystic text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+              <h1 className="font-mystic text-2xl font-semibold tracking-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)] sm:text-3xl">
                 {t("title")}
               </h1>
             </div>
-            <p className="mt-1 text-[15px] text-muted-foreground">
+            <p className="mt-1 text-[15px] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
               {t("description")}
             </p>
           </div>
           <div className="text-right">
-            <p className="font-mystic text-2xl font-bold tabular-nums text-foreground sm:text-3xl">
-              {ownedCount}
-              <span className="text-base font-normal text-muted-foreground">
+            <p className="font-mystic text-2xl font-bold tabular-nums text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)] sm:text-3xl">
+              {displayOwnedCount}
+              <span className="text-base font-normal text-white/75">
                 {" / "}
                 {TOTAL_CARDS}
               </span>
             </p>
-            <p className="text-[15px] text-muted-foreground">소장 카드</p>
+            <p className="text-[15px] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
+              {adminMode ? "마스터 — 전체 공개" : "소장 카드"}
+            </p>
           </div>
         </div>
 
@@ -80,7 +103,7 @@ export default async function CollectionPage() {
             style={{ width: `${percent}%` }}
           />
         </div>
-        <p className="text-right text-[15px] tabular-nums text-muted-foreground">
+        <p className="text-right text-[15px] tabular-nums text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
           {percent}% 달성
         </p>
       </header>
