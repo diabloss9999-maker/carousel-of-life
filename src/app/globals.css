@@ -164,7 +164,9 @@ body .on-character-image * {
     inset 0 1px 0 rgba(255,255,255,0.12),
     0 8px 32px rgba(0,0,0,0.22);
   backdrop-filter: blur(28px);
-  color: var(--foreground);
+  /* color 명시 제거 — 부모로부터 inherit. 도감처럼 부모에 text-white 박은
+     경우 자식 텍스트가 자동으로 흰색이 되도록. (예전엔 var(--foreground)
+     를 강제로 박아서 도감의 흰색 처리가 안 먹는 버그가 있었다.) */
 }
 
 /* 캡처 모드 — html-to-image 가 카드 노드를 PNG 로 저장하기 직전에 추가되는 클래스.
