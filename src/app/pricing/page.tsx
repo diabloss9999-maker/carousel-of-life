@@ -237,8 +237,16 @@ export default async function PricingPage() {
             value={`상기 표시된 금액(라이트 ${formatKRW(SUBSCRIPTION.lite.monthlyPriceKRW)} / 프로 ${formatKRW(SUBSCRIPTION.pro.monthlyPriceKRW)})이 결제창에서 청구되는 실 금액과 동일합니다.`}
           />
           <PurchaseRow
-            label="해지 및 환불"
-            value="설정 페이지에서 언제든 자동결제 해지 가능. 환불 정책은 환불정책 페이지를 참고해 주세요."
+            label="해지 방법"
+            value="[설정 → 멤버십 → 구독 해지] 메뉴에서 언제든 1-클릭으로 자동결제 해지가 가능합니다. 해지 후에도 이미 결제된 주기 종료일까지 멤버십이 유지되며, 다음 결제는 청구되지 않습니다."
+          />
+          <PurchaseRow
+            label="환불 정책"
+            value="결제일로부터 7일 이내, 유료 풀이를 한 번도 사용하지 않은 경우 100% 환불 (전자상거래법 제17조 제1항). 자세한 내용은 [환불정책] 페이지를 참고해 주세요."
+          />
+          <PurchaseRow
+            label="고객 문의"
+            value="결제·환불·이용 관련 문의는 diabloss9999@gmail.com 으로 이메일을 보내주세요. 영업일 기준 1~2일 내 답변 드립니다."
           />
           <PurchaseRow
             label="상품 제공 사업자"

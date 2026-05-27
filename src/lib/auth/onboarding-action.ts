@@ -5,14 +5,12 @@
  */
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
 import { z } from "zod";
 
 import { db } from "@/db";
 import { profiles } from "@/db/schema";
 import { ROUTES } from "@/lib/constants";
 import { requireUser } from "@/lib/auth/get-user";
-import { userIdFromCode, validateRefCode } from "@/lib/invites/service";
 
 export interface OnboardingFormState {
   kind: "idle" | "error";
@@ -78,20 +76,8 @@ export async function onboardingAction(
   const mbti = parsed.data.mbti ? parsed.data.mbti.toUpperCase() : null;
   const birthPlace = parsed.data.birthPlace || null;
 
-  // 친구 초대 추적 — carousel_ref 쿠키에서 초대자 코드 → user_id 변환
-  let invitedBy: string | null = null;
-  try {
-    const cookieStore = await cookies();
-    const refCookie = cookieStore.get("carousel_ref")?.value;
-    if (refCookie && validateRefCode(refCookie, user.id)) {
-      const inviter = await userIdFromCode(refCookie);
-      if (inviter && inviter !== user.id) {
-        invitedBy = inviter;
-      }
-    }
-  } catch {
-    // 초대 추적 실패해도 가입은 진행
-  }
+  // 친구 초대 기능 제거 — invitedBy 는 항상 null. (DB 컬럼은 유지 — 기존 데이터 보호)
+  const invitedBy: string | null = null;
 
   try {
     await db

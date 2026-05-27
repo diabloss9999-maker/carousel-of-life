@@ -121,17 +121,10 @@ const structuredData = {
   ],
 };
 
-import { RefCapture } from "@/components/invites/ref-capture";
-import { Suspense } from "react";
-
 export default async function HomePage() {
   const t = await getTranslations("landing");
   return (
     <main className="relative min-h-dvh">
-      {/* ?ref= 쿼리 → 쿠키 저장 (친구 초대 추적) */}
-      <Suspense fallback={null}>
-        <RefCapture />
-      </Suspense>
       <script
         type="application/ld+json"
         // 정적 객체를 직렬화하는 표준 JSON-LD 패턴. </script> 시퀀스를 이스케이프해 인젝션 방지.
