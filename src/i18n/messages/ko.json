@@ -192,16 +192,28 @@
     "vacationBadge": "오늘 휴가 중",
     "vacationLine": "바닷바람 보러 잠깐 자리를 비웠어요.",
     "vacationCta": "대신 {name}에게 가기",
-    "vacationReasons": {
-      "child": "악마와 재계약 중",
-      "witch": "달빛 기억 보관소 정리 중",
-      "sage": "구름 위 상담실 점검 중",
-      "shaman": "신령님 호출 받고 산기도 중",
-      "taoist": "도깨비 퇴치 중",
-      "dokkaebi": "저승 문단속 중",
-      "hunter": "눈길의 흔적 추적 중",
-      "runeshaman": "오로라 아래 룬 재정렬 중",
-      "god": "마지막 별을 지키는 중"
+    "vacationReasonPools": {
+      "otherworld": {
+        "rift": "아스트라 균열 봉인식에 불려감",
+        "contract": "악마 계약서 조항 재검토 중",
+        "memory": "달빛 기억 보관소 정리 중",
+        "court": "별의 법정에 증언하러 감",
+        "cloud": "구름 위 상담실 결계 점검 중"
+      },
+      "eastern": {
+        "shrine": "조선 산신당에 향 올리는 중",
+        "spirit": "신령님 호출 받고 산기도 중",
+        "dokkaebi": "도깨비 장난 수습 중",
+        "talisman": "월식경 앞에서 부적 말리는 중",
+        "bamboo": "대나무 숲에서 천기 흐름 살피는 중"
+      },
+      "nordic": {
+        "rune": "오로라 아래 룬 재정렬 중",
+        "trail": "눈 덮인 숲의 발자국 추적 중",
+        "hearth": "미드홀의 마지막 불씨 지키는 중",
+        "worldTree": "세계수 뿌리의 균열 봉합 중",
+        "starSea": "얼음 바다의 별길 확인 중"
+      }
     }
   },
   "specialties": {

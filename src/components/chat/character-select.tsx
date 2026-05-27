@@ -80,30 +80,72 @@ const CHAR_SELECTED: Record<CharacterId, string> = {
   god:        "ring-sky-500/60 border-sky-600/60 bg-sky-950/20",
 };
 
-const VACATION_REASON_KEY: Record<CharacterId,
-  | "vacationReasons.child"
-  | "vacationReasons.witch"
-  | "vacationReasons.sage"
-  | "vacationReasons.shaman"
-  | "vacationReasons.taoist"
-  | "vacationReasons.dokkaebi"
-  | "vacationReasons.hunter"
-  | "vacationReasons.runeshaman"
-  | "vacationReasons.god"
-> = {
-  child: "vacationReasons.child",
-  witch: "vacationReasons.witch",
-  sage: "vacationReasons.sage",
-  shaman: "vacationReasons.shaman",
-  taoist: "vacationReasons.taoist",
-  dokkaebi: "vacationReasons.dokkaebi",
-  hunter: "vacationReasons.hunter",
-  runeshaman: "vacationReasons.runeshaman",
-  god: "vacationReasons.god",
+type VacationReasonKey =
+  | "vacationReasonPools.otherworld.rift"
+  | "vacationReasonPools.otherworld.contract"
+  | "vacationReasonPools.otherworld.memory"
+  | "vacationReasonPools.otherworld.court"
+  | "vacationReasonPools.otherworld.cloud"
+  | "vacationReasonPools.eastern.shrine"
+  | "vacationReasonPools.eastern.spirit"
+  | "vacationReasonPools.eastern.dokkaebi"
+  | "vacationReasonPools.eastern.talisman"
+  | "vacationReasonPools.eastern.bamboo"
+  | "vacationReasonPools.nordic.rune"
+  | "vacationReasonPools.nordic.trail"
+  | "vacationReasonPools.nordic.hearth"
+  | "vacationReasonPools.nordic.worldTree"
+  | "vacationReasonPools.nordic.starSea";
+
+const OTHERWORLD_VACATION_REASONS = [
+  "vacationReasonPools.otherworld.rift",
+  "vacationReasonPools.otherworld.contract",
+  "vacationReasonPools.otherworld.memory",
+  "vacationReasonPools.otherworld.court",
+  "vacationReasonPools.otherworld.cloud",
+] as const satisfies readonly VacationReasonKey[];
+
+const EASTERN_VACATION_REASONS = [
+  "vacationReasonPools.eastern.shrine",
+  "vacationReasonPools.eastern.spirit",
+  "vacationReasonPools.eastern.dokkaebi",
+  "vacationReasonPools.eastern.talisman",
+  "vacationReasonPools.eastern.bamboo",
+] as const satisfies readonly VacationReasonKey[];
+
+const NORDIC_VACATION_REASONS = [
+  "vacationReasonPools.nordic.rune",
+  "vacationReasonPools.nordic.trail",
+  "vacationReasonPools.nordic.hearth",
+  "vacationReasonPools.nordic.worldTree",
+  "vacationReasonPools.nordic.starSea",
+] as const satisfies readonly VacationReasonKey[];
+
+const VACATION_REASON_KEYS_BY_CHARACTER: Record<CharacterId, readonly VacationReasonKey[]> = {
+  child: OTHERWORLD_VACATION_REASONS,
+  witch: OTHERWORLD_VACATION_REASONS,
+  sage: OTHERWORLD_VACATION_REASONS,
+  shaman: EASTERN_VACATION_REASONS,
+  taoist: EASTERN_VACATION_REASONS,
+  dokkaebi: EASTERN_VACATION_REASONS,
+  hunter: NORDIC_VACATION_REASONS,
+  runeshaman: NORDIC_VACATION_REASONS,
+  god: NORDIC_VACATION_REASONS,
 };
 
-function isCharacterId(value: unknown): value is CharacterId {
-  return typeof value === "string" && value in CHARACTERS;
+function hashString(value: string): number {
+  let hash = 2166136261;
+  for (let i = 0; i < value.length; i++) {
+    hash ^= value.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+function getVacationReasonKey(characterId: CharacterId, dateKey: string): VacationReasonKey {
+  const keys = VACATION_REASON_KEYS_BY_CHARACTER[characterId];
+  const seed = hashString(`vacation-reason:${dateKey}:${characterId}`);
+  return keys[seed % keys.length];
 }
 
 interface CreateSessionResponse {
@@ -111,7 +153,6 @@ interface CreateSessionResponse {
   data?: { sessionId: string };
   error?: {
     code?: string;
-    details?: { recommendationId?: unknown };
   };
 }
 
@@ -130,26 +171,18 @@ export function CharacterSelect({
   const tChar = useTranslations("characters");
   const tSpec = useTranslations("specialties");
 
-  async function handleSelect(id: CharacterId, destinationId: CharacterId = id) {
+  async function handleSelect(id: CharacterId) {
     setSelected(id);
     startTransition(async () => {
       const res = await fetch("/api/chat/sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ character: destinationId }),
+        body: JSON.stringify({ character: id }),
       });
       const json = (await res.json().catch(() => null)) as CreateSessionResponse | null;
       if (json?.ok && json.data) {
         router.push(`/chat/${json.data.sessionId}`);
         return;
-      }
-
-      const recommendationId = json?.error?.details?.recommendationId;
-      if (
-        json?.error?.code === "CHARACTER_ON_VACATION" &&
-        isCharacterId(recommendationId)
-      ) {
-        await handleSelect(recommendationId);
       }
     });
   }
@@ -187,37 +220,36 @@ export function CharacterSelect({
               {ids.map((id) => {
                 const char = CHARACTERS[id];
                 const vacation = vacationByCharacter.get(id);
-                const recommendation = vacation
-                  ? CHARACTERS[vacation.recommendationId]
-                  : null;
                 const vacationImage = VACATION_POSTCARD_BY_CHARACTER[id];
-                const destinationId = vacation?.recommendationId ?? id;
                 const isLoading = isPending && selected === id;
                 const isSelected = selected === id;
                 const name = tChar(`${id}.name`);
                 const title = tChar(`${id}.title`);
                 const hook = tChar(`${id}.hook`);
-                const vacationReason = tCat(VACATION_REASON_KEY[id]);
-                const recommendationName = recommendation
-                  ? tChar(`${recommendation.id}.name`)
-                  : "";
+                const vacationReason = tCat(getVacationReasonKey(id, vacationRoster.dateKey));
                 const specialty = tSpec(SPECIALTY_KEY[id] as "tarot" | "pillarsCelestial" | "runeOmen" | "runeOracle" | "runeVoice");
 
                 return (
                   <button
                     key={id}
                     type="button"
-                    onClick={() => handleSelect(id, destinationId)}
+                    onClick={() => {
+                      if (!vacation) {
+                        void handleSelect(id);
+                      }
+                    }}
                     disabled={isPending}
+                    aria-disabled={vacation ? true : undefined}
                     aria-label={
                       vacation
-                        ? `${name} ${tCat("vacationBadge")}. ${vacationReason}. ${tCat("vacationCta", { name: recommendationName })}`
+                        ? `${name} ${tCat("vacationBadge")}. ${vacationReason}.`
                         : name
                     }
                     className={cn(
                       "group relative flex flex-col items-center gap-3 sm:gap-2",
                       "rounded-2xl border ring-1 ring-transparent p-3 text-center transition-all duration-200",
-                      "disabled:opacity-60 disabled:cursor-not-allowed",
+                      "disabled:cursor-not-allowed",
+                      vacation && "cursor-default",
                       isSelected
                         ? CHAR_SELECTED[id]
                         : cn("app-surface", CHAR_ACCENT[id]),
@@ -242,7 +274,7 @@ export function CharacterSelect({
                         />
                       )}
                       {vacation && (
-                        <div className="absolute inset-x-3 bottom-3 rounded-lg bg-black/65 px-3 py-2 text-left backdrop-blur-md on-character-image">
+                        <div className="absolute inset-x-3 bottom-3 rounded-lg bg-black/70 px-3 py-2 text-left on-character-image">
                           <p className="font-mystic text-[15px] font-semibold leading-tight">
                             {tCat("vacationBadge")}
                           </p>
@@ -258,7 +290,7 @@ export function CharacterSelect({
                       )}
                       {/* 전문 배지 */}
                       <div className="absolute top-2 left-2 on-character-image">
-                        <span className="rounded-md bg-black/60 backdrop-blur-sm px-2 py-0.5 text-[15px] font-medium leading-none">
+                        <span className="rounded-md bg-black/65 px-2 py-0.5 text-[15px] font-medium leading-none">
                           {vacation ? tCat("vacationBadge") : specialty}
                         </span>
                       </div>
@@ -272,11 +304,6 @@ export function CharacterSelect({
                       <p className="text-[15px] text-muted-foreground/80 leading-tight">
                         {title}
                       </p>
-                      {vacation && recommendation && (
-                        <p className="text-[15px] font-medium leading-tight text-amber-200/90">
-                          {tCat("vacationCta", { name: recommendationName })}
-                        </p>
-                      )}
                       {/* 훅 — 데스크탑(sm+)에서만 */}
                       <p className={cn(
                         "hidden sm:block text-[15px] text-foreground/80 leading-snug font-mystic italic",

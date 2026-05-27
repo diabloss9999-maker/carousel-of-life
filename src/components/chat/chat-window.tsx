@@ -44,17 +44,17 @@ interface DisplayMessage {
 /** 캐릭터별 채팅창 색상 테마. */
 const CHARACTER_THEME: Record<
   CharacterId,
-  { surface: string; ring: string; input: string; send: string }
+  { surface: string; ring: string; input: string; send: string; skin: string }
 > = {
-  child:      { surface: "bg-red-950/25 border border-red-800/30",     ring: "ring-red-700/40",     input: "border-red-800/30 bg-red-950/20 focus-visible:ring-red-700/40",         send: "bg-red-700 hover:bg-red-600 text-white" },
-  witch:      { surface: "bg-blue-950/25 border border-blue-800/30",   ring: "ring-blue-700/40",    input: "border-blue-800/30 bg-blue-950/20 focus-visible:ring-blue-700/40",       send: "bg-blue-700 hover:bg-blue-600 text-white" },
-  sage:       { surface: "bg-amber-950/20 border border-amber-700/30", ring: "ring-amber-600/40",   input: "border-amber-700/30 bg-amber-950/15 focus-visible:ring-amber-600/40",   send: "bg-amber-600 hover:bg-amber-500 text-white" },
-  shaman:     { surface: "bg-rose-950/20 border border-rose-700/30",   ring: "ring-rose-600/40",    input: "border-rose-700/30 bg-rose-950/15 focus-visible:ring-rose-600/40",     send: "bg-rose-700 hover:bg-rose-600 text-white" },
-  taoist:     { surface: "bg-cyan-950/20 border border-cyan-800/30",   ring: "ring-cyan-700/40",    input: "border-cyan-800/30 bg-cyan-950/15 focus-visible:ring-cyan-700/40",     send: "bg-cyan-700 hover:bg-cyan-600 text-white" },
-  dokkaebi:   { surface: "bg-purple-950/25 border border-purple-800/30", ring: "ring-purple-700/40", input: "border-purple-800/30 bg-purple-950/20 focus-visible:ring-purple-700/40", send: "bg-purple-700 hover:bg-purple-600 text-white" },
-  hunter:     { surface: "bg-stone-950/30 border border-stone-700/30", ring: "ring-stone-600/40",   input: "border-stone-700/30 bg-stone-950/20 focus-visible:ring-stone-600/40",   send: "bg-stone-700 hover:bg-stone-600 text-white" },
-  runeshaman: { surface: "bg-indigo-950/25 border border-indigo-700/30", ring: "ring-indigo-600/40", input: "border-indigo-700/30 bg-indigo-950/20 focus-visible:ring-indigo-600/40", send: "bg-indigo-700 hover:bg-indigo-600 text-white" },
-  god:        { surface: "bg-sky-950/25 border border-sky-700/30",     ring: "ring-sky-500/40",     input: "border-sky-700/30 bg-sky-950/20 focus-visible:ring-sky-500/40",       send: "bg-sky-600 hover:bg-sky-500 text-white" },
+  child:      { surface: "bg-red-950/25 border border-red-800/30",     ring: "ring-red-700/40",     input: "border-red-800/30 bg-red-950/20 focus-visible:ring-red-700/40",         send: "bg-red-700 hover:bg-red-600 text-white", skin: "chat-skin-child" },
+  witch:      { surface: "bg-blue-950/25 border border-blue-800/30",   ring: "ring-blue-700/40",    input: "border-blue-800/30 bg-blue-950/20 focus-visible:ring-blue-700/40",       send: "bg-blue-700 hover:bg-blue-600 text-white", skin: "chat-skin-witch" },
+  sage:       { surface: "bg-amber-950/20 border border-amber-700/30", ring: "ring-amber-600/40",   input: "border-amber-700/30 bg-amber-950/15 focus-visible:ring-amber-600/40",   send: "bg-amber-600 hover:bg-amber-500 text-white", skin: "chat-skin-sage" },
+  shaman:     { surface: "bg-rose-950/20 border border-rose-700/30",   ring: "ring-rose-600/40",    input: "border-rose-700/30 bg-rose-950/15 focus-visible:ring-rose-600/40",     send: "bg-rose-700 hover:bg-rose-600 text-white", skin: "chat-skin-shaman" },
+  taoist:     { surface: "bg-cyan-950/20 border border-cyan-800/30",   ring: "ring-cyan-700/40",    input: "border-cyan-800/30 bg-cyan-950/15 focus-visible:ring-cyan-700/40",     send: "bg-cyan-700 hover:bg-cyan-600 text-white", skin: "chat-skin-taoist" },
+  dokkaebi:   { surface: "bg-purple-950/25 border border-purple-800/30", ring: "ring-purple-700/40", input: "border-purple-800/30 bg-purple-950/20 focus-visible:ring-purple-700/40", send: "bg-purple-700 hover:bg-purple-600 text-white", skin: "chat-skin-dokkaebi" },
+  hunter:     { surface: "bg-stone-950/30 border border-stone-700/30", ring: "ring-stone-600/40",   input: "border-stone-700/30 bg-stone-950/20 focus-visible:ring-stone-600/40",   send: "bg-stone-700 hover:bg-stone-600 text-white", skin: "chat-skin-hunter" },
+  runeshaman: { surface: "bg-indigo-950/25 border border-indigo-700/30", ring: "ring-indigo-600/40", input: "border-indigo-700/30 bg-indigo-950/20 focus-visible:ring-indigo-600/40", send: "bg-indigo-700 hover:bg-indigo-600 text-white", skin: "chat-skin-runeshaman" },
+  god:        { surface: "bg-sky-950/25 border border-sky-700/30",     ring: "ring-sky-500/40",     input: "border-sky-700/30 bg-sky-950/20 focus-visible:ring-sky-500/40",       send: "bg-sky-600 hover:bg-sky-500 text-white", skin: "chat-skin-god" },
 };
 
 const DEFAULT_THEME = CHARACTER_THEME.witch;
@@ -269,7 +269,7 @@ export function ChatWindow({
   const charsLeft = MAX_MESSAGE_LENGTH - input.length;
 
   return (
-    <div className="flex h-full flex-col gap-3">
+    <div className={cn("chat-window-skin flex h-full flex-col gap-3", theme.skin)}>
       {/* 삭제 버튼 */}
       <div className="flex items-center justify-end">
         <Button
@@ -286,7 +286,7 @@ export function ChatWindow({
       <div
         ref={scrollRef}
         className={cn(
-          "flex-1 space-y-4 overflow-y-auto rounded-xl p-4 backdrop-blur-sm",
+          "chat-panel-skin flex-1 space-y-4 overflow-y-auto rounded-xl p-4 backdrop-blur-sm",
           theme.surface,
         )}
       >
@@ -306,14 +306,15 @@ export function ChatWindow({
                   }
                 : undefined;
             return (
-              <MessageBubble
-                key={m.id}
-                role={m.role}
-                content={m.content}
-                isStreaming={m.isStreaming}
-                cards={m.cards}
-                share={share}
-              />
+                <MessageBubble
+                  key={m.id}
+                  role={m.role}
+                  content={m.content}
+                  isStreaming={m.isStreaming}
+                  cards={m.cards}
+                  characterId={characterId}
+                  share={share}
+                />
             );
           })
         )}
@@ -330,19 +331,7 @@ export function ChatWindow({
 
       {/* 입력창 — ritual 스타일 */}
       <form onSubmit={handleSend} className="flex flex-col gap-1.5">
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr auto",
-            gap: "10px",
-            padding: "10px",
-            borderRadius: "26px",
-            border: "1px solid rgba(116,86,64,0.16)",
-            background: "linear-gradient(180deg, rgba(255,255,255,0.56), rgba(255,250,240,0.78))",
-            backdropFilter: "blur(24px)",
-            boxShadow: "0 8px 32px rgba(102,80,62,0.10)",
-          }}
-        >
+        <div className="chat-input-shell">
           <textarea
             ref={textareaRef}
             value={input}
@@ -353,32 +342,13 @@ export function ChatWindow({
             maxLength={MAX_MESSAGE_LENGTH}
             rows={1}
             autoFocus
-            className="ritual-chat-textarea resize-none outline-none leading-relaxed text-[15px] py-3 px-4 rounded-[20px]"
-            style={{
-              minHeight: "48px",
-              maxHeight: "120px",
-              background: "rgba(0,0,0,0.04)",
-              border: "1px solid rgba(0,0,0,0.10)",
-              color: "rgba(0,0,0,0.82)",
-            }}
+            className="ritual-chat-textarea chat-input-textarea resize-none outline-none leading-relaxed text-[15px] py-3 px-4 rounded-[20px]"
           />
           <button
             type="submit"
             disabled={isStreaming || isPending || input.trim().length === 0}
             aria-label={t("sendAriaLabel")}
-            style={{
-              minWidth: "52px",
-              height: "52px",
-              borderRadius: "20px",
-              border: "1px solid rgba(191,166,106,0.26)",
-              background: "radial-gradient(circle at 50% 30%, rgba(191,166,106,0.20), transparent 36%), rgba(18,16,31,0.72)",
-              color: "rgba(246,239,220,0.94)",
-              cursor: "pointer",
-              display: "grid",
-              placeItems: "center",
-              fontSize: "18px",
-              opacity: (isStreaming || input.trim().length === 0) ? 0.4 : 1,
-            }}
+            className="chat-send-button"
           >
             {isStreaming ? (
               <Loader2 className="h-4 w-4 animate-spin" />

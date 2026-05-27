@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Sparkles, User } from "lucide-react";
+import { User } from "lucide-react";
 
 import { ShareButton } from "@/components/shared/share-button";
 import { cn } from "@/lib/utils";
@@ -29,11 +29,36 @@ interface MessageBubbleProps {
   role: "user" | "assistant";
   content: string;
   isStreaming?: boolean;
+  characterId?: CharacterId;
   /** 점술 요청 시 뽑힌 카드 메타데이터 */
   cards?: DrawnCardMeta[];
   /** 어시스턴트 메시지가 공유 가능할 때 — 직전 user 질문 등 메타데이터 */
   share?: ShareInfo;
 }
+
+const CHARACTER_BUBBLE_CLASS: Record<CharacterId, string> = {
+  child: "chat-bubble-child",
+  witch: "chat-bubble-witch",
+  sage: "chat-bubble-sage",
+  shaman: "chat-bubble-shaman",
+  taoist: "chat-bubble-taoist",
+  dokkaebi: "chat-bubble-dokkaebi",
+  hunter: "chat-bubble-hunter",
+  runeshaman: "chat-bubble-runeshaman",
+  god: "chat-bubble-god",
+};
+
+const CHARACTER_EMOJI_SRC: Record<CharacterId, string> = {
+  child: "/chat-emojis/child.webp",
+  witch: "/chat-emojis/witch.webp",
+  sage: "/chat-emojis/sage.webp",
+  shaman: "/chat-emojis/shaman.webp",
+  taoist: "/chat-emojis/taoist.webp",
+  dokkaebi: "/chat-emojis/dokkaebi.webp",
+  hunter: "/chat-emojis/hunter.webp",
+  runeshaman: "/chat-emojis/runeshaman.webp",
+  god: "/chat-emojis/god.webp",
+};
 
 /**
  * 마크다운 기호·과도한 빈 줄 제거 + AI 가 누설한 시스템 마커 strip.
@@ -106,26 +131,38 @@ function buildShareImageUrl(share: ShareInfo, answer: string): string {
   return `${getOrigin()}/api/share/chat?${buildShareParams(share, answer).toString()}`;
 }
 
-export function MessageBubble({ role, content, isStreaming, cards, share }: MessageBubbleProps) {
+export function MessageBubble({ role, content, isStreaming, characterId, cards, share }: MessageBubbleProps) {
   const isAssistant = role === "assistant";
   const cleaned = cleanContent(content);
   const displayed = useTypewriter(cleaned, !!isStreaming);
   const isCursorVisible = isStreaming && displayed.length >= cleaned.length;
   const canShare = isAssistant && !isStreaming && !!share && cleaned.length > 0;
+  const speakerCharacterId = isAssistant ? (characterId ?? share?.characterId) : undefined;
 
   return (
     <div className={cn("flex gap-2", isAssistant ? "flex-row" : "flex-row-reverse")}>
       {/* 아이콘 */}
       <div
         className={cn(
-          "flex h-7 w-7 shrink-0 items-center justify-center rounded-full border mt-1",
+          "chat-speaker-avatar flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border mt-1",
           isAssistant
             ? "border-accent/30 bg-accent/10 text-accent"
             : "border-primary/30 bg-primary/10 text-primary",
         )}
         aria-hidden
       >
-        {isAssistant ? <Sparkles className="h-3.5 w-3.5" /> : <User className="h-3.5 w-3.5" />}
+        {isAssistant && speakerCharacterId ? (
+          <Image
+            src={CHARACTER_EMOJI_SRC[speakerCharacterId]}
+            alt=""
+            width={32}
+            height={32}
+            className="h-full w-full object-cover"
+            sizes="32px"
+          />
+        ) : (
+          <User className="h-3.5 w-3.5" />
+        )}
       </div>
 
       <div className="flex-1 min-w-0 space-y-3">
@@ -156,7 +193,13 @@ export function MessageBubble({ role, content, isStreaming, cards, share }: Mess
         )}
 
         {/* 텍스트 버블 — ritual 스타일 */}
-        <div className={cn("ritual-message", isAssistant ? "oracle" : "observer")}>
+        <div
+          className={cn(
+            "ritual-message",
+            isAssistant ? "oracle chat-bubble-skin" : "observer",
+            speakerCharacterId && CHARACTER_BUBBLE_CLASS[speakerCharacterId],
+          )}
+        >
           <p className="font-mystic whitespace-pre-line leading-relaxed">
             {displayed || (isStreaming ? "" : "...")}
             {isCursorVisible && (

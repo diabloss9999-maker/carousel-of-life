@@ -192,16 +192,28 @@
     "vacationBadge": "Away Today",
     "vacationLine": "They stepped out to catch the sea breeze.",
     "vacationCta": "Visit {name} instead",
-    "vacationReasons": {
-      "child": "Renegotiating with a demon",
-      "witch": "Sorting moonlit memories",
-      "sage": "Auditing the cloud-side counsel room",
-      "shaman": "Answering a spirit summons",
-      "taoist": "Driving out a troublesome dokkaebi",
-      "dokkaebi": "Locking the gates of the underworld",
-      "hunter": "Tracking footprints through the snow",
-      "runeshaman": "Reordering runes beneath the aurora",
-      "god": "Guarding the final star"
+    "vacationReasonPools": {
+      "otherworld": {
+        "rift": "Called to seal an Astra Rift fracture",
+        "contract": "Reviewing a demon contract clause",
+        "memory": "Sorting the moonlit memory archive",
+        "court": "Testifying before the court of stars",
+        "cloud": "Checking the wards of the cloud counsel room"
+      },
+      "eastern": {
+        "shrine": "Offering incense at a Joseon mountain shrine",
+        "spirit": "Answering a summons from the spirits",
+        "dokkaebi": "Cleaning up a dokkaebi prank",
+        "talisman": "Drying talismans before the eclipse mirror",
+        "bamboo": "Reading heaven's current in the bamboo grove"
+      },
+      "nordic": {
+        "rune": "Reordering runes beneath the aurora",
+        "trail": "Tracking footprints through the snow woods",
+        "hearth": "Guarding Midhall's last hearthfire",
+        "worldTree": "Mending a fracture in the world-tree roots",
+        "starSea": "Checking the star-path over the ice sea"
+      }
     }
   },
   "specialties": {
