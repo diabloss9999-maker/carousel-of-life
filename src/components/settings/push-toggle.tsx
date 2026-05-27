@@ -163,11 +163,20 @@ export function PushToggle() {
         await sub.unsubscribe().catch(() => undefined);
       }
       if (endpoint) {
-        await fetch("/api/push/unsubscribe", {
+        const res = await fetch("/api/push/unsubscribe", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ endpoint }),
         });
+        const payload: unknown = await res.json().catch(() => null);
+        const apiOk =
+          typeof payload === "object" && payload !== null && "ok" in payload
+            ? (payload as { ok?: unknown }).ok
+            : undefined;
+
+        if (!res.ok || apiOk === false) {
+          throw new Error("서버 해제 실패");
+        }
       }
       toast.success("알림을 껐어요");
       await refresh();

@@ -10,6 +10,10 @@
  * 같은 입력은 항상 같은 결과 — DB 캐시 불필요. AI 해설은 별도 service.
  */
 
+export const NAME_COMPATIBILITY_NAME_PATTERN = /^[가-힣]{1,6}$/;
+export const NAME_COMPATIBILITY_NAME_MESSAGE =
+  "이름은 한글 1~6자로 입력해 주세요.";
+
 /** 한글 자음별 획수 표준 표. */
 const STROKE_MAP: Record<string, number> = {
   ㄱ: 2,
@@ -85,18 +89,19 @@ function gradeOf(score: number): { label: string; tone: NameCompatibilityResult[
   return { label: "다른 길의 인연", tone: "tough" };
 }
 
-/** 한글만 남기고 공백·기호 제거. 성+이름 사이 공백 등 입력 다양성 흡수. */
+/** 이름 입력값을 계산에 사용할 형태로 정리한다. */
 function normalizeName(raw: string): string {
-  return Array.from(raw.trim()).filter((ch) => {
-    const code = ch.charCodeAt(0);
-    return code >= 0xac00 && code <= 0xd7a3;
-  }).join("");
+  const name = raw.trim();
+  if (!NAME_COMPATIBILITY_NAME_PATTERN.test(name)) {
+    throw new Error(NAME_COMPATIBILITY_NAME_MESSAGE);
+  }
+  return name;
 }
 
 /**
  * 이름 궁합 점수 계산.
  *
- * @throws 두 이름 중 하나라도 한글 글자가 1개 미만이면 예외.
+ * @throws 두 이름 중 하나라도 한글 1~6자가 아니면 예외.
  */
 export function calculateNameCompatibility(
   rawNameA: string,
@@ -104,12 +109,6 @@ export function calculateNameCompatibility(
 ): NameCompatibilityResult {
   const a = normalizeName(rawNameA);
   const b = normalizeName(rawNameB);
-  if (a.length < 1 || b.length < 1) {
-    throw new Error("이름은 한글 1자 이상이어야 해요.");
-  }
-  if (a.length > 6 || b.length > 6) {
-    throw new Error("이름은 6자 이내로 입력해 주세요.");
-  }
 
   // 1) 교차 배열
   const aChars = Array.from(a);

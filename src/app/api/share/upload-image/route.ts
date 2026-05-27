@@ -19,6 +19,7 @@ import { NextResponse } from "next/server";
 import { randomBytes } from "crypto";
 
 import { requireUser } from "@/lib/auth/get-user";
+import { checkRateLimit } from "@/lib/rate-limit/in-memory";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { API_ERROR_CODES } from "@/types/api";
 
@@ -28,6 +29,8 @@ export const dynamic = "force-dynamic";
 const MAX_BYTES = 5 * 1024 * 1024;
 const ALLOWED_TYPES = new Set(["image/png", "image/jpeg", "image/webp"]);
 const BUCKET = "share-images";
+const UPLOAD_RATE_LIMIT_MAX = 20;
+const UPLOAD_RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 
 function makeFileName(userId: string, ext: string): string {
   const rand = randomBytes(8).toString("hex");
@@ -42,6 +45,29 @@ function extOf(mime: string): string {
 
 export async function POST(request: Request) {
   const user = await requireUser();
+  const rateLimit = checkRateLimit(
+    `share-upload-image:${user.id}`,
+    UPLOAD_RATE_LIMIT_MAX,
+    UPLOAD_RATE_LIMIT_WINDOW_MS,
+  );
+  if (!rateLimit.ok) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: {
+          code: API_ERROR_CODES.RATE_LIMITED,
+          message: "이미지 업로드가 너무 잦아요. 잠시 후 다시 시도해 주세요.",
+        },
+      },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(rateLimit.retryAfterSec ?? 60),
+        },
+      },
+    );
+  }
+
   const contentType = request.headers.get("content-type") ?? "";
 
   let blob: Blob | null = null;

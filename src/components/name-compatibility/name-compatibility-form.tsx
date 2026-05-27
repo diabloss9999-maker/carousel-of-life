@@ -19,6 +19,7 @@ import {
 } from "@/app/(dashboard)/name-compatibility/actions";
 
 const initial: NameCompatibilityActionState = { kind: "idle" };
+const NAME_INPUT_PATTERN = "[가-힣]{1,6}";
 
 interface NameCompatibilityFormProps {
   defaultMyName?: string;
@@ -51,7 +52,9 @@ export function NameCompatibilityForm({
                 name="nameA"
                 type="text"
                 required
-                maxLength={20}
+                maxLength={6}
+                pattern={NAME_INPUT_PATTERN}
+                title="한글 1~6자로 입력해 주세요."
                 defaultValue={defaultMyName}
                 placeholder="예: 최영탁"
                 disabled={isPending}
@@ -68,13 +71,15 @@ export function NameCompatibilityForm({
                 name="nameB"
                 type="text"
                 required
-                maxLength={20}
+                maxLength={6}
+                pattern={NAME_INPUT_PATTERN}
+                title="한글 1~6자로 입력해 주세요."
                 placeholder="예: 김영희"
                 disabled={isPending}
                 autoComplete="off"
               />
               <p className="text-[15px] text-muted-foreground">
-                둘 다 한글 이름으로 입력해 주세요.
+                둘 다 한글 1~6자로 입력해 주세요.
               </p>
             </div>
 

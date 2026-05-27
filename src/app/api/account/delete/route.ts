@@ -23,6 +23,7 @@ import { db } from "@/db";
 import { subscriptions } from "@/db/schema";
 import { and, eq, inArray } from "drizzle-orm";
 import { API_ERROR_CODES } from "@/types/api";
+import { deleteBillingKey, PortOneError } from "@/lib/payment/portone";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -30,6 +31,8 @@ export const dynamic = "force-dynamic";
 const bodySchema = z.object({
   confirmEmail: z.string().email(),
 });
+
+const cancellableStatuses = ["active", "on_trial", "past_due"] as const;
 
 export async function POST(request: Request) {
   // 1. 인증
@@ -65,9 +68,46 @@ export async function POST(request: Request) {
     );
   }
 
-  // 3. 활성 구독 상태만 cancelled 로 flag — PortOne/Toss 모두 빌링키 자체가
-  //    auth.users CASCADE 로 사라지므로 외부 API 호출 불필요.
+  // 3. 활성 구독 취소 + PortOne 빌링키 폐기.
+  //    auth.users CASCADE 전에 외부 결제수단을 먼저 지워 orphan billing key 를 막는다.
   try {
+    const activeSubs = await db
+      .select({
+        id: subscriptions.id,
+        provider: subscriptions.provider,
+        portoneBillingKey: subscriptions.portoneBillingKey,
+      })
+      .from(subscriptions)
+      .where(
+        and(
+          eq(subscriptions.userId, user.id),
+          inArray(subscriptions.status, cancellableStatuses),
+        ),
+      );
+
+    for (const sub of activeSubs) {
+      if (sub.provider !== "portone" || !sub.portoneBillingKey) continue;
+      try {
+        await deleteBillingKey(sub.portoneBillingKey);
+      } catch (e) {
+        if (e instanceof PortOneError && e.status === 404) continue;
+        console.error("[delete-account] portone billing key delete failed", {
+          subscriptionId: sub.id,
+          message: e instanceof Error ? e.message : String(e),
+        });
+        return NextResponse.json(
+          {
+            ok: false,
+            error: {
+              code: "BILLING_KEY_DELETE_FAILED",
+              message: "구독 결제수단 폐기에 실패했어요. 잠시 후 다시 시도하거나 문의해 주세요.",
+            },
+          },
+          { status: 502 },
+        );
+      }
+    }
+
     await db
       .update(subscriptions)
       .set({
@@ -79,7 +119,7 @@ export async function POST(request: Request) {
       .where(
         and(
           eq(subscriptions.userId, user.id),
-          inArray(subscriptions.status, ["active", "on_trial"]),
+          inArray(subscriptions.status, cancellableStatuses),
         ),
       );
   } catch (e) {

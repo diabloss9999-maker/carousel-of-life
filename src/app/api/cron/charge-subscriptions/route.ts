@@ -6,7 +6,7 @@
  *     "crons": [{ "path": "/api/cron/charge-subscriptions", "schedule": "0 18 * * *" }]
  *
  * 로직:
- *   1. provider='toss' AND status='active' AND currentPeriodEndsAt <= now + 24h
+ *   1. provider='toss' AND status IN ('active', 'past_due') AND currentPeriodEndsAt <= now + 24h
  *      AND cancelAtPeriodEnd=false 인 구독 찾기
  *   2. 빌링키로 결제 청구 (멱등성 orderId 사용해 같은 날 중복 방지)
  *   3. 성공: currentPeriodEndsAt 한 달 연장
@@ -17,7 +17,7 @@
  *   기반 Bearer 토큰을 보낸다. 환경변수 CRON_SECRET 이 설정되어 있으면 검증.
  */
 import { NextResponse, type NextRequest } from "next/server";
-import { and, eq, lte, or } from "drizzle-orm";
+import { and, desc, eq, inArray, lte, or } from "drizzle-orm";
 
 import { db } from "@/db";
 import { subscriptions, tossPayments, portonePayments } from "@/db/schema";
@@ -69,7 +69,7 @@ export async function GET(req: NextRequest) {
           eq(subscriptions.provider, "toss"),
           eq(subscriptions.provider, "portone"),
         ),
-        eq(subscriptions.status, "active"),
+        inArray(subscriptions.status, ["active", "past_due"]),
         eq(subscriptions.cancelAtPeriodEnd, false),
         lte(subscriptions.currentPeriodEndsAt, cutoff),
       ),
@@ -137,7 +137,7 @@ export async function GET(req: NextRequest) {
       .select({ amount: tossPayments.amount })
       .from(tossPayments)
       .where(eq(tossPayments.subscriptionId, sub.id))
-      .orderBy(tossPayments.createdAt)
+      .orderBy(desc(tossPayments.createdAt))
       .limit(1);
     const lastAmount = lastPayment[0]?.amount ?? SUBSCRIPTION.lite.monthlyPriceKRW;
     const planLabel =
@@ -174,6 +174,7 @@ export async function GET(req: NextRequest) {
     await db
       .update(subscriptions)
       .set({
+        status: "active",
         currentPeriodStartsAt: sub.currentPeriodEndsAt,
         currentPeriodEndsAt: nextEnd,
         updatedAt: new Date(),
@@ -191,7 +192,7 @@ export async function GET(req: NextRequest) {
       .select({ amount: portonePayments.amount })
       .from(portonePayments)
       .where(eq(portonePayments.subscriptionId, sub.id))
-      .orderBy(portonePayments.createdAt)
+      .orderBy(desc(portonePayments.createdAt))
       .limit(1);
     const lastAmount =
       lastPayment[0]?.amount ?? SUBSCRIPTION.lite.monthlyPriceKRW;
@@ -244,6 +245,7 @@ export async function GET(req: NextRequest) {
     await db
       .update(subscriptions)
       .set({
+        status: "active",
         currentPeriodStartsAt: sub.currentPeriodEndsAt,
         currentPeriodEndsAt: nextEnd,
         updatedAt: new Date(),

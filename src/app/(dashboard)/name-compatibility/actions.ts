@@ -13,6 +13,10 @@ import {
   generateNameCompatibility,
   type NameCompatibilityOutput,
 } from "@/lib/name-compatibility/service";
+import {
+  NAME_COMPATIBILITY_NAME_MESSAGE,
+  NAME_COMPATIBILITY_NAME_PATTERN,
+} from "@/lib/name-compatibility/algorithm";
 
 export type NameCompatibilityActionState =
   | { kind: "idle" }
@@ -22,12 +26,10 @@ export type NameCompatibilityActionState =
 const schema = z.object({
   nameA: z
     .string()
-    .min(1, "내 이름을 입력해주세요.")
-    .max(20, "이름이 너무 길어요."),
+    .regex(NAME_COMPATIBILITY_NAME_PATTERN, NAME_COMPATIBILITY_NAME_MESSAGE),
   nameB: z
     .string()
-    .min(1, "상대 이름을 입력해주세요.")
-    .max(20, "이름이 너무 길어요."),
+    .regex(NAME_COMPATIBILITY_NAME_PATTERN, NAME_COMPATIBILITY_NAME_MESSAGE),
 });
 
 export async function nameCompatibilityAction(

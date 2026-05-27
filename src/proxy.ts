@@ -6,7 +6,7 @@
  *
  * 책임:
  * - 미러 도메인을 canonical URL 로 301 리다이렉트 (SEO 분산 방지)
- * - /api/* state-changing 요청 CSRF 보호 (Origin 검사)
+ * - /api/* state-changing 요청 CSRF 보호 (Origin/Referer 검사)
  * - Supabase 세션 갱신
  * - 보호된 라우트 접근 제어
  */
@@ -32,6 +32,20 @@ function getAllowedOrigins(): Set<string> {
   return set;
 }
 
+function getRequestOrigin(request: NextRequest): string | null {
+  const origin = request.headers.get("origin");
+  if (origin) return origin;
+
+  const referer = request.headers.get("referer");
+  if (!referer) return null;
+
+  try {
+    return new URL(referer).origin;
+  } catch {
+    return null;
+  }
+}
+
 export async function proxy(request: NextRequest) {
   const host = request.headers.get("host") ?? "";
   const { pathname } = request.nextUrl;
@@ -51,21 +65,19 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url, 301);
   }
 
-  // 2) CSRF — /api/* state-changing 요청 Origin 검사. webhook 은 자체 HMAC.
+  // 2) CSRF — /api/* state-changing 요청 Origin/Referer 검사. webhook 은 자체 HMAC.
   if (
     pathname.startsWith("/api/") &&
     !pathname.startsWith("/api/webhooks/") &&
     MUTATING_METHODS.has(request.method)
   ) {
-    const origin = request.headers.get("origin");
-    if (origin) {
-      const allowed = getAllowedOrigins();
-      if (!allowed.has(origin)) {
-        return new NextResponse(
-          JSON.stringify({ error: "Forbidden: invalid origin" }),
-          { status: 403, headers: { "Content-Type": "application/json" } },
-        );
-      }
+    const requestOrigin = getRequestOrigin(request);
+    const allowed = getAllowedOrigins();
+    if (!requestOrigin || !allowed.has(requestOrigin)) {
+      return new NextResponse(
+        JSON.stringify({ error: "Forbidden: invalid origin" }),
+        { status: 403, headers: { "Content-Type": "application/json" } },
+      );
     }
   }
 

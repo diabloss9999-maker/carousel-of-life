@@ -223,7 +223,19 @@ export async function twoPersonCompatAction(
   }
 
   try {
-    await requireProfile();
+    const { profile } = await requireProfile();
+
+    try {
+      enforceAiRateLimit(profile.userId, "compatibility");
+    } catch (e) {
+      if (e instanceof RateLimitedError) {
+        return {
+          kind: "error",
+          message: `잠깐만, ${e.retryAfterSec}초 뒤에 다시 시도해줘.`,
+        };
+      }
+      throw e;
+    }
 
     const output = await generateJson({
       schema: compatibilityAiSchema,
