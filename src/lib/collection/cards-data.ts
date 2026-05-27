@@ -518,7 +518,7 @@ export const CATEGORY_META: Record<
   flowers:       { label: "꽃점",    emoji: "", cardBackSrc: "/collection/card_back_flowers.png" },
 };
 
-/** 전체 카드 수 (227장 — 기존 197 + 꽃점 30). */
+/** 전체 카드 수 (257장 — 기존 197 + 꽃점 60). */
 export const TOTAL_CARDS =
   TAROT_CARDS.length +
   MBTI_CARDS.length +
@@ -530,8 +530,8 @@ export const TOTAL_CARDS =
   RUNE_COLLECTION_CARDS.length +
   FLOWER_COLLECTION_CARDS.length;
 
-if (TOTAL_CARDS !== 227) {
+if (TOTAL_CARDS !== 257) {
   throw new Error(
-    `컬렉션 카드 수 오류: 기대 227, 실제 ${TOTAL_CARDS}`,
+    `컬렉션 카드 수 오류: 기대 257, 실제 ${TOTAL_CARDS}`,
   );
 }
