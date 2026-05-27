@@ -191,7 +191,18 @@
     "categorySubNordic": "MIDHALL",
     "vacationBadge": "Away Today",
     "vacationLine": "They stepped out to catch the sea breeze.",
-    "vacationCta": "Visit {name} instead"
+    "vacationCta": "Visit {name} instead",
+    "vacationReasons": {
+      "child": "Renegotiating with a demon",
+      "witch": "Sorting moonlit memories",
+      "sage": "Auditing the cloud-side counsel room",
+      "shaman": "Answering a spirit summons",
+      "taoist": "Driving out a troublesome dokkaebi",
+      "dokkaebi": "Locking the gates of the underworld",
+      "hunter": "Tracking footprints through the snow",
+      "runeshaman": "Reordering runes beneath the aurora",
+      "god": "Guarding the final star"
+    }
   },
   "specialties": {
     "tarot": "Tarot · Cards",

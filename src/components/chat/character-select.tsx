@@ -80,6 +80,28 @@ const CHAR_SELECTED: Record<CharacterId, string> = {
   god:        "ring-sky-500/60 border-sky-600/60 bg-sky-950/20",
 };
 
+const VACATION_REASON_KEY: Record<CharacterId,
+  | "vacationReasons.child"
+  | "vacationReasons.witch"
+  | "vacationReasons.sage"
+  | "vacationReasons.shaman"
+  | "vacationReasons.taoist"
+  | "vacationReasons.dokkaebi"
+  | "vacationReasons.hunter"
+  | "vacationReasons.runeshaman"
+  | "vacationReasons.god"
+> = {
+  child: "vacationReasons.child",
+  witch: "vacationReasons.witch",
+  sage: "vacationReasons.sage",
+  shaman: "vacationReasons.shaman",
+  taoist: "vacationReasons.taoist",
+  dokkaebi: "vacationReasons.dokkaebi",
+  hunter: "vacationReasons.hunter",
+  runeshaman: "vacationReasons.runeshaman",
+  god: "vacationReasons.god",
+};
+
 function isCharacterId(value: unknown): value is CharacterId {
   return typeof value === "string" && value in CHARACTERS;
 }
@@ -175,6 +197,7 @@ export function CharacterSelect({
                 const name = tChar(`${id}.name`);
                 const title = tChar(`${id}.title`);
                 const hook = tChar(`${id}.hook`);
+                const vacationReason = tCat(VACATION_REASON_KEY[id]);
                 const recommendationName = recommendation
                   ? tChar(`${recommendation.id}.name`)
                   : "";
@@ -188,7 +211,7 @@ export function CharacterSelect({
                     disabled={isPending}
                     aria-label={
                       vacation
-                        ? `${name} ${tCat("vacationBadge")}. ${tCat("vacationCta", { name: recommendationName })}`
+                        ? `${name} ${tCat("vacationBadge")}. ${vacationReason}. ${tCat("vacationCta", { name: recommendationName })}`
                         : name
                     }
                     className={cn(
@@ -224,7 +247,7 @@ export function CharacterSelect({
                             {tCat("vacationBadge")}
                           </p>
                           <p className="mt-1 text-[15px] leading-tight text-white/80">
-                            {tCat("vacationLine")}
+                            {vacationReason}
                           </p>
                         </div>
                       )}

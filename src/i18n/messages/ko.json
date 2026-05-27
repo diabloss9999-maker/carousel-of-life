@@ -191,7 +191,18 @@
     "categorySubNordic": "MIDHALL",
     "vacationBadge": "오늘 휴가 중",
     "vacationLine": "바닷바람 보러 잠깐 자리를 비웠어요.",
-    "vacationCta": "대신 {name}에게 가기"
+    "vacationCta": "대신 {name}에게 가기",
+    "vacationReasons": {
+      "child": "악마와 재계약 중",
+      "witch": "달빛 기억 보관소 정리 중",
+      "sage": "구름 위 상담실 점검 중",
+      "shaman": "신령님 호출 받고 산기도 중",
+      "taoist": "도깨비 퇴치 중",
+      "dokkaebi": "저승 문단속 중",
+      "hunter": "눈길의 흔적 추적 중",
+      "runeshaman": "오로라 아래 룬 재정렬 중",
+      "god": "마지막 별을 지키는 중"
+    }
   },
   "specialties": {
     "tarot": "타로 · 카드 점술",
