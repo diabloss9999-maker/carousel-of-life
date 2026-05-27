@@ -44,17 +44,97 @@ interface DisplayMessage {
 /** 캐릭터별 채팅창 색상 테마. */
 const CHARACTER_THEME: Record<
   CharacterId,
-  { surface: string; ring: string; input: string; send: string; skin: string }
+  {
+    surface: string;
+    overlay: string;
+    inputWrap: string;
+    textarea: string;
+    send: string;
+    glyph: string;
+    skin: string;
+  }
 > = {
-  child:      { surface: "bg-red-950/25 border border-red-800/30",     ring: "ring-red-700/40",     input: "border-red-800/30 bg-red-950/20 focus-visible:ring-red-700/40",         send: "bg-red-700 hover:bg-red-600 text-white", skin: "chat-skin-child" },
-  witch:      { surface: "bg-blue-950/25 border border-blue-800/30",   ring: "ring-blue-700/40",    input: "border-blue-800/30 bg-blue-950/20 focus-visible:ring-blue-700/40",       send: "bg-blue-700 hover:bg-blue-600 text-white", skin: "chat-skin-witch" },
-  sage:       { surface: "bg-amber-950/20 border border-amber-700/30", ring: "ring-amber-600/40",   input: "border-amber-700/30 bg-amber-950/15 focus-visible:ring-amber-600/40",   send: "bg-amber-600 hover:bg-amber-500 text-white", skin: "chat-skin-sage" },
-  shaman:     { surface: "bg-rose-950/20 border border-rose-700/30",   ring: "ring-rose-600/40",    input: "border-rose-700/30 bg-rose-950/15 focus-visible:ring-rose-600/40",     send: "bg-rose-700 hover:bg-rose-600 text-white", skin: "chat-skin-shaman" },
-  taoist:     { surface: "bg-cyan-950/20 border border-cyan-800/30",   ring: "ring-cyan-700/40",    input: "border-cyan-800/30 bg-cyan-950/15 focus-visible:ring-cyan-700/40",     send: "bg-cyan-700 hover:bg-cyan-600 text-white", skin: "chat-skin-taoist" },
-  dokkaebi:   { surface: "bg-purple-950/25 border border-purple-800/30", ring: "ring-purple-700/40", input: "border-purple-800/30 bg-purple-950/20 focus-visible:ring-purple-700/40", send: "bg-purple-700 hover:bg-purple-600 text-white", skin: "chat-skin-dokkaebi" },
-  hunter:     { surface: "bg-stone-950/30 border border-stone-700/30", ring: "ring-stone-600/40",   input: "border-stone-700/30 bg-stone-950/20 focus-visible:ring-stone-600/40",   send: "bg-stone-700 hover:bg-stone-600 text-white", skin: "chat-skin-hunter" },
-  runeshaman: { surface: "bg-indigo-950/25 border border-indigo-700/30", ring: "ring-indigo-600/40", input: "border-indigo-700/30 bg-indigo-950/20 focus-visible:ring-indigo-600/40", send: "bg-indigo-700 hover:bg-indigo-600 text-white", skin: "chat-skin-runeshaman" },
-  god:        { surface: "bg-sky-950/25 border border-sky-700/30",     ring: "ring-sky-500/40",     input: "border-sky-700/30 bg-sky-950/20 focus-visible:ring-sky-500/40",       send: "bg-sky-600 hover:bg-sky-500 text-white", skin: "chat-skin-god" },
+  child: {
+    surface: "border border-red-800/40 bg-gradient-to-b from-red-950/35 via-red-950/20 to-black/35",
+    overlay: "bg-[radial-gradient(circle_at_10%_18%,rgba(239,68,68,0.18),transparent_34%),radial-gradient(circle_at_82%_92%,rgba(248,113,113,0.16),transparent_38%)]",
+    inputWrap: "border-red-700/35 bg-red-950/20",
+    textarea: "border-red-700/30 bg-red-900/20 text-red-50 placeholder:text-red-100/50",
+    send: "border-red-400/30 bg-red-600/90 text-white hover:bg-red-500",
+    glyph: "✦",
+    skin: "chat-skin-child",
+  },
+  witch: {
+    surface: "border border-blue-800/40 bg-gradient-to-b from-blue-950/35 via-indigo-950/20 to-black/35",
+    overlay: "bg-[radial-gradient(circle_at_14%_16%,rgba(59,130,246,0.2),transparent_34%),radial-gradient(circle_at_90%_88%,rgba(129,140,248,0.18),transparent_42%)]",
+    inputWrap: "border-blue-700/35 bg-blue-950/20",
+    textarea: "border-blue-700/30 bg-blue-900/20 text-blue-50 placeholder:text-blue-100/50",
+    send: "border-blue-300/30 bg-blue-600/90 text-white hover:bg-blue-500",
+    glyph: "☾",
+    skin: "chat-skin-witch",
+  },
+  sage: {
+    surface: "border border-amber-700/40 bg-gradient-to-b from-amber-950/30 via-zinc-900/20 to-black/35",
+    overlay: "bg-[radial-gradient(circle_at_12%_14%,rgba(251,191,36,0.2),transparent_34%),radial-gradient(circle_at_88%_90%,rgba(245,158,11,0.18),transparent_42%)]",
+    inputWrap: "border-amber-600/35 bg-amber-950/15",
+    textarea: "border-amber-600/30 bg-amber-900/20 text-amber-50 placeholder:text-amber-100/55",
+    send: "border-amber-300/35 bg-amber-500/90 text-amber-950 hover:bg-amber-400",
+    glyph: "✶",
+    skin: "chat-skin-sage",
+  },
+  shaman: {
+    surface: "border border-rose-700/40 bg-gradient-to-b from-rose-950/30 via-fuchsia-950/15 to-black/35",
+    overlay: "bg-[radial-gradient(circle_at_14%_20%,rgba(244,63,94,0.2),transparent_36%),radial-gradient(circle_at_84%_88%,rgba(225,29,72,0.18),transparent_40%)]",
+    inputWrap: "border-rose-600/35 bg-rose-950/15",
+    textarea: "border-rose-600/30 bg-rose-900/20 text-rose-50 placeholder:text-rose-100/55",
+    send: "border-rose-300/35 bg-rose-600/90 text-white hover:bg-rose-500",
+    glyph: "❋",
+    skin: "chat-skin-shaman",
+  },
+  taoist: {
+    surface: "border border-cyan-700/40 bg-gradient-to-b from-cyan-950/30 via-teal-950/15 to-black/35",
+    overlay: "bg-[radial-gradient(circle_at_12%_18%,rgba(34,211,238,0.2),transparent_34%),radial-gradient(circle_at_84%_88%,rgba(20,184,166,0.18),transparent_42%)]",
+    inputWrap: "border-cyan-600/35 bg-cyan-950/15",
+    textarea: "border-cyan-600/30 bg-cyan-900/20 text-cyan-50 placeholder:text-cyan-100/55",
+    send: "border-cyan-300/35 bg-cyan-600/90 text-white hover:bg-cyan-500",
+    glyph: "☯",
+    skin: "chat-skin-taoist",
+  },
+  dokkaebi: {
+    surface: "border border-purple-800/40 bg-gradient-to-b from-purple-950/35 via-violet-950/20 to-black/35",
+    overlay: "bg-[radial-gradient(circle_at_18%_16%,rgba(168,85,247,0.22),transparent_34%),radial-gradient(circle_at_86%_88%,rgba(217,70,239,0.2),transparent_40%)]",
+    inputWrap: "border-purple-700/35 bg-purple-950/20",
+    textarea: "border-purple-700/30 bg-purple-900/20 text-purple-50 placeholder:text-purple-100/55",
+    send: "border-purple-300/35 bg-purple-600/90 text-white hover:bg-purple-500",
+    glyph: "✹",
+    skin: "chat-skin-dokkaebi",
+  },
+  hunter: {
+    surface: "border border-stone-700/45 bg-gradient-to-b from-stone-900/45 via-stone-950/25 to-black/40",
+    overlay: "bg-[radial-gradient(circle_at_10%_14%,rgba(120,113,108,0.24),transparent_34%),radial-gradient(circle_at_88%_90%,rgba(87,83,78,0.22),transparent_40%)]",
+    inputWrap: "border-stone-600/40 bg-stone-950/25",
+    textarea: "border-stone-600/35 bg-stone-900/30 text-stone-100 placeholder:text-stone-300/55",
+    send: "border-stone-300/35 bg-stone-600/90 text-white hover:bg-stone-500",
+    glyph: "⟁",
+    skin: "chat-skin-hunter",
+  },
+  runeshaman: {
+    surface: "border border-indigo-700/40 bg-gradient-to-b from-indigo-950/35 via-indigo-950/20 to-black/35",
+    overlay: "bg-[radial-gradient(circle_at_12%_16%,rgba(99,102,241,0.22),transparent_34%),radial-gradient(circle_at_88%_88%,rgba(67,56,202,0.2),transparent_42%)]",
+    inputWrap: "border-indigo-600/35 bg-indigo-950/20",
+    textarea: "border-indigo-600/30 bg-indigo-900/20 text-indigo-50 placeholder:text-indigo-100/55",
+    send: "border-indigo-300/35 bg-indigo-600/90 text-white hover:bg-indigo-500",
+    glyph: "ᚠ",
+    skin: "chat-skin-runeshaman",
+  },
+  god: {
+    surface: "border border-sky-700/40 bg-gradient-to-b from-sky-950/35 via-cyan-950/20 to-black/35",
+    overlay: "bg-[radial-gradient(circle_at_12%_14%,rgba(14,165,233,0.22),transparent_34%),radial-gradient(circle_at_84%_90%,rgba(56,189,248,0.2),transparent_42%)]",
+    inputWrap: "border-sky-600/35 bg-sky-950/20",
+    textarea: "border-sky-600/30 bg-sky-900/20 text-sky-50 placeholder:text-sky-100/55",
+    send: "border-sky-300/35 bg-sky-500/90 text-sky-950 hover:bg-sky-400",
+    glyph: "✧",
+    skin: "chat-skin-god",
+  },
 };
 
 const DEFAULT_THEME = CHARACTER_THEME.witch;
@@ -286,38 +366,44 @@ export function ChatWindow({
       <div
         ref={scrollRef}
         className={cn(
-          "chat-panel-skin flex-1 space-y-4 overflow-y-auto rounded-xl p-4 backdrop-blur-sm",
+          "chat-panel-skin relative flex-1 space-y-4 overflow-y-auto rounded-2xl p-4 backdrop-blur-sm",
           theme.surface,
         )}
       >
-        {messages.length === 0 ? (
-          <EmptyState characterId={characterId} />
-        ) : (
-          messages.map((m, i) => {
-            // 어시스턴트 메시지일 때 직전 user 질문을 share 데이터로 묶어준다.
-            const prev = i > 0 ? messages[i - 1] : null;
-            const share: ShareInfo | undefined =
-              m.role === "assistant" && characterId && prev && prev.role === "user" && prev.content
-                ? {
-                    characterId,
-                    characterName: tChars(`${characterId}.name`),
-                    question: prev.content,
-                    locale: shareLocale,
-                  }
-                : undefined;
-            return (
+        <div
+          aria-hidden
+          className={cn("pointer-events-none absolute inset-0 z-0", theme.overlay)}
+        />
+        <div className="relative z-10">
+          {messages.length === 0 ? (
+            <EmptyState characterId={characterId} />
+          ) : (
+            messages.map((m, i) => {
+              // 어시스턴트 메시지일 때 직전 user 질문을 share 데이터로 묶어준다.
+              const prev = i > 0 ? messages[i - 1] : null;
+              const share: ShareInfo | undefined =
+                m.role === "assistant" && characterId && prev && prev.role === "user" && prev.content
+                  ? {
+                      characterId,
+                      characterName: tChars(`${characterId}.name`),
+                      question: prev.content,
+                      locale: shareLocale,
+                    }
+                  : undefined;
+              return (
                 <MessageBubble
                   key={m.id}
                   role={m.role}
                   content={m.content}
                   isStreaming={m.isStreaming}
                   cards={m.cards}
-                  characterId={characterId}
                   share={share}
+                  characterId={characterId}
                 />
-            );
-          })
-        )}
+              );
+            })
+          )}
+        </div>
       </div>
 
       {isQuotaError ? (
@@ -331,7 +417,12 @@ export function ChatWindow({
 
       {/* 입력창 — ritual 스타일 */}
       <form onSubmit={handleSend} className="flex flex-col gap-1.5">
-        <div className="chat-input-shell">
+        <div
+          className={cn(
+            "chat-input-shell grid grid-cols-[1fr_auto] gap-2.5 rounded-[24px] border p-2.5 shadow-[0_10px_28px_rgba(0,0,0,0.16)] backdrop-blur-xl",
+            theme.inputWrap,
+          )}
+        >
           <textarea
             ref={textareaRef}
             value={input}
@@ -342,17 +433,25 @@ export function ChatWindow({
             maxLength={MAX_MESSAGE_LENGTH}
             rows={1}
             autoFocus
-            className="ritual-chat-textarea chat-input-textarea resize-none outline-none leading-relaxed text-[15px] py-3 px-4 rounded-[20px]"
+            className={cn(
+              "ritual-chat-textarea chat-input-textarea resize-none outline-none leading-relaxed text-[15px] py-3 px-4 rounded-[18px]",
+              "min-h-12 max-h-[120px] border",
+              theme.textarea,
+            )}
           />
           <button
             type="submit"
             disabled={isStreaming || isPending || input.trim().length === 0}
             aria-label={t("sendAriaLabel")}
-            className="chat-send-button"
+            className={cn(
+              "chat-send-button grid h-[52px] min-w-[52px] place-items-center rounded-[18px] border text-lg shadow-sm transition",
+              "disabled:cursor-not-allowed disabled:opacity-40",
+              theme.send,
+            )}
           >
             {isStreaming ? (
               <Loader2 className="h-4 w-4 animate-spin" />
-            ) : "✦"}
+            ) : theme.glyph}
           </button>
         </div>
         <div className="flex items-center justify-end px-1">

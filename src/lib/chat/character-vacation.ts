@@ -80,9 +80,8 @@ function shuffledCharacterIds(seed: number): CharacterId[] {
   return ids;
 }
 
-function vacationCount(seed: number): number {
-  if (seed % 5 === 0) return 0;
-  return seed % 3 === 0 ? 2 : 1;
+function vacationCount(): number {
+  return 2;
 }
 
 function recommendFor(
@@ -104,7 +103,7 @@ export function getTodayCharacterVacations(
   const dateKey = getKstDateKey(date);
   const seed = hashString(`carousel-character-vacation:${dateKey}`);
   const vacationing = new Set(
-    shuffledCharacterIds(seed).slice(0, vacationCount(seed)),
+    shuffledCharacterIds(seed).slice(0, vacationCount()),
   );
 
   return {
