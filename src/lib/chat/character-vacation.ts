@@ -2,6 +2,18 @@ import type { CharacterCategory, CharacterId } from "@/lib/chat/characters";
 
 export const VACATION_POSTCARD_SRC = "/characters/vacation/postcard.webp";
 
+export const VACATION_POSTCARD_BY_CHARACTER: Record<CharacterId, string> = {
+  child: "/characters/vacation/child.webp",
+  witch: "/characters/vacation/witch.webp",
+  sage: "/characters/vacation/sage.webp",
+  shaman: "/characters/vacation/shaman.webp",
+  taoist: "/characters/vacation/taoist.webp",
+  dokkaebi: "/characters/vacation/dokkaebi.webp",
+  hunter: "/characters/vacation/hunter.webp",
+  runeshaman: "/characters/vacation/runeshaman.webp",
+  god: "/characters/vacation/god.webp",
+};
+
 const CHARACTER_IDS = [
   "child",
   "witch",

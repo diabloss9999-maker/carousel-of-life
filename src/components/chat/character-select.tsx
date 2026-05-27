@@ -15,6 +15,7 @@ import {
   type CharacterCategory,
 } from "@/lib/chat/characters";
 import {
+  VACATION_POSTCARD_BY_CHARACTER,
   VACATION_POSTCARD_SRC,
   type CharacterVacationRoster,
 } from "@/lib/chat/character-vacation";
@@ -170,6 +171,8 @@ export function CharacterSelect({
                 const recommendation = vacation
                   ? CHARACTERS[vacation.recommendationId]
                   : null;
+                const vacationImage =
+                  VACATION_POSTCARD_BY_CHARACTER[id] ?? VACATION_POSTCARD_SRC;
                 const destinationId = vacation?.recommendationId ?? id;
                 const isLoading = isPending && selected === id;
                 const isSelected = selected === id;
@@ -212,7 +215,7 @@ export function CharacterSelect({
                     >
                       {vacation ? (
                         <Image
-                          src={VACATION_POSTCARD_SRC}
+                          src={vacationImage}
                           alt={`${name} ${tCat("vacationBadge")}`}
                           fill
                           className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
