@@ -461,7 +461,7 @@ export const RUNE_COLLECTION_CARDS: CollectionCardMeta[] = RUNE_DECK.map(
 );
 
 /**
- * 플로로랜시 꽃점 30종 메타데이터 (ID 충돌 방지를 위해 flower_ 접두어 사용).
+ * 플로로랜시 꽃점 60종 메타데이터 (ID 충돌 방지를 위해 flower_ 접두어 사용).
  *
  * 희귀도: 사계절 피는 꽃 → legendary, 봄·가을 등 흔한 계절 → common,
  *         겨울·여름 단일 계절 → rare.

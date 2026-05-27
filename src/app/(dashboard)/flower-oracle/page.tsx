@@ -21,7 +21,7 @@ export default async function FlowerOraclePage() {
           오늘의 꽃
         </h1>
         <p className="text-[15px] text-muted-foreground leading-relaxed">
-          30종의 꽃 중 한 송이가 당신에게 건네는 짧은 한 마디.
+          60종의 꽃 중 한 송이가 당신에게 건네는 짧은 한 마디.
           <br className="hidden sm:inline" />
           꽃말의 결을 사주와 엮어 오늘의 흐름을 읽어드려요.
         </p>

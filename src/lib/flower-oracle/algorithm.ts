@@ -41,7 +41,7 @@ export interface DrawDailyInput {
  * 오늘의 꽃 — 결정론적.
  *
  * 같은 사용자·같은 날 = 같은 꽃. 다른 날 = 다른 꽃 (대체로).
- * 사주 오행은 약한 가중치 — 절대적이 아니라 30종 균등 분포 살짝 비틀기.
+ * 사주 오행은 약한 가중치 — 절대적이 아니라 60종 균등 분포 살짝 비틀기.
  */
 export function drawDaily(input: DrawDailyInput): FlowerCard {
   const date = input.date ?? todayKst();
@@ -51,7 +51,7 @@ export function drawDaily(input: DrawDailyInput): FlowerCard {
   let index = seed % FLOWERS.length;
 
   // 사주 오행 가중치 — 강한 오행에 매칭되는 꽃을 살짝 우대
-  // (전체 30종이라 가중치는 약하게: ±5 인덱스 보정)
+  // (전체 60종이라 가중치는 약하게: ±5 인덱스 보정)
   if (input.fiveElements) {
     const offsets = elementOffsets(input.fiveElements, seed);
     index = (index + offsets) % FLOWERS.length;
