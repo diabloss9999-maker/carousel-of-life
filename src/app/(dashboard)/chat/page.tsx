@@ -14,6 +14,7 @@ import { getAllAffinities } from "@/lib/affinity/service";
 import { getTodayUsage } from "@/lib/usage/quota";
 import { WorldTeaserBanner } from "@/components/chat/world-teaser-banner";
 import { WelcomeGreeting } from "@/components/chat/welcome-greeting";
+import { getTodayCharacterVacations } from "@/lib/chat/character-vacation";
 import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ export default async function ChatPage() {
   const affinities = Object.fromEntries(
     affinityRows.map((a) => [a.characterId, a.points]),
   );
+  const vacationRoster = getTodayCharacterVacations();
 
   return (
     <div className="space-y-8">
@@ -62,7 +64,10 @@ export default async function ChatPage() {
 
       <Card className="app-surface">
         <CardContent className="pt-5">
-          <CharacterSelect affinities={affinities} />
+          <CharacterSelect
+            affinities={affinities}
+            vacationRoster={vacationRoster}
+          />
         </CardContent>
       </Card>
 

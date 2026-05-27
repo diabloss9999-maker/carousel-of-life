@@ -12,6 +12,7 @@ import { z } from "zod";
 import { requireProfile } from "@/lib/auth/get-user";
 import { createSession, findOrCreateSessionForCharacter } from "@/lib/chat/service";
 import { DEFAULT_CHARACTER } from "@/lib/chat/characters";
+import { getCharacterVacation } from "@/lib/chat/character-vacation";
 import { API_ERROR_CODES } from "@/types/api";
 
 const bodySchema = z.object({
@@ -41,6 +42,24 @@ export async function POST(request: NextRequest) {
       }
     } catch {
       // body 없으면 기본값 사용
+    }
+
+    const vacation = getCharacterVacation(character);
+    if (vacation) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: {
+            code: API_ERROR_CODES.CHARACTER_ON_VACATION,
+            message: "오늘은 이 점술사가 휴가 중이에요. 다른 점술사를 추천할게요.",
+            details: {
+              characterId: vacation.characterId,
+              recommendationId: vacation.recommendationId,
+            },
+          },
+        },
+        { status: 409 },
+      );
     }
 
     // fresh=true면 새로 생성, 아니면 기존 세션 이어가기

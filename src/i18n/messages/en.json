@@ -188,7 +188,10 @@
     "categoryNordic": "Midhall",
     "categorySubOtherworld": "ASTRA RIFT",
     "categorySubEastern": "月蝕鏡",
-    "categorySubNordic": "MIDHALL"
+    "categorySubNordic": "MIDHALL",
+    "vacationBadge": "Away Today",
+    "vacationLine": "They stepped out to catch the sea breeze.",
+    "vacationCta": "Visit {name} instead"
   },
   "specialties": {
     "tarot": "Tarot · Cards",

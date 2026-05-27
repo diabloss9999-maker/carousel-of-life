@@ -1,6 +1,7 @@
 "use client";
 
 import { CharacterImage } from "@/components/shared/character-image";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { Loader2 } from "lucide-react";
@@ -13,11 +14,16 @@ import {
   type CharacterId,
   type CharacterCategory,
 } from "@/lib/chat/characters";
+import {
+  VACATION_POSTCARD_SRC,
+  type CharacterVacationRoster,
+} from "@/lib/chat/character-vacation";
 import { SPECIALTY_KEY } from "@/i18n/character-display";
 import { cn } from "@/lib/utils";
 
 interface CharacterSelectProps {
   affinities?: Record<string, number>;
+  vacationRoster: CharacterVacationRoster;
 }
 
 const CATEGORY_ORDER: CharacterCategory[] = ["이세계", "동양", "북유럽"];
@@ -74,26 +80,54 @@ const CHAR_SELECTED: Record<CharacterId, string> = {
   god:        "ring-sky-500/60 border-sky-600/60 bg-sky-950/20",
 };
 
-export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
+function isCharacterId(value: unknown): value is CharacterId {
+  return typeof value === "string" && value in CHARACTERS;
+}
+
+interface CreateSessionResponse {
+  ok: boolean;
+  data?: { sessionId: string };
+  error?: {
+    code?: string;
+    details?: { recommendationId?: unknown };
+  };
+}
+
+export function CharacterSelect({
+  affinities = {},
+  vacationRoster,
+}: CharacterSelectProps) {
   const router = useRouter();
   const [selected, setSelected] = useState<CharacterId | null>(null);
   const [isPending, startTransition] = useTransition();
+  const vacationByCharacter = new Map(
+    vacationRoster.vacations.map((item) => [item.characterId, item]),
+  );
 
   const tCat = useTranslations("characterSelect");
   const tChar = useTranslations("characters");
   const tSpec = useTranslations("specialties");
 
-  async function handleSelect(id: CharacterId) {
+  async function handleSelect(id: CharacterId, destinationId: CharacterId = id) {
     setSelected(id);
     startTransition(async () => {
       const res = await fetch("/api/chat/sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ character: id }),
+        body: JSON.stringify({ character: destinationId }),
       });
-      const json = await res.json();
-      if (json.ok) {
+      const json = (await res.json().catch(() => null)) as CreateSessionResponse | null;
+      if (json?.ok && json.data) {
         router.push(`/chat/${json.data.sessionId}`);
+        return;
+      }
+
+      const recommendationId = json?.error?.details?.recommendationId;
+      if (
+        json?.error?.code === "CHARACTER_ON_VACATION" &&
+        isCharacterId(recommendationId)
+      ) {
+        await handleSelect(recommendationId);
       }
     });
   }
@@ -132,19 +166,32 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-3">
               {ids.map((id) => {
                 const char = CHARACTERS[id];
+                const vacation = vacationByCharacter.get(id);
+                const recommendation = vacation
+                  ? CHARACTERS[vacation.recommendationId]
+                  : null;
+                const destinationId = vacation?.recommendationId ?? id;
                 const isLoading = isPending && selected === id;
                 const isSelected = selected === id;
                 const name = tChar(`${id}.name`);
                 const title = tChar(`${id}.title`);
                 const hook = tChar(`${id}.hook`);
+                const recommendationName = recommendation
+                  ? tChar(`${recommendation.id}.name`)
+                  : "";
                 const specialty = tSpec(SPECIALTY_KEY[id] as "tarot" | "pillarsCelestial" | "runeOmen" | "runeOracle" | "runeVoice");
 
                 return (
                   <button
                     key={id}
                     type="button"
-                    onClick={() => handleSelect(id)}
+                    onClick={() => handleSelect(id, destinationId)}
                     disabled={isPending}
+                    aria-label={
+                      vacation
+                        ? `${name} ${tCat("vacationBadge")}. ${tCat("vacationCta", { name: recommendationName })}`
+                        : name
+                    }
                     className={cn(
                       "group relative flex flex-col items-center gap-3 sm:gap-2",
                       "rounded-2xl border ring-1 ring-transparent p-3 text-center transition-all duration-200",
@@ -157,14 +204,39 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                     {/* 캐릭터 이미지
                         모바일: 풀폭 + aspect-[4/5] (얼굴+상반신 중심 자름)
                         sm+  : 원본 비율 그대로 (h-auto) */}
-                    <div className="relative w-full overflow-hidden rounded-xl shadow-md aspect-[4/5] sm:aspect-auto">
-                      <CharacterImage
-                        character={char}
-                        fill
-                        quality={95}
-                        className="transition-transform duration-300 group-hover:scale-[1.03] sm:!relative sm:!h-auto"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 25vw, 220px"
-                      />
+                    <div
+                      className={cn(
+                        "relative w-full overflow-hidden rounded-xl shadow-md aspect-[4/5]",
+                        !vacation && "sm:aspect-auto",
+                      )}
+                    >
+                      {vacation ? (
+                        <Image
+                          src={VACATION_POSTCARD_SRC}
+                          alt={`${name} ${tCat("vacationBadge")}`}
+                          fill
+                          className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 25vw, 220px"
+                        />
+                      ) : (
+                        <CharacterImage
+                          character={char}
+                          fill
+                          quality={95}
+                          className="transition-transform duration-300 group-hover:scale-[1.03] sm:!relative sm:!h-auto"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 25vw, 220px"
+                        />
+                      )}
+                      {vacation && (
+                        <div className="absolute inset-x-3 bottom-3 rounded-lg bg-black/65 px-3 py-2 text-left backdrop-blur-md on-character-image">
+                          <p className="font-mystic text-[15px] font-semibold leading-tight">
+                            {tCat("vacationBadge")}
+                          </p>
+                          <p className="mt-1 text-[15px] leading-tight text-white/80">
+                            {tCat("vacationLine")}
+                          </p>
+                        </div>
+                      )}
                       {isLoading && (
                         <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-xl">
                           <Loader2 className="h-7 w-7 text-white animate-spin" />
@@ -173,7 +245,7 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                       {/* 전문 배지 */}
                       <div className="absolute top-2 left-2 on-character-image">
                         <span className="rounded-md bg-black/60 backdrop-blur-sm px-2 py-0.5 text-[15px] font-medium leading-none">
-                          {specialty}
+                          {vacation ? tCat("vacationBadge") : specialty}
                         </span>
                       </div>
                     </div>
@@ -186,8 +258,16 @@ export function CharacterSelect({ affinities = {} }: CharacterSelectProps) {
                       <p className="text-[15px] text-muted-foreground/80 leading-tight">
                         {title}
                       </p>
+                      {vacation && recommendation && (
+                        <p className="text-[15px] font-medium leading-tight text-amber-200/90">
+                          {tCat("vacationCta", { name: recommendationName })}
+                        </p>
+                      )}
                       {/* 훅 — 데스크탑(sm+)에서만 */}
-                      <p className="hidden sm:block text-[15px] text-foreground/80 leading-snug font-mystic italic">
+                      <p className={cn(
+                        "hidden sm:block text-[15px] text-foreground/80 leading-snug font-mystic italic",
+                        vacation && "text-muted-foreground/70",
+                      )}>
                         &ldquo;{hook}&rdquo;
                       </p>
                       {/* 친밀도 — 데스크탑(sm+)에서만 */}

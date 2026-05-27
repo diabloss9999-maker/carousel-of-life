@@ -188,7 +188,10 @@
     "categoryNordic": "북방",
     "categorySubOtherworld": "ASTRA RIFT",
     "categorySubEastern": "月蝕鏡",
-    "categorySubNordic": "MIDHALL"
+    "categorySubNordic": "MIDHALL",
+    "vacationBadge": "오늘 휴가 중",
+    "vacationLine": "바닷바람 보러 잠깐 자리를 비웠어요.",
+    "vacationCta": "대신 {name}에게 가기"
   },
   "specialties": {
     "tarot": "타로 · 카드 점술",
