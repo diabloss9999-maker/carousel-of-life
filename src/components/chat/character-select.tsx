@@ -16,7 +16,6 @@ import {
 } from "@/lib/chat/characters";
 import {
   VACATION_POSTCARD_BY_CHARACTER,
-  VACATION_POSTCARD_SRC,
   type CharacterVacationRoster,
 } from "@/lib/chat/character-vacation";
 import { SPECIALTY_KEY } from "@/i18n/character-display";
@@ -161,9 +160,7 @@ export function CharacterSelect({
               <div className={cn("flex-1 h-px", deco.border, "border-t")} />
             </div>
 
-            {/* 캐릭터 카드 그리드.
-                · 모바일 (< sm): 1열, 큰 이미지 + 이름 + 직함만 (심플)
-                · sm 이상      : 3열, 이미지 + 모든 정보 (훅·친밀도 등) */}
+            {/* 캐릭터 카드 그리드. 이미지 슬롯은 기존 캐릭터 원본과 같은 2:3 카드 비율. */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-3">
               {ids.map((id) => {
                 const char = CHARACTERS[id];
@@ -171,8 +168,7 @@ export function CharacterSelect({
                 const recommendation = vacation
                   ? CHARACTERS[vacation.recommendationId]
                   : null;
-                const vacationImage =
-                  VACATION_POSTCARD_BY_CHARACTER[id] ?? VACATION_POSTCARD_SRC;
+                const vacationImage = VACATION_POSTCARD_BY_CHARACTER[id];
                 const destinationId = vacation?.recommendationId ?? id;
                 const isLoading = isPending && selected === id;
                 const isSelected = selected === id;
@@ -204,15 +200,7 @@ export function CharacterSelect({
                         : cn("app-surface", CHAR_ACCENT[id]),
                     )}
                   >
-                    {/* 캐릭터 이미지
-                        모바일: 풀폭 + aspect-[4/5] (얼굴+상반신 중심 자름)
-                        sm+  : 원본 비율 그대로 (h-auto) */}
-                    <div
-                      className={cn(
-                        "relative w-full overflow-hidden rounded-xl shadow-md aspect-[4/5]",
-                        !vacation && "sm:aspect-auto",
-                      )}
-                    >
+                    <div className="relative aspect-[2/3] w-full overflow-hidden rounded-xl shadow-md">
                       {vacation ? (
                         <Image
                           src={vacationImage}
@@ -226,7 +214,7 @@ export function CharacterSelect({
                           character={char}
                           fill
                           quality={95}
-                          className="transition-transform duration-300 group-hover:scale-[1.03] sm:!relative sm:!h-auto"
+                          className="transition-transform duration-300 group-hover:scale-[1.03]"
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 25vw, 220px"
                         />
                       )}
