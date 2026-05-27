@@ -81,8 +81,7 @@ function shuffledCharacterIds(seed: number): CharacterId[] {
 }
 
 function vacationCount(seed: number): number {
-  if (seed % 5 === 0) return 0;
-  return seed % 3 === 0 ? 2 : 1;
+  return 2;
 }
 
 function recommendFor(

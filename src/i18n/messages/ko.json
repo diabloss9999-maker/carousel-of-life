@@ -189,8 +189,19 @@
     "categorySubOtherworld": "ASTRA RIFT",
     "categorySubEastern": "月蝕鏡",
     "categorySubNordic": "MIDHALL",
+    "categoryMethodOtherworld": "타로 · 르노르망",
+    "categoryMethodEastern": "사주 · 천기",
+    "categoryMethodNordic": "룬 · 발자국",
+    "categoryFlavorOtherworld": "카드가 뒤집히는 순간, 감정의 균열이 먼저 드러난다.",
+    "categoryFlavorEastern": "사주의 기둥을 세우고, 천기의 결을 따라 오늘의 타이밍을 짚는다.",
+    "categoryFlavorNordic": "설원 위 자국과 룬의 각을 겹쳐, 살아남는 길을 고른다.",
     "vacationBadge": "오늘 휴가 중",
     "vacationLine": "바닷바람 보러 잠깐 자리를 비웠어요.",
+    "vacationLine1": "바닷바람 보러 잠깐 자리를 비웠어요.",
+    "vacationLine2": "별자리 흐름을 다시 읽으러 잠시 물러났어요.",
+    "vacationLine3": "의식 도구를 정비하러 조용히 다녀오는 길이에요.",
+    "vacationLine4": "룬판과 카드 결을 맞추느라 잠깐 자리를 비웠어요.",
+    "vacationLine5": "오늘의 길흉 징조를 추려 오느라 잠시 쉬는 중이에요.",
     "vacationCta": "대신 {name}에게 가기",
     "vacationReasons": {
       "child": "악마와 재계약 중",
@@ -1975,3 +1986,4 @@
     ]
   }
 }
+

@@ -34,24 +34,32 @@ const CATEGORY_DECO: Record<CharacterCategory, {
   border: string;
   text: string;
   dot: string;
+  panel: string;
+  method: string;
 }> = {
   이세계: {
     labelKey: "Otherworld",
     border: "border-violet-500/30",
     text: "text-violet-400",
     dot: "bg-violet-500",
+    panel: "bg-violet-500/5",
+    method: "border-violet-400/40 bg-violet-500/10 text-violet-200",
   },
   동양: {
     labelKey: "Eastern",
     border: "border-emerald-500/30",
     text: "text-emerald-400",
     dot: "bg-emerald-500",
+    panel: "bg-emerald-500/5",
+    method: "border-emerald-400/40 bg-emerald-500/10 text-emerald-200",
   },
   북유럽: {
     labelKey: "Nordic",
     border: "border-sky-500/30",
     text: "text-sky-300",
     dot: "bg-sky-400",
+    panel: "bg-sky-500/5",
+    method: "border-sky-400/40 bg-sky-500/10 text-sky-100",
   },
 };
 
@@ -80,30 +88,29 @@ const CHAR_SELECTED: Record<CharacterId, string> = {
   god:        "ring-sky-500/60 border-sky-600/60 bg-sky-950/20",
 };
 
-const VACATION_REASON_KEY: Record<CharacterId,
-  | "vacationReasons.child"
-  | "vacationReasons.witch"
-  | "vacationReasons.sage"
-  | "vacationReasons.shaman"
-  | "vacationReasons.taoist"
-  | "vacationReasons.dokkaebi"
-  | "vacationReasons.hunter"
-  | "vacationReasons.runeshaman"
-  | "vacationReasons.god"
-> = {
-  child: "vacationReasons.child",
-  witch: "vacationReasons.witch",
-  sage: "vacationReasons.sage",
-  shaman: "vacationReasons.shaman",
-  taoist: "vacationReasons.taoist",
-  dokkaebi: "vacationReasons.dokkaebi",
-  hunter: "vacationReasons.hunter",
-  runeshaman: "vacationReasons.runeshaman",
-  god: "vacationReasons.god",
-};
+const VACATION_LINE_KEYS = [
+  "vacationLine1",
+  "vacationLine2",
+  "vacationLine3",
+  "vacationLine4",
+  "vacationLine5",
+] as const;
 
-function isCharacterId(value: unknown): value is CharacterId {
-  return typeof value === "string" && value in CHARACTERS;
+function hashVacationSeed(value: string): number {
+  let hash = 2166136261;
+  for (let i = 0; i < value.length; i++) {
+    hash ^= value.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+function pickVacationLineKey(
+  dateKey: string,
+  characterId: CharacterId,
+): (typeof VACATION_LINE_KEYS)[number] {
+  const seed = hashVacationSeed(`${dateKey}:${characterId}:vacation-line`);
+  return VACATION_LINE_KEYS[seed % VACATION_LINE_KEYS.length];
 }
 
 interface CreateSessionResponse {
@@ -111,7 +118,6 @@ interface CreateSessionResponse {
   data?: { sessionId: string };
   error?: {
     code?: string;
-    details?: { recommendationId?: unknown };
   };
 }
 
@@ -130,26 +136,17 @@ export function CharacterSelect({
   const tChar = useTranslations("characters");
   const tSpec = useTranslations("specialties");
 
-  async function handleSelect(id: CharacterId, destinationId: CharacterId = id) {
+  async function handleSelect(id: CharacterId) {
     setSelected(id);
     startTransition(async () => {
       const res = await fetch("/api/chat/sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ character: destinationId }),
+        body: JSON.stringify({ character: id }),
       });
       const json = (await res.json().catch(() => null)) as CreateSessionResponse | null;
       if (json?.ok && json.data) {
         router.push(`/chat/${json.data.sessionId}`);
-        return;
-      }
-
-      const recommendationId = json?.error?.details?.recommendationId;
-      if (
-        json?.error?.code === "CHARACTER_ON_VACATION" &&
-        isCharacterId(recommendationId)
-      ) {
-        await handleSelect(recommendationId);
       }
     });
   }
@@ -165,21 +162,43 @@ export function CharacterSelect({
         const ids = CHARACTERS_BY_CATEGORY[category];
         const label = tCat(`category${deco.labelKey}` as "categoryOtherworld" | "categoryEastern" | "categoryNordic");
         const sub = tCat(`categorySub${deco.labelKey}` as "categorySubOtherworld" | "categorySubEastern" | "categorySubNordic");
+        const method = tCat(`categoryMethod${deco.labelKey}` as "categoryMethodOtherworld" | "categoryMethodEastern" | "categoryMethodNordic");
+        const flavor = tCat(`categoryFlavor${deco.labelKey}` as "categoryFlavorOtherworld" | "categoryFlavorEastern" | "categoryFlavorNordic");
 
         return (
           <div key={category} className="space-y-4">
             {/* 카테고리 헤더 */}
-            <div className="flex items-center gap-3">
-              <div className={cn("h-2 w-2 rounded-full flex-shrink-0", deco.dot)} />
-              <div className="flex items-baseline gap-2">
-                <span className={cn("font-mystic text-[15px] font-bold tracking-wider", deco.text)}>
-                  {label}
-                </span>
-                <span className="text-[15px] tracking-widest text-muted-foreground/50 uppercase">
-                  {sub}
+            <div
+              className={cn(
+                "rounded-2xl border px-4 py-3 sm:px-5 sm:py-4",
+                "shadow-[0_12px_30px_-24px_rgba(0,0,0,0.95)] backdrop-blur-[1px]",
+                deco.border,
+                deco.panel,
+              )}
+            >
+              <div className="flex items-center gap-3">
+                <div className={cn("h-2 w-2 rounded-full flex-shrink-0", deco.dot)} />
+                <div className="flex min-w-0 flex-wrap items-baseline gap-2">
+                  <span className={cn("font-mystic text-[15px] font-bold tracking-wider", deco.text)}>
+                    {label}
+                  </span>
+                  <span className="text-[15px] tracking-widest text-muted-foreground/50 uppercase">
+                    {sub}
+                  </span>
+                </div>
+                <span
+                  className={cn(
+                    "ml-auto rounded-full border px-2.5 py-1 text-[15px] font-semibold leading-none whitespace-nowrap",
+                    deco.method,
+                  )}
+                >
+                  {method}
                 </span>
               </div>
-              <div className={cn("flex-1 h-px", deco.border, "border-t")} />
+              <p className="mt-2 text-[15px] leading-relaxed text-foreground/80 sm:mt-3">
+                {flavor}
+              </p>
+              <div className={cn("mt-3 h-px", deco.border, "border-t")} />
             </div>
 
             {/* 캐릭터 카드 그리드. 이미지 슬롯은 기존 캐릭터 원본과 같은 2:3 카드 비율. */}
@@ -191,24 +210,27 @@ export function CharacterSelect({
                   ? CHARACTERS[vacation.recommendationId]
                   : null;
                 const vacationImage = VACATION_POSTCARD_BY_CHARACTER[id];
-                const destinationId = vacation?.recommendationId ?? id;
                 const isLoading = isPending && selected === id;
                 const isSelected = selected === id;
                 const name = tChar(`${id}.name`);
                 const title = tChar(`${id}.title`);
                 const hook = tChar(`${id}.hook`);
-                const vacationReason = tCat(VACATION_REASON_KEY[id]);
                 const recommendationName = recommendation
                   ? tChar(`${recommendation.id}.name`)
                   : "";
+                const vacationLineKey = pickVacationLineKey(
+                  vacationRoster.dateKey,
+                  id,
+                );
+                const vacationReason = tCat(vacationLineKey);
                 const specialty = tSpec(SPECIALTY_KEY[id] as "tarot" | "pillarsCelestial" | "runeOmen" | "runeOracle" | "runeVoice");
 
                 return (
                   <button
                     key={id}
                     type="button"
-                    onClick={() => handleSelect(id, destinationId)}
-                    disabled={isPending}
+                    onClick={vacation ? undefined : () => handleSelect(id)}
+                    disabled={isPending || Boolean(vacation)}
                     aria-label={
                       vacation
                         ? `${name} ${tCat("vacationBadge")}. ${vacationReason}. ${tCat("vacationCta", { name: recommendationName })}`
