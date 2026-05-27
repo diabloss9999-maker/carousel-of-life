@@ -18,6 +18,7 @@ import {
   buildSubscriptionOrderId,
   chargeWithBillingKey,
   issueBillingKey,
+  refundPayment,
 } from "@/lib/payment/toss";
 import { SUBSCRIPTION } from "@/lib/constants";
 
@@ -121,52 +122,66 @@ export async function createTossSubscription(
     const nextMonth = new Date(now);
     nextMonth.setMonth(nextMonth.getMonth() + 1);
 
-    const [sub] = await db
-      .insert(subscriptions)
-      .values({
+    const subscriptionId = await db.transaction(async (tx) => {
+      const [sub] = await tx
+        .insert(subscriptions)
+        .values({
+          userId: opts.userId,
+          provider: "toss",
+          tossBillingKey: billing.billingKey,
+          tossCustomerKey: opts.customerKey,
+          tossCardCompany: billing.card.company,
+          tossCardNumberMasked: billing.card.number,
+          status: "active",
+          currentPeriodStartsAt: now,
+          currentPeriodEndsAt: nextMonth,
+          cancelAtPeriodEnd: false,
+        })
+        .returning({ id: subscriptions.id });
+
+      if (!sub) {
+        throw new Error("subscription insert returned no row");
+      }
+
+      await tx.insert(tossPayments).values({
         userId: opts.userId,
-        provider: "toss",
-        tossBillingKey: billing.billingKey,
-        tossCustomerKey: opts.customerKey,
-        tossCardCompany: billing.card.company,
-        tossCardNumberMasked: billing.card.number,
-        status: "active",
-        currentPeriodStartsAt: now,
-        currentPeriodEndsAt: nextMonth,
-        cancelAtPeriodEnd: false,
-      })
-      .returning({ id: subscriptions.id });
+        subscriptionId: sub.id,
+        paymentKey: charge.paymentKey,
+        orderId: charge.orderId,
+        amount: charge.totalAmount,
+        status: charge.status,
+        method: charge.method,
+        approvedAt: charge.approvedAt ? new Date(charge.approvedAt) : null,
+        rawResponse: charge as unknown as Record<string, unknown>,
+      });
 
-    if (!sub) {
-      throw new Error("subscription insert returned no row");
-    }
-
-    await db.insert(tossPayments).values({
-      userId: opts.userId,
-      subscriptionId: sub.id,
-      paymentKey: charge.paymentKey,
-      orderId: charge.orderId,
-      amount: charge.totalAmount,
-      status: charge.status,
-      method: charge.method,
-      approvedAt: charge.approvedAt ? new Date(charge.approvedAt) : null,
-      rawResponse: charge as unknown as Record<string, unknown>,
+      return sub.id;
     });
 
     return {
       ok: true,
-      subscriptionId: sub.id,
+      subscriptionId,
       paymentKey: charge.paymentKey,
       receiptUrl: charge.receipt?.url,
     };
   } catch (e) {
     console.error("[createTossSubscription] db insert failed", e);
-    // TODO: 결제는 되었으나 DB 실패 — 보상 트랜잭션 (자동 환불) 고려 필요
+    try {
+      await refundPayment({
+        paymentKey: charge.paymentKey,
+        cancelReason: "구독 정보 저장 실패로 자동 결제 취소",
+      });
+    } catch (refundError) {
+      console.error(
+        "[createTossSubscription] compensation refund failed",
+        refundError,
+      );
+    }
     return {
       ok: false,
       code: "DB_FAILED",
       message:
-        "결제는 완료됐지만 시스템에 기록되지 않았어요. 고객센터로 문의해주세요.",
+        "결제 기록에 실패해 자동 취소를 시도했어요. 카드 청구 내역을 확인한 뒤 다시 시도해주세요.",
     };
   }
 }

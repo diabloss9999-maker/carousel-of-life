@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
 import { ChevronUp } from "lucide-react";
@@ -22,6 +22,26 @@ const NAV_MUTED    = "var(--nav-muted)";
 const NAV_SURFACE  = "rgba(255,255,255,0.16)";
 const NAV_SURFACE2 = "rgba(255,255,255,0.08)";
 
+function subscribeToClientHydration(): () => void {
+  return () => undefined;
+}
+
+function getClientSnapshot(): boolean {
+  return true;
+}
+
+function getServerSnapshot(): boolean {
+  return false;
+}
+
+function useClientHydrated(): boolean {
+  return useSyncExternalStore(
+    subscribeToClientHydration,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
+}
+
 export function MobileNav() {
   const pathname = usePathname();
   const params = useSearchParams();
@@ -30,13 +50,13 @@ export function MobileNav() {
 
   const hash = useLocationHash();
   const search = params.toString();
+  const routeKey = `${pathname}?${search}#${hash}`;
 
-  const [openGroup, setOpenGroup] = useState<string | null>(null);
-  const tileRefs = useRef<Record<string, HTMLButtonElement | null>>({});
-
-  useEffect(() => {
-    setOpenGroup(null);
-  }, [pathname, search, hash]);
+  const [openState, setOpenState] = useState<{
+    routeKey: string;
+    groupId: string | null;
+  }>({ routeKey: "", groupId: null });
+  const openGroup = openState.routeKey === routeKey ? openState.groupId : null;
 
   const activeGroup =
     openGroup
@@ -64,8 +84,7 @@ export function MobileNav() {
       {activeGroup && (
         <ExpandedPanelPortal
           group={activeGroup}
-          tileRef={tileRefs.current[activeGroup.id] ?? null}
-          onClose={() => setOpenGroup(null)}
+          onClose={() => setOpenState({ routeKey, groupId: null })}
           tNav={tNav}
           pathname={pathname}
           search={search}
@@ -102,11 +121,14 @@ export function MobileNav() {
               iconSrc={entry.iconSrc}
               isActive={active}
               isOpen={isOpen}
-              registerRef={(el) => {
-                tileRefs.current[entry.id] = el;
-              }}
               onToggle={() =>
-                setOpenGroup((cur) => (cur === entry.id ? null : entry.id))
+                setOpenState((cur) => ({
+                  routeKey,
+                  groupId:
+                    cur.routeKey === routeKey && cur.groupId === entry.id
+                      ? null
+                      : entry.id,
+                }))
               }
             />
           );
@@ -119,7 +141,6 @@ export function MobileNav() {
 /* ── Portal 시트 — body 직속, 진짜 backdrop-filter 작동 ────── */
 function ExpandedPanelPortal({
   group,
-  tileRef,
   onClose,
   tNav,
   pathname,
@@ -127,48 +148,52 @@ function ExpandedPanelPortal({
   hash,
 }: {
   group: NavGroup;
-  tileRef: HTMLButtonElement | null;
   onClose: () => void;
   tNav: (k: string) => string;
   pathname: string;
   search: string;
   hash: string;
 }) {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useClientHydrated();
   const [coords, setCoords] = useState<{ bottom: number; left: number; width: number } | null>(null);
 
-  useEffect(() => setMounted(true), []);
-
-  const updatePosition = () => {
-    if (!tileRef) return;
-    const r = tileRef.getBoundingClientRect();
-    const sheetWidth = 200;
-    const viewportMargin = 12;
-    const desiredCenter = r.left + r.width / 2;
-    // 좌/우 가장자리에서 화면 밖으로 튀어나가지 않도록 clamp.
-    // 첫 번째 (운세) 타일처럼 좌측에 붙어있으면 그대로 두면 -50% transform 시
-    // 시트가 화면 왼쪽으로 잘려 보인다 → 최소 left 보장.
-    const minCenter = viewportMargin + sheetWidth / 2;
-    const maxCenter = window.innerWidth - viewportMargin - sheetWidth / 2;
-    const clampedCenter = Math.min(Math.max(desiredCenter, minCenter), maxCenter);
-    setCoords({
-      // 타일 위쪽으로 시트가 뜸 (8px 띄움).
-      bottom: window.innerHeight - r.top + 8,
-      left: clampedCenter,
-      width: sheetWidth,
-    });
-  };
-
   useLayoutEffect(() => {
-    updatePosition();
-    window.addEventListener("scroll", updatePosition, true);
-    window.addEventListener("resize", updatePosition);
-    return () => {
-      window.removeEventListener("scroll", updatePosition, true);
-      window.removeEventListener("resize", updatePosition);
+    let frame = 0;
+    const updatePosition = () => {
+      const tile = document.querySelector<HTMLButtonElement>(
+        `[data-group="${group.id}"]`,
+      );
+      if (!tile) return;
+      const r = tile.getBoundingClientRect();
+      const sheetWidth = 200;
+      const viewportMargin = 12;
+      const desiredCenter = r.left + r.width / 2;
+      // 좌/우 가장자리에서 화면 밖으로 튀어나가지 않도록 clamp.
+      // 첫 번째 (운세) 타일처럼 좌측에 붙어있으면 그대로 두면 -50% transform 시
+      // 시트가 화면 왼쪽으로 잘려 보인다 → 최소 left 보장.
+      const minCenter = viewportMargin + sheetWidth / 2;
+      const maxCenter = window.innerWidth - viewportMargin - sheetWidth / 2;
+      const clampedCenter = Math.min(Math.max(desiredCenter, minCenter), maxCenter);
+      setCoords({
+        // 타일 위쪽으로 시트가 뜸 (8px 띄움).
+        bottom: window.innerHeight - r.top + 8,
+        left: clampedCenter,
+        width: sheetWidth,
+      });
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tileRef]);
+    const schedulePosition = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(updatePosition);
+    };
+    schedulePosition();
+    window.addEventListener("scroll", schedulePosition, true);
+    window.addEventListener("resize", schedulePosition);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedulePosition, true);
+      window.removeEventListener("resize", schedulePosition);
+    };
+  }, [group.id]);
 
   if (!mounted || !coords) return null;
 
@@ -269,7 +294,6 @@ function NavGroupTile({
   isActive,
   isOpen,
   onToggle,
-  registerRef,
 }: {
   groupId: string;
   label: string;
@@ -277,11 +301,9 @@ function NavGroupTile({
   isActive: boolean;
   isOpen: boolean;
   onToggle: () => void;
-  registerRef: (el: HTMLButtonElement | null) => void;
 }) {
   return (
     <button
-      ref={registerRef}
       data-group={groupId}
       type="button"
       onClick={onToggle}

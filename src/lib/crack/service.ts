@@ -107,7 +107,6 @@ export async function getCrackScore(userId: string): Promise<{ score: number; le
 export async function addCrack(
   userId: string,
   amount: number,
-  _reason?: string,
 ): Promise<{ score: number; level: CrackLevel; levelUp: boolean }> {
   const prev = await getCrackScore(userId);
 

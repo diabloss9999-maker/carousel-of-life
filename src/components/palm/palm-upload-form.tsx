@@ -9,7 +9,7 @@
  * - 캐릭터 선택 (이세계 3인)
  */
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useRef, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import { Camera, Loader2, Sparkles, Upload, X } from "lucide-react";
 
@@ -24,6 +24,23 @@ import {
 
 const PALM_CHARS: CharacterId[] = ["witch", "sage", "child"];
 const INITIAL_STATE: PalmActionState = { kind: "idle" };
+const COARSE_POINTER_QUERY = "(pointer: coarse)";
+
+function subscribeToPointerChange(callback: () => void): () => void {
+  if (typeof window === "undefined") return () => undefined;
+  const mq = window.matchMedia(COARSE_POINTER_QUERY);
+  mq.addEventListener("change", callback);
+  return () => mq.removeEventListener("change", callback);
+}
+
+function getPointerSnapshot(): boolean {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia(COARSE_POINTER_QUERY).matches;
+}
+
+function getServerPointerSnapshot(): boolean {
+  return false;
+}
 
 /** 1024px 한도로 이미지 압축 — 모바일 5MB+ 사진을 200~400KB 로 줄임. */
 async function compressImage(file: File): Promise<Blob> {
@@ -77,15 +94,11 @@ export function PalmUploadForm() {
 
   // 터치 디바이스(모바일) 감지 — 카메라 버튼 노출 여부.
   // (pointer: coarse) 는 터치 입력 우선이라는 의미라 폰·태블릿에서 true.
-  const [isTouch, setIsTouch] = useState(false);
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mq = window.matchMedia("(pointer: coarse)");
-    setIsTouch(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsTouch(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
+  const isTouch = useSyncExternalStore(
+    subscribeToPointerChange,
+    getPointerSnapshot,
+    getServerPointerSnapshot,
+  );
 
   async function handleFile(file: File) {
     setError(null);

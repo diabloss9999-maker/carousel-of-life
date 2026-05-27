@@ -77,7 +77,7 @@ async function applyCharacterCrackDelta(
   characterId: CharacterId,
 ): Promise<void> {
   const delta = CHARACTER_CRACK_DELTA[characterId] ?? 0;
-  if (delta > 0) await addCrack(userId, delta, `chat:${characterId}`);
+  if (delta > 0) await addCrack(userId, delta);
   else if (delta < 0) await reduceCrack(userId, Math.abs(delta));
 }
 
@@ -172,10 +172,6 @@ export async function POST(
     const decision = resolveReadingFlow(
       parsed.data.content,
       characterId,
-      messages.map((m) => ({
-        role: m.role === "assistant" ? "assistant" : "user",
-        content: m.content,
-      })),
     );
     if (decision.kind === "draw") {
       reading = decision.reading;

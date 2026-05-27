@@ -52,8 +52,6 @@ export interface ReadingResult {
   promptText: string;
 }
 
-export type RecentMessage = { role: "user" | "assistant"; content: string };
-
 export type ReadingDecision =
   /** 점술 무관 — 일반 대화 */
   | { kind: "none" }
@@ -195,12 +193,10 @@ function matchIntent(
  *
  * @param currentMessage 사용자가 방금 보낸 메시지
  * @param characterId 현재 대화 캐릭터
- * @param _history   미사용 (호환성 유지용 매개변수)
  */
 export function resolveReadingFlow(
   currentMessage: string,
   characterId: CharacterId,
-  _history: readonly RecentMessage[],
 ): ReadingDecision {
   const allowed = ALLOWED_READINGS[characterId];
 

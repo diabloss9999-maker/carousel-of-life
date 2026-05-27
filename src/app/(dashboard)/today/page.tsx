@@ -69,7 +69,6 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
 
   const { profile } = await requireProfile();
   const t = await getTranslations("today");
-  const tNav = await getTranslations("nav");
   const locale = await getLocale();
 
   const [fortune, usage, subscribed, tier, streakResult, crackData] = await Promise.all([
@@ -117,7 +116,6 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           <CrackAtmosphere
             crackLevel={crackData.level}
             todayStr={today}
-            pageName={tNav("fortune")}
           />
           {(() => {
             const hidden = getHomeHiddenText(crackData.level, locale);

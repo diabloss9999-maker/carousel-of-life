@@ -133,6 +133,148 @@ body.ritual-night {
   background: url("/backgrounds/night.webp") center / cover no-repeat fixed !important;
 }
 
+/* ─── 전역 배경 레이어 — 회전목마의 별자리 지도 ─── */
+.ritual-backdrop {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: -30;
+  overflow: hidden;
+  background: #f5ecd9;
+  isolation: isolate;
+}
+
+.ritual-backdrop__image {
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.025);
+  filter: saturate(1.04) contrast(1.02) brightness(1.02);
+}
+
+.ritual-backdrop__veil,
+.ritual-backdrop__wheel,
+.ritual-backdrop__threads,
+.ritual-backdrop__grain,
+.ritual-readable-scrim {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+}
+
+.ritual-backdrop__veil {
+  z-index: 1;
+  background:
+    linear-gradient(112deg, rgba(255, 247, 225, 0.62) 0%, rgba(224, 237, 221, 0.28) 38%, rgba(226, 210, 232, 0.18) 70%, rgba(255, 239, 205, 0.34) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.46) 58%, rgba(255, 255, 255, 0.24) 100%);
+}
+
+.ritual-backdrop__wheel {
+  z-index: 2;
+  width: min(92vw, 920px);
+  aspect-ratio: 1;
+  left: 50%;
+  top: 47%;
+  right: auto;
+  bottom: auto;
+  border-radius: 999px;
+  transform: translate3d(-50%, -50%, 0);
+  opacity: 0.28;
+  background:
+    conic-gradient(
+      from -36deg,
+      rgba(191, 166, 106, 0),
+      rgba(191, 166, 106, 0.72),
+      rgba(122, 169, 161, 0.42),
+      rgba(152, 128, 187, 0.30),
+      rgba(191, 166, 106, 0)
+    );
+  mask:
+    radial-gradient(circle, transparent 0 48%, #000 49% 50%, transparent 51% 59%, #000 60% 61%, transparent 62% 70%, #000 71% 71.5%, transparent 72%);
+  animation: ritual-wheel-drift 90s linear infinite;
+}
+
+.ritual-backdrop__threads {
+  z-index: 3;
+  opacity: 0.46;
+  background-image:
+    linear-gradient(rgba(70, 52, 36, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(70, 52, 36, 0.045) 1px, transparent 1px),
+    repeating-linear-gradient(118deg, transparent 0 54px, rgba(77, 58, 44, 0.06) 55px, transparent 57px 132px);
+  background-size: 88px 88px, 88px 88px, 240px 240px;
+  mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 78%, transparent 100%);
+}
+
+.ritual-backdrop__grain {
+  z-index: 4;
+  opacity: 0.20;
+  mix-blend-mode: multiply;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(20, 14, 8, 0.05) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 4px);
+  background-size: 7px 7px, 11px 11px;
+}
+
+.ritual-readable-scrim {
+  z-index: -10;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.20) 38%, rgba(255, 255, 255, 0.42) 100%);
+}
+
+.ritual-backdrop.is-night {
+  background: #ebe2cd;
+}
+
+.ritual-backdrop.is-night .ritual-backdrop__image {
+  filter: saturate(0.88) contrast(1.04) brightness(0.96);
+}
+
+.ritual-backdrop.is-night .ritual-backdrop__veil {
+  background:
+    linear-gradient(114deg, rgba(245, 238, 219, 0.64) 0%, rgba(204, 226, 214, 0.26) 38%, rgba(226, 202, 221, 0.18) 72%, rgba(244, 224, 194, 0.38) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.26) 0%, rgba(255, 255, 255, 0.48) 58%, rgba(255, 255, 255, 0.30) 100%);
+}
+
+.ritual-backdrop.is-night .ritual-backdrop__wheel {
+  opacity: 0.34;
+}
+
+.ritual-backdrop.is-night .ritual-backdrop__threads {
+  opacity: 0.52;
+}
+
+body[data-time="night"] .ritual-readable-scrim,
+body.ritual-night .ritual-readable-scrim {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.24) 42%, rgba(255, 255, 255, 0.50) 100%);
+}
+
+@keyframes ritual-wheel-drift {
+  from { transform: translate3d(-50%, -50%, 0) rotate(0deg); }
+  to { transform: translate3d(-50%, -50%, 0) rotate(360deg); }
+}
+
+@media (max-width: 640px) {
+  .ritual-backdrop__image {
+    transform: scale(1.08);
+  }
+
+  .ritual-backdrop__wheel {
+    width: 132vw;
+    top: 44%;
+    opacity: 0.22;
+  }
+
+  .ritual-backdrop__threads {
+    background-size: 64px 64px, 64px 64px, 180px 180px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ritual-backdrop__wheel {
+    animation: none;
+  }
+}
+
 /* ─── 글로벌: 모든 텍스트 강제 검정 (낮·밤 무관) ───
    사용자 요청: 글씨색 전부 검정. CSS 변수만으로는 명시적 흰색 클래스
    (text-white, text-zinc-50 등)와 인라인 color 를 못 덮어서 광범위 catchall.

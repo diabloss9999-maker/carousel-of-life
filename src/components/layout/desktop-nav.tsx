@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
 import { ChevronDown } from "lucide-react";
@@ -20,6 +26,26 @@ import { useLocationHash } from "@/hooks/use-location-hash";
 const NAV_ACTIVE_BG  = "rgba(255,255,255,0.14)";
 const NAV_ACTIVE_CLR = "var(--nav-active)";
 const NAV_MUTED      = "var(--nav-muted)";
+
+function subscribeToClientHydration(): () => void {
+  return () => undefined;
+}
+
+function getClientSnapshot(): boolean {
+  return true;
+}
+
+function getServerSnapshot(): boolean {
+  return false;
+}
+
+function useClientHydrated(): boolean {
+  return useSyncExternalStore(
+    subscribeToClientHydration,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
+}
 
 export function DesktopNav() {
   const pathname = usePathname();
@@ -118,32 +144,33 @@ function GroupDropdown({
   hash: string;
 }) {
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useClientHydrated();
   const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // 포털 마운트 가드 (SSR).
-  useEffect(() => setMounted(true), []);
-
-  // 버튼 위치 계산 — 드롭다운을 버튼 아래 가운데에 띄우기.
-  const updatePosition = () => {
-    if (!buttonRef.current) return;
-    const r = buttonRef.current.getBoundingClientRect();
-    setCoords({
-      top: r.bottom + 6,
-      left: r.left + r.width / 2,
-    });
-  };
-
   useLayoutEffect(() => {
     if (!open) return;
-    updatePosition();
-    window.addEventListener("scroll", updatePosition, true);
-    window.addEventListener("resize", updatePosition);
+    let frame = 0;
+    const updatePosition = () => {
+      if (!buttonRef.current) return;
+      const r = buttonRef.current.getBoundingClientRect();
+      setCoords({
+        top: r.bottom + 6,
+        left: r.left + r.width / 2,
+      });
+    };
+    const schedulePosition = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(updatePosition);
+    };
+    schedulePosition();
+    window.addEventListener("scroll", schedulePosition, true);
+    window.addEventListener("resize", schedulePosition);
     return () => {
-      window.removeEventListener("scroll", updatePosition, true);
-      window.removeEventListener("resize", updatePosition);
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedulePosition, true);
+      window.removeEventListener("resize", schedulePosition);
     };
   }, [open]);
 

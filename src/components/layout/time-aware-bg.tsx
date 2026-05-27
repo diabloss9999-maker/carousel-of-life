@@ -5,6 +5,9 @@
  *
  * 06:00 ~ 20:59 → 천국의 회전목마 (밝은 낮 배경)
  * 21:00 ~ 05:59 → 밤 회전목마 (어두운 밤 배경)
+ *
+ * 이미지 위에는 CSS 레이어로 별자리 지도·회전 원형·종이 질감을 얹어
+ * 모든 페이지가 같은 세계 안에 놓인 느낌을 만든다.
  */
 
 import Image from "next/image";
@@ -42,36 +45,26 @@ export function TimeAwareBg() {
     return () => clearInterval(timer);
   }, []);
 
-  const wideSrc   = night ? "/backgrounds/night.webp" : "/backgrounds/day.webp";
-  const mobileSrc = night ? "/backgrounds/night.webp" : "/backgrounds/day.webp";
+  const src = night ? "/backgrounds/night.webp" : "/backgrounds/day.webp";
 
   return (
-    <>
-      {/* 모바일 배경 */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 -z-20 sm:hidden">
-        <Image
-          key={mobileSrc}
-          src={mobileSrc}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center transition-opacity duration-700"
-        />
-      </div>
-      {/* 데스크톱 배경 */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 -z-20 hidden sm:block">
-        <Image
-          key={wideSrc}
-          src={wideSrc}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center transition-opacity duration-700"
-        />
-      </div>
-    </>
+    <div
+      aria-hidden
+      className={`ritual-backdrop ${night ? "is-night" : "is-day"}`}
+    >
+      <Image
+        key={src}
+        src={src}
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="ritual-backdrop__image"
+      />
+      <div className="ritual-backdrop__veil" />
+      <div className="ritual-backdrop__wheel" />
+      <div className="ritual-backdrop__threads" />
+      <div className="ritual-backdrop__grain" />
+    </div>
   );
 }
-

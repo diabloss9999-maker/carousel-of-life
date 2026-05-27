@@ -30,7 +30,7 @@ export async function saveMoodAction(opts: {
 
   if (isFirstToday) {
     const delta = MOOD_CRACK[opts.mood] ?? 0;
-    if (delta > 0) await addCrack(profile.userId, delta, `mood:${opts.mood}`);
+    if (delta > 0) await addCrack(profile.userId, delta);
     if (delta < 0) await reduceCrack(profile.userId, Math.abs(delta));
   }
 

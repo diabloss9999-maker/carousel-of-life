@@ -12,13 +12,11 @@ import type { CrackLevel } from "@/lib/crack/service";
 interface CrackAtmosphereProps {
   crackLevel: CrackLevel;
   todayStr: string;
-  pageName: string;
 }
 
 export function CrackAtmosphere({
   crackLevel,
   todayStr,
-  pageName,
 }: CrackAtmosphereProps) {
   const t = useTranslations("crackAtmosphere");
   if (crackLevel < 2) {

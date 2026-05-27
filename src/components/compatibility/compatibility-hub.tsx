@@ -5,13 +5,30 @@
  */
 import { useState } from "react";
 import type { ReactNode } from "react";
-import { BookHeart, CalendarDays, Heart, Sparkles, UsersRound } from "lucide-react";
+import {
+  BookHeart,
+  CalendarDays,
+  Heart,
+  Sparkles,
+  UsersRound,
+  type LucideIcon,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 
-const TAB_IDS = ["new", "twoPerson", "zodiac", "chineseZodiac", "mbti"] as const;
-export type CompatibilityTabId = (typeof TAB_IDS)[number];
+export type CompatibilityTabId =
+  | "new"
+  | "twoPerson"
+  | "zodiac"
+  | "chineseZodiac"
+  | "mbti";
+
+interface CompatibilityTab {
+  id: CompatibilityTabId;
+  label: string;
+  icon: LucideIcon;
+}
 
 interface CompatibilityHubProps {
   newReading: ReactNode;
@@ -33,12 +50,12 @@ export function CompatibilityHub({
   const [active, setActive] = useState<CompatibilityTabId>(defaultTab);
   const t = useTranslations("compatibilityHub");
 
-  const tabs = [
-    { id: "new"           as CompatibilityTabId, label: t("tabMine"),       icon: Heart },
-    { id: "twoPerson"     as CompatibilityTabId, label: t("tabTwoPerson"),  icon: UsersRound },
-    { id: "zodiac"        as CompatibilityTabId, label: t("tabZodiac"),     icon: Sparkles },
-    { id: "chineseZodiac" as CompatibilityTabId, label: t("tabChinese"),    icon: CalendarDays },
-    { id: "mbti"          as CompatibilityTabId, label: t("tabMbti"),       icon: BookHeart },
+  const tabs: CompatibilityTab[] = [
+    { id: "new", label: t("tabMine"), icon: Heart },
+    { id: "twoPerson", label: t("tabTwoPerson"), icon: UsersRound },
+    { id: "zodiac", label: t("tabZodiac"), icon: Sparkles },
+    { id: "chineseZodiac", label: t("tabChinese"), icon: CalendarDays },
+    { id: "mbti", label: t("tabMbti"), icon: BookHeart },
   ];
 
   return (

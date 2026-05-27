@@ -72,7 +72,7 @@ export default async function RootLayout({
         {/* KST 시간대 배경 — 06~20시 낮, 21~05시 밤 */}
         <TimeAwareBg />
         {/* 가독성 오버레이 */}
-        <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 bg-white/10" />
+        <div aria-hidden className="ritual-readable-scrim" />
 
         {/* 카카오 Share SDK — 환경변수 있을 때만 로드 (트래픽 절약) */}
         <KakaoSdkScript />

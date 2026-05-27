@@ -1,12 +1,12 @@
 "use client";
 
 /**
- * body에 낮/밤 배경 + 균열 클래스 + dominant 존재 광원 클래스를
- * 자동 적용하는 클라이언트 컴포넌트.
+ * body에 낮/밤 클래스 + 균열 클래스 + dominant 존재 광원 클래스를 자동 적용한다.
  *
  * - 시간 기반 (07~18시 = 낮, 그 외 = 밤).
  * - 균열 수치 3+ 이면 fracture-high 클래스를 추가.
  * - dominant entity (luna/rael/gael) 가 있으면 presence-* 클래스를 추가.
+ * - 실제 배경 이미지는 TimeAwareBg/CSS 가 담당한다.
  */
 import { useEffect } from "react";
 
@@ -54,16 +54,6 @@ function applyTimeClass(body: HTMLElement, crackLevel: CrackLevel) {
   body.classList.add(isDay ? "ritual-day" : "ritual-night");
   body.classList.toggle("ritual-dawn", isDawn);
   body.setAttribute("data-time", isDay ? "day" : "night");
-
-  // 인라인 style로 직접 지정 — CSS 클래스 캐스케이드 충돌 방지
-  body.style.backgroundImage = `url('/backgrounds/${isDay ? "day" : "night"}.webp')`;
-  body.style.backgroundSize = "cover";
-  body.style.backgroundPosition = "center";
-  body.style.backgroundRepeat = "no-repeat";
-  body.style.backgroundAttachment = "fixed";
-
-  // 텍스트 색상도 직접 지정
-  body.style.color = isDay ? "rgba(0,0,0,0.88)" : "rgba(255,255,255,0.92)";
 
   if (crackLevel >= 3) {
     body.classList.add("fracture-high");
