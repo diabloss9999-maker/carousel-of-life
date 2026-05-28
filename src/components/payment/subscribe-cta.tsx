@@ -7,8 +7,7 @@
  *   1. PortOne (KCP 카드)         — NEXT_PUBLIC_PORTONE_STORE_ID + NEXT_PUBLIC_PORTONE_CHANNEL_KEY
  *   2. PortOne (카카오페이)         — + NEXT_PUBLIC_PORTONE_CHANNEL_KEY_KAKAO
  *      (위 카드 채널이 활성일 때만 추가 노출)
- *   3. Toss                       — NEXT_PUBLIC_TOSS_CLIENT_KEY (폴백)
- *   4. 모두 없으면 "곧 오픈해요" 비활성
+ *   3. 모두 없으면 "곧 오픈해요" 비활성
  *
  * 카카오페이 가맹 승인 + 채널 키 등록되면 자동으로 [카드 결제] + [카카오페이로 결제]
  * 두 버튼이 노출됨. 환경변수 추가 외 코드 변경 불필요.
@@ -18,7 +17,6 @@ import { CreditCard } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { clientEnv } from "@/lib/env";
-import { TossSubscribeButton } from "@/components/payment/toss-subscribe-button";
 import { PortOneSubscribeButton } from "@/components/payment/portone-subscribe-button";
 
 interface SubscribeCtaProps {
@@ -63,7 +61,6 @@ export function SubscribeCta({
     !!clientEnv.NEXT_PUBLIC_PORTONE_CHANNEL_KEY;
   const useKakao =
     usePortOne && !!clientEnv.NEXT_PUBLIC_PORTONE_CHANNEL_KEY_KAKAO;
-  const useToss = !!clientEnv.NEXT_PUBLIC_TOSS_CLIENT_KEY;
 
   // 1순위: PortOne — 한국 PG 통합 게이트웨이
   if (usePortOne) {
@@ -111,21 +108,7 @@ export function SubscribeCta({
     );
   }
 
-  // 2순위(폴백): Toss 직접 연동
-  if (useToss) {
-    return (
-      <TossSubscribeButton
-        plan={plan}
-        userId={userId}
-        email={email}
-        displayName={displayName}
-        label={label}
-        className="w-full"
-      />
-    );
-  }
-
-  // 3순위: 모든 결제 비활성 — 사용자에게 명시적 안내
+  // 2순위: 결제 비활성 — 사용자에게 명시적 안내
   return (
     <Button
       type="button"

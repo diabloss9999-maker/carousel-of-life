@@ -9,7 +9,7 @@
  *   - 그 외 활성 구독은 → "lite"
  *   - 활성 구독 없음 → "free"
  *
- * Toss 사용자도 동일 로직 (tossPayments.amount 로 폴백).
+ * (Toss 폴백 코드 제거됨 — PortOne 단일화)
  * LS 사용자(legacy)는 ls_variant_id 가 있는 경우 무조건 lite 로 폴백 처리.
  */
 import "server-only";
@@ -20,7 +20,6 @@ import { db } from "@/db";
 import {
   subscriptions,
   portonePayments,
-  tossPayments,
   type Subscription,
 } from "@/db/schema";
 import { isFreeAccessDay } from "@/lib/payment/promo";
@@ -62,7 +61,7 @@ export type SubscriptionTier = "free" | "lite" | "pro";
  * 판정:
  *   1. 활성 구독 없음 → "free"
  *   2. 활성 구독 + 최신 portone_payments.amount === PRO 가격 → "pro"
- *   3. 활성 구독 + 최신 toss_payments.amount === PRO 가격 → "pro"
+ *   3. (Toss 분기 제거됨)
  *   4. 활성 구독 + 그 외 → "lite"
  */
 export async function getSubscriptionTier(
@@ -97,7 +96,7 @@ export async function getSubscriptionTier(
 
   const proPrice = SUBSCRIPTION.pro.monthlyPriceKRW;
 
-  // 최신 PortOne 결제로 우선 판단
+  // 최신 PortOne 결제로 판단
   const [portoneLast] = await db
     .select({ amount: portonePayments.amount })
     .from(portonePayments)
@@ -108,18 +107,7 @@ export async function getSubscriptionTier(
     return portoneLast.amount >= proPrice ? "pro" : "lite";
   }
 
-  // Toss 결제 폴백
-  const [tossLast] = await db
-    .select({ amount: tossPayments.amount })
-    .from(tossPayments)
-    .where(eq(tossPayments.subscriptionId, sub.id))
-    .orderBy(desc(tossPayments.createdAt))
-    .limit(1);
-  if (tossLast) {
-    return tossLast.amount >= proPrice ? "pro" : "lite";
-  }
-
-  // 결제 row 가 없으면 lite 로 안전 폴백 (LS legacy / dev_grant 등)
+  // 결제 row 가 없으면 lite 로 안전 폴백 (legacy / dev_grant 등)
   return "lite";
 }
 

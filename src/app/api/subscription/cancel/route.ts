@@ -4,7 +4,7 @@
  * POST /api/subscription/cancel
  *
  * - 본인 구독만 취소 가능
- * - PortOne/Toss 모두: 빌링키 자체는 유지, cancel_at_period_end 만 설정.
+ * - PortOne: 빌링키 자체는 유지, cancel_at_period_end 만 설정.
  *   다음 cron 이 자동 청구하지 않음 → 기간 만료 후 자연 종료.
  */
 import { NextResponse } from "next/server";

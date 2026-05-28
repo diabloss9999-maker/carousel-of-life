@@ -43,8 +43,7 @@ export default async function PricingPage() {
   const portOneReady =
     !!process.env.NEXT_PUBLIC_PORTONE_STORE_ID &&
     !!process.env.NEXT_PUBLIC_PORTONE_CHANNEL_KEY;
-  const tossReady = !!process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
-  const paymentReady = portOneReady || tossReady;
+  const paymentReady = portOneReady;
 
   return (
     <main className="mx-auto w-full max-w-5xl px-6 py-16">

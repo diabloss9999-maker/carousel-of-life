@@ -1,31 +1,26 @@
 /**
- * 정기결제 자동 갱신 cron.
+ * 정기결제 자동 갱신 cron — PortOne (NHN KCP) 전용.
  *
  * Vercel Cron 이 매일 03:00 KST (UTC 18:00 전날) 호출:
  *   vercel.json:
  *     "crons": [{ "path": "/api/cron/charge-subscriptions", "schedule": "0 18 * * *" }]
  *
  * 로직:
- *   1. provider='toss' AND status IN ('active', 'past_due') AND currentPeriodEndsAt <= now + 24h
+ *   1. provider='portone' AND status IN ('active', 'past_due') AND currentPeriodEndsAt <= now + 24h
  *      AND cancelAtPeriodEnd=false 인 구독 찾기
- *   2. 빌링키로 결제 청구 (멱등성 orderId 사용해 같은 날 중복 방지)
+ *   2. 빌링키로 결제 청구 (결정론적 paymentId 로 멱등성 확보)
  *   3. 성공: currentPeriodEndsAt 한 달 연장
- *   4. 실패: status='past_due' 로 표시 (다음 cron 에서 재시도)
+ *   4. 실패: status='past_due' 로 표시 (다음 cron 에서 재시도, 만료 후엔 cancelled)
  *
  * 인증:
  *   Vercel Cron 은 요청에 `x-vercel-cron-signature` 또는 환경변수 `CRON_SECRET`
  *   기반 Bearer 토큰을 보낸다. 환경변수 CRON_SECRET 이 설정되어 있으면 검증.
  */
 import { NextResponse, type NextRequest } from "next/server";
-import { and, desc, eq, inArray, lte, or } from "drizzle-orm";
+import { and, desc, eq, inArray, lte } from "drizzle-orm";
 
 import { db } from "@/db";
-import { subscriptions, tossPayments, portonePayments } from "@/db/schema";
-import {
-  buildSubscriptionOrderId,
-  chargeWithBillingKey,
-  TossError,
-} from "@/lib/payment/toss";
+import { subscriptions, portonePayments } from "@/db/schema";
 import {
   chargeWithBillingKey as portoneCharge,
   buildRecurringPaymentId as portoneBuildRecurringPaymentId,
@@ -57,7 +52,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
-  // 만료 임박 (24시간 이내) + active + 취소 예약 안 됨 + 한국 PG (toss·portone) 구독
+  // 만료 임박 (24시간 이내) + active + 취소 예약 안 됨 + PortOne 구독
   const cutoff = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
   const due = await db
@@ -65,10 +60,7 @@ export async function GET(req: NextRequest) {
     .from(subscriptions)
     .where(
       and(
-        or(
-          eq(subscriptions.provider, "toss"),
-          eq(subscriptions.provider, "portone"),
-        ),
+        eq(subscriptions.provider, "portone"),
         inArray(subscriptions.status, ["active", "past_due"]),
         eq(subscriptions.cancelAtPeriodEnd, false),
         lte(subscriptions.currentPeriodEndsAt, cutoff),
@@ -79,26 +71,13 @@ export async function GET(req: NextRequest) {
 
   for (const sub of due) {
     try {
-      if (sub.provider === "portone") {
-        await chargePortOneSub(sub);
-        outcomes.push({ subscriptionId: sub.id, ok: true });
-      } else if (sub.provider === "toss") {
-        await chargeTossSub(sub);
-        outcomes.push({ subscriptionId: sub.id, ok: true });
-      } else {
-        outcomes.push({
-          subscriptionId: sub.id,
-          ok: false,
-          reason: "UNKNOWN_PROVIDER",
-        });
-      }
+      await chargePortOneSub(sub);
+      outcomes.push({ subscriptionId: sub.id, ok: true });
     } catch (e) {
       const code =
-        e instanceof TossError
-          ? e.code
-          : e instanceof PortOneError
-            ? (e.code ?? "PORTONE_ERROR")
-            : "UNKNOWN_ERROR";
+        e instanceof PortOneError
+          ? (e.code ?? "PORTONE_ERROR")
+          : "UNKNOWN_ERROR";
       console.error("[charge-subscriptions] failed", {
         subscriptionId: sub.id,
         provider: sub.provider,
@@ -125,61 +104,6 @@ export async function GET(req: NextRequest) {
         reason: shouldCancel ? `${code}_CANCELLED` : String(code),
       });
     }
-  }
-
-  async function chargeTossSub(
-    sub: typeof subscriptions.$inferSelect,
-  ): Promise<void> {
-    if (!sub.tossBillingKey || !sub.tossCustomerKey) {
-      throw new Error("MISSING_BILLING_KEY: 토스 빌링키 누락");
-    }
-    const lastPayment = await db
-      .select({ amount: tossPayments.amount })
-      .from(tossPayments)
-      .where(eq(tossPayments.subscriptionId, sub.id))
-      .orderBy(desc(tossPayments.createdAt))
-      .limit(1);
-    const lastAmount = lastPayment[0]?.amount ?? SUBSCRIPTION.lite.monthlyPriceKRW;
-    const planLabel =
-      lastAmount === SUBSCRIPTION.pro.monthlyPriceKRW ? "프로" : "라이트";
-
-    const orderId = buildSubscriptionOrderId(sub.userId);
-    const orderName = `${planLabel} 정기 결제 (${lastAmount.toLocaleString()}원)`;
-
-    const charge = await chargeWithBillingKey({
-      billingKey: sub.tossBillingKey,
-      customerKey: sub.tossCustomerKey,
-      amount: lastAmount,
-      orderId,
-      orderName,
-    });
-
-    await db
-      .insert(tossPayments)
-      .values({
-        userId: sub.userId,
-        subscriptionId: sub.id,
-        paymentKey: charge.paymentKey,
-        orderId: charge.orderId,
-        amount: charge.totalAmount,
-        status: charge.status,
-        method: charge.method,
-        approvedAt: charge.approvedAt ? new Date(charge.approvedAt) : null,
-        rawResponse: charge as unknown as Record<string, unknown>,
-      })
-      .onConflictDoNothing({ target: tossPayments.orderId });
-
-    const nextEnd = new Date(sub.currentPeriodEndsAt ?? new Date());
-    nextEnd.setMonth(nextEnd.getMonth() + 1);
-    await db
-      .update(subscriptions)
-      .set({
-        status: "active",
-        currentPeriodStartsAt: sub.currentPeriodEndsAt,
-        currentPeriodEndsAt: nextEnd,
-        updatedAt: new Date(),
-      })
-      .where(eq(subscriptions.id, sub.id));
   }
 
   async function chargePortOneSub(

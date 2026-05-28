@@ -7,7 +7,7 @@
  * 절차:
  * 1. 사용자 인증 확인
  * 2. confirmEmail 이 본인 이메일과 일치하는지 검증 (오삭제 방지)
- * 3. 활성 구독이 있으면 즉시 취소 (LS API / Toss flag)
+ * 3. 활성 구독이 있으면 즉시 취소 (PortOne API)
  * 4. auth.users 행 삭제 → 모든 user_id FK 가 CASCADE 로 같이 삭제됨
  *    (profiles, fortunes, tarot_readings, subscriptions 등 전부)
  * 5. 세션 만료 → 클라이언트에서 로그인 페이지로 이동
