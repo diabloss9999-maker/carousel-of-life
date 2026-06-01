@@ -1,9 +1,14 @@
 import postgres from "postgres";
+import { config } from "dotenv";
 
-const DATABASE_URL =
-  "postgresql://postgres.rsffxhafktifmbaagrge:EV7qomsmBnEfAFuT@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres";
+config({ path: ".env.local" });
 
-const sql = postgres(DATABASE_URL, { ssl: "require" });
+const databaseUrl = process.env.DATABASE_URL;
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL is required.");
+}
+
+const sql = postgres(databaseUrl, { ssl: "require" });
 
 await sql`
   CREATE TABLE IF NOT EXISTS public.daily_questions (

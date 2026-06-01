@@ -1,9 +1,14 @@
 import postgres from "postgres";
+import { config } from "dotenv";
 
-const sql = postgres(
-  "postgresql://postgres.rsffxhafktifmbaagrge:EV7qomsmBnEfAFuT@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres",
-  { ssl: "require" },
-);
+config({ path: ".env.local" });
+
+const databaseUrl = process.env.DATABASE_URL;
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL is required.");
+}
+
+const sql = postgres(databaseUrl, { ssl: "require" });
 
 await sql`
   CREATE TABLE IF NOT EXISTS public.character_affinities (

@@ -120,11 +120,14 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
   }
 
   return (
-    <Card className={`app-surface ring-1 ${borderColor}`} data-capture-root>
+    <Card
+      className={`liquid-glass-panel liquid-fortune-card ring-1 ${borderColor}`}
+      data-capture-root
+    >
       <CardHeader className="space-y-3 pb-3">
         {/* 캐릭터 헤더 */}
-        <div className="flex items-center gap-3">
-          <div className="relative h-24 w-16 flex-shrink-0 overflow-hidden rounded-lg shadow-md">
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="liquid-portrait-frame relative h-24 w-16 flex-shrink-0 overflow-hidden rounded-2xl">
             <CharacterImage
               character={character}
               fill
@@ -133,13 +136,15 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
               quality={90}
             />
           </div>
-          <div>
+          <div className="min-w-0 flex-1">
             <p className="font-mystic text-[15px] font-semibold text-foreground/90">
               {name}
             </p>
             <p className="text-[15px] text-muted-foreground">{title}</p>
           </div>
-          <span className="ml-auto text-[15px] text-muted-foreground">{label}</span>
+          <span className="liquid-character-chip ml-auto px-3 py-1 text-[15px] text-muted-foreground">
+            {label}
+          </span>
         </div>
 
         <h2 className="font-mystic text-xl font-semibold leading-snug tracking-tight">
@@ -159,7 +164,7 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
         />
 
         {/* 채팅으로 연결 */}
-        <div className="rounded-xl border border-border/30 bg-muted/20 px-4 py-3 flex items-center justify-between gap-3">
+        <div className="liquid-glass-control flex items-center justify-between gap-3 px-4 py-3">
           <p className="text-[15px] text-muted-foreground leading-relaxed">
             {t("askMore", { name })}
           </p>
@@ -167,7 +172,7 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
             type="button"
             size="sm"
             variant="outline"
-            className="shrink-0"
+            className="liquid-glass-action shrink-0"
             onClick={handleChat}
             disabled={isPending}
           >

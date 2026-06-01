@@ -26,7 +26,7 @@ export async function QuotaBar({
 
   if (tier === "pro") {
     return (
-      <div className="app-surface rounded-xl p-4 ring-1 ring-accent/15">
+      <div className="liquid-glass-panel liquid-quota-shell p-4 ring-1 ring-accent/15">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-3">
             <Crown className="h-5 w-5 text-accent" aria-hidden />
@@ -49,7 +49,7 @@ export async function QuotaBar({
 
   if (tier === "lite") {
     return (
-      <div className="app-surface rounded-xl p-4 ring-1 ring-primary/15">
+      <div className="liquid-glass-panel liquid-quota-shell p-4 ring-1 ring-primary/15">
         <div className="flex items-center justify-between gap-4 flex-wrap mb-3">
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-primary" aria-hidden />
@@ -81,7 +81,7 @@ export async function QuotaBar({
   }
 
   return (
-    <div className="app-surface rounded-xl p-4">
+    <div className="liquid-glass-panel liquid-quota-shell p-4">
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div className="grid grid-cols-3 gap-4 sm:gap-6 text-[15px] flex-1 min-w-0">
           <Item
@@ -111,18 +111,18 @@ function Item({
 }) {
   const exhausted = used >= max;
   return (
-    <div className="space-y-1">
+    <div className="liquid-quota-metric space-y-2 rounded-2xl px-3 py-2">
       <div className="flex items-center justify-between text-[15px] text-muted-foreground">
         <span>{label}</span>
         <span className={exhausted ? "text-destructive font-medium" : ""}>
           {used}/{max}
         </span>
       </div>
-      <div className="h-2 overflow-hidden rounded-full bg-muted/75">
+      <div className="liquid-meter-track">
         <div
           className={cn(
-            "h-full rounded-full transition-all",
-            exhausted ? "bg-destructive" : "bg-primary",
+            "liquid-meter-fill",
+            exhausted && "is-exhausted",
           )}
           style={{ width: `${Math.min(100, (used / max) * 100)}%` }}
         />
@@ -133,7 +133,7 @@ function Item({
 
 function UnlimitedItem({ label, used }: { label: string; used: number }) {
   return (
-    <div className="flex flex-col items-center text-center">
+    <div className="liquid-quota-metric flex flex-col items-center rounded-2xl px-3 py-2 text-center">
       <span className="text-muted-foreground">{label}</span>
       <span className="font-medium flex items-center gap-1 mt-0.5">
         <span className="tabular-nums">{used}</span>

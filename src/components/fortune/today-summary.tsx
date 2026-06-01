@@ -69,7 +69,7 @@ export async function TodaySummary({ fortunes }: TodaySummaryProps) {
               href={`${ROUTES.today}?category=${id}`}
               className="group block focus:outline-none"
             >
-              <Card className="app-surface h-full transition group-hover:border-primary/40 group-focus-visible:ring-2 group-focus-visible:ring-primary/40">
+              <Card className="liquid-glass-panel liquid-summary-card h-full group-focus-visible:ring-2 group-focus-visible:ring-primary/40">
                 <CardContent className="space-y-2 p-4">
                   <span className="text-[15px] uppercase tracking-wider text-muted-foreground">
                     {label}
