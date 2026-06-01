@@ -186,6 +186,35 @@ const STEM_KOREAN_TRAIT: Record<string, string> = {
   癸: "맑은 빗물·이슬 — 차분하고 부드러우며 스며드는 결",
 };
 
+/**
+ * 사주 전문용어(한자·한글 음역·간지년)를 채팅 컨텍스트에서 제거/순화한다.
+ *
+ * DB 에 저장된 사주 분석 텍스트에는 '을목·을사년·일간' 같은 용어가 들어있어,
+ * 채팅 캐릭터가 그대로 복사하면 일반 유저 몰입이 깨진다. 채팅 enrichment 에만
+ * 적용 — 전문 풀이 페이지(/saju)는 원문 그대로 둔다.
+ */
+function stripSajuJargon(text: string): string {
+  if (!text) return text;
+  let out = text;
+  // 한자 제거 (CJK 통합 한자)
+  out = out.replace(/[一-鿿]+/g, "");
+  // 천간 음역 (단독 단어): 갑목·을목·병화·정화·무토·기토·경금·신금·임수·계수
+  out = out.replace(
+    /(갑목|을목|병화|정화|무토|기토|경금|신금|임수|계수)/g,
+    "타고난 기질",
+  );
+  // 간지년: 갑자년~계해년 패턴 (천간+지지+년)
+  out = out.replace(
+    /[갑을병정무기경신임계][자축인묘진사오미신유술해]년/g,
+    "올해",
+  );
+  // 잔여 사주 용어
+  out = out.replace(/(일간|월운|세운|대운|천간|지지|상충|상생|일주|시주|월주|년주)/g, "");
+  // 괄호 안이 비었거나 깨진 잔재 정리: '(  — )', '()' 등
+  out = out.replace(/\(\s*[—\-·,\s]*\)/g, "").replace(/\s{2,}/g, " ").trim();
+  return out;
+}
+
 /** 오늘의 운세 카테고리 ID. */
 export type FortuneCategory =
   | "general"
@@ -1002,17 +1031,19 @@ export function buildChatContext(
   // 채팅은 모든 캐릭터가 chatMode — 동양이어도 사주 한자·전문용어 비노출.
   lines.push(buildUserContext({ profile, world: worldOf(characterId), chatMode: true }));
 
-  // 사주 심층 분석
+  // 사주 심층 분석 — 사주 용어(한자·음역)를 제거한 뒤 주입.
+  // 채팅 캐릭터(특히 동양)가 enrichment 의 '을목·을사년' 을 복사해 쓰는 걸 차단.
   if (enrichment.sajuDeep) {
     const d = enrichment.sajuDeep;
-    lines.push("\n[사주 심층 분석 — 이미 알고 있는 정보]");
-    if (d.personality)  lines.push(`성격: ${d.personality}`);
-    if (d.strengths)    lines.push(`강점: ${d.strengths}`);
-    if (d.cautions)     lines.push(`주의: ${d.cautions}`);
-    if (d.loveStyle)    lines.push(`연애 스타일: ${d.loveStyle}`);
-    if (d.careerFit)    lines.push(`직업 적성: ${d.careerFit}`);
-    if (d.healthCare)   lines.push(`건강: ${d.healthCare}`);
-    if (d.lifeFlow)     lines.push(`인생 흐름: ${d.lifeFlow}`);
+    const f = stripSajuJargon;
+    lines.push("\n[질문자 분석 — 이미 알고 있는 정보 / 사주 용어는 쓰지 말 것]");
+    if (d.personality)  lines.push(`성격: ${f(d.personality)}`);
+    if (d.strengths)    lines.push(`강점: ${f(d.strengths)}`);
+    if (d.cautions)     lines.push(`주의: ${f(d.cautions)}`);
+    if (d.loveStyle)    lines.push(`연애 스타일: ${f(d.loveStyle)}`);
+    if (d.careerFit)    lines.push(`직업 적성: ${f(d.careerFit)}`);
+    if (d.healthCare)   lines.push(`건강: ${f(d.healthCare)}`);
+    if (d.lifeFlow)     lines.push(`인생 흐름: ${f(d.lifeFlow)}`);
   }
 
   // 성격유형 통합 분석
