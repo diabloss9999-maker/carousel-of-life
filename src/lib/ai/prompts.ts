@@ -48,9 +48,19 @@ export type CharacterWorld = "동양" | "이세계" | "북유럽" | "any";
 export function buildUserContext({
   profile,
   world = "any",
-}: BuildContextOptions & { world?: CharacterWorld }): string {
+  chatMode = false,
+}: BuildContextOptions & {
+  world?: CharacterWorld;
+  /**
+   * 채팅 대화 모드. true 면 동양 캐릭터여도 사주 한자·전문용어를 노출하지 않고
+   * 한국어 비유만 쓴다. (사주 전문 풀이 페이지와 달리, 대화에서는 한자가
+   * 몰입을 깨므로 동양 캐릭터도 쉬운 한국어로만 말하게 함.)
+   */
+  chatMode?: boolean;
+}): string {
   const lines: string[] = [];
-  const isOriental = world === "동양" || world === "any";
+  // 채팅 모드에서는 동양이어도 한자 노출 안 함 (전문 풀이 페이지만 한자 OK).
+  const isOriental = (world === "동양" || world === "any") && !chatMode;
 
   if (profile.displayName) lines.push(`이름: ${profile.displayName}`);
   lines.push(
@@ -114,6 +124,7 @@ export function buildUserContext({
   // 세계관별 한자·전문술어 정책
   lines.push("");
   if (isOriental) {
+    // 사주 전문 풀이 페이지 — 한자 노출 OK (풀이 동반)
     lines.push("[한자·전문술어 표기 — 반드시 지킬 것]");
     lines.push(
       "한자(천간지지·오행·사주 용어 등)를 본문에 쓸 때는 반드시 그 옆에 괄호로 한국어 풀이를 같이 적어. " +
@@ -122,7 +133,21 @@ export function buildUserContext({
         "같은 한자가 한 문단 안에서 반복되면 두 번째부터는 한자만 써도 OK. " +
         "한자를 아예 쓰지 않고 한국어로만 풀어 써도 OK — 다만 한자를 쓸 거면 무조건 풀이 동반.",
     );
+  } else if (chatMode && (world === "동양" || world === "any")) {
+    // 동양 캐릭터 채팅 — 사주를 알지만 한자·전문용어로 말하지 않음 (몰입 우선)
+    lines.push("[대화 언어 — 반드시 지킬 것]");
+    lines.push(
+      "너는 이 사람의 사주·기질을 속으로는 알고 있지만, 대화에서는 절대 한자나 사주 전문용어를 입에 올리지 않아. " +
+        "乙木·壬午·일간·월운·천간·지지·오행·상충·상생 같은 단어는 대화에서 금지. " +
+        "독자는 사주 용어를 모르는 평범한 사람이고, 어려운 말을 들으면 몰입이 깨진다. " +
+        "사주에서 읽은 본질은 쉬운 한국어 비유로만 풀어 말해. " +
+        "예: '乙木이라 유연하고' 대신 '넌 부드럽게 휘어지는 성격이라', " +
+        "'壬水 일간이 강해서' 대신 '속이 깊고 자유로운 사람이라', " +
+        "'상충이 들어서' 대신 '두 기운이 부딪히는 시기라서'. " +
+        "사주를 본다는 티는 자연스럽게 내되 (예: '네 기운을 보니'), 용어 설명·한자 인용은 하지 않는다.",
+    );
   } else {
+    // 이세계·북유럽 캐릭터 — 한자 금지 + 자기 세계관 비유
     lines.push("[세계관 일관성 — 반드시 지킬 것]");
     lines.push(
       "너는 동양 사주의 한자 용어(乙木·壬午·卯月·辛未·일간·월운 등)를 본문에 직접 인용하지 않아. " +
@@ -969,7 +994,8 @@ export function buildChatContext(
   const lines: string[] = [];
 
   lines.push("[질문자 기본 정보]");
-  lines.push(buildUserContext({ profile, world: worldOf(characterId) }));
+  // 채팅은 모든 캐릭터가 chatMode — 동양이어도 사주 한자·전문용어 비노출.
+  lines.push(buildUserContext({ profile, world: worldOf(characterId), chatMode: true }));
 
   // 사주 심층 분석
   if (enrichment.sajuDeep) {
