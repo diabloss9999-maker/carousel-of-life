@@ -24,6 +24,8 @@ import { cn } from "@/lib/utils";
 interface CharacterSelectProps {
   affinities?: Record<string, number>;
   vacationRoster: CharacterVacationRoster;
+  /** 유저 MBTI 기준 캐릭터별 궁합 점수 (없으면 궁합 배지 미표시). */
+  matchScores?: Record<string, number> | null;
 }
 
 const CATEGORY_ORDER: CharacterCategory[] = ["이세계", "동양", "북유럽"];
@@ -170,6 +172,7 @@ interface CreateSessionResponse {
 export function CharacterSelect({
   affinities = {},
   vacationRoster,
+  matchScores = null,
 }: CharacterSelectProps) {
   const router = useRouter();
   const [selected, setSelected] = useState<CharacterId | null>(null);
@@ -177,6 +180,13 @@ export function CharacterSelect({
   const vacationByCharacter = new Map(
     vacationRoster.vacations.map((item) => [item.characterId, item]),
   );
+
+  // 가장 궁합 높은 캐릭터 — "최고의 짝" 배지용 (휴가 중 제외)
+  const bestMatchId: CharacterId | null = matchScores
+    ? ((Object.entries(matchScores) as [CharacterId, number][])
+        .filter(([id]) => !vacationByCharacter.has(id))
+        .sort((a, b) => b[1] - a[1])[0]?.[0] ?? null)
+    : null;
 
   const tCat = useTranslations("characterSelect");
   const tChar = useTranslations("characters");
@@ -325,6 +335,27 @@ export function CharacterSelect({
                           {vacation ? tCat("vacationBadge") : specialty}
                         </span>
                       </div>
+                      {/* MBTI + 궁합 배지 — 우상단 (휴가 중엔 숨김) */}
+                      {!vacation && (
+                        <div className="absolute top-2 right-2 flex flex-col items-end gap-1 on-character-image">
+                          <span className="rounded-md bg-black/65 px-2 py-0.5 text-[13px] font-bold leading-none tracking-wide">
+                            {char.mbti}
+                          </span>
+                          {matchScores && matchScores[id] != null && (
+                            <span
+                              className={cn(
+                                "rounded-md px-2 py-0.5 text-[12px] font-semibold leading-none",
+                                id === bestMatchId
+                                  ? "bg-amber-400/90 text-black"
+                                  : "bg-black/65 text-white/90",
+                              )}
+                            >
+                              {id === bestMatchId ? "★ " : ""}
+                              궁합 {matchScores[id]}%
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
 
                     {/* 이름 + 직함 — 모바일은 여기까지만 */}

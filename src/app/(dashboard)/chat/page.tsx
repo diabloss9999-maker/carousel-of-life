@@ -15,6 +15,7 @@ import { getTodayUsage } from "@/lib/usage/quota";
 import { WorldTeaserBanner } from "@/components/chat/world-teaser-banner";
 import { WelcomeGreeting } from "@/components/chat/welcome-greeting";
 import { getTodayCharacterVacations } from "@/lib/chat/character-vacation";
+import { buildMatchScoreMap } from "@/lib/chat/character-match";
 import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
@@ -37,6 +38,8 @@ export default async function ChatPage() {
     affinityRows.map((a) => [a.characterId, a.points]),
   );
   const vacationRoster = getTodayCharacterVacations();
+  // 유저 MBTI 기준 캐릭터 궁합 점수 (MBTI 없으면 null → 배지 미표시)
+  const matchScores = buildMatchScoreMap(profile.mbti);
 
   return (
     <div className="space-y-8">
@@ -67,6 +70,7 @@ export default async function ChatPage() {
           <CharacterSelect
             affinities={affinities}
             vacationRoster={vacationRoster}
+            matchScores={matchScores}
           />
         </CardContent>
       </Card>

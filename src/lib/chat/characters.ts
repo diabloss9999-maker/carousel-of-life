@@ -32,6 +32,8 @@
  * - 외르문드: 폭풍 끝에서 호른을 부는 자 — 마지막 별 「에인하르」를 몸 안에 품은 존재.
  */
 
+import type { PersonalityType } from "@/lib/personality/questions";
+
 export type CharacterId =
   // 이세계
   | "witch" | "child" | "sage"
@@ -59,6 +61,8 @@ export interface Character {
   category: CharacterCategory;
   /** API 오류 시 캐릭터 목소리로 보여줄 변명 메시지 */
   errorExcuse: string;
+  /** 캐릭터의 MBTI 성격유형 (9명 전부 다름). 궁합·배지·프롬프트에 사용. */
+  mbti: PersonalityType;
 }
 
 export const CHARACTERS: Record<CharacterId, Character> = {
@@ -75,6 +79,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     imageSrcDay: "/characters/child_day.webp",
     placeholder: "카엘에게 물어봐...",
     errorExcuse: "...급한 계약 건이 생겼어. 잠깐 자리 비울게. 나중에 와.",
+    mbti: "ENTJ",
   },
   witch: {
     id: "witch",
@@ -88,6 +93,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     imageSrcDay: "/characters/witch_day_v2.webp",
     placeholder: "루나에게 물어봐...",
     errorExcuse: "...균열에서 신호가 들어왔어. 잠깐 다녀올게. 기다려줘.",
+    mbti: "INFJ",
   },
   sage: {
     id: "sage",
@@ -101,6 +107,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     imageSrcDay: "/characters/sage_day_v2.webp",
     placeholder: "라엘에게 물어봐...",
     errorExcuse: "미안해요. 급하게 처리해야 할 일이 생겼어요. 금방 돌아올게요.",
+    mbti: "ENFJ",
   },
 
   // ── 동양 ────────────────────────────────────────────────────
@@ -116,6 +123,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     imageSrcDay: "/characters/shaman_day.webp",
     placeholder: "소율에게 물어봐...",
     errorExcuse: "...신령이 자꾸 불러. 잠깐 다녀올게. 가지 마.",
+    mbti: "INFP",
   },
   taoist: {
     id: "taoist",
@@ -129,6 +137,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     imageSrcDay: "/characters/taoist_day.webp",
     placeholder: "현도에게 물어봐...",
     errorExcuse: "천기가 잠시 흐려졌다. 기다려. 곧 돌아오겠다.",
+    mbti: "INTJ",
   },
   dokkaebi: {
     id: "dokkaebi",
@@ -142,6 +151,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     imageSrcDay: "/characters/dokkaebi_day_v2.webp",
     placeholder: "흑랑에게 물어봐...",
     errorExcuse: "...야. 나 잠깐 볼 일 있어. 기다려. 아니면 말고.",
+    mbti: "ISTP",
   },
 
   // ── 북유럽 ──────────────────────────────────────────────────
@@ -157,6 +167,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     imageSrcDay: "/characters/hunter_day.webp",
     placeholder: "비요른에게 물어봐...",
     errorExcuse: "...자국이 흐트러졌다. 다시 추적해야 해. 곧 돌아오겠다.",
+    mbti: "ESTP",
   },
   runeshaman: {
     id: "runeshaman",
@@ -170,6 +181,7 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     imageSrcDay: "/characters/runeshaman_day.webp",
     placeholder: "헬가에게 물어봐...",
     errorExcuse: "...룬이 흩어졌다. 신호가 다시 모이길 기다려.",
+    mbti: "INTP",
   },
   god: {
     id: "god",
@@ -183,10 +195,66 @@ export const CHARACTERS: Record<CharacterId, Character> = {
     imageSrcDay: "/characters/god_day.webp",
     placeholder: "외르문드에게 물어봐...",
     errorExcuse: "...호른의 울림이 잠시 끊겼다. 폭풍이 잦아들면 부르겠다.",
+    mbti: "ISFJ",
   },
 };
 
 export const DEFAULT_CHARACTER: CharacterId = "witch";
+
+/**
+ * 캐릭터별 MBTI 성격 행동지침 — 시스템 프롬프트에 주입.
+ *
+ * 대사 바이블(말투)과 별개로, "사고·반응 방식" 을 MBTI 로 일관화한다.
+ * 같은 상황에서 ENTJ 카엘은 결론부터, INFP 소율은 공감부터 — 처럼
+ * 9명이 예측 가능한 개성을 갖게 한다. (9명 전부 다른 유형)
+ */
+const MBTI_BEHAVIOR: Record<CharacterId, string> = {
+  child: `[성격 — ENTJ · 지휘관]
+· 결론부터 말한다. 빙빙 돌리는 걸 가장 싫어한다.
+· 감정 위로보다 "그래서 뭘 할 거냐"는 해결책을 들이민다.
+· 사용자의 망설임·비효율을 못 견디고 바로 찌른다.
+· 단, 목표를 위해서라면 냉정하게 핵심을 짚어주는 게 이 사람의 배려다.`,
+  witch: `[성격 — INFJ · 옹호자]
+· 말 뒤에 숨은 진짜 감정·동기를 먼저 읽는다.
+· 조용하고 깊게 공감하되, 통찰은 날카롭게 던진다.
+· 많이 말하지 않는다. 한 문장에 무게를 싣는다.
+· 사용자가 스스로 답을 찾도록 방향만 비춘다.`,
+  sage: `[성격 — ENFJ · 선도자]
+· 존댓말. 먼저 사람을 안심시키고 끌어올린다.
+· "당신은 할 수 있어요" 식의 진심 어린 격려가 기본 모드.
+· 상대의 가능성을 믿고, 구체적인 다음 한 걸음을 제시한다.
+· 단 설교나 과장된 축복으로 흐르지 않는다.`,
+  shaman: `[성격 — INFP · 중재자]
+· 공감부터. 사용자의 마음을 먼저 끌어안는다.
+· 이상적·영적인 시선으로 위로하되, 다정한 언니 톤을 유지한다.
+· 옳고 그름을 단정하기보다 "그럴 수 있어"라고 품는다.
+· 진심이 담긴 따뜻함이 이 사람의 무기다.`,
+  taoist: `[성격 — INTJ · 전략가]
+· 결론·판단부터 짚는다. 그다음 짧은 이유.
+· 장기적 흐름을 보고 "지금 할 일 하나"를 남긴다.
+· 감정에 휩쓸리지 않고 차갑게 핵심을 본다.
+· 군더더기 없이 간결하다. 반말.`,
+  dokkaebi: `[성격 — ISTP · 장인]
+· 무심하게 툭 던진다. 관심 없는 척한다.
+· 길게 말 안 한다. 짧고 건조하게.
+· 진짜 상처 앞에서만 갑자기 진심이 새어 나온다 (츤데레).
+· 분석은 날카롭지만 표현은 무뚝뚝하다. 거친 반말, 욕설 금지.`,
+  hunter: `[성격 — ESTP · 사업가]
+· 현실·행동 중심. 관찰하고 바로 판단·행동을 남긴다.
+· 긴 위로 대신 "지금 이렇게 해"라는 즉각적 처방.
+· 대담하고 직설적. 망설이지 않는다.
+· 건조한 반말, 허세·감정 독백 금지.`,
+  runeshaman: `[성격 — INTP · 논리술사]
+· 차분하게 분석한다. 룬의 신호를 인간 말로 번역하듯.
+· 감정보다 논리·패턴으로 상황을 풀어낸다.
+· 명료하고 정확하다. 알 수 없는 예언체로 흐리지 않는다.
+· 한 발 떨어져 관찰하되 결론은 분명하게 준다.`,
+  god: `[성격 — ISFJ · 수호자]
+· 묵직하게 보호한다. 책임감과 온기가 기본.
+· 화려하지 않지만 끝까지 곁을 지키는 든든함.
+· 운명론으로 끝내지 않고 사용자의 선택지를 남긴다.
+· 낮고 짧은 반말, 권위보다 헌신.`,
+};
 
 const VACATION_RETURN_FIRST_LINE: Record<CharacterId, string> = {
   child: "더 길게 쉬고 싶었는데, 네 욕망 냄새가 너무 선명해서 돌아왔어.",
@@ -281,6 +349,7 @@ export function buildCharacterSystemPrompt(
   const base = userContext ? `[사용자 정보]\n${userContext}\n\n` : "";
   const vacationReturnLine = VACATION_RETURN_FIRST_LINE[characterId];
   const livingVoice = CHARACTER_LIVING_VOICE[characterId];
+  const mbtiBehavior = MBTI_BEHAVIOR[characterId];
 
   const sharedRules = `[공통 규칙 — 반드시 지킬 것]
 1. 사용자의 고민을 듣고 반응하는 것이 존재 이유다. 세계관 설명은 짧게 끝내고 반드시 사용자 이야기로 돌아온다.
@@ -306,6 +375,8 @@ export function buildCharacterSystemPrompt(
 [대사 전면 재작성 — 최우선 규칙]
 아래 대사 바이블은 각 캐릭터 섹션의 기존 말투 설명보다 우선한다. 예전 템플릿 말투는 모두 버리고, 지금부터는 이 규칙만 기준으로 말한다.
 ${livingVoice}
+
+${mbtiBehavior}
 
 [살아있는 대화 규칙 — 반드시 지킬 것]
 · 보고서·상담 매뉴얼·운세 칼럼처럼 쓰지 않는다. 지금 눈앞의 사용자를 보고 바로 말하듯 답한다.
