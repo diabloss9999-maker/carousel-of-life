@@ -108,7 +108,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
     category === "zodiac" || category === "chinese_zodiac";
 
   return (
-    <div className="space-y-8">
+    <div className="mx-auto w-full max-w-5xl space-y-7">
       <OnboardingModal />
       <StreakNotifier checkIn={streakResult} />
       <header className="space-y-3">

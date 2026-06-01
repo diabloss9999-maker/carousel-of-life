@@ -121,13 +121,13 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
 
   return (
     <Card
-      className={`liquid-glass-panel liquid-fortune-card ring-1 ${borderColor}`}
+      className={`liquid-glass-panel liquid-fortune-card p-5 ring-1 sm:p-7 ${borderColor}`}
       data-capture-root
     >
-      <CardHeader className="space-y-3 pb-3">
+      <CardHeader className="space-y-0 p-0">
         {/* 캐릭터 헤더 */}
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="liquid-portrait-frame relative h-24 w-16 flex-shrink-0 overflow-hidden rounded-2xl">
+        <div className="liquid-oracle-header flex flex-wrap items-center gap-4 px-4 py-4 sm:px-5">
+          <div className="liquid-portrait-frame relative h-24 w-16 flex-shrink-0 overflow-hidden rounded-2xl sm:h-28 sm:w-20">
             <CharacterImage
               character={character}
               fill
@@ -137,23 +137,23 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
             />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="font-mystic text-[15px] font-semibold text-foreground/90">
+            <p className="font-mystic text-lg font-semibold leading-tight text-foreground/90">
               {name}
             </p>
-            <p className="text-[15px] text-muted-foreground">{title}</p>
+            <p className="mt-1 text-[15px] text-muted-foreground">{title}</p>
           </div>
-          <span className="liquid-character-chip ml-auto px-3 py-1 text-[15px] text-muted-foreground">
+          <span className="liquid-character-chip px-3 py-1 text-[15px] text-muted-foreground">
             {label}
           </span>
         </div>
 
-        <h2 className="font-mystic text-xl font-semibold leading-snug tracking-tight">
+        <h2 className="font-mystic px-1 pt-5 text-2xl font-semibold leading-snug tracking-tight sm:text-3xl">
           {fortune.title}
         </h2>
       </CardHeader>
 
-      <CardContent className="space-y-5">
-        <p className="font-mystic whitespace-pre-line leading-relaxed text-foreground/90">
+      <CardContent className="space-y-5 p-0 pt-5">
+        <p className="liquid-reading-copy font-mystic whitespace-pre-line text-base leading-loose text-foreground/90">
           {fortune.content}
         </p>
 
@@ -164,15 +164,15 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
         />
 
         {/* 채팅으로 연결 */}
-        <div className="liquid-glass-control flex items-center justify-between gap-3 px-4 py-3">
-          <p className="text-[15px] text-muted-foreground leading-relaxed">
+        <div className="liquid-conversation-cta flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-[15px] leading-relaxed text-muted-foreground">
             {t("askMore", { name })}
           </p>
           <Button
             type="button"
             size="sm"
             variant="outline"
-            className="liquid-glass-action shrink-0"
+            className="liquid-glass-action liquid-chat-action shrink-0"
             onClick={handleChat}
             disabled={isPending}
           >
@@ -185,10 +185,11 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
           </Button>
         </div>
 
-        <div className="flex flex-wrap items-center justify-end gap-2">
+        <div className="liquid-share-row flex flex-wrap items-center justify-end gap-2">
           <SaveImageButton
             imageUrl={buildShareImageUrl()}
             filename={t("shareFilename", { label })}
+            className="liquid-soft-button"
           />
           <ShareButton
             title={`[${label}] ${fortune.title}`}
@@ -201,6 +202,7 @@ export function FortuneCard({ fortune, crackLevel = 0 }: FortuneCardProps) {
               direction: fortune.luckyDirection ?? "—",
             })}
             imageUrl={buildShareImageUrl()}
+            className="liquid-soft-button"
           />
         </div>
       </CardContent>

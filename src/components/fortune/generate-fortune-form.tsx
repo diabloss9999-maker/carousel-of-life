@@ -60,20 +60,20 @@ export function GenerateFortuneForm({
   const sub = t("fallbackSaju");
 
   return (
-    <div className="liquid-glass-panel liquid-fortune-card overflow-hidden">
-      <div className="flex gap-0">
+    <div className="liquid-glass-panel liquid-fortune-card overflow-hidden p-4 sm:p-5">
+      <div className="liquid-oracle-header flex gap-0 overflow-hidden">
         {/* 캐릭터 이미지 */}
-        <div className="relative w-24 sm:w-32 flex-shrink-0">
+        <div className="relative w-24 flex-shrink-0 sm:w-32">
           <CharacterImage
             character={character}
             width={600}
             height={900}
             quality={85}
-            className="h-full w-full object-cover object-top opacity-80"
+            className="h-full w-full object-cover object-top opacity-90"
             style={{ minHeight: "160px", maxHeight: "200px" }}
             sizes="128px"
           />
-          <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-r from-transparent to-white/8" />
+          <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-r from-transparent to-white/20" />
         </div>
 
         {/* 콘텐츠 */}
@@ -94,7 +94,7 @@ export function GenerateFortuneForm({
               type="submit"
               disabled={isPending}
               size="lg"
-              className="liquid-glass-action w-full font-mystic"
+              className="liquid-glass-action w-full rounded-full font-mystic"
             >
               {isPending ? (
                 <>

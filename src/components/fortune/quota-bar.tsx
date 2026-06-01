@@ -55,7 +55,7 @@ export async function QuotaBar({
             <Sparkles className="h-4 w-4 text-primary" aria-hidden />
             <p className="font-mystic text-[15px] font-medium">{t("lightPlan")}</p>
           </div>
-          <Button asChild size="sm" variant="ghost">
+          <Button asChild size="sm" variant="ghost" className="liquid-soft-button">
             <Link href={ROUTES.pricing}>{t("upgradePro")}</Link>
           </Button>
         </div>
@@ -92,7 +92,7 @@ export async function QuotaBar({
           <Item label={t("tarot")} used={tarotCount} max={FREE_DAILY_LIMITS.tarot} />
           <Item label={t("chat")} used={chatCount} max={FREE_DAILY_LIMITS.chat} />
         </div>
-        <Button asChild size="sm" variant="ghost">
+        <Button asChild size="sm" variant="ghost" className="liquid-soft-button">
           <Link href={ROUTES.pricing}>{t("upgrade")}</Link>
         </Button>
       </div>

@@ -105,15 +105,15 @@ export function LuckyInfo({ color, number, direction }: LuckyInfoProps) {
   const rotation = resolveDirectionRotation(direction);
 
   return (
-    <div className="grid grid-cols-3 gap-2 border-t border-border/40 pt-4 sm:gap-3">
+    <div className="liquid-lucky-grid grid grid-cols-3 gap-0">
       {/* 행운의 색 */}
       <LuckyTile label={t("luckyColor")}>
         <span
-          className="inline-block h-8 w-8 rounded-full border border-border/60 shadow-inner sm:h-10 sm:w-10"
+          className="liquid-lucky-color inline-block h-9 w-9 rounded-full sm:h-10 sm:w-10"
           style={{ backgroundColor: colorHex }}
           aria-hidden="true"
         />
-        <span className="font-mystic text-[15px] font-semibold text-foreground/90 sm:text-base">
+        <span className="font-mystic text-[15px] font-semibold text-foreground/90">
           {color ?? "—"}
         </span>
       </LuckyTile>
@@ -121,7 +121,7 @@ export function LuckyInfo({ color, number, direction }: LuckyInfoProps) {
       {/* 행운의 수 */}
       <LuckyTile label={t("luckyNumber")}>
         <span
-          className="font-mystic bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-600 bg-clip-text text-3xl font-bold text-transparent drop-shadow-sm sm:text-4xl"
+          className="liquid-lucky-number font-mystic text-3xl font-bold sm:text-4xl"
           aria-hidden="true"
         >
           {number ?? "—"}
@@ -133,7 +133,7 @@ export function LuckyInfo({ color, number, direction }: LuckyInfoProps) {
       <LuckyTile label={t("luckyDirection")}>
         {rotation !== null ? (
           <ArrowUp
-            className="h-7 w-7 text-primary sm:h-9 sm:w-9"
+            className="h-8 w-8 text-foreground/85 sm:h-9 sm:w-9"
             style={{ transform: `rotate(${rotation}deg)` }}
             aria-hidden="true"
           />
@@ -142,7 +142,7 @@ export function LuckyInfo({ color, number, direction }: LuckyInfoProps) {
             —
           </span>
         )}
-        <span className="font-mystic text-[15px] font-semibold text-foreground/90 sm:text-base">
+        <span className="font-mystic text-[15px] font-semibold text-foreground/90">
           {direction ?? "—"}
         </span>
       </LuckyTile>
@@ -157,11 +157,11 @@ interface LuckyTileProps {
 
 function LuckyTile({ label, children }: LuckyTileProps) {
   return (
-    <div className="flex flex-col items-center justify-between gap-2 p-3 text-center sm:p-4">
+    <div className="liquid-lucky-tile flex flex-col items-center justify-between gap-2 px-2 py-3 text-center sm:px-4 sm:py-4">
       <div className="flex flex-1 flex-col items-center justify-center gap-1.5">
         {children}
       </div>
-      <span className="text-[15px] uppercase tracking-wider text-muted-foreground sm:text-[15px]">
+      <span className="text-[15px] text-muted-foreground">
         {label}
       </span>
     </div>
