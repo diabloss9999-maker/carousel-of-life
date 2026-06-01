@@ -23,6 +23,7 @@ import {
  *  새 페이지 추가 시 여기 함께 추가.)
  */
 const DASHBOARD_PREFIXES = [
+  "/admin",
   "/archive",
   "/chat",
   "/collection",

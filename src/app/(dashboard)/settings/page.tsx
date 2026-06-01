@@ -1,6 +1,6 @@
 import type { Metadata, Route } from "next";
 import Link from "next/link";
-import { Archive, Bell, Crown, MessageCircleHeart, User } from "lucide-react";
+import { Archive, BarChart3, Bell, Crown, MessageCircleHeart, User } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ import { DeleteAccountButton } from "@/components/settings/delete-account-button
 import { PushToggle } from "@/components/settings/push-toggle";
 import { ROUTES } from "@/lib/constants";
 import { requireProfile } from "@/lib/auth/get-user";
+import { isAdmin } from "@/lib/auth/admin";
 import {
   getLatestSubscription,
   hasActiveSubscription,
@@ -32,6 +33,7 @@ export default async function SettingsPage() {
   const { user, profile } = await requireProfile();
   const subscribed = await hasActiveSubscription(user.id);
   const subscription = await getLatestSubscription(user.id);
+  const adminMode = isAdmin(user.email);
   const t = await getTranslations("settingsPage");
 
   const calendarLabel =
@@ -58,6 +60,26 @@ export default async function SettingsPage() {
           {t("subheading")}
         </p>
       </header>
+
+      {/* 마스터 전용 — 운영자 통계 */}
+      {adminMode && (
+        <Card className="app-surface ring-1 ring-amber-400/30">
+          <CardHeader className="pb-3">
+            <CardTitle className="font-mystic flex items-center gap-2 text-lg">
+              <BarChart3 className="h-5 w-5 text-amber-400" aria-hidden />
+              운영자 통계
+            </CardTitle>
+            <CardDescription className="text-[15px]">
+              방문·결제·기능 사용 통계를 한눈에 봐요. (마스터 전용)
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild variant="outline" className="w-full">
+              <Link href={"/admin" as Route}>통계 대시보드 열기</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Plan card */}
       <Card

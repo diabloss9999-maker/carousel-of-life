@@ -14,6 +14,7 @@ import { clientEnv } from "@/lib/env";
  * 새 페이지 추가 시 여기 함께 등록.
  */
 const PROTECTED_PREFIXES = [
+  "/admin",
   "/archive",
   "/chat",
   "/collection",
