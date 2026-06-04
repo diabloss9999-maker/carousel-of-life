@@ -5,7 +5,7 @@
     ],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.carouseloflife.app",
+      "package_name": "com.leonardocode.carouseloflife",
       "sha256_cert_fingerprints": [
         "45:34:C4:1F:4A:F6:9F:CD:98:6C:25:C7:35:39:19:AE:05:2C:31:FB:24:B9:99:EB:C6:10:B5:78:31:2C:B3:63"
       ]
