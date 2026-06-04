@@ -101,10 +101,12 @@ adb install app-release-signed.apk
      - 수집 데이터: 이메일, 생년월일, 결제 정보, 사용자 콘텐츠(채팅, 사진=손금)
      - 손금 사진은 **즉시 폐기** (DB 저장 안 함) 명시
      - 전송 암호화: HTTPS
-5. **결제 관련 안내 (외부 결제 사용)**
-   - Google Play 결제가 아닌 외부 결제(토스/Lemon Squeezy) 사용
-   - 한국 사용자 대상: 전기통신사업법 개정에 따라 가능
-   - "결제 시스템 선택권" 명시 의무 — 앱 내 결제 화면에 "본 결제는 Google Play 외부 결제 시스템을 통해 진행됩니다" 안내 필수
+5. **결제 관련 안내 (앱 내 결제 없음)**
+   - 안드로이드 앱은 인앱에서 유료 구독을 판매하지 않는다 (PlatformBridge 가
+     앱 컨텍스트를 감지해 모든 /pricing 링크·결제 버튼을 숨김).
+   - 멤버십 구독은 웹사이트(carouseloflife.com)에서만 진행 → Google Play
+     인앱결제(IAP) 정책 적용 대상 외.
+   - Data Safety 에서 "앱이 금융정보를 수집하지 않음"으로 신고 가능.
 6. **메인 스토어 등록정보**
    - 앱 아이콘: 512×512 PNG (`/public/icons-pwa/icon-512.png`)
    - 그래픽 이미지: 1024×500 PNG (제작 필요)
@@ -136,4 +138,4 @@ pnpm dlx @bubblewrap/cli build
 - **키스토어 분실 시 앱 업데이트 영원히 불가** — Google Play App Signing 활성화 권장 (Bubblewrap init 시 Y).
 - **Digital Asset Links 검증 실패 시 URL 바가 표시되어 PWA처럼 안 보임** — assetlinks.json 의 fingerprint 정확히 확인.
 - **카메라 권한**: TWA 는 Chrome Custom Tab 기반이라 카메라 접근은 Chrome 권한 위임. 별도 manifest 권한 선언 불필요. 손금 input[type=file capture] 정상 작동.
-- **결제**: 외부 결제 사용 시 Google Play 정책 25.3.2 항목 준수. 한국은 사용자가 결제 수단 선택 가능. 단 앱 설명에 명시 의무.
+- **결제**: 앱 내 구매 동선이 없으므로(웹 전용 구독) Google Play 인앱결제 정책 비대상. 앱 안에서는 PlatformBridge 가 결제 진입점을 숨긴다.

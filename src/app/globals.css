@@ -297,6 +297,16 @@ body .on-character-image * {
   color: rgba(255, 255, 255, 0.95) !important;
 }
 
+/* ── 안드로이드 앱(TWA) 내부에서는 결제/구독 진입점 숨김 ──────────────
+   Google Play 결제 정책 준수: 앱 안에서는 외부결제(구독 구매)를 노출하지 않는다.
+   구독은 웹사이트(carouseloflife.com)에서만 가능.
+   PlatformBridge 가 TWA 를 감지해 <html data-platform="android"> 를 설정하고,
+   아래 규칙이 모든 /pricing 링크와 data-hide-in-app 요소(결제 버튼)를 숨긴다. */
+html[data-platform="android"] a[href*="/pricing"],
+html[data-platform="android"] [data-hide-in-app] {
+  display: none !important;
+}
+
 /* Frosted Glass 카드 — v7: .ritual-message 의 backdrop-filter 가 빌드를 통과한
    유일한 케이스라서 같은 형태로 단순화. saturate() · -webkit prefix 제거. */
 .app-surface {

@@ -11,6 +11,7 @@ import { Footer } from "@/components/layout/footer";
 import { AmbientTrack } from "@/components/effects/ambient-track";
 import { GlobalMusicToggle } from "@/components/effects/global-music-toggle";
 import { KakaoSdkScript } from "@/components/shared/kakao-sdk-script";
+import { PlatformBridge } from "@/components/platform/platform-bridge";
 import { defaultMetadata } from "@/config/site";
 
 import "./globals.css";
@@ -76,6 +77,9 @@ export default async function RootLayout({
 
         {/* 카카오 Share SDK — 환경변수 있을 때만 로드 (트래픽 절약) */}
         <KakaoSdkScript />
+
+        {/* 안드로이드 TWA 감지 — 앱 내부에서는 결제 진입점을 숨긴다 (UI 없음) */}
+        <PlatformBridge />
 
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider

@@ -41,7 +41,8 @@
 모든 운세 데이터는 본인만 조회 가능합니다.
 
 ⚠️ 결제 안내
-본 앱의 결제는 Google Play 결제가 아닌 외부 결제 시스템 (토스페이먼츠) 을 통해 진행됩니다.
+본 앱(안드로이드)은 인앱에서 유료 구독을 판매하지 않습니다.
+멤버십 구독은 웹사이트(https://carouseloflife.com)에서 별도로 이용하실 수 있습니다.
 
 문의: diabloss9999@gmail.com
 
@@ -79,7 +80,7 @@ https://carouseloflife.com/privacy
 | 출생지 | 사주 계산 | 선택 | 안 함 |
 | 성별 | 사주 계산 | ✓ | 안 함 |
 | MBTI | 성격 분석 | 선택 | 안 함 |
-| 결제 기록 (메타데이터) | 구독 관리 | ✓ | 토스 (결제 처리만) |
+| 결제 기록 (메타데이터) | 구독 상태 확인 | 선택 | 앱에서 수집 안 함 (구독 결제는 웹에서 PortOne·NHN KCP 처리) |
 | 채팅 메시지 | AI 응답 생성 | ✓ | Anthropic Claude (AI 추론) |
 | 사진 (손금) | AI 분석 | ✓ | Anthropic Claude (즉시 폐기, DB 저장 X) |
 
@@ -92,11 +93,12 @@ https://carouseloflife.com/privacy
 ### 데이터 삭제 URL
 https://carouseloflife.com/settings (로그인 후 계정 삭제 가능)
 
-## 결제 정책 안내 (Google Play 25.3.2)
-본 앱은 Google Play 결제가 아닌 외부 결제 시스템을 사용합니다.
-- 결제 처리: 토스페이먼츠 (TossPayments) · Lemon Squeezy
-- 사용자가 결제 시스템을 선택할 수 있음 (한국 전기통신사업법 개정 준수)
-- 결제 화면에 외부 결제 사용 명시
+## 결제 정책 안내 (Google Play)
+본 앱(안드로이드)은 인앱에서 디지털 상품(유료 구독)을 판매하지 않습니다.
+- 앱 안에는 결제·구독 진입점이 노출되지 않습니다 (구매 동선 없음).
+- 멤버십 구독은 앱 외부 웹사이트(carouseloflife.com)에서만 진행됩니다.
+- 따라서 Google Play 인앱결제(IAP) 정책 적용 대상이 아닙니다.
+- (참고) 웹 결제 처리사: PortOne 경유 NHN KCP(카드)·카카오페이.
 
 ## 그래픽 자산 체크리스트
 - [ ] 앱 아이콘 512×512 PNG (✅ `/public/icons-pwa/icon-512.png` 사용 가능)

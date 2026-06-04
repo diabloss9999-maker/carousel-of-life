@@ -67,7 +67,7 @@ export function SubscribeCta({
     // 카카오페이 채널이 설정되어 있으면 카드 + 카카오페이 두 옵션 노출.
     if (useKakao) {
       return (
-        <div className="space-y-2">
+        <div data-hide-in-app className="space-y-2">
           <PortOneSubscribeButton
             plan={plan}
             userId={userId}
@@ -96,28 +96,32 @@ export function SubscribeCta({
     }
     // 카드 채널만 활성 — 단일 버튼
     return (
-      <PortOneSubscribeButton
-        plan={plan}
-        userId={userId}
-        email={email}
-        displayName={displayName}
-        label={label}
-        className="w-full"
-        variant={variant}
-      />
+      <div data-hide-in-app className="contents">
+        <PortOneSubscribeButton
+          plan={plan}
+          userId={userId}
+          email={email}
+          displayName={displayName}
+          label={label}
+          className="w-full"
+          variant={variant}
+        />
+      </div>
     );
   }
 
   // 2순위: 결제 비활성 — 사용자에게 명시적 안내
   return (
-    <Button
-      type="button"
-      className="w-full"
-      variant={variant}
-      disabled
-      title="결제 시스템 오픈 준비 중입니다."
-    >
-      곧 오픈해요
-    </Button>
+    <div data-hide-in-app className="contents">
+      <Button
+        type="button"
+        className="w-full"
+        variant={variant}
+        disabled
+        title="결제 시스템 오픈 준비 중입니다."
+      >
+        곧 오픈해요
+      </Button>
+    </div>
   );
 }
