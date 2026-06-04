@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+/* ── 안드로이드/TWA 터치 폴리시 — "웹사이트"가 아닌 "앱"처럼 동작 ──────────────
+   · 탭 시 회색 하이라이트 플래시 제거
+   · 안드로이드 Chrome 의 폰트 자동 확대 방지
+   · 화면 끝에서 당겨서 새로고침 / 스크롤 체이닝 차단 (풀스크린 몰입 유지)
+   콘텐츠(운세 텍스트 등) 선택·복사는 그대로 둔다(user-select 미변경). */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+body {
+  overscroll-behavior-y: contain;
+}
+
 /* =============================================================================
    인생의 회전목마 - 디자인 토큰
    Light Ritual: 밝고 몽환적인 낮의 의식 공간 (기본)
