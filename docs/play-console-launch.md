@@ -1,11 +1,12 @@
 # Google Play Console 출시 가이드 — 인생의 회전목마
 
 ## 빌드 산출물 (이미 준비됨)
-- **AAB 파일**: `C:\Users\User\Desktop\carousel-of-life-v1.0.0.aab` (3.9MB)
-- **Keystore**: `C:\Users\User\projects\carousel-of-life\android\android.keystore`
-  - 비밀번호: `Carousel2026!` (분실 금지! 암호 관리자에 보관)
-- **SHA256**: `73:F2:30:8C:4D:A4:FD:F0:EF:68:1D:1C:ED:73:41:FB:56:5F:13:95:C3:FE:A9:F9:B9:D0:05:F8:A1:B3:E2:C6`
-- **Package ID**: `com.carouseloflife.app`
+- **AAB 파일 (업로드용)**: `C:\Users\User\Downloads\총괄 디자이너\android-release\carousel-of-life-v1.0.0-playstore-signed.aab`
+  - ⚠️ 패키지 ID 변경(com.leonardocode.carouseloflife)으로 **재빌드 필요** — 위 파일은 구 패키지(com.carouseloflife.app)라 무효.
+- **Keystore (출시 서명키)**: `C:\Users\User\Downloads\총괄 디자이너\android-release\carousel-of-life-release.keystore`
+  - 비밀번호: 같은 폴더의 `IMPORTANT-android-key-passwords.txt` 참조 (분실 금지! 암호 관리자·USB 백업)
+- **SHA256**: `45:34:C4:1F:4A:F6:9F:CD:98:6C:25:C7:35:39:19:AE:05:2C:31:FB:24:B9:99:EB:C6:10:B5:78:31:2C:B3:63`
+- **Package ID**: `com.leonardocode.carouseloflife`
 - **Version**: 1.0.0 (versionCode 1)
 
 ---

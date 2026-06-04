@@ -6,7 +6,7 @@ import { useEffect } from "react";
  * 안드로이드 TWA(앱) 컨텍스트 감지 브리지.
  *
  * Bubblewrap TWA 로 앱이 실행되면 최초 진입 시 document.referrer 가
- * `android-app://com.carouseloflife.app` 로 설정된다. 이를 감지해
+ * `android-app://com.leonardocode.carouseloflife` 로 설정된다. 이를 감지해
  * <html> 에 data-platform="android" 를 부여하고 쿠키로 영속화한다.
  *
  * 이 표식을 기준으로 globals.css 가 앱 내부에서는 결제/구독 진입점
@@ -16,7 +16,7 @@ import { useEffect } from "react";
  *
  * UI 를 렌더링하지 않는다(null 반환).
  */
-const ANDROID_PACKAGE_REFERRER = "android-app://com.carouseloflife.app";
+const ANDROID_PACKAGE_REFERRER = "android-app://com.leonardocode.carouseloflife";
 const PLATFORM_COOKIE = "col_platform";
 const ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
 
