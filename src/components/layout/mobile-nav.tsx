@@ -66,7 +66,7 @@ export function MobileNav() {
   return (
     <nav
       aria-label={tExtras("navBottomAria")}
-      className="mobile-bottom-nav sticky bottom-0 z-30 md:hidden"
+      className="mobile-bottom-nav fixed inset-x-0 bottom-0 z-50 md:hidden"
       style={{
         background: `linear-gradient(to top, ${NAV_SURFACE}, ${NAV_SURFACE2})`,
         borderRadius: "18px 18px 0 0",

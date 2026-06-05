@@ -301,7 +301,7 @@ body.ritual-night .ritual-readable-scrim {
 
   .mobile-app-content {
     padding-top: 18px;
-    padding-bottom: 18px;
+    padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
   }
 
   html[data-platform="android"] .mobile-app-content {
