@@ -66,18 +66,18 @@ export function MobileNav() {
   return (
     <nav
       aria-label={tExtras("navBottomAria")}
-      className="sticky bottom-0 z-30 md:hidden"
+      className="mobile-bottom-nav sticky bottom-0 z-30 md:hidden"
       style={{
         background: `linear-gradient(to top, ${NAV_SURFACE}, ${NAV_SURFACE2})`,
-        borderRadius: "20px 20px 0 0",
+        borderRadius: "18px 18px 0 0",
         borderTop: "1px solid var(--header-border)",
-        boxShadow: "0 -8px 32px rgba(102,80,62,0.10)",
+        boxShadow: "0 -10px 30px rgba(58,45,74,0.14)",
         backdropFilter: "blur(24px)",
         WebkitBackdropFilter: "blur(24px)",
-        paddingBottom: "calc(8px + env(safe-area-inset-bottom, 0px))",
-        paddingLeft: 8,
-        paddingRight: 8,
-        paddingTop: 8,
+        paddingBottom: "calc(6px + env(safe-area-inset-bottom, 0px))",
+        paddingLeft: 6,
+        paddingRight: 6,
+        paddingTop: 6,
       }}
     >
       {/* 그룹 시트는 body 직속으로 띄움 (헤더/푸터 backdrop-filter 회피) */}
@@ -165,7 +165,7 @@ function ExpandedPanelPortal({
       );
       if (!tile) return;
       const r = tile.getBoundingClientRect();
-      const sheetWidth = 200;
+      const sheetWidth = Math.min(260, Math.max(216, window.innerWidth - 24));
       const viewportMargin = 12;
       const desiredCenter = r.left + r.width / 2;
       // 좌/우 가장자리에서 화면 밖으로 튀어나가지 않도록 clamp.
@@ -272,13 +272,13 @@ function NavTile({
     <Link
       href={href}
       aria-current={isActive ? "page" : undefined}
-      className="flex min-w-[56px] flex-1 shrink-0 flex-col items-center justify-center gap-[3px] min-h-[52px] px-1 transition-colors duration-150"
+      className="flex min-w-[52px] flex-1 shrink-0 flex-col items-center justify-center gap-1 min-h-[50px] px-1 transition-colors duration-150"
       style={{ color: isActive ? NAV_ACTIVE : NAV_MUTED }}
     >
       <IconBubble iconSrc={iconSrc} isActive={isActive} />
       <span
-        className="max-w-[64px] truncate text-center font-semibold tracking-tight leading-none"
-        style={{ fontSize: 11 }}
+        className="max-w-[58px] truncate text-center font-semibold leading-none"
+        style={{ fontSize: 10.5 }}
       >
         {label}
       </span>
@@ -308,13 +308,13 @@ function NavGroupTile({
       type="button"
       onClick={onToggle}
       aria-expanded={isOpen}
-      className="flex min-w-[56px] flex-1 shrink-0 flex-col items-center justify-center gap-[3px] min-h-[52px] px-1 transition-colors duration-150"
+      className="flex min-w-[52px] flex-1 shrink-0 flex-col items-center justify-center gap-1 min-h-[50px] px-1 transition-colors duration-150"
       style={{ color: isActive || isOpen ? NAV_ACTIVE : NAV_MUTED }}
     >
       <IconBubble iconSrc={iconSrc} isActive={isActive || isOpen} />
       <span
-        className="max-w-[64px] truncate text-center font-semibold tracking-tight leading-none flex items-center gap-0.5"
-        style={{ fontSize: 11 }}
+        className="max-w-[58px] truncate text-center font-semibold leading-none flex items-center gap-0.5"
+        style={{ fontSize: 10.5 }}
       >
         {label}
         <ChevronUp
@@ -347,7 +347,7 @@ function handleLeafClick(
 function IconBubble({ iconSrc, isActive }: { iconSrc?: string; isActive: boolean }) {
   return (
     <span
-      className="flex h-7 w-7 items-center justify-center rounded-full transition-all duration-150"
+      className="flex h-6 w-6 items-center justify-center rounded-full transition-all duration-150"
       style={
         isActive
           ? {
@@ -363,8 +363,8 @@ function IconBubble({ iconSrc, isActive }: { iconSrc?: string; isActive: boolean
           aria-hidden
           style={{
             display: "block",
-            width: 22,
-            height: 22,
+            width: 20,
+            height: 20,
             backgroundColor: "currentColor",
             maskImage: `url(${iconSrc})`,
             maskSize: "contain",

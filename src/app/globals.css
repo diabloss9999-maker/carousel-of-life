@@ -283,6 +283,176 @@ body.ritual-night .ritual-readable-scrim {
   }
 }
 
+
+/* Android mobile polish: compact app chrome, stable cards, and thumb-friendly controls. */
+@media (max-width: 640px) {
+  html {
+    scroll-padding-top: calc(64px + env(safe-area-inset-top, 0px));
+  }
+
+  body {
+    min-width: 320px;
+    overflow-x: hidden;
+  }
+
+  .mobile-app-header {
+    border-bottom-color: rgba(255, 255, 255, 0.18) !important;
+  }
+
+  .mobile-app-content {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
+  html[data-platform="android"] .mobile-app-content {
+    padding-top: 14px;
+  }
+
+  .liquid-glass-panel,
+  .app-surface {
+    border-radius: 18px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.42),
+      0 14px 34px rgba(42, 35, 58, 0.16);
+  }
+
+  .liquid-fortune-card {
+    padding: 16px !important;
+  }
+
+  .liquid-oracle-header {
+    gap: 12px;
+    border-radius: 18px;
+    padding: 12px !important;
+  }
+
+  .liquid-portrait-frame {
+    width: 56px !important;
+    height: 78px !important;
+    border-radius: 14px !important;
+  }
+
+  .liquid-reading-copy {
+    border-radius: 18px;
+    padding: 14px 15px;
+    font-size: 15px;
+    line-height: 1.84;
+  }
+
+  .liquid-lucky-grid {
+    border-radius: 18px;
+  }
+
+  .liquid-lucky-tile {
+    min-height: 92px;
+    padding: 14px 8px !important;
+  }
+
+  .liquid-conversation-cta {
+    border-radius: 18px;
+    padding: 14px !important;
+  }
+
+  .liquid-conversation-cta .liquid-chat-action,
+  .liquid-soft-button {
+    min-height: 44px;
+  }
+
+  .liquid-quota-shell {
+    padding: 12px !important;
+  }
+
+  .liquid-quota-shell .grid-cols-3 {
+    gap: 8px !important;
+  }
+
+  .liquid-quota-metric {
+    border-radius: 14px !important;
+    padding: 10px 8px !important;
+  }
+
+  .liquid-quota-metric .text-\[15px\] {
+    font-size: 13px !important;
+  }
+
+  .mobile-bottom-nav {
+    margin-top: auto;
+  }
+
+  .mobile-bottom-nav a,
+  .mobile-bottom-nav button {
+    touch-action: manipulation;
+  }
+
+  .mobile-chat-window {
+    gap: 10px;
+    min-height: min(680px, calc(100dvh - 170px));
+  }
+
+  .mobile-chat-panel {
+    min-height: 0;
+    max-height: calc(100dvh - 250px);
+    border-radius: 18px !important;
+    padding: 12px !important;
+    overscroll-behavior: contain;
+  }
+
+  .ritual-message {
+    border-radius: 18px;
+    padding: 13px 14px;
+    font-size: 14px;
+    line-height: 1.72;
+  }
+
+  .chat-bubble-skin {
+    box-shadow:
+      0 6px 18px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.30);
+  }
+
+  .mobile-chat-form {
+    padding-bottom: 2px;
+  }
+
+  .chat-input-shell {
+    gap: 8px;
+    border-radius: 20px;
+    padding: 8px;
+  }
+
+  .chat-input-textarea {
+    min-height: 46px;
+    max-height: 104px;
+    border-radius: 16px !important;
+    padding: 11px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+  }
+
+  .chat-send-button {
+    min-width: 48px;
+    height: 48px;
+    border-radius: 16px;
+  }
+}
+
+@media (max-width: 380px) {
+  .mobile-app-content {
+    padding-left: max(0.75rem, env(safe-area-inset-left, 0.75rem));
+    padding-right: max(0.75rem, env(safe-area-inset-right, 0.75rem));
+  }
+
+  .liquid-quota-metric {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  .mobile-bottom-nav a,
+  .mobile-bottom-nav button {
+    min-width: 48px !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ritual-backdrop__wheel {
     animation: none;

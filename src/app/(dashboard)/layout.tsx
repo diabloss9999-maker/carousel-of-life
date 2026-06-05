@@ -46,7 +46,7 @@ export default async function DashboardLayout({
       <RitualBody crackLevel={crackData.level} />
 
       <TimeAwareHeader
-        className="sticky top-0 z-40 pt-safe"
+        className="sticky top-0 z-40 pt-safe mobile-app-header"
         style={{
           background: `var(--header-bg)`,
           boxShadow: "var(--header-shadow)",
@@ -55,10 +55,10 @@ export default async function DashboardLayout({
           borderBottom: "1px solid var(--header-border)",
         } as React.CSSProperties}
       >
-        <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
+        <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-2 px-safe-4 sm:h-16 sm:px-safe-6">
           <Link
             href={ROUTES.today}
-            className="font-mystic whitespace-nowrap text-lg font-semibold tracking-tight transition-opacity hover:opacity-75"
+            className="font-mystic max-w-[52vw] truncate whitespace-nowrap text-base font-semibold tracking-tight transition-opacity hover:opacity-75 sm:max-w-none sm:text-lg"
             style={{ color: "var(--ritual-text)", letterSpacing: "0.04em" }}
           >
             {siteConfig.name}
@@ -66,7 +66,7 @@ export default async function DashboardLayout({
 
           <DesktopNav />
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             <LanguageToggle />
             <MusicToggle />
             <form action={signOutAction}>
@@ -92,7 +92,7 @@ export default async function DashboardLayout({
       <PromoBanner />
 
       <main id="main-content" className="flex-1">
-        <div className="mx-auto w-full max-w-6xl px-safe-4 py-7 sm:px-safe-6 md:py-10">
+        <div className="mobile-app-content mx-auto w-full max-w-6xl px-safe-4 py-5 sm:px-safe-6 sm:py-7 md:py-10">
           {children}
         </div>
       </main>

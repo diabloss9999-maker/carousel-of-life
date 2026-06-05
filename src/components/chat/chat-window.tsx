@@ -349,7 +349,7 @@ export function ChatWindow({
   const charsLeft = MAX_MESSAGE_LENGTH - input.length;
 
   return (
-    <div className={cn("chat-window-skin flex h-full flex-col gap-3", theme.skin)}>
+    <div className={cn("chat-window-skin mobile-chat-window flex h-full flex-col gap-3", theme.skin)}>
       {/* 삭제 버튼 */}
       <div className="flex items-center justify-end">
         <Button
@@ -366,7 +366,7 @@ export function ChatWindow({
       <div
         ref={scrollRef}
         className={cn(
-          "chat-panel-skin relative flex-1 space-y-4 overflow-y-auto rounded-2xl p-4 backdrop-blur-sm",
+          "chat-panel-skin mobile-chat-panel relative flex-1 space-y-4 overflow-y-auto rounded-2xl p-4 backdrop-blur-sm",
           theme.surface,
         )}
       >
@@ -416,7 +416,7 @@ export function ChatWindow({
       ) : null}
 
       {/* 입력창 — ritual 스타일 */}
-      <form onSubmit={handleSend} className="flex flex-col gap-1.5">
+      <form onSubmit={handleSend} className="mobile-chat-form flex flex-col gap-1.5">
         <div
           className={cn(
             "chat-input-shell grid grid-cols-[1fr_auto] gap-2.5 rounded-[24px] border p-2.5 shadow-[0_10px_28px_rgba(0,0,0,0.16)] backdrop-blur-xl",
