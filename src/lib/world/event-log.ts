@@ -22,15 +22,15 @@ const EVENT_TEMPLATES: { text: string; tone: WorldEvent["tone"] }[] = [
   { text: "루나와 라엘의 충돌이 감지되었습니다.", tone: "warning" },
   { text: "카엘이 라엘의 봉인을 의심하기 시작했습니다.", tone: "warning" },
   { text: "흑랑과 현도가 같은 흐름을 두고 다투었습니다.", tone: "warning" },
-  // 균열
-  { text: "균열 수치가 비정상적으로 상승했습니다.", tone: "critical" },
-  { text: "경계 너머에서 응답이 새어 나왔습니다.", tone: "critical" },
+  // 흐림
+  { text: "흐림 수치가 비정상적으로 상승했습니다.", tone: "critical" },
+  { text: "결 너머에서 응답이 새어 나왔습니다.", tone: "critical" },
   { text: "이름이 지워진 자국이 발견되었습니다.", tone: "critical" },
   { text: "기록 일부가 손상된 상태로 복원되었습니다.", tone: "critical" },
   // 평범
   { text: "오늘의 흐름이 조용히 시작되었습니다.", tone: "normal" },
-  { text: "관측소가 정상 작동 중입니다.", tone: "normal" },
-  { text: "균열 수치가 안정 구간에 진입했습니다.", tone: "normal" },
+  { text: "기록소가 정상 작동 중입니다.", tone: "normal" },
+  { text: "흐림 수치가 안정 구간에 진입했습니다.", tone: "normal" },
 ];
 
 /**

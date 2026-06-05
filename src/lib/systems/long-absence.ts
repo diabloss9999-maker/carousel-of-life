@@ -1,7 +1,7 @@
 /**
  * 오랜만 접속 인사 문장 — `lastVisitAt`(ms timestamp) 기준 부재 기간별 한 줄.
  *
- * - 게임화 금지. 사실의 관측 형태로만 표현한다.
+ * - 게임화 금지. 사실의 기록 형태로만 표현한다.
  * - null 이면 표시하지 않는다.
  */
 
@@ -30,7 +30,7 @@ export function getLongAbsenceGreeting(lastVisitAt: number): string | null {
     return "당신의 흔적이 거의 사라진 줄 알았습니다.";
   }
   if (daysAgo >= ABSENCE_DAYS_LONG) {
-    return "오랫동안 관측이 중단되어 있었습니다.";
+    return "오랫동안 기록이 중단되어 있었습니다.";
   }
   if (daysAgo >= ABSENCE_DAYS_MEDIUM) {
     return "루나는 당신이 다시 올 가능성을 낮게 보고 있었습니다.";

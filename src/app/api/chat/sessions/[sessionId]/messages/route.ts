@@ -49,7 +49,7 @@ const bodySchema = z.object({
 });
 
 /**
- * 캐릭터별 메시지당 균열 변동량 — 선·악 스펙트럼.
+ * 캐릭터별 메시지당 흐림 변동량 — 선·악 스펙트럼.
  *
  *  강한 선 (-2): 라엘
  *  선     (-1): 소율 · 헬가
@@ -70,7 +70,7 @@ const CHARACTER_CRACK_DELTA: Record<CharacterId, number> = {
 };
 
 /**
- * 한 메시지에 대해 캐릭터별 균열 변동을 적용.
+ * 한 메시지에 대해 캐릭터별 흐림 변동을 적용.
  */
 async function applyCharacterCrackDelta(
   userId: string,
@@ -245,7 +245,7 @@ export async function POST(
           cards: reading?.cards,
         }),
         addAffinityPoint(prepared.profile.userId, characterId),
-        // 캐릭터 본질에 따른 균열 변동 — 선/악 스펙트럼.
+        // 캐릭터 본질에 따른 흐림 변동 — 선/악 스펙트럼.
         applyCharacterCrackDelta(prepared.profile.userId, characterId),
       ]);
     },

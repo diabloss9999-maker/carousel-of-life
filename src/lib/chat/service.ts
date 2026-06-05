@@ -400,7 +400,7 @@ export async function prepareSendMessage(opts: {
       const streak = streakResult.status === "fulfilled" ? streakResult.value : null;
       const moodCtx     = buildMoodContext(moodData);
 
-      // 관측 메시지 — 사용자 행동 패턴을 캐릭터에게 암시적으로 전달
+      // 기록 메시지 — 사용자 행동 패턴을 캐릭터에게 암시적으로 전달
       const todayStr = getTodayInSeoul();
       const lastCheckIn = streak?.lastCheckIn ?? null;
       const wasReset = lastCheckIn !== null && lastCheckIn !== todayStr &&

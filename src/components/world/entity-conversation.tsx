@@ -4,7 +4,7 @@
  * 존재끼리의 짧은 대화 — 화면 모서리에 한 줄씩 떠올랐다 사라진다.
  *
  * - 세션당 최대 1회 (sessionStorage).
- * - 기본 확률 1.5% / 균열 임계 이상이면 3%.
+ * - 기본 확률 1.5% / 흐림 임계 이상이면 3%.
  * - 어떤 대화가 선택되는지는 dailySeed 로 결정 (같은 날에는 사용자별로 같은 흐름).
  */
 import { useEffect, useRef, useState } from "react";
@@ -33,9 +33,9 @@ const FADE_OUT_MS = 1_400;
 
 /** 기본 등장 확률. */
 const BASE_CHANCE = 0.015;
-/** 균열 임계 이상에서의 등장 확률. */
+/** 흐림 임계 이상에서의 등장 확률. */
 const HIGH_FRACTURE_CHANCE = 0.03;
-/** 균열 임계 (level). */
+/** 흐림 임계 (level). */
 const FRACTURE_THRESHOLD = 30;
 
 interface DisplayLine extends ConversationLine {

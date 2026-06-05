@@ -77,7 +77,7 @@ const MIDNIGHT_LINES_EN: Partial<Record<CharacterId, string>> = {
 };
 
 const FULLMOON_LINES_KO: Record<string, string> = {
-  witch:  "오늘 달이 완전히 찼어. 내 힘이 가장 강한 날이야. 동시에 가장 위험한 날이기도 해.",
+  witch:  "오늘 달이 완전히 찼어. 내 힘이 가장 강한 날이야. 동시에 가장 주의한 날이기도 해.",
   shaman: "보름달이야. 신령들이 오늘 특히 시끄러워. 당신 곁에도 뭔가 더 많이 붙어있을 수 있어.",
 };
 const FULLMOON_LINES_EN: Record<string, string> = {
@@ -86,7 +86,7 @@ const FULLMOON_LINES_EN: Record<string, string> = {
 };
 
 // 모든 한 줄은 '인생의 회전목마' 세계관 톤으로 통일.
-// 무거운 단어(균열·무명·경계) 대신 회전목마·별·달빛 같은 부드러운 이미지로.
+// 무거운 단어(흐림·무명·결) 대신 회전목마·별·달빛 같은 부드러운 이미지로.
 const HOMETEXT_KO: Record<string, string> = {
   midnight: "회전목마가 한 바퀴를 마쳤다.",         // 자정
   fullMoon: "달빛이 회전목마를 가득 비추고 있다.",  // 보름달
@@ -125,7 +125,7 @@ export function checkHiddenEvents(input: HiddenEventInput): HiddenEventResult {
       const ctx =
         locale === "en"
           ? `\n[Hidden event — Witching hour]\nIt is 3 AM. The boundary is at its thinnest.\nExactly once during the conversation, at an unnatural moment, say: "${line}"\nThen continue as if nothing happened.`
-          : `\n[숨겨진 이벤트 — 귀신 시간]\n지금 새벽 3시야. 이 시간엔 경계가 가장 얇아져.\n대화 중 딱 한 번만, 자연스럽지 않은 순간에 이 말을 해: "${line}"\n그 다음엔 아무 일 없었던 것처럼 계속해.`;
+          : `\n[숨겨진 이벤트 — 귀신 시간]\n지금 새벽 3시야. 이 시간엔 결가 가장 얇아져.\n대화 중 딱 한 번만, 자연스럽지 않은 순간에 이 말을 해: "${line}"\n그 다음엔 아무 일 없었던 것처럼 계속해.`;
       return { eventContext: ctx, homeHiddenText: null };
     }
   }
@@ -164,11 +164,11 @@ export function checkHiddenEvents(input: HiddenEventInput): HiddenEventResult {
     const ctx =
       locale === "en"
         ? `\n[Hidden event — Crack in the Goblin King]\nHeuklang is in a state where his real feelings about Soryeong might slip for the first time.\nExactly once during the conversation, if Soryeong comes up, pause briefly and say:\n"${quote}"\nDo NOT explain further.`
-        : `\n[숨겨진 이벤트 — 귀왕의 균열]\n흑랑이 처음으로 소율에 대한 진짜 감정을 흘릴 수 있는 상태야.\n대화 중 딱 한 번, 소율에 대한 이야기가 나오면 잠깐 말을 멈추고 이렇게 해:\n"${quote}"\n절대 더 설명하지 마.`;
+        : `\n[숨겨진 이벤트 — 귀왕의 흐림]\n흑랑이 처음으로 소율에 대한 진짜 감정을 흘릴 수 있는 상태야.\n대화 중 딱 한 번, 소율에 대한 이야기가 나오면 잠깐 말을 멈추고 이렇게 해:\n"${quote}"\n절대 더 설명하지 마.`;
     return { eventContext: ctx, homeHiddenText: null };
   }
 
-  // ── 5. 균열 Lv3 이상 ─────────────────────────────────────────────
+  // ── 5. 흐림 Lv3 이상 ─────────────────────────────────────────────
   if (crackLevel >= 3) {
     const quote = locale === "en"
       ? "...I just heard something."
@@ -176,7 +176,7 @@ export function checkHiddenEvents(input: HiddenEventInput): HiddenEventResult {
     const ctx =
       locale === "en"
         ? `\n[Hidden event — Boundary unstable]\nThis person's boundary is seriously trembling.\nOnce during the conversation, stop mid-sentence and say "${quote}", then move on.\nDo NOT explain.`
-        : `\n[숨겨진 이벤트 — 경계 불안정]\n이 사람 주변 경계가 심각하게 흔들리고 있어.\n대화 중 한 번, 갑자기 문장 중간에 멈추고 "${quote}" 하고 넘어가.\n설명 금지.`;
+        : `\n[숨겨진 이벤트 — 결 불안정]\n이 사람 주변 결가 심각하게 흔들리고 있어.\n대화 중 한 번, 갑자기 문장 중간에 멈추고 "${quote}" 하고 넘어가.\n설명 금지.`;
     return {
       eventContext: ctx,
       homeHiddenText: crackLevel >= 4 ? homeText.nameless : null,

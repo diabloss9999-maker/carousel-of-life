@@ -12,11 +12,11 @@ import type { NextRequest } from "next/server";
 export const runtime = "edge";
 
 const CRACK_LABEL_KO: Record<string, string> = {
-  "0": "경계 · 안정",
-  "1": "경계 · 파동 감지",
-  "2": "경계 · 균열 확장",
-  "3": "경계 · 위험",
-  "4": "경계 · 임박",
+  "0": "결 · 안정",
+  "1": "결 · 파동 감지",
+  "2": "결 · 흐림 확장",
+  "3": "결 · 주의",
+  "4": "결 · 가까움",
 };
 const CRACK_LABEL_EN: Record<string, string> = {
   "0": "Boundary · Stable",
@@ -89,7 +89,7 @@ export async function GET(req: NextRequest) {
   const crackColor  = CRACK_COLOR[crack] ?? CRACK_COLOR["0"];
   const crackInt    = parseInt(crack, 10);
 
-  // 균열 바 길이 (0~4 → 0~100%)
+  // 흐림 바 길이 (0~4 → 0~100%)
   const crackBarPct = Math.min(100, crackInt * 25);
 
   return new ImageResponse(
@@ -185,13 +185,13 @@ export async function GET(req: NextRequest) {
         {/* 구분선 */}
         <div style={{ height: 1, background: "#ffffff10", marginBottom: 20 }} />
 
-        {/* 하단: 균열 상태 + 날짜 */}
+        {/* 하단: 흐림 상태 + 날짜 */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             <span style={{ fontSize: 14, color: "#504058", letterSpacing: 2 }}>
               {crackLabel}
             </span>
-            {/* 균열 바 */}
+            {/* 흐림 바 */}
             <div style={{
               width: 120, height: 3, borderRadius: 2,
               background: "#ffffff10", display: "flex",

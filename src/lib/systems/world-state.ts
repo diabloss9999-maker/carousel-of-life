@@ -68,7 +68,7 @@ const GLOBAL_NOTES: Record<WorldDominantMood, readonly string[]> = {
     "라엘이 평소보다 더 가까이 있습니다.",
   ],
   fractured: [
-    "균열이 잦은 날입니다.",
+    "흐림이 잦은 날입니다.",
     "오늘은 카엘이 자주 깨어 있습니다.",
     "오늘은 흑랑이 자주 깨어 있습니다.",
   ],
@@ -80,7 +80,7 @@ export const MOOD_LABEL: Record<WorldDominantMood, string> = {
   unstable: "불안정",
   dreamlike: "몽환",
   warm: "온기",
-  fractured: "균열",
+  fractured: "흐림",
 };
 
 /** mood 별 문장형 표현. */
@@ -89,7 +89,7 @@ export const MOOD_NARRATIVE: Record<WorldDominantMood, string> = {
   unstable: "오늘의 결은 자주 흔들립니다.",
   dreamlike: "오늘의 시간은 평소보다 느리게 흐릅니다.",
   warm: "오늘의 공기는 평소보다 부드럽습니다.",
-  fractured: "오늘은 경계가 더 얇아져 있습니다.",
+  fractured: "오늘은 결가 더 얇아져 있습니다.",
 };
 
 /** 존재 한국어 라벨. */

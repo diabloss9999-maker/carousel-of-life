@@ -860,16 +860,16 @@ export type DailyQuestion = typeof dailyQuestions.$inferSelect;
 export type NewDailyQuestion = typeof dailyQuestions.$inferInsert;
 
 // =============================================================================
-// world_cracks - 세계 균열 수치 (사용자에게 직접 노출 금지)
+// world_cracks - 세계 흐림 수치 (사용자에게 직접 노출 금지)
 // =============================================================================
 
 export const worldCracks = pgTable("world_cracks", {
   userId: uuid("user_id")
     .primaryKey()
     .references(() => authUsers.id, { onDelete: "cascade" }),
-  /** 현재 균열 수치 (0~100). 감소 가능. */
+  /** 현재 흐림 수치 (0~100). 감소 가능. */
   crackScore: integer("crack_score").notNull().default(0),
-  /** 누적 균열량 (감소 없음, 숨겨진 업적용). */
+  /** 누적 흐림량 (감소 없음, 숨겨진 업적용). */
   totalAccumulated: integer("total_accumulated").notNull().default(0),
   updatedAt: timestamp("updated_at", { withTimezone: true })
     .notNull()

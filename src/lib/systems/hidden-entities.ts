@@ -58,11 +58,11 @@ export const HIDDEN_ENTITIES: HiddenEntity[] = [
   { id: "tiger_magpie",     name: "까치호랑이", category: "omen", imageSrc: "/hidden/27_tiger_magpie.png",   line: "오래된 그림 안에서 누가 웃었습니다." },
 ];
 
-/** 카테고리별 등장 가중치. shadow는 균열 높을 때, guardian/omen은 평소. */
+/** 카테고리별 등장 가중치. shadow는 흐림 높을 때, guardian/omen은 평소. */
 export function pickHiddenEntity(opts: { fractureLevel: number; isDawn: boolean; isNight: boolean }): HiddenEntity {
   const { fractureLevel, isDawn, isNight } = opts;
 
-  // 균열 높고 새벽이면 shadow 가중치↑, 평소엔 guardian/omen 가중치↑
+  // 흐림 높고 새벽이면 shadow 가중치↑, 평소엔 guardian/omen 가중치↑
   const pool = HIDDEN_ENTITIES.flatMap((e) => {
     let weight = 1;
     if (e.category === "shadow") {

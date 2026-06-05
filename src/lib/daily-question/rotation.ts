@@ -3,6 +3,7 @@
  * (server-only 의존성 없음)
  */
 import type { CharacterCategory, CharacterId } from "@/lib/chat/characters";
+import { getTodayCharacterVacations } from "@/lib/chat/character-vacation";
 
 const CHARACTER_ROTATION: CharacterId[] = [
   "child", "witch", "sage",
@@ -29,11 +30,29 @@ function resolveDate(dateStr?: string): string {
     new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Seoul" })
   );
 }
+function getVacationDate(dateKey: string): Date {
+  return new Date(`${dateKey}T12:00:00+09:00`);
+}
+
+function pickAvailableCharacter(
+  pool: readonly CharacterId[],
+  dateStr?: string,
+): CharacterId {
+  const dateKey = resolveDate(dateStr);
+  const vacationing = new Set(
+    getTodayCharacterVacations(getVacationDate(dateKey)).vacations.map(
+      (item) => item.characterId,
+    ),
+  );
+  const available = pool.filter((id) => !vacationing.has(id));
+  const candidates = available.length > 0 ? available : pool;
+  const idx = dayOfYear(dateKey) % candidates.length;
+  return candidates[idx];
+}
 
 /** 날짜 기반으로 오늘의 캐릭터를 결정한다 (결정론적). 9명 전체 풀. */
 export function getTodayCharacter(dateStr?: string): CharacterId {
-  const idx = dayOfYear(resolveDate(dateStr)) % CHARACTER_ROTATION.length;
-  return CHARACTER_ROTATION[idx];
+  return pickAvailableCharacter(CHARACTER_ROTATION, dateStr);
 }
 
 /**
@@ -47,7 +66,5 @@ export function getTodayCharacterByCategory(
   category: CharacterCategory,
   dateStr?: string,
 ): CharacterId {
-  const pool = ROTATION_BY_CATEGORY[category];
-  const idx = dayOfYear(resolveDate(dateStr)) % pool.length;
-  return pool[idx];
+  return pickAvailableCharacter(ROTATION_BY_CATEGORY[category], dateStr);
 }

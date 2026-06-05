@@ -1,12 +1,12 @@
 /**
- * 균열 연출 시스템 — 상태 관리 (localStorage 기반).
+ * 흐림 연출 시스템 — 상태 관리 (localStorage 기반).
  *
  * 사용자가 "어? 방금 뭐였지?" 라고 느끼는 미세한 이상 현상을 위한
  * 영속 상태를 보관한다. 공포가 아니라 앱이 나를 기억한다는 느낌이 목적.
  */
 
 export interface FractureState {
-  /** 0~100. 균열 누적 레벨. */
+  /** 0~100. 흐림 누적 레벨. */
   level: number;
   /** 누적 방문 횟수. */
   visitCount: number;
@@ -26,7 +26,7 @@ const SESSION_KEY = "carousel_fracture_session";
 /** 한 방문(=같은 lastVisitAt) 으로 묶을 시간 (ms). */
 const RETURNING_THRESHOLD_MS = 30_000;
 
-/** 방문 시 균열 레벨 가산치. */
+/** 방문 시 흐림 레벨 가산치. */
 const NIGHT_VISIT_BONUS = 3;
 const RETURNING_VISIT_BONUS = 2;
 const REPEATED_QUESTION_BONUS = 4;
@@ -48,7 +48,7 @@ function canUseStorage(): boolean {
   return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
 }
 
-/** localStorage 에서 균열 상태를 불러온다. */
+/** localStorage 에서 흐림 상태를 불러온다. */
 export function loadFractureState(): FractureState {
   if (!canUseStorage()) return { ...DEFAULT_STATE };
   try {
@@ -61,7 +61,7 @@ export function loadFractureState(): FractureState {
   }
 }
 
-/** 균열 상태를 localStorage 에 저장한다. */
+/** 흐림 상태를 localStorage 에 저장한다. */
 export function saveFractureState(state: FractureState): void {
   if (!canUseStorage()) return;
   try {

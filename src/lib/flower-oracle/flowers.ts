@@ -128,7 +128,7 @@ export const FLOWERS: FlowerCard[] = [
     scientificName: "Impatiens balsamina",
     category: "동양",
     meaning: "건드리지 마세요, 나를 잊지 마세요",
-    keywords: ["여린 경계", "정성 어린 추억", "여름 손톱의 색"],
+    keywords: ["여린 결", "정성 어린 추억", "여름 손톱의 색"],
     season: "여름",
     accent: "ring-rose-500/40",
     image: "/flowers/09.png",

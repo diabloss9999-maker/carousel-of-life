@@ -17,7 +17,7 @@ body {
 /* =============================================================================
    인생의 회전목마 - 디자인 토큰
    Light Ritual: 밝고 몽환적인 낮의 의식 공간 (기본)
-   밤/균열 모드에서만 어두운 톤으로 전환
+   밤/흐림 모드에서만 어두운 톤으로 전환
 
    Pretendard 폰트는 layout.tsx 의 <link> 태그로 직접 로드한다.
    (CSS @import 순서 spec 위반을 피하기 위함.)
@@ -979,7 +979,7 @@ html[data-platform="android"] [data-hide-in-app] {
   --ritual-radius: 18px;
 }
 
-/* 균열 수치가 높을 때 — body.fracture-high 로 활성화 */
+/* 흐림 수치가 높을 때 — body.fracture-high 로 활성화 */
 @keyframes ritual-micro-glitch {
   0%, 93%, 100% { transform: translate3d(0,0,0); filter: none; }
   94% { transform: translate3d(-0.5px, 0.3px, 0); filter: blur(0.08px); }
@@ -1277,7 +1277,7 @@ body.ritual-night .chat-input-textarea {
   border-top-left-radius: 8px;
 }
 
-/* 관측자(사용자) */
+/* 기록자(사용자) */
 .ritual-message.observer {
   color: var(--col-ink);
   background:
@@ -1288,7 +1288,7 @@ body.ritual-night .chat-input-textarea {
   border-color: rgba(255,255,255,0.28);
 }
 
-/* 균열 메시지 — Lv3+ 시 적용 */
+/* 흐림 메시지 — Lv3+ 시 적용 */
 .ritual-message.fracture {
   border-color: rgba(201,107,115,0.25);
   background:
@@ -1408,7 +1408,7 @@ body.ritual-night .chat-input-textarea {
 }
 
 /* =============================================================================
-   균열 연출 시스템 — Fracture System
+   흐림 연출 시스템 — Fracture System
    ============================================================================= */
 
 /* 미세한 흔들림 — 카드/버튼 1개에만 적용 */

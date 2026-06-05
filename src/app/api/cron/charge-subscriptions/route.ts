@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
-  // 만료 임박 (24시간 이내) + active + 취소 예약 안 됨 + PortOne 구독
+  // 만료 가까움 (24시간 이내) + active + 취소 예약 안 됨 + PortOne 구독
   const cutoff = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
   const due = await db

@@ -1,12 +1,12 @@
 /**
- * 관측 실패(Observation Failure) — 균열이 깊어진 새벽에 드물게 발생하는 미세 글리치.
+ * 기록 실패(Observation Failure) — 흐림이 깊어진 새벽에 드물게 발생하는 미세 글리치.
  *
  * 공포가 아니라 "오늘은 흐름이 잘 보이지 않는다" 정도의 조용한 메시지.
- * 균열 수치 + 시간대에 따라 확률이 결정된다.
+ * 흐림 수치 + 시간대에 따라 확률이 결정된다.
  */
 
 export interface ObservationFailureOpts {
-  /** 균열 누적 수치 (0~100). */
+  /** 흐림 누적 수치 (0~100). */
   fractureLevel: number;
   /** KST 기준 현재 시(0~23). */
   kstHour: number;
@@ -16,7 +16,7 @@ export interface ObservationFailureOpts {
 const DAWN_HOUR_START = 2;
 const DAWN_HOUR_END = 5;
 
-/** 균열 수치 임계값. */
+/** 흐림 수치 임계값. */
 const HIGH_FRACTURE = 4;
 const MID_FRACTURE = 3;
 
@@ -31,7 +31,7 @@ const FAILURE_LINES = [
   "당신의 흔적 일부를 놓쳤습니다.",
 ];
 
-/** 관측 실패가 일어나야 하는지 판정한다. */
+/** 기록 실패가 일어나야 하는지 판정한다. */
 export function shouldFail(opts: ObservationFailureOpts): boolean {
   const { fractureLevel, kstHour } = opts;
   const isDawn = kstHour >= DAWN_HOUR_START && kstHour < DAWN_HOUR_END;

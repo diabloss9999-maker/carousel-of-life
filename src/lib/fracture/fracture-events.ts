@@ -1,5 +1,5 @@
 /**
- * 균열 연출 시스템 — 이벤트 정의 및 확률 계산.
+ * 흐림 연출 시스템 — 이벤트 정의 및 확률 계산.
  */
 
 import type { FractureState } from "./fracture-state";
@@ -13,11 +13,11 @@ export const TEXT_SWAP_PAIRS: ReadonlyArray<{
   {
     selector: '[data-fracture="today-title"]',
     original: "오늘의 흐름",
-    swapped: "오늘의 균열",
+    swapped: "오늘의 흐림",
   },
   {
     selector: '[data-fracture="history-title"]',
-    original: "관측 기록",
+    original: "기록 기록",
     swapped: "기억 누락",
   },
   {
@@ -39,7 +39,7 @@ export const WHISPER_MESSAGES: ReadonlyArray<string> = [
   "루나는 침묵도 기억합니다.",
   "오늘의 빛이 잠시 어긋났습니다.",
   "기록되지 않은 선택이 있습니다.",
-  "경계가 당신을 기다리고 있어.",
+  "결가 당신을 기다리고 있어.",
   "이 시간에 오는 사람은 드뭅니다.",
 ];
 
@@ -52,7 +52,7 @@ export function getPlaceholder(state: FractureState, isNight: boolean): string {
   return "지금 떠오른 것을 조용히 남기세요";
 }
 
-/** 균열 발생 확률 반환 (0~1). */
+/** 흐림 발생 확률 반환 (0~1). */
 export function getFractureChance(state: FractureState, isNight: boolean): number {
   if (state.level >= 80) return 0.08;
   if (state.level >= 50) return 0.05;

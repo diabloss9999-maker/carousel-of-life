@@ -1,7 +1,7 @@
 import { getDailySeed, seedValue } from "@/lib/systems/daily-seed";
 
 /**
- * 균열 점수(0~100)를 사용자에게 보여줄 % 수치(1~89)로 변환한다.
+ * 흐림 점수(0~100)를 사용자에게 보여줄 % 수치(1~89)로 변환한다.
  *
  * - 같은 날·같은 점수에는 결정론적으로 동일한 값을 반환한다.
  * - daily seed 기반으로 매일 살짝씩 흔들린다 (±2%).
@@ -51,10 +51,10 @@ function scoreToLevel(score: number): 0 | 1 | 2 | 3 | 4 {
 /** 크랙 레벨에 대응하는 한국어 라벨. */
 export function crackLabel(
   level: number,
-): "안정" | "파동" | "균열" | "위험" | "임박" {
-  if (level >= 4) return "임박";
-  if (level >= 3) return "위험";
-  if (level >= 2) return "균열";
+): "안정" | "파동" | "흐림" | "주의" | "가까움" {
+  if (level >= 4) return "가까움";
+  if (level >= 3) return "주의";
+  if (level >= 2) return "흐림";
   if (level >= 1) return "파동";
   return "안정";
 }

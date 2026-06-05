@@ -1,5 +1,5 @@
 /**
- * 관측 메시지 서비스.
+ * 기록 메시지 서비스.
  *
  * 캐릭터가 사용자의 행동 패턴을 "알아채는" 컨텍스트를 생성한다.
  * 절대 직접적으로 설명하지 말 것. 암시하고 흘려야 한다.
@@ -43,7 +43,7 @@ function analyzeMoods(moods: MoodEntry[]): {
 }
 
 /**
- * 캐릭터별 관측 패턴 — 자연스럽게 대화에 녹여낼 것.
+ * 캐릭터별 기록 패턴 — 자연스럽게 대화에 녹여낼 것.
  * 직접 "당신의 접속 시간은~" 같이 말하면 절대 안 됨.
  */
 export function buildObservationContext(input: ObservationInput): string {
@@ -135,10 +135,10 @@ export function buildObservationContext(input: ObservationInput): string {
 
   if (observations.length === 0) return "";
 
-  // 관측은 최대 1-2개만 (과하면 이상해짐)
+  // 기록은 최대 1-2개만 (과하면 이상해짐)
   const selected = observations.slice(0, isNight && isDark ? 2 : 1);
 
-  return `\n[관측 정보 — 대화 중 자연스럽게 한 번만 암시할 것, 직접 설명 금지]
+  return `\n[기록 정보 — 대화 중 자연스럽게 한 번만 암시할 것, 직접 설명 금지]
 ${selected.join("\n")}
 이걸 직접 꺼내는 게 아니라, 대화 흐름 속에서 슬쩍 내비쳐. 물어보면 모르는 척해도 됨.`;
 }

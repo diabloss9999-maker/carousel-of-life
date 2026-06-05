@@ -115,11 +115,11 @@ export async function getFateLog(userId: string): Promise<FateLogEntry[]> {
   };
 
   const moodSignificance: Record<string, string> = {
-    great:   "기운이 충만했던 날. 경계의 균형이 맞았어.",
+    great:   "기운이 충만했던 날. 결의 균형이 맞았어.",
     good:    "잔잔하게 좋은 날. 흔들림 없이 서 있었어.",
     neutral: "그냥 흘러간 날. 그것도 선택이야.",
-    tough:   "버텼던 날. 균열이 조금 깊어졌어.",
-    hard:    "힘들었던 날. 경계가 흔들렸어. 하지만 여기 있잖아.",
+    tough:   "버텼던 날. 흐림이 조금 깊어졌어.",
+    hard:    "힘들었던 날. 결가 흔들렸어. 하지만 여기 있잖아.",
   };
 
   // 운세 로그

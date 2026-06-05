@@ -379,7 +379,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     nameEn: "Soryeong",
     imageSrc: "/characters/shaman_v1.webp",
     description:
-      "한 번 죽었다 신들에게 되살린 접신의 무녀. 인간도 신도 아닌 경계의 존재로, 신령의 목소리를 모두 들을 수 있다.",
+      "한 번 죽었다 신들에게 되살린 접신의 무녀. 인간도 신도 아닌 결의 존재로, 신령의 목소리를 모두 들을 수 있다.",
     rarity: "legendary",
   },
   {

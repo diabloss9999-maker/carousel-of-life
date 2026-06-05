@@ -1,7 +1,7 @@
 /**
  * 세계의 흐름 — 공동 세계 상태 페이지.
  *
- * - 시스템 수치 노출 금지. 관측 기록 형태로만.
+ * - 시스템 수치 노출 금지. 기록 기록 형태로만.
  * - 같은 KST 날짜에는 모든 사용자가 동일한 노트를 본다.
  */
 import type { Metadata } from "next";
@@ -16,7 +16,7 @@ import { requireProfile } from "@/lib/auth/get-user";
 
 export const metadata: Metadata = {
   title: "세계의 흐름",
-  description: "오늘의 공동 관측 — 세계가 모두에게 들려주는 한 줄.",
+  description: "오늘의 공동 기록 — 세계가 모두에게 들려주는 한 줄.",
 };
 
 export default async function WorldPage() {
@@ -32,7 +32,7 @@ export default async function WorldPage() {
     <div className="space-y-10">
       <header className="space-y-2">
         <p className="text-[15px] uppercase tracking-widest text-muted-foreground/70">
-          경계(境界) · 공동 관측
+          사이의 결 · 공동 기록
         </p>
         <h1 className="font-mystic text-4xl font-semibold tracking-tight">
           세계의 흐름
@@ -47,7 +47,7 @@ export default async function WorldPage() {
           className="app-surface rounded-[var(--ritual-radius)] px-6 py-8 sm:px-8 sm:py-10"
         >
           <p className="text-[15px] uppercase tracking-widest text-muted-foreground/70">
-            오늘의 관측
+            오늘의 기록
           </p>
           <p
             className="font-mystic mt-4 text-2xl leading-snug sm:text-3xl"
@@ -97,7 +97,7 @@ export default async function WorldPage() {
             세계의 메모
           </p>
           <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-            오늘의 결과 깨어 있는 존재는 같은 날 모든 관측자에게 동일하게
+            오늘의 결과 깨어 있는 존재는 같은 날 모든 기록자에게 동일하게
             전해집니다. 내일이 되면 흐름은 조용히 다시 짜입니다.
           </p>
         </div>

@@ -11,7 +11,7 @@ import { ArrowRight } from "lucide-react";
 import { ROUTES } from "@/lib/constants";
 
 const HOOKS = [
-  { tag: "이세계", color: "text-violet-300", line: "균열이 벌어진 도시" },
+  { tag: "이세계", color: "text-violet-300", line: "흐림이 벌어진 도시" },
   { tag: "동양",   color: "text-emerald-300", line: "월식이 시작된 조선" },
   { tag: "북방",   color: "text-sky-300",    line: "별이 죽어가는 설원" },
 ];

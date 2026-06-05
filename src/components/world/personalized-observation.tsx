@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * 개인화된 관측 문장(Personalized Observation).
+ * 개인화된 기록 문장(Personalized Observation).
  *
  * 아카이브 페이지 상단에 작게 표시되는 사용자 고유 한 줄.
  * entity-memory / fracture-state 로부터 도출한 패턴 문장이 있을 때만 렌더링.

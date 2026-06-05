@@ -198,7 +198,7 @@ ${profile.mbti} 유형이 스트레스를 받을 때 어떻게 무너지는지 +
   "triggers": ["스트레스 유발 상황 — 캐릭터 말투로", "스트레스 유발 상황 2", "스트레스 유발 상황 3"],
   "collapsePattern": "${profile.mbti} 가 무너질 때 패턴 — 캐릭터 말투로 2문장",
   "recoveryTips": ["회복법 — 캐릭터 말투로", "회복법 2", "회복법 3"],
-  "warningSign": "위험 신호 — 캐릭터 말투로 1문장"
+  "warningSign": "주의 신호 — 캐릭터 말투로 1문장"
 }`;
 
     const data = await generateJson({

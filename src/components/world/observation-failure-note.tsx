@@ -1,9 +1,9 @@
 "use client";
 
 /**
- * 관측 실패 노트(Observation Failure Note).
+ * 기록 실패 노트(Observation Failure Note).
  *
- * - 균열 수치가 높은 새벽에 드물게 한 줄을 표시한다.
+ * - 흐림 수치가 높은 새벽에 드물게 한 줄을 표시한다.
  * - sessionStorage("obs_failure_shown") 로 세션당 1회 제한.
  * - pointer-events: none, aria-hidden.
  */

@@ -12,7 +12,7 @@ import { PersonalizedObservation } from "@/components/world/personalized-observa
 
 /** 오래된 기록으로 분류할 visitCount 기준. */
 const OLD_MEMORY_THRESHOLD = 15;
-/** 더 깊은 균열 관측 카드에 흐릿함을 부여할 기준. */
+/** 더 깊은 흐림 기록 카드에 흐릿함을 부여할 기준. */
 const ANCIENT_FRACTURE_THRESHOLD = 5;
 
 interface ArchivePanelProps {

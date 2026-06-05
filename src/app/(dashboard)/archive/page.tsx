@@ -1,7 +1,7 @@
 /**
- * 기억 보관소 — 경계(境界)가 사용자에 대해 기억하고 있는 것들.
+ * 기억 보관소 — 사이의 결가 사용자에 대해 기억하고 있는 것들.
  *
- * 서버 컴포넌트로 친밀도/균열 데이터를 끌어와
+ * 서버 컴포넌트로 친밀도/흐림 데이터를 끌어와
  * ArchivePanel(클라이언트)에 넘긴다.
  */
 import type { Metadata } from "next";
@@ -13,7 +13,7 @@ import { getCrackScore } from "@/lib/crack/service";
 
 export const metadata: Metadata = {
   title: "기억 보관소",
-  description: "경계(境界)가 당신에 대해 기억하고 있는 것들.",
+  description: "사이의 결가 당신에 대해 기억하고 있는 것들.",
 };
 
 export default async function ArchivePage() {
@@ -28,7 +28,7 @@ export default async function ArchivePage() {
     <div className="space-y-8">
       <header className="space-y-2">
         <p className="text-[15px] uppercase tracking-widest text-muted-foreground/70">
-          경계(境界) · 존재의 기록
+          사이의 결 · 존재의 기록
         </p>
         <h1 className="font-mystic text-4xl font-semibold tracking-tight">
           기억 보관소

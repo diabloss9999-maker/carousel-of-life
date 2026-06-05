@@ -5,7 +5,7 @@
  *
  * - daily seed 기반의 오늘의 속삭임 한 문장 반환
  * - luna / rael / gael 각 존재의 mood 계산
- * - 균열 상태 + 존재 기억 동시 노출
+ * - 흐림 상태 + 존재 기억 동시 노출
  */
 import { useMemo } from "react";
 

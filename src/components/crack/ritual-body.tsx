@@ -1,10 +1,10 @@
 "use client";
 
 /**
- * body에 낮/밤 클래스 + 균열 클래스 + dominant 존재 광원 클래스를 자동 적용한다.
+ * body에 낮/밤 클래스 + 흐림 클래스 + dominant 존재 광원 클래스를 자동 적용한다.
  *
  * - 시간 기반 (07~18시 = 낮, 그 외 = 밤).
- * - 균열 수치 3+ 이면 fracture-high 클래스를 추가.
+ * - 흐림 수치 3+ 이면 fracture-high 클래스를 추가.
  * - dominant entity (luna/rael/gael) 가 있으면 presence-* 클래스를 추가.
  * - 실제 배경 이미지는 TimeAwareBg/CSS 가 담당한다.
  */
@@ -71,7 +71,7 @@ export function RitualBody({ crackLevel }: RitualBodyProps) {
     // 즉시 적용
     applyTimeClass(body, crackLevel);
 
-    // 매분 체크 — 낮/밤 경계를 놓치지 않도록
+    // 매분 체크 — 낮/밤 결를 놓치지 않도록
     const timer = setInterval(() => applyTimeClass(body, crackLevel), 60_000);
 
     return () => {

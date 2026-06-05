@@ -57,7 +57,7 @@ export async function generateJson<TSchema extends z.ZodTypeAny>(
     model: opts.model,
     max_tokens: opts.maxTokens,
     // stop_sequences 로 닫는 } 다음에 모델이 사족을 못 붙이게 막는 건
-    // JSON 내부의 } 까지 잘릴 수 있어 위험. prefill 만 사용한다.
+    // JSON 내부의 } 까지 잘릴 수 있어 주의. prefill 만 사용한다.
     ...(systemText
       ? {
           system: [

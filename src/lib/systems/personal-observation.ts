@@ -1,5 +1,5 @@
 /**
- * 개인화 관측(Personal Observation) — 사용자 패턴 기반 단일 문장.
+ * 개인화 기록(Personal Observation) — 사용자 패턴 기반 단일 문장.
  *
  * 우선순위에 따라 한 줄만 반환한다. 어떤 조건에도 해당하지 않으면 null.
  * 게임화 금지 — 숫자 노출 없이 분위기 문장으로만 표현한다.
@@ -16,7 +16,7 @@ const TOTAL_VISIT_THRESHOLD = 20;
 const FRACTURE_WITNESS_THRESHOLD = 3;
 
 /**
- * 사용자 패턴 기반 개인화 관측 문장을 만든다.
+ * 사용자 패턴 기반 개인화 기록 문장을 만든다.
  * 어떤 패턴에도 해당하지 않으면 null.
  */
 export function buildPersonalObservation(

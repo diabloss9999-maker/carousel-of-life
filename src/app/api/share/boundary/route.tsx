@@ -1,5 +1,5 @@
 /**
- * 오늘의 경계 카드 — 하루 결산 공유 이미지.
+ * 오늘의 오늘의 결 카드 — 하루 결산 공유 이미지.
  *
  * GET /api/share/boundary?mood=tough&char=흑랑&crack=2
  *     &pattern=달카드3번&date=2026.05.12
@@ -25,11 +25,11 @@ const MOOD_LABEL_EN: Record<string, string> = {
 };
 
 const CRACK_STATE_KO: Record<string, { label: string; color: string; bg: string }> = {
-  "0": { label: "경계 · 안정",      color: "#504058", bg: "#1a1025" },
-  "1": { label: "경계 · 파동 감지", color: "#7060a0", bg: "#1a1030" },
-  "2": { label: "경계 · 균열 확장", color: "#906080", bg: "#200a18" },
-  "3": { label: "경계 · 위험",      color: "#c04060", bg: "#280010" },
-  "4": { label: "경계 · 임박",      color: "#e02040", bg: "#300008" },
+  "0": { label: "결 · 안정",      color: "#504058", bg: "#1a1025" },
+  "1": { label: "결 · 파동 감지", color: "#7060a0", bg: "#1a1030" },
+  "2": { label: "결 · 흐림 확장", color: "#906080", bg: "#200a18" },
+  "3": { label: "결 · 주의",      color: "#c04060", bg: "#280010" },
+  "4": { label: "결 · 가까움",      color: "#e02040", bg: "#300008" },
 };
 const CRACK_STATE_EN: Record<string, { label: string; color: string; bg: string }> = {
   "0": { label: "Boundary · Stable",   color: "#504058", bg: "#1a1025" },
@@ -147,7 +147,7 @@ export async function GET(req: NextRequest) {
           )}
         </div>
 
-        {/* 하단: 균열 상태 */}
+        {/* 하단: 흐림 상태 */}
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <span style={{ fontSize: 14, color: crackInfo.color, letterSpacing: 3 }}>
@@ -157,7 +157,7 @@ export async function GET(req: NextRequest) {
               BOUNDARY INDEX
             </span>
           </div>
-          {/* 균열 바 */}
+          {/* 흐림 바 */}
           <div style={{
             width: "100%", height: 2, borderRadius: 1,
             background: "#ffffff08", display: "flex",

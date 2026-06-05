@@ -146,7 +146,7 @@ export function FateLogView({ entries, summary, crackLevel }: FateLogViewProps) 
           </div>
         )}
 
-        {/* 오늘의 경계 공유 버튼 */}
+        {/* 오늘의 결 공유 버튼 */}
         <div className="border-t border-white/5 pt-3 flex items-center justify-between">
           <p className="text-[15px] text-muted-foreground/65 tracking-widest">{t("todayBoundaryCard")}</p>
           <button

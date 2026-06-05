@@ -5,7 +5,7 @@
  * 짧은 한 문장을 한 번만 띄운다.
  *
  * - 게임화 없음. 사용자 입력 방해 없음 (pointer-events: none, aria-hidden).
- * - 후유증 조건(긴 채팅 체류 / 새벽 / 균열 3+)에 해당하면 AFTERTASTE 문장이 우선.
+ * - 후유증 조건(긴 채팅 체류 / 새벽 / 흐림 3+)에 해당하면 AFTERTASTE 문장이 우선.
  * - sessionStorage 키로 세션당 1회 제한.
  *
  * 자동 사라짐:
@@ -24,7 +24,7 @@ const SESSION_KEY = "session_fade_shown";
 const ENTRY_TIME_KEY = "session_entry_at";
 /** 후유증 트리거 — 5분 이상 체류. */
 const LONG_DWELL_MS = 5 * 60 * 1000;
-/** 후유증 트리거 — 균열 임계. */
+/** 후유증 트리거 — 흐림 임계. */
 const FRACTURE_THRESHOLD = 3;
 /** 새벽 시작/끝 (KST). */
 const DAWN_HOUR_START = 2;

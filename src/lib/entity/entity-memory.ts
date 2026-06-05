@@ -34,13 +34,13 @@ export interface EntityMemory {
   repeatedCardCount: number;
   /** 마지막으로 반복 선택된 카드. */
   lastRepeatedCard: string | null;
-  /** 균열 이벤트를 목격한 누적 횟수. */
+  /** 흐림 이벤트를 목격한 누적 횟수. */
   fractureEventsWitnessed: number;
   /** 가장 긴 세션 길이 (분). */
   longestSessionMinutes: number;
 
   // ── 패턴 이름 ─────────────────────────────────────────
-  /** 계산된 관측 패턴 이름. */
+  /** 계산된 기록 패턴 이름. */
   patternName: string | null;
 }
 
@@ -123,12 +123,12 @@ export function recordEntityVisit(
   };
 }
 
-/** 관측 패턴 이름을 계산한다. */
+/** 기록 패턴 이름을 계산한다. */
 export function computePatternName(memory: EntityMemory): string {
   if (memory.dawnVisitCount >= 3) return "새벽의 기록자";
   if (memory.repeatedCardCount >= 5) return "반복된 질문자";
   if (memory.nightVisitCount >= 10) return "밤의 방문자";
-  if (memory.fractureEventsWitnessed >= 3) return "균열 추적자";
-  if (memory.longestSessionMinutes >= 30) return "침묵 관측자";
-  return "경계의 관측자";
+  if (memory.fractureEventsWitnessed >= 3) return "흐림 추적자";
+  if (memory.longestSessionMinutes >= 30) return "침묵 기록자";
+  return "결의 기록자";
 }

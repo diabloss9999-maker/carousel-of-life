@@ -13,13 +13,13 @@ interface WorldStatusPanelProps {
 const LABEL_TO_KEY: Record<ReturnType<typeof crackLabel>, string> = {
   안정: "stable",
   파동: "wave",
-  균열: "fracture",
-  위험: "danger",
-  임박: "imminent",
+  흐림: "fracture",
+  주의: "danger",
+  가까움: "imminent",
 };
 
 /**
- * 오늘의 세계 상태(경계 균열 측정 패널).
+ * 오늘의 세계 상태(결 흐림 측정 패널).
  *
  * - %, 라벨, 진행 바, 분위기 한 줄을 함께 표시한다.
  * - 게임화 금지 원칙에 따라 점수/레벨 자체는 노출하지 않는다.
@@ -57,7 +57,7 @@ export function WorldStatusPanel({ crackScore, crackLevel }: WorldStatusPanelPro
         </div>
       </div>
 
-      {/* 균열 진행 바 */}
+      {/* 흐림 진행 바 */}
       <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
         <div
           className={`h-full transition-all duration-700 ${

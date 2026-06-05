@@ -49,7 +49,7 @@ const ENTITY_LINES: Record<EntityKey, ReadonlyArray<string>> = {
     "같은 질문이 반복되고 있습니다.",
   ],
   soryeong: [
-    "이와 비슷한 흐름이 이전에도 관측되었습니다.",
+    "이와 비슷한 흐름이 이전에도 기록되었습니다.",
     "기록은 반복될수록 선명해집니다.",
     "이 문장은 오래전에도 남아 있었습니다.",
   ],

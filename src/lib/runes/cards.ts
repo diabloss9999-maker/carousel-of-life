@@ -77,9 +77,9 @@ export const RUNE_DECK: RuneCard[] = [
     meaningUpright:
       "보호하는 가시. 적을 막는 힘과 때로는 예상치 못한 충격적 변화.",
     meaningReversed:
-      "자기 파괴적 충동. 위험에 무방비로 노출되거나 충동적 행동.",
+      "자기 파괴적 충동. 주의에 무방비로 노출되거나 충동적 행동.",
     keywordsUpright: ["보호", "방어", "충격", "변화", "힘"],
-    keywordsReversed: ["위험", "충동", "파괴", "무방비"],
+    keywordsReversed: ["주의", "충동", "파괴", "무방비"],
     imageSrc: "/runes/03_Thurisaz.webp",
   },
   {
@@ -238,9 +238,9 @@ export const RUNE_DECK: RuneCard[] = [
     meaningUpright:
       "운명의 컵. 숨겨진 비밀이나 기회, 운의 게임과 신비.",
     meaningReversed:
-      "숨겨진 위험이나 불운. 비밀이 드러나는 충격적 상황.",
+      "숨겨진 주의이나 불운. 비밀이 드러나는 충격적 상황.",
     keywordsUpright: ["비밀", "운명", "기회", "신비", "우연"],
-    keywordsReversed: ["불운", "폭로", "위험", "혼돈"],
+    keywordsReversed: ["불운", "폭로", "주의", "혼돈"],
     imageSrc: "/runes/14_Perthro.webp",
   },
   {
@@ -253,9 +253,9 @@ export const RUNE_DECK: RuneCard[] = [
     meaningUpright:
       "보호와 방어. 신성한 가호 아래 안전과 직관의 경고.",
     meaningReversed:
-      "보호의 약화. 위험에 노출되거나 본능적 직관을 무시하는 상황.",
+      "보호의 약화. 주의에 노출되거나 본능적 직관을 무시하는 상황.",
     keywordsUpright: ["보호", "방어", "안전", "직관", "신성"],
-    keywordsReversed: ["취약", "위험", "무방비", "무시"],
+    keywordsReversed: ["취약", "주의", "무방비", "무시"],
     imageSrc: "/runes/15_Algiz.webp",
   },
   {

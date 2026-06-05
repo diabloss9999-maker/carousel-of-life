@@ -1,7 +1,7 @@
 /**
  * 세계 프로필(World Profile).
  *
- * - 존재 기억 + 균열 상태 + 오늘 seed 를 종합해
+ * - 존재 기억 + 흐림 상태 + 오늘 seed 를 종합해
  *   오늘의 세계가 어떤 톤으로 사용자를 맞이할지 결정한다.
  */
 import type { EntityMemory } from "@/lib/entity/entity-memory";
@@ -20,7 +20,7 @@ export interface WorldProfile {
   memoryDensity: number;
 }
 
-/** 존재 기억 + 균열 + daily seed → 세계 프로필. */
+/** 존재 기억 + 흐림 + daily seed → 세계 프로필. */
 export function computeWorldProfile(
   memory: EntityMemory,
   fracture: FractureState,

@@ -27,7 +27,7 @@ const DOMINANCE_THRESHOLD = 0.55;
  * 세 존재의 현재 영향력과 압도 여부를 계산한다.
  *
  * @param memory 존재 기억 (대화 횟수 등)
- * @param fracture 균열 상태 (균열 수치, 반복 질문 등)
+ * @param fracture 흐림 상태 (흐림 수치, 반복 질문 등)
  */
 export function computeEntityRelation(
   memory: EntityMemory,

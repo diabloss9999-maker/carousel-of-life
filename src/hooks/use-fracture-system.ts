@@ -12,7 +12,7 @@ import {
 } from "@/lib/fracture/fracture-state";
 import { getFractureChance } from "@/lib/fracture/fracture-events";
 
-/** 세션당 균열 이벤트 최대 발생 횟수. */
+/** 세션당 흐림 이벤트 최대 발생 횟수. */
 const MAX_SESSION_EVENTS = 2;
 /** 밤 시간대 — KST 19시 ~ 익일 06시 59분. */
 const NIGHT_HOUR_START = 19;
@@ -34,7 +34,7 @@ function getIsNight(): boolean {
 }
 
 export interface FractureContext {
-  /** 현재 균열 상태 (localStorage 동기화). */
+  /** 현재 흐림 상태 (localStorage 동기화). */
   state: FractureState;
   /** 밤 시간대 여부. */
   isNight: boolean;
@@ -45,7 +45,7 @@ export interface FractureContext {
 }
 
 /**
- * 균열 연출 시스템 진입점 훅.
+ * 흐림 연출 시스템 진입점 훅.
  *
  * - 컴포넌트 마운트 시 방문을 기록한다.
  * - 1분 간격으로 낮/밤 전환을 감지한다.
