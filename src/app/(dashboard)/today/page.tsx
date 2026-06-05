@@ -19,6 +19,7 @@ import { TodaySummary } from "@/components/fortune/today-summary";
 import { ZodiacBanner } from "@/components/fortune/zodiac-banner";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
 import { ShamanCall } from "@/components/chat/shaman-call";
+import { FeatureGrid } from "@/components/home/feature-grid";
 import { StreakNotifier } from "@/components/streak/streak-notifier";
 import type { DailyFortune } from "@/db/schema";
 import { requireProfile } from "@/lib/auth/get-user";
@@ -146,6 +147,9 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
 
       {/* 점술사 호출 */}
       <ShamanCall />
+
+      {/* 모든 기능 — 홈 허브 그리드 (일반 홈에서만 노출, 카테고리 뷰는 집중) */}
+      {category === "general" && <FeatureGrid />}
 
       {/* 별자리·십이간지 — 비구독자: 라이트 잠금 */}
       {isPremiumCategory && !subscribed ? (
