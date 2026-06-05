@@ -234,10 +234,14 @@ export function MessageBubble({
       {/* 아이콘 */}
       <div
         className={cn(
-          "chat-speaker-avatar flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border mt-1",
-          isAssistant
-            ? oracleTheme.icon
-            : "border-primary/30 bg-primary/10 text-primary",
+          "chat-speaker-avatar flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full mt-1",
+          // 캐릭터 배지는 자체 원형 프레임이 있으므로 얇은 링만(테두리/배경 제거 → 틈·이중링 방지).
+          speakerCharacterId
+            ? "ring-1 ring-black/10"
+            : cn(
+                "border",
+                isAssistant ? oracleTheme.icon : "border-primary/30 bg-primary/10 text-primary",
+              ),
         )}
         aria-hidden
       >
@@ -247,7 +251,7 @@ export function MessageBubble({
             alt=""
             width={32}
             height={32}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover object-center"
             sizes="32px"
           />
         ) : (
