@@ -3,6 +3,12 @@ import type { Route } from "next";
 import { getTranslations } from "next-intl/server";
 import {
   Sparkles,
+  Sun,
+  Heart,
+  Coins,
+  Briefcase,
+  HeartPulse,
+  GraduationCap,
   Layers,
   Hexagon,
   Flower2,
@@ -42,23 +48,29 @@ interface HomeSection {
 
 const SECTIONS: HomeSection[] = [
   {
-    title: "카드 점술",
+    title: "운세",
     tiles: [
-      { href: "/tarot#tarot" as Route, labelKey: "tarot", icon: Sparkles },
-      { href: "/tarot#lenormand" as Route, labelKey: "lenormand", icon: Layers },
-      { href: "/tarot#runes" as Route, labelKey: "runes", icon: Hexagon },
-      { href: "/flower-oracle" as Route, labelKey: "flowerOracle", icon: Flower2 },
-    ],
-  },
-  {
-    title: "별 · 띠 운세",
-    tiles: [
+      { href: "/today?category=general" as Route, labelKey: "fortuneGeneral", icon: Sun },
+      { href: "/today?category=love" as Route, labelKey: "fortuneLove", icon: Heart },
+      { href: "/today?category=money" as Route, labelKey: "fortuneMoney", icon: Coins },
+      { href: "/today?category=career" as Route, labelKey: "fortuneCareer", icon: Briefcase },
+      { href: "/today?category=health" as Route, labelKey: "fortuneHealth", icon: HeartPulse },
+      { href: "/today?category=study" as Route, labelKey: "fortuneStudy", icon: GraduationCap },
       { href: "/today?category=zodiac" as Route, labelKey: "zodiac", icon: Star },
       {
         href: "/today?category=chinese_zodiac" as Route,
         labelKey: "chineseZodiac",
         icon: PawPrint,
       },
+    ],
+  },
+  {
+    title: "카드 점술",
+    tiles: [
+      { href: "/tarot#tarot" as Route, labelKey: "tarot", icon: Sparkles },
+      { href: "/tarot#lenormand" as Route, labelKey: "lenormand", icon: Layers },
+      { href: "/tarot#runes" as Route, labelKey: "runes", icon: Hexagon },
+      { href: "/flower-oracle" as Route, labelKey: "flowerOracle", icon: Flower2 },
     ],
   },
   {
