@@ -14,17 +14,17 @@ export function Footer() {
 
   return (
     <footer
-      className="relative z-10 border-t border-white/15 mt-20 bg-black/15 backdrop-blur-sm"
+      className="relative z-10 border-t border-white/15 mt-8 bg-black/15 backdrop-blur-sm"
       role="contentinfo"
     >
-      <div className="mx-auto max-w-5xl px-6 py-10 space-y-8">
-        <div className="grid gap-8 md:grid-cols-3">
+      <div className="mx-auto max-w-5xl px-4 py-5 space-y-4 sm:px-6 sm:py-6">
+        <div className="grid gap-4 md:grid-cols-[0.9fr_1.5fr_0.7fr] md:gap-6">
           {/* 1) 서비스 정보 */}
-          <div className="space-y-2">
-            <p className="font-mystic text-lg font-semibold">
+          <div className="space-y-1.5">
+            <p className="font-mystic text-base font-semibold">
               {BUSINESS_INFO.serviceName}
             </p>
-            <p className="text-[15px] text-foreground/70 leading-relaxed">
+            <p className="text-[13px] text-foreground/70 leading-snug">
               별의 흐름과 카드의 계시로 오늘의 운명을 풀이해드려요.
             </p>
           </div>
@@ -32,7 +32,7 @@ export function Footer() {
           {/* 2) 사업자 정보 — NHN KCP 가맹점 심사 필수 6항목 모두 노출.
                   순서: 상호 → 대표 → 사업자등록번호 → 통신판매신고번호
                        → 사업장 주소 → 전화번호 */}
-          <dl className="space-y-1.5 text-[15px] leading-relaxed text-foreground/80">
+          <dl className="space-y-1 text-[13px] leading-snug text-foreground/80">
             <BusinessRow label="상호" value={BUSINESS_INFO.companyName} />
             <BusinessRow label="대표" value={BUSINESS_INFO.ownerName} />
             <BusinessRow
@@ -52,7 +52,7 @@ export function Footer() {
           {/* 3) 약관 링크 */}
           <nav
             aria-label="법적 안내"
-            className="space-y-2 text-[15px] text-foreground/85"
+            className="grid grid-cols-2 gap-x-4 gap-y-1 text-[13px] text-foreground/85 md:block md:space-y-1"
           >
             <FooterLink href="/terms">이용약관</FooterLink>
             <FooterLink href="/privacy">개인정보처리방침</FooterLink>
@@ -61,7 +61,7 @@ export function Footer() {
           </nav>
         </div>
 
-        <p className="text-[15px] text-foreground/55 text-center border-t border-white/10 pt-6">
+        <p className="text-[12px] text-foreground/55 text-center border-t border-white/10 pt-3">
           © {year} {BUSINESS_INFO.companyName}. All rights reserved.
         </p>
       </div>
@@ -72,7 +72,7 @@ export function Footer() {
 function BusinessRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex gap-2">
-      <dt className="font-medium text-foreground/60 shrink-0 min-w-[5rem]">
+      <dt className="font-medium text-foreground/60 shrink-0 min-w-[4.2rem]">
         {label}
       </dt>
       <dd className="break-keep">{value}</dd>

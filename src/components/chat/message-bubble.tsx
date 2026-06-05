@@ -252,7 +252,12 @@ export function MessageBubble({
             width={32}
             height={32}
             // 살짝 확대해 배지 바깥의 흰 링·여백을 잘라내고 캐릭터만 꽉 채운다.
-            className="h-full w-full scale-[1.22] object-cover object-center"
+            className={cn(
+              "h-full w-full object-cover object-center",
+              speakerCharacterId === "runeshaman"
+                ? "scale-[1.55] translate-y-[2px]"
+                : "scale-[1.22]",
+            )}
             sizes="32px"
           />
         ) : (
