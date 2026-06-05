@@ -235,9 +235,9 @@ export function MessageBubble({
       <div
         className={cn(
           "chat-speaker-avatar flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full mt-1",
-          // 캐릭터 배지는 자체 원형 프레임이 있으므로 얇은 링만(테두리/배경 제거 → 틈·이중링 방지).
+          // 캐릭터 배지: 바깥 흰 링·모서리를 가리려 어두운 배경 + 얇은 링만.
           speakerCharacterId
-            ? "ring-1 ring-black/10"
+            ? "bg-black/40 ring-1 ring-white/15"
             : cn(
                 "border",
                 isAssistant ? oracleTheme.icon : "border-primary/30 bg-primary/10 text-primary",
@@ -251,7 +251,8 @@ export function MessageBubble({
             alt=""
             width={32}
             height={32}
-            className="h-full w-full object-cover object-center"
+            // 살짝 확대해 배지 바깥의 흰 링·여백을 잘라내고 캐릭터만 꽉 채운다.
+            className="h-full w-full scale-[1.22] object-cover object-center"
             sizes="32px"
           />
         ) : (
