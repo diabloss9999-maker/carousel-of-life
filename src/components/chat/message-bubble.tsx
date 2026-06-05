@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { User } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { ShareButton } from "@/components/shared/share-button";
 import { cn } from "@/lib/utils";
@@ -217,6 +218,7 @@ export function MessageBubble({
   share,
   characterId,
 }: MessageBubbleProps) {
+  const tChars = useTranslations("characters");
   const isAssistant = role === "assistant";
   const oracleTheme = characterId
     ? (ORACLE_BUBBLE_THEME[characterId] ?? DEFAULT_ORACLE_THEME)
@@ -281,9 +283,9 @@ export function MessageBubble({
         )}
 
         {/* 텍스트 버블 — ritual 스타일 */}
-        {isAssistant && (
-          <p className="text-[15px] uppercase tracking-[0.16em] text-foreground/45">
-            {oracleTheme.label}
+        {isAssistant && characterId && (
+          <p className="text-[15px] font-mystic font-semibold tracking-wide text-foreground/60">
+            {tChars(`${characterId}.name`)}
           </p>
         )}
         <div

@@ -98,7 +98,7 @@ export default async function ChatSessionPage({
       </div>
 
       {/* 데스크톱: 좌측 캐릭터 이미지 + 우측 대화창 — 같은 높이 / 모바일: 전체 차지 */}
-      <div className="flex gap-4 h-[calc(100dvh-16rem)] md:h-[calc(100dvh-13rem)]">
+      <div className="flex gap-4 h-[calc(100dvh-15rem)] md:h-[calc(100dvh-13rem)]">
         {/* 캐릭터 이미지 — 데스크톱 전용, sticky */}
         <div className="hidden md:flex flex-col items-center gap-2 sticky top-20 flex-shrink-0 w-40 h-full">
           <div className="relative w-full flex-1 overflow-hidden rounded-2xl shadow-xl ring-1 ring-amber-200/20">

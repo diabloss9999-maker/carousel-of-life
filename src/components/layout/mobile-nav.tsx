@@ -63,6 +63,9 @@ export function MobileNav() {
       ? (mainNav.find((e) => e.type === "group" && e.id === openGroup) as NavGroup | undefined)
       : undefined;
 
+  // 대화 화면(/chat/[sessionId])에서는 하단 탭바를 숨겨 채팅이 전체 높이를 쓰게 한다.
+  if (pathname.includes("/chat/")) return null;
+
   return (
     <nav
       aria-label={tExtras("navBottomAria")}
