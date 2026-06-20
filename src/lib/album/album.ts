@@ -98,7 +98,7 @@ export const ALBUM_TRACKS: AlbumTrack[] = [
     no: 5,
     title: "주파수",
     titleEn: "Frequency",
-    src: "/album/05-awaken.wav",
+    src: "/album/05-we-rise.mp3",
     parts: {
       이안: "인트로 · 아웃트로",
       유준: "벌스1 · 코러스 리드 · 브릿지 · 아웃트로",
