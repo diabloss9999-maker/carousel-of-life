@@ -81,8 +81,8 @@ export default async function AdminPage() {
         </div>
       </Panel>
 
-      {/* 점술사 인기 */}
-      <Panel title="오늘 점술사 대화량">
+      {/* 멤버 인기 */}
+      <Panel title="오늘 멤버 대화량">
         {characterRank.length === 0 ? (
           <p className="text-[15px] text-white/60">오늘 대화 기록이 아직 없어요.</p>
         ) : (

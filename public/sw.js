@@ -21,8 +21,9 @@ self.addEventListener("push", (event) => {
   const title = payload.title || "인생의 회전목마";
   const options = {
     body: payload.body || "",
-    icon: "/icons-pwa/icon-192.png",
+    icon: payload.icon || "/icons-pwa/icon-192.png",
     badge: "/icons-pwa/icon-192.png",
+    image: payload.image || undefined,
     tag: payload.tag || "carousel-default",
     renotify: !!payload.renotify,
     data: {

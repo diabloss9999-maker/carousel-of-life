@@ -51,6 +51,10 @@ export interface PushPayload {
   tag?: string;
   /** 새 알림으로 기존 알림 대체. */
   renotify?: boolean;
+  /** 알림 아이콘 (멤버 사진 등). 미지정 시 sw 기본 아이콘. */
+  icon?: string;
+  /** 알림 큰 이미지 (Android — 본문 아래 히어로 이미지). */
+  image?: string;
 }
 
 interface SendResult {

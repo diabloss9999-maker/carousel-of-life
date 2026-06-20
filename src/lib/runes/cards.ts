@@ -45,7 +45,7 @@ export const RUNE_DECK: RuneCard[] = [
     aett: "Freyr",
     isInvertible: true,
     meaningUpright:
-      "물질적 풍요와 재물의 흐름. 노력으로 얻은 성과와 번영의 시작.",
+      "물질적 풍요와 재물의 기운. 노력으로 얻은 성과와 번영의 시작.",
     meaningReversed:
       "재물의 손실이나 에너지 낭비. 탐욕이 화를 부를 수 있는 시기.",
     keywordsUpright: ["풍요", "재물", "번영", "에너지", "성취"],
@@ -105,10 +105,10 @@ export const RUNE_DECK: RuneCard[] = [
     aett: "Freyr",
     isInvertible: true,
     meaningUpright:
-      "여정과 리듬. 옳은 방향으로의 이동과 삶의 자연스러운 흐름.",
+      "여정과 리듬. 옳은 방향으로의 이동과 삶의 자연스러운 기운.",
     meaningReversed:
       "여정의 지연이나 방향 상실. 잘못된 결정이나 통제 불능의 상황.",
-    keywordsUpright: ["여정", "리듬", "방향", "이동", "흐름"],
+    keywordsUpright: ["여정", "리듬", "방향", "이동", "기운"],
     keywordsReversed: ["지연", "방향상실", "혼돈", "통제불능"],
     imageSrc: "/runes/05_Raidho.webp",
   },
@@ -208,7 +208,7 @@ export const RUNE_DECK: RuneCard[] = [
     aett: "Heimdall",
     isInvertible: false,
     meaningUpright:
-      "수확과 순환. 노력의 결실과 자연스러운 시간의 흐름.",
+      "수확과 순환. 노력의 결실과 자연스러운 시간의 기운.",
     meaningReversed: null,
     keywordsUpright: ["수확", "순환", "결실", "시간", "인과"],
     keywordsReversed: [],
@@ -342,10 +342,10 @@ export const RUNE_DECK: RuneCard[] = [
     aett: "Tyr",
     isInvertible: true,
     meaningUpright:
-      "물의 흐름. 직관과 감정, 무의식의 세계와 치유.",
+      "물의 기운. 직관과 감정, 무의식의 세계와 치유.",
     meaningReversed:
       "감정의 범람이나 혼란. 직관이 흐려지거나 두려움에 압도되는 상황.",
-    keywordsUpright: ["흐름", "직관", "감정", "치유", "무의식"],
+    keywordsUpright: ["기운", "직관", "감정", "치유", "무의식"],
     keywordsReversed: ["범람", "혼란", "두려움", "압도"],
     imageSrc: "/runes/21_Laguz.webp",
   },

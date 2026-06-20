@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 카드 컬렉션 정적 메타데이터.
  *
  * 8개 카테고리 총 197장:
@@ -7,7 +7,7 @@
  * - 별자리 12장
  * - 십이간지 12장
  * - 천간 10장
- * - 점술사 9장 (이세계 3 · 동양 3 · 북방 3)
+ * - 점술사 9장 (카드 3 · 동양 3 · 룬 3)
  *
  * 발견 여부는 service.ts 가 기존 사용자 데이터(profiles, tarotReadings,
  * chatSessions)에서 계산한다. 이 파일은 카드의 표시 정보만을 담는다.
@@ -338,9 +338,9 @@ export const CHEONGAN_CARDS: CollectionCardMeta[] = CHEONGAN_ORDER.map(
   },
 );
 
-/** 점술사 캐릭터 9장 메타데이터 — 이세계 3 + 동양 3 + 북방 3. */
+/** 점술사 캐릭터 9장 메타데이터 — 카드 3 + 동양 3 + 룬 3. */
 export const CHARACTER_CARDS: CollectionCardMeta[] = [
-  // 이세계
+  // 카드
   {
     id: "witch",
     category: "characters",
@@ -402,7 +402,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
       "소율을 살리기 위해 스스로 귀왕이 된 도깨비. 진짜 이름을 잃었고, 그 사실을 소율은 모른다.",
     rarity: "legendary",
   },
-  // 북방 — 《죽은 별의 밤》
+  // 룬 — 《죽은 별의 밤》
   {
     id: "god",
     category: "characters",
@@ -420,7 +420,7 @@ export const CHARACTER_CARDS: CollectionCardMeta[] = [
     nameEn: "Bjorn",
     imageSrc: "/characters/hunter_night.webp",
     description:
-      "북방 늑대 부족의 사냥꾼. 신을 죽이기 위해 태어난 「검은 숲의 왕」의 마지막 후손 — 손등에 짐승의 룬이 자라난다.",
+      "룬 늑대 부족의 사냥꾼. 신을 죽이기 위해 태어난 「검은 숲의 왕」의 마지막 후손 — 손등에 짐승의 룬이 자라난다.",
     rarity: "legendary",
   },
   {
@@ -518,7 +518,7 @@ export const CATEGORY_META: Record<
   flowers:       { label: "꽃점",    emoji: "", cardBackSrc: "/collection/card_back_flowers.png" },
 };
 
-/** 전체 카드 수 (257장 — 기존 197 + 꽃점 60). */
+/** 전체 카드 수. */
 export const TOTAL_CARDS =
   TAROT_CARDS.length +
   MBTI_CARDS.length +
@@ -530,8 +530,8 @@ export const TOTAL_CARDS =
   RUNE_COLLECTION_CARDS.length +
   FLOWER_COLLECTION_CARDS.length;
 
-if (TOTAL_CARDS !== 257) {
+if (TOTAL_CARDS !== 221) {
   throw new Error(
-    `컬렉션 카드 수 오류: 기대 257, 실제 ${TOTAL_CARDS}`,
+    `컬렉션 카드 수 오류: 기대 221, 실제 ${TOTAL_CARDS}`,
   );
 }

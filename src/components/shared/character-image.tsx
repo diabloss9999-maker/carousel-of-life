@@ -1,16 +1,17 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import type { Character } from "@/lib/chat/characters";
 import { useCharacterImage } from "@/hooks/use-character-image";
+import { cn } from "@/lib/utils";
 
 /** 기본 이미지 크기(width/height 미지정 시 사용). */
 const DEFAULT_WIDTH = 600;
 const DEFAULT_HEIGHT = 900;
 
 /**
- * 영상(idle 루프) 가 준비된 캐릭터.
+ * 영상(idle 루프) 가 준비된 멤버.
  * 값은 확장자 없는 베이스 경로 — `.webm` 과 `.mp4` 두 파일을 모두 가리킨다.
  */
 const VIDEO_BY_CHARACTER: Record<string, string> = {
@@ -19,7 +20,7 @@ const VIDEO_BY_CHARACTER: Record<string, string> = {
 };
 
 interface CharacterImageProps {
-  /** 표시할 캐릭터 객체. KST 시간대에 따라 day/night 이미지가 자동 선택된다. */
+  /** 표시할 멤버 객체. KST 시간대에 따라 day/night 이미지가 자동 선택된다. */
   character: Character;
   /** Next.js Image의 fill 모드 */
   fill?: boolean;
@@ -35,10 +36,16 @@ interface CharacterImageProps {
   alt?: string;
   /** 인라인 스타일 (크기 제한 등 부득이한 경우에만 사용) */
   style?: React.CSSProperties;
+  slideshowActive?: boolean;
+  /**
+   * 슬라이드쇼에 노출할 최대 사진 수 (친밀도 레벨 해금용).
+   * 미지정이면 전부 노출. 최소 1장은 항상 보장.
+   */
+  maxSlides?: number;
 }
 
 /**
- * 현재 KST 시간대(낮/밤)에 맞는 캐릭터 이미지를 렌더링하는 클라이언트 컴포넌트.
+ * 현재 KST 시간대(낮/밤)에 맞는 멤버 이미지를 렌더링하는 클라이언트 컴포넌트.
  * 서버 컴포넌트에서 직접 import 하여 사용 가능하다.
  */
 export function CharacterImage({
@@ -52,10 +59,49 @@ export function CharacterImage({
   height,
   alt,
   style,
+  slideshowActive,
+  maxSlides,
 }: CharacterImageProps) {
-  const src = useCharacterImage(character);
+  const baseSrc = useCharacterImage(character);
+  const slides = useMemo(() => {
+    const characterSlides = character.imageSlides?.filter((item) => item.length > 0) ?? [];
+    const all = characterSlides.length > 0 ? characterSlides : [baseSrc];
+    if (maxSlides == null) return all;
+    return all.slice(0, Math.max(1, maxSlides));
+  }, [baseSrc, character.imageSlides, maxSlides]);
+  const [slideIndex, setSlideIndex] = useState(0);
+  const [isSelfHovered, setIsSelfHovered] = useState(false);
+  const isSlideshowActive = slideshowActive ?? isSelfHovered;
+  const activeSlideIndex = isSlideshowActive && slides.length > 1 ? slideIndex + 1 : 0;
+  const src = slides[activeSlideIndex % slides.length] ?? baseSrc;
   const imageAlt = alt ?? character.name;
   const videoBase = VIDEO_BY_CHARACTER[character.id];
+
+  useEffect(() => {
+    if (!isSlideshowActive || slides.length < 2) return undefined;
+
+    const timer = window.setInterval(() => {
+      setSlideIndex((current) => (current + 1) % slides.length);
+    }, 4200);
+
+    return () => window.clearInterval(timer);
+  }, [isSlideshowActive, slides.length]);
+
+  function handleMouseEnter() {
+    setIsSelfHovered(true);
+  }
+
+  function handleMouseLeave() {
+    setIsSelfHovered(false);
+  }
+
+  const hoverHandlers =
+    slideshowActive === undefined
+      ? {
+          onMouseEnter: handleMouseEnter,
+          onMouseLeave: handleMouseLeave,
+        }
+      : undefined;
 
   // 새 이미지들은 비율이 다르므로 (1106x1422 vs 600x900) cover로 통일
   const mergedStyle: React.CSSProperties = {
@@ -64,9 +110,10 @@ export function CharacterImage({
     ...style,
   };
 
-  const mergedClass = className;
+  // 사진이 로드되기 전 빈 박스 대신 셔머 표시 (스냅은 모두 불투명 사진).
+  const mergedClass = cn("img-shimmer", className);
 
-  // 영상이 준비된 캐릭터는 video 로 렌더.
+  // 영상이 준비된 멤버는 video 로 렌더.
   // - 평소엔 poster 정적 이미지가 보임 (재생 정지 상태)
   // - 마우스 호버 시에만 재생, 떼면 첫 프레임으로 리셋
   // - 모바일(hover 없음)에선 poster 이미지가 그대로 표시됨
@@ -105,6 +152,7 @@ export function CharacterImage({
         priority={priority}
         quality={quality}
         style={mergedStyle}
+        {...hoverHandlers}
       />
     );
   }
@@ -120,12 +168,13 @@ export function CharacterImage({
       priority={priority}
       quality={quality}
       style={mergedStyle}
+      {...hoverHandlers}
     />
   );
 }
 
 /**
- * 호버 시에만 재생되는 캐릭터 video.
+ * 호버 시에만 재생되는 멤버 video.
  * - 평소: poster 정적 이미지, video 정지 상태
  * - mouseEnter: play()
  * - mouseLeave: pause() + currentTime=0 으로 첫 프레임 복귀

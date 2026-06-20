@@ -49,7 +49,7 @@ export const STEMS: Record<string, StemMeaning> = {
     ko: "을",
     polarity: "yin",
     element: "wood",
-    symbol: "풀·꽃·덩굴",
+    symbol: "풀·꽃·새순",
     description: "부드럽지만 끈질긴 생명력, 유연한 적응력.",
   },
   丙: {
@@ -106,7 +106,7 @@ export const STEMS: Record<string, StemMeaning> = {
     polarity: "yang",
     element: "water",
     symbol: "큰 바다·강",
-    description: "깊고 넓은 흐름, 포용력 있는 지혜.",
+    description: "깊고 넓은 기운, 포용력 있는 지혜.",
   },
   癸: {
     char: "癸",

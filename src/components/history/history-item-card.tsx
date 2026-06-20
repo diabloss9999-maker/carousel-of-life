@@ -1,17 +1,24 @@
 "use client";
 
-import { Heart, Sparkles, Sun } from "lucide-react";
+import { useState } from "react";
+import Link from "next/link";
+import type { Route } from "next";
+import { Heart, Sparkles, Sun, Trash2 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 
 import { Card, CardContent } from "@/components/ui/card";
-import type { HistoryItem } from "@/lib/history/service";
+import { type FortuneCategoryId } from "@/lib/constants";
 import {
-  type FortuneCategoryId,
-} from "@/lib/constants";
+  looksCorruptedText,
+  safeReadingText,
+  safeShortText,
+} from "@/lib/content/safety";
+import type { HistoryItem } from "@/lib/history/service";
 import { cn, formatKoreanDate } from "@/lib/utils";
 
 interface HistoryItemCardProps {
   item: HistoryItem;
+  onDelete?: (item: HistoryItem) => Promise<void>;
 }
 
 const CATEGORY_TKEY: Record<FortuneCategoryId, string> = {
@@ -27,15 +34,63 @@ const CATEGORY_TKEY: Record<FortuneCategoryId, string> = {
 
 function localizedDate(date: Date, locale: string): string {
   if (locale === "en") {
-    return date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
   }
   return formatKoreanDate(date);
 }
 
-export function HistoryItemCard({ item }: HistoryItemCardProps) {
-  if (item.kind === "fortune") return <FortuneRow item={item.data} />;
-  if (item.kind === "tarot") return <TarotRow item={item.data} />;
-  return <CompatibilityRow item={item.data} />;
+export function HistoryItemCard({ item, onDelete }: HistoryItemCardProps) {
+  const t = useTranslations("historyPage");
+  const href = `/archive/${item.kind}/${item.data.id}` as Route;
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  async function handleDelete() {
+    if (!onDelete || isDeleting) return;
+    if (!confirm(t("deleteConfirm"))) return;
+
+    setIsDeleting(true);
+    try {
+      await onDelete(item);
+    } catch {
+      alert(t("deleteFailed"));
+    } finally {
+      setIsDeleting(false);
+    }
+  }
+
+  return (
+    <Card
+      className={cn(
+        "app-surface relative overflow-hidden transition",
+        isDeleting && "opacity-60",
+      )}
+    >
+      <Link href={href} className="block transition hover:opacity-90">
+        {item.kind === "fortune" ? <FortuneRow item={item.data} /> : null}
+        {item.kind === "tarot" ? <TarotRow item={item.data} /> : null}
+        {item.kind === "compatibility" ? (
+          <CompatibilityRow item={item.data} />
+        ) : null}
+      </Link>
+
+      {onDelete ? (
+        <button
+          type="button"
+          onClick={handleDelete}
+          disabled={isDeleting}
+          className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-background/80 text-muted-foreground shadow-sm backdrop-blur transition hover:border-destructive/40 hover:text-destructive disabled:cursor-wait disabled:opacity-50"
+          aria-label={t("deleteRecord")}
+          title={t("deleteRecord")}
+        >
+          <Trash2 className="h-4 w-4" aria-hidden />
+        </button>
+      ) : null}
+    </Card>
+  );
 }
 
 function FortuneRow({
@@ -48,25 +103,34 @@ function FortuneRow({
   const locale = useLocale();
   const key = CATEGORY_TKEY[item.category as FortuneCategoryId];
   const label = key
-    ? t(key as "categoryGeneral" | "categoryLove" | "categoryWealth" | "categoryCareer" | "categoryHealth" | "categoryStudy" | "categoryZodiac" | "categoryChineseZodiac")
+    ? t(
+        key as
+          | "categoryGeneral"
+          | "categoryLove"
+          | "categoryWealth"
+          | "categoryCareer"
+          | "categoryHealth"
+          | "categoryStudy"
+          | "categoryZodiac"
+          | "categoryChineseZodiac",
+      )
     : tHist("itemFortune");
+  const title = safeShortText(item.title, "오늘의 운세");
+  const content = safeReadingText(item.content);
+
   return (
-    <Card className="app-surface">
-      <CardContent className="p-4 flex items-start gap-4">
-        <BadgeIcon icon={<Sun className="h-4 w-4" />} tone="primary" />
-        <div className="flex-1 min-w-0 space-y-1.5">
-          <div className="flex items-center justify-between gap-2">
-            <span className="text-[15px] uppercase tracking-wide text-muted-foreground">
-              {label} · {localizedDate(new Date(item.createdAt), locale)}
-            </span>
-          </div>
-          <p className="font-mystic font-medium leading-snug">{item.title}</p>
-          <p className="text-[15px] text-muted-foreground line-clamp-2">
-            {item.content}
-          </p>
-        </div>
-      </CardContent>
-    </Card>
+    <CardContent className="flex items-start gap-4 p-4 pr-14">
+      <BadgeIcon icon={<Sun className="h-4 w-4" />} tone="primary" />
+      <div className="min-w-0 flex-1 space-y-1.5">
+        <span className="text-[15px] uppercase tracking-wide text-muted-foreground">
+          {label} · {localizedDate(new Date(item.createdAt), locale)}
+        </span>
+        <p className="font-mystic font-medium leading-snug">{title}</p>
+        <p className="line-clamp-2 text-[15px] text-muted-foreground">
+          {content}
+        </p>
+      </div>
+    </CardContent>
   );
 }
 
@@ -78,44 +142,56 @@ function TarotRow({
   const t = useTranslations("historyPage");
   const locale = useLocale();
   const cards = Array.isArray(item.cards)
-    ? (item.cards as Array<{ nameKo: string; nameEn?: string | null; isReversed: boolean }>)
+    ? (item.cards as Array<{
+        nameKo: string;
+        nameEn?: string | null;
+        isReversed: boolean;
+      }>)
     : [];
-  const cardSummary = cards
-    .map((c) => (locale === "en" && c.nameEn ? c.nameEn : c.nameKo))
-    .join(", ");
-  const spreadLabel = item.spreadType === "three" ? t("itemTarotThree") : t("itemTarotOne");
+  const cardSummary =
+    cards
+      .map((card) => (locale === "en" && card.nameEn ? card.nameEn : card.nameKo))
+      .map((name) => safeShortText(name, "타로 카드"))
+      .join(", ") || "타로 카드";
+  const spreadLabel =
+    item.spreadType === "three" ? t("itemTarotThree") : t("itemTarotOne");
+  const question =
+    item.question && !looksCorruptedText(item.question) ? item.question : null;
 
-  // three 스프레드는 interpretation 이 JSON 이라 summary 만 추출.
   let preview = item.interpretation;
   if (item.spreadType === "three") {
     try {
-      const parsed = JSON.parse(item.interpretation);
+      const parsed = JSON.parse(item.interpretation) as {
+        summary?: string;
+        synthesis?: string;
+      };
       preview = parsed.summary ?? parsed.synthesis ?? item.interpretation;
     } catch {
-      // ignore
+      preview = item.interpretation;
     }
   }
+  const safePreview = safeReadingText(preview);
 
   return (
-    <Card className="app-surface">
-      <CardContent className="p-4 flex items-start gap-4">
-        <BadgeIcon icon={<Sparkles className="h-4 w-4" />} tone="accent" />
-        <div className="flex-1 min-w-0 space-y-1.5">
-          <span className="text-[15px] uppercase tracking-wide text-muted-foreground">
-            {spreadLabel} · {localizedDate(new Date(item.createdAt), locale)}
-          </span>
-          <p className="font-mystic font-medium leading-snug truncate">
-            {cardSummary}
+    <CardContent className="flex items-start gap-4 p-4 pr-14">
+      <BadgeIcon icon={<Sparkles className="h-4 w-4" />} tone="accent" />
+      <div className="min-w-0 flex-1 space-y-1.5">
+        <span className="text-[15px] uppercase tracking-wide text-muted-foreground">
+          {spreadLabel} · {localizedDate(new Date(item.createdAt), locale)}
+        </span>
+        <p className="truncate font-mystic font-medium leading-snug">
+          {cardSummary}
+        </p>
+        {question ? (
+          <p className="text-[15px] italic text-muted-foreground/80">
+            &ldquo;{question}&rdquo;
           </p>
-          {item.question ? (
-            <p className="text-[15px] italic text-muted-foreground/80">
-              “{item.question}”
-            </p>
-          ) : null}
-          <p className="text-[15px] text-muted-foreground line-clamp-2">{preview}</p>
-        </div>
-      </CardContent>
-    </Card>
+        ) : null}
+        <p className="line-clamp-2 text-[15px] text-muted-foreground">
+          {safePreview}
+        </p>
+      </div>
+    </CardContent>
   );
 }
 
@@ -126,25 +202,26 @@ function CompatibilityRow({
 }) {
   const t = useTranslations("historyPage");
   const locale = useLocale();
+  const partnerName = safeShortText(item.partnerName, "상대");
+  const summary = safeReadingText(item.summary);
+
   return (
-    <Card className="app-surface">
-      <CardContent className="p-4 flex items-start gap-4">
-        <BadgeIcon icon={<Heart className="h-4 w-4" />} tone="primary" />
-        <div className="flex-1 min-w-0 space-y-1.5">
-          <div className="flex items-center justify-between gap-2">
-            <span className="text-[15px] uppercase tracking-wide text-muted-foreground">
-              {t("itemCompat", { date: localizedDate(new Date(item.createdAt), locale) })}
-            </span>
-          </div>
-          <p className="font-mystic font-medium leading-snug">
-            {t("itemCompatTitle", { partner: item.partnerName })}
-          </p>
-          <p className="text-[15px] text-muted-foreground line-clamp-2">
-            {item.summary}
-          </p>
-        </div>
-      </CardContent>
-    </Card>
+    <CardContent className="flex items-start gap-4 p-4 pr-14">
+      <BadgeIcon icon={<Heart className="h-4 w-4" />} tone="primary" />
+      <div className="min-w-0 flex-1 space-y-1.5">
+        <span className="text-[15px] uppercase tracking-wide text-muted-foreground">
+          {t("itemCompat", {
+            date: localizedDate(new Date(item.createdAt), locale),
+          })}
+        </span>
+        <p className="font-mystic font-medium leading-snug">
+          {t("itemCompatTitle", { partner: partnerName })}
+        </p>
+        <p className="line-clamp-2 text-[15px] text-muted-foreground">
+          {summary}
+        </p>
+      </div>
+    </CardContent>
   );
 }
 

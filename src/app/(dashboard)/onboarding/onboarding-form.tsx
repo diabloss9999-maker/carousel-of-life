@@ -1,7 +1,13 @@
 "use client";
 
 import { useActionState } from "react";
-import { Loader2 } from "lucide-react";
+import {
+  CalendarDays,
+  Compass,
+  Loader2,
+  Sparkles,
+  type LucideIcon,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
@@ -15,6 +21,32 @@ import {
 } from "@/lib/auth/onboarding-action";
 
 const initial: OnboardingFormState = { kind: "idle" };
+
+const START_OPTIONS: Array<{
+  body: string;
+  icon: LucideIcon;
+  title: string;
+  value: "today" | "tarot" | "saju";
+}> = [
+  {
+    body: "오늘 하루 흐름부터 바로 확인해요.",
+    icon: CalendarDays,
+    title: "오늘운세",
+    value: "today",
+  },
+  {
+    body: "마음에 걸리는 질문을 카드로 살펴봐요.",
+    icon: Sparkles,
+    title: "타로",
+    value: "tarot",
+  },
+  {
+    body: "내 기질과 오행 균형부터 정리해요.",
+    icon: Compass,
+    title: "사주",
+    value: "saju",
+  },
+];
 
 interface OnboardingFormProps {
   initialDisplayName?: string;
@@ -140,6 +172,49 @@ export function OnboardingForm({
           />
         </div>
       </div>
+
+      <fieldset className="space-y-3">
+        <div className="space-y-1">
+          <legend className="text-[14px] font-semibold text-foreground">
+            처음 무엇을 볼까요?
+          </legend>
+          <p className="text-[13px] leading-5 text-muted-foreground">
+            프로필 저장 후 선택한 화면으로 바로 이동해요.
+          </p>
+        </div>
+        <div className="grid gap-2 sm:grid-cols-3">
+          {START_OPTIONS.map(({ body, icon: Icon, title, value }) => (
+            <label
+              key={value}
+              className="group relative min-h-[116px] cursor-pointer rounded-2xl border border-white/10 bg-white/[0.04] p-3 transition hover:border-primary/40 hover:bg-white/[0.07]"
+            >
+              <input
+                className="peer sr-only"
+                type="radio"
+                name="startWith"
+                value={value}
+                defaultChecked={value === "today"}
+                disabled={isPending}
+              />
+              <span
+                className="pointer-events-none absolute inset-0 rounded-2xl ring-0 ring-primary/0 transition peer-checked:ring-2 peer-checked:ring-primary/55"
+                aria-hidden
+              />
+              <span className="relative flex h-full flex-col gap-2">
+                <span className="flex items-center gap-2 text-primary">
+                  <Icon className="h-4 w-4 shrink-0" aria-hidden />
+                  <span className="text-[13px] font-semibold text-foreground">
+                    {title}
+                  </span>
+                </span>
+                <span className="text-[13px] leading-5 text-muted-foreground">
+                  {body}
+                </span>
+              </span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
 
       <FormMessage
         state={

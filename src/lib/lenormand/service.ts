@@ -20,8 +20,7 @@ import {
   type LenormandReading,
   type Profile,
 } from "@/db/schema";
-import { CHARACTER_CARD_VOICE, CHARACTER_PROSE_VOICE } from "@/lib/ai/character-voice";
-import { getTodayCharacterByCategory } from "@/lib/daily-question/rotation";
+import { NEUTRAL_CARD_VOICE, NEUTRAL_PROSE_VOICE } from "@/lib/ai/character-voice";
 import { getLocale, getTranslations } from "next-intl/server";
 import { generateJson, generateMarkdown } from "@/lib/ai/generate";
 import { buildUserContext } from "@/lib/ai/prompts";
@@ -94,7 +93,7 @@ export async function getTodayLenormandReadings(
 const CARD_DEFS = `1.기수-소식·방문자·빠른도착 / 2.클로버-작은행운·일시적기쁨 / 3.배-여행·이동·외국 / 4.집-가정·안정·가족 / 5.나무-건강·성장·생명력 / 6.구름-혼란·불확실·의심 / 7.뱀-우회·복잡함·거짓 / 8.관-종결·깊은변환·질병 / 9.꽃다발-선물·기쁨·매력 / 10.낫-갑작스런단절·결단 / 11.채찍-갈등·반복·논쟁 / 12.새-대화·불안·두사람 / 13.어린이-새시작·순수·작은것 / 14.여우-속임수·직장·주의 / 15.곰-권력자·상사·재정 / 16.별-희망·이상·인도 / 17.황새-변화·임신·이주 / 18.개-친구·충성·신뢰 / 19.탑-권위·기관·고독 / 20.정원-공공장소·모임·대중 / 21.산-장애물·지연·무거움 / 22.갈림길-선택·결정·다중옵션 / 23.쥐-손실·스트레스·갉아먹힘 / 24.하트-사랑·애정·로맨스 / 25.반지-약속·계약·결혼 / 26.책-비밀·지식·미공개 / 27.편지-문서·메시지·소식 / 28.남자-파트너또는본인(여성질문자) / 29.여자-파트너또는본인(남성질문자) / 30.백합-평화·성숙·가족 / 31.태양-성공·진실·활력 / 32.달-감정·명성·직관 / 33.열쇠-해결·확실함·운명 / 34.물고기-돈·사업·풍요 / 35.닻-안정·직장·장기성 / 36.십자가-운명·시련·부담`;
 
 /**
- * single / three 스프레드 처리 — 기존 흐름.
+ * single / three 스프레드 처리 — 기존 기운.
  */
 async function processSingleOrThree(
   opts: {
@@ -131,13 +130,13 @@ async function processSingleOrThree(
   const userCtx = buildUserContext({ profile: opts.profile });
   const questionPart = opts.question
     ? `\n질문: "${opts.question}"`
-    : "\n질문: (없음 — 오늘의 전반적 흐름)";
+    : "\n질문: (없음 — 오늘의 전반적인 기운)";
 
   const spreadInstruction =
     opts.spreadType === "three"
       ? `3장 스프레드 (과거·현재·미래):
 1. 전체 분위기: 긍정/부정 카드 비율 파악
-2. 핵심 흐름: 과거(배경) → 현재(핵심) → 미래(결과) 연결
+2. 핵심 기운: 과거(배경) → 현재(핵심) → 미래(결과) 연결
 3. 카드 조합: 인접 카드끼리 의미 결합 (예: 구름+열쇠 = "혼란이 해결된다")
 4. 결론: 한 문장으로 답`
       : `1장 리딩:
@@ -179,7 +178,7 @@ ${spreadInstruction}
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.fortuneMaxTokens,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacterByCategory("이세계")],
+      systemSuffix: NEUTRAL_CARD_VOICE,
       locale: await getLocale(),
     });
   } catch (e) {
@@ -240,7 +239,7 @@ async function processNine(opts: {
   const userCtx = buildUserContext({ profile: opts.profile });
   const questionPart = opts.question
     ? `\n질문: "${opts.question}"`
-    : "\n질문: (없음 — 전반적 흐름)";
+    : "\n질문: (없음 — 전반적인 기운)";
 
   const cardLines = drawnCards
     .map((c, i) => {
@@ -274,7 +273,7 @@ ${CARD_DEFS}
 
 [해석 지침]
 중심 카드([4])가 핵심이야. 먼저 중심 카드가 지금 상황에서 뭘 말하는지 이야기해줘.
-그다음 상단(과거) → 중단(현재) → 하단(미래) 흐름을 자연스럽게 연결해서 이야기해.
+그다음 상단(과거) → 중단(현재) → 하단(미래) 기운을 자연스럽게 연결해서 이야기해.
 인접한 카드끼리 조합을 짚어주고, 부정 카드도 솔직히 전달하되 대응 방향을 함께 제시해.
 마지막에 실용적인 조언으로 마무리해.
 이모지·##·**·* 등 마크다운 기호 쓰지 말고, 사람이 말하듯 자연스럽게. 빈 줄 넣지 마.`;
@@ -285,7 +284,7 @@ ${CARD_DEFS}
       userPrompt,
       model: AI_MODELS.fast,
       maxTokens: 1500,
-      systemSuffix: CHARACTER_PROSE_VOICE[getTodayCharacterByCategory("이세계")],
+      systemSuffix: NEUTRAL_PROSE_VOICE,
       locale: await getLocale(),
     });
   } catch (e) {
@@ -354,7 +353,7 @@ async function processGrandTableau(opts: {
   const userCtx = buildUserContext({ profile: opts.profile });
   const questionPart = opts.question
     ? `\n질문: "${opts.question}"`
-    : "\n질문: (없음 — 전반적 인생 흐름)";
+    : "\n질문: (없음 — 전반적인 인생 결)";
 
   const formatCard = (c: LenormandCard | null): string =>
     c ? `${c.id}번 ${c.nameKo}` : "(없음)";
@@ -408,10 +407,10 @@ ${CARD_DEFS}
 
 [해석 지침]
 시그니피케이터(${sigLine})가 어디에 자리 잡고 있고 주변 분위기가 어떤지 먼저 이야기해줘.
-그다음 같은 행의 왼쪽(과거) → 오른쪽(미래) 시간선을 따라 흐름을 설명해.
+그다음 같은 행의 왼쪽(과거) → 오른쪽(미래) 시간선을 따라 기운을 설명해.
 8방향 인접 카드들이 시그니피케이터에 미치는 영향을 구체적으로 짚어줘.
 같은 열의 카드들이 반복적으로 강조하는 테마를 이야기하고,
-영혼 카드 4장이 내면에서 말하는 흐름을 정리해줘.
+영혼 카드 4장이 내면에서 말하는 기운을 정리해줘.
 마지막에 실용적인 조언으로 마무리해.
 부정 카드도 솔직히 전달하되 대응 방향을 함께 제시해.
 이모지·##·**·* 등 마크다운 기호 쓰지 말고, 사람이 말하듯 자연스럽게. 빈 줄 넣지 마.`;
@@ -422,7 +421,7 @@ ${CARD_DEFS}
       userPrompt,
       model: AI_MODELS.fast,
       maxTokens: 2000,
-      systemSuffix: CHARACTER_PROSE_VOICE[getTodayCharacterByCategory("이세계")],
+      systemSuffix: NEUTRAL_PROSE_VOICE,
       locale: await getLocale(),
     });
   } catch (e) {

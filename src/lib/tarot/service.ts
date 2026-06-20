@@ -32,8 +32,7 @@ import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { ensureSajuCalculated } from "@/lib/saju/calculate";
 import { drawCards, type DrawnCard } from "@/lib/tarot/draw";
 import { checkAndIncrementQuota } from "@/lib/usage/quota";
-import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
-import { getTodayCharacterByCategory } from "@/lib/daily-question/rotation";
+import { NEUTRAL_CARD_VOICE } from "@/lib/ai/character-voice";
 
 export type TarotResult =
   | {
@@ -56,7 +55,8 @@ export async function createSingleTarot(opts: {
   const quota = await checkAndIncrementQuota({
     userId: opts.profile.userId,
     kind: "tarot",
-    max: FREE_DAILY_LIMITS.tarot,
+    max: FREE_DAILY_LIMITS.fortune,
+    amount: 2,
   });
   if (!quota.ok) {
     return { ok: false, reason: "quota_exceeded", max: quota.max };
@@ -83,7 +83,7 @@ export async function createSingleTarot(opts: {
   try {
     aiOutput = await generateJson({
       schema: tarotSingleAiSchema,
-      userPrompt: buildTarotSinglePrompt({
+      userPrompt: `${buildTarotSinglePrompt({
         profile,
         question: opts.question,
         card: {
@@ -91,10 +91,16 @@ export async function createSingleTarot(opts: {
           name: card.nameKo,
           isReversed: card.isReversed,
         },
-      }),
+      })}
+
+[Neutral tarot reading rules]
+- Do not mention any member, idol, fan-service concept, or Carousel Nine worldbuilding.
+- Reflect the card name and upright/reversed state accurately, and connect the reading to the user's question when present.
+- Do not write as a fixed prediction. Keep it practical and useful for today.
+- Write 6 to 8 sentences in a calm Korean report tone.`,
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.tarotMaxTokens,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacterByCategory("이세계")],
+      systemSuffix: NEUTRAL_CARD_VOICE,
       locale: await getLocale(),
     });
   } catch (e) {
@@ -162,7 +168,7 @@ export async function createThreeCardTarot(opts: {
   try {
     aiOutput = await generateJson({
       schema: tarotThreeAiSchema,
-      userPrompt: buildTarotThreePrompt({
+      userPrompt: `${buildTarotThreePrompt({
         profile,
         question: opts.question,
         cards: drawn.map((c) => ({
@@ -170,10 +176,16 @@ export async function createThreeCardTarot(opts: {
           name: c.nameKo,
           isReversed: c.isReversed,
         })),
-      }),
+      })}
+
+[Neutral three-card tarot reading rules]
+- Do not mention any member, idol, fan-service concept, or Carousel Nine worldbuilding.
+- Keep the past, present, and future structure clear, and reflect each card name and upright/reversed state accurately.
+- Do not write as a fixed prediction. Help the user organize the situation and choose a next action.
+- Write summary, past, present, future, and synthesis in a calm Korean report tone.`,
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.tarotMaxTokens * 2,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacterByCategory("이세계")],
+      systemSuffix: NEUTRAL_CARD_VOICE,
       locale: await getLocale(),
     });
   } catch (e) {

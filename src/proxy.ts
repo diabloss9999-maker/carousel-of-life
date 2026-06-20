@@ -46,6 +46,23 @@ function getRequestOrigin(request: NextRequest): string | null {
   }
 }
 
+function isLocalHost(host: string): boolean {
+  return host.startsWith("localhost") || host.startsWith("127.0.0.1");
+}
+
+function isAllowedLocalOrigin(origin: string, host: string): boolean {
+  if (!isLocalHost(host)) return false;
+  try {
+    const url = new URL(origin);
+    return (
+      url.protocol === "http:" &&
+      (url.hostname === "localhost" || url.hostname === "127.0.0.1")
+    );
+  } catch {
+    return false;
+  }
+}
+
 export async function proxy(request: NextRequest) {
   const host = request.headers.get("host") ?? "";
   const { pathname } = request.nextUrl;
@@ -55,7 +72,7 @@ export async function proxy(request: NextRequest) {
   // localhost / *.local / canonical 호스트는 통과.
   if (
     host !== CANONICAL_HOST &&
-    !host.startsWith("localhost") &&
+    !isLocalHost(host) &&
     !host.endsWith(".local") &&
     (host.endsWith(".vercel.app") || host === `www.${CANONICAL_HOST}`)
   ) {
@@ -73,7 +90,10 @@ export async function proxy(request: NextRequest) {
   ) {
     const requestOrigin = getRequestOrigin(request);
     const allowed = getAllowedOrigins();
-    if (!requestOrigin || !allowed.has(requestOrigin)) {
+    if (
+      !requestOrigin ||
+      (!allowed.has(requestOrigin) && !isAllowedLocalOrigin(requestOrigin, host))
+    ) {
       return new NextResponse(
         JSON.stringify({ error: "Forbidden: invalid origin" }),
         { status: 403, headers: { "Content-Type": "application/json" } },

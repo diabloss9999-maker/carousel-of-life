@@ -17,12 +17,15 @@ import { sajuDeepAiSchema, type SajuDeepAiOutput } from "@/lib/ai/types";
 import { AI_LIMITS, AI_MODELS } from "@/lib/constants";
 import { ensureSajuCalculated } from "@/lib/saju/calculate";
 import { annotateHanjaDeep } from "@/lib/saju/hanja-annotate";
-import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
-import { getTodayCharacterByCategory } from "@/lib/daily-question/rotation";
+import {
+  NEUTRAL_SAJU_VOICE,
+  NEUTRAL_SAJU_VOICE_ID,
+} from "@/lib/ai/character-voice";
 
 export interface SajuDeepReading extends SajuDeepAiOutput {
   model: string;
   createdAt: string; // ISO
+  voice?: string;
 }
 
 /**
@@ -30,13 +33,15 @@ export interface SajuDeepReading extends SajuDeepAiOutput {
  */
 export function asSajuDeepReading(v: unknown): SajuDeepReading | null {
   if (!v || typeof v !== "object") return null;
+  const meta = v as { model?: string; createdAt?: string; voice?: string };
+  if (meta.voice !== NEUTRAL_SAJU_VOICE_ID) return null;
   const parsed = sajuDeepAiSchema.safeParse(v);
   if (!parsed.success) return null;
-  const meta = v as { model?: string; createdAt?: string };
   return {
     ...parsed.data,
     model: meta.model ?? "unknown",
     createdAt: meta.createdAt ?? new Date().toISOString(),
+    voice: meta.voice,
   };
 }
 
@@ -83,7 +88,7 @@ export async function getOrCreateDeepReading(
       userPrompt: buildSajuDeepPrompt(withSaju),
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.sajuDeepMaxTokens,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacterByCategory("동양")],
+      systemSuffix: NEUTRAL_SAJU_VOICE,
       locale: await getLocale(),
     });
   } catch (e) {
@@ -105,6 +110,7 @@ export async function getOrCreateDeepReading(
     ...annotated,
     model: AI_MODELS.premium,
     createdAt: new Date().toISOString(),
+    voice: NEUTRAL_SAJU_VOICE_ID,
   };
 
   await db

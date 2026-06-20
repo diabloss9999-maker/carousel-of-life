@@ -1,6 +1,7 @@
 "use server";
 
 import { z } from "zod";
+import { getTranslations } from "next-intl/server";
 
 import { requireProfile } from "@/lib/auth/get-user";
 import {
@@ -32,6 +33,7 @@ export async function readNameAction(
   _prev: NameReadingActionState,
   formData: FormData,
 ): Promise<NameReadingActionState> {
+  const tErr = await getTranslations("actionErrors");
   const parsed = nameSchema.safeParse({
     targetName: String(formData.get("targetName") ?? "").trim(),
     hanja: String(formData.get("hanja") ?? "").trim(),
@@ -40,7 +42,7 @@ export async function readNameAction(
   if (!parsed.success) {
     return {
       kind: "error",
-      message: parsed.error.issues[0]?.message ?? "입력값을 확인해주세요.",
+      message: tErr("validationFailed"),
     };
   }
 
@@ -52,7 +54,7 @@ export async function readNameAction(
     if (e instanceof RateLimitedError) {
       return {
         kind: "error",
-        message: `너무 빠르게 호출하고 있어. ${e.retryAfterSec}초 뒤에 다시.`,
+        message: tErr("rateLimitedSeconds", { n: e.retryAfterSec }),
       };
     }
     throw e;
@@ -62,11 +64,12 @@ export async function readNameAction(
     userId: profile.userId,
     kind: "fortune",
     max: FREE_DAILY_LIMITS.fortune,
+    amount: 2,
   });
   if (!quota.ok) {
     return {
       kind: "error",
-      message: `오늘의 운세 한도(${quota.max}회)를 모두 사용했어. 내일 다시 만나.`,
+      message: tErr("fortuneQuotaExceeded", { n: quota.max }),
     };
   }
 
@@ -82,7 +85,7 @@ export async function readNameAction(
     console.error("[readNameAction]", e);
     return {
       kind: "error",
-      message: "이름을 풀이하는 중 어긋났어. 잠시 후 다시 시도해줘.",
+      message: tErr("nameReadingGenericError"),
     };
   }
 }

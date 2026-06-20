@@ -18,18 +18,8 @@ export function Footer() {
       role="contentinfo"
     >
       <div className="mx-auto max-w-5xl px-4 py-5 space-y-4 sm:px-6 sm:py-6">
-        <div className="grid gap-4 md:grid-cols-[0.9fr_1.5fr_0.7fr] md:gap-6">
-          {/* 1) 서비스 정보 */}
-          <div className="space-y-1.5">
-            <p className="font-mystic text-base font-semibold">
-              {BUSINESS_INFO.serviceName}
-            </p>
-            <p className="text-[13px] text-foreground/70 leading-snug">
-              별의 흐름과 카드의 계시로 오늘의 운명을 풀이해드려요.
-            </p>
-          </div>
-
-          {/* 2) 사업자 정보 — NHN KCP 가맹점 심사 필수 6항목 모두 노출.
+        <div className="grid gap-4 md:grid-cols-[1fr_auto] md:gap-6">
+          {/* 1) 사업자 정보 — 맨 왼쪽. NHN KCP 가맹점 심사 필수 6항목 모두 노출.
                   순서: 상호 → 대표 → 사업자등록번호 → 통신판매신고번호
                        → 사업장 주소 → 전화번호 */}
           <dl className="space-y-1 text-[13px] leading-snug text-foreground/80">
@@ -49,7 +39,7 @@ export function Footer() {
             <BusinessRow label="호스팅" value={BUSINESS_INFO.hosting} />
           </dl>
 
-          {/* 3) 약관 링크 */}
+          {/* 2) 약관 링크 — 오른쪽 */}
           <nav
             aria-label="법적 안내"
             className="grid grid-cols-2 gap-x-4 gap-y-1 text-[13px] text-foreground/85 md:block md:space-y-1"

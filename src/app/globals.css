@@ -1,10 +1,10 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
-/* ── 안드로이드/TWA 터치 폴리시 — "웹사이트"가 아닌 "앱"처럼 동작 ──────────────
-   · 탭 시 회색 하이라이트 플래시 제거
-   · 안드로이드 Chrome 의 폰트 자동 확대 방지
-   · 화면 끝에서 당겨서 새로고침 / 스크롤 체이닝 차단 (풀스크린 몰입 유지)
-   콘텐츠(운세 텍스트 등) 선택·복사는 그대로 둔다(user-select 미변경). */
+/* ?? ?덈뱶濡쒖씠??TWA ?곗튂 ?대━????"?뱀궗?댄듃"媛 ?꾨땶 "??泥섎읆 ?숈옉 ??????????????
+   쨌 ?????뚯깋 ?섏씠?쇱씠???뚮옒???쒓굅
+   쨌 ?덈뱶濡쒖씠??Chrome ???고듃 ?먮룞 ?뺣? 諛⑹?
+   쨌 ?붾㈃ ?앹뿉???밴꺼???덈줈怨좎묠 / ?ㅽ겕濡?泥댁씠??李⑤떒 (??ㅽ겕由?紐곗엯 ?좎?)
+   肄섑뀗痢??댁꽭 ?띿뒪???? ?좏깮쨌蹂듭궗??洹몃?濡??붾떎(user-select 誘몃?寃?. */
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -14,19 +14,80 @@ body {
   overscroll-behavior-y: contain;
 }
 
-/* =============================================================================
-   인생의 회전목마 - 디자인 토큰
-   Light Ritual: 밝고 몽환적인 낮의 의식 공간 (기본)
-   밤/흐림 모드에서만 어두운 톤으로 전환
+html[data-platform="android"],
+html[data-platform="ios"] {
+  min-height: 100dvh;
+  background: #f7f7f7;
+  overscroll-behavior: none;
+}
 
-   Pretendard 폰트는 layout.tsx 의 <link> 태그로 직접 로드한다.
-   (CSS @import 순서 spec 위반을 피하기 위함.)
+body.is-app-shell {
+  min-height: 100dvh;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
+body.is-app-shell footer {
+  display: none !important;
+}
+
+body.is-app-shell #main-content {
+  min-height: 100dvh;
+}
+
+body:has(.kakao-chat-page) .mobile-app-header,
+body:has(.kakao-chat-page) .quota-sticky-shell,
+body:has(.kakao-chat-page) .mobile-bottom-nav,
+body:has(.kakao-chat-page) footer {
+  display: none !important;
+}
+
+body:has(.kakao-chat-page) #main-content {
+  min-height: 100dvh;
+}
+
+.mobile-app-content:has(.kakao-chat-page) {
+  height: 100dvh;
+  max-width: none !important;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0 !important;
+}
+
+.kakao-chat-page.mobile-chat-page {
+  display: flex;
+  height: 100dvh;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  body.is-app-shell .mobile-app-content {
+    max-width: none !important;
+    padding-left: max(12px, env(safe-area-inset-left, 12px)) !important;
+    padding-right: max(12px, env(safe-area-inset-right, 12px)) !important;
+  }
+
+  body.is-app-shell .mobile-app-header {
+    box-shadow: none !important;
+  }
+}
+
+/* =============================================================================
+   ?몄깮???뚯쟾紐⑸쭏 - ?붿옄???좏겙
+   Light Ritual: 諛앷퀬 紐쏀솚?곸씤 ??쓽 ?섏떇 怨듦컙 (湲곕낯)
+   諛??먮┝ 紐⑤뱶?먯꽌留??대몢???ㅼ쑝濡??꾪솚
+
+   Pretendard ?고듃??layout.tsx ??<link> ?쒓렇濡?吏곸젒 濡쒕뱶?쒕떎.
+   (CSS @import ?쒖꽌 spec ?꾨컲???쇳븯湲??꾪븿.)
    ============================================================================= */
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* 라이트 모드: 양피지 위 골드+다크 잉크 */
+  /* ?쇱씠??紐⑤뱶: ?묓뵾吏 ??怨⑤뱶+?ㅽ겕 ?됲겕 */
   --background: oklch(0.975 0.014 88);
   --foreground: oklch(0.24 0.032 60);
 
@@ -36,7 +97,7 @@ body {
   --popover: oklch(0.995 0.006 88);
   --popover-foreground: oklch(0.24 0.032 60);
 
-  --primary: oklch(0.62 0.14 74); /* 골드 */
+  --primary: oklch(0.62 0.14 74); /* 怨⑤뱶 */
   --primary-foreground: oklch(0.99 0.006 88);
 
   --secondary: oklch(0.93 0.018 88);
@@ -45,7 +106,7 @@ body {
   --muted: oklch(0.925 0.014 88);
   --muted-foreground: oklch(0.50 0.045 68);
 
-  --accent: oklch(0.74 0.13 82); /* 황금 강조 */
+  --accent: oklch(0.74 0.13 82); /* ?⑷툑 媛뺤“ */
   --accent-foreground: oklch(0.14 0.04 55);
 
   --destructive: oklch(0.55 0.22 25);
@@ -61,10 +122,10 @@ body {
   --chart-4: oklch(0.55 0.16 200);
   --chart-5: oklch(0.65 0.16 145);
 
-  /* 둥글둥글한 디자인을 위한 큰 radius. */
+  /* ?κ??κ????붿옄?몄쓣 ?꾪븳 ??radius. */
   --radius: 0.875rem;
 
-  /* White Glass 공통 토큰 — 낮: 검정, 밤: 흰색 (body[data-time]이 override) */
+  /* White Glass 怨듯넻 ?좏겙 ???? 寃?? 諛? ?곗깋 (body[data-time]??override) */
   --nav-active: rgba(0,0,0,0.88);
   --nav-muted: rgba(0,0,0,0.50);
   --header-bg: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.07));
@@ -73,7 +134,7 @@ body {
 }
 
 .dark {
-  /* White Glass — 기본값 (낮: 검정 텍스트) */
+  /* White Glass ??湲곕낯媛?(?? 寃???띿뒪?? */
   --background: transparent;
   --foreground: rgba(0, 0, 0, 0.88);
 
@@ -109,7 +170,7 @@ body {
   --chart-5: oklch(0.58 0.16 145);
 }
 
-/* 낮 배경 — 검정 텍스트 */
+/* ??諛곌꼍 ??寃???띿뒪??*/
 body[data-time="day"],
 body.ritual-day {
   --foreground: rgba(0, 0, 0, 0.88);
@@ -125,10 +186,10 @@ body.ritual-day {
   --ritual-text: rgba(0, 0, 0, 0.88);
   --ritual-muted: rgba(0, 0, 0, 0.55);
   color: rgba(0, 0, 0, 0.88) !important;
-  background: url("/backgrounds/day.webp") center / cover no-repeat fixed;
+  background: url("/backgrounds/carousel-meadow.webp") center / cover no-repeat fixed;
 }
 
-/* 밤 배경 — 검정 텍스트 (사용자 요청: 밤에도 글씨 전부 검정) */
+/* 諛?諛곌꼍 ??寃???띿뒪??(?ъ슜???붿껌: 諛ㅼ뿉??湲???꾨? 寃?? */
 body[data-time="night"],
 body.ritual-night {
   --foreground: rgba(0, 0, 0, 0.92);
@@ -144,10 +205,10 @@ body.ritual-night {
   --ritual-text: rgba(0, 0, 0, 0.92);
   --ritual-muted: rgba(0, 0, 0, 0.62);
   color: rgba(0, 0, 0, 0.92) !important;
-  background: url("/backgrounds/night.webp") center / cover no-repeat fixed !important;
+  background: url("/backgrounds/carousel-meadow.webp") center / cover no-repeat fixed !important;
 }
 
-/* ─── 전역 배경 레이어 — 회전목마의 별자리 지도 ─── */
+/* ??? ?꾩뿭 諛곌꼍 ?덉씠?????뚯쟾紐⑸쭏??蹂꾩옄由?吏????? */
 .ritual-backdrop {
   pointer-events: none;
   position: fixed;
@@ -178,8 +239,8 @@ body.ritual-night {
 .ritual-backdrop__veil {
   z-index: 1;
   background:
-    linear-gradient(112deg, rgba(255, 247, 225, 0.62) 0%, rgba(224, 237, 221, 0.28) 38%, rgba(226, 210, 232, 0.18) 70%, rgba(255, 239, 205, 0.34) 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.46) 58%, rgba(255, 255, 255, 0.24) 100%);
+    linear-gradient(112deg, rgba(255, 247, 225, 0.14) 0%, rgba(224, 237, 221, 0.06) 38%, rgba(226, 210, 232, 0.04) 70%, rgba(255, 239, 205, 0.08) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.08) 58%, rgba(255, 255, 255, 0.05) 100%);
 }
 
 .ritual-backdrop__wheel {
@@ -192,7 +253,7 @@ body.ritual-night {
   bottom: auto;
   border-radius: 999px;
   transform: translate3d(-50%, -50%, 0);
-  opacity: 0.28;
+  opacity: 0.12;
   background:
     conic-gradient(
       from -36deg,
@@ -209,7 +270,7 @@ body.ritual-night {
 
 .ritual-backdrop__threads {
   z-index: 3;
-  opacity: 0.46;
+  opacity: 0.16;
   background-image:
     linear-gradient(rgba(70, 52, 36, 0.055) 1px, transparent 1px),
     linear-gradient(90deg, rgba(70, 52, 36, 0.045) 1px, transparent 1px),
@@ -220,7 +281,7 @@ body.ritual-night {
 
 .ritual-backdrop__grain {
   z-index: 4;
-  opacity: 0.20;
+  opacity: 0.08;
   mix-blend-mode: multiply;
   background-image:
     repeating-linear-gradient(0deg, rgba(20, 14, 8, 0.05) 0 1px, transparent 1px 3px),
@@ -231,7 +292,7 @@ body.ritual-night {
 .ritual-readable-scrim {
   z-index: -10;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.20) 38%, rgba(255, 255, 255, 0.42) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.03) 38%, rgba(255, 255, 255, 0.08) 100%);
 }
 
 .ritual-backdrop.is-night {
@@ -244,22 +305,22 @@ body.ritual-night {
 
 .ritual-backdrop.is-night .ritual-backdrop__veil {
   background:
-    linear-gradient(114deg, rgba(245, 238, 219, 0.64) 0%, rgba(204, 226, 214, 0.26) 38%, rgba(226, 202, 221, 0.18) 72%, rgba(244, 224, 194, 0.38) 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.26) 0%, rgba(255, 255, 255, 0.48) 58%, rgba(255, 255, 255, 0.30) 100%);
+    linear-gradient(114deg, rgba(245, 238, 219, 0.10) 0%, rgba(204, 226, 214, 0.05) 38%, rgba(226, 202, 221, 0.04) 72%, rgba(244, 224, 194, 0.08) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.08) 58%, rgba(255, 255, 255, 0.06) 100%);
 }
 
 .ritual-backdrop.is-night .ritual-backdrop__wheel {
-  opacity: 0.34;
+  opacity: 0.14;
 }
 
 .ritual-backdrop.is-night .ritual-backdrop__threads {
-  opacity: 0.52;
+  opacity: 0.18;
 }
 
 body[data-time="night"] .ritual-readable-scrim,
 body.ritual-night .ritual-readable-scrim {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.24) 42%, rgba(255, 255, 255, 0.50) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.04) 42%, rgba(255, 255, 255, 0.10) 100%);
 }
 
 @keyframes ritual-wheel-drift {
@@ -269,11 +330,11 @@ body.ritual-night .ritual-readable-scrim {
 
 @media (max-width: 640px) {
   .ritual-backdrop__image {
-    transform: scale(1.08);
+    transform: none;
   }
 
   .ritual-backdrop__wheel {
-    width: 132vw;
+    width: 68vw;
     top: 44%;
     opacity: 0.22;
   }
@@ -293,19 +354,77 @@ body.ritual-night .ritual-readable-scrim {
   body {
     min-width: 320px;
     overflow-x: hidden;
+    touch-action: manipulation;
   }
 
   .mobile-app-header {
     border-bottom-color: rgba(255, 255, 255, 0.18) !important;
   }
 
+  .mobile-app-header > div {
+    min-height: calc(56px + env(safe-area-inset-top, 0px));
+  }
+
   .mobile-app-content {
     padding-top: 18px;
-    padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(136px + env(safe-area-inset-bottom, 0px));
   }
 
   html[data-platform="android"] .mobile-app-content {
-    padding-top: 14px;
+    padding-top: 12px;
+    padding-bottom: calc(144px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .home-value-hero {
+    border-radius: 20px !important;
+    padding: 16px !important;
+  }
+
+  .home-value-hero h2 {
+    font-size: 1.45rem;
+    line-height: 1.24;
+  }
+
+  .home-value-hero p {
+    line-height: 1.62;
+  }
+
+  .home-primary-actions {
+    gap: 8px;
+  }
+
+  .home-primary-action,
+  .home-secondary-action {
+    min-height: 48px;
+    border-radius: 16px;
+  }
+
+  .home-feature-section {
+    scroll-margin-top: calc(76px + env(safe-area-inset-top, 0px));
+    content-visibility: auto;
+    contain-intrinsic-size: 620px;
+  }
+
+  .home-feature-list {
+    gap: 10px;
+  }
+
+  .home-feature-tile {
+    min-height: 72px;
+    border-radius: 18px;
+    padding: 14px;
+    contain: layout paint;
+  }
+
+  .home-feature-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .home-feature-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .liquid-glass-panel,
@@ -377,30 +496,165 @@ body.ritual-night .ritual-readable-scrim {
 
   .mobile-bottom-nav {
     margin-top: auto;
+    padding-bottom: max(6px, env(safe-area-inset-bottom, 0px)) !important;
   }
 
   .mobile-bottom-nav a,
   .mobile-bottom-nav button {
+    min-height: 52px;
     touch-action: manipulation;
   }
 
+  .mobile-bottom-nav span {
+    letter-spacing: 0;
+  }
+
+  body:has(.kakao-chat-page) .mobile-app-header,
+  body:has(.kakao-chat-page) .quota-sticky-shell,
+  body:has(.kakao-chat-page) .mobile-bottom-nav,
+  body:has(.kakao-chat-page) footer {
+    display: none !important;
+  }
+
+  body:has(.kakao-chat-page) #main-content {
+    min-height: 100dvh;
+  }
+
+  .mobile-app-content:has(.kakao-chat-page) {
+    height: 100dvh;
+    max-width: none !important;
+    min-height: 0;
+    overflow: hidden;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .mobile-chat-page {
+    display: flex;
+    height: 100dvh;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .group-chat-page {
+    height: 100dvh !important;
+    max-width: none !important;
+  }
+
+  .kakao-chat-page {
+    gap: 0 !important;
+  }
+
+  .mobile-chat-header {
+    flex-shrink: 0;
+  }
+
+  .kakao-chat-header {
+    min-height: calc(50px + env(safe-area-inset-top, 0px));
+    padding: env(safe-area-inset-top, 0px) 6px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(250, 250, 250, 0.96);
+    color: rgba(0, 0, 0, 0.88);
+  }
+
+  .kakao-chat-left {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .kakao-chat-back {
+    height: 44px !important;
+    min-height: 44px !important;
+    width: 38px;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    color: rgba(0, 0, 0, 0.72) !important;
+  }
+
+  .kakao-chat-title {
+    max-width: 48vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--font-sans), system-ui, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .kakao-chat-subtitle {
+    margin-top: 1px;
+    max-width: 48vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11px;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.46);
+  }
+
+  .kakao-chat-actions {
+    height: 44px;
+  }
+
+  .kakao-chat-actions > button {
+    height: 36px !important;
+    min-height: 36px !important;
+    width: 36px !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: rgba(0, 0, 0, 0.66) !important;
+    box-shadow: none !important;
+  }
+
+  .kakao-chat-actions > button[aria-pressed="true"] {
+    color: #e84b6a !important;
+  }
+
+  .mobile-chat-member-strip,
+  .kakao-chat-page .chat-delete-row {
+    display: none !important;
+  }
+
+  .mobile-chat-profile {
+    display: none;
+  }
+
+  .mobile-chat-session {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto !important;
+    max-height: none;
+    overflow: hidden;
+  }
+
   .mobile-chat-window {
-    gap: 10px;
-    min-height: min(680px, calc(100dvh - 170px));
+    gap: 0;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
   }
 
   .mobile-chat-panel {
+    flex: 1 1 auto;
     min-height: 0;
-    max-height: calc(100dvh - 250px);
-    border-radius: 18px !important;
-    padding: 12px !important;
+    max-height: none;
+    overflow-y: auto !important;
+    border-radius: 0 !important;
+    padding: 12px 10px !important;
     overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .ritual-message {
     border-radius: 18px;
     padding: 13px 14px;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.72;
   }
 
@@ -411,22 +665,28 @@ body.ritual-night .ritual-readable-scrim {
   }
 
   .mobile-chat-form {
-    padding-bottom: 2px;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    flex-shrink: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(247, 247, 247, 0.96);
+    padding: 6px 8px max(6px, env(safe-area-inset-bottom, 6px));
   }
 
   .chat-input-shell {
-    gap: 8px;
-    border-radius: 20px;
-    padding: 8px;
+    gap: 6px;
+    border-radius: 0;
+    padding: 0;
   }
 
   .chat-input-textarea {
-    min-height: 46px;
-    max-height: 104px;
-    border-radius: 16px !important;
-    padding: 11px 12px !important;
+    min-height: 40px;
+    max-height: 96px;
+    border-radius: 20px !important;
+    padding: 9px 13px !important;
     font-size: 14px !important;
-    line-height: 1.55 !important;
+    line-height: 1.45 !important;
   }
 
   .chat-send-button {
@@ -437,6 +697,12 @@ body.ritual-night .ritual-readable-scrim {
 }
 
 @media (max-width: 380px) {
+  .home-feature-tile {
+    min-height: 68px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
   .mobile-app-content {
     padding-left: max(0.75rem, env(safe-area-inset-left, 0.75rem));
     padding-right: max(0.75rem, env(safe-area-inset-right, 0.75rem));
@@ -459,18 +725,16 @@ body.ritual-night .ritual-readable-scrim {
   }
 }
 
-/* ─── 글로벌: 모든 텍스트 강제 검정 (낮·밤 무관) ───
-   사용자 요청: 글씨색 전부 검정. CSS 변수만으로는 명시적 흰색 클래스
-   (text-white, text-zinc-50 등)와 인라인 color 를 못 덮어서 광범위 catchall.
-   야간 모드 변경 시에도 catchall 이 그대로 적용된다 (selector 가 더 광범위). */
+/* ??? 湲濡쒕쾶: 紐⑤뱺 ?띿뒪??媛뺤젣 寃??(??룸갇 臾닿?) ???
+   ?ъ슜???붿껌: 湲?⑥깋 ?꾨? 寃?? CSS 蹂?섎쭔?쇰줈??紐낆떆???곗깋 ?대옒??   (text-white, text-zinc-50 ??? ?몃씪??color 瑜?紐???뼱??愿묐쾾??catchall.
+   ?쇨컙 紐⑤뱶 蹂寃??쒖뿉??catchall ??洹몃?濡??곸슜?쒕떎 (selector 媛 ??愿묐쾾??. */
 body,
 body * {
   color: rgba(0, 0, 0, 0.92) !important;
 }
-/* 단, primary·destructive·accent 버튼처럼 색배경 위 inverse 텍스트는 흰색 유지 — 가독성.
-   data-keep-color 속성으로 개별 element 도 옵트인 가능.
-   .on-character-image 클래스는 캐릭터 이미지 위에 오버레이된 텍스트(이름·title 등)를
-   흰색으로 유지한다 — 자식 모두 포함. */
+/* ?? primary쨌destructive쨌accent 踰꾪듉泥섎읆 ?됰같寃???inverse ?띿뒪?몃뒗 ?곗깋 ?좎? ??媛?낆꽦.
+   data-keep-color ?띿꽦?쇰줈 媛쒕퀎 element ???듯듃??媛??
+   .on-character-image ?대옒?ㅻ뒗 硫ㅻ쾭 ?대?吏 ?꾩뿉 ?ㅻ쾭?덉씠???띿뒪???대쫫쨌title ??瑜?   ?곗깋?쇰줈 ?좎??쒕떎 ???먯떇 紐⑤몢 ?ы븿. */
 body .text-primary-foreground,
 body .text-destructive-foreground,
 body .text-accent-foreground,
@@ -481,18 +745,180 @@ body .on-character-image * {
   color: rgba(255, 255, 255, 0.95) !important;
 }
 
-/* ── 안드로이드 앱(TWA) 내부에서는 결제/구독 진입점 숨김 ──────────────
-   Google Play 결제 정책 준수: 앱 안에서는 외부결제(구독 구매)를 노출하지 않는다.
-   구독은 웹사이트(carouseloflife.com)에서만 가능.
-   PlatformBridge 가 TWA 를 감지해 <html data-platform="android"> 를 설정하고,
-   아래 규칙이 모든 /pricing 링크와 data-hide-in-app 요소(결제 버튼)를 숨긴다. */
-html[data-platform="android"] a[href*="/pricing"],
-html[data-platform="android"] [data-hide-in-app] {
+/* ?? ?ㅽ넗?????대? 寃곗젣 吏꾩엯??遺꾧린 ??????????????
+   Android TWA ?먯꽌??Google Play 援щ룆 踰꾪듉留??몄텧?섍퀬 ??PG 踰꾪듉? ?④릿??
+   iOS ?섑띁?먯꽌???몃?寃곗젣 吏꾩엯?먯쓣 ?④릿??
+   PlatformBridge 媛 ??而⑦뀓?ㅽ듃瑜?媛먯???<html data-platform="..."> 瑜??ㅼ젙?섍퀬,
+   ?꾨옒 洹쒖튃???뚮옯?쇰퀎 寃곗젣 踰꾪듉 ?몄텧???쒖뼱?쒕떎. */
+[data-show-in-android] {
   display: none !important;
 }
 
-/* Frosted Glass 카드 — v7: .ritual-message 의 backdrop-filter 가 빌드를 통과한
-   유일한 케이스라서 같은 형태로 단순화. saturate() · -webkit prefix 제거. */
+html[data-platform="android"] [data-show-in-android] {
+  display: contents !important;
+}
+
+html[data-platform="android"] [data-hide-in-app],
+html[data-platform="ios"] a[href*="/pricing"],
+html[data-platform="ios"] [data-hide-in-app] {
+  display: none !important;
+}
+
+/* ?좊Ъ李쎌? ?묒? Android TWA ?붾㈃?먯꽌??湲?먭? ?몃줈濡?李?뼱吏吏 ?딄쾶 怨좎젙?쒕떎. */
+.gift-sheet,
+.gift-sheet * {
+  letter-spacing: 0 !important;
+  writing-mode: horizontal-tb !important;
+  text-orientation: mixed !important;
+}
+
+.gift-sheet {
+  min-width: 0;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+
+.gift-sheet-header {
+  word-break: keep-all;
+}
+
+.gift-balance-card,
+.gift-balance-card * {
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+
+.gift-balance-card p:first-child,
+.gift-balance-card p:last-child {
+  color: rgba(255, 255, 255, 0.64) !important;
+}
+
+.gift-list,
+.gift-pack-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+.gift-row {
+  display: grid !important;
+  grid-template-columns: 48px minmax(0, 1fr) 58px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.gift-row-emoji {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+}
+
+.gift-row-copy {
+  min-width: 0 !important;
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+.gift-row-name {
+  display: block !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.gift-row-meta {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: start !important;
+  align-items: center !important;
+  gap: 5px !important;
+  min-width: 0 !important;
+}
+
+.gift-row-affinity,
+.gift-row-cost {
+  display: inline-flex !important;
+  width: max-content !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
+  word-break: keep-all !important;
+}
+
+.gift-row-action {
+  display: inline-flex !important;
+  width: 58px !important;
+  min-width: 0 !important;
+  max-width: 58px !important;
+  height: 36px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  text-align: center !important;
+  word-break: keep-all !important;
+}
+
+.gift-row-action[data-state="ready"] {
+  background: #111111 !important;
+  color: #ffffff !important;
+}
+
+.gift-row-action[data-state="needs-topup"] {
+  background: #f1f1f1 !important;
+  color: rgba(0, 0, 0, 0.58) !important;
+}
+
+.gift-pack-row {
+  display: flex !important;
+  width: 100% !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+}
+
+@media (max-width: 380px) {
+  .gift-sheet {
+    max-height: 92dvh !important;
+  }
+
+  .gift-sheet-header {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .gift-sheet > div:last-child {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .gift-row {
+    grid-template-columns: 42px minmax(0, 1fr) 54px !important;
+    gap: 8px !important;
+    padding: 10px !important;
+  }
+
+  .gift-row-emoji {
+    width: 42px !important;
+    height: 42px !important;
+    flex-basis: 42px !important;
+    font-size: 24px !important;
+  }
+
+  .gift-row-action {
+    width: 54px !important;
+    min-width: 54px !important;
+    max-width: 54px !important;
+    height: 34px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* Frosted Glass 移대뱶 ??v7: .ritual-message ??backdrop-filter 媛 鍮뚮뱶瑜??듦낵??   ?좎씪??耳?댁뒪?쇱꽌 媛숈? ?뺥깭濡??⑥닚?? saturate() 쨌 -webkit prefix ?쒓굅. */
 .app-surface {
   border: 1px solid rgba(255,255,255,0.18);
   background: rgba(255,255,255,0.05);
@@ -500,13 +926,13 @@ html[data-platform="android"] [data-hide-in-app] {
     inset 0 1px 0 rgba(255,255,255,0.12),
     0 8px 32px rgba(0,0,0,0.22);
   backdrop-filter: blur(28px);
-  /* color 명시 제거 — 부모로부터 inherit. 도감처럼 부모에 text-white 박은
-     경우 자식 텍스트가 자동으로 흰색이 되도록. (예전엔 var(--foreground)
-     를 강제로 박아서 도감의 흰색 처리가 안 먹는 버그가 있었다.) */
+  /* color 紐낆떆 ?쒓굅 ??遺紐⑤줈遺??inherit. ?꾧컧泥섎읆 遺紐⑥뿉 text-white 諛뺤?
+     寃쎌슦 ?먯떇 ?띿뒪?멸? ?먮룞?쇰줈 ?곗깋???섎룄濡? (?덉쟾??var(--foreground)
+     瑜?媛뺤젣濡?諛뺤븘???꾧컧???곗깋 泥섎━媛 ??癒밸뒗 踰꾧렇媛 ?덉뿀??) */
 }
 
-/* Liquid Ritual Glass — 운세 화면 전용 샘플 UI.
-   수정구처럼 투명하지만, 텍스트 가독성을 위해 중심부는 밝게 잡는다. */
+/* Liquid Ritual Glass ???댁꽭 ?붾㈃ ?꾩슜 ?섑뵆 UI.
+   ?섏젙援ъ쿂???щ챸?섏?留? ?띿뒪??媛?낆꽦???꾪빐 以묒떖遺??諛앷쾶 ?〓뒗?? */
 .liquid-glass-panel {
   position: relative;
   isolation: isolate;
@@ -612,6 +1038,94 @@ html[data-platform="android"] [data-hide-in-app] {
   border-radius: 24px;
 }
 
+.quota-sticky-shell {
+  padding-top: 8px;
+}
+
+.quota-glass-bar {
+  margin-left: auto;
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.045)),
+    rgba(255, 255, 255, 0.035);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 12px 30px rgba(25, 20, 36, 0.10);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  padding: 7px 10px 7px 12px;
+}
+
+/* ?ъ슜???ㅽ듃由쎌쓽 ?몃씪??誘몃땲 寃뚯씠吏 */
+.quota-inline-meter {
+  width: 84px;
+  height: 6px;
+  flex: 0 1 auto;
+}
+
+@media (max-width: 640px) {
+  .quota-inline-meter {
+    width: 56px;
+  }
+}
+
+.quota-metric {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.035)),
+    rgba(255, 255, 255, 0.03);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 8px 22px rgba(35, 28, 48, 0.08);
+}
+
+.quota-upgrade-button {
+  min-height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  background: rgba(255, 255, 255, 0.055) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.quota-metric .liquid-meter-track {
+  width: 100%;
+}
+
+.plan-glass-card {
+  border-color: rgba(255, 255, 255, 0.20) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.035)),
+    rgba(255, 255, 255, 0.035) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 18px 48px rgba(28, 22, 42, 0.13) !important;
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+}
+
+@media (max-width: 640px) {
+  .quota-sticky-shell {
+    padding-top: 7px;
+  }
+
+  .quota-glass-bar {
+    width: 100%;
+    border-radius: 999px;
+    padding: 7px 8px 7px 12px;
+  }
+
+  .quota-metric {
+    border-radius: 16px;
+    padding: 10px 12px;
+  }
+}
+
 .liquid-summary-card {
   border-radius: 22px;
   transition:
@@ -692,15 +1206,23 @@ html[data-platform="android"] [data-hide-in-app] {
 }
 
 .liquid-meter-track {
+  display: block;
+  width: 100%;
   height: 8px;
   overflow: hidden;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.32);
   background: rgba(255, 255, 255, 0.34);
   box-shadow: inset 0 1px 3px rgba(70, 54, 80, 0.10);
+  appearance: none;
 }
 
-.liquid-meter-fill {
+.liquid-meter-track::-webkit-progress-bar {
+  border-radius: inherit;
+  background: transparent;
+}
+
+.liquid-meter-track::-webkit-progress-value {
   height: 100%;
   border-radius: inherit;
   background:
@@ -708,10 +1230,24 @@ html[data-platform="android"] [data-hide-in-app] {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.48),
     0 0 16px rgba(122, 210, 195, 0.24);
-  transition: width 180ms ease;
+  transition: inline-size 180ms ease;
 }
 
-.liquid-meter-fill.is-exhausted {
+.liquid-meter-track::-moz-progress-bar {
+  height: 100%;
+  border-radius: inherit;
+  background:
+    linear-gradient(90deg, rgba(122, 210, 195, 0.86), rgba(170, 126, 244, 0.84), rgba(235, 193, 107, 0.88));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.48),
+    0 0 16px rgba(122, 210, 195, 0.24);
+}
+
+.liquid-meter-track[data-exhausted="true"]::-webkit-progress-value {
+  background: linear-gradient(90deg, rgba(221, 88, 88, 0.84), rgba(245, 176, 105, 0.86));
+}
+
+.liquid-meter-track[data-exhausted="true"]::-moz-progress-bar {
   background: linear-gradient(90deg, rgba(221, 88, 88, 0.84), rgba(245, 176, 105, 0.86));
 }
 
@@ -736,10 +1272,9 @@ html[data-platform="android"] [data-hide-in-app] {
   }
 }
 
-/* 캡처 모드 — html-to-image 가 카드 노드를 PNG 로 저장하기 직전에 추가되는 클래스.
-   backdrop-filter 와 반투명 배경은 캡처 시 alpha 채널로 남아 인스타 스토리·카카오톡에서
-   검은 배경이 비춰 보이는 문제 발생.
-   캡처 시점에만 흰색 배경 + 어두운 텍스트로 라이트 톤 전환. */
+/* 罹≪쿂 紐⑤뱶 ??html-to-image 媛 移대뱶 ?몃뱶瑜?PNG 濡???ν븯湲?吏곸쟾??異붽??섎뒗 ?대옒??
+   backdrop-filter ? 諛섑닾紐?諛곌꼍? 罹≪쿂 ??alpha 梨꾨꼸濡??⑥븘 ?몄뒪? ?ㅽ넗由?룹뭅移댁삤?≪뿉??   寃? 諛곌꼍??鍮꾩떠 蹂댁씠??臾몄젣 諛쒖깮.
+   罹≪쿂 ?쒖젏?먮쭔 ?곗깋 諛곌꼍 + ?대몢???띿뒪?몃줈 ?쇱씠?????꾪솚. */
 .is-capturing,
 .is-capturing .app-surface,
 .is-capturing .liquid-glass-panel,
@@ -752,13 +1287,13 @@ html[data-platform="android"] [data-hide-in-app] {
     inset 0 1px 0 rgba(0,0,0,0.04),
     0 4px 18px rgba(0,0,0,0.08) !important;
 }
-/* 텍스트·아이콘 모두 어둡게 — 흰 배경에 흰 글씨 가독성 0 방지.
-   그라데이션 헤더(이름 궁합 등) 위의 텍스트도 함께 어두워져서 잘 보임. */
+/* ?띿뒪?맞룹븘?댁퐯 紐⑤몢 ?대몼寃?????諛곌꼍????湲??媛?낆꽦 0 諛⑹?.
+   洹몃씪?곗씠???ㅻ뜑(?대쫫 沅곹빀 ?? ?꾩쓽 ?띿뒪?몃룄 ?④퍡 ?대몢?뚯졇????蹂댁엫. */
 .is-capturing,
 .is-capturing * {
   color: #2a1c3d !important;
 }
-/* 테두리·구분선 — 라이트 톤에 맞게 약하게 */
+/* ?뚮몢由?룰뎄遺꾩꽑 ???쇱씠???ㅼ뿉 留욊쾶 ?쏀븯寃?*/
 .is-capturing,
 .is-capturing .app-surface,
 .is-capturing .liquid-glass-panel {
@@ -768,7 +1303,7 @@ html[data-platform="android"] [data-hide-in-app] {
 .is-capturing .liquid-glass-panel::after {
   display: none !important;
 }
-/* muted 배경 박스도 라이트 회색으로 */
+/* muted 諛곌꼍 諛뺤뒪???쇱씠???뚯깋?쇰줈 */
 .is-capturing .bg-muted\/30,
 .is-capturing .bg-muted\/20,
 .is-capturing .bg-muted\/40 {
@@ -815,12 +1350,12 @@ html[data-platform="android"] [data-hide-in-app] {
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* 산세리프 — Pretendard (CDN), system font fallback. */
+  /* ?곗꽭由ы봽 ??Pretendard (CDN), system font fallback. */
   --font-sans: "Pretendard Variable", Pretendard, -apple-system,
     BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Noto Sans KR",
     "Malgun Gothic", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-  /* 명조 (mystic 강조용) — 시스템 명조체 fallback. */
+  /* 紐낆“ (mystic 媛뺤“?? ???쒖뒪??紐낆“泥?fallback. */
   --font-serif: "Apple SD Gothic Neo", "Nanum Myeongjo", "Noto Serif KR",
     "AppleGothic", "Malgun Gothic", serif;
 }
@@ -830,7 +1365,7 @@ html[data-platform="android"] [data-hide-in-app] {
     border-color: var(--color-border);
   }
 
-  /* 키보드 포커스 표시 — 마우스 클릭엔 안 보이고 Tab 으로 진입할 때만 노출. */
+  /* ?ㅻ낫???ъ빱???쒖떆 ??留덉슦???대┃????蹂댁씠怨?Tab ?쇰줈 吏꾩엯???뚮쭔 ?몄텧. */
   :focus-visible {
     outline: 2px solid oklch(0.74 0.13 82);
     outline-offset: 2px;
@@ -850,13 +1385,15 @@ html[data-platform="android"] [data-hide-in-app] {
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* 신비한 분위기 강조용 명조체. */
+  /* ?좊퉬??遺꾩쐞湲?媛뺤“??紐낆“泥? */
   .font-mystic {
     font-family: var(--font-serif);
     letter-spacing: 0;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
-  /* 운명의 별빛 텍스트 강조 */
+  /* ?대챸??蹂꾨튆 ?띿뒪??媛뺤“ */
   .text-mystic-gold {
     color: var(--color-accent);
   }
@@ -868,10 +1405,26 @@ html[data-platform="android"] [data-hide-in-app] {
 }
 
 @layer utilities {
+  .text-keep {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  .text-balance-ko {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    text-wrap: balance;
+  }
+
+  .text-pretty-ko {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    text-wrap: pretty;
+  }
+
   /* =========================================================
      Safe Area Insets
-     iPhone Dynamic Island / Galaxy 펀치홀 / 홈 인디케이터 대응
-     ========================================================= */
+     iPhone Dynamic Island / Galaxy ?移섑? / ???몃뵒耳?댄꽣 ???     ========================================================= */
   .pt-safe {
     padding-top: env(safe-area-inset-top, 0px);
   }
@@ -885,7 +1438,7 @@ html[data-platform="android"] [data-hide-in-app] {
     padding-right: env(safe-area-inset-right, 0px);
   }
 
-  /* 기존 패딩에 safe area를 추가 (max 사용으로 최솟값 보장) */
+  /* 湲곗〈 ?⑤뵫??safe area瑜?異붽? (max ?ъ슜?쇰줈 理쒖넖媛?蹂댁옣) */
   .px-safe-4 {
     padding-left: max(1rem, env(safe-area-inset-left, 1rem));
     padding-right: max(1rem, env(safe-area-inset-right, 1rem));
@@ -895,15 +1448,14 @@ html[data-platform="android"] [data-hide-in-app] {
     padding-right: max(1.5rem, env(safe-area-inset-right, 1.5rem));
   }
 
-  /* 터치 타깃 최솟값 44px (Apple HIG / Material Design 기준) */
+  /* ?곗튂 ?源?理쒖넖媛?44px (Apple HIG / Material Design 湲곗?) */
   .min-touch {
     min-height: 44px;
     min-width: 44px;
   }
 
   /* =========================================================
-     Gacha 카드 플립 애니메이션
-     ========================================================= */
+     Gacha 移대뱶 ?뚮┰ ?좊땲硫붿씠??     ========================================================= */
   .card-flip {
     perspective: 1000px;
   }
@@ -931,7 +1483,7 @@ html[data-platform="android"] [data-hide-in-app] {
     transform: rotateY(180deg);
   }
 
-  /* 새 카드 등장 시 사용하는 잔잔한 광채 애니메이션 */
+  /* ??移대뱶 ?깆옣 ???ъ슜?섎뒗 ?붿옍??愿묒콈 ?좊땲硫붿씠??*/
   @keyframes gacha-glow {
     0%, 100% {
       box-shadow:
@@ -960,8 +1512,8 @@ html[data-platform="android"] [data-hide-in-app] {
 }
 
 /* =============================================================================
-   Ritual UI Kit — Carousel of Life
-   Concept: 앱 UI가 아니라 세계와 접촉하는 '의식형 인터페이스'
+   Ritual UI Kit ??Carousel of Life
+   Concept: ??UI媛 ?꾨땲???멸퀎? ?묒큺?섎뒗 '?섏떇???명꽣?섏씠??
    ============================================================================= */
 
 :root {
@@ -979,20 +1531,7 @@ html[data-platform="android"] [data-hide-in-app] {
   --ritual-radius: 18px;
 }
 
-/* 흐림 수치가 높을 때 — body.fracture-high 로 활성화 */
-@keyframes ritual-micro-glitch {
-  0%, 93%, 100% { transform: translate3d(0,0,0); filter: none; }
-  94% { transform: translate3d(-0.5px, 0.3px, 0); filter: blur(0.08px); }
-  95% { transform: translate3d(0.7px, -0.3px, 0); }
-  96% { transform: translate3d(0, 0, 0); filter: none; }
-}
-
-.fracture-high .ritual-button,
-.ritual-button.is-fractured {
-  animation: ritual-micro-glitch 7.5s infinite;
-}
-
-/* 접근성 */
+/* ?묎렐??*/
 @media (prefers-reduced-motion: reduce) {
   .ritual-button {
     transition: none;
@@ -1001,7 +1540,7 @@ html[data-platform="android"] [data-hide-in-app] {
 }
 
 /* =============================================================================
-   Chat Ritual UI — 채팅 전용 의식형 UI
+   Chat Ritual UI ??梨꾪똿 ?꾩슜 ?섏떇??UI
    ============================================================================= */
 
 :root {
@@ -1014,12 +1553,11 @@ html[data-platform="android"] [data-hide-in-app] {
   --col-gold: #bfa66a;
   --col-violet: #8f79c9;
   --col-teal: #7aa9a1;
-  --col-fracture: #c96b73;
   --glass-deep: rgba(255,255,255,0.14);
   --glass-soft: rgba(255,255,255,0.08);
 }
 
-/* 입력창 placeholder — 낮: 어두운 힌트, 밤: 밝은 힌트 */
+/* ?낅젰李?placeholder ???? ?대몢???뚰듃, 諛? 諛앹? ?뚰듃 */
 .ritual-chat-textarea::placeholder {
   color: rgba(0, 0, 0, 0.38);
 }
@@ -1044,55 +1582,55 @@ body.ritual-night .ritual-chat-textarea {
 }
 
 .chat-skin-child {
-  --chat-skin-image: url("/chat-ui/child.webp");
+  --chat-skin-image: none;
   --chat-skin-accent: rgba(156, 38, 54, 0.48);
   --chat-skin-glow: rgba(156, 38, 54, 0.22);
 }
 
 .chat-skin-witch {
-  --chat-skin-image: url("/chat-ui/witch.webp");
+  --chat-skin-image: none;
   --chat-skin-accent: rgba(84, 96, 188, 0.46);
   --chat-skin-glow: rgba(84, 96, 188, 0.22);
 }
 
 .chat-skin-sage {
-  --chat-skin-image: url("/chat-ui/sage.webp");
+  --chat-skin-image: none;
   --chat-skin-accent: rgba(184, 143, 58, 0.42);
   --chat-skin-glow: rgba(184, 143, 58, 0.18);
 }
 
 .chat-skin-shaman {
-  --chat-skin-image: url("/chat-ui/shaman.webp");
+  --chat-skin-image: none;
   --chat-skin-accent: rgba(190, 68, 88, 0.44);
   --chat-skin-glow: rgba(190, 68, 88, 0.20);
 }
 
 .chat-skin-taoist {
-  --chat-skin-image: url("/chat-ui/taoist.webp");
+  --chat-skin-image: none;
   --chat-skin-accent: rgba(36, 137, 152, 0.42);
   --chat-skin-glow: rgba(36, 137, 152, 0.18);
 }
 
 .chat-skin-dokkaebi {
-  --chat-skin-image: url("/chat-ui/dokkaebi.webp");
+  --chat-skin-image: none;
   --chat-skin-accent: rgba(123, 69, 162, 0.46);
   --chat-skin-glow: rgba(123, 69, 162, 0.22);
 }
 
 .chat-skin-hunter {
-  --chat-skin-image: url("/chat-ui/hunter.webp");
+  --chat-skin-image: none;
   --chat-skin-accent: rgba(116, 105, 89, 0.46);
   --chat-skin-glow: rgba(116, 105, 89, 0.20);
 }
 
 .chat-skin-runeshaman {
-  --chat-skin-image: url("/chat-ui/runeshaman.webp");
+  --chat-skin-image: none;
   --chat-skin-accent: rgba(63, 128, 119, 0.44);
   --chat-skin-glow: rgba(63, 128, 119, 0.22);
 }
 
 .chat-skin-god {
-  --chat-skin-image: url("/chat-ui/god.webp");
+  --chat-skin-image: none;
   --chat-skin-accent: rgba(92, 137, 184, 0.44);
   --chat-skin-glow: rgba(92, 137, 184, 0.22);
 }
@@ -1131,7 +1669,7 @@ body.ritual-night .ritual-chat-textarea {
 
 .chat-input-shell {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 10px;
   padding: 10px;
   border-radius: 26px;
@@ -1182,52 +1720,543 @@ body.ritual-night .chat-input-textarea {
   opacity: 0.42;
 }
 
+.chat-tool-button {
+  border-color: var(--chat-skin-accent);
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.28), transparent 36%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.48), rgba(255, 250, 240, 0.34));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    0 0 0 1px var(--chat-skin-glow);
+}
+
 .chat-send-button:not(:disabled):hover {
   transform: translateY(-1px);
 }
 
+.kakao-chat-page .desktop-member-rail,
+.kakao-chat-page .mobile-chat-profile,
+.kakao-chat-page .mobile-chat-member-strip,
+.kakao-chat-page .chat-delete-row {
+  display: none !important;
+}
+
+.kakao-chat-page .mobile-chat-session {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.kakao-chat-page .chat-window-skin {
+  height: 100%;
+  min-height: 0;
+  gap: 0 !important;
+}
+
+.kakao-chat-page .chat-panel-skin {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: rgba(178, 199, 217, 0.92) !important;
+  box-shadow: none !important;
+}
+
+.kakao-chat-page .chat-panel-skin::before {
+  display: none !important;
+}
+
+.kakao-chat-page .mobile-chat-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.kakao-chat-page .mobile-chat-panel > .relative {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 100%;
+}
+
+.kakao-chat-page .mobile-chat-form {
+  flex-shrink: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(247, 247, 247, 0.96);
+  padding: 6px 8px max(6px, env(safe-area-inset-bottom, 6px));
+}
+
+.kakao-chat-page .chat-input-shell {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.kakao-chat-page .one-chat-input-shell,
+.kakao-chat-page .group-chat-input-shell {
+  display: flex !important;
+  grid-template-columns: none !important;
+  align-items: flex-end !important;
+  gap: 6px !important;
+  width: 100% !important;
+  padding: 0 !important;
+}
+
+.kakao-chat-page .one-chat-text-field,
+.kakao-chat-page .group-chat-text-field {
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+}
+
+.kakao-chat-page .chat-input-textarea {
+  color: rgba(0, 0, 0, 0.86) !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+.kakao-chat-page .one-chat-textarea,
+.kakao-chat-page .group-chat-textarea {
+  min-height: 40px !important;
+  max-height: 92px !important;
+  width: 100% !important;
+  border-radius: 20px !important;
+  padding: 10px 12px 10px 44px !important;
+  font-size: 15px !important;
+  line-height: 1.35 !important;
+}
+
+.kakao-chat-page .chat-send-button,
+.kakao-chat-page .chat-tool-button {
+  height: 40px !important;
+  min-width: 40px !important;
+  width: 40px !important;
+  flex: 0 0 40px !important;
+  border: 0 !important;
+  border-radius: 20px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(0, 0, 0, 0.62) !important;
+}
+
+.kakao-chat-page .chat-send-button:not(:disabled) {
+  background: #fee500 !important;
+  color: rgba(0, 0, 0, 0.82) !important;
+}
+
+.kakao-chat-page .group-chat-photo-button {
+  background: transparent !important;
+  color: rgba(0, 0, 0, 0.62) !important;
+}
+
+.kakao-chat-page .group-chat-photo-button svg,
+.kakao-chat-page .group-chat-send-button svg {
+  display: block !important;
+  height: 20px !important;
+  width: 20px !important;
+  stroke-width: 2 !important;
+}
+
+.kakao-chat-page .chat-emoji-picker,
+.kakao-chat-page .chat-emoji-toggle,
+.kakao-chat-page .one-chat-emoji-button,
+.kakao-chat-page .group-chat-emoji-button,
+.kakao-chat-page .one-chat-emoji-button .chat-emoji-toggle,
+.kakao-chat-page .group-chat-emoji-button .chat-emoji-toggle {
+  height: 40px !important;
+  width: 40px !important;
+}
+
+.kakao-chat-page .one-chat-emoji-button,
+.kakao-chat-page .group-chat-emoji-button {
+  bottom: 0 !important;
+  left: 2px !important;
+}
+
+.kakao-chat-page .chat-emoji-toggle {
+  border: 0 !important;
+  border-radius: 20px !important;
+  background: transparent !important;
+  color: rgba(0, 0, 0, 0.62) !important;
+}
+
+.kakao-chat-page .chat-emoji-tray {
+  left: 0 !important;
+  bottom: calc(100% + 8px) !important;
+  max-width: calc(100vw - 24px) !important;
+  border-radius: 14px !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  padding: 6px !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12) !important;
+}
+
+.kakao-chat-page .chat-emoji-tray button {
+  height: 42px !important;
+  width: 42px !important;
+  border-radius: 10px !important;
+}
+
+.kakao-chat-page .chat-emoji-tray img {
+  height: 34px !important;
+  width: 34px !important;
+}
+
+.kakao-chat-page .group-mention-strip,
+.kakao-chat-page .mobile-chat-form > .flex.items-center {
+  display: none !important;
+}
+
+.kakao-chat-page .chat-speaker-avatar {
+  margin-top: 0 !important;
+}
+
+.kakao-chat-page .chat-speaker-sticker,
+.kakao-chat-page .chat-speaker-sticker img {
+  height: 34px !important;
+  width: 34px !important;
+}
+
+.kakao-chat-page .chat-speaker-avatar:not(.chat-speaker-sticker) {
+  height: 28px !important;
+  width: 28px !important;
+}
+
+.kakao-chat-page .ritual-message {
+  width: fit-content;
+  min-width: 0;
+  max-width: min(72vw, 300px);
+  border-radius: 12px !important;
+  padding: 6px 8px !important;
+  font-size: 12px !important;
+  line-height: 1.38 !important;
+  box-shadow: none !important;
+}
+
+.kakao-chat-page .ritual-message p {
+  line-height: 1.38 !important;
+}
+
+.kakao-chat-page .ritual-message.oracle {
+  background: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.06) !important;
+  color: rgba(0, 0, 0, 0.88) !important;
+}
+
+.kakao-chat-page .ritual-message.observer {
+  margin-left: auto;
+  background: #fee500 !important;
+  border-color: rgba(0, 0, 0, 0.04) !important;
+  color: rgba(0, 0, 0, 0.88) !important;
+}
+
+.kakao-chat-page .chat-bubble-skin {
+  box-shadow: none !important;
+}
+
+.kakao-chat-page .chat-speaker-avatar + .flex-1 {
+  max-width: calc(100% - 42px);
+  gap: 3px !important;
+}
+
+.kakao-chat-page .chat-speaker-avatar + .flex-1 > p {
+  margin-bottom: -1px;
+  font-family: var(--font-sans), system-ui, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+}
+
+@media (min-width: 768px) {
+  .kakao-chat-page {
+    max-width: 860px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .kakao-chat-page .mobile-chat-session {
+    height: min(760px, calc(100dvh - 11rem)) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.12);
+  }
+
+  .kakao-chat-page .mobile-chat-panel {
+    padding: 18px 18px !important;
+  }
+
+  .kakao-chat-page .ritual-message {
+    max-width: min(56vw, 360px);
+  }
+}
+
+@media (max-width: 767px) {
+  .kakao-chat-page .chat-panel-skin {
+    border: 0 !important;
+    background: rgba(178, 199, 217, 0.92) !important;
+    box-shadow: none !important;
+  }
+
+  .kakao-chat-page .chat-panel-skin::before {
+    display: none !important;
+  }
+
+  .kakao-chat-page .chat-input-shell {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .kakao-chat-page .chat-input-textarea {
+    color: rgba(0, 0, 0, 0.86) !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .kakao-chat-page .chat-send-button,
+  .kakao-chat-page .chat-tool-button {
+    height: 40px;
+    min-width: 40px;
+    width: 40px;
+    border-radius: 20px;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: rgba(0, 0, 0, 0.62) !important;
+  }
+
+  .kakao-chat-page .chat-emoji-picker,
+  .kakao-chat-page .chat-emoji-toggle {
+    height: 40px !important;
+    width: 40px !important;
+  }
+
+  .kakao-chat-page .chat-emoji-toggle {
+    border: 0 !important;
+    border-radius: 20px !important;
+    background: transparent !important;
+    color: rgba(0, 0, 0, 0.62) !important;
+  }
+
+  .kakao-chat-page .chat-emoji-tray {
+    left: 0 !important;
+    bottom: calc(100% + 8px) !important;
+    max-width: calc(100vw - 24px) !important;
+    border-radius: 14px !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+    padding: 6px !important;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12) !important;
+  }
+
+  .kakao-chat-page .chat-emoji-tray button {
+    height: 42px !important;
+    width: 42px !important;
+    border-radius: 10px !important;
+  }
+
+  .kakao-chat-page .chat-emoji-tray img {
+    height: 34px !important;
+    width: 34px !important;
+  }
+
+  .kakao-chat-page .mobile-chat-form > .flex.items-center,
+  .kakao-chat-page .group-mention-strip {
+    display: none !important;
+  }
+
+  .kakao-chat-page .chat-send-button:not(:disabled) {
+    background: #fee500 !important;
+    color: rgba(0, 0, 0, 0.82) !important;
+  }
+
+  .kakao-chat-page .one-chat-input-shell,
+  .kakao-chat-page .group-chat-input-shell {
+    display: flex !important;
+    grid-template-columns: none !important;
+    align-items: flex-end !important;
+    gap: 6px !important;
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .kakao-chat-page .one-chat-send-button,
+  .kakao-chat-page .group-chat-photo-button,
+  .kakao-chat-page .group-chat-send-button {
+    height: 40px !important;
+    min-width: 40px !important;
+    width: 40px !important;
+    flex: 0 0 40px !important;
+    border-radius: 20px !important;
+  }
+
+  .kakao-chat-page .group-chat-photo-button {
+    background: transparent !important;
+    color: rgba(0, 0, 0, 0.62) !important;
+  }
+
+  .kakao-chat-page .group-chat-photo-button svg,
+  .kakao-chat-page .group-chat-send-button svg {
+    display: block !important;
+    height: 20px !important;
+    width: 20px !important;
+    stroke-width: 2 !important;
+  }
+
+  .kakao-chat-page .one-chat-text-field,
+  .kakao-chat-page .group-chat-text-field {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+  }
+
+  .kakao-chat-page .one-chat-textarea,
+  .kakao-chat-page .group-chat-textarea {
+    min-height: 40px !important;
+    max-height: 92px !important;
+    width: 100% !important;
+    border-radius: 20px !important;
+    padding-left: 44px !important;
+    padding-right: 12px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    font-size: 15px !important;
+    line-height: 1.35 !important;
+  }
+
+  .kakao-chat-page .one-chat-emoji-button,
+  .kakao-chat-page .group-chat-emoji-button {
+    bottom: 0 !important;
+    left: 2px !important;
+    height: 40px !important;
+    width: 40px !important;
+  }
+
+  .kakao-chat-page .one-chat-emoji-button .chat-emoji-toggle,
+  .kakao-chat-page .group-chat-emoji-button .chat-emoji-toggle {
+    height: 40px !important;
+    width: 40px !important;
+  }
+
+  .kakao-chat-page .mobile-chat-panel {
+    gap: 6px;
+  }
+
+  .kakao-chat-page .mobile-chat-panel > .relative {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .kakao-chat-page .chat-speaker-avatar {
+    margin-top: 0 !important;
+  }
+
+  .kakao-chat-page .chat-speaker-sticker,
+  .kakao-chat-page .chat-speaker-sticker img {
+    height: 34px !important;
+    width: 34px !important;
+  }
+
+  .kakao-chat-page .chat-speaker-avatar:not(.chat-speaker-sticker) {
+    height: 28px !important;
+    width: 28px !important;
+  }
+
+  .kakao-chat-page .ritual-message {
+    max-width: min(72vw, 300px);
+  }
+
+  .kakao-chat-page .ritual-message {
+    width: fit-content;
+    min-width: 0;
+    border-radius: 12px !important;
+    padding: 6px 8px !important;
+    font-size: 12px !important;
+    line-height: 1.38 !important;
+    box-shadow: none !important;
+  }
+
+  .kakao-chat-page .ritual-message p {
+    line-height: 1.38 !important;
+  }
+
+  .kakao-chat-page .ritual-message.oracle {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
+    color: rgba(0, 0, 0, 0.88) !important;
+  }
+
+  .kakao-chat-page .ritual-message.observer {
+    margin-left: auto;
+    background: #fee500 !important;
+    border-color: rgba(0, 0, 0, 0.04) !important;
+    color: rgba(0, 0, 0, 0.88) !important;
+  }
+
+  .kakao-chat-page .chat-bubble-skin {
+    box-shadow: none !important;
+  }
+
+  .kakao-chat-page .chat-speaker-avatar + .flex-1 {
+    max-width: calc(100% - 42px);
+    gap: 3px !important;
+  }
+
+  .kakao-chat-page .chat-speaker-avatar + .flex-1 > p {
+    margin-bottom: -1px;
+    font-family: var(--font-sans), system-ui, sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+  }
+}
+
 .chat-bubble-child {
-  --chat-bubble-image: url("/chat-bubbles/child.webp");
+  --chat-bubble-image: none;
   --chat-bubble-accent: rgba(156, 38, 54, 0.36);
 }
 
 .chat-bubble-witch {
-  --chat-bubble-image: url("/chat-bubbles/witch.webp");
+  --chat-bubble-image: none;
   --chat-bubble-accent: rgba(84, 96, 188, 0.34);
 }
 
 .chat-bubble-sage {
-  --chat-bubble-image: url("/chat-bubbles/sage.webp");
+  --chat-bubble-image: none;
   --chat-bubble-accent: rgba(184, 143, 58, 0.32);
 }
 
 .chat-bubble-shaman {
-  --chat-bubble-image: url("/chat-bubbles/shaman.webp");
+  --chat-bubble-image: none;
   --chat-bubble-accent: rgba(190, 68, 88, 0.34);
 }
 
 .chat-bubble-taoist {
-  --chat-bubble-image: url("/chat-bubbles/taoist.webp");
+  --chat-bubble-image: none;
   --chat-bubble-accent: rgba(36, 137, 152, 0.32);
 }
 
 .chat-bubble-dokkaebi {
-  --chat-bubble-image: url("/chat-bubbles/dokkaebi.webp");
+  --chat-bubble-image: none;
   --chat-bubble-accent: rgba(123, 69, 162, 0.36);
 }
 
 .chat-bubble-hunter {
-  --chat-bubble-image: url("/chat-bubbles/hunter.webp");
+  --chat-bubble-image: none;
   --chat-bubble-accent: rgba(116, 105, 89, 0.36);
 }
 
 .chat-bubble-runeshaman {
-  --chat-bubble-image: url("/chat-bubbles/runeshaman.webp");
+  --chat-bubble-image: none;
   --chat-bubble-accent: rgba(63, 128, 119, 0.34);
 }
 
 .chat-bubble-god {
-  --chat-bubble-image: url("/chat-bubbles/god.webp");
+  --chat-bubble-image: none;
   --chat-bubble-accent: rgba(92, 137, 184, 0.34);
 }
 
@@ -1243,20 +2272,107 @@ body.ritual-night .chat-input-textarea {
     0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 
-.chat-speaker-avatar {
+.chat-speaker-avatar:not(.chat-speaker-sticker) {
   box-shadow:
     0 4px 14px rgba(0, 0, 0, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.24);
 }
 
-/* 말풍선 공통 */
+.tarot-reader-table {
+  isolation: isolate;
+}
+
+.tarot-table-fan .tarot-card-fan {
+  transform-origin: 50% 90%;
+}
+
+@keyframes tarot-three-table-shuffle {
+  0% {
+    transform: rotate(var(--three-rot)) translateY(var(--three-ty));
+  }
+  33% {
+    transform: rotate(calc(var(--three-rot) + 14deg)) translateX(-14px) translateY(calc(var(--three-ty) - 10px));
+  }
+  66% {
+    transform: rotate(calc(var(--three-rot) - 12deg)) translateX(16px) translateY(calc(var(--three-ty) - 6px));
+  }
+  100% {
+    transform: rotate(var(--three-rot)) translateY(var(--three-ty));
+  }
+}
+
+.tarot-three-table-card {
+  transform: rotate(var(--three-rot)) translateY(var(--three-ty));
+}
+
+.tarot-three-table-card.shuffling {
+  animation: tarot-three-table-shuffle 0.45s ease-in-out 3 both;
+}
+
+.tarot-three-table-card.selected {
+  transform: rotate(var(--three-rot)) translateY(calc(var(--three-ty) - 12px));
+}
+
+@keyframes tarot-slide-card-shuffle {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  30% {
+    transform: translateX(-10px) translateY(-8px) rotate(-6deg);
+  }
+  65% {
+    transform: translateX(12px) translateY(-5px) rotate(7deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+.tarot-slide-card-shuffling {
+  animation: tarot-slide-card-shuffle 0.42s ease-in-out 3 both;
+}
+
+.tarot-slide-card-selected {
+  transform: translateY(-10px) scale(1.04);
+}
+
+@keyframes tarot-image-card-shuffle {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  30% {
+    transform: translate3d(-5px, -5px, 0) rotate(-2deg);
+  }
+  65% {
+    transform: translate3d(6px, -3px, 0) rotate(2deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+
+.tarot-image-card-shuffling {
+  animation: tarot-image-card-shuffle 0.42s ease-in-out 3 both;
+  border-color: rgba(251, 191, 36, 0.62) !important;
+  background: rgba(251, 191, 36, 0.10) !important;
+  box-shadow: 0 0 24px rgba(251, 191, 36, 0.28);
+}
+
+.tarot-image-card-selected {
+  border-color: rgba(253, 230, 138, 0.76) !important;
+  background: rgba(253, 230, 138, 0.12) !important;
+  box-shadow: 0 0 34px rgba(251, 191, 36, 0.38);
+  transform: translateY(-6px) scale(1.03);
+}
+
+/* 留먰뭾??怨듯넻 */
 .ritual-message {
   position: relative;
   width: 100%;
   padding: 16px 20px;
   border-radius: 24px;
   line-height: 1.80;
-  font-size: 15px;
+  font-size: 12px;
   letter-spacing: -0.01em;
   backdrop-filter: blur(12px);
   border: 1px solid var(--col-line);
@@ -1267,8 +2383,11 @@ body.ritual-night .chat-input-textarea {
 
 .ritual-message p { margin: 0; }
 
-/* 존재(AI) 응답 */
+/* 硫ㅻ쾭 ?묐떟 ??醫뚯륫 ?뺣젹 + ?댁슜 湲몄씠??留욌뒗 ??(移댄넚 ?ㅽ??? */
 .ritual-message.oracle {
+  width: fit-content;
+  min-width: 56px;
+  max-width: 92%;
   color: var(--col-ink);
   background:
     radial-gradient(circle at 18% 0%, rgba(143,121,201,0.18), transparent 34%),
@@ -1277,34 +2396,82 @@ body.ritual-night .chat-input-textarea {
   border-top-left-radius: 8px;
 }
 
-/* 기록자(사용자) */
+/* 湲곕줉???ъ슜?? ??移댄넚泥섎읆 ?곗륫 ?뺣젹 + ?몃? ?ㅼ쑝濡?硫ㅻ쾭 留먰뭾?좉낵 援щ텇 */
 .ritual-message.observer {
-  color: var(--col-ink);
+  width: fit-content;
+  max-width: 85%;
+  margin-left: auto;
+  color: rgba(32, 24, 8, 0.92);
   background:
-    radial-gradient(circle at 80% 0%, rgba(191,166,106,0.16), transparent 34%),
-    linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04)),
-    rgba(255,255,255,0.10);
+    linear-gradient(180deg, rgba(255, 238, 170, 0.95), rgba(250, 219, 110, 0.9));
   border-top-right-radius: 8px;
-  border-color: rgba(255,255,255,0.28);
+  border-color: rgba(212, 175, 55, 0.5);
 }
 
-/* 흐림 메시지 — Lv3+ 시 적용 */
-.ritual-message.fracture {
-  border-color: rgba(201,107,115,0.25);
+/* ?대?吏 濡쒕뵫 ?붾㉧ ???대?吏媛 洹몃젮吏湲???鍮?諛뺤뒪 ????????吏곸엫 ?쒖떆.
+   遺덊닾紐낇븳 ?ъ쭊(webp ?ㅻ깄쨌而ㅻ쾭)?먮쭔 ?곸슜. ?щ챸 PNG(?ㅽ떚而??먮뒗 ?곗? ?딅뒗?? */
+.img-shimmer {
   background:
-    linear-gradient(120deg, rgba(201,107,115,0.13), transparent 42%),
-    rgba(16,13,24,0.70);
-  animation: ritual-chat-fracture 8.5s infinite;
+    linear-gradient(110deg, rgba(120, 100, 60, 0.10) 25%, rgba(255, 255, 255, 0.45) 50%, rgba(120, 100, 60, 0.10) 75%);
+  background-size: 200% 100%;
+  animation: img-shimmer 1.6s ease-in-out infinite;
 }
 
-@keyframes ritual-chat-fracture {
-  0%, 94%, 100% { transform: translate3d(0,0,0); filter: none; }
-  95% { transform: translate3d(-0.6px,0.3px,0); filter: blur(0.12px); }
-  96% { transform: translate3d(0.8px,-0.2px,0); }
-  97% { transform: translate3d(0,0,0); filter: none; }
+@keyframes img-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
 }
 
-/* 상태 배지 */
+@media (prefers-reduced-motion: reduce) {
+  .img-shimmer { animation: none; }
+}
+
+/* ?? ?뉗? 而ㅼ뒪? ?ㅽ겕濡ㅻ컮 ???덈룄??湲곕낯 ?먭볼??諛??泥?????????????????????? */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(120, 100, 60, 0.35) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  background-color: rgba(120, 100, 60, 0.35);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(120, 100, 60, 0.55);
+}
+
+/* ?? ?섏씠吏 吏꾩엯 ?섏씠?쒖씤.
+   transform ? ?덈? ?곗? ?딅뒗????fill-mode 濡?transform ???⑥쑝硫?   .mobile-app-content 媛 ?대? fixed ?붿냼(PageBg ????而⑦뀒?대떇 釉붾줉???섏뼱
+   ?섏씠吏 諛곌꼍/?ㅽ겕由??덉씠?닿? 肄섑뀗痢??꾨줈 ?좎삤瑜대뒗 踰꾧렇媛 ?앷릿?? ???????? */
+.mobile-app-content {
+  animation: page-enter 280ms ease-out;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-app-content {
+    animation: none;
+  }
+}
+
+/* ?곹깭 諛곗? */
 .ritual-status-badge {
   display: inline-flex;
   align-items: center;
@@ -1326,13 +2493,9 @@ body.ritual-night .chat-input-textarea {
   box-shadow: 0 0 12px rgba(122,169,161,0.52);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .ritual-message.fracture { animation: none; }
-}
+/* ===== ?濡??뷀뵆 ?좊땲硫붿씠??===== */
 
-/* ===== 타로 셔플 애니메이션 ===== */
-
-/* 셔플 — 카드가 빠르게 뒤섞임 */
+/* ?뷀뵆 ??移대뱶媛 鍮좊Ⅴ寃??ㅼ꽎??*/
 @keyframes tarot-shuffle {
   0%   { transform: rotate(var(--card-rot)) translateY(var(--card-ty)); }
   25%  { transform: rotate(calc(var(--card-rot) + 18deg)) translateX(-18px) translateY(calc(var(--card-ty) - 8px)); }
@@ -1341,13 +2504,13 @@ body.ritual-night .chat-input-textarea {
   100% { transform: rotate(var(--card-rot)) translateY(var(--card-ty)); }
 }
 
-/* 선택된 카드가 위로 떠오름 */
+/* ?좏깮??移대뱶媛 ?꾨줈 ?좎삤由?*/
 @keyframes tarot-rise {
-  from { transform: rotate(0deg) translateY(0) scale(1); }
-  to   { transform: rotate(0deg) translateY(-32px) scale(1.08); }
+  from { transform: translateX(-50%) rotate(var(--card-rot)) translateY(var(--card-ty)) scale(1); }
+  to   { transform: translateX(-50%) rotate(var(--card-rot)) translateY(-32px) scale(1.08); }
 }
 
-/* 글로우 펄스 */
+/* 湲濡쒖슦 ?꾩뒪 */
 @keyframes tarot-glow-pulse {
   0%, 100% { box-shadow: 0 0 18px rgba(191,166,106,0.35), 0 8px 32px rgba(0,0,0,0.22); }
   50%       { box-shadow: 0 0 40px rgba(191,166,106,0.70), 0 12px 44px rgba(0,0,0,0.28); }
@@ -1362,13 +2525,29 @@ body.ritual-night .chat-input-textarea {
   overflow: hidden;
 }
 
+.tarot-card-fan-manual {
+  transform: translateX(-50%) rotate(var(--card-rot)) translateY(var(--card-ty));
+}
+
+@keyframes tarot-manual-shuffle {
+  0%   { transform: translateX(-50%) rotate(var(--card-rot)) translateY(var(--card-ty)); }
+  25%  { transform: translateX(calc(-50% - 8px)) rotate(calc(var(--card-rot) - 6deg)) translateY(calc(var(--card-ty) - 8px)); }
+  50%  { transform: translateX(calc(-50% + 9px)) rotate(calc(var(--card-rot) + 7deg)) translateY(calc(var(--card-ty) - 12px)); }
+  75%  { transform: translateX(calc(-50% - 5px)) rotate(calc(var(--card-rot) - 4deg)) translateY(calc(var(--card-ty) - 7px)); }
+  100% { transform: translateX(-50%) rotate(var(--card-rot)) translateY(var(--card-ty)); }
+}
+
+.tarot-card-fan-manual.shuffling {
+  animation: tarot-manual-shuffle 0.35s ease-in-out 3 both !important;
+}
+
 .tarot-card-fan:nth-child(1) { --card-rot: -20deg; --card-ty: -8px; left: calc(50% - 180px); transform: rotate(-20deg) translateY(-8px); z-index: 1; }
 .tarot-card-fan:nth-child(2) { --card-rot: -10deg; --card-ty: -4px; left: calc(50% - 100px); transform: rotate(-10deg) translateY(-4px); z-index: 2; }
 .tarot-card-fan:nth-child(3) { --card-rot:   0deg; --card-ty:   0px; left: calc(50% - 40px);  transform: rotate(0deg)   translateY(0);    z-index: 3; }
 .tarot-card-fan:nth-child(4) { --card-rot:  10deg; --card-ty: -4px; left: calc(50% + 20px);  transform: rotate(10deg)  translateY(-4px); z-index: 2; }
 .tarot-card-fan:nth-child(5) { --card-rot:  20deg; --card-ty: -8px; left: calc(50% + 100px); transform: rotate(20deg)  translateY(-8px); z-index: 1; }
 
-/* 큰 변형 — 우측 3장 뽑기 카드 영역과 시각적 균형 맞춤 (단일 카드 뽑기 폼에서 사용) */
+/* ??蹂?????곗륫 3??戮묎린 移대뱶 ?곸뿭怨??쒓컖??洹좏삎 留욎땄 (?⑥씪 移대뱶 戮묎린 ?쇱뿉???ъ슜) */
 .tarot-fan-lg .tarot-card-fan:nth-child(1) { left: calc(50% - 240px); transform: rotate(-22deg) translateY(-10px); }
 .tarot-fan-lg .tarot-card-fan:nth-child(2) { left: calc(50% - 140px); transform: rotate(-11deg) translateY(-5px); }
 .tarot-fan-lg .tarot-card-fan:nth-child(3) { left: calc(50% - 60px);  transform: rotate(0deg)   translateY(0); }
@@ -1402,36 +2581,20 @@ body.ritual-night .chat-input-textarea {
   transition: none;
 }
 
+@media (max-width: 420px) {
+  .tarot-fan-lg .tarot-card-fan:nth-child(1) { left: calc(50% - 210px); }
+  .tarot-fan-lg .tarot-card-fan:nth-child(2) { left: calc(50% - 126px); }
+  .tarot-fan-lg .tarot-card-fan:nth-child(3) { left: calc(50% - 52px); }
+  .tarot-fan-lg .tarot-card-fan:nth-child(4) { left: calc(50% + 18px); }
+  .tarot-fan-lg .tarot-card-fan:nth-child(5) { left: calc(50% + 96px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tarot-card-fan.shuffling,
   .tarot-card-fan.selected { animation: none; }
 }
 
-/* =============================================================================
-   흐림 연출 시스템 — Fracture System
-   ============================================================================= */
-
-/* 미세한 흔들림 — 카드/버튼 1개에만 적용 */
-.fracture-soft {
-  animation: fracture-soft 0.28s ease-in-out 1 !important;
-}
-
-@keyframes fracture-soft {
-  0%   { transform: translate3d(0,0,0); filter: none; }
-  35%  { transform: translate3d(-0.6px,0.3px,0); filter: blur(0.08px); }
-  70%  { transform: translate3d(0.7px,-0.2px,0); }
-  100% { transform: translate3d(0,0,0); filter: none; }
-}
-
-/* 숨겨진 문장 출현 */
-@keyframes fracture-whisper-in {
-  0%   { opacity: 0; }
-  20%  { opacity: 1; }
-  75%  { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-/* 세션 종료 / 존재 대화 등에 쓰는 부드러운 페이드-인 */
+/* ?몄뀡 醫낅즺 / 議댁옱 ????깆뿉 ?곕뒗 遺?쒕윭???섏씠????*/
 @keyframes session-fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -1444,7 +2607,7 @@ body.ritual-night .chat-input-textarea {
   }
 }
 
-/* 밤 모드 — html.night. 단순 blur 만. */
+/* 諛?紐⑤뱶 ??html.night. ?⑥닚 blur 留? */
 html.night .app-surface {
   background: rgba(255,255,255,0.04);
   box-shadow:
@@ -1454,10 +2617,10 @@ html.night .app-surface {
 }
 
 html.night body[data-time="night"] {
-  background-image: url("/backgrounds/night.webp");
+  background-image: url("/backgrounds/carousel-meadow.webp");
 }
 
-/* ===== 새벽 모드 (02~04시 KST) ===== */
+/* ===== ?덈꼍 紐⑤뱶 (02~04??KST) ===== */
 body.ritual-dawn .app-surface {
   background: rgba(120, 100, 160, 0.06) !important;
   box-shadow:
@@ -1469,28 +2632,28 @@ body.ritual-dawn {
   filter: brightness(0.96) saturate(0.92);
 }
 
-/* ===== 존재 활성 테마 — 카드 border 미세 색감 (9명) ===== */
+/* ===== 議댁옱 ?쒖꽦 ?뚮쭏 ??移대뱶 border 誘몄꽭 ?됯컧 (9紐? ===== */
 .entity-luna .app-surface { border-color: rgba(180, 150, 230, 0.28) !important; }
 .entity-rael .app-surface { border-color: rgba(200, 220, 255, 0.26) !important; }
 .entity-gael .app-surface {
   border-color: rgba(220, 140, 100, 0.24) !important;
 }
 
-/* 소율 — 세피아 / 오래된 기록 분위기 (frosted 베이스 유지, 색조만 그라데이션) */
+/* Jaeha ???명뵾??/ ?ㅻ옒??湲곕줉 遺꾩쐞湲?(frosted 踰좎씠???좎?, ?됱“留?洹몃씪?곗씠?? */
 .entity-soryeong .app-surface {
   border-color: rgba(190, 160, 110, 0.26) !important;
   background: linear-gradient(180deg, rgba(255, 245, 220, 0.08), rgba(180, 140, 90, 0.06)) !important;
 }
 
-/* 현도 — 차가운 회색 / 차분 */
+/* Haru ??李④????뚯깋 / 李⑤텇 */
 .entity-hyundo .app-surface {
   border-color: rgba(180, 200, 220, 0.24) !important;
 }
 
-/* 흑랑 — 작은 sparkle / 미세한 튐 */
+/* Sion ???묒? sparkle / 誘몄꽭????*/
 .entity-gwiyeom .app-surface {
   border-color: rgba(220, 180, 100, 0.22) !important;
-  animation: gwiyeom-bounce 8s infinite;
+  animation: none !important;
 }
 @keyframes gwiyeom-bounce {
   0%, 92%, 100% { transform: translateY(0); }
@@ -1499,64 +2662,36 @@ body.ritual-dawn {
   98% { transform: translateY(0); }
 }
 
-/* 외르문드 — 차가운 푸른 빛 / 신탁의 거리감 (frosted 유지) */
+/* Theo ??李④????몃Ⅸ 鍮?/ 李⑤텇??嫄곕━媛?(frosted ?좎?) */
 .entity-ormund .app-surface {
   border-color: rgba(160, 200, 240, 0.26) !important;
   background: linear-gradient(180deg, rgba(180, 210, 255, 0.06), rgba(60, 90, 150, 0.04)) !important;
 }
 
-/* 비요른 — 어두운 흙·가죽 / 야성 (frosted 유지) */
+/* Evan ???대몢???쇑룰?二?/ ?쇱꽦 (frosted ?좎?) */
 .entity-bjorn .app-surface {
   border-color: rgba(160, 130, 100, 0.24) !important;
   background: linear-gradient(180deg, rgba(110, 90, 70, 0.06), rgba(60, 50, 40, 0.04)) !important;
 }
 
-/* 헬가 — 룬의 푸른빛 / 미세한 빛 떨림 (frosted 유지) */
+/* Luhan ??猷ъ쓽 ?몃Ⅸ鍮?(frosted ?좎?) */
 .entity-helga .app-surface {
   border-color: rgba(150, 160, 230, 0.26) !important;
   background: linear-gradient(180deg, rgba(140, 160, 240, 0.06), rgba(80, 90, 180, 0.04)) !important;
-  animation: helga-rune-flicker 9s infinite;
-}
-@keyframes helga-rune-flicker {
-  0%, 88%, 100% { box-shadow: none; }
-  90%, 92% { box-shadow: 0 0 12px rgba(140, 160, 240, 0.15); }
 }
 
-/* 접근성 */
+/* ?묎렐??*/
 @media (prefers-reduced-motion: reduce) {
-  .fracture-soft { animation: none !important; }
   body.ritual-dawn { filter: none; }
-  .entity-gwiyeom .app-surface { animation: none !important; }
-  @keyframes fracture-whisper-in {
-    0%, 100% { opacity: 0; }
-    30%, 70% { opacity: 0.8; }
-  }
 }
 
-/* ===== 기억 손실 연출 ===== */
-.memory-faded {
-  opacity: 0.42;
-  filter: blur(0.3px);
-  transition: opacity 0.3s, filter 0.3s;
-}
-.memory-faded:hover {
-  opacity: 0.72;
-  filter: none;
-}
-
-.memory-redacted {
-  color: transparent !important;
-  text-shadow: 0 0 7px rgba(80, 60, 80, 0.35);
-  user-select: none;
-}
-
-/* ===== 존재 기분 — 카드 테두리 미세 변화 ===== */
+/* ===== 議댁옱 湲곕텇 ??移대뱶 ?뚮몢由?誘몄꽭 蹂??===== */
 .entity-mood-calm    .app-surface { border-color: rgba(255, 255, 255, 0.22) !important; }
 .entity-mood-distant .app-surface { border-color: rgba(180, 160, 220, 0.20) !important; }
 .entity-mood-curious .app-surface { border-color: rgba(200, 220, 255, 0.24) !important; }
 .entity-mood-unstable .app-surface {
   border-color: rgba(220, 180, 100, 0.22) !important;
-  animation: fracture-soft 12s infinite;
+  animation: none !important;
 }
 .entity-mood-protective .app-surface { border-color: rgba(180, 220, 200, 0.22) !important; }
 .entity-mood-silent .app-surface {
@@ -1564,30 +2699,12 @@ body.ritual-dawn {
   opacity: 0.96;
 }
 
-/* 접근성 */
+/* ?묎렐??*/
 @media (prefers-reduced-motion: reduce) {
   .entity-mood-unstable .app-surface { animation: none !important; }
-  .memory-faded { filter: none; }
 }
 
-/* ===== 세계 노화 (오래된 기록) ===== */
-.old-memory {
-  opacity: 0.62;
-  filter: saturate(0.78);
-  transition: opacity 0.3s, filter 0.3s;
-}
-.old-memory:hover {
-  opacity: 0.85;
-  filter: saturate(0.9);
-}
-
-.ancient-record {
-  filter: blur(0.25px);
-  opacity: 0.5;
-  letter-spacing: 0.04em;
-}
-
-/* ===== 존재 상태 광원 미세 ===== */
+/* ===== 議댁옱 ?곹깭 愿묒썝 誘몄꽭 ===== */
 body.presence-luna .app-surface {
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.22),
@@ -1604,6 +2721,142 @@ body.presence-gael .app-surface {
     0 8px 32px rgba(180,120,80,0.16) !important;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .old-memory { transition: none; }
+@media (max-width: 640px) {
+  .ritual-backdrop__image {
+    transform: none !important;
+  }
+
+  .ritual-backdrop__wheel {
+    width: 68vw !important;
+  }
+}
+
+/* Tarot draw: open card-first ritual UI */
+.tarot-open-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 280px;
+  overflow: hidden;
+  border-radius: 0;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(253, 230, 138, 0.22), transparent 34%),
+    radial-gradient(circle at 50% 100%, rgba(122, 169, 161, 0.12), transparent 42%);
+}
+
+.tarot-open-stage::before {
+  content: "";
+  position: absolute;
+  inset: 12% 18%;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  filter: blur(34px);
+}
+
+.tarot-three-open-stage {
+  min-height: 250px;
+  padding: 18px 4px;
+}
+
+.tarot-flip-card {
+  position: relative;
+  z-index: 1;
+  display: block;
+  border: 0;
+  background: transparent;
+  perspective: 1000px;
+  touch-action: manipulation;
+}
+
+.tarot-single-flip-card {
+  width: min(44vw, 180px);
+  aspect-ratio: 2 / 3;
+}
+
+.tarot-three-flip-card {
+  width: min(25vw, 118px);
+  aspect-ratio: 2 / 3;
+}
+
+.tarot-flip-card:disabled {
+  cursor: default;
+}
+
+.tarot-flip-card:not(:disabled):hover .tarot-flip-card__inner,
+.tarot-flip-card:not(:disabled):focus-visible .tarot-flip-card__inner {
+  transform: translateY(-8px) rotateY(0deg);
+}
+
+.tarot-flip-card.is-flipped .tarot-flip-card__inner,
+.tarot-flip-card.is-flipped:not(:disabled):hover .tarot-flip-card__inner,
+.tarot-flip-card.is-flipped:not(:disabled):focus-visible .tarot-flip-card__inner {
+  transform: translateY(-6px) rotateY(180deg);
+}
+
+.tarot-flip-card__inner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition:
+    transform 640ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 240ms ease,
+    box-shadow 240ms ease;
+  border-radius: 16px;
+  box-shadow:
+    0 20px 44px rgba(0, 0, 0, 0.24),
+    0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+.tarot-flip-card.is-busy .tarot-flip-card__inner {
+  filter: drop-shadow(0 0 18px rgba(251, 191, 36, 0.34));
+}
+
+.tarot-flip-card__face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.tarot-flip-card__back {
+  background: #17100f;
+}
+
+.tarot-flip-card__front {
+  transform: rotateY(180deg);
+  border: 1px solid rgba(120, 84, 32, 0.24);
+  background:
+    radial-gradient(circle at 50% 32%, rgba(255, 255, 255, 0.64), transparent 24%),
+    linear-gradient(145deg, rgba(253, 230, 138, 0.96), rgba(245, 208, 154, 0.88) 42%, rgba(186, 230, 253, 0.62));
+  color: rgba(0, 0, 0, 0.82) !important;
+  text-align: center;
+  padding: 12px;
+}
+
+.tarot-flip-card__front > * {
+  color: rgba(0, 0, 0, 0.82) !important;
+}
+
+@media (max-width: 420px) {
+  .tarot-open-stage {
+    min-height: 250px;
+  }
+
+  .tarot-three-open-stage {
+    min-height: 230px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .tarot-single-flip-card {
+    width: min(48vw, 164px);
+  }
+
+  .tarot-three-flip-card {
+    width: min(25vw, 98px);
+  }
 }

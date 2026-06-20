@@ -5,7 +5,7 @@
  *
  * D. 사주 × 별자리 × 성격유형 통합 분석
  * E. 스트레스 유형 + 회복법
- * F. 직업 적성 심층 리포트
+ * F. 직업 적성 풀이
  *
  * 셋 모두 사용자별로 한 번만 생성되고 DB에 영구 저장된다.
  */
@@ -21,8 +21,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { requireProfile } from "@/lib/auth/get-user";
 import { enforceAiRateLimit, RateLimitedError } from "@/lib/rate-limit/in-memory";
 import { generateJson } from "@/lib/ai/generate";
-import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
-import { getTodayCharacter } from "@/lib/daily-question/rotation";
+import { NEUTRAL_CARD_VOICE } from "@/lib/ai/character-voice";
 import {
   careerFitSchema,
   type CareerFitOutput,
@@ -106,14 +105,14 @@ export async function generateTripleAnalysisAction(): Promise<TripleAnalysisStat
 [지시]
 사주·별자리(${zodiac.ko})·성격유형(${profile.mbti}) 세 시스템이 동시에 말하는 이 사람의 진짜 성격을 분석해줘.
 세 시스템이 서로 모순될 수도 있고 같은 방향을 가리킬 수도 있어. 그 결을 솔직하게 짚어줘.
-모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
+모든 문장은 특정 멤버 말투가 아니라 차분한 존댓말 리포트 톤으로 써. '~야', '~해', '~줘' 같은 반말은 금지.
 
 반드시 아래 JSON 형식으로만 응답해. 마크다운·설명 없이 JSON만:
 {
-  "convergence": "사주·별자리·성격유형이 공통으로 말하는 성격 — 캐릭터 말투로 2~3문장",
-  "contradiction": "서로 모순되거나 다른 측면 — 캐릭터 말투로 1~2문장",
-  "trueNature": "세 시스템을 통합해서 도출한 진짜 본성 — 캐릭터 말투로 2~3문장",
-  "uniqueStrength": "이 조합만의 독특한 강점 — 캐릭터 말투로 1~2문장"
+  "convergence": "사주·별자리·성격유형이 공통으로 말하는 성격 — 차분한 존댓말 리포트 톤으로 2~3문장",
+  "contradiction": "서로 모순되거나 다른 측면 — 차분한 존댓말 리포트 톤으로 1~2문장",
+  "trueNature": "세 시스템을 통합해서 도출한 진짜 본성 — 차분한 존댓말 리포트 톤으로 2~3문장",
+  "uniqueStrength": "이 조합만의 독특한 강점 — 차분한 존댓말 리포트 톤으로 1~2문장"
 }`;
 
     const data = await generateJson({
@@ -121,7 +120,7 @@ export async function generateTripleAnalysisAction(): Promise<TripleAnalysisStat
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 800,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      systemSuffix: NEUTRAL_CARD_VOICE,
       locale: await getLocale(),
     });
 
@@ -191,14 +190,14 @@ export async function generateStressProfileAction(): Promise<StressProfileState>
 
 [지시]
 ${profile.mbti} 유형이 스트레스를 받을 때 어떻게 무너지는지 + 빠른 회복법을 분석해줘.
-모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
+모든 문장은 특정 멤버 말투가 아니라 차분한 존댓말 리포트 톤으로 써. '~야', '~해', '~줘' 같은 반말은 금지.
 
 반드시 아래 JSON 형식으로만 응답해. 마크다운·설명 없이 JSON만:
 {
-  "triggers": ["스트레스 유발 상황 — 캐릭터 말투로", "스트레스 유발 상황 2", "스트레스 유발 상황 3"],
-  "collapsePattern": "${profile.mbti} 가 무너질 때 패턴 — 캐릭터 말투로 2문장",
-  "recoveryTips": ["회복법 — 캐릭터 말투로", "회복법 2", "회복법 3"],
-  "warningSign": "주의 신호 — 캐릭터 말투로 1문장"
+  "triggers": ["스트레스 유발 상황 — 차분한 존댓말 리포트 톤으로", "스트레스 유발 상황 2", "스트레스 유발 상황 3"],
+  "collapsePattern": "${profile.mbti} 가 무너질 때 패턴 — 차분한 존댓말 리포트 톤으로 2문장",
+  "recoveryTips": ["회복법 — 차분한 존댓말 리포트 톤으로", "회복법 2", "회복법 3"],
+  "warningSign": "주의 신호 — 차분한 존댓말 리포트 톤으로 1문장"
 }`;
 
     const data = await generateJson({
@@ -206,7 +205,7 @@ ${profile.mbti} 유형이 스트레스를 받을 때 어떻게 무너지는지 +
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 800,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      systemSuffix: NEUTRAL_CARD_VOICE,
       locale: await getLocale(),
     });
 
@@ -238,7 +237,7 @@ export interface CareerFitState {
 }
 
 /**
- * 직업 적성 심층 리포트 — 사용자당 1회 생성, 영구 캐시.
+ * 직업 적성 풀이 — 사용자당 1회 생성, 영구 캐시.
  */
 export async function generateCareerFitAction(): Promise<CareerFitState> {
   try {
@@ -275,16 +274,16 @@ export async function generateCareerFitAction(): Promise<CareerFitState> {
 - 성격유형: ${profile.mbti}
 
 [지시]
-${profile.mbti} 유형 기반으로 어떤 업무 환경·직군이 잘 맞는지 심층 리포트를 작성해줘.
-모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
+${profile.mbti} 유형 기반으로 어떤 업무 환경·직군이 잘 맞는지 자세히 풀어줘.
+모든 문장은 특정 멤버 말투가 아니라 차분한 존댓말 리포트 톤으로 써. '~야', '~해', '~줘' 같은 반말은 금지.
 
 반드시 아래 JSON 형식으로만 응답해. 마크다운·설명 없이 JSON만:
 {
-  "bestEnvironment": "${profile.mbti} 가 빛나는 업무 환경 — 캐릭터 말투로 2문장",
+  "bestEnvironment": "${profile.mbti} 가 빛나는 업무 환경 — 차분한 존댓말 리포트 톤으로 2문장",
   "fitRoles": ["잘 맞는 직군 1", "잘 맞는 직군 2", "잘 맞는 직군 3", "잘 맞는 직군 4", "잘 맞는 직군 5"],
-  "avoidEnvironments": "피해야 할 환경 — 캐릭터 말투로 1~2문장",
-  "workStyle": "${profile.mbti} 업무 스타일 — 캐릭터 말투로 2문장",
-  "growthTip": "성장 팁 — 캐릭터 말투로 1~2문장"
+  "avoidEnvironments": "피해야 할 환경 — 차분한 존댓말 리포트 톤으로 1~2문장",
+  "workStyle": "${profile.mbti} 업무 스타일 — 차분한 존댓말 리포트 톤으로 2문장",
+  "growthTip": "성장 팁 — 차분한 존댓말 리포트 톤으로 1~2문장"
 }`;
 
     const data = await generateJson({
@@ -292,7 +291,7 @@ ${profile.mbti} 유형 기반으로 어떤 업무 환경·직군이 잘 맞는�
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 800,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      systemSuffix: NEUTRAL_CARD_VOICE,
       locale: await getLocale(),
     });
 

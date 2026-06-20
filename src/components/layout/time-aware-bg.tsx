@@ -45,7 +45,7 @@ export function TimeAwareBg() {
     return () => clearInterval(timer);
   }, []);
 
-  const src = night ? "/backgrounds/night.webp" : "/backgrounds/day.webp";
+  const src = "/backgrounds/carousel-meadow.webp";
 
   return (
     <div

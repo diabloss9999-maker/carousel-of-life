@@ -3,9 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
-  Check,
   ChevronDown,
-  Crown,
   Heart,
   Layers,
   Lightbulb,
@@ -28,21 +26,19 @@ import {
   CHARACTERS_BY_CATEGORY,
   type CharacterId,
 } from "@/lib/chat/characters";
-import {
-  ROUTES,
-  SUBSCRIPTION,
-  FREE_DAILY_LIMITS,
-  LITE_DAILY_LIMITS,
-  PRO_DAILY_LIMITS,
-} from "@/lib/constants";
-import { formatKRW } from "@/lib/utils";
+import { ROUTES } from "@/lib/constants";
 import { siteConfig } from "@/config/site";
+
+type MemberFact = {
+  label: string;
+  value: string;
+};
 
 export const metadata: Metadata = {
   // 랜딩은 사이트 기본 타이틀 그대로 노출 (template 우회).
   title: { absolute: `${siteConfig.name} — ${siteConfig.tagline}` },
   description:
-    "AI 가 사주팔자·타로·성격유형을 통합해 매일의 운명을 풀이해드려요. 가입 후 매일 무료로 운세 2회·타로 1장·점술사 문답 10회를 받아볼 수 있어요.",
+    "사주팔자·타로·궁합으로 오늘의 흐름을 살피고, Carousel Nine 콘텐츠는 별도로 즐겨요.",
   alternates: {
     canonical: "/",
   },
@@ -56,23 +52,15 @@ export const metadata: Metadata = {
 const LANDING_FAQS: { q: string; a: string }[] = [
   {
     q: "정말 무료인가요?",
-    a: "네. 가입만 하면 매일 운세 2회·타로 1장·점술사 문답 10회를 무료로 받으실 수 있어요. 더 많은 풀이를 원하시면 라이트·프로 멤버십을 확인해주세요.",
+    a: "네. 매일 운세 3회와 대화 10회를 무료로 드려요.",
   },
   {
     q: "사주 정보는 어떻게 입력하나요?",
-    a: "가입 직후 안내되는 온보딩에서 생년월일과 태어난 시각을 입력하시면, 사주팔자가 자동으로 계산되어 저장돼요. 한 번만 입력하면 됩니다.",
+    a: "온보딩에서 생년월일과 태어난 시각을 한 번만 입력하면 돼요.",
   },
   {
-    q: "AI 풀이는 얼마나 정확한가요?",
-    a: "사주·타로·성격유형이라는 세 가지 시선을 통합해 해석하므로 단편적인 운세보다 입체적이에요. 다만 결정의 도구가 아니라 흐름을 읽는 참고로 봐주세요.",
-  },
-  {
-    q: "결제는 어떻게 진행되나요?",
-    a: "안전한 카드 결제로 매월 자동 갱신됩니다. 언제든지 설정 페이지에서 취소할 수 있어요.",
-  },
-  {
-    q: "탈퇴/환불 정책은?",
-    a: "설정 페이지에서 언제든 구독을 취소할 수 있고, 다음 결제일 전에 취소하시면 더 이상 청구되지 않아요. 환불은 첫 결제 후 7일 이내 고객문의 이메일로 요청해주세요.",
+    q: "운세 풀이는 얼마나 정확한가요?",
+    a: "사주·타로·성격유형을 함께 참고해요. 결정은 직접 해주세요.",
   },
 ];
 
@@ -107,7 +95,7 @@ const structuredData = {
         "@type": "Offer",
         price: "0",
         priceCurrency: "KRW",
-        description: "무료 가입 후 매일 운세 2회·타로 1장·점술사 문답 10회 제공",
+        description: "무료 가입 후 매일 운세 3회·대화 10회 제공",
       },
     },
     {
@@ -141,45 +129,47 @@ export default async function HomePage() {
         className="pointer-events-none fixed inset-0 -z-[5] bg-gradient-to-t from-background/30 via-transparent to-background/15"
       />
 
-      <section className="relative z-10 mx-auto flex min-h-dvh max-w-3xl flex-col items-center justify-start gap-6 px-6 pt-20 pb-40 text-center sm:justify-center sm:pt-12 sm:pb-12">
-        <h1 className="font-mystic text-balance text-5xl font-semibold leading-tight tracking-tight text-foreground sm:text-6xl drop-shadow-[0_2px_8px_rgba(60,30,100,0.3)]">
-          {siteConfig.name}
-        </h1>
+      <section className="relative z-10 mx-auto flex min-h-dvh max-w-6xl flex-col items-center justify-start overflow-hidden px-6 pt-16 pb-36 text-center sm:justify-center sm:pt-12 sm:pb-16">
+        <div className="relative z-10 flex max-w-3xl flex-col items-center gap-5">
+          <p className="rounded-full border border-white/40 bg-white/25 px-4 py-1.5 text-[13px] font-semibold text-foreground/80 shadow-sm backdrop-blur-md">
+            CAROUSEL NINE
+          </p>
 
-        <p className="font-mystic text-balance text-base leading-relaxed text-foreground/90 sm:text-lg drop-shadow-[0_1px_4px_rgba(60,30,100,0.25)]">
-          {t("tagline")}
-        </p>
+          <h1 className="font-mystic text-balance text-5xl font-semibold leading-tight tracking-tight text-foreground sm:text-6xl drop-shadow-[0_2px_8px_rgba(60,30,100,0.3)]">
+            {siteConfig.name}
+          </h1>
 
-        {/* 페이지 설명 — 앱이 무엇을 하는지 한 단락 */}
-        <p className="text-balance text-[15px] leading-relaxed text-foreground/85 drop-shadow-sm max-w-lg whitespace-pre-line">
-          {t("intro")}
-        </p>
+          <p className="font-mystic text-balance text-lg leading-relaxed text-foreground/95 sm:text-xl drop-shadow-[0_1px_4px_rgba(60,30,100,0.25)]">
+            {t("tagline")}
+          </p>
 
-        {/* 1차 CTA: 지금 무료로 시작하기 (primary) → 그 아래 유료 플랜 보기 (배경 없는 outline) */}
-        <div className="flex flex-col gap-3 mt-2 w-full max-w-sm">
-          <Button asChild size="lg" className="shadow-lg">
-            <Link href={ROUTES.login}>
-              {t("startFree")}
-              <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
-          </Button>
-          <Button
-            asChild
-            size="lg"
-            variant="outline"
-            className="border-white/50 bg-transparent hover:bg-white/10"
+          {/* 페이지 설명 — 앱이 무엇을 하는지 한 단락 */}
+          <p className="max-w-xl whitespace-pre-line text-balance text-[15px] leading-relaxed text-foreground/85 drop-shadow-sm">
+            {t("intro")}
+          </p>
+
+          {/* 1차 CTA: 멤버 경험 진입 */}
+          <div className="mt-2 flex w-full max-w-sm flex-col gap-3">
+            <Button
+              asChild
+              size="lg"
+              className="rounded-full border border-white/65 bg-white/45 px-7 text-foreground shadow-[0_12px_34px_rgba(96,64,26,0.22),inset_0_1px_0_rgba(255,255,255,0.65)] backdrop-blur-md transition hover:bg-white/60"
+            >
+              <Link href={ROUTES.login}>
+                {t("startFree")}
+                <ArrowRight className="h-4 w-4" aria-hidden />
+              </Link>
+            </Button>
+          </div>
+
+          {/* 스크롤 아래로 힌트 */}
+          <div
+            aria-hidden
+            className="flex flex-col items-center gap-1 text-foreground/60 animate-bounce"
           >
-            <Link href={ROUTES.pricing}>{t("viewPricing")}</Link>
-          </Button>
-        </div>
-
-        {/* 스크롤 아래로 힌트 */}
-        <div
-          aria-hidden
-          className="flex flex-col items-center gap-1 text-foreground/60 mt-6 sm:mt-10 animate-bounce"
-        >
-          <span className="text-[15px] tracking-widest">SCROLL</span>
-          <ChevronDown className="h-5 w-5" />
+            <span className="text-[15px] tracking-widest">SCROLL</span>
+            <ChevronDown className="h-5 w-5" />
+          </div>
         </div>
       </section>
 
@@ -187,17 +177,7 @@ export default async function HomePage() {
       <ValuePropsSection />
       <OraclesSection />
       <HowToPlaySection />
-      <PlansSection />
       <FaqSection />
-
-      <section className="relative z-10 mx-auto max-w-3xl px-6 pb-20 pt-8 text-center">
-        <Button asChild size="lg" className="min-w-48 shadow-lg">
-          <Link href={ROUTES.login}>
-            {t("finalCta")}
-            <ArrowRight className="h-4 w-4" aria-hidden />
-          </Link>
-        </Button>
-      </section>
     </main>
   );
 }
@@ -252,15 +232,15 @@ async function ValuePropsSection() {
   );
 }
 
-/** 9명 점술사 캐릭터 쇼케이스. 3 카테고리 × 3명 = 3×3 grid. */
+/** 9명 AI 멤버 쇼케이스. 3 유닛 × 3명 = 3×3 grid. */
 async function OraclesSection() {
   const t = await getTranslations("landing.oracles");
   const tChar = await getTranslations("characters");
 
-  const categories: { key: "이세계" | "동양" | "북유럽"; label: string }[] = [
-    { key: "이세계", label: "이세계" },
-    { key: "동양", label: "동양" },
-    { key: "북유럽", label: "북방" },
+  const categories: { key: "기본" | "확장" | "보관"; label: string }[] = [
+    { key: "기본", label: "프론트 유닛" },
+    { key: "확장", label: "스튜디오 유닛" },
+    { key: "보관", label: "무드 유닛" },
   ];
 
   return (
@@ -288,6 +268,7 @@ async function OraclesSection() {
                   name={tChar(`${id}.name`)}
                   title={tChar(`${id}.title`)}
                   hook={tChar(`${id}.hook`)}
+                  facts={tChar.raw(`${id}.facts`) as MemberFact[]}
                 />
               ))}
             </div>
@@ -296,7 +277,11 @@ async function OraclesSection() {
       </div>
 
       <div className="flex justify-center pt-2">
-        <Button asChild size="lg" className="shadow-lg">
+        <Button
+          asChild
+          size="lg"
+          className="h-auto min-h-12 max-w-full rounded-full border border-white/65 bg-white/45 px-7 py-3 text-center leading-tight text-foreground shadow-[0_12px_34px_rgba(96,64,26,0.22),inset_0_1px_0_rgba(255,255,255,0.65)] backdrop-blur-md transition hover:bg-white/60"
+        >
           <Link href={ROUTES.login}>
             {t("cta")}
             <ArrowRight className="h-4 w-4" aria-hidden />
@@ -312,11 +297,13 @@ function OracleCard({
   name,
   title,
   hook,
+  facts,
 }: {
   id: CharacterId;
   name: string;
   title: string;
   hook: string;
+  facts: MemberFact[];
 }) {
   // 낮 이미지를 카드용으로 사용 (랜딩은 밝은 톤 강조).
   const imageSrc = CHARACTERS[id].imageSrcDay;
@@ -346,6 +333,21 @@ function OracleCard({
         <p className="font-mystic text-[15px] leading-relaxed text-foreground/85 italic">
           “{hook}”
         </p>
+        <dl className="mt-3 grid grid-cols-2 gap-1.5 text-left text-[12px] leading-tight">
+          {facts.map((fact) => (
+            <div
+              key={`${fact.label}-${fact.value}`}
+              className="rounded-md border border-border/60 bg-background/45 px-2 py-1.5"
+            >
+              <dt className="text-[12px] font-medium text-muted-foreground">
+                {fact.label}
+              </dt>
+              <dd className="mt-0.5 font-semibold text-foreground/85">
+                {fact.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
       </CardContent>
     </Card>
   );
@@ -415,148 +417,6 @@ async function HowToPlaySection() {
   );
 }
 
-/** 가격 섹션 — 무료 / 라이트 / 프로 3 카드. 가격 페이지와 동일 데이터 소스. */
-async function PlansSection() {
-  const t = await getTranslations("landing.plansSection");
-  const tPricing = await getTranslations("pricing");
-
-  return (
-    <section className="relative z-10 mx-auto max-w-5xl space-y-8 px-6 pt-12 sm:pt-16">
-      <div className="space-y-2 text-center">
-        <h2 className="font-mystic text-2xl font-semibold sm:text-3xl">
-          {t("heading")}
-        </h2>
-        <p className="text-[15px] text-muted-foreground leading-relaxed">
-          {t("subheading")}
-        </p>
-      </div>
-
-      <div className="grid gap-6 sm:grid-cols-3">
-        {/* 무료 */}
-        <Card className="app-surface flex flex-col">
-          <CardHeader>
-            <CardTitle className="font-mystic text-2xl">
-              {tPricing("freeName")}
-            </CardTitle>
-            <CardDescription>{tPricing("freeDesc")}</CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4 flex-1">
-            <p className="font-mystic text-3xl font-semibold">₩0</p>
-            <ul className="space-y-2 text-[15px] flex-1">
-              <PlanBullet>
-                {tPricing("fortuneLine", { n: FREE_DAILY_LIMITS.fortune })}
-              </PlanBullet>
-              <PlanBullet>
-                {tPricing("tarotOneLine", { n: FREE_DAILY_LIMITS.tarot })}
-              </PlanBullet>
-              <PlanBullet>
-                {tPricing("chatLine", { n: FREE_DAILY_LIMITS.chat })}
-              </PlanBullet>
-            </ul>
-            <Button asChild variant="outline" className="w-full">
-              <Link href={ROUTES.login}>{tPricing("ctaFreeStart")}</Link>
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* 라이트 — 인기 배지 */}
-        <Card className="app-surface flex flex-col ring-2 ring-primary/40 relative overflow-hidden">
-          <div className="absolute top-0 right-0">
-            <div className="flex items-center gap-1 bg-primary text-primary-foreground text-[15px] font-bold px-3 py-1.5 rounded-bl-xl">
-              <Sparkles className="h-3.5 w-3.5" aria-hidden />
-              {t("badgePopular")}
-            </div>
-          </div>
-          <CardHeader className="pt-8">
-            <CardTitle className="font-mystic text-2xl">
-              {SUBSCRIPTION.lite.label}
-            </CardTitle>
-            <CardDescription>{tPricing("lightDesc")}</CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4 flex-1">
-            <p className="font-mystic text-3xl font-semibold text-primary">
-              {formatKRW(SUBSCRIPTION.lite.monthlyPriceKRW)}
-              <span className="text-base text-muted-foreground font-normal">
-                {" "}
-                {tPricing("perMonth")}
-              </span>
-            </p>
-            <ul className="space-y-2 text-[15px] flex-1">
-              <PlanBullet>
-                {tPricing("fortuneLine", { n: LITE_DAILY_LIMITS.fortune })}
-              </PlanBullet>
-              <PlanBullet>
-                {tPricing("tarotLine", { n: LITE_DAILY_LIMITS.tarot })}
-              </PlanBullet>
-              <PlanBullet>
-                {tPricing("chatLine", { n: LITE_DAILY_LIMITS.chat })}
-              </PlanBullet>
-              <PlanBullet>{tPricing("bulletZodiac")}</PlanBullet>
-              <PlanBullet>{tPricing("bulletTarotThree")}</PlanBullet>
-              <PlanBullet>{tPricing("bulletCompat")}</PlanBullet>
-            </ul>
-            <Button asChild className="w-full">
-              <Link href={ROUTES.pricing}>{tPricing("ctaLightStart")}</Link>
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* 프로 */}
-        <Card className="app-surface flex flex-col">
-          <CardHeader>
-            <CardTitle className="font-mystic text-2xl flex items-center gap-2">
-              <Crown className="h-5 w-5 text-accent" aria-hidden />
-              {SUBSCRIPTION.pro.label}
-            </CardTitle>
-            <CardDescription>{tPricing("proDesc")}</CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4 flex-1">
-            <p className="font-mystic text-3xl font-semibold">
-              {formatKRW(SUBSCRIPTION.pro.monthlyPriceKRW)}
-              <span className="text-base text-muted-foreground font-normal">
-                {" "}
-                {tPricing("perMonth")}
-              </span>
-            </p>
-            <ul className="space-y-2 text-[15px] flex-1">
-              <PlanBullet>
-                {tPricing("fortuneLine", { n: PRO_DAILY_LIMITS.fortune })}
-              </PlanBullet>
-              <PlanBullet>
-                {tPricing("bulletTarotCeltic", { n: PRO_DAILY_LIMITS.tarot })}
-              </PlanBullet>
-              <PlanBullet>
-                {tPricing("chatLine", { n: PRO_DAILY_LIMITS.chat })}
-              </PlanBullet>
-              <PlanBullet>{tPricing("bulletZodiac")}</PlanBullet>
-              <PlanBullet>{tPricing("bulletLenormand")}</PlanBullet>
-              <PlanBullet>{tPricing("bulletRunes")}</PlanBullet>
-              <PlanBullet>{tPricing("bulletCompat")}</PlanBullet>
-              <PlanBullet>{tPricing("bulletSajuDeep")}</PlanBullet>
-              <PlanBullet>{tPricing("bulletGacha")}</PlanBullet>
-            </ul>
-            <Button asChild variant="secondary" className="w-full">
-              <Link href={ROUTES.pricing}>{tPricing("ctaProStart")}</Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    </section>
-  );
-}
-
-function PlanBullet({ children }: { children: React.ReactNode }) {
-  return (
-    <li className="flex items-start gap-2 leading-relaxed">
-      <Check
-        className="h-4 w-4 text-primary flex-shrink-0 mt-0.5"
-        aria-hidden
-      />
-      <span>{children}</span>
-    </li>
-  );
-}
-
 /** 결과물 미리보기 섹션 (예시 카드 2장). */
 async function PreviewSection() {
   const t = await getTranslations("landing.preview");
@@ -579,7 +439,9 @@ async function PreviewSection() {
                 예시
               </span>
             </div>
-            <CardDescription className="text-[15px]">The Star · 별의 인도</CardDescription>
+            <CardDescription className="text-[15px]">
+              The Star · 별의 인도
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="mx-auto h-44 w-28 overflow-hidden rounded-lg ring-1 ring-border">
@@ -592,9 +454,12 @@ async function PreviewSection() {
               />
             </div>
             <p className="text-[15px] leading-relaxed text-muted-foreground">
-              오래 흐려 있던 마음에 다시 빛이 닿아요. 무리해서 결론 내지 말고,
-              지금은 회복의 시간을 천천히 받아들여요. 작은 희망을 발견하는 것이
-              오늘의 시작입니다.
+              오래 흐려 있던 마음에 다시 빛이 닿는 흐름이에요. 무리해서 결론 내기보다,
+              지금은 회복할 시간을 확보하는 쪽이 유리해요. 작은 희망을 확인하는 것이
+              오늘의 첫 선택입니다.
+            </p>
+            <p className="rounded-lg border border-primary/20 bg-primary/10 px-3 py-2 text-[15px] leading-relaxed text-foreground/85">
+              오늘의 행동: 확답을 기다리기보다 내가 회복할 수 있는 시간을 먼저 정하세요.
             </p>
           </CardContent>
         </Card>
@@ -603,20 +468,25 @@ async function PreviewSection() {
         <Card>
           <CardHeader className="space-y-2">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-base">오늘의 운세</CardTitle>
+              <CardTitle className="text-base">오늘 종합운</CardTitle>
               <span className="rounded-full bg-muted px-2 py-0.5 text-[15px] text-muted-foreground">
                 예시
               </span>
             </div>
-            <CardDescription className="text-[15px]">사주 + 일진 통합 풀이</CardDescription>
+            <CardDescription className="text-[15px]">
+              오늘의 기운
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <p className="text-[15px] font-medium leading-relaxed">
-              조급함을 내려놓을수록 길이 보이는 하루.
+              조급함을 내려놓을수록 오늘의 길이 또렷해지는 하루입니다.
             </p>
             <p className="text-[15px] leading-relaxed text-muted-foreground">
-              계획대로 풀리지 않더라도 흔들리지 마세요. 오늘은 결단보다 관찰이
-              유리합니다. 가까운 사람의 한마디에 단서가 있을 수 있어요.
+              계획대로 풀리지 않더라도 크게 흔들릴 필요는 없어요. 오늘은 결단보다 관찰이
+              유리하고, 가까운 사람의 한마디에 단서가 있을 수 있어요.
+            </p>
+            <p className="rounded-lg border border-primary/20 bg-primary/10 px-3 py-2 text-[15px] leading-relaxed text-foreground/85">
+              오늘의 행동: 급한 답장을 보내기 전, 한 번만 더 읽고 보내세요.
             </p>
             <div className="flex flex-wrap gap-1.5 pt-1">
               {["회복", "기다림", "별빛"].map((k) => (

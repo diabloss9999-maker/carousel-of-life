@@ -13,6 +13,8 @@ const nextConfig: NextConfig = {
   images: {
     /** 기본 품질 90 — 캐릭터·카드 이미지 품질 확보 */
     qualities: [75, 90, 95],
+    /** WebP 고정 — AVIF 는 q=95 대형 이미지에서 첫 변환이 수 초씩 걸려 첫 방문 UX 를 해침. */
+    formats: ["image/webp"],
     remotePatterns: [
       // Supabase Storage 에 업로드된 이미지(타로카드, 사용자 아바타 등) 허용.
       {

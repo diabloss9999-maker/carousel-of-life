@@ -1,28 +1,28 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState, useTransition, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader2, Trash2 } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
+import { track } from "@vercel/analytics";
 
 import { Button } from "@/components/ui/button";
+import { ChatEmojiPicker } from "@/components/chat/chat-emoji-picker";
 import { MessageBubble, type DrawnCardMeta, type ShareInfo } from "@/components/chat/message-bubble";
 import { ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { CHARACTERS, type CharacterId } from "@/lib/chat/characters";
-import { useFractureSystem } from "@/hooks/use-fracture-system";
-import { getPlaceholder } from "@/lib/fracture/fracture-events";
 import { recordEcho } from "@/lib/systems/long-term-memory";
 
-/** 한 메시지 최대 글자 수. 서버 zod schema 와 동기화 유지. */
+/** Keep the client message limit in sync with the server schema. */
 const MAX_MESSAGE_LENGTH = 100;
 
 export interface InitialMessage {
   id: string;
   role: "user" | "assistant";
   content: string;
-  /** 점술 요청 시 DB 에 저장된 카드 메타 — 페이지 리로드 후에도 이미지 유지. */
+  /** Card metadata saved with a reading message. */
   cards?: DrawnCardMeta[] | null;
 }
 
@@ -30,6 +30,16 @@ interface ChatWindowProps {
   sessionId: string;
   initialMessages: InitialMessage[];
   characterId?: CharacterId;
+  initialPrompt?: string;
+  chatUsage?: {
+    used: number;
+    max: number;
+  };
+  readingContext?: {
+    source: string;
+    title: string | null;
+    summary: string | null;
+  };
   onDeleteRequest?: () => void;
 }
 
@@ -41,7 +51,7 @@ interface DisplayMessage {
   cards?: DrawnCardMeta[];
 }
 
-/** 캐릭터별 채팅창 색상 테마. */
+/** Per-member chat color themes. */
 const CHARACTER_THEME: Record<
   CharacterId,
   {
@@ -60,7 +70,7 @@ const CHARACTER_THEME: Record<
     inputWrap: "border-red-700/35 bg-red-950/20",
     textarea: "border-red-700/30 bg-red-900/20 text-red-50 placeholder:text-red-100/50",
     send: "border-red-400/30 bg-red-600/90 text-white hover:bg-red-500",
-    glyph: "✦",
+    glyph: "↑",
     skin: "chat-skin-child",
   },
   witch: {
@@ -69,7 +79,7 @@ const CHARACTER_THEME: Record<
     inputWrap: "border-blue-700/35 bg-blue-950/20",
     textarea: "border-blue-700/30 bg-blue-900/20 text-blue-50 placeholder:text-blue-100/50",
     send: "border-blue-300/30 bg-blue-600/90 text-white hover:bg-blue-500",
-    glyph: "☾",
+    glyph: "↑",
     skin: "chat-skin-witch",
   },
   sage: {
@@ -78,7 +88,7 @@ const CHARACTER_THEME: Record<
     inputWrap: "border-amber-600/35 bg-amber-950/15",
     textarea: "border-amber-600/30 bg-amber-900/20 text-amber-50 placeholder:text-amber-100/55",
     send: "border-amber-300/35 bg-amber-500/90 text-amber-950 hover:bg-amber-400",
-    glyph: "✶",
+    glyph: "↑",
     skin: "chat-skin-sage",
   },
   shaman: {
@@ -87,7 +97,7 @@ const CHARACTER_THEME: Record<
     inputWrap: "border-rose-600/35 bg-rose-950/15",
     textarea: "border-rose-600/30 bg-rose-900/20 text-rose-50 placeholder:text-rose-100/55",
     send: "border-rose-300/35 bg-rose-600/90 text-white hover:bg-rose-500",
-    glyph: "❋",
+    glyph: "↑",
     skin: "chat-skin-shaman",
   },
   taoist: {
@@ -96,7 +106,7 @@ const CHARACTER_THEME: Record<
     inputWrap: "border-cyan-600/35 bg-cyan-950/15",
     textarea: "border-cyan-600/30 bg-cyan-900/20 text-cyan-50 placeholder:text-cyan-100/55",
     send: "border-cyan-300/35 bg-cyan-600/90 text-white hover:bg-cyan-500",
-    glyph: "☯",
+    glyph: "↑",
     skin: "chat-skin-taoist",
   },
   dokkaebi: {
@@ -105,7 +115,7 @@ const CHARACTER_THEME: Record<
     inputWrap: "border-purple-700/35 bg-purple-950/20",
     textarea: "border-purple-700/30 bg-purple-900/20 text-purple-50 placeholder:text-purple-100/55",
     send: "border-purple-300/35 bg-purple-600/90 text-white hover:bg-purple-500",
-    glyph: "✹",
+    glyph: "↑",
     skin: "chat-skin-dokkaebi",
   },
   hunter: {
@@ -114,7 +124,7 @@ const CHARACTER_THEME: Record<
     inputWrap: "border-stone-600/40 bg-stone-950/25",
     textarea: "border-stone-600/35 bg-stone-900/30 text-stone-100 placeholder:text-stone-300/55",
     send: "border-stone-300/35 bg-stone-600/90 text-white hover:bg-stone-500",
-    glyph: "⟁",
+    glyph: "↑",
     skin: "chat-skin-hunter",
   },
   runeshaman: {
@@ -123,7 +133,7 @@ const CHARACTER_THEME: Record<
     inputWrap: "border-indigo-600/35 bg-indigo-950/20",
     textarea: "border-indigo-600/30 bg-indigo-900/20 text-indigo-50 placeholder:text-indigo-100/55",
     send: "border-indigo-300/35 bg-indigo-600/90 text-white hover:bg-indigo-500",
-    glyph: "ᚠ",
+    glyph: "↑",
     skin: "chat-skin-runeshaman",
   },
   god: {
@@ -132,7 +142,7 @@ const CHARACTER_THEME: Record<
     inputWrap: "border-sky-600/35 bg-sky-950/20",
     textarea: "border-sky-600/30 bg-sky-900/20 text-sky-50 placeholder:text-sky-100/55",
     send: "border-sky-300/35 bg-sky-500/90 text-sky-950 hover:bg-sky-400",
-    glyph: "✧",
+    glyph: "↑",
     skin: "chat-skin-god",
   },
 };
@@ -143,6 +153,9 @@ export function ChatWindow({
   sessionId,
   initialMessages,
   characterId,
+  initialPrompt,
+  chatUsage,
+  readingContext,
   onDeleteRequest,
 }: ChatWindowProps) {
   const router = useRouter();
@@ -154,8 +167,10 @@ export function ChatWindow({
       cards: m.cards ?? undefined,
     })),
   );
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(() => initialPrompt?.slice(0, MAX_MESSAGE_LENGTH) ?? "");
+  const [activeReadingContext, setActiveReadingContext] = useState(readingContext);
   const [error, setError] = useState<string | null>(null);
+  const [chatUsed, setChatUsed] = useState(chatUsage?.used ?? 0);
   const [isPending, startTransition] = useTransition();
   const [isStreaming, setIsStreaming] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -167,10 +182,9 @@ export function ChatWindow({
   const rawLocale = useLocale();
   const shareLocale: "ko" | "en" = rawLocale === "en" ? "en" : "ko";
 
-  const { state: fractureState, isNight } = useFractureSystem();
-  const placeholder = getPlaceholder(fractureState, isNight);
+  const placeholder = t("inputPlaceholder");
 
-  /** textarea 높이 자동 조절 */
+  /** Auto-resize the composer textarea. */
   const adjustHeight = useCallback(() => {
     const el = textareaRef.current;
     if (!el) return;
@@ -178,7 +192,7 @@ export function ChatWindow({
     el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
   }, []);
 
-  /** Enter = 전송 / Shift+Enter = 줄바꿈 */
+  /** Enter sends; Shift+Enter inserts a line break. */
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -189,7 +203,16 @@ export function ChatWindow({
     }
   }
 
-  // 새 메시지 또는 청크가 들어올 때 스크롤 맨 아래로.
+  function sendEmoji(token: string) {
+    void sendMessage(token, false);
+  }
+
+  // Chat pages own the viewport; reset any scroll position carried over from the previous page.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [sessionId]);
+
+  // Keep the newest message in view.
   useEffect(() => {
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
@@ -197,31 +220,45 @@ export function ChatWindow({
     });
   }, [messages]);
 
-  // 스트리밍 완료 시 입력창 자동 포커스
+  // Return focus to the composer after streaming finishes.
   useEffect(() => {
     if (!isStreaming) {
-      textareaRef.current?.focus();
+      textareaRef.current?.focus({ preventScroll: true });
     }
   }, [isStreaming]);
 
   async function handleSend(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const trimmed = input.trim();
+    await sendMessage(input.trim(), true);
+  }
+
+  async function sendMessage(trimmed: string, clearComposer: boolean) {
     if (!trimmed || isStreaming) return;
+    if (chatUsage && chatUsed >= chatUsage.max) {
+      setError("quota");
+      return;
+    }
     if (trimmed.length > MAX_MESSAGE_LENGTH) {
       setError(t("messageTooLong", { n: MAX_MESSAGE_LENGTH }));
       return;
     }
 
+    track("chat_message_submit", {
+      mode: "one_to_one",
+      character: characterId ?? "unknown",
+      hasReadingContext: Boolean(activeReadingContext),
+      source: clearComposer ? "composer" : "emoji",
+    });
+
     setError(null);
-    setInput("");
-    // 높이 리셋 + 재포커스
+    if (clearComposer) setInput("");
+    // Reset height and keep focus in the composer.
     if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.focus();
+      if (clearComposer) textareaRef.current.style.height = "auto";
+      textareaRef.current.focus({ preventScroll: true });
     }
 
-    // 사용자 메시지를 장기 기억(echo)에 기록 — 감정 키워드 포함 시에만 저장됨
+    // Store the user message as an echo for long-term memory.
     recordEcho(trimmed);
 
     const userId = crypto.randomUUID();
@@ -238,19 +275,32 @@ export function ChatWindow({
       const res = await fetch(`/api/chat/sessions/${sessionId}/messages`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: trimmed }),
+        body: JSON.stringify({
+          content: trimmed,
+          readingContext: activeReadingContext,
+        }),
       });
 
       if (!res.ok) {
         const json = await res.json().catch(() => null);
-        // 서버는 API_ERROR_CODES.QUOTA_EXCEEDED ("QUOTA_EXCEEDED" 대문자) 를 반환.
-        // 과거 lowercase 비교 버그 때문에 quota UI 가 안 떴음 — 둘 다 허용.
+        // The server returns API_ERROR_CODES.QUOTA_EXCEEDED.
+        // Normalize the code so the quota UI still opens for older lowercase responses.
         const code = String(json?.error?.code ?? "").toLowerCase();
         const isQuota = code === "quota_exceeded";
-        // 한도 초과는 그대로, 그 외 오류는 캐릭터 변명으로 대체
+        // Surface quota errors as a member-style assistant message.
         if (isQuota) {
+          track("chat_message_error", {
+            mode: "one_to_one",
+            character: characterId ?? "unknown",
+            reason: "quota_exceeded",
+          });
           setError("quota");
         } else {
+          track("chat_message_error", {
+            mode: "one_to_one",
+            character: characterId ?? "unknown",
+            reason: "api_error",
+          });
           const excuse = characterId ? (CHARACTERS[characterId]?.errorExcuse ?? t("excuseFallback")) : t("excuseFallback");
           setMessages((prev) =>
             prev.map((m) =>
@@ -261,6 +311,10 @@ export function ChatWindow({
           );
         }
         return;
+      }
+
+      if (chatUsage) {
+        setChatUsed((prev) => Math.min(chatUsage.max, prev + 1));
       }
 
       if (!res.body) {
@@ -286,7 +340,7 @@ export function ChatWindow({
         if (done) break;
         acc += decoder.decode(value, { stream: true });
 
-        // 첫 줄 "CARDS:{json}\n" 파싱
+        // 泥?以?"CARDS:{json}\n" ?뚯떛
         if (!cardsExtracted && acc.startsWith("CARDS:")) {
           const newlineIdx = acc.indexOf("\n");
           if (newlineIdx !== -1) {
@@ -299,25 +353,33 @@ export function ChatWindow({
           }
         }
 
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === assistantId
-              ? { ...m, content: acc, cards: drawnCards }
-              : m,
-          ),
-        );
+        // While streaming, keep the KakaoTalk-like typing state instead of repainting text.
+        // The completed response is rendered once below.
       }
 
+      // Render the full message and card metadata after streaming completes.
       setMessages((prev) =>
         prev.map((m) =>
-          m.id === assistantId ? { ...m, isStreaming: false } : m,
+          m.id === assistantId
+            ? { ...m, content: acc, cards: drawnCards, isStreaming: false }
+            : m,
         ),
       );
+      setActiveReadingContext(undefined);
+      track("chat_message_success", {
+        mode: "one_to_one",
+        character: characterId ?? "unknown",
+      });
 
       startTransition(() => {
         router.refresh();
       });
     } catch {
+      track("chat_message_error", {
+        mode: "one_to_one",
+        character: characterId ?? "unknown",
+        reason: "network_error",
+      });
       const excuse = characterId ? (CHARACTERS[characterId]?.errorExcuse ?? t("excuseFallback")) : t("excuseFallback");
       setMessages((prev) =>
         prev.map((m) =>
@@ -347,11 +409,15 @@ export function ChatWindow({
 
   const isQuotaError = error === "quota";
   const charsLeft = MAX_MESSAGE_LENGTH - input.length;
+  const chatRemaining = chatUsage
+    ? Math.max(chatUsage.max - chatUsed, 0)
+    : null;
+  const quotaBlocked = chatRemaining === 0;
 
   return (
     <div className={cn("chat-window-skin mobile-chat-window flex h-full flex-col gap-3", theme.skin)}>
-      {/* 삭제 버튼 */}
-      <div className="flex items-center justify-end">
+      {/* ??젣 踰꾪듉 */}
+      <div className="chat-delete-row flex items-center justify-end">
         <Button
           variant="ghost"
           size="sm"
@@ -362,7 +428,7 @@ export function ChatWindow({
         </Button>
       </div>
 
-      {/* 메시지 영역 */}
+      {/* Message area */}
       <div
         ref={scrollRef}
         className={cn(
@@ -375,11 +441,14 @@ export function ChatWindow({
           className={cn("pointer-events-none absolute inset-0 z-0", theme.overlay)}
         />
         <div className="relative z-10">
+          {readingContext ? (
+            <ReadingContextCard context={readingContext} />
+          ) : null}
           {messages.length === 0 ? (
             <EmptyState characterId={characterId} />
           ) : (
             messages.map((m, i) => {
-              // 어시스턴트 메시지일 때 직전 user 질문을 share 데이터로 묶어준다.
+              // Attach share data by pairing an assistant reply with the previous user message.
               const prev = i > 0 ? messages[i - 1] : null;
               const share: ShareInfo | undefined =
                 m.role === "assistant" && characterId && prev && prev.role === "user" && prev.content
@@ -415,36 +484,68 @@ export function ChatWindow({
         </div>
       ) : null}
 
-      {/* 입력창 — ritual 스타일 */}
+      {chatUsage ? (
+        <div
+          className={cn(
+            "flex items-center justify-between gap-3 rounded-2xl border px-3 py-2 text-[13px] backdrop-blur",
+            quotaBlocked
+              ? "border-destructive/30 bg-destructive/10 text-destructive"
+              : chatRemaining !== null && chatRemaining <= 3
+                ? "border-amber-400/30 bg-amber-50/5 text-amber-200"
+                : "border-white/10 bg-white/[0.06] text-muted-foreground",
+          )}
+        >
+          <span>오늘 남은 대화</span>
+          <span className="font-semibold tabular-nums text-foreground">
+            {chatRemaining} / {chatUsage.max}회
+          </span>
+        </div>
+      ) : null}
+
+      {/* ?낅젰李???ritual ?ㅽ???*/}
       <form onSubmit={handleSend} className="mobile-chat-form flex flex-col gap-1.5">
         <div
           className={cn(
-            "chat-input-shell grid grid-cols-[1fr_auto] gap-2.5 rounded-[24px] border p-2.5 shadow-[0_10px_28px_rgba(0,0,0,0.16)] backdrop-blur-xl",
+            "chat-input-shell one-chat-input-shell flex items-end gap-2 rounded-[24px] border p-2.5 shadow-[0_10px_28px_rgba(0,0,0,0.16)] backdrop-blur-xl",
             theme.inputWrap,
           )}
         >
-          <textarea
-            ref={textareaRef}
-            value={input}
-            onChange={(e) => { setInput(e.target.value); adjustHeight(); }}
-            onKeyDown={handleKeyDown}
-            placeholder={placeholder}
-            disabled={isStreaming}
-            maxLength={MAX_MESSAGE_LENGTH}
-            rows={1}
-            autoFocus
-            className={cn(
-              "ritual-chat-textarea chat-input-textarea resize-none outline-none leading-relaxed text-[15px] py-3 px-4 rounded-[18px]",
-              "min-h-12 max-h-[120px] border",
-              theme.textarea,
-            )}
-          />
+          <div className="one-chat-text-field relative min-w-0 flex-1">
+            <ChatEmojiPicker
+              inline
+              onSelect={sendEmoji}
+              disabled={isStreaming}
+              className="one-chat-emoji-button absolute bottom-1 left-1 z-10"
+            />
+            <textarea
+              ref={textareaRef}
+              value={input}
+              onChange={(e) => { setInput(e.target.value); adjustHeight(); }}
+              onKeyDown={handleKeyDown}
+              placeholder={placeholder}
+              disabled={isStreaming || quotaBlocked}
+              maxLength={MAX_MESSAGE_LENGTH}
+              rows={1}
+              autoFocus
+              className={cn(
+                "ritual-chat-textarea chat-input-textarea one-chat-textarea w-full resize-none outline-none leading-relaxed text-[15px] py-3 pl-[52px] pr-4 rounded-[18px]",
+                "min-h-12 max-h-[120px] border",
+                theme.textarea,
+              )}
+            />
+          </div>
           <button
             type="submit"
-            disabled={isStreaming || isPending || input.trim().length === 0}
+            data-keep-color
+            disabled={
+              isStreaming ||
+              isPending ||
+              quotaBlocked ||
+              input.trim().length === 0
+            }
             aria-label={t("sendAriaLabel")}
             className={cn(
-              "chat-send-button grid h-[52px] min-w-[52px] place-items-center rounded-[18px] border text-lg shadow-sm transition",
+              "chat-send-button one-chat-send-button grid h-[52px] min-w-[52px] shrink-0 place-items-center rounded-[18px] border text-lg shadow-sm transition",
               "disabled:cursor-not-allowed disabled:opacity-40",
               theme.send,
             )}
@@ -473,14 +574,41 @@ export function ChatWindow({
   );
 }
 
+function ReadingContextCard({
+  context,
+}: {
+  context: NonNullable<ChatWindowProps["readingContext"]>;
+}) {
+  return (
+    <div className="mb-4 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 shadow-[0_12px_30px_rgba(0,0,0,0.12)] backdrop-blur-md">
+      <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-primary/80">
+        방금 본 {context.source}
+      </p>
+      {context.title ? (
+        <p className="mt-1 font-mystic text-[15px] font-semibold leading-snug text-foreground/90">
+          {context.title}
+        </p>
+      ) : null}
+      {context.summary ? (
+        <p className="mt-1 line-clamp-2 text-[13px] leading-relaxed text-muted-foreground">
+          {context.summary}
+        </p>
+      ) : null}
+      <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground/80">
+        아래 입력창에 이 내용을 이어서 물어볼 질문을 준비해뒀어요.
+      </p>
+    </div>
+  );
+}
+
 // =============================================================================
-// 빈 화면 — 캐릭터별 세계관 첫 인사
+// Empty state member greetings
 // =============================================================================
 
 function EmptyState({ characterId }: { characterId?: string }) {
   const tEmpty = useTranslations("chatShell.emptyLines");
   const key = characterId ?? "witch";
-  // raw() 로 객체를 통째로 가져온 뒤 line1/line2 추출. 알 수 없는 키는 witch 폴백.
+  // raw() returns a locale object with line1/line2; fall back to witch when missing.
   const fallback = tEmpty.raw("witch") as { line1: string; line2: string };
   let lines: { line1: string; line2: string };
   try {

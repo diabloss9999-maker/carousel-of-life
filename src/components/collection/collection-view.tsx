@@ -26,6 +26,8 @@ import { cn } from "@/lib/utils";
 
 import { pullGachaAction } from "@/app/(dashboard)/collection/actions";
 
+const BONUS_CARD_BACK_SRC = "/collection/bonus-card-back.png";
+
 /** 탭 식별자 — "all" 은 전체 보기. */
 type TabId = "all" | CollectionCategory;
 
@@ -65,12 +67,12 @@ function displayName(card: { nameKo: string; nameEn?: string | null }, locale: s
 /** 카테고리 표시 순서. */
 const CATEGORY_ORDER: CollectionCategory[] = [
   "tarot",
-  "lenormand",
-  "runes",
   "flowers",
   "chineseZodiac",
   "zodiac",
   "cheongan",
+  "lenormand",
+  "runes",
   "characters",
   "mbti",
 ];
@@ -106,6 +108,9 @@ export function CollectionView({
   const [isPending, startTransition] = useTransition();
   const [flipped, setFlipped] = useState<boolean>(false);
   const [pulled, setPulled] = useState<PullDisplayState | null>(null);
+  const [choosing, setChoosing] = useState<boolean>(false);
+  const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
+  const [bonusCredits, setBonusCredits] = useState<number>(gachaStatus.bonusCredits);
 
   const [tab, setTab] = useState<TabId>("all");
   const [selected, setSelected] = useState<FlatCard | null>(null);
@@ -134,9 +139,9 @@ export function CollectionView({
       zodiac: { owned: 0, total: 0 },
       chineseZodiac: { owned: 0, total: 0 },
       cheongan: { owned: 0, total: 0 },
-      characters: { owned: 0, total: 0 },
       lenormand: { owned: 0, total: 0 },
       runes: { owned: 0, total: 0 },
+      characters: { owned: 0, total: 0 },
       flowers: { owned: 0, total: 0 },
     };
     for (const card of flatAll) {
@@ -153,9 +158,9 @@ export function CollectionView({
     tabCounts.zodiac.owned +
     tabCounts.chineseZodiac.owned +
     tabCounts.cheongan.owned +
-    tabCounts.characters.owned +
     tabCounts.lenormand.owned +
     tabCounts.runes.owned +
+    tabCounts.characters.owned +
     tabCounts.flowers.owned;
 
   // ESC 모달 닫기
@@ -179,15 +184,25 @@ export function CollectionView({
   }, [selected]);
 
   /** 가챠 뽑기 핸들러. */
-  function handlePull() {
-    // 일일 한도 + 보너스 둘 다 0일 때만 차단
-    const bonusCredits = gachaStatus.bonusCredits;
+  function handleStartPick() {
     if (isPending) return;
     if (remaining <= 0 && bonusCredits <= 0) return;
+    setFlipped(false);
+    setPulled(null);
+    setSelectedSlot(null);
+    setChoosing(true);
+  }
+
+  function handlePull(slot: number) {
+    // 일일 한도 + 보너스 둘 다 0일 때만 차단
+    if (isPending) return;
+    if (remaining <= 0 && bonusCredits <= 0) return;
+    const wasBonusPull = remaining <= 0 && bonusCredits > 0;
 
     // 다시 뒷면으로 돌렸다가 뽑기 시작
     setFlipped(false);
     setPulled(null);
+    setSelectedSlot(slot);
 
     startTransition(async () => {
       const result = await pullGachaAction();
@@ -211,6 +226,10 @@ export function CollectionView({
       });
       setRemaining(result.remaining);
       setLimit(result.limit);
+      if (wasBonusPull) {
+        setBonusCredits((current) => Math.max(0, current - 1));
+      }
+      setChoosing(false);
       const bonusSuffix =
         result.chatBonus > 0 ? t("chatBonus", { n: result.chatBonus }) : "";
       const cardName = displayName(result.card, locale);
@@ -237,10 +256,13 @@ export function CollectionView({
         pulled={pulled}
         remaining={remaining}
         limit={limit}
-        bonusCredits={gachaStatus.bonusCredits}
+        bonusCredits={bonusCredits}
+        choosing={choosing}
+        selectedSlot={selectedSlot}
         isPending={isPending}
         subscribed={subscribed}
-        onPull={handlePull}
+        onStartPick={handleStartPick}
+        onPick={handlePull}
       />
 
       {/* 진행도 표시 — 카테고리 탭 위 한 줄. */}
@@ -328,9 +350,12 @@ interface GachaPanelProps {
   remaining: number;
   limit: number;
   bonusCredits: number;
+  choosing: boolean;
+  selectedSlot: number | null;
   isPending: boolean;
   subscribed: boolean;
-  onPull: () => void;
+  onStartPick: () => void;
+  onPick: (slot: number) => void;
 }
 
 function GachaPanel({
@@ -339,9 +364,12 @@ function GachaPanel({
   remaining,
   limit,
   bonusCredits,
+  choosing,
+  selectedSlot,
   isPending,
   subscribed,
-  onPull,
+  onStartPick,
+  onPick,
 }: GachaPanelProps) {
   const t = useTranslations("collectionPage");
   const locale = useLocale();
@@ -353,7 +381,7 @@ function GachaPanel({
       ? t("drawDoneToday")
       : canUseBonus
         ? t("drawBonus", { n: bonusCredits })
-        : t("drawCount", { used: remaining, max: limit });
+        : t("drawCount", { used: limit - remaining, max: limit });
 
   return (
     <div className="app-surface space-y-5 rounded-2xl border border-border/60 p-5 shadow-sm sm:p-7">
@@ -366,9 +394,39 @@ function GachaPanel({
             ? t("subDescSubscribed")
             : t("subDescFree")}
         </p>
+        <p className="text-[13px] text-amber-100/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.55)]">
+          {t("bonusDeductNotice")}
+        </p>
       </div>
 
       {/* 카드 플립 */}
+      {choosing && !pulled ? (
+        <div className="grid grid-cols-3 gap-3 sm:gap-4">
+          {[0, 1, 2].map((slot) => (
+            <button
+              key={slot}
+              type="button"
+              onClick={() => onPick(slot)}
+              disabled={isPending}
+              className={cn(
+                "relative aspect-[2/3] overflow-hidden rounded-xl border-2 border-amber-300/55 shadow-lg transition",
+                "hover:-translate-y-1 hover:border-amber-200 hover:shadow-amber-300/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-200",
+                selectedSlot === slot && "scale-[0.98] border-white opacity-80",
+                isPending && selectedSlot !== slot && "opacity-55",
+              )}
+              aria-label={t("pickOneAria", { n: slot + 1 })}
+            >
+              <Image
+                src={BONUS_CARD_BACK_SRC}
+                alt={t("bonusBackAlt")}
+                fill
+                sizes="(min-width: 640px) 160px, 30vw"
+                className="object-cover"
+              />
+            </button>
+          ))}
+        </div>
+      ) : (
       <div className="mx-auto card-flip h-60 w-40 sm:h-72 sm:w-48">
         <div
           className={cn(
@@ -381,17 +439,16 @@ function GachaPanel({
           <div
             className={cn(
               "card-face overflow-hidden rounded-xl border-2 border-amber-400/60",
-              "bg-gradient-to-br from-[oklch(0.32_0.07_300)] via-[oklch(0.22_0.08_290)] to-[oklch(0.18_0.06_280)]",
-              "flex items-center justify-center",
             )}
             aria-hidden={flipped}
           >
-            <div className="flex flex-col items-center gap-2 text-amber-200">
-              <Sparkles className="h-9 w-9 opacity-90" aria-hidden />
-              <span className="font-mystic text-[15px] tracking-widest">
-                FORTUNE
-              </span>
-            </div>
+            <Image
+              src={BONUS_CARD_BACK_SRC}
+              alt={t("bonusBackAlt")}
+              fill
+              sizes="(min-width: 640px) 192px, 160px"
+              className="object-cover"
+            />
           </div>
           {/* 앞면 */}
           <div
@@ -427,7 +484,10 @@ function GachaPanel({
         </div>
       </div>
 
+      )}
+
       {/* 결과 메시지 영역 (높이 고정으로 레이아웃 안정화) */}
+
       <div className="flex min-h-[40px] flex-col items-center justify-center text-center">
         {pulled ? (
           <>
@@ -446,6 +506,10 @@ function GachaPanel({
               </p>
             ) : null}
           </>
+        ) : choosing ? (
+          <p className="text-[15px] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
+            {t("pickOneHint")}
+          </p>
         ) : (
           <p className="text-[15px] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
             {t("resultIdle")}
@@ -457,8 +521,8 @@ function GachaPanel({
         <Button
           type="button"
           size="lg"
-          onClick={onPull}
-          disabled={isPending || exhausted}
+          onClick={onStartPick}
+          disabled={isPending || exhausted || choosing}
           aria-label={t("drawAriaLabel")}
         >
           <Sparkles aria-hidden />

@@ -16,18 +16,18 @@ import {
 } from "@/db/schema";
 import { getLocale, getTranslations } from "next-intl/server";
 import { generateJson } from "@/lib/ai/generate";
-import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
-import { getTodayCharacter } from "@/lib/daily-question/rotation";
+import { NEUTRAL_CARD_VOICE } from "@/lib/ai/character-voice";
 import {
   buildCompatibilityPrompt,
   type PartnerInfo,
 } from "@/lib/ai/prompts";
 import { compatibilityAiSchema } from "@/lib/ai/types";
-import { AI_MODELS } from "@/lib/constants";
+import { AI_MODELS, FREE_DAILY_LIMITS } from "@/lib/constants";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 import { ensureSajuCalculated } from "@/lib/saju/calculate";
+import { checkAndIncrementQuota } from "@/lib/usage/quota";
 
-const FREE_DAILY_COMPATIBILITY = 3;
+const FREE_DAILY_COMPATIBILITY = 0;
 
 export type CompatibilityResult =
   | { ok: true; reading: CompatibilityReading }
@@ -111,6 +111,20 @@ export async function createCompatibility(opts: {
   profile: Profile;
   partner: PartnerInfo;
 }): Promise<CompatibilityResult> {
+  const quota = await checkAndIncrementQuota({
+    userId: opts.profile.userId,
+    kind: "fortune",
+    max: FREE_DAILY_LIMITS.fortune,
+    amount: 2,
+  });
+  if (!quota.ok) {
+    return {
+      ok: false,
+      reason: "quota_exceeded",
+      max: quota.max,
+    };
+  }
+
   // 1) 한도 (구독자는 무제한).
   let subscribed = false;
   try {
@@ -120,7 +134,7 @@ export async function createCompatibility(opts: {
     subscribed = false;
   }
 
-  if (!subscribed) {
+  if (false && !subscribed) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -176,7 +190,7 @@ export async function createCompatibility(opts: {
       }),
       model: AI_MODELS.fast,
       maxTokens: 900,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      systemSuffix: NEUTRAL_CARD_VOICE,
       locale: await getLocale(),
     });
   } catch (e) {

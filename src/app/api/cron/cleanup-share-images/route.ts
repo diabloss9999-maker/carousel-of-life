@@ -4,7 +4,7 @@
  * Vercel Cron 매일 04:00 KST (UTC 19:00 전날):
  *   { "path": "/api/cron/cleanup-share-images", "schedule": "0 19 * * *" }
  *
- * 흐름:
+ * 기운:
  *   1. share-images 버킷에서 24h 이상 된 파일 목록 조회
  *   2. service_role 로 일괄 삭제
  *

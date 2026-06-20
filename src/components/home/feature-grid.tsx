@@ -1,137 +1,311 @@
 import Link from "next/link";
 import type { Route } from "next";
-import { getTranslations } from "next-intl/server";
 import {
-  Sparkles,
-  Sun,
-  Heart,
-  Coins,
-  Briefcase,
-  HeartPulse,
-  GraduationCap,
-  Layers,
-  Hexagon,
-  Flower2,
-  Star,
-  PawPrint,
-  Compass,
-  Hand,
-  HeartHandshake,
-  Users,
-  Signature,
-  Moon,
+  ArrowRight,
   Brain,
-  MessageCircle,
+  Briefcase,
+  CalendarDays,
+  Coins,
+  Compass,
+  Disc3,
+  Flower2,
+  GraduationCap,
+  Hand,
+  Heart,
+  HeartHandshake,
+  HeartPulse,
   Library,
+  MessageCircle,
+  Moon,
+  Sparkles,
+  Star,
+  Sun,
+  TrendingUp,
+  Users,
   type LucideIcon,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-/**
- * 홈(오늘의 운세) 하단 — 모든 기능을 한눈에 보여주는 런처형 그리드.
- *
- * 메뉴 드롭다운에 숨어있던 14개+ 기능을 타일로 펼쳐 모바일 디스커버리를 높인다.
- * 라벨은 기존 nav.* i18n 키를 그대로 재사용한다.
- */
 interface HomeTile {
+  badge?: string;
+  description: string;
+  emphasis?: boolean;
   href: Route;
-  /** next-intl `nav` 네임스페이스 키. */
-  labelKey: string;
   icon: LucideIcon;
+  title: string;
 }
 
 interface HomeSection {
-  title: string;
+  description: string;
+  eyebrow: string;
   tiles: HomeTile[];
+  title: string;
 }
+
+const QUICK_TILES: HomeTile[] = [
+  {
+    href: "/today?category=general" as Route,
+    title: "오늘 종합운",
+    description: "하루의 흐름, 주의할 점, 행운 포인트를 먼저 확인해요.",
+    icon: Sun,
+    badge: "매일",
+    emphasis: true,
+  },
+  {
+    href: "/weekly" as Route,
+    title: "주간 리포트",
+    description: "이번 주 기록과 관심사를 한 번에 정리해요.",
+    icon: TrendingUp,
+    badge: "기록",
+    emphasis: true,
+  },
+  {
+    href: "/tarot#tarot" as Route,
+    title: "타로 카드",
+    description: "지금 마음에 걸리는 질문을 카드로 가볍게 확인해요.",
+    icon: Sparkles,
+    badge: "인기",
+    emphasis: true,
+  },
+];
 
 const SECTIONS: HomeSection[] = [
   {
-    title: "운세",
+    eyebrow: "Daily",
+    title: "오늘 바로 보는 운세",
+    description: "짧게 보고 바로 생활에 적용할 수 있는 운세예요.",
     tiles: [
-      { href: "/today?category=general" as Route, labelKey: "fortuneGeneral", icon: Sun },
-      { href: "/today?category=love" as Route, labelKey: "fortuneLove", icon: Heart },
-      { href: "/today?category=money" as Route, labelKey: "fortuneMoney", icon: Coins },
-      { href: "/today?category=career" as Route, labelKey: "fortuneCareer", icon: Briefcase },
-      { href: "/today?category=health" as Route, labelKey: "fortuneHealth", icon: HeartPulse },
-      { href: "/today?category=study" as Route, labelKey: "fortuneStudy", icon: GraduationCap },
-      { href: "/today?category=zodiac" as Route, labelKey: "zodiac", icon: Star },
       {
-        href: "/today?category=chinese_zodiac" as Route,
-        labelKey: "chineseZodiac",
-        icon: PawPrint,
+        href: "/today?category=love" as Route,
+        title: "연애운",
+        description: "마음의 방향과 관계 분위기",
+        icon: Heart,
+      },
+      {
+        href: "/today?category=money" as Route,
+        title: "금전운",
+        description: "소비, 기회, 조율할 지점",
+        icon: Coins,
+      },
+      {
+        href: "/today?category=career" as Route,
+        title: "커리어운",
+        description: "일의 흐름과 선택 포인트",
+        icon: Briefcase,
+      },
+      {
+        href: "/today?category=health" as Route,
+        title: "건강운",
+        description: "컨디션과 관리 신호",
+        icon: HeartPulse,
+      },
+      {
+        href: "/today?category=study" as Route,
+        title: "공부운",
+        description: "집중력을 쓰는 방식",
+        icon: GraduationCap,
+      },
+      {
+        href: "/today?category=zodiac" as Route,
+        title: "별자리운",
+        description: "별자리로 보는 하루 분위기",
+        icon: Star,
+      },
+      {
+        href: "/monthly" as Route,
+        title: "월간운세",
+        description: "이번 달 흐름과 주차별 방향",
+        icon: CalendarDays,
+      },
+      {
+        href: "/yearly" as Route,
+        title: "2026 연간운세",
+        description: "한 해의 흐름과 분기별 방향",
+        icon: Sparkles,
       },
     ],
   },
   {
-    title: "카드 점술",
+    eyebrow: "Deep Reading",
+    title: "깊게 보는 리포트",
+    description: "사주, 궁합, 이름처럼 오래 저장하고 다시 보기 좋은 콘텐츠예요.",
     tiles: [
-      { href: "/tarot#tarot" as Route, labelKey: "tarot", icon: Sparkles },
-      { href: "/tarot#lenormand" as Route, labelKey: "lenormand", icon: Layers },
-      { href: "/tarot#runes" as Route, labelKey: "runes", icon: Hexagon },
-      { href: "/flower-oracle" as Route, labelKey: "flowerOracle", icon: Flower2 },
+      {
+        href: "/saju" as Route,
+        title: "내 사주 리포트",
+        description: "타고난 기질과 흐름 정리",
+        icon: Compass,
+      },
+      {
+        href: "/compatibility" as Route,
+        title: "두 사람 궁합",
+        description: "나와 상대의 관계 흐름",
+        icon: HeartHandshake,
+      },
+      {
+        href: "/name-compatibility" as Route,
+        title: "이름 궁합",
+        description: "이름의 울림으로 보는 관계감",
+        icon: Users,
+      },
+      {
+        href: "/name-reading" as Route,
+        title: "이름 풀이",
+        description: "이름이 주는 인상과 결",
+        icon: Brain,
+      },
+      {
+        href: "/personality" as Route,
+        title: "성격 분석",
+        description: "MBTI와 성향을 현실적으로 정리",
+        icon: Brain,
+      },
+      {
+        href: "/palm" as Route,
+        title: "손금 보기",
+        description: "사진으로 보는 손바닥의 흐름",
+        icon: Hand,
+      },
+      {
+        href: "/dream" as Route,
+        title: "꿈해몽",
+        description: "꿈의 상징과 감정 해석",
+        icon: Moon,
+      },
     ],
   },
   {
-    title: "사주 · 심층",
+    eyebrow: "Light Oracle",
+    title: "가볍게 열어보는 점술",
+    description: "부담 없이 보고 기록에 남기기 좋은 짧은 콘텐츠예요.",
     tiles: [
-      { href: "/saju" as Route, labelKey: "saju", icon: Compass },
-      { href: "/palm" as Route, labelKey: "palm", icon: Hand },
-      { href: "/compatibility" as Route, labelKey: "compatibility", icon: HeartHandshake },
-      { href: "/name-compatibility" as Route, labelKey: "nameCompatibility", icon: Users },
-      { href: "/name-reading" as Route, labelKey: "nameReading", icon: Signature },
-      { href: "/dream" as Route, labelKey: "dream", icon: Moon },
-      { href: "/personality" as Route, labelKey: "personality", icon: Brain },
+      {
+        href: "/flower-oracle" as Route,
+        title: "오늘의 꽃점",
+        description: "꽃으로 보는 오늘의 힌트",
+        icon: Flower2,
+      },
+      {
+        href: "/today?category=chinese_zodiac" as Route,
+        title: "띠운세",
+        description: "띠로 보는 오늘의 조율점",
+        icon: Star,
+      },
     ],
   },
   {
-    title: "대화 · 기록",
+    eyebrow: "Carousel Nine",
+    title: "Carousel Nine 콘텐츠",
+    description: "운세와 분리해서 즐기는 멤버 콘텐츠예요.",
     tiles: [
-      { href: "/chat" as Route, labelKey: "shaman", icon: MessageCircle },
-      { href: "/collection" as Route, labelKey: "archive", icon: Library },
+      {
+        href: "/chat" as Route,
+        title: "멤버 대화",
+        description: "좋아하는 멤버와 자연스럽게 대화",
+        icon: MessageCircle,
+      },
+      {
+        href: "/group" as Route,
+        title: "단체방",
+        description: "여러 멤버가 함께 말하는 채팅",
+        icon: Users,
+      },
+      {
+        href: "/album" as Route,
+        title: "앨범",
+        description: "Carousel Nine 음악 감상",
+        icon: Disc3,
+      },
+      {
+        href: "/collection" as Route,
+        title: "보너스",
+        description: "내가 본 기록과 카드 모아보기",
+        icon: Library,
+      },
     ],
   },
 ];
 
-export async function FeatureGrid() {
-  const tNav = await getTranslations("nav");
-
+export function FeatureGrid() {
   return (
-    <section aria-label="모든 기능" className="space-y-5" data-fracture="home-features">
-      <h2 className="font-mystic text-xl font-semibold tracking-tight flex items-center gap-2">
-        <Sparkles className="h-5 w-5 opacity-70" aria-hidden />
-        모든 기능
-      </h2>
+    <div className="space-y-7">
+      <section className="grid gap-3 sm:grid-cols-3" aria-label="추천 운세">
+        {QUICK_TILES.map((tile) => (
+          <FeatureTile key={tile.href as string} compact={false} tile={tile} />
+        ))}
+      </section>
 
       {SECTIONS.map((section) => (
-        <div key={section.title} className="space-y-2.5">
-          <p className="text-[13px] font-semibold tracking-wide text-muted-foreground/80">
-            {section.title}
-          </p>
-          <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-4 md:grid-cols-6">
-            {section.tiles.map((tile) => {
-              const Icon = tile.icon;
-              return (
-                <Link
-                  key={tile.href as string}
-                  href={tile.href}
-                  className={cn(
-                    "app-surface flex min-h-[88px] flex-col items-center justify-center gap-2",
-                    "rounded-2xl px-2 py-4 text-center",
-                    "transition-transform duration-150 hover:ring-1 hover:ring-primary/30 active:scale-95",
-                  )}
-                >
-                  <Icon className="h-6 w-6 opacity-80" aria-hidden />
-                  <span className="text-[13px] font-medium leading-tight">
-                    {tNav(tile.labelKey)}
-                  </span>
-                </Link>
-              );
-            })}
+        <section
+          key={section.title}
+          className="space-y-3"
+          aria-labelledby={`${section.eyebrow}-heading`}
+        >
+          <div className="space-y-1">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.22em] text-primary/70">
+              {section.eyebrow}
+            </p>
+            <h2
+              id={`${section.eyebrow}-heading`}
+              className="text-xl font-semibold tracking-tight"
+            >
+              {section.title}
+            </h2>
+            <p className="text-[15px] leading-6 text-muted-foreground">
+              {section.description}
+            </p>
           </div>
-        </div>
+          <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+            {section.tiles.map((tile) => (
+              <FeatureTile key={tile.href as string} compact tile={tile} />
+            ))}
+          </div>
+        </section>
       ))}
-    </section>
+    </div>
+  );
+}
+
+function FeatureTile({ compact, tile }: { compact: boolean; tile: HomeTile }) {
+  const Icon = tile.icon;
+
+  return (
+    <Link
+      href={tile.href}
+      className={cn(
+        "app-surface group flex min-h-[92px] items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-left",
+        "transition-transform duration-150 hover:-translate-y-0.5 hover:ring-1 hover:ring-primary/30 active:scale-[0.99]",
+        tile.emphasis && "border-primary/30 bg-primary/10",
+        !compact && "sm:min-h-[132px] sm:flex-col sm:items-start sm:justify-between",
+      )}
+    >
+      <span
+        className={cn(
+          "flex min-w-0 gap-3",
+          compact ? "items-center" : "items-start",
+        )}
+      >
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/20">
+          <Icon className="h-5 w-5 opacity-85" aria-hidden />
+        </span>
+        <span className="min-w-0 space-y-1">
+          <span className="flex items-center gap-2">
+            <span className="text-[15px] font-semibold leading-tight">
+              {tile.title}
+            </span>
+            {tile.badge ? (
+              <span className="rounded-full border border-primary/25 px-2 py-0.5 text-[11px] font-semibold text-primary">
+                {tile.badge}
+              </span>
+            ) : null}
+          </span>
+          <span className="block text-[13px] leading-5 text-muted-foreground">
+            {tile.description}
+          </span>
+        </span>
+      </span>
+      <ArrowRight className="h-4 w-4 shrink-0 opacity-50 transition-transform group-hover:translate-x-0.5" aria-hidden />
+    </Link>
   );
 }

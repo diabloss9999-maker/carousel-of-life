@@ -1,8 +1,5 @@
 "use server";
 
-/**
- * 사주 페이지 — 사주 캐시 + 심층 분석 액션.
- */
 import { revalidatePath } from "next/cache";
 import { getLocale, getTranslations } from "next-intl/server";
 
@@ -11,11 +8,16 @@ import { z } from "zod";
 
 import { db } from "@/db";
 import { dailyIljin, profiles } from "@/db/schema";
+import { generateJson } from "@/lib/ai/generate";
+import { iljinAiSchema, type IljinAiOutput } from "@/lib/ai/types";
+import {
+  NEUTRAL_SAJU_VOICE,
+  NEUTRAL_SAJU_VOICE_ID,
+} from "@/lib/ai/character-voice";
+import { AI_MODELS } from "@/lib/constants";
 import { requireProfile } from "@/lib/auth/get-user";
-import { enforceAiRateLimit, RateLimitedError } from "@/lib/rate-limit/in-memory";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
-import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
-import { getTodayCharacter } from "@/lib/daily-question/rotation";
+import { enforceAiRateLimit, RateLimitedError } from "@/lib/rate-limit/in-memory";
 import { calculateSaju } from "@/lib/saju/calculate";
 import { getOrCreateDeepReading } from "@/lib/saju/deep-reading";
 import { annotateHanjaDeep } from "@/lib/saju/hanja-annotate";
@@ -24,9 +26,6 @@ import {
   analyzeDayRelationship,
   type RelationshipResult,
 } from "@/lib/saju/relationships";
-import { iljinAiSchema, type IljinAiOutput } from "@/lib/ai/types";
-import { generateJson } from "@/lib/ai/generate";
-import { AI_MODELS } from "@/lib/constants";
 
 export interface CalculateSajuState {
   kind: "idle" | "error";
@@ -47,24 +46,20 @@ export async function calculateSajuAction(): Promise<CalculateSajuState> {
     return {
       kind: "error",
       message:
-        "사주를 계산하지 못했어: " +
+        "사주를 계산하지 못했어요. " +
         (e instanceof Error ? e.message : "알 수 없는 원인"),
     };
   }
 }
 
-/**
- * 사주 캐시를 초기화하고 재계산한다.
- */
 export async function resetSajuAction(): Promise<CalculateSajuState> {
   try {
     const { profile } = await requireProfile();
-    // 기존 캐시 초기화
     await db
       .update(profiles)
       .set({ sajuPillars: null, fiveElements: null, sajuDeepReading: null })
       .where(eq(profiles.userId, profile.userId));
-    // 재계산
+
     const saju = await calculateSaju(profile);
     await db
       .update(profiles)
@@ -76,7 +71,7 @@ export async function resetSajuAction(): Promise<CalculateSajuState> {
     return {
       kind: "error",
       message:
-        "재계산에 실패했어: " +
+        "사주를 다시 계산하지 못했어요. " +
         (e instanceof Error ? e.message : "알 수 없는 원인"),
     };
   }
@@ -85,16 +80,9 @@ export async function resetSajuAction(): Promise<CalculateSajuState> {
 export interface DeepReadingState {
   kind: "idle" | "error";
   message?: string;
-  /** true 면 비구독자 — 결제 CTA 표시. */
   premiumOnly?: boolean;
 }
 
-/**
- * 사주 심층 분석 생성/조회.
- *
- * - 비구독자: premiumOnly = true 반환 (UI 가 결제 CTA 표시)
- * - 구독자: 캐시 또는 신규 생성
- */
 export async function generateDeepReadingAction(): Promise<DeepReadingState> {
   const { profile } = await requireProfile();
 
@@ -102,7 +90,10 @@ export async function generateDeepReadingAction(): Promise<DeepReadingState> {
     enforceAiRateLimit(profile.userId, "saju");
   } catch (e) {
     if (e instanceof RateLimitedError) {
-      return { kind: "error", message: `잠시 후 다시 시도해줘. (${e.retryAfterSec}s)` };
+      return {
+        kind: "error",
+        message: `잠시 후 다시 시도해주세요. (${e.retryAfterSec}s)`,
+      };
     }
     throw e;
   }
@@ -129,10 +120,6 @@ export async function generateDeepReadingAction(): Promise<DeepReadingState> {
   return { kind: "idle" };
 }
 
-// =============================================================================
-// 오늘의 일진 × 내 사주 (라이트)
-// =============================================================================
-
 export interface IljinState {
   kind: "idle" | "success" | "error";
   data?: IljinAiOutput;
@@ -141,6 +128,7 @@ export interface IljinState {
 }
 
 const iljinCacheSchema = z.object({
+  voice: z.literal(NEUTRAL_SAJU_VOICE_ID),
   aiOutput: iljinAiSchema,
   relationships: z.array(
     z.object({
@@ -152,10 +140,6 @@ const iljinCacheSchema = z.object({
   ),
 });
 
-/**
- * 오늘 일진(日柱)과 내 사주의 충·합 관계를 분석하고 AI 해석을 생성한다.
- * 하루 1회 캐시.
- */
 export async function generateIljinAction(): Promise<IljinState> {
   try {
     const { profile } = await requireProfile();
@@ -170,12 +154,10 @@ export async function generateIljinAction(): Promise<IljinState> {
       return { kind: "error", message: tErr("sajuRequired") };
     }
 
-    // KST 기준 오늘 날짜 (YYYY-MM-DD)
     const today = new Date().toLocaleDateString("sv-SE", {
       timeZone: "Asia/Seoul",
     });
 
-    // 캐시 조회
     const [cached] = await db
       .select()
       .from(dailyIljin)
@@ -198,10 +180,7 @@ export async function generateIljinAction(): Promise<IljinState> {
       }
     }
 
-    // 오늘 일주 계산
     const todayPillar = getDayPillar(new Date());
-
-    // 사주 4기둥
     const pillars = profile.sajuPillars as {
       year: { stem: string; branch: string } | null;
       month: { stem: string; branch: string } | null;
@@ -209,43 +188,42 @@ export async function generateIljinAction(): Promise<IljinState> {
       hour: { stem: string; branch: string } | null;
     };
 
-    // 충·합 분석
     const relationships = analyzeDayRelationship(
       todayPillar.stemIdx,
       todayPillar.branchIdx,
       pillars,
     );
 
-    // AI 프롬프트
     const relText = relationships
       .map((r) => `${r.description}: ${r.detail}`)
       .join("\n");
 
     const userPrompt = `사용자 정보:
-- 일주(日柱): ${pillars.day?.stem ?? ""}${pillars.day?.branch ?? ""}
-- 전체 사주: 년${pillars.year?.stem ?? ""}${pillars.year?.branch ?? ""} 월${pillars.month?.stem ?? ""}${pillars.month?.branch ?? ""} 일${pillars.day?.stem ?? ""}${pillars.day?.branch ?? ""} 시${pillars.hour?.stem ?? ""}${pillars.hour?.branch ?? ""}
+- 일주: ${pillars.day?.stem ?? ""}${pillars.day?.branch ?? ""}
+- 전체 사주: 년 ${pillars.year?.stem ?? ""}${pillars.year?.branch ?? ""} / 월 ${pillars.month?.stem ?? ""}${pillars.month?.branch ?? ""} / 일 ${pillars.day?.stem ?? ""}${pillars.day?.branch ?? ""} / 시 ${pillars.hour?.stem ?? ""}${pillars.hour?.branch ?? ""}
 
 오늘 일주: ${todayPillar.stemHanja}${todayPillar.branchHanja}일 (${todayPillar.stemKo}${todayPillar.branchKo})
 
-충·합 분석 결과:
-${relText}
+충합 관계 분석:
+${relText || "특별히 강하게 드러나는 충합 관계는 없습니다."}
 
-위 분석을 바탕으로 오늘 이 사람의 일진을 해석해줘.
-모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼. 예언 투 금지.
+오늘 하루를 사주 일진 관점에서 해석해주세요.
+특정 멤버, 아이돌, 팬서비스, 무대 설정은 언급하지 마세요.
+차분한 존댓말 리포트 톤으로 쓰고, 예언처럼 단정하지 마세요.
+사용자가 오늘 바로 참고할 수 있는 행동 기준을 먼저 주세요.
 
-[한자 표기 규칙 — 매우 중요]
-응답에 천간(甲乙丙丁戊己庚辛壬癸)·지지(子丑寅卯辰巳午未申酉戌亥)·오행(木火土金水)·음양(陰陽) 한자가 등장할 때는 반드시 한자 바로 뒤에 한글 음을 괄호로 병기한다. 한국인 대부분이 한자를 못 읽기 때문.
-예: 甲(갑), 子(자), 庚辛(경신), 木(목), 陽(양), 辛未(신미)일
-한자만 단독으로 쓰지 말 것.
+한자 표기 규칙:
+- todayPillar 필드에는 "${todayPillar.stemHanja}${todayPillar.branchHanja}일"처럼 짧게 넣어주세요.
+- 본문은 전문용어를 남발하지 말고 쉬운 한국어로 설명해주세요.
 
-마크다운 없이 JSON만. overallEnergy 는 locale 무관 영문 enum 으로:
+마크다운 없이 JSON만 반환하세요.
 {
   "todayPillar": "${todayPillar.stemHanja}${todayPillar.branchHanja}일",
   "overallEnergy": "positive" 또는 "neutral" 또는 "caution",
-  "mainMessage": "오늘 일진의 핵심 한두 문장",
-  "advice": "오늘 하루 어떻게 지내면 좋을지 구체적 조언 2~3문장",
+  "mainMessage": "오늘 일진의 핵심을 두 문장으로",
+  "advice": "오늘 하루를 어떻게 지내면 좋을지 구체적인 조언 2~3문장",
   "luckyTime": "어느 시간대가 좋은지",
-  "caution": "주의할 것 한 문장"
+  "caution": "주의할 점 한 문장"
 }`;
 
     const rawAiOutput = await generateJson({
@@ -253,14 +231,17 @@ ${relText}
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 800,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      systemSuffix: NEUTRAL_SAJU_VOICE,
       locale: await getLocale(),
     });
 
-    // 한자 옆에 한글 음 자동 병기 (AI 프롬프트로도 지시하지만 보안망).
     const aiOutput: IljinAiOutput = annotateHanjaDeep(rawAiOutput);
 
-    const saveData = { aiOutput, relationships };
+    const saveData = {
+      voice: NEUTRAL_SAJU_VOICE_ID,
+      aiOutput,
+      relationships,
+    };
 
     if (cached) {
       await db
@@ -282,7 +263,10 @@ ${relText}
   } catch (e) {
     return {
       kind: "error",
-      message: e instanceof Error ? e.message : (await getTranslations("actionErrors"))("iljinError"),
+      message:
+        e instanceof Error
+          ? e.message
+          : (await getTranslations("actionErrors"))("iljinError"),
     };
   }
 }

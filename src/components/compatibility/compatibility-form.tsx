@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
-import { Heart, Loader2 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { Heart, Loader2, MessageCircle, Sparkles, UsersRound } from "lucide-react";
 
+import {
+  submitCompatibilityAction,
+  type CompatibilityActionState,
+} from "@/app/(dashboard)/compatibility/actions";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,10 +22,6 @@ import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { useScrollToResult } from "@/hooks/use-scroll-to-result";
 import { ROUTES } from "@/lib/constants";
-import {
-  submitCompatibilityAction,
-  type CompatibilityActionState,
-} from "@/app/(dashboard)/compatibility/actions";
 
 const initial: CompatibilityActionState = { kind: "idle" };
 
@@ -31,7 +30,6 @@ export function CompatibilityForm() {
     submitCompatibilityAction,
     initial,
   );
-  const t = useTranslations("compatibilityForm");
 
   useScrollToResult(isPending, "compat-result", 800);
 
@@ -40,34 +38,65 @@ export function CompatibilityForm() {
       <CardHeader>
         <CardTitle className="font-mystic flex items-center gap-2 text-lg">
           <Heart className="h-5 w-5 text-accent" aria-hidden />
-          {t("heading")}
+          새 궁합 보기
         </CardTitle>
         <CardDescription className="text-[15px]">
-          {t("body")}
+          상대의 기본 정보를 입력하면 관계의 분위기와 조심할 지점을 정리해요.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-4">
+        <div className="grid gap-2 sm:grid-cols-3">
+          {[
+            {
+              icon: UsersRound,
+              title: "관계의 결",
+              body: "두 사람이 편하게 맞는 지점을 먼저 살펴봐요.",
+            },
+            {
+              icon: Sparkles,
+              title: "끌림과 거리감",
+              body: "어디서 가까워지고 어디서 엇갈리는지 정리해요.",
+            },
+            {
+              icon: MessageCircle,
+              title: "다가가는 방식",
+              body: "오늘 어떻게 말을 꺼내면 좋을지 힌트를 얻어요.",
+            },
+          ].map(({ icon: Icon, title, body }) => (
+            <div
+              key={title}
+              className="rounded-2xl border border-white/10 bg-white/[0.05] px-3 py-3"
+            >
+              <div className="flex items-center gap-2 text-primary">
+                <Icon className="h-4 w-4 shrink-0" aria-hidden />
+                <p className="text-[13px] font-semibold text-foreground">
+                  {title}
+                </p>
+              </div>
+              <p className="mt-1 text-[12px] leading-5 text-muted-foreground">
+                {body}
+              </p>
+            </div>
+          ))}
+        </div>
+
         <form action={formAction} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="partnerName">
-              {t("name")}
-            </Label>
+            <Label htmlFor="partnerName">상대 이름</Label>
             <Input
               id="partnerName"
               name="partnerName"
               type="text"
               maxLength={40}
               required
-              placeholder={t("namePlaceholder")}
+              placeholder="예: 민지"
               disabled={isPending}
             />
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="partnerBirthDate">
-                {t("birthDate")}
-              </Label>
+              <Label htmlFor="partnerBirthDate">생년월일</Label>
               <Input
                 id="partnerBirthDate"
                 name="partnerBirthDate"
@@ -78,7 +107,7 @@ export function CompatibilityForm() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="partnerBirthTime">{t("birthTime")}</Label>
+              <Label htmlFor="partnerBirthTime">태어난 시간 선택 입력</Label>
               <Input
                 id="partnerBirthTime"
                 name="partnerBirthTime"
@@ -90,9 +119,7 @@ export function CompatibilityForm() {
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="partnerCalendarSystem">
-                {t("calendar")}
-              </Label>
+              <Label htmlFor="partnerCalendarSystem">달력</Label>
               <Select
                 id="partnerCalendarSystem"
                 name="partnerCalendarSystem"
@@ -100,14 +127,12 @@ export function CompatibilityForm() {
                 required
                 disabled={isPending}
               >
-                <option value="solar">{t("calendarSolar")}</option>
-                <option value="lunar">{t("calendarLunar")}</option>
+                <option value="solar">양력</option>
+                <option value="lunar">음력</option>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="partnerGender">
-                {t("gender")}
-              </Label>
+              <Label htmlFor="partnerGender">성별</Label>
               <Select
                 id="partnerGender"
                 name="partnerGender"
@@ -116,23 +141,23 @@ export function CompatibilityForm() {
                 disabled={isPending}
               >
                 <option value="" disabled>
-                  {t("genderPick")}
+                  선택
                 </option>
-                <option value="male">{t("genderMale")}</option>
-                <option value="female">{t("genderFemale")}</option>
-                <option value="other">{t("genderOther")}</option>
+                <option value="male">남성</option>
+                <option value="female">여성</option>
+                <option value="other">기타</option>
               </Select>
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="partnerMbti">{t("mbti")}</Label>
+            <Label htmlFor="partnerMbti">MBTI 선택 입력</Label>
             <Input
               id="partnerMbti"
               name="partnerMbti"
               type="text"
               maxLength={4}
-              placeholder={t("mbtiPlaceholder")}
+              placeholder="예: ENFP"
               className="uppercase"
               disabled={isPending}
             />
@@ -145,15 +170,15 @@ export function CompatibilityForm() {
               />
               {state.quotaExceeded ? (
                 <Button asChild className="w-full" variant="outline">
-                  <Link href={ROUTES.pricing}>{t("upgradeCta")}</Link>
+                  <Link href={ROUTES.pricing}>플랜 확인하기</Link>
                 </Button>
               ) : null}
             </div>
           ) : null}
 
-          {state.kind === "done" ? (
-            <p className="text-[15px] text-center text-emerald-500 font-medium">
-              {t("doneNotice")}
+          {state.kind === "done" && !state.reading ? (
+            <p className="text-center text-[15px] font-medium text-emerald-500">
+              궁합 결과를 불러왔어요.
             </p>
           ) : null}
 
@@ -166,12 +191,12 @@ export function CompatibilityForm() {
             {isPending ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                {t("submitLoading")}
+                궁합 보는 중
               </>
             ) : (
               <>
                 <Heart className="h-4 w-4" aria-hidden />
-                {t("submitCta")}
+                궁합 보기
               </>
             )}
           </Button>

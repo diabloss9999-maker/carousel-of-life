@@ -62,7 +62,7 @@ function Gauge({ value }: { value: number }) {
  *
  * - 비라이트 사용자: 흐릿한 미리보기 + 라이트 유도 CTA를 표시한다.
  * - 라이트 + 미생성: "리포트 받기" 버튼을 표시한다.
- * - 라이트 + 생성됨: 4개 섹션(에너지/타이밍/주간흐름/관계운) + 팁 3가지를 표시한다.
+ * - 라이트 + 생성됨: 4개 섹션(에너지/타이밍/주간기운/관계운) + 팁 3가지를 표시한다.
  */
 export function CareerTips({ subscribed }: CareerTipsProps) {
   const [report, setReport] = useState<CareerReportOutput | null>(null);
@@ -235,7 +235,7 @@ export function CareerTips({ subscribed }: CareerTipsProps) {
           </p>
         </section>
 
-        {/* ③ 이번 주 직장 흐름 */}
+        {/* ③ 이번 주 직장운 */}
         <section className="space-y-3">
           <h3 className="font-mystic flex items-center gap-2 text-[15px] font-semibold">
             <CalendarDays className="h-4 w-4 text-primary" aria-hidden />

@@ -1,7 +1,5 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -18,38 +16,76 @@ interface FiveElementsChartProps {
 }
 
 const ELEMENTS = [
-  { key: "wood"  as const, tKey: "wood",  hanja: "木", stroke: "#34d399", glow: "#34d399", textClass: "text-emerald-400", dotClass: "bg-emerald-400" },
-  { key: "fire"  as const, tKey: "fire",  hanja: "火", stroke: "#f87171", glow: "#f87171", textClass: "text-red-400",     dotClass: "bg-red-400" },
-  { key: "earth" as const, tKey: "earth", hanja: "土", stroke: "#fbbf24", glow: "#fbbf24", textClass: "text-amber-400",   dotClass: "bg-amber-400" },
-  { key: "metal" as const, tKey: "metal", hanja: "金", stroke: "#94a3b8", glow: "#94a3b8", textClass: "text-slate-400",   dotClass: "bg-slate-400" },
-  { key: "water" as const, tKey: "water", hanja: "水", stroke: "#38bdf8", glow: "#38bdf8", textClass: "text-sky-400",     dotClass: "bg-sky-400" },
+  {
+    key: "wood" as const,
+    label: "목",
+    desc: "성장",
+    color: "#34d399",
+    textClass: "text-emerald-400",
+    dotClass: "bg-emerald-400",
+  },
+  {
+    key: "fire" as const,
+    label: "화",
+    desc: "표현",
+    color: "#f87171",
+    textClass: "text-red-400",
+    dotClass: "bg-red-400",
+  },
+  {
+    key: "earth" as const,
+    label: "토",
+    desc: "안정",
+    color: "#fbbf24",
+    textClass: "text-amber-400",
+    dotClass: "bg-amber-400",
+  },
+  {
+    key: "metal" as const,
+    label: "금",
+    desc: "기준",
+    color: "#94a3b8",
+    textClass: "text-slate-400",
+    dotClass: "bg-slate-400",
+  },
+  {
+    key: "water" as const,
+    label: "수",
+    desc: "유연함",
+    color: "#38bdf8",
+    textClass: "text-sky-400",
+    dotClass: "bg-sky-400",
+  },
 ];
 
 const R = 30;
 const CX = 40;
 const CY = 40;
-const CIRC = 2 * Math.PI * R; // ≈ 188.5
+const CIRC = 2 * Math.PI * R;
 
 interface GaugeRingProps {
-  pct: number;
-  stroke: string;
-  glow: string;
-  isStrongest: boolean;
+  color: string;
   isEmpty: boolean;
-  hanja: string;
-  textClass: string;
+  isStrongest: boolean;
+  label: string;
+  pct: number;
 }
 
-function GaugeRing({ pct, stroke, glow, isStrongest, isEmpty, hanja }: Omit<GaugeRingProps, "textClass">) {
+function GaugeRing({
+  color,
+  isEmpty,
+  isStrongest,
+  label,
+  pct,
+}: GaugeRingProps) {
   const offset = CIRC * (1 - pct / 100);
 
   return (
     <svg
       viewBox="0 0 80 80"
-      className="w-full h-full"
+      className="h-full w-full"
       style={{ transform: "rotate(-90deg)" }}
     >
-      {/* 배경 트랙 */}
       <circle
         cx={CX}
         cy={CY}
@@ -58,69 +94,66 @@ function GaugeRing({ pct, stroke, glow, isStrongest, isEmpty, hanja }: Omit<Gaug
         stroke="rgba(255,255,255,0.07)"
         strokeWidth={5}
       />
-      {/* 진행 링 */}
-      {!isEmpty && (
+      {!isEmpty ? (
         <circle
           cx={CX}
           cy={CY}
           r={R}
           fill="none"
-          stroke={stroke}
+          stroke={color}
           strokeWidth={5}
           strokeLinecap="round"
           strokeDasharray={CIRC}
           strokeDashoffset={offset}
           style={{
-            filter: isStrongest
-              ? `drop-shadow(0 0 6px ${glow})`
-              : undefined,
+            filter: isStrongest ? `drop-shadow(0 0 6px ${color})` : undefined,
           }}
         />
-      )}
-      {/* 한자 (rotate 보정) */}
+      ) : null}
       <text
         x={CX}
         y={CY}
         textAnchor="middle"
         dominantBaseline="central"
         style={{
-          transform: `rotate(90deg)`,
+          transform: "rotate(90deg)",
           transformOrigin: `${CX}px ${CY}px`,
           fontFamily: "var(--font-serif), serif",
           fontSize: isEmpty ? "14px" : "16px",
           fontWeight: "700",
-          fill: isEmpty ? "rgba(255,255,255,0.2)" : stroke,
-          filter: isStrongest ? `drop-shadow(0 0 6px ${glow})` : undefined,
+          fill: isEmpty ? "rgba(255,255,255,0.25)" : color,
+          filter: isStrongest ? `drop-shadow(0 0 6px ${color})` : undefined,
         }}
       >
-        {hanja}
+        {label}
       </text>
     </svg>
   );
 }
 
 export function FiveElementsChart({ elements }: FiveElementsChartProps) {
-  const t = useTranslations("fiveElements");
   const total = ELEMENTS.reduce((s, e) => s + elements[e.key], 0) || 1;
   const sorted = [...ELEMENTS].sort((a, b) => elements[b.key] - elements[a.key]);
   const strongest = sorted[0]!;
   const weakest = sorted[sorted.length - 1]!;
-  const strongestLabel = t(strongest.tKey as "wood" | "fire" | "earth" | "metal" | "water");
-  const weakestLabel = t(weakest.tKey as "wood" | "fire" | "earth" | "metal" | "water");
 
   return (
     <Card className="border-white/20 bg-white/10 shadow-none backdrop-blur-md">
-      <CardContent className="pt-5 space-y-5">
-        {/* 헤더 */}
+      <CardContent className="space-y-5 pt-5">
         <div className="flex items-center justify-between">
           <div>
-            <p className="font-mystic text-xl font-semibold text-foreground/90">{t("heading")}</p>
-            <p className="text-[15px] text-muted-foreground mt-0.5">{t("subheading", { total })}</p>
+            <p className="font-mystic text-xl font-semibold text-foreground/90">
+              오행 균형
+            </p>
+            <p className="mt-0.5 text-[15px] text-muted-foreground">
+              전체 {total}개 기운을 기준으로 정리했어요.
+            </p>
           </div>
-          <span className="text-[15px] text-muted-foreground/50 font-medium">五行</span>
+          <span className="text-[15px] font-medium text-muted-foreground/50">
+            오행
+          </span>
         </div>
 
-        {/* 원형 게이지 5개 */}
         <div className="grid grid-cols-5 gap-1">
           {ELEMENTS.map((el) => {
             const count = elements[el.key];
@@ -130,18 +163,15 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
 
             return (
               <div key={el.key} className="flex flex-col items-center gap-1.5">
-                {/* 원형 게이지 */}
-                <div className="relative w-14 h-14 sm:w-16 sm:h-16">
+                <div className="relative h-14 w-14 sm:h-16 sm:w-16">
                   <GaugeRing
                     pct={pct}
-                    stroke={el.stroke}
-                    glow={el.glow}
+                    color={el.color}
                     isStrongest={isStrongest}
                     isEmpty={isEmpty}
-                    hanja={el.hanja}
+                    label={el.label}
                   />
                 </div>
-                {/* 이름 + 숫자 */}
                 <div className="text-center">
                   <p
                     className={cn(
@@ -149,11 +179,14 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
                       isEmpty ? "text-muted-foreground/60" : el.textClass,
                     )}
                   >
-                    {t(el.tKey as "wood" | "fire" | "earth" | "metal" | "water")}
+                    {el.label}
+                  </p>
+                  <p className="mt-0.5 text-[11px] text-muted-foreground">
+                    {el.desc}
                   </p>
                   <p
                     className={cn(
-                      "font-mystic text-base font-bold leading-tight mt-0.5",
+                      "mt-0.5 font-mystic text-base font-bold leading-tight",
                       isEmpty ? "text-muted-foreground/60" : el.textClass,
                     )}
                   >
@@ -165,26 +198,33 @@ export function FiveElementsChart({ elements }: FiveElementsChartProps) {
           })}
         </div>
 
-        {/* 강한/약한 기운 */}
         <div className="flex gap-3">
-          <div className="flex-1 rounded-xl bg-white/10 backdrop-blur border border-white/20 px-3 py-2.5">
-            <p className="text-[15px] text-muted-foreground/80 mb-1.5">{t("strong")}</p>
+          <div className="flex-1 rounded-xl border border-white/20 bg-white/10 px-3 py-2.5 backdrop-blur">
+            <p className="mb-1.5 text-[15px] text-muted-foreground/80">
+              강한 기운
+            </p>
             <div className="flex items-center gap-1.5">
-              <span className={cn("h-2 w-2 rounded-full flex-shrink-0", strongest.dotClass)} />
-              <span className={cn("font-mystic font-bold text-[15px]", strongest.textClass)}>
-                {strongestLabel}
+              <span className={cn("h-2 w-2 shrink-0 rounded-full", strongest.dotClass)} />
+              <span className={cn("font-mystic text-[15px] font-bold", strongest.textClass)}>
+                {strongest.label}
               </span>
-              <span className="text-[15px] text-muted-foreground/70">{strongest.hanja}</span>
+              <span className="text-[15px] text-muted-foreground/70">
+                {strongest.desc}
+              </span>
             </div>
           </div>
-          <div className="flex-1 rounded-xl bg-white/10 backdrop-blur border border-white/20 px-3 py-2.5">
-            <p className="text-[15px] text-muted-foreground/80 mb-1.5">{t("weak")}</p>
+          <div className="flex-1 rounded-xl border border-white/20 bg-white/10 px-3 py-2.5 backdrop-blur">
+            <p className="mb-1.5 text-[15px] text-muted-foreground/80">
+              보완할 기운
+            </p>
             <div className="flex items-center gap-1.5">
-              <span className={cn("h-2 w-2 rounded-full flex-shrink-0 opacity-50", weakest.dotClass)} />
-              <span className={cn("font-mystic font-semibold text-[15px] opacity-60", weakest.textClass)}>
-                {weakestLabel}
+              <span className={cn("h-2 w-2 shrink-0 rounded-full opacity-50", weakest.dotClass)} />
+              <span className={cn("font-mystic text-[15px] font-semibold opacity-70", weakest.textClass)}>
+                {weakest.label}
               </span>
-              <span className="text-[15px] text-muted-foreground/65">{weakest.hanja}</span>
+              <span className="text-[15px] text-muted-foreground/65">
+                {weakest.desc}
+              </span>
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@
  * 전역 global-error.tsx 로 떨어지면 헤더·푸터 없는 베어 화면이라 UX 깨짐.
  */
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { AlertTriangle, RotateCcw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,8 @@ interface DashboardErrorProps {
 }
 
 export default function DashboardError({ error, reset }: DashboardErrorProps) {
+  const t = useTranslations("dashboardError");
+
   useEffect(() => {
     console.error("[dashboard error]", error);
   }, [error]);
@@ -28,15 +31,14 @@ export default function DashboardError({ error, reset }: DashboardErrorProps) {
         aria-hidden
       />
       <h1 className="font-mystic text-2xl font-semibold tracking-tight">
-        잠시 별빛이 흐려졌어요
+        {t("title")}
       </h1>
       <p className="text-[15px] leading-relaxed text-muted-foreground">
-        풀이를 가져오는 중 어긋남이 생겼어요. 잠시 후 다시 시도해 주세요.
-        문제가 이어지면 설정 페이지에서 고객 지원으로 알려주세요.
+        {t("body")}
       </p>
       {error.digest ? (
         <p className="text-[15px] text-muted-foreground/60">
-          오류 코드: {error.digest}
+          {t("code", { code: error.digest })}
         </p>
       ) : null}
       <Button
@@ -46,7 +48,7 @@ export default function DashboardError({ error, reset }: DashboardErrorProps) {
         size="default"
       >
         <RotateCcw className="mr-2 h-4 w-4" aria-hidden />
-        다시 시도
+        {t("retry")}
       </Button>
     </div>
   );

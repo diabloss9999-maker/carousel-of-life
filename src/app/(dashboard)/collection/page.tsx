@@ -19,7 +19,7 @@ import { getTranslations } from "next-intl/server";
 export const metadata: Metadata = {
   title: "도감",
   description:
-    "매일 카드 뽑기로 모으는 나만의 카드 도감 — 257장 컬렉션.",
+    `매일 카드 뽑기로 모으는 나만의 카드 도감 — ${TOTAL_CARDS}장 컬렉션.`,
 };
 
 /**

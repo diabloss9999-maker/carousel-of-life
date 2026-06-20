@@ -10,11 +10,12 @@ import { and, eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { usageQuotas } from "@/db/schema";
-import { LITE_DAILY_LIMITS, PRO_DAILY_LIMITS } from "@/lib/constants";
+import { fortuneQuestionLimitForTier } from "@/lib/constants";
 import { getSubscriptionTier } from "@/lib/payment/subscription-state";
 import { createClient } from "@/lib/supabase/server";
 
 export type QuotaKind = "fortune" | "tarot" | "chat" | "palm";
+type UsageQuotaColumnKind = "fortune" | "chat";
 
 export interface QuotaResult {
   ok: boolean;
@@ -33,25 +34,25 @@ export async function checkAndIncrementQuota(opts: {
   userId: string;
   kind: QuotaKind;
   max: number;
+  amount?: number;
 }): Promise<QuotaResult> {
   const tier = await getSubscriptionTier(opts.userId);
+  const usageKind: UsageQuotaColumnKind =
+    opts.kind === "chat" ? "chat" : "fortune";
+  const tierLimits = fortuneQuestionLimitForTier(tier);
+  const amount = Math.max(1, Math.floor(opts.amount ?? 1));
 
-  let effectiveMax: number;
-  if (tier === "pro") {
-    effectiveMax = PRO_DAILY_LIMITS[opts.kind];
-  } else if (tier === "lite") {
-    effectiveMax = LITE_DAILY_LIMITS[opts.kind];
-  } else {
-    effectiveMax = opts.max;
-  }
+  const effectiveMax =
+    usageKind === "chat" ? tierLimits.question : tierLimits.fortune;
 
   const isUnlimited = false;
 
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("increment_usage_quota", {
+  const { data, error } = await supabase.rpc("increment_usage_quota_v2", {
     p_user_id: opts.userId,
-    p_kind: opts.kind,
+    p_kind: usageKind,
     p_max: effectiveMax,
+    p_amount: amount,
   });
 
   if (error) {

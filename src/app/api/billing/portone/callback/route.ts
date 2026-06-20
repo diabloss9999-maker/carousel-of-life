@@ -29,6 +29,8 @@ export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const plan = url.searchParams.get("plan");
   const issueId = url.searchParams.get("issueId");
+  const rawReturnTo = url.searchParams.get("returnTo") ?? "/today?subscribed=1";
+  const returnTo = normalizeReturnTo(rawReturnTo);
 
   // PortOne 이 실패 시 code/message 를 query 로 전달
   const errorCode = url.searchParams.get("code");
@@ -96,6 +98,15 @@ export async function GET(request: NextRequest) {
   }
 
   return NextResponse.redirect(
-    new URL("/today?subscribed=1", request.url),
+    new URL(returnTo, request.url),
   );
+}
+
+function normalizeReturnTo(value: string) {
+  if (!value.startsWith("/")) return "/today?subscribed=1";
+  if (value.startsWith("//")) return "/today?subscribed=1";
+
+  const url = new URL(value, "https://carouseloflife.com");
+  url.searchParams.set("subscribed", "1");
+  return `${url.pathname}${url.search}`;
 }

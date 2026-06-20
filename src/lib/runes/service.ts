@@ -20,8 +20,7 @@ import {
   type Profile,
   type RuneReading,
 } from "@/db/schema";
-import { CHARACTER_PROSE_VOICE } from "@/lib/ai/character-voice";
-import { getTodayCharacterByCategory } from "@/lib/daily-question/rotation";
+import { NEUTRAL_PROSE_VOICE } from "@/lib/ai/character-voice";
 import { getLocale, getTranslations } from "next-intl/server";
 import { generateMarkdown } from "@/lib/ai/generate";
 import { buildUserContext } from "@/lib/ai/prompts";
@@ -47,7 +46,7 @@ export type RuneResult =
   | { ok: false; reason: "ai_failed"; message: string };
 
 /** 24개 룬 의미 — AI 가 사용할 압축 정의. */
-const RUNE_DEFS = `1.Fehu(페후)-풍요·재물·번영 / 2.Uruz(우루즈)-힘·건강·야성·의지 / 3.Thurisaz(투리사즈)-보호·충격·방어 / 4.Ansuz(안수즈)-지혜·영감·소통·신성 / 5.Raidho(라이도)-여정·리듬·방향 / 6.Kenaz(케나즈)-창조·지식·통찰 / 7.Gebo(게보)[불변]-선물·교환·균형 / 8.Wunjo(운조)-기쁨·조화·행복 / 9.Hagalaz(하갈라즈)[불변]-시련·파괴·정화 / 10.Nauthiz(나우티즈)[불변]-필요·인내·제약 / 11.Isa(이사)[불변]-정지·얼음·성찰·기다림 / 12.Jera(예라)[불변]-수확·순환·결실 / 13.Eihwaz(에이와즈)[불변]-지속성·생명력·변환 / 14.Perthro(페르스로)-비밀·운명·기회·신비 / 15.Algiz(알기즈)-보호·방어·직관 / 16.Sowilo(소윌로)[불변]-승리·태양·성공 / 17.Tiwaz(티와즈)-정의·희생·용기 / 18.Berkano(베르카노)-양육·성장·재생 / 19.Ehwaz(에화즈)-파트너십·신뢰·협력 / 20.Mannaz(만나즈)-인간성·자아·공동체 / 21.Laguz(라구즈)-흐름·직관·감정·치유 / 22.Ingwaz(잉와즈)[불변]-잠재력·씨앗·완성 / 23.Dagaz(다가즈)[불변]-돌파·전환·각성 / 24.Othala(오탈라)-유산·고향·뿌리·소속`;
+const RUNE_DEFS = `1.Fehu(페후)-풍요·재물·번영 / 2.Uruz(우루즈)-힘·건강·야성·의지 / 3.Thurisaz(투리사즈)-보호·충격·방어 / 4.Ansuz(안수즈)-지혜·영감·소통·신성 / 5.Raidho(라이도)-여정·리듬·방향 / 6.Kenaz(케나즈)-창조·지식·통찰 / 7.Gebo(게보)[불변]-선물·교환·균형 / 8.Wunjo(운조)-기쁨·조화·행복 / 9.Hagalaz(하갈라즈)[불변]-시련·파괴·정화 / 10.Nauthiz(나우티즈)[불변]-필요·인내·제약 / 11.Isa(이사)[불변]-정지·얼음·성찰·기다림 / 12.Jera(예라)[불변]-수확·순환·결실 / 13.Eihwaz(에이와즈)[불변]-지속성·생명력·변환 / 14.Perthro(페르스로)-비밀·운명·기회·신비 / 15.Algiz(알기즈)-보호·방어·직관 / 16.Sowilo(소윌로)[불변]-승리·태양·성공 / 17.Tiwaz(티와즈)-정의·희생·용기 / 18.Berkano(베르카노)-양육·성장·재생 / 19.Ehwaz(에화즈)-파트너십·신뢰·협력 / 20.Mannaz(만나즈)-인간성·자아·공동체 / 21.Laguz(라구즈)-기운·직관·감정·치유 / 22.Ingwaz(잉와즈)[불변]-잠재력·씨앗·완성 / 23.Dagaz(다가즈)[불변]-돌파·전환·각성 / 24.Othala(오탈라)-유산·고향·뿌리·소속`;
 
 /** 스프레드별 max_tokens. */
 const MAX_TOKENS: Record<RuneSpreadType, number> = {
@@ -148,7 +147,7 @@ export async function createRuneReading(opts: {
   const userCtx = buildUserContext({ profile: opts.profile });
   const questionPart = opts.question
     ? `\n질문: "${opts.question}"`
-    : "\n질문: (없음 — 전반적 흐름)";
+    : "\n질문: (없음 — 전반적인 기운)";
 
   // 에트 분포·역방향 개수 통계.
   const aettCount = { Freyr: 0, Heimdall: 0, Tyr: 0 };
@@ -220,7 +219,7 @@ ${spreadInstruction}
       userPrompt,
       model: AI_MODELS.fast,
       maxTokens: MAX_TOKENS[opts.spreadType],
-      systemSuffix: CHARACTER_PROSE_VOICE[getTodayCharacterByCategory("북유럽")],
+      systemSuffix: NEUTRAL_PROSE_VOICE,
       locale: await getLocale(),
     });
   } catch (e) {
@@ -273,7 +272,7 @@ function buildSpreadInstruction(spread: RuneSpreadType): string {
 이모지·##·**·* 등 마크다운 기호 쓰지 말고, 사람이 말하듯 자연스럽게. 빈 줄 넣지 마.`;
   }
   if (spread === "three") {
-    return `과거, 현재, 미래 세 자리 룬을 시간 흐름처럼 이야기해줘.
+    return `과거, 현재, 미래 세 자리 룬을 시간의 결처럼 이야기해줘.
 인접한 룬끼리 어떻게 연결되는지 짚고, 마지막에 실용적인 조언으로 마무리해.
 이모지·##·**·* 등 마크다운 기호 쓰지 말고, 사람이 말하듯 자연스럽게. 빈 줄 넣지 마.`;
   }
@@ -284,7 +283,7 @@ function buildSpreadInstruction(spread: RuneSpreadType): string {
   }
   // nine
   return `상단[0,1,2]=과거, 중단[3,4,5]=현재, 하단[6,7,8]=미래 구조로 이야기해줘.
-중심 룬[4]가 가장 중요하니까 거기서부터 시작해서 과거·현재·미래 흐름을 연결하고,
+중심 룬[4]가 가장 중요하니까 거기서부터 시작해서 과거·현재·미래 기운을 연결하고,
 눈에 띄는 룬 조합을 짚은 뒤 실용적인 조언으로 마무리해.
 이모지·##·**·* 등 마크다운 기호 쓰지 말고, 사람이 말하듯 자연스럽게. 빈 줄 넣지 마.`;
 }

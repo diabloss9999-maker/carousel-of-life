@@ -53,8 +53,8 @@ export async function generateMetadata({
       : `${character.name}이(가) 풀어준 이야기 — ${siteConfig.name}`;
   const description =
     locale === "en"
-      ? "An AI oracle reading from Carousel of Life. Ask yours."
-      : "인생의 회전목마에서 받은 점술사의 풀이. 너도 한 번 물어봐.";
+      ? "A reading from Carousel of Life. Ask yours."
+      : "인생의 회전목마에서 받은 풀이. 너도 한 번 물어봐.";
 
   const ogUrl = buildOgUrl(sp);
 
@@ -98,7 +98,7 @@ export default async function SharePage({
   const locale = sp.locale === "en" ? "en" : "ko";
   const ogUrl = buildOgUrl(sp);
 
-  const ctaLabel = locale === "en" ? "Ask your own oracle" : "나도 풀이 받아보기";
+  const ctaLabel = locale === "en" ? "Ask your own character" : "나도 풀이 받아보기";
   const subLabel =
     locale === "en"
       ? `${character.name} · ${character.title}`

@@ -57,7 +57,7 @@
 ## 확인사항 (요청란) — 그대로 복사·붙여넣기
 
 ```
-[ 결제 흐름 시연용 테스트 계정 — 무료 회원 ]
+[ 결제 절차 시연용 테스트 계정 — 무료 회원 ]
 URL    : https://carouseloflife.com/login
 이메일  : test-card-review@carouseloflife.com
 비밀번호 : TestCard2026!

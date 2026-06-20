@@ -12,7 +12,7 @@ import { useEffect } from "react";
 
 const MESSAGES = {
   ko: {
-    title: "별의 흐름이 완전히 멈췄어요",
+    title: "별의 기운이 완전히 멈췄어요",
     body: "치명적인 오류가 발생했어요. 잠시 후 다시 시도해주세요.",
     retry: "다시 시도",
   },

@@ -34,6 +34,7 @@ export async function savePersonalityResult(
       .where(eq(profiles.userId, profile.userId));
 
     revalidatePath(ROUTES.personality, "page");
+    revalidatePath(ROUTES.appHome, "page");
     revalidatePath(ROUTES.today, "page");
 
     return { type };

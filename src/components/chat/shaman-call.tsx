@@ -1,8 +1,8 @@
 "use client";
 
 /**
- * 흐름 페이지에서 점술사가 먼저 말을 걸어오는 카드.
- * 클릭하면 해당 점술사와의 대화 세션을 생성/이어서 /chat/[id] 로 이동.
+ * 오늘 운세 페이지에서 멤버가 먼저 말을 걸어오는 카드.
+ * 클릭하면 해당 멤버와의 대화 세션을 생성/이어서 /chat/[id] 로 이동.
  */
 import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -22,7 +22,7 @@ function pickCharacter(): CharacterId {
   return CHARACTER_IDS[Math.floor(Math.random() * CHARACTER_IDS.length)];
 }
 
-export function ShamanCall() {
+export function CharacterCall() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [charId, setCharId] = useState<CharacterId | null>(null);
@@ -31,7 +31,7 @@ export function ShamanCall() {
   const tShell = useTranslations("chatShell");
   const tChar = useTranslations("characters");
 
-  // 마운트 시 랜덤 캐릭터 + 라인 선택 — SSR 하이드레이션 불일치 회피를 위해 client-only.
+  // 마운트 시 랜덤 멤버 + 라인 선택 — SSR 하이드레이션 불일치 회피를 위해 client-only.
   // 마운트 1회 초기화는 effect 내 setState 가 의도된 표준 패턴.
   useEffect(() => {
     const id = pickCharacter();
@@ -71,7 +71,7 @@ export function ShamanCall() {
       className="app-surface group flex w-full items-center gap-3 rounded-2xl p-3 sm:p-4 text-left transition-transform hover:-translate-y-0.5 disabled:opacity-60"
       aria-label={tShell("startChat", { name })}
     >
-      {/* 캐릭터 미니 초상화 */}
+      {/* 멤버 미니 초상화 */}
       <div className="relative h-14 w-10 sm:h-16 sm:w-12 flex-shrink-0 overflow-hidden rounded-lg ring-1 ring-white/20 shadow-md">
         <CharacterImage
           character={character}

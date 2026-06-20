@@ -1,11 +1,8 @@
 import Image from "next/image";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { CharacterImage } from "@/components/shared/character-image";
 import type { RuneReading } from "@/db/schema";
 import { RUNE_BY_ID } from "@/lib/runes/cards";
-import { CHARACTERS } from "@/lib/chat/characters";
-import { getTodayCharacter } from "@/lib/daily-question/rotation";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -94,24 +91,17 @@ export function RuneReadingCard({ reading }: Props) {
     isRuneEntry,
   );
   const spreadType = reading.spreadType;
-  const readDate = reading.createdAt instanceof Date
-    ? reading.createdAt.toISOString().slice(0, 10)
-    : String(reading.createdAt).slice(0, 10);
-  const charId = getTodayCharacter(readDate);
-  const character = CHARACTERS[charId];
 
   return (
     <Card className="app-surface" data-capture-root>
       <CardHeader className="space-y-3 pb-3">
-        {/* 캐릭터 배지 */}
-        <div className="flex items-center gap-3">
-          <div className="relative h-20 w-14 overflow-hidden rounded-lg shadow-md flex-shrink-0">
-            <CharacterImage character={character} fill className="object-cover object-top" sizes="56px" quality={90} />
-          </div>
-          <div>
-            <p className="font-mystic text-[15px] font-semibold text-foreground">{character.name}</p>
-            <p className="text-[15px] text-muted-foreground">{character.title}</p>
-          </div>
+        <div>
+          <p className="font-mystic text-[15px] font-semibold text-foreground">
+            룬 풀이
+          </p>
+          <p className="text-[15px] text-muted-foreground">
+            룬 배열과 방향을 차분히 살펴봐요
+          </p>
         </div>
         {spreadType === "single" ? (
           <div className="flex justify-center">

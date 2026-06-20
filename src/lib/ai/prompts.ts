@@ -1,17 +1,21 @@
-/**
+﻿/**
  * AI 프롬프트 빌더.
  *
  * 사용자 컨텍스트를 받아 운세·타로·궁합 프롬프트를 일관된 형식으로 만든다.
  */
 import type { UserProfile } from "@/types";
-import { CHARACTERS, type CharacterId } from "@/lib/chat/characters";
+import type { CharacterId } from "@/lib/chat/characters";
 
-/** 캐릭터 ID → 세계관 카테고리 (사주 인용 정책 분기). */
-function worldOf(characterId: CharacterId | undefined): CharacterWorld {
+/** 캐릭터 ID → 해석 스타일 (사주 용어 노출 정책 분기). */
+function readingStyleOf(characterId: CharacterId | undefined): ReadingStyle {
   if (!characterId) return "any";
-  const c = CHARACTERS[characterId];
-  if (!c) return "any";
-  return c.category as CharacterWorld;
+  if (characterId === "shaman" || characterId === "taoist" || characterId === "dokkaebi") {
+    return "동양";
+  }
+  if (characterId === "runeshaman" || characterId === "hunter" || characterId === "god") {
+    return "룬";
+  }
+  return "카드";
 }
 
 interface BuildContextOptions {
@@ -30,27 +34,24 @@ interface BuildContextOptions {
   };
 }
 
-/** 세계관 카테고리 — 캐릭터별 사주 인용 정책 분기. */
-export type CharacterWorld = "동양" | "이세계" | "북유럽" | "any";
+/** 해석 스타일 — 사주 용어 노출 정책 분기. */
+export type ReadingStyle = "동양" | "카드" | "룬" | "any";
 
 /**
  * 사용자 사주 컨텍스트를 사람이 읽을 수 있는 한국어 문단으로 변환.
  *
- * 캐릭터 카테고리(world)에 따라 사주 한자 노출 정책이 달라진다:
+ * 해석 스타일에 따라 사주 한자 노출 정책이 달라진다:
  *   - "동양": 사주 8자 한자 그대로 노출 + 한자 사용 시 풀이 동반
- *     (소율·현도·흑랑 — 사주·천기 전문)
- *   - "이세계": 사주 한자 노출 X, 일간 특성만 한국어로 + 한자 직접 인용 금지
- *     (루나·라엘·카엘 — 타로·카드 전문)
- *   - "북유럽": 사주 한자 노출 X, 일간 특성만 한국어로 + 한자 직접 인용 금지
- *     (신·헌터·룬샤먼 — 룬 전문)
+ *   - "카드": 사주 한자 노출 X, 일간 특성만 쉬운 한국어로 설명
+ *   - "룬": 사주 한자 노출 X, 일간 특성만 쉬운 한국어로 설명
  *   - "any" / 기본: 동양과 동일 (사주 풀이·이름풀이 등 사주 중심 콘텐츠용)
  */
 export function buildUserContext({
   profile,
-  world = "any",
+  readingStyle = "any",
   chatMode = false,
 }: BuildContextOptions & {
-  world?: CharacterWorld;
+  readingStyle?: ReadingStyle;
   /**
    * 채팅 대화 모드. true 면 동양 캐릭터여도 사주 한자·전문용어를 노출하지 않고
    * 한국어 비유만 쓴다. (사주 전문 풀이 페이지와 달리, 대화에서는 한자가
@@ -60,7 +61,7 @@ export function buildUserContext({
 }): string {
   const lines: string[] = [];
   // 채팅 모드에서는 동양이어도 한자 노출 안 함 (전문 풀이 페이지만 한자 OK).
-  const isOriental = (world === "동양" || world === "any") && !chatMode;
+  const isOriental = (readingStyle === "동양" || readingStyle === "any") && !chatMode;
 
   if (profile.displayName) lines.push(`이름: ${profile.displayName}`);
   lines.push(
@@ -74,7 +75,7 @@ export function buildUserContext({
   if (profile.mbti) lines.push(`MBTI: ${profile.mbti}`);
   if (profile.birthPlace) lines.push(`출생지: ${profile.birthPlace}`);
 
-  // 사주 정보 노출 — world 별로 다름.
+  // 사주 정보 노출 — 해석 스타일별로 다름.
   if (profile.sajuPillars && typeof profile.sajuPillars === "object") {
     const p = profile.sajuPillars as {
       year?: { stem?: string; branch?: string };
@@ -83,7 +84,7 @@ export function buildUserContext({
       hour?: { stem?: string; branch?: string };
     };
 
-    // world 무관 — AI 입력에는 한자 8자를 넣지 않고 일간 본질만 한국어 비유로.
+    // AI 입력에는 한자 8자를 넣지 않고 일간 본질만 한국어 비유로 전달.
     // (사주 8자 글자판은 화면 UI 에서 별도 표시되며, AI 풀이엔 용어가 새면 안 됨)
     if (p.day?.stem) {
       const trait = STEM_KOREAN_TRAIT[p.day.stem];
@@ -113,13 +114,13 @@ export function buildUserContext({
     lines.push(
       "위 정보(본질 특성 · 성향 · 생년월일)를 풀이에 자연스럽게 녹여. " +
         "일반적·추상적 문장만 나열하면 실패. " +
-        "이 사람만의 결을 만들되, 너의 세계관 안의 언어로 풀어야 함. " +
+        "이 사람만의 결을 만들되, 쉬운 일상 언어로 풀어야 함. " +
         "다른 사람과 응답이 비슷하게 나오면 안 됨. " +
         noLabelRule,
     );
   }
 
-  // 세계관별 한자·전문술어 정책
+  // 해석 스타일별 한자·전문술어 정책
   lines.push("");
   if (isOriental) {
     // 사주 전문 풀이 페이지 — 8자 글자판(표)은 화면에 따로 보여주되,
@@ -140,7 +141,7 @@ export function buildUserContext({
         "'식신이 강해' → '표현력과 즐길 줄 아는 기운이 강해'. " +
         "사주를 본다는 분위기는 자연스럽게 내되 (예: '네 기운을 보면', '타고난 결을 보니'), 용어 자체는 절대 안 쓴다.",
     );
-  } else if (chatMode && (world === "동양" || world === "any")) {
+  } else if (chatMode && (readingStyle === "동양" || readingStyle === "any")) {
     // 동양 캐릭터 채팅 — 사주를 알지만 한자·전문용어로 말하지 않음 (몰입 우선)
     lines.push("[대화 언어 — 반드시 지킬 것]");
     lines.push(
@@ -159,15 +160,13 @@ export function buildUserContext({
         "사주를 본다는 분위기는 자연스럽게 내되 (예: '네 기운을 보니', '올해 흐름을 보면'), 용어 자체는 절대 안 쓴다.",
     );
   } else {
-    // 이세계·북유럽 캐릭터 — 한자 금지 + 자기 세계관 비유
-    lines.push("[세계관 일관성 — 반드시 지킬 것]");
+    lines.push("[쉬운 한국어 해석 — 반드시 지킬 것]");
     lines.push(
       "너는 동양 사주의 한자 용어(乙木·壬午·卯月·辛未·일간·월운 등)를 본문에 직접 인용하지 않아. " +
-        "그건 동양 점술사(소율·현도·흑랑)의 영역이고, 너의 세계관 결과 다르거든. " +
-        "사용자의 본질·기질은 너의 세계관 비유로 변환해서 표현해. " +
-        (world === "이세계"
-          ? "예: '카드의 결' '흐림의 방향' '별자리의 잔향' '잊혀진 이름' '결 너머의 기억' 같은 이세계 톤."
-          : "예: '룬의 결' '나무의 가지' '늑대 발자국' '북풍의 방향' '신의 눈빛' 같은 북유럽 톤.") +
+        "사용자의 본질·기질은 쉬운 일상 한국어 비유로 변환해서 표현해. " +
+        (readingStyle === "카드"
+          ? "예: '카드가 가리키는 선택' '마음의 방향' '오늘 붙잡을 실마리' 같은 타로 해석 톤."
+          : "예: '단단한 기준' '가지처럼 뻗는 가능성' '차분히 확인할 신호' 같은 실용적인 해석 톤.") +
         " 한자 자체가 꼭 필요하면 그 자리만 한국어로 풀어 써. " +
         "예: '乙木(을목)' 대신 '부드러운 나무 같은 결'. ",
     );
@@ -175,10 +174,9 @@ export function buildUserContext({
 
   return lines.join("\n");
 }
-
 /**
  * 천간(일간) 한자 → 한국어 비유 매핑.
- * 이세계·북유럽 캐릭터 prompt 에 한자 노출 없이 본질만 전달.
+ * 카드·룬 캐릭터 prompt 에 한자 노출 없이 본질만 전달.
  */
 const STEM_KOREAN_TRAIT: Record<string, string> = {
   甲: "곧게 뻗어 오르는 큰 나무 — 주도적이고 직진하는 결",
@@ -246,7 +244,7 @@ const FORTUNE_LABEL: Record<FortuneCategory, string> = {
 
 /** 캐릭터별 운세 전달 보이스 설정 (9명 전체) */
 const CHARACTER_FORTUNE_VOICE = {
-  // ── 이세계 ──────────────────────────────────────────────────
+  // ── 카드 ──────────────────────────────────────────────────
   child: {
     persona: "너는 카엘 — 욕망을 숨기는 사람을 못 본 척하지 않는 악마 계약자야.",
     titleGuide: "카엘답게 욕망을 찌르는 한 마디 (20자 이내, 반말)",
@@ -290,7 +288,7 @@ const CHARACTER_FORTUNE_VOICE = {
     speechGuide: "짜증 뒤에 보호 본능. 말버릇 후보: 뭔데 그 표정, 그거 나 줘, 그래도 그건 버리지 마.",
     tone: "까칠·변덕·반말",
   },
-  // ── 북유럽 ──────────────────────────────────────────────────
+  // ── 룬 ──────────────────────────────────────────────────
   hunter: {
     persona: "너는 비요른 — 흔적을 보고 살아남는 길을 말하는 북방의 남성 사냥꾼이야.",
     titleGuide: "비요른답게 흔적을 읽는 한 마디 (20자 이내, 반말)",
@@ -386,19 +384,55 @@ function dailyToneFor(seedKey: string): string {
   return DAILY_TONES[idx];
 }
 
+export function dailyFortuneScoreFor(
+  opts: {
+    profile: BuildContextOptions["profile"];
+    category: FortuneCategory;
+    fortuneDate: string;
+  },
+  delta = 0,
+): number {
+  const seed = [
+    opts.fortuneDate,
+    opts.category,
+    opts.profile.birthDate ?? "",
+    opts.profile.birthTime ?? "",
+    opts.profile.displayName ?? "",
+    opts.profile.mbti ?? "",
+    opts.profile.gender ?? "",
+  ].join("|");
+  let h = 2166136261;
+  for (let i = 0; i < seed.length; i++) {
+    h ^= seed.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  const base = 45 + (Math.abs(h) % 36);
+  return Math.max(20, Math.min(95, base + delta));
+}
+
 export function buildDailyFortunePrompt(opts: {
   profile: BuildContextOptions["profile"];
   category: FortuneCategory;
   fortuneDate: string;
   characterId?: CharacterFortuneId;
+  manse?: { block?: string | null } | null;
 }): string {
   const ctx = buildUserContext({
     profile: opts.profile,
-    world: worldOf(opts.characterId as CharacterId | undefined),
+    readingStyle: readingStyleOf(opts.characterId as CharacterId | undefined),
   });
   const label = FORTUNE_LABEL[opts.category];
-  const charId = opts.characterId ?? "witch";
-  const voice = CHARACTER_FORTUNE_VOICE[charId];
+  const voice = opts.characterId
+    ? CHARACTER_FORTUNE_VOICE[opts.characterId]
+    : {
+        persona: "너는 아이돌이나 캐릭터가 아니라, 사용자의 하루 흐름을 쉬운 말로 정리하는 한국어 운세 리포트 작성자다.",
+        titleGuide: "오늘 흐름을 바로 이해할 수 있는 제목 (20자 이내, 존댓말 아님)",
+        contentGuide:
+          "6-8문장. 첫 문장은 오늘의 핵심 분위기를 바로 말하고, 이어서 조심할 점·밀어붙일 점·사람/돈/일/컨디션 중 해당 카테고리의 실천 기준을 구체적으로 제시. 마지막 문장은 오늘 바로 해볼 행동 하나.",
+        speechGuide:
+          "차분하고 현실적인 리포트 톤. 겁주지 말고, 막연한 위로도 하지 말고, 사용자가 오늘 무엇을 조절하면 되는지 알려준다.",
+        tone: "차분한 존댓말 리포트",
+      };
 
   const isZodiac = opts.category === "zodiac" || opts.category === "chinese_zodiac";
   const basis = isZodiac
@@ -419,7 +453,7 @@ export function buildDailyFortunePrompt(opts: {
   const todayTone = dailyToneFor(seedKey);
   const differentiation = CATEGORY_DIFFERENTIATION[opts.category];
 
-  return `[캐릭터 설정]
+  return `[풀이자 설정]
 ${voice.persona}
 
 [질문자 정보]
@@ -429,6 +463,7 @@ ${ctx}
 - 날짜: ${opts.fortuneDate}
 - 카테고리: ${label}
 - 오늘의 결(시스템이 미리 정함): ${todayTone}
+${opts.manse?.block ? `\n[오늘 명리 흐름]\n${opts.manse.block}` : ""}
 
 [카테고리 차별화 — 반드시 지킬 것]
 ${differentiation}
@@ -437,11 +472,11 @@ ${differentiation}
 ${basis}
 ${voice.tone} 어조로 전달해.
 
-[살아있는 말투 — 반드시 지킬 것]
+[와닿는 리포트 톤 — 반드시 지킬 것]
 ${voice.speechGuide}
-보고서·상담 칼럼처럼 쓰지 말고, 캐릭터가 지금 눈앞의 사용자에게 바로 말하듯 써.
-첫 문장은 일반론이 아니라 오늘 이 사람의 흐름에 대한 즉각적인 대사여야 해.
-캐릭터 상징어는 양념처럼만 쓰고, 같은 어미와 같은 문장 구조를 반복하지 마.
+상담 칼럼처럼 뜬구름 잡지 말고, 사용자가 오늘 실제로 판단할 수 있는 기준을 줘.
+첫 문장은 일반론이 아니라 오늘 이 사람의 흐름에 대한 즉각적인 요약이어야 해.
+같은 어미와 같은 문장 구조를 반복하지 마.
 
 **개인화 — 반드시 지킬 것**:
 - 이 사람의 타고난 기질·성향·오늘의 흐름이 결과에 자연스럽게 녹아야 해.
@@ -496,8 +531,8 @@ export function buildTarotSinglePrompt(opts: {
   question: string | null;
   card: { id: string; name: string; isReversed: boolean };
 }): string {
-  // 타로 = 이세계 점술사 영역 (루나·라엘·카엘)
-  const ctx = buildUserContext({ profile: opts.profile, world: "이세계" });
+  // 타로 = 카드 점술사 영역 (루나·라엘·카엘)
+  const ctx = buildUserContext({ profile: opts.profile, readingStyle: "카드" });
   const orient = opts.card.isReversed ? "역방향(逆位)" : "정방향(正位)";
   const question = opts.question?.trim() || "(질문 없음 — 오늘의 한 장 가이드)";
 
@@ -540,8 +575,8 @@ export function buildTarotThreePrompt(opts: {
   question: string | null;
   cards: Array<{ id: string; name: string; isReversed: boolean }>;
 }): string {
-  // 타로 = 이세계
-  const ctx = buildUserContext({ profile: opts.profile, world: "이세계" });
+  // 타로 = 카드
+  const ctx = buildUserContext({ profile: opts.profile, readingStyle: "카드" });
   const positions = ["과거", "현재", "미래"] as const;
   const cardLines = opts.cards
     .map((c, i) => {
@@ -613,7 +648,7 @@ export function buildCompatibilityPrompt(opts: {
   partner: PartnerInfo;
 }): string {
   // 궁합 = 사주 기반 = 동양
-  const meCtx = buildUserContext({ profile: opts.profile, world: "동양" });
+  const meCtx = buildUserContext({ profile: opts.profile, readingStyle: "동양" });
   const partnerLines: string[] = [];
   partnerLines.push(`이름: ${opts.partner.name}`);
   partnerLines.push(
@@ -635,13 +670,14 @@ ${partnerLines.join("\n")}
 
 [지시]
 두 사람의 사주와 기운을 살펴 궁합을 풀이해주세요.
-모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
+모든 문장은 특정 캐릭터나 멤버 말투가 아니라, 차분한 한국어 관계 리포트 톤으로 써.
+맞다/안 맞다로 단정하지 말고, 끌리는 이유·부딪히는 지점·오늘 바꿔볼 대화 방식을 구체적으로 제시해.
 다음 JSON 스키마를 정확히 따라 단 하나의 JSON 객체로만 응답하세요. 추가 설명·markdown·코드펜스 없이 JSON 만 출력합니다.
 
 {
   "score": 1-100 사이 정수 (궁합 점수),
-  "summary": "한 줄 요약 — 캐릭터 말투로 30자 이내",
-  "detail": "6-8문장. 두 사람의 기운이 어떻게 어울리는지, 잘 맞는 부분과 조심할 부분. 캐릭터 말투로 직접 말하듯."
+  "summary": "한 줄 요약 — 관계 흐름을 바로 알 수 있게 30자 이내",
+  "detail": "6-8문장. 두 사람의 기운이 어떻게 어울리는지, 잘 맞는 부분과 조심할 부분, 오늘 바꿔볼 말투나 거리감."
 }`;
 }
 
@@ -690,13 +726,14 @@ ${relationLine}
 [지시]
 두 사람의 사주·기운·별자리·MBTI(있다면)를 종합해 궁합을 풀이해주세요.
 질문자가 아닌 제3자 두 명 사이의 관계 분석이라는 점을 잊지 마세요.
-모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
+모든 문장은 특정 캐릭터나 멤버 말투가 아니라, 차분한 한국어 관계 리포트 톤으로 써.
+맞다/안 맞다로 단정하지 말고, 서로 편해지는 거리·대화 방식·주의할 오해를 구체적으로 제시해.
 다음 JSON 스키마를 정확히 따라 단 하나의 JSON 객체로만 응답하세요. 추가 설명·markdown·코드펜스 없이 JSON 만 출력합니다.
 
 {
   "score": 1-100 사이 정수 (두 사람의 궁합 점수),
-  "summary": "한 줄 요약 — 캐릭터 말투로 30자 이내",
-  "detail": "6-8문장. 두 사람의 기운이 어떻게 어울리는지, 잘 맞는 부분과 조심할 부분. 캐릭터 말투로."
+  "summary": "한 줄 요약 — 관계 흐름을 바로 알 수 있게 30자 이내",
+  "detail": "6-8문장. 두 사람의 기운이 어떻게 어울리는지, 잘 맞는 부분과 조심할 부분, 서로 편해지는 대화 방식."
 }`;
 }
 
@@ -709,7 +746,7 @@ export function buildSajuDeepPrompt(
   profile: BuildContextOptions["profile"],
 ): string {
   // 사주 심층 = 동양
-  const ctx = buildUserContext({ profile, world: "동양" });
+  const ctx = buildUserContext({ profile, readingStyle: "동양" });
 
   // 이미 계산된 4 기둥이 있으면 컨텍스트에 직접 노출 — AI 가 글자별 풀이를 정확히 만들 수 있도록.
   const pillarsLines: string[] = [];
@@ -810,7 +847,7 @@ export function buildDreamReadingPrompt(opts: {
   mood?: "bright" | "dark" | "weird" | "neutral";
 }): string {
   // 꿈해몽 = 동양 점술사 영역
-  const ctx = buildUserContext({ profile: opts.profile, world: "동양" });
+  const ctx = buildUserContext({ profile: opts.profile, readingStyle: "동양" });
   const moodLabel =
     opts.mood === "bright" ? "밝고 따뜻한 분위기"
     : opts.mood === "dark" ? "어둡고 무거운 분위기"
@@ -861,7 +898,7 @@ export function buildNameReadingPrompt(opts: {
   isOwnName: boolean;
 }): string {
   // 이름풀이 = 한자·획수·오행 분석 = 동양
-  const ctx = buildUserContext({ profile: opts.profile, world: "동양" });
+  const ctx = buildUserContext({ profile: opts.profile, readingStyle: "동양" });
   const hanjaLine = opts.hanja ? `\n한자 표기: ${opts.hanja}` : "";
   const targetLabel = opts.isOwnName ? "본인 이름" : "타인 이름";
 
@@ -911,7 +948,7 @@ export function buildFlowerOraclePrompt(opts: {
   flower: {
     koreanName: string;
     scientificName: string;
-    category: "동양" | "이세계" | "북유럽";
+    category: "동양" | "카드" | "룬";
     meaning: string;
     keywords: string[];
     season: string;
@@ -919,11 +956,11 @@ export function buildFlowerOraclePrompt(opts: {
   /** 오늘의 꽃 모드인지 자유 뽑기 모드인지. */
   mode: "daily" | "free";
 }): string {
-  // 꽃점은 어떤 카테고리든 한자·전문술어 노출 X 일관 정책 — 항상 이세계 톤으로
+  // 꽃점은 어떤 카테고리든 한자·전문술어 노출 X 일관 정책 — 항상 카드 톤으로
   // 한국어 비유만 받음. 점술사 voice 는 살아있되 어휘는 부드럽고 따뜻.
   const ctx = buildUserContext({
     profile: opts.profile,
-    world: "이세계",
+    readingStyle: "카드",
   });
   const modeHint =
     opts.mode === "daily"
@@ -1036,14 +1073,14 @@ ${toneHint}
 export function buildChatContext(
   profile: BuildContextOptions["profile"],
   enrichment: ChatEnrichment = {},
-  /** 채팅 캐릭터 ID — 세계관별 사주 인용 정책 분기. */
+  /** 채팅 캐릭터 ID — 설정별 사주 인용 정책 분기. */
   characterId?: CharacterId,
 ): string {
   const lines: string[] = [];
 
   lines.push("[질문자 기본 정보]");
   // 채팅은 모든 캐릭터가 chatMode — 동양이어도 사주 한자·전문용어 비노출.
-  lines.push(buildUserContext({ profile, world: worldOf(characterId), chatMode: true }));
+  lines.push(buildUserContext({ profile, readingStyle: readingStyleOf(characterId), chatMode: true }));
 
   // 사주 심층 분석 — 사주 용어(한자·음역)를 제거한 뒤 주입.
   // 채팅 캐릭터(특히 동양)가 enrichment 의 '을목·을사년' 을 복사해 쓰는 걸 차단.

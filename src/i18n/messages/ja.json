@@ -1,0 +1,2607 @@
+{
+  "home": {
+    "title": "今日はどんな流れを読んでみますか？",
+    "description": "四柱推命やタロットから始めて、その余韻をCarousel Nineのメンバーの声で続けられます。"
+  },
+  "nav": {
+    "home": "ホーム",
+    "fortune": "運勢",
+    "oracle": "メンバー",
+    "tarot": "タロット",
+    "pillars": "四柱推命",
+    "bond": "相性",
+    "archive": "ボーナス",
+    "settings": "設定",
+    "fortuneGroup": "運勢",
+    "divinationGroup": "占い",
+    "eastGroup": "四柱推命",
+    "deepReportsGroup": "深掘り",
+    "fortuneSuiteGroup": "運勢 | 占い | 四柱推命",
+    "shaman": "メンバー",
+    "groupChat": "グループ",
+    "album": "アルバム",
+    "fortuneGeneral": "今日の総合運",
+    "fortuneLove": "恋愛運",
+    "fortuneMoney": "金運",
+    "fortuneCareer": "仕事運",
+    "fortuneHealth": "健康運",
+    "fortuneStudy": "勉強運",
+    "lenormand": "ルノルマン",
+    "runes": "ルーン",
+    "zodiac": "星座",
+    "saju": "四柱推命",
+    "palm": "手相",
+    "compatibility": "相性",
+    "personality": "性格診断",
+    "dream": "夢占い",
+    "nameReading": "名前占い",
+    "nameCompatibility": "名前相性",
+    "flowerOracle": "花占い",
+    "chineseZodiac": "干支",
+    "monthlyReport": "月間深掘り",
+    "yearlyReport": "新年運勢",
+    "questionGroup": "チャット",
+    "records": "記録"
+  },
+  "common": {
+    "logout": "ログアウト",
+    "login": "ログイン",
+    "signup": "新規登録",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "back": "戻る",
+    "next": "次へ",
+    "close": "閉じる",
+    "loading": "読み込み中...",
+    "error": "エラーが発生しました",
+    "retry": "もう一度試す",
+    "today": "今日",
+    "viewMore": "もっと見る",
+    "skipToMain": "本文へスキップ"
+  },
+  "header": {
+    "languageToggle": "言語を変更"
+  },
+  "today": {
+    "title": "運勢",
+    "subtitleWithName": "{name}さんの今日の運勢を記録します",
+    "subtitleNoName": "今日の運勢を記録します",
+    "moodPrompt": "今日の気分は？",
+    "moodSaved": "保存しました"
+  },
+  "moods": {
+    "great": "最高",
+    "good": "いい感じ",
+    "neutral": "ふつう",
+    "tough": "少ししんどい",
+    "hard": "かなりつらい"
+  },
+  "chat": {
+    "title": "メンバー",
+    "description": "占いの余韻や日常の話を、9人のバーチャルアイドルメンバーと続けられます。",
+    "placeholderDefault": "話しかけてみて...",
+    "loreSectionTitle": "メンバーストーリー",
+    "charactersSection": "メンバープロフィール",
+    "truthRoute": "メンバールート",
+    "chapter": "チャプター {number}",
+    "unlockHint": "Lv.{level}で解放",
+    "characterStoryLocked": "このストーリーはまだ刻まれていません。まもなく公開されます。"
+  },
+  "tarot": {
+    "title": "タロット",
+    "description": "カードを引いて、今日のヒントを見てみましょう。",
+    "drawOne": "カードを1枚引く",
+    "drawThree": "3枚引く",
+    "drawingTitle": "1枚引き",
+    "drawingThreeTitle": "過去・現在・未来（3枚）",
+    "questionLabel": "質問",
+    "questionOptional": "（任意）",
+    "questionPlaceholderOne": "例：今週はどんな流れになりそう？（100文字以内）",
+    "questionPlaceholderThree": "例：この件はこれからどう動きそう？（100文字以内）",
+    "questionHintOne": "空欄のままなら、今日の総合メッセージを読みます。",
+    "questionHintThree": "質問なしで、流れだけを見ることもできます。"
+  },
+  "saju": {
+    "title": "四柱推命",
+    "description": "四柱推命は、生まれた年・月・日・時間から運勢や相性を読み解くための土台です。",
+    "noSajuTitle": "まだ四柱推命を見ていません",
+    "noSajuDescription": "一度だけ作っておくと、他の運勢や相性もより深く読めます。結果はそのまま保存されます。"
+  },
+  "compatibility": {
+    "title": "相性",
+    "description": "2人の四柱・星座・干支・性格タイプがどう響き合うかを見ます。"
+  },
+  "personality": {
+    "title": "性格診断",
+    "description": "20問であなたのタイプを見つけます。結果はチャット、運勢、タロットに自然に反映されます。"
+  },
+  "collection": {
+    "title": "ボーナス",
+    "description": "集めたカードと記録をここで確認できます。"
+  },
+  "settings": {
+    "title": "設定",
+    "languageSection": "言語",
+    "languageDescription": "表示言語を選べます。運勢やリーディングも対応言語で生成されます。",
+    "logout": "ログアウト"
+  },
+  "auth": {
+    "kakaoLogin": "Kakaoでログイン",
+    "googleLogin": "Googleでログイン",
+    "kakaoSignup": "Kakaoではじめる",
+    "googleSignup": "Googleではじめる",
+    "loginTitle": "ログイン",
+    "loginSubtitle": "今日の流れを開いてみましょう。",
+    "signupTitle": "はじめての登録",
+    "signupSubtitle": "あなたの一日を読む準備をします。",
+    "firstVisitHint": "初めての方は自動で登録されます。",
+    "noPasswordHint": "ワンタップで入れます。パスワードは不要です。"
+  },
+  "landing": {
+    "tagline": "Carousel Nineが、今日を一緒に見てくれます。",
+    "intro": "運勢、タロット、相性を見て、そのまま気になるメンバーと話せます。\nレポートで流れを知って、メンバーチャットで気持ちを続けてみてください。",
+    "freeHint": "毎日、運勢3回・チャット10回まで無料で使えます。",
+    "startFree": "無料ではじめる",
+    "kakaoStart": "Kakaoで今すぐはじめる",
+    "alreadyMember": "すでにアカウントをお持ちですか？",
+    "loginLink": "ログイン",
+    "valueProps": {
+      "heading": "運勢とメンバーをひとつの流れで",
+      "subheading": "リーディングを、冷たい結果だけで終わらせないために",
+      "v1Title": "四柱推命・タロット・相性",
+      "v1Body": "今日の流れ、質問へのカード、関係の相性をひとつの場所でつなげて見られます。",
+      "v2Title": "9人のメンバー解釈",
+      "v2Body": "イアンは中心を整え、ユジュンは気持ちを受け止め、ドユンは次の一歩を示します。",
+      "v3Title": "毎日の流れを無料で",
+      "v3Body": "登録するだけで、毎日運勢3回・チャット10回まで使えます。"
+    },
+    "plansSection": {
+      "heading": "使い方に合わせて選ぶ",
+      "subheading": "必要な分だけ選べます。いつでも解約できます。",
+      "badgePopular": "人気"
+    },
+    "oracles": {
+      "heading": "運命を読んでくれる9人のメンバー",
+      "subheading": "リーダー、ボーカル、パフォーマー、プロデューサー、ラッパー。それぞれ違う温度でリーディングを続けます。",
+      "cta": "無料ではじめてメンバーに会う"
+    },
+    "howToPlay": {
+      "heading": "使い方",
+      "subheading": "レポートを読んで、メンバーに聞いて、自分だけの記録に残せます。",
+      "tip1Title": "今日のメンバーを選ぶ",
+      "tip1Body": "今ほしい空気に合うメンバーを選んでください。慰め、勢い、関係の整理、静かな分析、それぞれ声が違います。",
+      "tip2Title": "レポートから会話へ",
+      "tip2Body": "四柱推命、タロット、相性で状況を見たあと、メンバーに続けて質問できます。",
+      "tip3Title": "コツ：カードは最後に",
+      "tip3Body": "カードを引くと、レア度に応じてその日の使用済みチャット回数が1〜7回戻ります。\n先に話してから引くと、ボーナスを無駄なく使えます。"
+    },
+    "preview": {
+      "heading": "今日の運勢の読み方",
+      "exampleLabel": "例"
+    },
+    "finalCta": "無料ではじめる"
+  },
+  "characterSelect": {
+    "askToday": "今日のリーディングを、誰の声で続けますか？",
+    "subheading": "今ほしい空気に合うCarousel Nineのメンバーを選んでください。",
+    "categoryEastern": "スタジオユニット",
+    "categoryNordic": "ムードユニット",
+    "categorySubEastern": "PRODUCER · MOOD · RAP",
+    "categorySubNordic": "DANCE · ANALYST · DREAM",
+    "categoryMethodEastern": "プロデュース · ムード · ラップ",
+    "categoryMethodNordic": "ダンス · 趣味 · 想像",
+    "categoryFlavorEastern": "音楽の話、冗談、近況を自然に交わせるメンバー。",
+    "categoryFlavorNordic": "エネルギー、趣味、想像力で会話を広げるメンバー。",
+    "categoryPrimary": "フロントユニット",
+    "categoryExtended": "スタジオユニット",
+    "categoryArchive": "ムードユニット",
+    "categorySubPrimary": "FRONT UNIT",
+    "categorySubExtended": "STUDIO UNIT",
+    "categorySubArchive": "MOOD UNIT",
+    "categoryMethodPrimary": "リーダー · ボーカル · パフォーマンス",
+    "categoryMethodExtended": "プロデュース · ムード · ラップ",
+    "categoryMethodArchive": "ダンス · 趣味 · 想像",
+    "categoryFlavorPrimary": "今日の流れの最初の方向を整えてくれる3人。",
+    "categoryFlavorExtended": "感情、音楽、考えを会話へ運んでくれる3人。",
+    "categoryFlavorArchive": "勢い、リアルさ、やわらかな余韻を足してくれる3人。",
+    "categoryFront": "フロントユニット",
+    "categorySubFront": "LEADER · VOCAL · PERFORMANCE",
+    "categoryMethodFront": "リーダー · ボーカル · パフォーマンス",
+    "categoryFlavorFront": "最初に声をかけやすいフロントメンバー。"
+  },
+  "specialties": {
+    "fortune": "運勢",
+    "tarot": "気持ち",
+    "pillarsCelestial": "整理",
+    "runeOmen": "行動",
+    "runeOracle": "分析",
+    "runeVoice": "内なる声"
+  },
+  "characters": {
+    "child": {
+      "name": "イアン",
+      "title": "イアン · 静かなリーダー",
+      "hook": "言葉の前にそっと場を整える、低い最初の音のような存在。",
+      "facts": [
+        {
+          "label": "誕生日",
+          "value": "2003.02.14"
+        },
+        {
+          "label": "血液型",
+          "value": "A"
+        },
+        {
+          "label": "身長",
+          "value": "178cm"
+        },
+        {
+          "label": "体重",
+          "value": "64kg"
+        },
+        {
+          "label": "デビュー日",
+          "value": "5月14日"
+        },
+        {
+          "label": "所属事務所",
+          "value": "レオナルドコード"
+        },
+        {
+          "label": "国籍",
+          "value": "韓国"
+        },
+        {
+          "label": "出身地",
+          "value": "ソウル"
+        },
+        {
+          "label": "性格タイプ",
+          "value": "ISFJ"
+        },
+        {
+          "label": "好きな食べ物",
+          "value": "温かいカルビタン"
+        },
+        {
+          "label": "好きな音楽",
+          "value": "アコースティックバラード"
+        }
+      ]
+    },
+    "witch": {
+      "name": "ユジュン",
+      "title": "ユジュン · あたたかなボーカル",
+      "hook": "やわらかなコーラスみたいに、言えなかった気持ちまで残してくれる声。",
+      "facts": [
+        {
+          "label": "誕生日",
+          "value": "2004.04.09"
+        },
+        {
+          "label": "血液型",
+          "value": "O"
+        },
+        {
+          "label": "身長",
+          "value": "176cm"
+        },
+        {
+          "label": "体重",
+          "value": "61kg"
+        },
+        {
+          "label": "デビュー日",
+          "value": "5月14日"
+        },
+        {
+          "label": "所属事務所",
+          "value": "レオナルドコード"
+        },
+        {
+          "label": "国籍",
+          "value": "韓国"
+        },
+        {
+          "label": "出身地",
+          "value": "全州"
+        },
+        {
+          "label": "性格タイプ",
+          "value": "INFJ"
+        },
+        {
+          "label": "好きな食べ物",
+          "value": "全州ビビンバ"
+        },
+        {
+          "label": "好きな音楽",
+          "value": "R&Bとインディーバラード"
+        }
+      ]
+    },
+    "sage": {
+      "name": "ドユン",
+      "title": "ドユン · 鮮やかなパフォーマー",
+      "hook": "ステージの高音みたいに澄んだエネルギーで、ためらいを前へ押してくれる。",
+      "facts": [
+        {
+          "label": "誕生日",
+          "value": "2004.02.22"
+        },
+        {
+          "label": "血液型",
+          "value": "B"
+        },
+        {
+          "label": "身長",
+          "value": "178cm"
+        },
+        {
+          "label": "体重",
+          "value": "66kg"
+        },
+        {
+          "label": "デビュー日",
+          "value": "5月14日"
+        },
+        {
+          "label": "所属事務所",
+          "value": "レオナルドコード"
+        },
+        {
+          "label": "国籍",
+          "value": "韓国"
+        },
+        {
+          "label": "出身地",
+          "value": "釜山"
+        },
+        {
+          "label": "性格タイプ",
+          "value": "ENFJ"
+        },
+        {
+          "label": "好きな食べ物",
+          "value": "豚クッパ"
+        },
+        {
+          "label": "好きな音楽",
+          "value": "ファンキーなダンスポップ"
+        }
+      ]
+    },
+    "shaman": {
+      "name": "ジェハ",
+      "title": "ジェハ · 静かなプロデューサー",
+      "hook": "ヴァースとヴァースの間のブリッジのように、感情の輪郭を静かにつかむ。",
+      "facts": [
+        {
+          "label": "誕生日",
+          "value": "2004.03.03"
+        },
+        {
+          "label": "血液型",
+          "value": "AB"
+        },
+        {
+          "label": "身長",
+          "value": "175cm"
+        },
+        {
+          "label": "体重",
+          "value": "58kg"
+        },
+        {
+          "label": "デビュー日",
+          "value": "5月14日"
+        },
+        {
+          "label": "所属事務所",
+          "value": "レオナルドコード"
+        },
+        {
+          "label": "国籍",
+          "value": "韓国"
+        },
+        {
+          "label": "出身地",
+          "value": "光州"
+        },
+        {
+          "label": "性格タイプ",
+          "value": "INFP"
+        },
+        {
+          "label": "好きな食べ物",
+          "value": "トッカルビ"
+        },
+        {
+          "label": "好きな音楽",
+          "value": "ローファイとオルタナティブ"
+        }
+      ]
+    },
+    "taoist": {
+      "name": "ハル",
+      "title": "ハル · 明るいムードメーカー",
+      "hook": "ダンスブレイクみたいに空気を変えて、止まった心をまた動かす火花。",
+      "facts": [
+        {
+          "label": "誕生日",
+          "value": "2005.03.18"
+        },
+        {
+          "label": "血液型",
+          "value": "O"
+        },
+        {
+          "label": "身長",
+          "value": "174cm"
+        },
+        {
+          "label": "体重",
+          "value": "59kg"
+        },
+        {
+          "label": "デビュー日",
+          "value": "5月14日"
+        },
+        {
+          "label": "所属事務所",
+          "value": "レオナルドコード"
+        },
+        {
+          "label": "国籍",
+          "value": "韓国"
+        },
+        {
+          "label": "出身地",
+          "value": "大邱"
+        },
+        {
+          "label": "性格タイプ",
+          "value": "ESFP"
+        },
+        {
+          "label": "好きな食べ物",
+          "value": "ぺたんこ餃子"
+        },
+        {
+          "label": "好きな音楽",
+          "value": "シティポップとハウス"
+        }
+      ]
+    },
+    "dokkaebi": {
+      "name": "シオン",
+      "title": "シオン · シックなラッパー",
+      "hook": "短い一言でも、ちゃんとこちらを見ていることが伝わる。",
+      "facts": [
+        {
+          "label": "誕生日",
+          "value": "2003.03.27"
+        },
+        {
+          "label": "血液型",
+          "value": "B"
+        },
+        {
+          "label": "身長",
+          "value": "179cm"
+        },
+        {
+          "label": "体重",
+          "value": "63kg"
+        },
+        {
+          "label": "デビュー日",
+          "value": "5月14日"
+        },
+        {
+          "label": "所属事務所",
+          "value": "レオナルドコード"
+        },
+        {
+          "label": "国籍",
+          "value": "韓国"
+        },
+        {
+          "label": "出身地",
+          "value": "仁川"
+        },
+        {
+          "label": "性格タイプ",
+          "value": "ISTP"
+        },
+        {
+          "label": "好きな食べ物",
+          "value": "カンジャジャン"
+        },
+        {
+          "label": "好きな音楽",
+          "value": "ヒップホップとトラップビート"
+        }
+      ]
+    },
+    "hunter": {
+      "name": "イヒョン",
+      "title": "イヒョン · 冷静なアナリスト",
+      "hook": "余韻の奥にある本音を、静かに見つけて言葉にする。",
+      "facts": [
+        {
+          "label": "誕生日",
+          "value": "2003.05.05"
+        },
+        {
+          "label": "血液型",
+          "value": "A"
+        },
+        {
+          "label": "身長",
+          "value": "180cm"
+        },
+        {
+          "label": "体重",
+          "value": "64kg"
+        },
+        {
+          "label": "デビュー日",
+          "value": "5月14日"
+        },
+        {
+          "label": "所属事務所",
+          "value": "レオナルドコード"
+        },
+        {
+          "label": "国籍",
+          "value": "韓国"
+        },
+        {
+          "label": "出身地",
+          "value": "大田"
+        },
+        {
+          "label": "性格タイプ",
+          "value": "INTJ"
+        },
+        {
+          "label": "好きな食べ物",
+          "value": "カルグクス"
+        },
+        {
+          "label": "好きな音楽",
+          "value": "ジャズとネオソウル"
+        }
+      ]
+    },
+    "runeshaman": {
+      "name": "ハミン",
+      "title": "ハミン · 夢見る末っ子",
+      "hook": "夢の端をつかむように、言葉にならない気持ちをそっと拾う。",
+      "facts": [
+        {
+          "label": "誕生日",
+          "value": "2006.01.29"
+        },
+        {
+          "label": "血液型",
+          "value": "AB"
+        },
+        {
+          "label": "身長",
+          "value": "175cm"
+        },
+        {
+          "label": "体重",
+          "value": "57kg"
+        },
+        {
+          "label": "デビュー日",
+          "value": "5月14日"
+        },
+        {
+          "label": "所属事務所",
+          "value": "レオナルドコード"
+        },
+        {
+          "label": "国籍",
+          "value": "韓国"
+        },
+        {
+          "label": "出身地",
+          "value": "済州"
+        },
+        {
+          "label": "性格タイプ",
+          "value": "ISFP"
+        },
+        {
+          "label": "好きな食べ物",
+          "value": "アワビ粥"
+        },
+        {
+          "label": "好きな音楽",
+          "value": "ドリームポップとオーケストラポップ"
+        }
+      ]
+    },
+    "god": {
+      "name": "テオ",
+      "title": "テオ · エネルギッシュなメインダンサー",
+      "hook": "リハーサル室の熱気みたいに、今日をもう一歩動かしてくれる。",
+      "facts": [
+        {
+          "label": "誕生日",
+          "value": "2004.05.12"
+        },
+        {
+          "label": "血液型",
+          "value": "O"
+        },
+        {
+          "label": "身長",
+          "value": "178cm"
+        },
+        {
+          "label": "体重",
+          "value": "67kg"
+        },
+        {
+          "label": "デビュー日",
+          "value": "5月14日"
+        },
+        {
+          "label": "所属事務所",
+          "value": "レオナルドコード"
+        },
+        {
+          "label": "国籍",
+          "value": "韓国"
+        },
+        {
+          "label": "出身地",
+          "value": "水原"
+        },
+        {
+          "label": "性格タイプ",
+          "value": "ESTP"
+        },
+        {
+          "label": "好きな食べ物",
+          "value": "水原カルビ"
+        },
+        {
+          "label": "好きな音楽",
+          "value": "ロックとEDM"
+        }
+      ]
+    }
+  },
+  "onboarding": {
+    "skip": "スキップ",
+    "next": "次へ",
+    "start": "はじめる",
+    "step1Title": "今日の流れを\nまず確認",
+    "step1Subtitle": "Carousel of Life",
+    "step1Desc": "運勢、タロット、四柱推命、相性をそれぞれの流れとして見て、必要な時に深く続けられます。",
+    "step2Title": "フロントユニット",
+    "step2Subtitle": "FRONT",
+    "step2Desc": "イアン、ユジュン、ドユンが最初の挨拶を落ち着いて、温かく、明るく受け止めます。",
+    "step3Title": "スタジオユニット",
+    "step3Subtitle": "STUDIO",
+    "step3Desc": "ジェハ、ハル、シオンが音楽の話、明るい雑談、少し鋭い掛け合いを届けます。",
+    "step4Title": "ムードユニット",
+    "step4Subtitle": "MOOD",
+    "step4Desc": "テオ、イヒョン、ハミンがエネルギー、好み、やわらかな想像力で会話を広げます。",
+    "step5Title": "今日必要な答えを\n軽く開く",
+    "step5Desc": "ホームで運勢、タロット、四柱推命、相性をまとめて見て、気になる流れを順番に続けましょう。"
+  },
+  "appShell": {
+    "errorTitle": "星の流れが少し止まりました",
+    "errorBody": "予期しないエラーが発生しました。",
+    "errorHome": "ホームへ戻る",
+    "errorRetry": "もう一度試す",
+    "globalErrorTitle": "星の流れが完全に止まりました",
+    "globalErrorBody": "重大なエラーが発生しました。少し時間をおいて再度お試しください。",
+    "globalErrorRetry": "もう一度試す",
+    "notFoundTitle": "この道はまだ書かれていません",
+    "notFoundBody": "探しているページが見つかりません。最初に戻りましょうか。",
+    "notFoundHome": "最初へ戻る",
+    "loadingText": "星の流れを読んでいます..."
+  },
+  "authButton": {
+    "googleFailed": "Googleログインに失敗しました: {message}",
+    "googleStartFailed": "Googleログインを開始できませんでした。少し時間をおいて再度お試しください。",
+    "kakaoFailed": "Kakaoログインに失敗しました: {message}",
+    "kakaoStartFailed": "Kakaoログインを開始できませんでした。少し時間をおいて再度お試しください。",
+    "redirecting": "移動しています..."
+  },
+  "onboardingForm": {
+    "name": "名前",
+    "namePlaceholder": "メンバーに呼ばれたい名前",
+    "birthDate": "生年月日",
+    "birthTime": "出生時間",
+    "birthTimeHelp": "わからない場合は空欄で大丈夫です。時柱は省略されます。",
+    "calendarSystem": "暦",
+    "calendarSolar": "新暦",
+    "calendarLunar": "旧暦",
+    "gender": "性別",
+    "genderPick": "選択してください",
+    "genderMale": "男性",
+    "genderFemale": "女性",
+    "genderOther": "その他",
+    "genderUnknown": "不明",
+    "mbti": "性格タイプ（例：INFJ）",
+    "mbtiPlaceholder": "例：INFP",
+    "birthplace": "出生地",
+    "birthplacePlaceholder": "例：ソウル",
+    "submitLoading": "運命の本を開いています...",
+    "submit": "はじめる",
+    "privacy": "入力情報はリーディングのためだけに使用されます。"
+  },
+  "pricing": {
+    "metaTitle": "プラン",
+    "metaDescription": "毎日の利用回数を増やせるLight / Proプランです。",
+    "heading": "プラン",
+    "subheading": "必要なものだけ選べます。いつでも解約できます。",
+    "freeName": "無料",
+    "freeTagline": "やさしく始める",
+    "lightName": "Light",
+    "lightTagline": "毎日もう少し深く",
+    "proName": "Pro",
+    "proTagline": "いちばん余裕のある上限",
+    "recommended": "おすすめ",
+    "fortuneLine": "運勢 | 占い | 四柱推命 - 1日{n}回",
+    "tarotLine": "今日のタロット × {n}",
+    "chatLine": "チャット - 1日{n}回",
+    "fortuneUnlimited": "運勢 | 占い | 四柱推命をたっぷり",
+    "tarotUnlimited": "タロットをたっぷり",
+    "chatUnlimited": "チャットをたっぷり",
+    "premiumReports": "Light限定レポート（仕事・健康・勉強・恋愛）",
+    "compatibilityUnlimited": "相性リーディングをたっぷり",
+    "ctaFreeStart": "無料ではじめる",
+    "ctaCurrent": "現在のプラン",
+    "ctaFree": "無料プラン",
+    "ctaSubscribed": "利用中",
+    "ctaProActive": "Pro利用中",
+    "ctaLightStart": "Lightを始める",
+    "ctaProStart": "Proを始める",
+    "loading": "少々お待ちください...",
+    "footer": "安全なカード決済です。毎月自動更新され、いつでも解約できます。",
+    "metaDescriptionFull": "無料 / Light / Proを比較できます。Lightは毎日の上限を増やし、Proは運勢 | 占い | 四柱推命45回、チャット120回まで使えます。",
+    "h1": "3つのプラン",
+    "h1Sub": "自分に合うプランを選んでください。",
+    "appFreeNote": "アプリでは基本機能を無料で楽しめます。まずは気軽に使ってみてください。",
+    "freeDesc": "毎日、軽いリーディングを受けられます。",
+    "lightDesc": "毎日の上限を増やして、もっと頻繁に会えます。",
+    "proDesc": "すべてのリーディングを余裕のある回数で使えます。",
+    "tarotOneLine": "タロット・1枚引き × 1日{n}回",
+    "perMonth": "/ 月",
+    "bulletZodiac": "星座・干支の運勢",
+    "bulletTarotThree": "タロット・3枚引き",
+    "bulletCompat": "相性リーディング",
+    "bulletTarotCeltic": "今日のタロット × {n}（ケルト十字を含む）",
+    "bulletLenormand": "ルノルマン9枚・グランタブロー",
+    "bulletRunes": "ルーン・5枚 / 9枚スプレッド",
+    "bulletSajuDeep": "四柱推命の深掘り（保存）",
+    "bulletGacha": "カードガチャ・1日3回",
+    "palmLine": "手相リーディング・1日{n}回"
+  },
+  "tierBadge": {
+    "lite": "LITE",
+    "pro": "PRO"
+  },
+  "settingsPage": {
+    "heading": "マイスペース",
+    "subheading": "プランとプロフィール情報を管理します。",
+    "lightActive": "Lightが有効です。1日の上限が増えています。",
+    "proActive": "Proが有効です。もっとも余裕のある上限です。",
+    "freeMembership": "現在は無料プランです。",
+    "nextBilling": "次回請求",
+    "upgradeCta": "Lightにアップグレード",
+    "myInfo": "プロフィール",
+    "myInfoHelp": "四柱推命やリーディングに使用されます。",
+    "labelName": "名前",
+    "labelEmail": "メール",
+    "labelBirthDate": "生年月日",
+    "labelBirthTime": "出生時間",
+    "labelCalendar": "暦",
+    "labelGender": "性別",
+    "labelMbti": "性格タイプ",
+    "labelBirthplace": "出生地",
+    "calendarLunar": "旧暦",
+    "calendarSolar": "新暦",
+    "calendarUnknown": "不明",
+    "genderMale": "男性",
+    "genderFemale": "女性",
+    "genderOther": "その他",
+    "feedbackCta": "チームにフィードバックを送る",
+    "openChatCta": "オープンチャットに参加",
+    "greetingNamed": "{name}さん、今日も星はそばにいます。",
+    "greetingAnon": "今日も星はそばにいます。",
+    "membership": "プラン",
+    "autoExpireNote": "この日付を過ぎると自動で終了します。",
+    "feedbackBody": "不具合、ほしい機能、率直な感想、すべて歓迎です。いつでもKakaoオープンチャットへどうぞ。",
+    "metaTitle": "設定",
+    "profileEdit": "情報を編集",
+    "profileEditClose": "閉じる",
+    "profileEditCancel": "キャンセル",
+    "profileEditSave": "保存"
+  },
+  "cancelSubscription": {
+    "title": "サブスクリプションを解約",
+    "body": "次回請求日を過ぎると終了します。続けますか？",
+    "confirm": "解約する",
+    "abort": "やめる",
+    "errorGeneric": "解約に失敗しました。少し時間をおいて再度お試しください。"
+  },
+  "chatShell": {
+    "newSession": "新しい会話",
+    "drawerTitle": "今日のチャット",
+    "deleteTitle": "会話を削除",
+    "deleteConfirm": "この会話を削除しますか？元に戻せません。",
+    "sendAriaLabel": "メッセージを送信",
+    "inputPlaceholder": "メッセージを入力",
+    "typing": "入力中",
+    "quotaExceeded": "今日のチャット上限を使い切りました。",
+    "upgradeChatCta": "Lightでチャット回数を増やす",
+    "messageTooLong": "チャットは{n}文字以内で入力してください。",
+    "excuseFallback": "少しだけ席を外すね。",
+    "startChat": "{name}と会話を始める",
+    "greetings": {
+      "child": [
+        "来てくれたんだ。今日はどうだった？",
+        "待ってたよ。ゆっくり話して。",
+        "今日聴いた曲でも、食べたものでもいいよ。"
+      ],
+      "witch": [
+        "待ってたよ。",
+        "来てくれてうれしい。",
+        "今日は何から話す？"
+      ],
+      "sage": [
+        "ちょうど練習が終わったところ。いいタイミング。",
+        "今日のテンション、どんな感じ？",
+        "ステージの話でも日常の話でも、ついていくよ。"
+      ],
+      "shaman": [
+        "スタジオにいるよ。少し一緒にいる？",
+        "今日のプレイリスト、何だった？",
+        "静かに話したい日なら、ここで大丈夫。"
+      ],
+      "taoist": [
+        "ライダー、来た！今日は何してた？",
+        "なんか面白い話ある？なくても作るけど。",
+        "今日の気分、3文字で言うと？"
+      ],
+      "dokkaebi": [
+        "来たね。今日はどんな顔してる？",
+        "まず一言だけ投げて。そこから拾う。",
+        "今日は軽く話す？それとも本音？"
+      ],
+      "hunter": [
+        "最近何見てる？",
+        "好みの話から始める？",
+        "静かに聞くから、ゆっくりでいいよ。"
+      ],
+      "runeshaman": [
+        "待ってた？",
+        "今日浮かんだこと、ひとつ教えて。",
+        "夢みたいな話でも、そのまま聞くよ。"
+      ],
+      "god": [
+        "お、来た。今日のエネルギー何点？",
+        "動けない日でも大丈夫。とりあえず話そ。",
+        "今日のハイライト、ひとつだけ教えて。"
+      ]
+    },
+    "shamanCall": {
+      "child": [
+        "イアンが今日のことを聞きたがっています。",
+        "落ち着いた最初の挨拶ならイアンへ。",
+        "短い近況だけでも、イアンには十分です。"
+      ],
+      "witch": [
+        "ユジュンが静かに待っています。",
+        "聴いた曲でも、今日の話でもユジュンに聞かせてください。",
+        "やさしく話したいならユジュンが合います。"
+      ],
+      "sage": [
+        "ドユンは練習から戻ったところです。",
+        "元気をもらいたいならドユンへ。",
+        "ステージの話でも日常の話でも、ドユンなら受け止めます。"
+      ],
+      "shaman": [
+        "ジェハがスタジオで待っています。",
+        "ジェハはプレイリストの話が好きです。",
+        "静かな夜の会話ならジェハへ。"
+      ],
+      "taoist": [
+        "ハルと軽く話してみますか？",
+        "食べ物の話から始めても大丈夫。ハルはきっと喜びます。",
+        "明るい反応がほしいならハルへ。"
+      ],
+      "dokkaebi": [
+        "シオンは待っていないふりをしています。",
+        "シオンは軽い掛け合いが得意です。",
+        "短いメッセージでも、シオンには十分です。"
+      ],
+      "hunter": [
+        "最近ハマっているものをイヒョンに話してみてください。",
+        "映画や音楽の感想はイヒョンにぴったりです。",
+        "落ち着いた好みの話ならイヒョンへ。"
+      ],
+      "runeshaman": [
+        "ハミンは少し不思議な話を待っています。",
+        "夢や写真の話をハミンに聞かせてください。",
+        "ゆるくてかわいい会話ならハミンへ。"
+      ],
+      "god": [
+        "テオが全力で待っています。",
+        "今日のエネルギーをテオに教えてください。",
+        "舞台裏みたいなテンションで話したいならテオへ。"
+      ]
+    },
+    "emptyLines": {
+      "child": {
+        "line1": "今日はどうだった？",
+        "line2": "短い近況から始めてみて。"
+      },
+      "witch": {
+        "line1": "待ってたよ。",
+        "line2": "今日は何から話そうか？"
+      },
+      "sage": {
+        "line1": "ちょうど練習が終わったところ。",
+        "line2": "今日のエネルギーはどんな感じ？"
+      },
+      "shaman": {
+        "line1": "スタジオは静かです。",
+        "line2": "今日聴いた曲はある？"
+      },
+      "taoist": {
+        "line1": "あ、来た！",
+        "line2": "今日食べたもの教えて。"
+      },
+      "dokkaebi": {
+        "line1": "来たなら話して。",
+        "line2": "聞いてるから。"
+      },
+      "hunter": {
+        "line1": "最近何を見てる？",
+        "line2": "好みの話から始める？"
+      },
+      "runeshaman": {
+        "line1": "待ってた？",
+        "line2": "今日浮かんだことをひとつ教えて。"
+      },
+      "god": {
+        "line1": "また来てくれたね。",
+        "line2": "今日のエネルギー何点？"
+      }
+    }
+  },
+  "onboardingHooks": {
+    "child": "静かなリーダー",
+    "witch": "温かなボーカル",
+    "sage": "すっきりしたパフォーマー",
+    "shaman": "静かなプロデューサー",
+    "taoist": "明るいムードメーカー",
+    "dokkaebi": "シックなラッパー",
+    "god": "エネルギッシュなメインダンサー",
+    "hunter": "落ち着いた分析担当",
+    "runeshaman": "夢見がちな末っ子"
+  },
+  "collectionPage": {
+    "heading": "ボーナス",
+    "ownedFraction": "{owned} / {total}枚 所持",
+    "filterAll": "すべて",
+    "rarityNormal": "ノーマル",
+    "rarityRare": "レア",
+    "rarityLegend": "レジェンド",
+    "drawingNow": "引いています...",
+    "drawDoneToday": "今日は完了",
+    "drawBonus": "ボーナスカードを選ぶ（残り{n}回）",
+    "drawCount": "カードを選ぶ（{used}/{max}）",
+    "drawAction": "今日のボーナスカード",
+    "drawAriaLabel": "ボーナスカードを選ぶ",
+    "lockedAriaLabel": "未所持のカード",
+    "lockedBadge": "未所持",
+    "detailAriaLabel": "{name}の詳細を見る",
+    "closeAriaLabel": "閉じる",
+    "upgradeHint": "Lightにすると1日{n}回引けます。",
+    "quotaError": "今日のカード回数を使い切りました。",
+    "chatBonus": "（チャット+{n}回）",
+    "newCardTitle": "新しいカード - {name}",
+    "dupeCardTitle": "所持済みカード - {name}",
+    "resultNew": "新しいカードがボーナスに加わりました！",
+    "resultDupe": "すでに持っているカードです。",
+    "resultBonus": "チャット+{n}回を獲得！",
+    "resultIdle": "ボタンを押して3枚のボーナスカードを開いてください。",
+    "drawError": "カードを引けませんでした。",
+    "subDescSubscribed": "サブスク中は毎日さらに多く引けます。Lightは3回、Proは5回です。",
+    "subDescFree": "無料1回、Light3回、Pro5回。レア以上のカードはチャットボーナスも付きます。",
+    "dupeDetailLine": "すでに持っているカードです。消費は1回分だけです。",
+    "bonusBackAlt": "ボーナスカード裏面",
+    "pickOneHint": "3枚のうち1枚を選んでください。",
+    "pickOneAria": "ボーナスカード{n}を選ぶ",
+    "bonusDeductNotice": "ボーナスが出た場合、表示されたチャット回数が今日の使用済み回数から差し引かれます。"
+  },
+  "fortuneCard": {
+    "categoryFallback": "運勢",
+    "chatCta": "話しに行く",
+    "shareFilename": "CarouselOfLife_{label}",
+    "shareTextLine": "[{label}] {title}\n\n{content}\n\nラッキー: {color} / {number} / {direction}",
+    "askMore": "{name}にもう少し聞いてみる？",
+    "luckyColor": "ラッキーカラー",
+    "luckyNumber": "ラッキーナンバー",
+    "luckyDirection": "ラッキー方角",
+    "categoryGeneral": "総合運",
+    "categoryLove": "恋愛運",
+    "categoryCareer": "仕事運",
+    "categoryHealth": "健康運",
+    "categoryStudy": "勉強運",
+    "categoryWealth": "金運",
+    "categoryZodiac": "星座運",
+    "categoryChineseZodiac": "干支運"
+  },
+  "premiumReports": {
+    "loading": "分析しています...",
+    "getReport": "レポートを見る",
+    "premiumGate": "Light",
+    "errorGeneric": "問題が発生しました。",
+    "errorCareer": "レポートを読み込めませんでした。",
+    "errorHealth": "今日の運動メニューを読み込めませんでした。",
+    "errorStudy": "今日の勉強ヒントを読み込めませんでした。",
+    "errorLove": "読み込めませんでした。",
+    "careerHeading": "今日、仕事でうまく動くコツ",
+    "healthHeading": "今日のコンディションガイド",
+    "studyHeading": "今日の勉強ヒント",
+    "loveHeading": "恋愛 - Lightレポート"
+  },
+  "historyPage": {
+    "metaTitle": "私の記録",
+    "metaDescription": "これまで見た運勢、タロット、相性の記録をまとめて確認できます。",
+    "category": "私の記録",
+    "heading": "記録",
+    "intro": "今日見た運勢、タロット、相性の結果を新しい順にまとめました。過去の結果も見返しながら流れをつなげられます。",
+    "emptyTitle": "まだ記録がありません",
+    "emptyBody": "運勢、タロット、相性を見るとここに記録されます。",
+    "totalRecords": "すべての記録",
+    "latestRecords": "最近の記録",
+    "showingRecent": "最近 {n} 件",
+    "filterAll": "すべて",
+    "filterEmptyTitle": "この種類の記録はまだありません",
+    "filterEmptyBody": "一度見ると、ここに記録されます。",
+    "deleteRecord": "記録を削除",
+    "deleteConfirm": "この記録を削除しますか？削除した記録は元に戻せません。",
+    "deleteFailed": "記録を削除できませんでした。しばらくしてからもう一度お試しください。",
+    "periodLabel": "期間",
+    "periodAll": "すべて",
+    "periodWeek": "最近7日",
+    "periodMonth": "最近30日",
+    "detailMetaTitle": "記録の詳細",
+    "detailMetaDescription": "保存された運勢、タロット、相性の結果をもう一度確認できます。",
+    "detailCategory": "保存された記録",
+    "detailHeading": "記録を見返す",
+    "detailIntro": "以前見た結果をもう一度開きました。今の気持ちと比べながら読んでみてください。",
+    "detailKindLabel": "種類",
+    "detailDateLabel": "記録日",
+    "detailFortuneCategoryLabel": "分類",
+    "detailTarotQuestionLabel": "質問",
+    "detailTarotNoQuestion": "質問なしで引いたカード",
+    "detailCompatibilityPartnerLabel": "相手",
+    "detailCompatibilityNoPartner": "相手情報なし",
+    "nextActionTitle": "次につなげる",
+    "nextActionBody": "保存した結果を確認したら、今の流れでもう一度見たり、ほかの記録を続けて見たりできます。",
+    "actionFortuneTitle": "今日の運勢をもう一度見る",
+    "actionFortuneBody": "今の自分を基準に、今日の流れをもう一度確認します。",
+    "actionTarotTitle": "タロットをもう一度引く",
+    "actionTarotBody": "今の気持ちに合わせて、新しいカードを開きます。",
+    "actionCompatTitle": "相性をもう一度見る",
+    "actionCompatBody": "同じ相手、または別の相手との流れを確認します。",
+    "backToArchiveBody": "ほかの保存記録を続けて見ます。",
+    "backToArchive": "記録へ戻る",
+    "startFortune": "運勢を見る",
+    "startFortuneBody": "今日使える流れから確認しましょう。",
+    "startTarot": "タロットを見る",
+    "startTarotBody": "今気になる選択をカードで見ます。",
+    "startCompat": "相性を見る",
+    "startCompatBody": "相手との流れを軽く確認します。",
+    "myStory": "私の流れ",
+    "recordedAt": "記録日",
+    "drawnCard": "引いたカード",
+    "repeatPattern": "繰り返しパターン",
+    "encounterRecord": "会話記録",
+    "patternDetected": "パターン検知",
+    "todayBoundaryCard": "今日の記録カード",
+    "saveBtn": "保存",
+    "boundaryFilename": "record-card-{date}.png",
+    "countSuffix": "{n}回",
+    "itemFortune": "運勢",
+    "itemTarot": "タロット",
+    "itemTarotThree": "タロット3枚",
+    "itemTarotOne": "タロット1枚",
+    "itemCompat": "相性 · {date}",
+    "itemCompatShort": "相性",
+    "itemCompatTitle": "{partner}との相性",
+    "compatScore": "{score}点",
+    "daysVisited": "記録した日",
+    "daysCount": "{n}日",
+    "cardsDrawn": "引いたカード",
+    "cardsCount": "{n}枚",
+    "mostMet": "一番会ったメンバー",
+    "mostMetWithCount": "{name} ({n}回)",
+    "dominantMood": "よく残した感情",
+    "repeatedDetected": "繰り返し検知",
+    "repeatedCardLine": "「{card}」カードが{n}回出ました。",
+    "encounter": "出会いの記録",
+    "encounterCount": "{name} {n}回",
+    "patternsDetected": "検知されたパターン",
+    "downloadSave": "保存"
+  },
+  "moodLabels": {
+    "great": "最高",
+    "good": "いい感じ",
+    "neutral": "ふつう",
+    "tough": "少ししんどい",
+    "hard": "かなりつらい"
+  },
+  "actionErrors": {
+    "premiumOnly": "Light限定機能です。",
+    "completePersonalityFirst": "先に性格診断を完了してください。",
+    "analysisFailed": "分析に失敗しました。",
+    "validationFailed": "入力内容が正しくありません。",
+    "authError": "認証エラー: {message}",
+    "compatibilityError": "相性リーディングで問題が発生しました: {message}",
+    "compatFreeExceeded": "無料の相性リーディングは1日{n}回までです。Lightで上限を増やしますか？",
+    "categoryInvalid": "カテゴリが正しくありません。",
+    "zodiacPremiumOnly": "星座運と干支運はLight限定です。",
+    "fortuneQuotaExceeded": "今日の運勢上限（{n}回）を使い切りました。",
+    "tarotQuotaExceeded": "今日のタロット上限（{n}回）を使い切りました。",
+    "tarotThreePremium": "3枚引きはLightプランの機能です。",
+    "tarotGenericError": "問題が発生しました。",
+    "lenormandGrandTableauGender": "グランタブローにはシグニフィケーターの性別が必要です。",
+    "lenormandQuotaExceeded": "今日の無料ルノルマン上限（{n}回）を使い切りました。",
+    "lenormandGenericError": "問題が発生しました。",
+    "runeQuotaExceeded": "今日の無料ルーン上限（{n}回）を使い切りました。",
+    "runeGenericError": "ルーンを引けませんでした。",
+    "sajuDeepPremium": "深掘りリーディングはLightプランの機能です。",
+    "sajuRequired": "先に四柱推命を作成してください。",
+    "iljinError": "今日の日柱を読めませんでした。",
+    "careerReportError": "レポートを読み込めませんでした。",
+    "healthWorkoutError": "今日の運動メニューを読み込めませんでした。",
+    "studyTipsError": "今日のヒントを読み込めませんでした。",
+    "loveCardError": "読み込めませんでした。",
+    "collectionDrawError": "カードを引けませんでした。",
+    "checkoutEmailRequired": "サブスクリプション開始にはメールアドレスが必要です。",
+    "checkoutCreationFailed": "決済ページを作成できませんでした。",
+    "subscriptionCancelFailed": "解約に失敗しました。",
+    "sessionCreateFailed": "セッションを作成できませんでした。",
+    "sessionNotFound": "セッションが見つかりません。",
+    "chatQuotaExceeded": "今日のチャット上限（{n}）を使い切りました。",
+    "chatBodyParseFailed": "リクエスト本文を読み取れませんでした。",
+    "chatBodyInvalid": "本文が正しくありません。",
+    "chatMessageRequired": "チャットメッセージを入力してください。",
+    "chatMessageTooLong": "チャットは100文字以内で入力してください。",
+    "fortuneAiFailed": "リーディングを書けませんでした: {message}",
+    "fortuneSajuFailed": "四柱の星の流れを読めませんでした: {message}",
+    "tarotAiFailed": "タロットのメッセージを読めませんでした: {message}",
+    "lenormandAiFailed": "ルノルマンのメッセージを読めませんでした: {message}",
+    "lenormandThreeFailed": "ルノルマン9枚リーディングを生成できませんでした: {message}",
+    "compatibilityAiFailed": "2人のエネルギーを読めませんでした: {message}",
+    "compatibilityAiFailedShort": "四柱の星の流れを読めませんでした: {message}",
+    "runeAiFailed": "ルーンのメッセージを読めませんでした: {message}",
+    "deepReadingAiFailed": "深掘りリーディングを書けませんでした: {message}",
+    "deepReadingSajuFailed": "四柱の星の流れを読めませんでした: {message}",
+    "unknownReason": "原因不明",
+    "reloginRequired": "もう一度ログインしてください。",
+    "compatPremiumOnly": "Light限定機能です。",
+    "tarotQuotaUpgradeFull": "今日のタロット上限（{n}回）を使い切りました。Lightで1日の上限を増やせます。",
+    "lenormandQuotaUpgradeFull": "今日の無料ルノルマン上限（{n}回）を使い切りました。Lightで1日の上限を増やせます。",
+    "lenormandPremiumSpread": "このスプレッドはLight限定です。9枚引きとグランタブローを自由に使えます。",
+    "runeQuotaUpgradeFull": "今日の無料ルーン上限（{n}回）を使い切りました。Lightで自由に引けます。",
+    "runePremiumSpread": "このスプレッドはLight限定です。5枚・9枚のルーンを自由に引けます。",
+    "questionTooLong": "質問は100文字以内で入力してください。",
+    "compatTwoSidedHeader": "2人のエネルギーを読めませんでした",
+    "lenormandSaveFailed": "ルノルマン9枚の結果を保存できませんでした。",
+    "grandTableauFailed": "グランタブロー分析に失敗しました: {message}",
+    "grandTableauInterpretFailed": "グランタブロー解釈を生成できませんでした: {message}",
+    "grandTableauSaveFailed": "グランタブロー結果を保存できませんでした。",
+    "grandTableauGenderRequired": "グランタブローにはシグニフィケーターの性別が必要です。",
+    "rateLimitedSeconds": "{n}秒後にもう一度お試しください。",
+    "nameCompatibilityNameInvalid": "名前は1〜24文字で入力してください。",
+    "nameCompatibilityGenericError": "名前相性を読めませんでした。少し時間をおいて再度お試しください。",
+    "nameReadingGenericError": "名前を読めませんでした。少し時間をおいて再度お試しください。",
+    "palmConsentRequired": "写真処理への同意が必要です。",
+    "palmImageRequired": "手のひら写真を添付してください。",
+    "palmImageTooLarge": "写真の容量が大きすぎます。5MB以内にしてください。",
+    "palmUnsupportedType": "JPEG / PNG / WEBPのみ対応しています。",
+    "palmPremiumOnly": "手相占いはLight会員限定です。登録後にご利用ください。",
+    "palmQuotaExceeded": "今日の手相占い上限（{n}回）を使い切りました。明日またお試しください。",
+    "aiSlowRetry": "AIの応答が遅れています。少し時間をおいて再度お試しください。",
+    "palmGenericError": "手相を読めませんでした。別の写真でもう一度お試しください。"
+  },
+  "todayExtras": {
+    "archive": "ボーナス",
+    "archiveSub": "記録とカード",
+    "streakDaysRow": "{n}日連続",
+    "streakActive": "流れが続いています",
+    "streakNew": "記録が積み上がっています",
+    "persona": "性格",
+    "personaSub": "あなたの中のパターン",
+    "navTopAria": "上部ナビゲーション",
+    "navBottomAria": "下部ナビゲーション"
+  },
+  "quotaBar": {
+    "proActive": "Pro有効",
+    "proSub": "運勢 | 占い | 四柱推命とチャットを余裕のある上限で使えます。",
+    "fortune": "運勢 | 占い | 四柱推命",
+    "tarot": "占い | 四柱推命",
+    "chat": "チャット",
+    "lightPlan": "Lightプラン",
+    "freePlan": "無料プラン",
+    "upgradePro": "Proにアップグレード",
+    "upgrade": "アップグレード"
+  },
+  "streak": {
+    "milestone3": "3日連続！",
+    "milestone7": "7日連続 - 1週間達成！",
+    "milestone30": "30日連続 - 1か月達成！",
+    "milestone100": "100日連続 - すごい！",
+    "milestoneGeneric": "{n}日連続！",
+    "reset": "連続記録がリセットされました。今日からまた始めましょう！",
+    "badgeLabel": "{n}日連続",
+    "bonus": "ボーナス +{n}"
+  },
+  "dailyQuestion": {
+    "eyebrow": "今日の質問",
+    "answerCta": "{name}に答える"
+  },
+  "premiumCard": {
+    "lightBadge": "Light",
+    "verifyCta": "Lightで解放",
+    "solveCta": "Lightで解放",
+    "unlimitedCta": "Lightで上限を増やす",
+    "analyzing": "分析しています...",
+    "getReport": "レポートを見る",
+    "genericError": "問題が発生しました。",
+    "shortError": "問題が発生しました",
+    "retry": "もう一度試す"
+  },
+  "generalPremium": {
+    "title": "今日の総合運レポート",
+    "lockBody": "時間帯ごとのエネルギー、6分野の運勢チャート、今日のDO / DON’Tをまとめて見られます。",
+    "lockBullet1": "時間帯別エネルギー（夜明け / 朝 / 午後 / 夜）",
+    "lockBullet2": "運勢レーダー（6分野）",
+    "lockBullet3": "今日のDO / DON’T",
+    "section1": "時間帯別エネルギー",
+    "section2": "運勢レーダー",
+    "section3": "今日のDO / DON’T",
+    "doToday": "今日やるといいこと",
+    "dontToday": "今日は避けたいこと",
+    "radarAria": "6分野の運勢スコアレーダーチャート",
+    "radarGeneral": "総合",
+    "radarLove": "恋愛",
+    "radarMoney": "金運",
+    "radarCareer": "仕事",
+    "radarHealth": "健康",
+    "radarStudy": "勉強"
+  },
+  "careerReport": {
+    "title": "今日の仕事運レポート",
+    "lockBody": "今日の仕事エネルギー、動きやすい時間、対人運をまとめて見られます。",
+    "lockBullet1": "仕事エネルギー（集中・関係・推進力）",
+    "lockBullet2": "動きやすい時間帯",
+    "lockBullet3": "今週の仕事の流れ",
+    "lockBullet4": "今日の対人運（上司・同僚）",
+    "lockBullet5": "評価されるコツ",
+    "energy": "今日の仕事エネルギー",
+    "energyFocus": "集中",
+    "energyRelation": "対人",
+    "energyDrive": "推進力",
+    "avoid": "避けたいこと",
+    "timing": "動きやすい時間",
+    "periodMorning": "午前",
+    "periodAfternoon": "午後",
+    "periodGood": "{period}がよさそう",
+    "meetings": "会議・交渉",
+    "weekly": "今週の仕事の流れ",
+    "relation": "今日の対人運",
+    "askGood": "お願いしやすい日",
+    "askLater": "お願いは明日に回す",
+    "boss": "上司",
+    "coworker": "同僚",
+    "stand": "目立つ",
+    "loved": "職場で評価されるコツ",
+    "weekdays": [
+      "日",
+      "月",
+      "火",
+      "水",
+      "木",
+      "金",
+      "土"
+    ],
+    "weekdayMon": "月",
+    "weekdayTue": "火",
+    "weekdayWed": "水",
+    "weekdayThu": "木",
+    "weekdayFri": "金"
+  },
+  "healthReport": {
+    "title": "今日のおすすめ運動",
+    "lockBody": "今日のコンディションに合わせた、自宅でできる器具なし運動です。",
+    "lockBullet1": "今日のコンディション分析",
+    "lockBullet2": "自重トレーニング",
+    "lockBullet3": "ストレス解消運動",
+    "lockBullet4": "避けたい運動",
+    "workoutCta": "運動メニューを見る",
+    "bodyweight": "自重",
+    "equipment": "器具"
+  },
+  "studyReport": {
+    "title": "集中力を上げるヒント",
+    "lockBody": "性格タイプに合わせた勉強戦略と環境づくりです。",
+    "lockBullet1": "今日吸収しやすい科目",
+    "lockBullet2": "集中しやすい時間帯",
+    "lockBullet3": "性格に合う勉強法",
+    "getTipsCta": "ヒントを見る"
+  },
+  "loveReport": {
+    "title": "今日の恋愛レポート",
+    "lockBody": "今日伝えやすい一言と、魅力を上げるコツです。",
+    "lockBullet1": "今日の一言（片思い / 恋人向け）",
+    "lockBullet2": "今日の魅力アップヒント",
+    "todayLine": "今日の一言",
+    "charmTip": "魅力アップヒント",
+    "loadingShort": "読み込み中..."
+  },
+  "lottoCard": {
+    "title": "金運ロト番号ジェネレーター",
+    "subtitle": "今日の金運エネルギーから6つの数字を引きます。",
+    "lottoSectionTitle": "ロト 6/45",
+    "lottoLockedPreview": "ラッキーナンバー6個",
+    "luckyNumberAria": "ロト番号 {n}",
+    "pensionTitle": "年金くじ 720+",
+    "pensionSubtitle": "長く続く金運の流れから、組と6桁の番号を選びます。",
+    "pensionLockedPreview": "組 + 6桁の番号",
+    "pensionGroup": "{group}組",
+    "pensionAria": "年金くじ番号 {group}組 {numbers}",
+    "getCta": "今日のラッキーナンバーを見る",
+    "againCta": "もう一度見る",
+    "fixedNote": "金運{score}をもとに算出・今日は固定",
+    "lockedTitle": "Light限定機能",
+    "lockedBody": "金運をもとにした6つのラッキーナンバーを毎日受け取れます。",
+    "lockedCta": "Lightを始める"
+  },
+  "premiumGate": {
+    "zodiacTitle": "星座運 - Light限定",
+    "zodiacBody": "星座運はLight会員向けです。12星座それぞれの今日の運勢を毎日書き下ろします。",
+    "chineseTitle": "干支運 - Light限定",
+    "chineseBody": "干支運はLight会員向けです。あなたの干支に合わせて毎日読みます。",
+    "fallbackTitle": "Light限定",
+    "fallbackBody": "この運勢はLight会員向けです。",
+    "subscribeCta": "Lightに登録",
+    "footer": "登録すると、星座運・干支運・Light限定の四柱リーディングが毎日使えます。"
+  },
+  "fortuneTrend": {
+    "lastNDays": "直近{n}日",
+    "avgScore": "平均 {n}",
+    "deltaScore": "{delta}"
+  },
+  "todaySummary": {
+    "title": "今日のほかのリーディング",
+    "viewMore": "もっと見る →"
+  },
+  "zodiacBanner": {
+    "compatible": "相性よし",
+    "caution": "注意"
+  },
+  "zodiacDateRange": {
+    "aries": "Mar 21 – Apr 19",
+    "taurus": "Apr 20 – May 20",
+    "gemini": "May 21 – Jun 21",
+    "cancer": "Jun 22 – Jul 22",
+    "leo": "Jul 23 – Aug 22",
+    "virgo": "Aug 23 – Sep 22",
+    "libra": "Sep 23 – Oct 22",
+    "scorpio": "Oct 23 – Nov 21",
+    "sagittarius": "Nov 22 – Dec 21",
+    "capricorn": "Dec 22 – Jan 19",
+    "aquarius": "Jan 20 – Feb 18",
+    "pisces": "Feb 19 – Mar 20"
+  },
+  "zodiacName": {
+    "aries": "牡羊座",
+    "taurus": "牡牛座",
+    "gemini": "双子座",
+    "cancer": "蟹座",
+    "leo": "獅子座",
+    "virgo": "乙女座",
+    "libra": "天秤座",
+    "scorpio": "蠍座",
+    "sagittarius": "射手座",
+    "capricorn": "山羊座",
+    "aquarius": "水瓶座",
+    "pisces": "魚座"
+  },
+  "chineseZodiacName": {
+    "rat": "子",
+    "ox": "丑",
+    "tiger": "寅",
+    "rabbit": "卯",
+    "dragon": "辰",
+    "snake": "巳",
+    "horse": "午",
+    "goat": "未",
+    "monkey": "申",
+    "rooster": "酉",
+    "dog": "戌",
+    "pig": "亥"
+  },
+  "generateForm": {
+    "loading": "星の流れを読んでいます...",
+    "eyebrow": "今日のリーディング",
+    "askCta": "{category}を見る",
+    "unlimitedCta": "Lightで上限を増やす",
+    "fallbackBody": "{category}の流れを読んでみます。",
+    "fallbackSaju": "あなたの四柱を見てみます。",
+    "copyGeneral": "今日の総合的な流れを読みます。",
+    "copyLove": "恋愛と関係の流れを見ます。",
+    "copyMoney": "金運とお金の流れを追います。",
+    "copyCareer": "仕事とキャリアの流れを読みます。",
+    "copyHealth": "健康とコンディションを確認します。",
+    "copyStudy": "勉強と集中の流れを見ます。",
+    "copyZodiac": "今日の星座運を読みます。",
+    "copyChineseZodiac": "今日の干支運を読みます。"
+  },
+  "tarotPage": {
+    "metaTitle": "占い",
+    "metaDescription": "カードがささやくメッセージを聞いてみましょう。",
+    "tarotOrigin": "タロットの起源",
+    "tarotOriginBody": "タロットは14世紀後半のヨーロッパで生まれた占い体系です。22枚の大アルカナと56枚の小アルカナ、全78枚で人の運命のさまざまな形を映します。\nそれぞれのカードには象徴があり、その象徴を読み解いて今の流れを見ます。",
+    "lenormandOrigin": "ルノルマンの起源",
+    "lenormandOriginBody": "ルノルマンは、18世紀後半のフランスの占い師マドモワゼル・ルノルマンに由来する36枚のカードです。\n日常の物、動物、自然がカードになっていて、隣り合うカードとの組み合わせから意味が生まれます。",
+    "runeOrigin": "ルーンの起源",
+    "runeOriginBody": "エルダー・フサルクは、ゲルマン民族の24文字のルーンからなる占い体系です。\nひとつのルーンは神々の言葉であり、運命の断片とされます。\n袋からルーンを引くことは、北方のやり方で流れに問いかけることです。",
+    "todaysTarot": "今日のタロット",
+    "todaysLenormand": "今日のルノルマン",
+    "todaysRune": "今日のルーン"
+  },
+  "cardTabs": {
+    "tarot": "タロット",
+    "tarotDesc": "78枚のカードで運命の流れを読みます。",
+    "lenormand": "ルノルマン",
+    "lenormandDesc": "36枚のカードが日常のメッセージを運びます。",
+    "rune": "ルーン",
+    "runeDesc": "24のルーンが北方の神託を伝えます。",
+    "aria": "カード占いの種類"
+  },
+  "tarotForm": {
+    "drawing": "運命を読んでいます...",
+    "shuffling": "シャッフル中...",
+    "selected": "選択済み",
+    "drawCard": "カードを引く",
+    "drawCardHeading": "1枚引き",
+    "drawCardBody": "質問を心に浮かべて、カードを1枚引いてください。",
+    "cardBackAlt": "タロットカード裏面",
+    "questionLabel": "質問（任意）",
+    "questionPlaceholderOne": "例：今週はどんな流れになりそう？（100文字以内）",
+    "questionHintOne": "空欄なら、今日の総合カードとして読みます。",
+    "subscribeCta": "Lightに登録",
+    "threeTitle": "過去・現在・未来（3枚）",
+    "threeLightTitle": "過去・現在・未来（Light）",
+    "threeBody": "3枚のカードで流れを読みます。",
+    "threeBullet1": "過去・ここまでの流れ",
+    "threeBullet2": "現在・今いる場所",
+    "threeBullet3": "未来・近づく流れ",
+    "threeBullet4": "3枚の総合解釈",
+    "threeCta": "Lightで解放",
+    "threeLoading": "3枚のカードの流れを読んでいます...",
+    "threeDraw": "3枚引く",
+    "threeError": "問題が発生しました",
+    "threeQuestionPlaceholder": "例：この件はこれからどう動きそう？（100文字以内）",
+    "threeQuestionHint": "質問なしで流れだけを見ることもできます。",
+    "reversedBadge": "逆位置",
+    "uprightBadge": "正位置",
+    "cardAriaReversed": "{name} 逆位置",
+    "cardAriaUpright": "{name} 正位置",
+    "synthesis": "総合",
+    "positionPast": "過去",
+    "positionPresent": "現在",
+    "positionFuture": "未来",
+    "positionPastSub": "ここまでの流れ",
+    "positionPresentSub": "今いる場所",
+    "positionFutureSub": "向かう先",
+    "spreadThreeLabel": "3枚引き",
+    "shareTitleOne": "タロット・1枚: {card}",
+    "shareTextOne": "[タロット] {card}（{orient}）\n\n{summary}",
+    "shareTitleThree": "タロット・3枚引き: {summary}",
+    "shareFilename": "CarouselOfLife_Tarot_{date}"
+  },
+  "sajuPage": {
+    "metaTitle": "四柱推命",
+    "metaDescription": "あなたの四柱の配置を見ます。",
+    "tipTitle": "覚えておきたいこと",
+    "tipBody": "四柱推命は、生まれた瞬間の星の配置を読む土台です。一度作っておくと、運勢・タロット・相性・今日の日柱リーディングがより深くなります。"
+  },
+  "sajuPillars": {
+    "pillarYear": "年柱",
+    "pillarYearSub": "根",
+    "pillarMonth": "月柱",
+    "pillarMonthSub": "環境",
+    "pillarDay": "日柱",
+    "pillarDaySub": "自分",
+    "pillarHour": "時柱",
+    "pillarHourSub": "内面",
+    "heading": "四柱八字",
+    "subheading": "四つの柱と八つの字。字をタップすると意味を確認できます。",
+    "hourEmpty": "出生時間が不明のため、時柱は空欄です。",
+    "tapHint": "字をタップすると、陰陽・五行・意味を見られます。",
+    "popoverStem": "天干",
+    "popoverBranch": "地支",
+    "yinYang": "陰陽",
+    "fiveElements": "五行",
+    "animal": "動物",
+    "hour": "時間",
+    "symbol": "象徴"
+  },
+  "sajuMeanings": {
+    "elementWood": "木",
+    "elementFire": "火",
+    "elementEarth": "土",
+    "elementMetal": "金",
+    "elementWater": "水",
+    "polarityYang": "陽",
+    "polarityYin": "陰",
+    "stem_甲_symbol": "大樹・柱",
+    "stem_甲_description": "始まりの勢いを持つ、まっすぐで原則を大切にするリーダー気質。",
+    "stem_乙_symbol": "草花・つる",
+    "stem_乙_description": "やわらかくもしぶとい生命力。柔軟で適応力があります。",
+    "stem_丙_symbol": "太陽",
+    "stem_丙_description": "明るく活発な陽のエネルギー。人を引き寄せる光です。",
+    "stem_丁_symbol": "灯火・ろうそく",
+    "stem_丁_description": "やさしく温かな火。細やかな気配りと献身を表します。",
+    "stem_戊_symbol": "山・大地",
+    "stem_戊_description": "重みのある安定した土台。揺らぎにくい中心です。",
+    "stem_己_symbol": "畑・庭土",
+    "stem_己_description": "やさしく育てる土。包み込む力と世話する力があります。",
+    "stem_庚_symbol": "鉄・斧",
+    "stem_庚_description": "硬く決断力のある意志。前へ進む力が強いタイプです。",
+    "stem_辛_symbol": "宝石・針",
+    "stem_辛_description": "洗練された繊細さと正確さ。磨かれた美意識を持ちます。",
+    "stem_壬_symbol": "海・大河",
+    "stem_壬_description": "深く広い流れ。受け止める力から生まれる知恵を表します。",
+    "stem_癸_symbol": "雨・露",
+    "stem_癸_description": "しっとりと繊細な水。静かな感受性を持ちます。",
+    "branch_子_animal": "子",
+    "branch_子_description": "真夜中の静けさ。鋭い知性と生み出す力があります。",
+    "branch_丑_animal": "丑",
+    "branch_丑_description": "夜明け前の闇。静かな忍耐と積み重ねを表します。",
+    "branch_寅_animal": "寅",
+    "branch_寅_description": "夜明け。勇気と新しい始まりの力があります。",
+    "branch_卯_animal": "卯",
+    "branch_卯_description": "朝のやわらかな成長。穏やかさと育つ力を表します。",
+    "branch_辰_animal": "辰",
+    "branch_辰_description": "上昇の時。変化と大きな夢を抱く力があります。",
+    "branch_巳_animal": "巳",
+    "branch_巳_description": "光が熱を帯びる時間。知恵と集中力を表します。",
+    "branch_午_animal": "午",
+    "branch_午_description": "正午のピーク。生命力と自由に駆ける勢いがあります。",
+    "branch_未_animal": "未",
+    "branch_未_description": "午後の陽ざし。温かさと守る心を表します。",
+    "branch_申_animal": "申",
+    "branch_申_description": "機転が利く時間。素早い判断と器用さがあります。",
+    "branch_酉_animal": "酉",
+    "branch_酉_description": "夕暮れ。精密さと物事を仕上げる力があります。",
+    "branch_戌_animal": "戌",
+    "branch_戌_description": "夜の入口。忠実さと守る力を表します。",
+    "branch_亥_animal": "亥",
+    "branch_亥_description": "静かな夜。豊かさと深い休息を表します。"
+  },
+  "sajuZodiac": {
+    "heading": "四つの地支・干支"
+  },
+  "fiveElements": {
+    "wood": "木",
+    "fire": "火",
+    "earth": "土",
+    "metal": "金",
+    "water": "水",
+    "heading": "五行バランス",
+    "subheading": "{total}文字に含まれるエネルギー分布",
+    "strong": "強い",
+    "weak": "弱い"
+  },
+  "iljin": {
+    "title": "今日の日柱 × 私の四柱",
+    "lockBullet1": "今日の日柱とあなたの四柱の関係（冲・合）を分析",
+    "lockBullet2": "今日のアドバイス + ラッキー時間 + 注意点",
+    "emptyMessage": "先に四柱推命を作成してください。",
+    "advice": "今日のアドバイス",
+    "luckyHour": "ラッキー時間",
+    "caution": "注意点",
+    "retry": "もう一度試す",
+    "body": "今日の日柱があなたの四柱とどう出会うか、冲・合の関係とアドバイスを見ます。",
+    "analyzing": "分析しています...",
+    "showCta": "今日のリーディングを見る",
+    "energyPositive": "良い流れ",
+    "energyNeutral": "ふつう",
+    "energyCaution": "注意",
+    "relPositive": "調和",
+    "relNegative": "衝突"
+  },
+  "deepReading": {
+    "section1Title": "性格",
+    "section1Sub": "生まれ持った質",
+    "section2Title": "強み",
+    "section2Sub": "輝きやすい場所",
+    "section3Title": "注意点",
+    "section3Sub": "弱くなりやすい流れ",
+    "section4Title": "恋愛",
+    "section4Sub": "愛し方の傾向",
+    "section5Title": "仕事",
+    "section5Sub": "流れやすい方向",
+    "section6Title": "健康",
+    "section6Sub": "ケアポイント",
+    "section7Title": "人生の流れ",
+    "section7Sub": "全体像",
+    "heading": "深掘りリーディング",
+    "intro": "一度作成すると、深掘りリーディングはずっと保存されます。あなたの四柱を7つの視点で読みます。",
+    "pillarYear": "年柱",
+    "pillarMonth": "月柱",
+    "pillarDay": "日柱",
+    "pillarHour": "時柱",
+    "eightChars": "八字の質",
+    "whyEight": "それぞれの字が出た理由",
+    "stemRevealed": "天干・表に出るもの",
+    "branchHidden": "地支・内側にあるもの",
+    "eightSummary": "八字の総合",
+    "premiumTitle": "深掘りリーディング - Light限定",
+    "premiumBody": "7視点の四柱リーディングはLight会員に保存付きで提供されます。",
+    "premiumLockBullets": [
+      "性格・生まれ持った質",
+      "強み・輝きやすい場所",
+      "注意点・弱くなりやすい流れ",
+      "恋愛・愛し方の傾向",
+      "仕事・流れやすい方向",
+      "健康・ケアポイント",
+      "人生の流れ・全体像"
+    ],
+    "solveCta": "Lightで解放",
+    "noneTitle": "まだ深掘りリーディングがありません",
+    "noneBody": "一度作成すると、四柱リーディングはずっと保存されます。7つの視点で読み解きます。",
+    "loading": "深く読んでいます...",
+    "getCta": "深掘りを見る",
+    "shortError": "問題が発生しました"
+  },
+  "sajuButtons": {
+    "calculating": "四柱を計算しています...",
+    "calculateCta": "四柱を作成する",
+    "resetConfirm": "四柱を再計算します。既存の深掘りリーディングもリセットされます。続けますか？",
+    "resetCta": "四柱を再計算",
+    "error": "問題が発生しました"
+  },
+  "compatibilityPage": {
+    "metaTitle": "相性",
+    "metaDescription": "2人のエネルギーがどう合うかを見ます。",
+    "todayHeading": "今日の相性"
+  },
+  "compatibilityHub": {
+    "tabMine": "私の相性",
+    "tabTwoPerson": "2人の相性",
+    "tabZodiac": "星座相性",
+    "tabChinese": "干支相性",
+    "tabMbti": "性格相性",
+    "aria": "相性タブ"
+  },
+  "compatibilityForm": {
+    "heading": "相手の情報",
+    "body": "2人の四柱を比べるため、相手の情報が必要です。",
+    "name": "名前 *",
+    "namePlaceholder": "相手の名前",
+    "birthDate": "生年月日 *",
+    "birthTime": "出生時間",
+    "calendar": "暦 *",
+    "calendarSolar": "新暦",
+    "calendarLunar": "旧暦",
+    "gender": "性別 *",
+    "genderPick": "選択してください",
+    "genderMale": "男性",
+    "genderFemale": "女性",
+    "genderOther": "その他",
+    "mbti": "性格タイプ",
+    "mbtiPlaceholder": "例：ENFP",
+    "upgradeCta": "Lightで上限を増やす",
+    "doneNotice": "完了！下で今日の相性を確認してください。",
+    "submitLoading": "2人の四柱を比べています...",
+    "submitCta": "相性を見る"
+  },
+  "twoPersonCompat": {
+    "heading": "2人の相性",
+    "body": "四柱を知らない2人でも比べられます。入力は2つだけです。",
+    "person1": "1人目",
+    "person2": "2人目",
+    "score": "相性スコア",
+    "scoreUnit": "{n}点"
+  },
+  "zodiacCompat": {
+    "heading": "星座相性",
+    "yourSignIs": "あなたの星座は{sign}です。",
+    "pickPartner": "相手の星座を選んでください。",
+    "score": "{n}点"
+  },
+  "chineseCompat": {
+    "heading": "干支相性",
+    "body": "2つの干支のエネルギーを比べます。",
+    "score": "{n}点",
+    "relSamhap": "三合",
+    "relYukhap": "六合",
+    "relSangchung": "冲",
+    "relSameYear": "同じ干支",
+    "relGeneral": "一般"
+  },
+  "mbtiCompat": {
+    "heading": "性格相性",
+    "body": "2人の性格タイプを選んで相性を見ます。",
+    "myMbti": "私のタイプ",
+    "myMbtiPlaceholder": "例：ENFP",
+    "myMbtiHint": "4文字で入力してください（例：INFJ）。",
+    "partnerMbti": "相手のタイプ",
+    "pickPartner": "相手のタイプを選んでください。",
+    "score": "{n}点"
+  },
+  "compatibilityCard": {
+    "scoreAria": "相性スコア {n}",
+    "scoreSuffix": "{n}点"
+  },
+  "compatPurpose": {
+    "title": "関係別の相性スコア",
+    "lockBody": "恋愛、結婚、仕事、友人として、どの関係が合いやすいかを見ます。",
+    "lockBullets": [
+      "恋愛スコア",
+      "結婚スコア",
+      "仕事スコア",
+      "友人スコア",
+      "一番合う関係と弱い関係"
+    ],
+    "analyzing": "相性の流れを読んでいます...",
+    "getCta": "関係別スコアを見る",
+    "tryAgain": "もう一度読む",
+    "bestKey": "一番合う関係",
+    "worstKey": "弱くなりやすい関係",
+    "labelRomance": "恋愛",
+    "labelMarriage": "結婚",
+    "labelBusiness": "仕事",
+    "labelFriendship": "友人"
+  },
+  "compatConflict": {
+    "title": "衝突パターン + 仲直り",
+    "lockBody": "2人がぶつかりやすいところと、ほどき方を見ます。",
+    "lockBullets": [
+      "3つのきっかけ",
+      "繰り返す衝突パターン",
+      "仲直り方法",
+      "衝突予防のコツ"
+    ],
+    "analyzing": "衝突の流れを読んでいます...",
+    "getCta": "衝突を分析する",
+    "tryAgain": "もう一度読む",
+    "triggers": "きっかけ",
+    "pattern": "繰り返すパターン",
+    "resolution": "仲直り方法",
+    "avoidTip": "予防のコツ"
+  },
+  "compatToday": {
+    "title": "今日どう近づくか",
+    "lockBody": "今日の日柱と2人の相性から、今日だけの近づき方を見ます。",
+    "lockBullets": [
+      "今日は距離を縮めやすいか",
+      "今日の近づき方",
+      "今日送るといい一言",
+      "今日避けたいこと"
+    ],
+    "analyzing": "今日の流れを読んでいます...",
+    "getCta": "今日の近づき方を見る",
+    "tryAgain": "もう一度読む",
+    "approach": "今日の近づき方",
+    "messageIdea": "送るといいメッセージ",
+    "caution": "今日は避けたいこと",
+    "goodDay": "近づきやすい日",
+    "notGoodDay": "今日は少し距離を置くのがよさそう"
+  },
+  "personalityPage": {
+    "metaTitle": "性格診断",
+    "metaDescription": "あなたは16タイプのうちどれ？",
+    "title": "私はどんなタイプ？",
+    "bodyWithProfile": "20問であなたのタイプを読みます。結果は運勢、タロット、四柱推命に自動で反映されます。",
+    "bodyNoProfile": "20問であなたのタイプを読みます。"
+  },
+  "personalityTest": {
+    "startTitle": "あなたはどんなタイプ？",
+    "startBody1": "20問であなたの傾向を見ます。",
+    "startBody2": "結果はメンバーチャット、運勢、タロットに自然に反映されます。",
+    "duration": "約3〜5分",
+    "questionCount": "20問",
+    "typeCount": "16タイプ",
+    "startCta": "診断を始める",
+    "analyzing": "タイプを読んでいます...",
+    "questionPrefix": "{n}. 私は...",
+    "previousQ": "前の質問",
+    "axisE": "E 外向",
+    "axisI": "I 内向",
+    "axisS": "S 感覚",
+    "axisN": "N 直感",
+    "axisT": "T 思考",
+    "axisF": "F 感情",
+    "axisJ": "J 判断",
+    "axisP": "P 知覚",
+    "strengthsHeading": "傾向の強さ",
+    "careersHeading": "向いている仕事",
+    "iAm": "これが私",
+    "strengths": "強み",
+    "cautions": "注意点",
+    "compatible": "相性よし",
+    "caution": "注意",
+    "resultIntegration": "この結果は運勢、タロット、四柱推命に自動で反映されます。",
+    "retestCta": "もう一度診断する",
+    "chooseTitle": "どうやって確認しますか？",
+    "chooseSubtitle": "すでにタイプを知っているなら登録済みのタイプを使えます。20問で測り直すこともできます。",
+    "chooseUseSaved": "入力済みの{type}を使う",
+    "chooseUseSavedHint": "登録時に入力したタイプ",
+    "chooseRetake": "自分で診断する",
+    "chooseRetakeHint": "20問・3〜5分"
+  },
+  "careerFit": {
+    "title": "仕事適性・深掘りレポート",
+    "lockBody": "あなたに合う環境や役割を深く分析します。一度作成すると保存されます。",
+    "lockBullets": [
+      "合う職場環境",
+      "向いている役割5つ",
+      "成長のヒント"
+    ],
+    "analyzing": "仕事適性を分析しています...",
+    "getCta": "分析する",
+    "bestEnvironment": "合う職場環境",
+    "fitRoles": "向いている役割",
+    "avoidEnvironments": "避けたい環境",
+    "workStyle": "私の働き方",
+    "growthTip": "仕事で伸びるコツ"
+  },
+  "stressProfile": {
+    "title": "ストレスタイプ + 回復法",
+    "lockBody": "ストレス時の崩れ方と、早く戻るためのルーティンを見ます。",
+    "lockBullets": [
+      "ストレスのきっかけ",
+      "崩れ方のパターン",
+      "3つの回復ルーティン",
+      "注意サイン"
+    ],
+    "analyzing": "ストレスの流れを読んでいます...",
+    "getCta": "ストレスを分析する",
+    "triggers": "ストレスのきっかけ",
+    "collapsePattern": "崩れ方のパターン",
+    "recoveryTips": "回復ルーティン",
+    "warningSign": "注意サイン"
+  },
+  "tripleAnalysis": {
+    "title": "四柱推命 × 星座 × 性格診断・統合分析",
+    "lockBody": "3つの体系を合わせて、あなたの本質を読みます。",
+    "lockBullets": [
+      "3つが共通して示すこと",
+      "食い違うところ",
+      "統合された本質",
+      "この組み合わせだけの強み"
+    ],
+    "analyzing": "統合しています...",
+    "getCta": "統合分析を見る",
+    "convergence": "共通して言えること",
+    "contradiction": "食い違うところ",
+    "trueNature": "統合された本質",
+    "uniqueStrength": "この組み合わせだけの強み"
+  },
+  "shareCard": {
+    "fortuneTitle": "今日の流れ",
+    "fortuneFallbackName": "メンバー",
+    "appName": "Carousel of Life",
+    "luckyColor": "ラッキーカラー",
+    "luckyNumber": "ラッキーナンバー",
+    "luckyDirection": "ラッキー方角",
+    "fortuneScore": "点",
+    "tarotLabel": "タロット",
+    "tarotSpread": "1枚",
+    "tarotReversed": "逆位置",
+    "tarotTitle": "タロット・{spread}",
+    "boundaryToday": "今日",
+    "boundaryReadBy": "{name}が読みました"
+  },
+  "personalityQuestions": {
+    "q1_a": "人と一緒にいると元気が出る。",
+    "q1_b": "一人の時間があると回復する。",
+    "q2_a": "初対面の人にもわりと話しかけられる。",
+    "q2_b": "知らない人に自分から近づくのは少し苦手。",
+    "q3_a": "話しながら考えがまとまることが多い。",
+    "q3_b": "話す前に頭の中で整理したい。",
+    "q4_a": "週末は友達と外に出たい。",
+    "q4_b": "週末は静かに自分の時間を過ごしたい。",
+    "q5_a": "人前で話すことにあまり緊張しない。",
+    "q5_b": "大勢の前に立つと緊張する。",
+    "q6_a": "実用的で現実的なものが好き。",
+    "q6_b": "可能性やアイデアに惹かれる。",
+    "q7_a": "経験で確かめられた方法を信じる。",
+    "q7_b": "新しいやり方を試すのが好き。",
+    "q8_a": "細部や具体的な事実に目がいく。",
+    "q8_b": "全体像やパターンを先につかむ。",
+    "q9_a": "今この瞬間に集中しやすい。",
+    "q9_b": "未来の可能性をよく想像する。",
+    "q10_a": "言葉はそのままの意味で受け取りたい。",
+    "q10_b": "比喩や象徴的な表現のほうが響く。",
+    "q11_a": "決めるときは論理と事実を優先する。",
+    "q11_b": "決めるときは気持ちや人間関係を優先する。",
+    "q12_a": "指摘は率直に伝えるべきだと思う。",
+    "q12_b": "指摘は相手の気持ちを先に考えるべきだと思う。",
+    "q13_a": "みんなが納得することより、公平さが大事。",
+    "q13_b": "公平さより、みんなが気持ちよく終われることが大事。",
+    "q14_a": "衝突は原則に沿って解決したい。",
+    "q14_b": "衝突はお互いの感情を理解して解決したい。",
+    "q15_a": "議論では筋が通っていれば相手の意見を受け入れる。",
+    "q15_b": "議論に勝つことより、わかり合うことが大事。",
+    "q16_a": "計画を立てて、その通りに進めるのが好き。",
+    "q16_b": "その場の流れで動くほうが楽しい。",
+    "q17_a": "締切には余裕を持って進める。",
+    "q17_b": "締切直前に集中力が上がる。",
+    "q18_a": "整理された環境のほうが効率が上がる。",
+    "q18_b": "少し自由な環境のほうが創造力が出る。",
+    "q19_a": "決断は早めにして次へ進みたい。",
+    "q19_b": "決める前にもう少し情報を集めたい。",
+    "q20_a": "予定やルーティンがあると安心する。",
+    "q20_b": "変化や柔軟さがあるほうが楽だ。"
+  },
+  "personalityTypes": {
+    "ISTJ_nickname": "信頼の柱",
+    "ISTJ_summary": "几帳面で責任感の強い現実派。ルールと約束を大切にします。",
+    "ISTJ_description": "ISTJは勤勉で信頼されやすいタイプです。引き受けたことは最後までやり抜き、約束を簡単には破りません。感情より事実と論理を重視し、安定した方法を好みます。外からは冷静に見えても、身近な人への責任感はとても深いです。",
+    "ISTJ_strengths": [
+      "責任感が強く誠実",
+      "計画が丁寧で体系的",
+      "一貫性があり信頼される"
+    ],
+    "ISTJ_cautions": [
+      "変化には少し柔軟さを持つ",
+      "気持ちを言葉にすると関係が深まる"
+    ],
+    "ISTJ_imageRole": "星図を読む戦略家",
+    "ISTJ_suitableJobs": [
+      "戦略コンサルタント",
+      "研究者",
+      "システム分析家",
+      "建築士",
+      "投資アナリスト"
+    ],
+    "ISFJ_nickname": "温かな守護者",
+    "ISFJ_summary": "静かに人を守る、献身的で温かいタイプ。",
+    "ISFJ_description": "ISFJは周りの人が必要としていることを自然に察し、静かに助けます。大切な人の好みや記念日をよく覚えていて、細かな気配りができます。責任感が強い一方で、自分の気持ちを後回しにしやすいところもあります。",
+    "ISFJ_strengths": [
+      "細やかな共感力",
+      "丁寧で信頼できる実行力",
+      "変わらない献身と誠実さ"
+    ],
+    "ISFJ_cautions": [
+      "自分の気持ちも大切にする",
+      "必要なときは断る練習をする"
+    ],
+    "ISFJ_imageRole": "聖域を守るヒーラー",
+    "ISFJ_suitableJobs": [
+      "看護師",
+      "福祉職",
+      "小学校教師",
+      "秘書",
+      "事務サポート"
+    ],
+    "INFJ_nickname": "静かな予言者",
+    "INFJ_summary": "理想へ静かに進む、洞察の深いタイプ。",
+    "INFJ_description": "INFJは人の奥にある感情や流れを敏感に読み取ります。理想を大切にし、誰かの成長や変化に深く関わろうとします。完璧を求めすぎると疲れやすいので、自分の休息も同じくらい大切です。",
+    "INFJ_strengths": [
+      "直感と洞察が鋭い",
+      "共感力と理解力が高い",
+      "ぶれにくい理想を持つ"
+    ],
+    "INFJ_cautions": [
+      "完璧主義を少しゆるめる",
+      "抱え込みすぎによる消耗に注意"
+    ],
+    "INFJ_imageRole": "静かな改革者・相談役",
+    "INFJ_suitableJobs": [
+      "心理カウンセラー",
+      "作家",
+      "福祉職",
+      "医師",
+      "教育者"
+    ],
+    "INTJ_nickname": "戦略家",
+    "INTJ_summary": "独立心の強い、大局を見る設計者。",
+    "INTJ_description": "INTJは複雑な仕組みやパターンを見抜く戦略的なタイプです。一人で深く分析する時間を好み、自分にも他人にも高い基準を持ちます。効率の悪さに敏感ですが、感情面の余白を持つとさらに力を発揮します。",
+    "INTJ_strengths": [
+      "長期的な戦略力",
+      "独立した創造的思考",
+      "目標へ向かう強い推進力"
+    ],
+    "INTJ_cautions": [
+      "状況に合わせた柔軟さを持つ",
+      "感情的なつながりにも余白を作る"
+    ],
+    "INTJ_imageRole": "星図を読む軍師",
+    "INTJ_suitableJobs": [
+      "戦略コンサルタント",
+      "研究者",
+      "システム分析家",
+      "建築士",
+      "投資アナリスト"
+    ],
+    "ISTP_nickname": "万能な職人",
+    "ISTP_summary": "実践的で冷静な観察者。手を動かして解決するのが得意です。",
+    "ISTP_description": "ISTPはどんな状況でも比較的落ち着いて、現実的な解決策を探します。道具や仕組みを扱う感覚に優れ、言葉より行動で示すことが多いタイプです。長期計画と感情表現を少し足すと安定します。",
+    "ISTP_strengths": [
+      "問題解決力と実務力",
+      "危機でも落ち着ける",
+      "偏りの少ない現実的判断"
+    ],
+    "ISTP_cautions": [
+      "長期計画を持つ習慣をつける",
+      "気持ちをもう少し直接伝える"
+    ],
+    "ISTP_imageRole": "現場で直す職人",
+    "ISTP_suitableJobs": [
+      "エンジニア",
+      "外科医",
+      "パイロット",
+      "技術者",
+      "鑑識専門家"
+    ],
+    "ISFP_nickname": "自由な芸術家",
+    "ISFP_summary": "静かで温かい感性を持つ、今を味わうタイプ。",
+    "ISFP_description": "ISFPは目立とうとしなくても、美しさや調和を敏感に感じ取ります。自分らしい表現を大切にし、今この瞬間の楽しさや心地よさから力を得ます。長期的な視点を少し持つと、才能がより形になります。",
+    "ISFP_strengths": [
+      "豊かで繊細な感性",
+      "判断しすぎない温かさ",
+      "自然体のやさしさ"
+    ],
+    "ISFP_cautions": [
+      "長期計画も少し意識する",
+      "自分の意見をもう少し出す"
+    ],
+    "ISFP_imageRole": "自然を愛するアーティスト",
+    "ISFP_suitableJobs": [
+      "アーティスト",
+      "ファッションデザイナー",
+      "写真家",
+      "料理人",
+      "理学療法士"
+    ],
+    "INFP_nickname": "理想を抱く夢想家",
+    "INFP_summary": "深い感情と信念を持つ静かな理想家。",
+    "INFP_description": "INFPは自分の価値観を大切にし、人の痛みに深く共感します。創造力が豊かで、言葉や作品に気持ちを込めるのが得意です。現実面とのバランスを取ると、理想をちゃんと形にできます。",
+    "INFP_strengths": [
+      "深く繊細な共感力",
+      "独創的な創造力",
+      "曲げにくい価値観"
+    ],
+    "INFP_cautions": [
+      "現実的な段取りも大切にする",
+      "感情を抱え込みすぎない"
+    ],
+    "INFP_imageRole": "詩的な仲介者・夢の解釈者",
+    "INFP_suitableJobs": [
+      "作家",
+      "アーティスト",
+      "カウンセラー",
+      "UXデザイナー",
+      "心理士"
+    ],
+    "INTP_nickname": "論理の探究者",
+    "INTP_summary": "尽きない好奇心で世界を分析する静かな革新者。",
+    "INTP_description": "INTPはあらゆることを理解し、説明したいタイプです。複雑な理論や概念を楽しみ、論理の穴を見つけるのが得意です。考える時間を大切にしつつ、行動へ移す習慣を持つと強みが生きます。",
+    "INTP_strengths": [
+      "鋭く深い分析力",
+      "既存の枠を壊す独創性",
+      "感情に流されにくい客観性"
+    ],
+    "INTP_cautions": [
+      "考えを行動に移す練習をする",
+      "関係性と会話にも気を配る"
+    ],
+    "INTP_imageRole": "天文台の哲学者",
+    "INTP_suitableJobs": [
+      "科学者",
+      "哲学者",
+      "ソフトウェア開発者",
+      "大学教員",
+      "データアナリスト"
+    ],
+    "ESTP_nickname": "大胆な実行家",
+    "ESTP_summary": "今を動かす、エネルギッシュで現実的なタイプ。",
+    "ESTP_description": "ESTPは状況をすばやく読み、まず動いて突破口を作ります。人との距離を詰めるのがうまく、危機にも強いタイプです。勢いが強いぶん、長期的な視点を少し足すとさらに安定します。",
+    "ESTP_strengths": [
+      "すばやく大胆な実行力",
+      "危機対応の強さ",
+      "人を動かす存在感"
+    ],
+    "ESTP_cautions": [
+      "長期計画の余白を作る",
+      "衝動的な判断を時々見直す"
+    ],
+    "ESTP_imageRole": "冒険する商人",
+    "ESTP_suitableJobs": [
+      "営業",
+      "起業家",
+      "アスリート",
+      "救急救命士",
+      "不動産営業"
+    ],
+    "ESFP_nickname": "自由なパフォーマー",
+    "ESFP_summary": "人生の楽しさを広げる、明るく即興的なタイプ。",
+    "ESFP_description": "ESFPはその場を明るくする自然なエンターテイナーです。人と一緒に楽しい瞬間を作ることが好きで、今を全力で味わいます。時々深い話や長期計画も入れると、魅力がより長く続きます。",
+    "ESFP_strengths": [
+      "明るいエネルギー",
+      "人とつながる力",
+      "今を楽しむ才能"
+    ],
+    "ESFP_cautions": [
+      "長期的な準備も少しする",
+      "深い話を避けすぎない"
+    ],
+    "ESFP_imageRole": "祝祭のパフォーマー",
+    "ESFP_suitableJobs": [
+      "エンターテイナー",
+      "イベント司会",
+      "ツアーガイド",
+      "販売職",
+      "YouTuber"
+    ],
+    "ENFP_nickname": "情熱的な活動家",
+    "ENFP_summary": "想像力と情熱にあふれる自由な魂。",
+    "ENFP_description": "ENFPは新しい可能性を見つけるのが得意で、人の心に火をつけます。共感力と発想力があり、楽しい流れを作る天才です。始めたことを最後まで形にする意識があると、夢が現実になります。",
+    "ENFP_strengths": [
+      "豊かな創造力",
+      "温かいつながりを作る力",
+      "新しいものへの好奇心"
+    ],
+    "ENFP_cautions": [
+      "ひとつのことに集中する練習をする",
+      "始めたことを最後まで仕上げる"
+    ],
+    "ENFP_imageRole": "祭りを企画する表現者",
+    "ENFP_suitableJobs": [
+      "クリエイター",
+      "マーケター",
+      "俳優",
+      "記者",
+      "イベントプランナー"
+    ],
+    "ENTP_nickname": "討論好きの発明家",
+    "ENTP_summary": "挑戦を楽しみ、アイデアが尽きない革新タイプ。",
+    "ENTP_description": "ENTPは既存の枠に疑問を投げ、新しい案を次々に出します。知的な議論を楽しみ、反対意見にも堂々と向き合えます。完走する習慣と相手の感情への配慮が加わると、説得力がさらに増します。",
+    "ENTP_strengths": [
+      "素早い洞察と柔軟な思考",
+      "複雑な問題への創造的解決",
+      "場に負けない議論力"
+    ],
+    "ENTP_cautions": [
+      "始めたことを終わらせる習慣を持つ",
+      "議論中も相手の気持ちを見る"
+    ],
+    "ENTP_imageRole": "発明家・革新者",
+    "ENTP_suitableJobs": [
+      "創業者",
+      "マーケター",
+      "弁護士",
+      "発明家",
+      "広告プランナー"
+    ],
+    "ESTJ_nickname": "厳格な管理者",
+    "ESTJ_summary": "秩序と構造を大切にする、生まれながらのリーダー。",
+    "ESTJ_description": "ESTJは目標を明確にし、手順を整えて実行する力があります。責任感が強く、集団をまとめることが得意です。状況によっては別のやり方も認めると、周囲がもっと動きやすくなります。",
+    "ESTJ_strengths": [
+      "組織化と実行力",
+      "明確な判断とリーダーシップ",
+      "強い責任感"
+    ],
+    "ESTJ_cautions": [
+      "必要に応じて柔軟に動く",
+      "違う意見や方法も受け入れる"
+    ],
+    "ESTJ_imageRole": "都市を治める管理者",
+    "ESTJ_suitableJobs": [
+      "管理職",
+      "裁判官",
+      "警察官",
+      "金融監督官",
+      "軍人"
+    ],
+    "ESFJ_nickname": "社交的な外交官",
+    "ESFJ_summary": "人を気にかけ、調和を作る温かなタイプ。",
+    "ESFJ_description": "ESFJは周りの空気を読み、人が必要としているものにすぐ気づきます。場をなごませ、対立をやわらげるのが得意です。人の評価に左右されすぎず、自分の気持ちも大切にすると安定します。",
+    "ESFJ_strengths": [
+      "共感力と細やかな配慮",
+      "協力とチームワーク",
+      "実務的で丁寧な行動"
+    ],
+    "ESFJ_cautions": [
+      "自分の望みも優先する",
+      "他人の評価に頼りすぎない"
+    ],
+    "ESFJ_imageRole": "宮廷の外交官",
+    "ESFJ_suitableJobs": [
+      "看護師",
+      "教師",
+      "営業マネージャー",
+      "人事担当",
+      "イベントプランナー"
+    ],
+    "ENFJ_nickname": "人を導く応援者",
+    "ENFJ_summary": "人を育てる、カリスマ性のあるリーダー。",
+    "ENFJ_description": "ENFJは人の成長に大きな喜びを感じるタイプです。言葉の力と共感力で周りを励まし、目標へ導きます。人に尽くしすぎると疲れやすいので、自分のエネルギー管理も大切です。",
+    "ENFJ_strengths": [
+      "自然なカリスマ性",
+      "共感と伝える力",
+      "人と場をつなぐ力"
+    ],
+    "ENFJ_cautions": [
+      "自分のエネルギーも守る",
+      "相手に依存されすぎないようにする"
+    ],
+    "ENFJ_imageRole": "共同体を導く案内人",
+    "ENFJ_suitableJobs": [
+      "教師",
+      "コーチ",
+      "人事マネージャー",
+      "活動家",
+      "司会者"
+    ],
+    "ENTJ_nickname": "大胆な指揮官",
+    "ENTJ_summary": "目標へまっすぐ進む、戦略的でカリスマ性のあるリーダー。",
+    "ENTJ_description": "ENTJは目標を定め、必要な資源を集めて結果へ向かいます。非効率を嫌い、常によりよい方法を探すタイプです。強い推進力に、周囲の感情への配慮が加わると最強です。",
+    "ENTJ_strengths": [
+      "強い推進力と決断力",
+      "長期戦略と計画力",
+      "人を動かすビジョン"
+    ],
+    "ENTJ_cautions": [
+      "一緒に動く人の気持ちを見る",
+      "目標だけでなく過程も整える"
+    ],
+    "ENTJ_imageRole": "帝国の指揮官",
+    "ENTJ_suitableJobs": [
+      "CEO",
+      "経営コンサルタント",
+      "弁護士",
+      "政治家",
+      "プロジェクトリーダー"
+    ]
+  },
+  "fanService": {
+    "today-general": {
+      "eyebrow": "Ian Daily Briefing",
+      "title": "イアンが整える\n今日の流れ",
+      "body": "イアンが今日の運勢を落ち着いて整理します。",
+      "imageAlt": "イアンが今日の運勢をファンサービスとして整理している姿"
+    },
+    "today-love": {
+      "eyebrow": "Yujun Heart Note",
+      "title": "ユジュンが聞いてくれる心の温度",
+      "body": "ユジュンが気持ちをゆっくり確認できるように手伝います。",
+      "imageAlt": "ユジュンが恋愛運を読んでいる姿"
+    },
+    "today-money": {
+      "eyebrow": "Ihyun Money Check",
+      "title": "イヒョンが見る今日の選択基準",
+      "body": "イヒョンが今日お金を使う前に見るポイントを教えます。",
+      "imageAlt": "イヒョンが金運をチェックしている姿"
+    },
+    "today-career": {
+      "eyebrow": "Sion Career Cut",
+      "title": "シオンが分ける仕事の優先順位",
+      "body": "シオンが今日やることと後回しでいいことを分けます。",
+      "imageAlt": "シオンが仕事運を整理している姿"
+    },
+    "today-health": {
+      "eyebrow": "Theo Body Signal",
+      "title": "テオが入れる今日のコンディションスイッチ",
+      "body": "テオが今日の体調に合う軽いルーティンを提案します。",
+      "imageAlt": "テオが健康運を見ている姿"
+    },
+    "today-study": {
+      "eyebrow": "Doyoon Study Push",
+      "title": "ドユンがつかむ今日の集中リズム",
+      "body": "ドユンが今日の勉強を始めやすく整えます。",
+      "imageAlt": "ドユンが勉強運を見ている姿"
+    },
+    "today-zodiac": {
+      "eyebrow": "Hamin Star Mood",
+      "title": "ハミンが聞かせる星座の空気",
+      "body": "ハミンが今日の星座運を静かに整理します。",
+      "imageAlt": "ハミンが星座運を伝えている姿"
+    },
+    "today-chinese-zodiac": {
+      "eyebrow": "Jaeha Old Sign",
+      "title": "ジェハが低く読む干支の流れ",
+      "body": "ジェハが今日気をつけるといいことを静かに教えます。",
+      "imageAlt": "ジェハが干支運を読んでいる姿"
+    },
+    "tarot": {
+      "eyebrow": "Hamin Tarot Service",
+      "title": "ハミンが趣味で見るタロット1枚",
+      "body": "ハミンがカードで今の気持ちを整理します。",
+      "imageAlt": "ハミンがタロットカードを読んでいる姿"
+    },
+    "saju": {
+      "eyebrow": "Doyoon Saju Note",
+      "title": "ドユンが趣味みたいにまとめる四柱推命ノート",
+      "body": "ドユンが四柱推命であなたの傾向を短く整理します。",
+      "imageAlt": "ドユンが四柱推命を整理している姿"
+    },
+    "flower": {
+      "eyebrow": "Haru Flower Pick",
+      "title": "ハルが選ぶ今日の花",
+      "body": "ハルが今日に合う花を一輪選びます。",
+      "imageAlt": "ハルが花占いをしている姿"
+    },
+    "compatibility": {
+      "eyebrow": "Yujun Pair Mood",
+      "title": "ユジュンが合わせてみる2人のリズム",
+      "body": "ユジュンが関係の温度をやさしく読みます。",
+      "imageAlt": "ユジュンが相性を読んでいる姿"
+    },
+    "name-reading": {
+      "eyebrow": "Jaeha Name Tone",
+      "title": "ジェハが聞く名前の響き",
+      "body": "ジェハが名前に残った質を静かに読みます。",
+      "imageAlt": "ジェハが名前を読んでいる姿"
+    },
+    "name-compatibility": {
+      "eyebrow": "Ihyun Name Match",
+      "title": "イヒョンが比べる名前相性",
+      "body": "イヒョンが2つの名前がどれくらい合うか比べます。",
+      "imageAlt": "イヒョンが名前相性を比べている姿"
+    },
+    "personality": {
+      "eyebrow": "Sion Type Check",
+      "title": "シオンが見る性格の核心",
+      "body": "シオンがあなたの性格パターンを短くはっきり整理します。",
+      "imageAlt": "シオンが性格タイプを整理している姿"
+    },
+    "dream": {
+      "eyebrow": "Jaeha Dream Note",
+      "title": "ジェハが低く読む夢の余韻",
+      "body": "ジェハが夢に残った場面と感情を一緒に整理します。",
+      "imageAlt": "ジェハが夢を解釈している姿"
+    },
+    "palm": {
+      "eyebrow": "Theo Palm Routine",
+      "title": "テオが見る手相と生活習慣",
+      "body": "テオが手相から生活習慣を軽く読みます。",
+      "imageAlt": "テオが手相を見ている姿"
+    }
+  },
+  "weeklyPage": {
+    "title": "週間レポート",
+    "fortuneStat": "運勢・占い",
+    "chatStat": "メンバーチャット",
+    "visitStat": "今週の訪問",
+    "countTimes": "{n}回",
+    "countMessages": "{n}件",
+    "countDays": "{n}日",
+    "streakDays": "{n}日連続",
+    "topMemberTitle": "今週いちばん会ったメンバー",
+    "emptyTopMember": "今週はまだ会話がありません。",
+    "emptyTopMemberCta": "メンバーに話しかける →",
+    "memberClosingTitle": "{name}の一週間メモ",
+    "todayCta": "今日の運勢を見に行く →",
+    "lines": {
+      "child": "今週もよく耐えました。来週はもっとそばで見ています。",
+      "witch": "今週聞かせてくれた話、全部覚えています。来週も一緒にいましょう。",
+      "sage": "今週のテンション、よかったです！来週はもっと楽しく行きましょう。",
+      "shaman": "今週の記録、いいメロディになりそうです。来週も聞かせてください。",
+      "taoist": "一週間おつかれさま！！来週もおいしいもの食べて、全部話してね。",
+      "dokkaebi": "一週間終わり。…来週も来て。待ってるから。",
+      "god": "今週も完走！来週はもっと高く行きましょう。一緒に！",
+      "hunter": "今週のデータを見ると、来週はもっとよくなる可能性が高いです。",
+      "runeshaman": "一週間ありがとうございました…来週もそばにいてくれますよね？"
+    }
+  },
+  "nameReadingPage": {
+    "title": "名前占い",
+    "description": "漢字・画数・五行とあなたの四柱推命を合わせて、名前の質を読みます。"
+  },
+  "nameCompatibilityPage": {
+    "title": "名前相性",
+    "descriptionLine1": "2人の名前だけで相性を見ます。",
+    "descriptionLine2": "名前の響きとリズムを読んで、スコアと短い一言を届けます。"
+  },
+  "onboardingPage": {
+    "title": "あなたのことを教えてください",
+    "description": "四柱推命のために、生まれた時の情報を入力してください。"
+  },
+  "nameReadingForm": {
+    "cardTitle": "読む名前",
+    "nameLabel": "名前",
+    "namePlaceholder": "例：山田はるか",
+    "nameHelp": "どの言語の名前でも入力できます。漢字がある場合は下の欄に別で入力してください。",
+    "hanjaLabel": "漢字表記（任意）",
+    "hanjaPlaceholder": "例：山田遥（なければ空欄）",
+    "hanjaHelp": "漢字があると、より具体的に読めます。",
+    "ownerLabel": "誰の名前ですか？",
+    "ownerSelf": "自分の名前",
+    "ownerOther": "他の人の名前",
+    "loading": "名前の質を読んでいます…",
+    "submit": "読み取る",
+    "score": "{n}点",
+    "meaningTitle": "名前の意味",
+    "sajuHarmonyTitle": "四柱推命との調和",
+    "fortuneTitle": "運勢の流れ",
+    "adviceTitle": "アドバイス・注意点"
+  },
+  "nameCompatibilityForm": {
+    "cardTitle": "2人の名前",
+    "myName": "自分の名前",
+    "partnerName": "相手の名前",
+    "nameInputTitle": "1〜24文字の名前を入力してください。",
+    "myNamePlaceholder": "例：はるか",
+    "partnerNamePlaceholder": "例：ゆうと",
+    "nameHelp": "韓国語、英語、日本語など、文字で書ける名前に対応しています。",
+    "loading": "名前の響きを読んでいます…",
+    "submit": "相性を見る",
+    "adviceTitle": "アドバイス",
+    "shareText": "{nameA}と{nameB}の名前相性: {score}%（{label}）\n「{headline}」"
+  },
+  "nameCompatibilityLabels": {
+    "soulmate": "運命の相性",
+    "perfectPair": "最高のペア",
+    "goodBond": "いいご縁",
+    "easyFlow": "自然な流れ",
+    "takesEffort": "歩み寄れば届く",
+    "differentRhythm": "少し違うリズム",
+    "crossedStars": "すれ違う星",
+    "differentPaths": "別の道のご縁"
+  },
+  "dreamForm": {
+    "cardTitle": "夢を書いてみてください",
+    "contentLabel": "夢の内容",
+    "contentPlaceholder": "例：大きな川を渡る夢を見ました。水は澄んでいて...",
+    "contentHelp": "10〜500文字で、印象に残った場面・人物・感情を短く書いてください。",
+    "moodLabel": "夢の雰囲気",
+    "moodNeutral": "特に強い雰囲気はない",
+    "moodBright": "明るく温かい雰囲気",
+    "moodDark": "暗く重い雰囲気",
+    "moodWeird": "奇妙で非現実的な雰囲気",
+    "loading": "夢の意味を読んでいます…",
+    "submit": "読み取る",
+    "fortuneGood": "吉夢",
+    "fortuneCaution": "注意夢",
+    "fortuneBad": "凶夢",
+    "fortuneNeutral": "中立夢",
+    "meaningTitle": "夢の意味",
+    "sajuConnectionTitle": "あなたの四柱推命とのつながり",
+    "adviceTitle": "今日のアドバイス"
+  },
+  "palmForm": {
+    "cardTitle": "手相占い",
+    "photoLabel": "手のひら写真",
+    "photoAlt": "アップロードした手のひら写真",
+    "removePhoto": "写真を削除",
+    "camera": "カメラ",
+    "gallery": "ギャラリー",
+    "uploadPhoto": "写真をアップロード",
+    "photoHelp": "明るい場所で手のひらを開き、正面から撮影してください。線がはっきり見えるほど読みやすくなります。",
+    "questionLabel": "気になること",
+    "questionOptional": "（任意、100文字）",
+    "questionPlaceholder": "例：今年の恋愛運が気になります",
+    "consent": "写真は分析後すぐ破棄され、保存されません。これは医療・心理診断ではなく、エンタメ目的の鑑定であることに同意します。",
+    "imageOnlyError": "画像ファイルを選択してください。",
+    "imageProcessError": "画像を処理できませんでした。もう一度お試しください。",
+    "loading": "手相を見ています...",
+    "submit": "手相を読む",
+    "resultTitle": "手相占い結果"
+  },
+  "fanProfileCard": {
+    "fallbackFanName": "ライダー",
+    "daysTogetherPrefix": "{name}と一緒に過ごして",
+    "biasLine": "{fanName}さんのEquestrian推し · レベル Lv.{level}",
+    "noBiasTitle": "まだ推しメンバーがいません",
+    "noBiasBody": "メンバーと話して、♥ボタンで推しを登録してみてください。",
+    "level": "レベル",
+    "giftsSent": "送ったギフト",
+    "starPieces": "星のかけら",
+    "weeklyCta": "📋 週間レポートを見る",
+    "meetMembersCta": "メンバーに会う"
+  },
+  "dreamPage": {
+    "title": "夢占い",
+    "description": "昨夜、または最近見た夢を書いてください。あなたの四柱推命と合わせて読み解きます。"
+  },
+  "palmPage": {
+    "title": "手相占い",
+    "description": "手のひら写真をもとに、主要な線の流れを落ち着いたレポートで整理します。"
+  },
+  "biasGallery": {
+    "title": "{name}ギャラリー",
+    "biasBadge": "推し",
+    "viewAll": "すべて見る →",
+    "lockedAlt": "ロックされた写真",
+    "photoAlt": "{name}の写真 {n}",
+    "unlockHint": "メンバーシップに登録すると、{name}の写真がすべて開きます。"
+  },
+  "emailLoginForm": {
+    "missingFields": "メールアドレスとパスワードを入力してください。",
+    "passwordTooShort": "パスワードは8文字以上で入力してください。",
+    "signupComplete": "登録が完了しました。少々お待ちください…",
+    "confirmationSent": "確認メールを送信しました。メール内のリンクから登録を完了してください。",
+    "loginComplete": "ログインしました。",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "passwordSignup": "パスワード（8文字以上）",
+    "processing": "処理中…",
+    "signupWithEmail": "メールで登録",
+    "loginWithEmail": "メールでログイン",
+    "alreadyAccount": "すでにアカウントをお持ちですか？",
+    "noAccount": "アカウントをお持ちでないですか？",
+    "login": "ログイン",
+    "signup": "登録"
+  },
+  "biasButton": {
+    "unset": "推しを解除",
+    "set": "推しに登録",
+    "current": "推し",
+    "setShort": "推し登録"
+  },
+  "affinityBar": {
+    "max": "最大",
+    "nextPrefix": "次のLv.{level} —",
+    "unlock": "解放",
+    "reward2": "軽い冗談",
+    "reward3": "くだけた話し方・あだ名",
+    "reward5": "本音・小さな秘密",
+    "reward7": "もっと深い日常",
+    "reward10": "いちばん近い関係"
+  },
+  "dashboardError": {
+    "title": "星の光が少し弱まりました",
+    "body": "リーディングを読み込む途中で問題が発生しました。少し時間をおいて再度お試しください。続く場合は設定ページからサポートにお知らせください。",
+    "code": "エラーコード: {code}",
+    "retry": "もう一度試す"
+  },
+  "flowerOracleForm": {
+    "cardTitle": "一輪を開いてください",
+    "description": "今日の花は同じ日なら同じ一輪を見せます。別の流れを見たいときは、自由引きでもう一輪開けます。",
+    "loading": "花びらを読んでいます…",
+    "dailyCta": "今日の花を受け取る",
+    "freeCta": "自由引き",
+    "dailyResult": "今日の花",
+    "freeResult": "もう一輪",
+    "flowerImageAlt": "{name}のイラスト",
+    "meaningLabel": "花言葉",
+    "todayAction": "今日の小さな行動",
+    "drawAgain": "もう一輪",
+    "shareTitle": "{name}",
+    "shareText": "今日の花: {name}\n「{headline}」\n\n— Carousel of Life · フロロマンシー"
+  },
+  "albumPlayer": {
+    "lyrics": "歌詞",
+    "lyricsEmpty": "この曲の歌詞は準備中です。",
+    "pause": "一時停止",
+    "play": "再生",
+    "dockPinned": "アルバム再生中",
+    "dockPin": "アルバムを流しておく",
+    "seek": "再生位置",
+    "albumSeek": "アルバム再生位置",
+    "dockListening": "{group}のアルバムを再生中",
+    "closePlayer": "アルバムプレイヤーを閉じる"
+  },
+  "albumPage": {
+    "subtitle": "{titleEn} · {group}の9人が歌う1stフルアルバム",
+    "releaseDate": "リリース日 {date}"
+  }
+}

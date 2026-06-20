@@ -1,7 +1,10 @@
 "use client";
 
 import { useActionState } from "react";
+import { useTranslations } from "next-intl";
 import { Loader2, User } from "lucide-react";
+
+import { breakSentences } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -25,6 +28,7 @@ interface NameReadingFormProps {
 }
 
 export function NameReadingForm({ defaultName = "" }: NameReadingFormProps) {
+  const t = useTranslations("nameReadingForm");
   const [state, formAction, isPending] = useActionState(readNameAction, initial);
 
   return (
@@ -33,14 +37,14 @@ export function NameReadingForm({ defaultName = "" }: NameReadingFormProps) {
         <CardHeader>
           <CardTitle className="font-mystic flex items-center gap-2 text-lg">
             <User className="h-5 w-5 text-primary" aria-hidden />
-            풀이할 이름
+            {t("cardTitle")}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <form action={formAction} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="targetName">
-                이름 <span className="text-destructive">*</span>
+                {t("nameLabel")} <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="targetName"
@@ -49,34 +53,34 @@ export function NameReadingForm({ defaultName = "" }: NameReadingFormProps) {
                 required
                 maxLength={20}
                 defaultValue={defaultName}
-                placeholder="예: 최영탁"
+                placeholder={t("namePlaceholder")}
                 disabled={isPending}
               />
               <p className="text-[15px] text-muted-foreground">
-                한글로 입력하세요. 한자는 아래 칸에 별도로.
+                {t("nameHelp")}
               </p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="hanja">한자 표기 (선택)</Label>
+              <Label htmlFor="hanja">{t("hanjaLabel")}</Label>
               <Input
                 id="hanja"
                 name="hanja"
                 type="text"
                 maxLength={20}
-                placeholder="예: 崔英卓 (없으면 비워두기)"
+                placeholder={t("hanjaPlaceholder")}
                 disabled={isPending}
               />
               <p className="text-[15px] text-muted-foreground">
-                한자가 있으면 더 정확한 풀이가 가능해요.
+                {t("hanjaHelp")}
               </p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="isOwnName">누구의 이름인가요?</Label>
+              <Label htmlFor="isOwnName">{t("ownerLabel")}</Label>
               <Select id="isOwnName" name="isOwnName" defaultValue="true" disabled={isPending}>
-                <option value="true">본인 이름</option>
-                <option value="false">다른 사람 이름</option>
+                <option value="true">{t("ownerSelf")}</option>
+                <option value="false">{t("ownerOther")}</option>
               </Select>
             </div>
 
@@ -84,10 +88,10 @@ export function NameReadingForm({ defaultName = "" }: NameReadingFormProps) {
               {isPending ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                  이름의 결을 짚는 중…
+                  {t("loading")}
                 </>
               ) : (
-                "풀이 받기"
+                t("submit")
               )}
             </Button>
 
@@ -117,11 +121,12 @@ function NameReadingResultCard({
 }: {
   reading: NonNullable<Extract<NameReadingActionState, { kind: "result" }>>["reading"];
 }) {
+  const t = useTranslations("nameReadingForm");
   return (
     <Card className="app-surface">
       <CardHeader>
         <CardTitle className="font-mystic flex items-baseline gap-3 text-2xl">
-          <span className={scoreColor(reading.score)}>{reading.score}점</span>
+          <span className={scoreColor(reading.score)}>{t("score", { n: reading.score })}</span>
           <span className="text-[15px] text-muted-foreground font-normal">
             {reading.summary}
           </span>
@@ -130,34 +135,34 @@ function NameReadingResultCard({
       <CardContent className="space-y-5 text-[15px] leading-relaxed">
         <section>
           <h3 className="font-mystic text-lg font-semibold mb-2 text-foreground/90">
-            이름의 의미
+            {t("meaningTitle")}
           </h3>
           <p className="text-foreground/85 whitespace-pre-line">
-            {reading.meaning}
+            {breakSentences(reading.meaning)}
           </p>
         </section>
         <section>
           <h3 className="font-mystic text-lg font-semibold mb-2 text-foreground/90">
-            사주와의 조화
+            {t("sajuHarmonyTitle")}
           </h3>
           <p className="text-foreground/85 whitespace-pre-line">
-            {reading.sajuHarmony}
+            {breakSentences(reading.sajuHarmony)}
           </p>
         </section>
         <section>
           <h3 className="font-mystic text-lg font-semibold mb-2 text-foreground/90">
-            운세 흐름
+            {t("fortuneTitle")}
           </h3>
           <p className="text-foreground/85 whitespace-pre-line">
-            {reading.fortune}
+            {breakSentences(reading.fortune)}
           </p>
         </section>
         <section>
           <h3 className="font-mystic text-lg font-semibold mb-2 text-foreground/90">
-            권유·주의
+            {t("adviceTitle")}
           </h3>
           <p className="text-foreground/85 whitespace-pre-line">
-            {reading.advice}
+            {breakSentences(reading.advice)}
           </p>
         </section>
       </CardContent>

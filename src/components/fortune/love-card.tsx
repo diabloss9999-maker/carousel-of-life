@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * 오늘의 사랑 리포트 — 라이트 전용 카드.
+ * 오늘의 사랑운 — 라이트 전용 카드.
  */
 import { useState, useTransition } from "react";
 import Link from "next/link";

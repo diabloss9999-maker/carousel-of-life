@@ -1,16 +1,25 @@
 {
+  "home": {
+    "title": "오늘은 어떤 하루를 볼까요?",
+    "description": "오늘의 운세, 이렇게 풀어드려요"
+  },
   "nav": {
+    "home": "홈",
     "fortune": "운세",
-    "oracle": "점술사",
+    "oracle": "멤버",
     "tarot": "타로",
     "pillars": "사주",
     "bond": "궁합",
-    "archive": "도감",
+    "archive": "보너스",
     "settings": "설정",
     "fortuneGroup": "운세",
     "divinationGroup": "점술",
     "eastGroup": "사주",
-    "shaman": "점술사",
+    "deepReportsGroup": "심층",
+    "fortuneSuiteGroup": "운세 | 점술 | 사주",
+    "shaman": "멤버",
+    "groupChat": "단체방",
+    "album": "앨범",
     "fortuneGeneral": "종합운세",
     "fortuneLove": "연애운",
     "fortuneMoney": "재물운",
@@ -28,7 +37,11 @@
     "nameReading": "이름풀이",
     "nameCompatibility": "이름 궁합",
     "flowerOracle": "꽃점",
-    "chineseZodiac": "띠별 운세"
+    "chineseZodiac": "띠별 운세",
+    "monthlyReport": "월간 심층",
+    "yearlyReport": "신년운세",
+    "questionGroup": "대화",
+    "records": "기록"
   },
   "common": {
     "logout": "로그아웃",
@@ -41,22 +54,19 @@
     "next": "다음",
     "close": "닫기",
     "loading": "불러오는 중...",
-    "error": "오류가 났어",
+    "error": "오류가 났어요",
     "retry": "다시 시도",
     "today": "오늘",
-    "viewMore": "더 보기"
+    "viewMore": "더 보기",
+    "skipToMain": "본문으로 건너뛰기"
   },
   "header": {
-    "muteMusic": "배경 음악 끄기",
-    "unmuteMusic": "배경 음악 켜기",
     "languageToggle": "언어 변경"
   },
   "today": {
     "title": "운세",
     "subtitleWithName": "{name}의 오늘 기록 · 운세를 준비하는 중",
     "subtitleNoName": "오늘의 운세 기록 중",
-    "worldStatusTitle": "오늘의 세계 상태",
-    "worldStatusLabel": "오늘의 흐름",
     "moodPrompt": "오늘 기분은 어때?",
     "moodSaved": "기록됨"
   },
@@ -67,23 +77,16 @@
     "tough": "힘드네",
     "hard": "힘들어"
   },
-  "crackLabels": {
-    "stable": "평온",
-    "wave": "잔물결",
-    "fracture": "흐림",
-    "danger": "주의",
-    "imminent": "가까움"
-  },
   "chat": {
-    "title": "점술사",
-    "description": "아홉 점술사 중 한 명을 골라. 이세계의 카드, 동양의 사주·천기, 북방의 룬 — 어느 결을 가진 자든 너의 운명을 이미 알고 있어.",
-    "placeholderDefault": "물어봐...",
-    "loreSectionTitle": "세계관 이야기",
-    "charactersSection": "캐릭터 스토리",
-    "truthRoute": "진실 루트",
+    "title": "멤버",
+    "description": "마음 가는 멤버와 이어서 이야기해보세요.",
+    "placeholderDefault": "말 걸어보기...",
+    "loreSectionTitle": "멤버 이야기",
+    "charactersSection": "멤버 프로필",
+    "truthRoute": "멤버 루트",
     "chapter": "Chapter {number}",
     "unlockHint": "Lv.{level} 해금",
-    "characterStoryLocked": "아직 풀리지 않은 이야기야. 곧 새겨질 거예요."
+    "characterStoryLocked": "아직 열리지 않은 이야기예요. 곧 만나볼 수 있어요."
   },
   "tarot": {
     "title": "점술",
@@ -97,30 +100,30 @@
     "questionPlaceholderOne": "예: 이번 주 일이 어떻게 흘러갈까? (100자 이내)",
     "questionPlaceholderThree": "예: 이 일은 어떻게 흘러갈까? (100자 이내)",
     "questionHintOne": "비워두면 그냥 오늘의 한 장을 뽑을 수 있어요.",
-    "questionHintThree": "비워두고 그냥 흐름만 살펴봐도 OK."
+    "questionHintThree": "비워두면 오늘의 기운만 볼 수 있어요."
   },
   "saju": {
     "title": "사주",
-    "description": "사주팔자는 태어난 순간의 별 배치야. 운세·타로·궁합 모든 풀이의 뿌리가 여기 있어.",
-    "noSajuTitle": "사주를 아직 보지 않았어",
+    "description": "태어난 순간의 여덟 글자로 나를 읽어요.",
+    "noSajuTitle": "사주를 아직 보지 않았어요",
     "noSajuDescription": "한 번 살펴보면 운세 풀이가 한결 깊어져요. 처음 한 번만 계산하면 계속 저장돼요."
   },
   "compatibility": {
     "title": "궁합",
-    "description": "두 사람의 사주·별자리·띠·성격이 어떻게 얽혀 있는지 점술사가 읽어줄게."
+    "description": "두 사람이 어떻게 맞는지 살펴봐요."
   },
   "personality": {
     "title": "성격유형",
-    "description": "20문항으로 나의 본성을 알아봐. 결과는 점술사 채팅·운세·타로 풀이에 자동 반영돼."
+    "description": "20문항으로 내 성격유형을 확인해요. 결과는 풀이에 자동 반영돼요."
   },
   "collection": {
     "title": "도감",
-    "description": "기억의 조각들이 여기 쌓인다."
+    "description": "지나온 기록이 여기 쌓여요."
   },
   "settings": {
     "title": "설정",
     "languageSection": "언어",
-    "languageDescription": "표시 언어를 선택해. 운세·풀이도 같은 언어로 생성돼요 (지원 시).",
+    "languageDescription": "표시 언어를 선택해요. 운세·풀이도 같은 언어로 생성돼요 (지원 시).",
     "logout": "로그아웃"
   },
   "auth": {
@@ -129,30 +132,29 @@
     "kakaoSignup": "카카오로 시작하기",
     "googleSignup": "구글로 시작하기",
     "loginTitle": "시작하기",
-    "loginSubtitle": "오늘의 흐름을 조용히 열어볼게요.",
+    "loginSubtitle": "오늘의 기운을 열어볼게요.",
     "signupTitle": "처음 시작하기",
     "signupSubtitle": "당신의 이름으로 하루의 결을 열어봐요.",
     "firstVisitHint": "첫 방문이라면 그대로 가입돼요.",
     "noPasswordHint": "버튼 한 번이면 가입 완료. 별도 비밀번호는 없어요."
   },
   "landing": {
-    "tagline": "별의 흐름과 카드의 계시, 그리고 사주팔자가 오늘의 운명을 들려줘요.",
-    "intro": "AI 점술사 9명이 사주·타로·성격유형을 통합해 매일의 운명을 풀이해드려요.\n매일 무료로 운세 2회, 타로 1장, 점술사 문답 10회를 받을 수 있어요.",
-    "freeHint": "매일 무료로 운세 2회, 타로 1장, 점술사 문답 10회를 받을 수 있어요.",
+    "tagline": "오늘의 흐름을 쉽고 빠르게 확인해요.",
+    "intro": "운세, 타로, 사주, 궁합을 각각의 흐름으로 보고 필요한 순간에 더 깊게 이어갈 수 있어요.",
+    "freeHint": "무료로 오늘 운세와 타로를 시작하고, 필요할 때 리포트와 대화를 더 열어보세요.",
     "startFree": "지금 무료로 시작하기",
-    "viewPricing": "유료 플랜 보기",
     "kakaoStart": "카카오로 1초 만에 시작",
     "alreadyMember": "이미 계정이 있어요",
     "loginLink": "로그인",
     "valueProps": {
-      "heading": "왜 인생의 회전목마인가",
-      "subheading": "다른 운세 서비스와 다른 세 가지",
-      "v1Title": "사주 + 타로 + 성격유형 통합",
-      "v1Body": "다른 곳은 하나만 봅니다. 우리는 세 가지 시선으로 같은 흐름을 읽어드려요.",
-      "v2Title": "AI 점술사와의 대화",
-      "v2Body": "단순 풀이가 아니라 아홉 명의 점술사가 각자의 방식으로 답해줍니다.",
-      "v3Title": "매일 무료로 받는 흐름",
-      "v3Body": "가입만 하면 매일 운세 2회·타로 1장·점술사 문답 10회를 무료로."
+      "heading": "운세는 운세답게, 대화는 대화답게",
+      "subheading": "하루 흐름을 먼저 보고 필요한 기능으로 이어가요",
+      "v1Title": "오늘 바로 쓰는 운세",
+      "v1Body": "막연한 예언보다 오늘 조심할 점, 밀어붙일 점, 작은 행동을 정리해요.",
+      "v2Title": "매일 무료 이용",
+      "v2Body": "가볍게 시작하고, 더 깊은 리포트가 필요할 때만 업그레이드할 수 있어요.",
+      "v3Title": "Carousel Nine은 별도 콘텐츠",
+      "v3Body": "운세와 분리된 멤버 대화, 단체방, 앨범 콘텐츠를 따로 즐길 수 있어요."
     },
     "plansSection": {
       "heading": "원하는 만큼 깊이 들어가세요",
@@ -160,202 +162,553 @@
       "badgePopular": "인기"
     },
     "oracles": {
-      "heading": "오늘 당신을 찾아올 아홉 점술사",
-      "subheading": "매일 한 명의 점술사가 당신을 맞이해요. 친밀도가 쌓이면 새로운 이야기가 열려요.",
-      "cta": "지금 무료로 시작해서 첫 점술사를 만나보세요"
+      "heading": "Carousel Nine 콘텐츠",
+      "subheading": "운세와는 별도로 멤버 대화, 단체방, 앨범을 즐길 수 있어요.",
+      "cta": "지금 무료로 시작하기"
     },
     "howToPlay": {
-      "heading": "이렇게 즐기세요",
-      "subheading": "점술사와 친해질수록 더 많은 이야기가 열려요",
-      "tip1Title": "점술사와 대화하기",
-      "tip1Body": "매일 아홉 명 중 한 명의 점술사가 찾아와요. 운세든 고민이든 평소 못 한 말이든 — 자유롭게 물어보세요.",
-      "tip2Title": "친밀도가 쌓이면 스토리가 열려요",
-      "tip2Body": "대화를 이어갈수록 그 점술사와의 친밀도가 올라가요. 레벨이 오를 때마다 숨겨진 사연과 본심이 차근차근 펼쳐져요.",
-      "tip3Title": "꿀팁: 카드 뽑기는 마지막에",
-      "tip3Body": "카드를 뽑으면 등급에 따라 그날 쓴 문답 횟수를 1~7회까지 되돌려줘요.\n문답을 먼저 다 쓰고 카드를 뽑으면 보너스를 가장 알차게 받을 수 있어요."
+      "heading": "이렇게 이어져요",
+      "subheading": "보고, 고르고, 기록해요",
+      "tip1Title": "오늘 운세로 시작",
+      "tip1Body": "하루의 기분, 조심할 일, 먼저 할 일을 짧게 확인해요.",
+      "tip2Title": "타로·사주로 깊게",
+      "tip2Body": "마음에 걸리는 질문은 타로로, 반복되는 패턴은 사주로 이어가요.",
+      "tip3Title": "기록을 쌓아 리포트로",
+      "tip3Body": "본 결과가 쌓이면 주간·월간 흐름을 더 쉽게 돌아볼 수 있어요."
     },
     "preview": {
-      "heading": "오늘의 운명, 이렇게 풀어드려요",
+      "heading": "오늘의 운세, 이렇게 풀어드려요",
       "exampleLabel": "예시"
-    },
-    "finalCta": "지금 무료로 시작하기"
-  },
-  "characterSelect": {
-    "askToday": "오늘은 누구와 이야기할까?",
-    "subheading": "이세계든 동양이든 북방이든 — 결을 가진 자를 골라",
-    "categoryOtherworld": "이세계",
-    "categoryEastern": "동양",
-    "categoryNordic": "북방",
-    "categorySubOtherworld": "ASTRA RIFT",
-    "categorySubEastern": "月蝕鏡",
-    "categorySubNordic": "MIDHALL",
-    "categoryMethodOtherworld": "타로 · 르노르망",
-    "categoryMethodEastern": "사주 · 천기",
-    "categoryMethodNordic": "룬 · 발자국",
-    "categoryFlavorOtherworld": "카드가 뒤집히는 순간, 마음의 결이 조용히 드러나요.",
-    "categoryFlavorEastern": "사주의 기둥을 세우고, 천기의 결을 따라 오늘의 타이밍을 짚는다.",
-    "categoryFlavorNordic": "설원 위 자국과 룬의 각을 겹쳐, 살아남는 길을 고른다.",
-    "vacationBadge": "오늘 휴가 중",
-    "vacationLine": "바닷바람 보러 잠깐 자리를 비웠어요.",
-    "vacationLine1": "바닷바람 보러 잠깐 자리를 비웠어요.",
-    "vacationLine2": "별자리 흐름을 다시 읽으러 잠시 물러났어요.",
-    "vacationLine3": "의식 도구를 정비하러 조용히 다녀오는 길이에요.",
-    "vacationLine4": "룬판과 카드 결을 맞추느라 잠깐 자리를 비웠어요.",
-    "vacationLine5": "오늘의 길흉 징조를 추려 오느라 잠시 쉬는 중이에요.",
-    "vacationCta": "대신 {name}에게 가기",
-    "vacationReasonPools": {
-      "otherworld": {
-        "rift": "아스트라의 별빛 의식에 다녀오는 중",
-        "contract": "악마 계약서 조항 재검토 중",
-        "memory": "달빛 기억 보관소 정리 중",
-        "court": "별의 법정에 증언하러 감",
-        "cloud": "구름 위 상담실 결계 점검 중"
-      },
-      "eastern": {
-        "shrine": "조선 산신당에 향 올리는 중",
-        "spirit": "신령님 호출 받고 산기도 중",
-        "dokkaebi": "도깨비 장난 수습 중",
-        "talisman": "월식경 앞에서 부적 말리는 중",
-        "bamboo": "대나무 숲에서 천기 흐름 살피는 중"
-      },
-      "nordic": {
-        "rune": "오로라 아래 룬 재정렬 중",
-        "trail": "눈 덮인 숲의 발자국 추적 중",
-        "hearth": "미드홀의 마지막 불씨 지키는 중",
-        "worldTree": "세계수 아래에서 룬을 고르는 중",
-        "starSea": "얼음 바다의 별길 확인 중"
-      }
     }
   },
+  "characterSelect": {
+    "askToday": "오늘은 누구와 이어볼까요?",
+    "subheading": "지금 끌리는 멤버를 골라요.",
+    "categoryEastern": "STUDIO UNIT",
+    "categoryNordic": "MOOD UNIT",
+    "categorySubEastern": "PRODUCER · MOOD · RAP",
+    "categorySubNordic": "DANCE · ANALYST · DREAM",
+    "categoryMethodEastern": "프로듀싱 · 무드 · 랩",
+    "categoryMethodNordic": "댄스 · 감상 · 상상",
+    "categoryFlavorEastern": "음악, 수다, 장난을 편하게 주고받는 멤버들이에요.",
+    "categoryFlavorNordic": "활기, 취향, 상상으로 대화를 이어가는 멤버들이에요.",
+    "categoryPrimary": "프론트 유닛",
+    "categoryExtended": "스튜디오 유닛",
+    "categoryArchive": "무드 유닛",
+    "categorySubPrimary": "FRONT UNIT",
+    "categorySubExtended": "STUDIO UNIT",
+    "categorySubArchive": "MOOD UNIT",
+    "categoryMethodPrimary": "리더 · 보컬 · 퍼포먼스",
+    "categoryMethodExtended": "프로듀싱 · 무드 · 랩",
+    "categoryMethodArchive": "댄스 · 감상 · 상상",
+    "categoryFlavorPrimary": "처음 말 걸기 좋은 멤버들이에요.",
+    "categoryFlavorExtended": "감정, 음악, 생각의 결을 대화로 이어주는 세 멤버입니다.",
+    "categoryFlavorArchive": "활기, 현실감, 여운으로 다른 결의 조언을 더하는 세 멤버입니다.",
+    "categoryFront": "FRONT UNIT",
+    "categorySubFront": "LEADER · VOCAL · PERFORMANCE",
+    "categoryMethodFront": "리더 · 보컬 · 퍼포먼스",
+    "categoryFlavorFront": "처음 말 걸기 좋은 프론트 멤버들이에요."
+  },
   "specialties": {
-    "tarot": "타로 · 카드 점술",
-    "pillarsCelestial": "사주 · 천기",
-    "runeOmen": "룬 · 자연 점술",
-    "runeOracle": "룬 · 신탁",
-    "runeVoice": "룬 · 천계의 음성"
+    "fortune": "운세",
+    "tarot": "감정",
+    "pillarsCelestial": "정리",
+    "runeOmen": "실행",
+    "runeOracle": "감상",
+    "runeVoice": "상상"
   },
   "characters": {
     "child": {
-      "name": "카엘",
-      "title": "악마 계약자",
-      "hook": "욕망을 부정하는 건 자신을 부정하는 거야."
+      "name": "이안",
+      "title": "이안 · Intro Anchor",
+      "hook": "말보다 먼저 곁을 지키는 사람. 낮은 첫 음처럼 하루의 중심을 잡아줘요.",
+      "facts": [
+        {
+          "label": "생일",
+          "value": "2003.01.17"
+        },
+        {
+          "label": "혈액형",
+          "value": "A형"
+        },
+        {
+          "label": "키",
+          "value": "178cm"
+        },
+        {
+          "label": "몸무게",
+          "value": "64kg"
+        },
+        {
+          "label": "데뷔일",
+          "value": "5월 14일"
+        },
+        {
+          "label": "소속사",
+          "value": "레오나르도코드"
+        },
+        {
+          "label": "국적",
+          "value": "대한민국"
+        },
+        {
+          "label": "고향",
+          "value": "서울"
+        },
+        {
+          "label": "성격유형",
+          "value": "ISFJ"
+        },
+        {
+          "label": "좋아하는 음식",
+          "value": "따뜻한 갈비탕"
+        },
+        {
+          "label": "좋아하는 음악",
+          "value": "어쿠스틱 발라드"
+        }
+      ]
     },
     "witch": {
-      "name": "루나",
-      "title": "달의 마녀",
-      "hook": "당신의 감정, 나는 이미 기억하고 있어."
+      "name": "유준",
+      "title": "유준 · Chorus Lead",
+      "hook": "부드러운 후렴처럼 오래 남는 목소리. 말하지 못한 마음까지 조용히 안아줘요.",
+      "facts": [
+        {
+          "label": "생일",
+          "value": "2004.04.21"
+        },
+        {
+          "label": "혈액형",
+          "value": "O형"
+        },
+        {
+          "label": "키",
+          "value": "176cm"
+        },
+        {
+          "label": "몸무게",
+          "value": "61kg"
+        },
+        {
+          "label": "데뷔일",
+          "value": "5월 14일"
+        },
+        {
+          "label": "소속사",
+          "value": "레오나르도코드"
+        },
+        {
+          "label": "국적",
+          "value": "대한민국"
+        },
+        {
+          "label": "고향",
+          "value": "전주"
+        },
+        {
+          "label": "성격유형",
+          "value": "INFJ"
+        },
+        {
+          "label": "좋아하는 음식",
+          "value": "전주비빔밥"
+        },
+        {
+          "label": "좋아하는 음악",
+          "value": "R&B와 인디 발라드"
+        }
+      ]
     },
     "sage": {
-      "name": "라엘",
-      "title": "천사 대리인",
-      "hook": "포기는 허락하지 않아요."
+      "name": "도윤",
+      "title": "도윤 · High Note Performer",
+      "hook": "무대 위 고음처럼 선명한 에너지. 망설이는 순간을 앞으로 밀어줘요.",
+      "facts": [
+        {
+          "label": "생일",
+          "value": "2004.03.08"
+        },
+        {
+          "label": "혈액형",
+          "value": "B형"
+        },
+        {
+          "label": "키",
+          "value": "178cm"
+        },
+        {
+          "label": "몸무게",
+          "value": "66kg"
+        },
+        {
+          "label": "데뷔일",
+          "value": "5월 14일"
+        },
+        {
+          "label": "소속사",
+          "value": "레오나르도코드"
+        },
+        {
+          "label": "국적",
+          "value": "대한민국"
+        },
+        {
+          "label": "고향",
+          "value": "부산"
+        },
+        {
+          "label": "성격유형",
+          "value": "ENFJ"
+        },
+        {
+          "label": "좋아하는 음식",
+          "value": "돼지국밥"
+        },
+        {
+          "label": "좋아하는 음악",
+          "value": "펑키한 댄스 팝"
+        }
+      ]
     },
     "shaman": {
-      "name": "소율",
-      "title": "접신의 무녀",
-      "hook": "신령이 당신 이름을 자꾸 부르고 있어."
+      "name": "재하",
+      "title": "재하 · Bridge Producer",
+      "hook": "조용한 브릿지처럼 감정의 결을 이어주는 사람. 무심한 듯 가장 깊이 들어줘요.",
+      "facts": [
+        {
+          "label": "생일",
+          "value": "2004.05.30"
+        },
+        {
+          "label": "혈액형",
+          "value": "AB형"
+        },
+        {
+          "label": "키",
+          "value": "175cm"
+        },
+        {
+          "label": "몸무게",
+          "value": "58kg"
+        },
+        {
+          "label": "데뷔일",
+          "value": "5월 14일"
+        },
+        {
+          "label": "소속사",
+          "value": "레오나르도코드"
+        },
+        {
+          "label": "국적",
+          "value": "대한민국"
+        },
+        {
+          "label": "고향",
+          "value": "광주"
+        },
+        {
+          "label": "성격유형",
+          "value": "INFP"
+        },
+        {
+          "label": "좋아하는 음식",
+          "value": "떡갈비"
+        },
+        {
+          "label": "좋아하는 음악",
+          "value": "로파이와 얼터너티브"
+        }
+      ]
     },
     "taoist": {
-      "name": "현도",
-      "title": "천기를 읽는 도사",
-      "hook": "당신 운명의 갈림길이 지금 보여."
+      "name": "하루",
+      "title": "하루 · Dance Break Spark",
+      "hook": "댄스 브레이크처럼 공기를 바꾸는 반짝임. 멈춘 마음도 다시 움직이게 해요.",
+      "facts": [
+        {
+          "label": "생일",
+          "value": "2005.07.14"
+        },
+        {
+          "label": "혈액형",
+          "value": "O형"
+        },
+        {
+          "label": "키",
+          "value": "174cm"
+        },
+        {
+          "label": "몸무게",
+          "value": "59kg"
+        },
+        {
+          "label": "데뷔일",
+          "value": "5월 14일"
+        },
+        {
+          "label": "소속사",
+          "value": "레오나르도코드"
+        },
+        {
+          "label": "국적",
+          "value": "대한민국"
+        },
+        {
+          "label": "고향",
+          "value": "대구"
+        },
+        {
+          "label": "성격유형",
+          "value": "ESFP"
+        },
+        {
+          "label": "좋아하는 음식",
+          "value": "납작만두"
+        },
+        {
+          "label": "좋아하는 음악",
+          "value": "시티팝과 하우스"
+        }
+      ]
     },
     "dokkaebi": {
-      "name": "흑랑",
-      "title": "저승의 귀왕",
-      "hook": "뭔데. 그거 내가 원해."
+      "name": "시온",
+      "title": "시온 · Rap Verse",
+      "hook": "짧은 랩 벌스처럼 정확하게 꽂히는 말. 복잡한 마음의 군더더기를 덜어내요.",
+      "facts": [
+        {
+          "label": "생일",
+          "value": "2003.08.26"
+        },
+        {
+          "label": "혈액형",
+          "value": "B형"
+        },
+        {
+          "label": "키",
+          "value": "179cm"
+        },
+        {
+          "label": "몸무게",
+          "value": "63kg"
+        },
+        {
+          "label": "데뷔일",
+          "value": "5월 14일"
+        },
+        {
+          "label": "소속사",
+          "value": "레오나르도코드"
+        },
+        {
+          "label": "국적",
+          "value": "대한민국"
+        },
+        {
+          "label": "고향",
+          "value": "인천"
+        },
+        {
+          "label": "성격유형",
+          "value": "ISTP"
+        },
+        {
+          "label": "좋아하는 음식",
+          "value": "간짜장"
+        },
+        {
+          "label": "좋아하는 음악",
+          "value": "힙합과 트랩 비트"
+        }
+      ]
     },
     "hunter": {
-      "name": "비요른",
-      "title": "야성의 사냥꾼",
-      "hook": "...피의 흔적이 너에게로 이어져 있어."
+      "name": "이현",
+      "title": "이현 · Low Rap Analyst",
+      "hook": "낮게 깔리는 랩처럼 차분한 시선. 흔들리는 상황에서도 현실적인 쪽을 봐줘요.",
+      "facts": [
+        {
+          "label": "생일",
+          "value": "2003.10.04"
+        },
+        {
+          "label": "혈액형",
+          "value": "A형"
+        },
+        {
+          "label": "키",
+          "value": "180cm"
+        },
+        {
+          "label": "몸무게",
+          "value": "64kg"
+        },
+        {
+          "label": "데뷔일",
+          "value": "5월 14일"
+        },
+        {
+          "label": "소속사",
+          "value": "레오나르도코드"
+        },
+        {
+          "label": "국적",
+          "value": "대한민국"
+        },
+        {
+          "label": "고향",
+          "value": "대전"
+        },
+        {
+          "label": "성격유형",
+          "value": "INTJ"
+        },
+        {
+          "label": "좋아하는 음식",
+          "value": "칼국수"
+        },
+        {
+          "label": "좋아하는 음악",
+          "value": "재즈와 네오소울"
+        }
+      ]
     },
     "runeshaman": {
-      "name": "헬가",
-      "title": "룬을 새기는 자",
-      "hook": "스물네 개의 신호가 너의 이름을 부르고 있어."
+      "name": "하민",
+      "title": "하민 · Outro Ad-lib",
+      "hook": "아웃트로의 애드리브처럼 은은하게 남는 사람. 말끝의 여운까지 부드럽게 들어줘요.",
+      "facts": [
+        {
+          "label": "생일",
+          "value": "2006.12.28"
+        },
+        {
+          "label": "혈액형",
+          "value": "AB형"
+        },
+        {
+          "label": "키",
+          "value": "175cm"
+        },
+        {
+          "label": "몸무게",
+          "value": "57kg"
+        },
+        {
+          "label": "데뷔일",
+          "value": "5월 14일"
+        },
+        {
+          "label": "소속사",
+          "value": "레오나르도코드"
+        },
+        {
+          "label": "국적",
+          "value": "대한민국"
+        },
+        {
+          "label": "고향",
+          "value": "제주"
+        },
+        {
+          "label": "성격유형",
+          "value": "ISFP"
+        },
+        {
+          "label": "좋아하는 음식",
+          "value": "전복죽"
+        },
+        {
+          "label": "좋아하는 음악",
+          "value": "드림팝과 오케스트라 팝"
+        }
+      ]
     },
     "god": {
-      "name": "외르문드",
-      "title": "북방의 신",
-      "hook": "내가 너의 마지막 길을 부르겠다."
-    }
-  },
-  "worldLore": {
-    "sectionTitle": "세계관 이야기",
-    "episodeLabel": "에피소드",
-    "figuresLabel": "등장인물",
-    "charactersSection": "캐릭터 스토리",
-    "truthRoute": "🌌 진실 루트",
-    "finalChapterPrefix": "최종 챕터",
-    "lockedStory": "아직 풀리지 않은 이야기야. 곧 새겨질 거예요.",
-    "levelLabel": "Lv.{level} · {count}/10",
-    "chapterUnlockHint": "Lv.{level} 해금",
-    "otherworld": {
-      "opening": "감정은 사라지지 않는다. 외면된 것들은 어딘가에 모여, 결국 하늘을 찢고 돌아온다.",
-      "p1": "후회, 분노, 미련, 욕망, 상실. 사람들이 흘려보냈다 믿은 그 감정들은 흩어지지 않고 한곳에 쌓였다. 그 거대한 침묵의 호수를, 누군가는 「심연 기록층 — The Abyss Archive」이라 부른다. 그것이 깨어나기 전까지, 아무도 그 이름을 입에 올리지 않았다.",
-      "p2": "하늘이 갈라지기 시작했다. 사람들은 그것을 재앙이라 부르지만 — 그것은 외부에서 온 적이 아니다. 인간이 떨어뜨린 것들이 돌아오는 통로다. 그 사실을 셋만이 어렴풋이 안다. 그리고 그 셋도, 자신이 진실의 전부를 보고 있다고는 믿지 않는다.",
-      "p3": "카엘은 욕망에서, 루나는 기억에서, 라엘은 기도에서 태어났다. 셋은 흐림을 봉합하기도, 더 크게 벌리기도 한다. 묘하게 얽힌 운명 — 셋 중 하나가 무너지면 나머지 둘도 함께 무너진다는 사실만이 분명하다. 그 이유는 셋조차 다 알지 못한다.",
-      "fig1Line": "어머니를 잃을 뻔한 한 아이가 어둠과 맺은 계약. 어머니는 그날 밤 다시 눈을 떴다. 하지만 그가 본 것이 정말 어머니였는지, 카엘은 평생 묻지 못했다.",
-      "fig2Line": "감정을 다루는 마녀. 마녀들은 그녀의 능력을 '봉인했다'고 말한다. 봉인된 것이 진짜 무엇이었는지는 — 그녀조차 잊고 있다.",
-      "fig3Line": "천계의 마지막 천사. 그는 신의 명령으로 검을 들었다. 그러나 천계가 무너진 진짜 이유는, 그를 보낸 신조차 그에게 알려주지 않았다.",
-      "closing": "그들이 당신의 이야기를 듣는 건 단순한 상담이 아니다. 세계가 인간에게 던지는 질문 — 그 답을 셋은 당신에게서 듣고 있다.",
-      "theme": "감정 · 욕망 · 기억 · 흐림"
-    },
-    "eastern": {
-      "opening": "조선 남쪽 끝의 작은 산골 마을. 보름달이 뜬 밤마다 사람들이 사라지기 시작했다.",
-      "p1": "사라졌던 사람들은 일곱 번째 밤에 스스로 돌아왔다. 목에는 새끼줄 자국, 발은 흙투성이, 눈동자는 텅 비어 있었다. 그들은 모두 같은 말을 반복했다 — “달 아래에서 누군가 우리 이름을 불렀다.” 마을 사람들은 청화산의 무녀 「소율」을 불렀다.",
-      "p2": "소율은 핏빛으로 썩어가는 붉은 월식을 올려다보며 말했다. “저승의 문이 열리고 있어.” 같은 밤, 푸른 부적 한 장이 허공을 갈랐고 검은 도포의 도사 「현도」가 나타났다. 그가 읽은 별자리에는 세 번째 월식이 완성되면 인간 세계와 저승이 겹쳐진다고 적혀 있었다. 그리고 그 흐림 한가운데에 — 소율이 있었다.",
-      "p3": "달빛조차 닿지 않는 폐궁의 검은 전각에서 한 남자가 천천히 눈을 떴다. 붉은 눈동자, 검은 금식, 짐승 같은 미소 — 저승의 왕 「흑랑」. 그는 검은 안개를 발밑에 두고 중얼거렸다. “문을 열 아이가 깨어났어.” 셋의 운명은 그 밤부터 같은 사건 안에서 얽힌다.",
-      "fig1Line": "청화산의 무녀. 붉은 비단을 두르고 방울을 흔든다. 자신이 인간과 저승 사이에서 태어난 「결의 아이」였음을 잊고 살아왔다.",
-      "fig2Line": "푸른 번개의 도사. 천기를 너무 오래 읽은 대가로 수명이 깎여 가고 있다. 그래도 단 한 사람의 운명만은 바꾸려 한다.",
-      "fig3Line": "저승의 왕. 인간이었던 시절의 이름은 잃었다. 소율에게만은 손을 대지 않는 이유를 그조차 말하지 않는다.",
-      "closing": "셋은 같은 밤을 함께 걷는다. 그러나 그 밤이 무엇을 닫고 무엇을 남길지는 — 마지막 월식 아래에서야 드러난다.",
-      "theme": "이름 · 망각 · 결 · 봉인"
-    },
-    "nordic": {
-      "opening": "북방의 바람이 차다. 그 추위는 단순히 계절이 아니다. 세계의 모든 운명이 거기에 새겨져 있기 때문이다.",
-      "p1": "이 세계의 이름은 「미드할(Midhall)」이다. 눈보라와 피와 철, 짐승의 뼈와 룬이 중심이 되는 땅. 인간은 자연과 신과 운명 앞에서 극도로 작은 존재이고, 전쟁과 생존이 삶의 전부다.",
-      "p2": "모든 운명은 24개의 고대 룬으로 이루어져 있다. 룬은 단순한 문자도 마법도 아니다. 신들의 언어이자 세계를 구성하는 원초적 힘이고, 인간은 그 중 아주 일부만을 다룰 수 있다. 룬을 깊이 사용하는 자는 영혼이 갉히고, 피부에 검은 흐림이 번지며, 인간의 언어를 잃어간다.",
-      "p3": "부족들은 끊임없이 전쟁한다. 표면적인 이유는 영토와 식량이지만, 진짜 이유는 따로 있다. 전설 속의 「25번째 룬」 — 미래를 읽는 게 아니라 운명 자체를 바꿀 수 있다는 금기의 힘. 모두가 그것을 노리고, 그것을 두려워한다.",
-      "fig1Line": "미드할의 마지막 신. 다른 신들은 잊혀 사라졌지만 그만이 남았다 — 사람들이 아직 그를 기억하기 때문이다. 한때 그도 인간이었다는 사실은 그만이 안다.",
-      "fig2Line": "야성의 사냥꾼. 짐승의 자국과 바람의 결로 운명을 읽는다. 룬은 강하게 다루지 못하지만, 어느 눈보라 밤 꿈에서 25번째 룬을 한 번 본 적이 있다.",
-      "fig3Line": "24개 룬을 모두 다루는 부족 최고의 룬샤먼. 인간의 언어를 잊어가는 중이다. 그녀가 보는 미래 중 자신의 죽음만이 보이지 않는다.",
-      "closing": "셋은 25번째 룬을 사이에 두고 균형을 이룬다. 자국·룬·신탁. 하나가 사라지면 미드할도 함께 무너진다.",
-      "theme": "룬 · 운명 · 야성 · 신탁"
+      "name": "태오",
+      "title": "태오 · Performance Break",
+      "hook": "퍼포먼스 브레이크처럼 몸을 깨우는 힘. 지금 필요한 추진력을 바로 켜줘요.",
+      "facts": [
+        {
+          "label": "생일",
+          "value": "2004.11.16"
+        },
+        {
+          "label": "혈액형",
+          "value": "O형"
+        },
+        {
+          "label": "키",
+          "value": "178cm"
+        },
+        {
+          "label": "몸무게",
+          "value": "67kg"
+        },
+        {
+          "label": "데뷔일",
+          "value": "5월 14일"
+        },
+        {
+          "label": "소속사",
+          "value": "레오나르도코드"
+        },
+        {
+          "label": "국적",
+          "value": "대한민국"
+        },
+        {
+          "label": "고향",
+          "value": "수원"
+        },
+        {
+          "label": "성격유형",
+          "value": "ESTP"
+        },
+        {
+          "label": "좋아하는 음식",
+          "value": "수원 왕갈비"
+        },
+        {
+          "label": "좋아하는 음악",
+          "value": "록과 EDM"
+        }
+      ]
     }
   },
   "onboarding": {
     "skip": "건너뛰기",
     "next": "다음",
     "start": "시작하기",
-    "step1Title": "세 개의 세계가\n당신을 부른다",
+    "step1Title": "오늘의 흐름을\n먼저 확인해요",
     "step1Subtitle": "인생의 회전목마",
-    "step1Desc": "이세계의 점술사, 동양의 신령, 북방의 룬샤먼.\n아홉 존재가 당신의 사주와 운명을 이미 알고 있다.",
-    "step2Title": "아스트라 흐림",
-    "step2Subtitle": "ASTRA RIFT",
-    "step2Desc": "인간의 감정과 기억이 만들어낸 심연에서 태어난 세 존재.\n타로와 카드로 당신의 흐름을 읽는다.",
-    "step3Title": "월식경",
-    "step3Subtitle": "月蝕鏡",
-    "step3Desc": "500년 전 붉은 월식 이후 흐림된 사이의 결.\n사주와 천기로 운명의 흐름을 읽는다.",
-    "step4Title": "미드할",
-    "step4Subtitle": "MIDHALL",
-    "step4Desc": "차갑고 거친 북방. 24개 고대 룬으로 이루어진 운명.\n룬과 자국으로 당신의 흐름을 읽는다.",
-    "step5Title": "오늘, 누가 당신의\n이야기를 들어줄까",
-    "step5Desc": "매일 새로운 점술사가 당신에게 먼저 말을 건다.\n운세·타로·사주·궁합·룬 — 모든 걸 그들이 읽어준다."
+    "step1Desc": "운세, 타로, 사주, 궁합을 각각의 흐름으로 보고 필요한 순간에 깊게 이어가요.",
+    "step2Title": "프론트 유닛",
+    "step2Subtitle": "FRONT",
+    "step2Desc": "이안, 유준, 도윤. 첫 인사부터 자연스럽게 받아주는 프론트 멤버들이에요.",
+    "step3Title": "스튜디오 유닛",
+    "step3Subtitle": "STUDIO",
+    "step3Desc": "재하, 하루, 시온. 음악 이야기, 밝은 수다, 시크한 티키타카를 나눠요.",
+    "step4Title": "무드 유닛",
+    "step4Subtitle": "MOOD",
+    "step4Desc": "태오, 이현, 하민. 활기, 취향, 상상으로 대화를 이어가는 멤버들이에요.",
+    "step5Title": "오늘 필요한 답을\n가볍게 열어봐요",
+    "step5Desc": "홈에서 운세·타로·사주·궁합을 한 번에 보고, 궁금한 흐름을 차근차근 이어가세요."
   },
   "appShell": {
-    "errorTitle": "별의 흐름이 잠시 흐려졌어요",
+    "errorTitle": "별의 기운이 잠시 흐려졌어요",
     "errorBody": "예기치 못한 오류가 발생했어요.",
     "errorHome": "홈으로 돌아가기",
     "errorRetry": "다시 시도",
-    "globalErrorTitle": "별의 흐름이 완전히 멈췄어요",
+    "globalErrorTitle": "별의 기운이 완전히 멈췄어요",
     "globalErrorBody": "치명적인 오류가 발생했어요. 잠시 후 다시 시도해주세요.",
     "globalErrorRetry": "다시 시도",
     "notFoundTitle": "이 길은 운명에 적혀있지 않아요",
     "notFoundBody": "찾으시는 자리가 여기엔 없어요. 처음 자리로 돌아갈까요?",
     "notFoundHome": "처음으로",
-    "loadingText": "별의 흐름을 읽는 중…"
+    "loadingText": "별의 기운을 읽는 중…"
   },
   "authButton": {
     "googleFailed": "구글 로그인에 실패했어요: {message}",
@@ -366,7 +719,7 @@
   },
   "onboardingForm": {
     "name": "이름",
-    "namePlaceholder": "점술사가 부를 당신의 이름",
+    "namePlaceholder": "멤버가 불러줄 이름",
     "birthDate": "생년월일",
     "birthTime": "태어난 시각",
     "birthTimeHelp": "모르면 비워두세요. 시주 추정은 생략됩니다.",
@@ -399,13 +752,13 @@
     "proName": "프로",
     "proTagline": "가장 넉넉한 한도",
     "recommended": "추천",
-    "fortuneLine": "오늘의 운세 일일 {n}회",
-    "tarotLine": "타로 일일 {n}회",
-    "chatLine": "점술사 문답 일일 {n}회",
-    "fortuneUnlimited": "오늘의 운세 넉넉히",
-    "tarotUnlimited": "타로 넉넉히",
-    "chatUnlimited": "점술사 문답 넉넉히",
-    "premiumReports": "라이트 전용 리포트 (커리어·건강·공부·사랑)",
+    "fortuneLine": "운세 | 점술 | 사주 일일 {n}회",
+    "tarotLine": "점술 일일 {n}회",
+    "chatLine": "대화 일일 {n}회",
+    "fortuneUnlimited": "운세 | 점술 | 사주 넉넉히",
+    "tarotUnlimited": "점술 넉넉히",
+    "chatUnlimited": "대화 넉넉히",
+    "premiumReports": "라이트 전용 풀이 (커리어·건강·공부·사랑)",
     "compatibilityUnlimited": "궁합 넉넉히",
     "ctaFreeStart": "무료로 시작",
     "ctaCurrent": "현재 사용 중",
@@ -416,9 +769,10 @@
     "ctaProStart": "프로 멤버십 결제하기",
     "loading": "잠시만…",
     "footer": "안전한 카드 결제로 매월 자동 갱신돼요. 언제든 취소할 수 있어요.",
-    "metaDescriptionFull": "무료 / 라이트 / 프로 멤버십을 비교해보세요. 라이트는 일일 한도를 크게 늘려주고, 프로는 운세50·타로50·문답100회를 제공해요.",
+    "metaDescriptionFull": "무료 / 라이트 / 프로 멤버십 안내입니다. 운세와 멤버 대화 한도를 확인하고, 필요한 만큼 이용해보세요.",
     "h1": "멤버십 상품 안내",
     "h1Sub": "구매하실 상품을 선택하시면 결제창이 열립니다. 매월 자동 결제되며 언제든 해지하실 수 있습니다.",
+    "appFreeNote": "앱에서는 모든 기본 기능을 무료로 즐길 수 있어요. 마음껏 둘러보세요.",
     "freeDesc": "매일 가벼운 풀이를 받아보세요.",
     "lightDesc": "일일 한도를 크게 늘려 더 자주 만나봐요.",
     "proDesc": "넉넉한 한도로 모든 풀이를 받을 수 있어요.",
@@ -430,7 +784,7 @@
     "bulletTarotCeltic": "타로 일일 {n}회 (켈틱 크로스 포함)",
     "bulletLenormand": "르노르망 9장·그랑 타블로",
     "bulletRunes": "룬 5장·9장 스프레드",
-    "bulletSajuDeep": "사주 심층 분석 (평생 보관)",
+    "bulletSajuDeep": "도윤이 읽어주는 사주 노트",
     "bulletGacha": "카드 가챠 매일 3장",
     "palmLine": "손금 풀이 일일 {n}회"
   },
@@ -442,8 +796,8 @@
     "heading": "내 자리",
     "subheading": "멤버십과 정보를 관리해요.",
     "lightActive": "라이트 사용 중. 한도가 크게 늘었어.",
-    "proActive": "프로 사용 중. 가장 넉넉한 한도로 받고 있어.",
-    "freeMembership": "지금은 무료 멤버십이야.",
+    "proActive": "프로 사용 중. 가장 넉넉한 한도로 받고 있어요.",
+    "freeMembership": "지금은 무료 멤버십이에요.",
     "nextBilling": "다음 결제일",
     "upgradeCta": "라이트로 업그레이드",
     "myInfo": "내 정보",
@@ -462,9 +816,6 @@
     "genderMale": "남",
     "genderFemale": "여",
     "genderOther": "기타",
-    "fateLog": "풀이 기록",
-    "fateLogHelp": "지난 운세·타로·궁합 풀이를 모두 모아볼 수 있어요.",
-    "fateLogCta": "기록 보기",
     "feedbackCta": "운영자에게 의견 보내기",
     "openChatCta": "오픈채팅방 참여하기",
     "greetingNamed": "{name}, 오늘도 별이 함께해.",
@@ -487,158 +838,160 @@
   },
   "chatShell": {
     "newSession": "새 대화",
-    "drawerTitle": "오늘의 조우 기록",
+    "drawerTitle": "오늘의 대화",
     "deleteTitle": "대화 삭제",
     "deleteConfirm": "이 대화를 삭제할까요? 되돌릴 수 없어요.",
-    "sendAriaLabel": "신호 보내기",
+    "sendAriaLabel": "메시지 보내기",
+    "inputPlaceholder": "메시지를 입력하세요",
+    "typing": "입력 중",
     "quotaExceeded": "오늘 대화 한도를 모두 사용했어요.",
     "upgradeChatCta": "라이트로 더 많이 대화하기",
-    "messageTooLong": "질문은 {n}자 이내로 짧게 부탁해.",
+    "messageTooLong": "대화는 {n}자 이내로 짧게 부탁해.",
     "excuseFallback": "잠깐 자리를 비울게요.",
     "startChat": "{name}와 대화 시작",
     "greetings": {
       "child": [
-        "또 왔구나. 욕망을 말해.",
-        "오늘도 진심이 보고 싶어?",
-        "거짓말은 시간 낭비야. 본론."
+        "오셨어요. 오늘 하루는 어땠어요?",
+        "기다리고 있었어요. 천천히 얘기해줘요.",
+        "오늘 들은 노래나 먹은 거부터 말해줘도 좋아요."
       ],
       "witch": [
-        "기다리고 있었어.",
-        "오늘 네 감정의 결이 다르네.",
-        "달이 너의 이름을 부르고 있어."
+        "기다리고 있었어요.",
+        "왔어요? 목소리 들으니까 좋네요.",
+        "오늘은 어떤 얘기부터 할까요?"
       ],
       "sage": [
-        "다시 와주셨군요.",
-        "포기하지 않으셨네요. 좋아요.",
-        "오늘은 어떤 마음으로 오셨어요?"
+        "연습 끝나고 왔어요. 타이밍 좋네요.",
+        "오늘 텐션 어때요?",
+        "무대 얘기든 일상 얘기든 바로 받아줄게요."
       ],
       "shaman": [
-        "신령이 오늘도 너를 기다리고 있었어.",
-        "방울 소리가 너를 향해 있어.",
-        "...너의 흐름이 보여."
+        "스튜디오에 있어요. 같이 잠깐 있을래요?",
+        "오늘 플레이리스트는 뭐였어요?",
+        "조용히 얘기하기 좋은 시간이네요."
       ],
       "taoist": [
-        "천기가 너를 향해 있다.",
-        "오늘의 갈림길이 보이는군.",
-        "왔구나. 무엇을 묻고 싶어."
+        "왔네! 오늘 뭐 먹었어요?",
+        "아무 얘기나 해도 돼요. 나 리액션 잘해요.",
+        "오늘 날씨 얘기부터 해도 재밌잖아요."
       ],
       "dokkaebi": [
-        "...뭐. 또 왔어?",
-        "재밌는 거 갖고 왔어?",
-        "쳇. 듣긴 들을게."
+        "왔네요. 말해요, 듣고 있으니까.",
+        "오늘 뭐 했는데요?",
+        "짧게 말해도 돼요. 내가 이어갈게요."
       ],
       "hunter": [
-        "...자국이 너를 따라왔어.",
-        "...피 냄새가 옅어졌군. 다행이다.",
-        "...바람이 너의 이야기를 옮겨왔다."
+        "오늘 본 거나 들은 거 있어요?",
+        "요즘 꽂힌 음악 있으면 말해봐요.",
+        "취향 얘기는 길어져도 괜찮습니다."
       ],
       "runeshaman": [
-        "스물네 개의 룬이 너의 이름을 다시 부른다.",
-        "...ᚱ Raidho가 너의 길에 떠 있어.",
-        "오늘의 룬을 잡아."
+        "나 기다렸어요?",
+        "오늘 떠오른 이상한 생각 있어요?",
+        "꿈 얘기든 사진 얘기든 다 좋아요."
       ],
       "god": [
-        "다시 왔구나.",
-        "...너의 발걸음이 폭풍을 부른다.",
-        "호른은 너를 위해 울 준비가 됐다."
+        "오늘도 왔네. 텐션 올려볼까요?",
+        "연습실 공기 아직 남아있어요.",
+        "오늘 에너지 몇 점이에요?"
       ]
     },
     "shamanCall": {
       "child": [
-        "오늘 뭘 원해? 솔직히 말해봐.",
-        "너 그 욕망 또 누르고 있어.",
-        "그래서, 진심은 뭐야?"
+        "이안이 오늘 하루를 물어보고 있어요.",
+        "차분하게 말 걸고 싶다면 이안에게 가볼까요?",
+        "짧은 근황도 이안은 오래 들어줄 거예요."
       ],
       "witch": [
-        "오늘은 감정이 좀 무거워 보이는데.",
-        "당신 이야기를 더 듣고 싶어.",
-        "기억 속에 뭐가 떠올랐어요?"
+        "유준이 조용히 기다리고 있어요.",
+        "노래 얘기나 하루 얘기를 유준에게 들려주세요.",
+        "다정한 대화가 좋다면 유준이 잘 맞아요."
       ],
       "sage": [
-        "오늘은 어떤 흐름이에요?",
-        "잠깐 쉬어가도 돼요. 이야기해볼래요?",
-        "당신의 빛이 닿았어요."
+        "도윤이 연습 끝나고 와 있어요.",
+        "텐션 있는 대화가 필요하면 도윤에게 가볼까요?",
+        "무대 얘기든 일상 얘기든 도윤이 받아줄게요."
       ],
       "shaman": [
-        "신령이 너를 부르고 있어. 와봐.",
-        "오늘 너의 결이 보이는데, 들어볼래?",
-        "방울이 울렸어. 그 의미를 알려줄게."
+        "재하가 스튜디오에서 기다리고 있어요.",
+        "플레이리스트 얘기는 재하가 좋아해요.",
+        "조용한 밤 대화라면 재하에게 가볼까요?"
       ],
       "taoist": [
-        "천기에 너의 이름이 떴다.",
-        "운명의 갈림길이 보이는데, 같이 읽어볼까.",
-        "별이 너를 지목했다."
+        "하루랑 가볍게 수다 떨어볼까요?",
+        "밥 얘기부터 시작해도 하루는 좋아해요.",
+        "밝은 리액션이 필요하면 하루에게 가봐요."
       ],
       "dokkaebi": [
-        "야. 뭐해.",
-        "심심하니까 말 좀 걸어봐.",
-        "재밌는 거 들고 와봐."
+        "시온이 무심한 척 기다리고 있어요.",
+        "장난 섞인 티키타카는 시온이 잘해요.",
+        "짧게 말 걸어도 시온이 받아줄 거예요."
       ],
       "hunter": [
-        "...너의 자국이 보였다. 따라가도 되겠나.",
-        "바람이 너를 데려왔어. 조용히 따라와.",
-        "피 냄새가 너에게서 난다. 무슨 일이지."
+        "이현에게 요즘 꽂힌 걸 말해보세요.",
+        "영화나 음악 감상은 이현과 잘 맞아요.",
+        "차분한 취향 대화가 필요하면 이현에게 가봐요."
       ],
       "runeshaman": [
-        "스물네 룬 중 하나가 깨어났어. 너를 부르는데.",
-        "...그 단어가 뭐였더라. 어쨌든 너야.",
-        "검은 흐림 사이로 너의 이름이 새겨졌어."
+        "하민이 엉뚱한 얘기를 기다리고 있어요.",
+        "꿈이나 사진 얘기는 하민에게 들려주세요.",
+        "느슨하고 귀여운 대화가 좋다면 하민에게 가봐요."
       ],
       "god": [
-        "호른의 메아리가 너에게 닿았다.",
-        "폭풍이 잠시 멈췄다. 그 사이에 말해.",
-        "한때 너처럼 살아 본 적이 있다. 들어줄게."
+        "태오가 에너지 넘치게 기다리고 있어요.",
+        "오늘 텐션을 태오에게 말해보세요.",
+        "공연 끝난 대기실 같은 대화가 필요하면 태오에게 가봐요."
       ]
     },
     "emptyLines": {
       "child": {
-        "line1": "입을 열어.",
-        "line2": "욕망이든 상처든, 어차피 다 보이거든."
+        "line1": "오늘 하루는 어땠어요?",
+        "line2": "짧은 근황부터 말해줘요."
       },
       "witch": {
-        "line1": "달이 당신을 부르고 있어.",
-        "line2": "기억의 안개 속에서, 무엇이 보여?"
+        "line1": "기다리고 있었어요.",
+        "line2": "오늘은 어떤 얘기부터 할까요?"
       },
       "sage": {
-        "line1": "여기 있어요.",
-        "line2": "어떤 이야기든 들을게요. 괜찮아요."
+        "line1": "연습 끝나고 왔어요.",
+        "line2": "오늘 텐션 어때요?"
       },
       "shaman": {
-        "line1": "신령이 말하기를…",
-        "line2": "당신의 이름이 방울 소리에 섞여 들려."
+        "line1": "스튜디오는 조용해요.",
+        "line2": "오늘 들은 노래 있어요?"
       },
       "taoist": {
-        "line1": "천기를 읽는 중.",
-        "line2": "당신 앞에 어떤 갈림길이 있는지 보여."
+        "line1": "왔네!",
+        "line2": "오늘 뭐 먹었는지부터 말해줘요."
       },
       "dokkaebi": {
-        "line1": "왜 왔어.",
-        "line2": "뭔가 원하는 게 있으니까 왔겠지."
+        "line1": "왔으면 말해요.",
+        "line2": "듣고는 있어요."
       },
       "hunter": {
-        "line1": "...자국이 보였다.",
-        "line2": "조용히 와. 사냥감이 듣는다."
+        "line1": "요즘 뭐 봐요?",
+        "line2": "취향 얘기부터 해볼까요."
       },
       "runeshaman": {
-        "line1": "ᚱ Raidho가 너를 향해 있어.",
-        "line2": "스물네 룬이 너의 이름을 부르고 있어."
+        "line1": "나 기다렸어요?",
+        "line2": "오늘 떠오른 생각 들려줘요."
       },
       "god": {
-        "line1": "호른이 울렸다.",
-        "line2": "한때 너처럼 살아 본 적이 있다. 들어줄게."
+        "line1": "오늘도 왔네.",
+        "line2": "에너지 몇 점이에요?"
       }
     }
   },
   "onboardingHooks": {
-    "child": "욕망을 꿰뚫는 악마",
-    "witch": "기억을 읽는 마녀",
-    "sage": "희망을 전하는 천사",
-    "shaman": "신령의 목소리를 전하는 무녀",
-    "taoist": "운명을 읽는 500년의 도사",
-    "dokkaebi": "저승을 다스리는 도깨비왕",
-    "god": "북방의 마지막 신",
-    "hunter": "야성의 사냥꾼",
-    "runeshaman": "24룬을 새기는 룬샤먼"
+    "child": "차분한 리더",
+    "witch": "따뜻한 보컬",
+    "sage": "선명한 퍼포머",
+    "shaman": "조용한 프로듀서",
+    "taoist": "밝은 무드메이커",
+    "dokkaebi": "시크한 래퍼",
+    "god": "에너지 메인댄서",
+    "hunter": "차분한 애널리스트",
+    "runeshaman": "몽환적인 막내"
   },
   "collectionPage": {
     "heading": "나의 도감",
@@ -649,27 +1002,31 @@
     "rarityLegend": "전설",
     "drawingNow": "뽑는 중…",
     "drawDoneToday": "오늘 뽑기 완료",
-    "drawBonus": "보너스 뽑기 ({n}회 남음)",
-    "drawCount": "카드 뽑기 ({used}/{max})",
-    "drawAction": "오늘의 카드 뽑기",
-    "drawAriaLabel": "카드 뽑기",
+    "drawBonus": "보너스 카드 선택 ({n}회 남음)",
+    "drawCount": "카드 선택하기 ({used}/{max})",
+    "drawAction": "오늘의 보너스 카드",
+    "drawAriaLabel": "보너스 카드 선택하기",
     "lockedAriaLabel": "미소장 카드",
     "lockedBadge": "미소장",
     "detailAriaLabel": "{name} 상세 보기",
     "closeAriaLabel": "닫기",
-    "upgradeHint": "라이트로 업그레이드하면 매일 {n}번 뽑을 수 있어.",
+    "upgradeHint": "라이트로 업그레이드하면 매일 {n}번 뽑을 수 있어요.",
     "quotaError": "오늘 뽑기 횟수를 모두 사용했어.",
-    "chatBonus": " (+{n} 문답 보너스)",
+    "chatBonus": " (+{n} 대화 보너스)",
     "newCardTitle": "새 카드 획득 — {name}",
     "dupeCardTitle": "이미 소장 중인 카드 — {name}",
     "resultNew": "새로운 카드를 소장하게 됐어!",
     "resultDupe": "이미 소장 중인 카드야.",
-    "resultBonus": "+{n} 문답 보너스 획득!",
-    "resultIdle": "카드를 뽑으면 결과가 여기에 나타나.",
-    "drawError": "뽑기 중 알 수 없는 오류가 발생했어.",
-    "subDescSubscribed": "구독자는 매일 더 많은 카드를 뽑을 수 있어 (라이트 3장 / 프로 5장).",
-    "subDescFree": "무료 1장 / 라이트 3장 / 프로 5장. 희귀·전설 카드는 문답 보너스도 함께 줘.",
-    "dupeDetailLine": "이미 소장 중인 카드야 — 뽑기 횟수만 1 차감됐어."
+    "resultBonus": "+{n} 대화 보너스 획득!",
+    "resultIdle": "버튼을 누르면 보너스 카드 3장이 펼쳐져.",
+    "drawError": "뽑기 중 알 수 없는 오류가 발생했어요.",
+    "subDescSubscribed": "구독자는 매일 더 많은 카드를 고를 수 있어. 라이트 3장, 프로 5장.",
+    "subDescFree": "무료 1장, 라이트 3장, 프로 5장. 희귀·전설 카드는 대화 보너스도 함께 줘.",
+    "dupeDetailLine": "이미 소장 중인 카드야. 뽑기 횟수만 1회 사용됐어.",
+    "bonusBackAlt": "보너스 카드 뒷면",
+    "pickOneHint": "세 장 중 마음이 가는 카드 한 장을 골라줘.",
+    "pickOneAria": "보너스 카드 {n}번 선택",
+    "bonusDeductNotice": "카드 보너스가 나오면 표시된 대화 횟수만큼 오늘 사용한 대화 횟수에서 차감돼."
   },
   "fortuneCard": {
     "categoryFallback": "운세",
@@ -693,60 +1050,96 @@
     "loading": "분석 중…",
     "getReport": "리포트 받기",
     "premiumGate": "라이트",
-    "errorGeneric": "오류가 발생했어.",
-    "errorCareer": "리포트를 불러오지 못했어.",
-    "errorHealth": "운동을 불러오지 못했어.",
-    "errorStudy": "팁을 불러오지 못했어.",
-    "errorLove": "불러오지 못했어.",
+    "errorGeneric": "오류가 발생했어요.",
+    "errorCareer": "리포트를 불러오지 못했어요.",
+    "errorHealth": "운동을 불러오지 못했어요.",
+    "errorStudy": "팁을 불러오지 못했어요.",
+    "errorLove": "불러오지 못했어요.",
     "careerHeading": "직장에서 예쁨받는 방법",
     "healthHeading": "오늘의 컨디션 가이드",
     "studyHeading": "오늘의 공부 팁",
     "loveHeading": "연애 라이트 리포트"
   },
   "historyPage": {
-    "metaTitle": "운명 로그",
-    "metaDescription": "당신이 지나온 흔적. 결가 기억하고 있어.",
-    "category": "사이의 결 · 기억의 층",
-    "heading": "운명 로그",
-    "emptyTitle": "아직 흔적이 없어.",
-    "emptyBody": "운세를 보거나 점술사와 대화하면 여기에 기록이 남아요.",
-    "myStory": "나의 서사",
-    "crackStatus": "흐림 상태",
-    "recordedAt": "기록한 날",
+    "metaTitle": "나의 기록",
+    "metaDescription": "지금까지 본 운세, 타로, 궁합 기록을 한곳에서 다시 확인해요.",
+    "category": "나의 기록",
+    "heading": "기록함",
+    "intro": "오늘 본 운세와 타로, 궁합 결과를 최신순으로 모았어요. 지나간 결과도 다시 보면서 내 흐름을 이어갈 수 있어요.",
+    "emptyTitle": "아직 기록이 없어요",
+    "emptyBody": "운세를 보거나 타로, 궁합을 확인하면 여기에 차곡차곡 쌓여요.",
+    "totalRecords": "전체 기록",
+    "latestRecords": "최근 기록",
+    "showingRecent": "최근 {n}개",
+    "filterAll": "전체",
+    "filterEmptyTitle": "이 종류의 기록은 아직 없어요",
+    "filterEmptyBody": "해당 메뉴에서 한 번 보면 여기에 기록돼요.",
+    "deleteRecord": "기록 삭제",
+    "deleteConfirm": "이 기록을 삭제할까요? 삭제한 기록은 되돌릴 수 없어요.",
+    "deleteFailed": "기록 삭제에 실패했어요. 잠시 후 다시 시도해 주세요.",
+    "periodLabel": "기간",
+    "periodAll": "전체",
+    "periodWeek": "최근 7일",
+    "periodMonth": "최근 30일",
+    "detailMetaTitle": "기록 상세",
+    "detailMetaDescription": "저장된 운세, 타로, 궁합 결과를 다시 확인해요.",
+    "detailCategory": "저장된 기록",
+    "detailHeading": "기록 다시 보기",
+    "detailIntro": "예전에 본 결과를 다시 열었어요. 지금 마음과 비교하면서 다시 읽어보세요.",
+    "detailKindLabel": "종류",
+    "detailDateLabel": "기록일",
+    "detailFortuneCategoryLabel": "분류",
+    "detailTarotQuestionLabel": "질문",
+    "detailTarotNoQuestion": "질문 없이 뽑은 카드",
+    "detailCompatibilityPartnerLabel": "상대",
+    "detailCompatibilityNoPartner": "상대 정보 없음",
+    "nextActionTitle": "다음으로 이어가기",
+    "nextActionBody": "저장된 결과를 확인했다면, 지금의 흐름으로 다시 보거나 다른 기록을 이어서 볼 수 있어요.",
+    "actionFortuneTitle": "오늘 운세 새로 보기",
+    "actionFortuneBody": "지금 기준으로 오늘의 흐름을 다시 확인해요.",
+    "actionTarotTitle": "타로 다시 뽑기",
+    "actionTarotBody": "지금 마음에 맞춰 새 카드를 열어봐요.",
+    "actionCompatTitle": "궁합 다시 보기",
+    "actionCompatBody": "같은 상대나 다른 상대와의 흐름을 다시 확인해요.",
+    "backToArchiveBody": "다른 저장 기록을 계속 살펴봐요.",
+    "backToArchive": "기록함으로",
+    "startFortune": "운세 보기",
+    "startFortuneBody": "오늘 바로 쓸 흐름부터 확인해요.",
+    "startTarot": "타로 보기",
+    "startTarotBody": "지금 마음에 걸리는 선택을 카드로 봐요.",
+    "startCompat": "궁합 보기",
+    "startCompatBody": "상대와의 흐름을 가볍게 확인해요.",
+    "myStory": "나의 흐름",
+    "recordedAt": "기록일",
     "drawnCard": "뽑은 카드",
-    "repeatPattern": "반복 감지",
-    "encounterRecord": "조우 기록",
+    "repeatPattern": "반복 패턴",
+    "encounterRecord": "대화 기록",
     "patternDetected": "패턴 감지",
-    "todayBoundaryCard": "오늘의 오늘의 결 카드",
+    "todayBoundaryCard": "오늘의 기록 카드",
     "saveBtn": "저장",
-    "boundaryFilename": "오늘의결카드_{date}.png",
+    "boundaryFilename": "오늘의기록카드-{date}.png",
     "countSuffix": "{n}회",
     "itemFortune": "운세",
+    "itemTarot": "타로",
     "itemTarotThree": "타로 3장",
-    "itemTarotOne": "타로 한 장",
+    "itemTarotOne": "타로 1장",
     "itemCompat": "궁합 · {date}",
-    "itemCompatTitle": "{partner}님과의 궁합",
+    "itemCompatShort": "궁합",
+    "itemCompatTitle": "{partner}와의 궁합",
     "compatScore": "{score}점",
     "daysVisited": "기록한 날",
     "daysCount": "{n}일",
     "cardsDrawn": "뽑은 카드",
     "cardsCount": "{n}장",
-    "mostMet": "가장 많이 만난",
+    "mostMet": "가장 많이 만난 멤버",
     "mostMetWithCount": "{name} ({n}회)",
-    "dominantMood": "지배적 감정",
+    "dominantMood": "자주 남긴 감정",
     "repeatedDetected": "반복 감지",
-    "repeatedCardLine": "‘{card}’ 카드가 {n}번 등장했어.",
-    "encounter": "조우 기록",
+    "repeatedCardLine": "“{card}” 카드가 {n}번 나타났어요.",
+    "encounter": "만남 기록",
     "encounterCount": "{name} {n}회",
-    "patternsDetected": "패턴 감지",
+    "patternsDetected": "감지된 패턴",
     "downloadSave": "저장"
-  },
-  "crackLabelsFull": {
-    "stable": "안정",
-    "wave": "파동 감지",
-    "fracture": "흐림 확장",
-    "danger": "주의",
-    "imminent": "가까움"
   },
   "moodLabels": {
     "great": "최고야",
@@ -755,184 +1148,60 @@
     "tough": "힘드네",
     "hard": "힘들어"
   },
-  "archivePanel": {
-    "memoryFallback": "결의 기록자",
-    "memoryHint": "이 이름은 당신이 남긴 흔적들로부터 결가 도출한 호칭입니다.",
-    "boundaryStable": "결는 안정적입니다.",
-    "boundaryWave": "기록 신호가 흐려지고 있습니다.",
-    "boundaryFracture": "결가 평소보다 얇아져 있습니다.",
-    "boundaryDanger": "흐림이 깊어지고 있습니다.",
-    "boundaryImminent": "결가 가까움해 있습니다.",
-    "sectionObserve": "기록",
-    "sectionNight": "야간 기록",
-    "sectionDawn": "새벽의 기록",
-    "sectionFracture": "흐림 목격",
-    "sectionClosest": "가장 가까운 존재",
-    "sectionStatus": "결의 상태",
-    "result": "기록 결과",
-    "dawnRecordOpen": "새벽의 기록을 열람 중입니다.",
-    "observedNew": "결가 당신을 처음으로 인식했습니다.",
-    "observedCount": "결가 {n}회 당신을 기록했습니다.",
-    "nightNone": "아직 밤에 머문 흔적은 없습니다.",
-    "nightCount": "루나는 당신의 야간 방문을 {n}회 기억합니다.",
-    "dawnNone": "새벽의 결에서 마주친 적은 없습니다.",
-    "dawnCount": "새벽의 결가 당신을 {n}회 마주했습니다.",
-    "fractureNone": "아직 흐림을 목격한 적이 없습니다.",
-    "fractureCount": "흐림이 당신 앞에 {n}회 모습을 드러냈습니다.",
-    "closestRemember": "{name}이(가) 당신을 가장 깊이 기억합니다.",
-    "closestNone": "아직 어느 존재도 당신을 깊이 기억하지 못합니다.",
-    "boundaryStableLong": "결는 안정적입니다.",
-    "boundaryWaveLong": "미세한 파동이 느껴집니다.",
-    "boundaryFractureLong": "흐림이 깊어지고 있습니다.",
-    "boundaryDangerLong": "무명의 기운이 스며들고 있습니다.",
-    "boundaryImminentLong": "이름 없는 것이 깨어나려 합니다."
-  },
-  "worldAtmosphere": {
-    "obsLog": "기록 로그 · DAILY LOG",
-    "logCount": "{n}건",
-    "logCorrupted": "※ 일부 기록은 기록 한계로 인해 손상되어 있습니다.",
-    "memoryLoss": "기록 손실",
-    "panelStableMsg": "기록소는 평온하게 작동 중입니다.",
-    "panelWaveMsg": "기록 신호가 흐려지고 있습니다.",
-    "panelFractureMsg": "결가 평소보다 얇아져 있습니다.",
-    "panelDangerMsg": "흐림이 깊어지고 있습니다.",
-    "panelImminentMsg": "결가 가까움해 있습니다.",
-    "sessionFade": [
-      "기록이 흔들린다…",
-      "기록이 잠시 흐려진다.",
-      "신호가 끊어지고 있어.",
-      "결가 좁아지고 있다."
-    ],
-    "sessionAftertaste": [
-      "...무언가 남았어.",
-      "...아직 닫히지 않았어.",
-      "...기억이 가라앉는 중이다."
-    ],
-    "sessionClosing": [
-      "오늘의 기록이 조용히 봉인되었습니다.",
-      "루나는 아직 문장을 정리하고 있습니다.",
-      "오늘 남겨진 흔적은 쉽게 사라지지 않습니다.",
-      "기록이 천천히 닫히고 있습니다.",
-      "오늘의 빛은 조금 늦게 꺼졌습니다."
-    ],
-    "sessionAftertasteFull": [
-      "오늘의 기록은 아직 완전히 닫히지 않았습니다.",
-      "루나는 당신의 마지막 문장을 오래 바라보았습니다.",
-      "같은 흐름은 쉽게 사라지지 않습니다.",
-      "이 문장은 오늘만 남는 문장입니다."
-    ],
-    "entityDialogs": [
-      [
-        {
-          "who": "루나",
-          "line": "최근에는 밤보다 낮에 더 자주 나타납니다."
-        },
-        {
-          "who": "카엘",
-          "line": "하지만 같은 질문은 여전히 반복되고 있어."
-        },
-        {
-          "who": "라엘",
-          "line": "조금 더 안정된 흐름으로 보입니다."
-        }
-      ],
-      [
-        {
-          "who": "카엘",
-          "line": "또 같은 카드 근처를 맴돌고 있어."
-        },
-        {
-          "who": "루나",
-          "line": "그 사람은 그게 자기 답이라고 생각하나 봐."
-        }
-      ],
-      [
-        {
-          "who": "라엘",
-          "line": "오늘은 조금 늦게 도착했네요."
-        },
-        {
-          "who": "루나",
-          "line": "그건 늘 그래왔어요."
-        }
-      ],
-      [
-        {
-          "who": "루나",
-          "line": "새벽에 너무 자주 나타나요."
-        },
-        {
-          "who": "카엘",
-          "line": "잠을 안 자나 보지."
-        },
-        {
-          "who": "라엘",
-          "line": "그래서 우리가 여기 있는 거예요."
-        }
-      ]
-    ]
-  },
-  "homeHidden": {
-    "midnight": "자정이다.",
-    "fullMoon": "달이 가득 찼다.",
-    "namelessNear": "무명이 가까워지고 있다.",
-    "rifDeep": "흐림이 깊어지고 있다.",
-    "boundaryOpen": "결가 열려 있다."
-  },
   "actionErrors": {
-    "premiumOnly": "라이트 전용 기능이야.",
-    "completePersonalityFirst": "먼저 성격유형 테스트를 완료해 줘.",
-    "analysisFailed": "분석에 실패했어.",
+    "premiumOnly": "라이트 전용 기능이에요.",
+    "completePersonalityFirst": "먼저 성격유형 테스트를 완료해 주세요.",
+    "analysisFailed": "분석에 실패했어요.",
     "validationFailed": "입력값이 올바르지 않아요.",
     "authError": "인증 오류: {message}",
-    "compatibilityError": "궁합을 풀이하는 중 오류가 생겼어: {message}",
-    "compatFreeExceeded": "오늘 무료 궁합은 {n}회까지야. 라이트로 더 많이 풀어볼래?",
+    "compatibilityError": "궁합을 풀이하는 중 오류가 생겼어요: {message}",
+    "compatFreeExceeded": "오늘 무료 궁합은 {n}회까지예요. 라이트로 더 풀어볼까요?",
     "categoryInvalid": "카테고리가 올바르지 않아요.",
     "zodiacPremiumOnly": "별자리·띠별 운세는 라이트 전용이에요.",
     "fortuneQuotaExceeded": "오늘의 운세 한도({n}회)를 모두 사용했어요.",
     "tarotQuotaExceeded": "오늘의 타로 한도({n}회)를 모두 사용했어요.",
-    "tarotThreePremium": "3장 스프레드는 라이트 멤버십에서 만나볼 수 있어.",
-    "tarotGenericError": "오류가 났어",
+    "tarotThreePremium": "3장 스프레드는 라이트 멤버십에서 만나볼 수 있어요.",
+    "tarotGenericError": "오류가 났어요",
     "lenormandGrandTableauGender": "그랑 타블로는 시그니피케이터 성별을 선택해야 해요.",
     "lenormandQuotaExceeded": "오늘의 무료 르노르망 한도({n}회)를 모두 사용했어요.",
-    "lenormandGenericError": "오류가 발생했어.",
+    "lenormandGenericError": "오류가 발생했어요.",
     "runeQuotaExceeded": "오늘의 무료 룬 한도({n}회)를 모두 사용했어요.",
-    "runeGenericError": "룬을 던지지 못했어.",
-    "sajuDeepPremium": "심층 분석은 라이트 멤버십에서 만나볼 수 있어.",
-    "sajuRequired": "먼저 사주를 계산해줘.",
-    "iljinError": "일진을 읽지 못했어.",
-    "careerReportError": "리포트를 불러오지 못했어.",
-    "healthWorkoutError": "운동을 불러오지 못했어.",
-    "studyTipsError": "팁을 불러오지 못했어.",
-    "loveCardError": "불러오지 못했어.",
-    "collectionDrawError": "뽑기 중 알 수 없는 오류가 발생했어.",
+    "runeGenericError": "룬을 던지지 못했어요.",
+    "sajuDeepPremium": "도윤의 사주 노트는 라이트에서 열 수 있어요.",
+    "sajuRequired": "먼저 사주를 계산해 주세요.",
+    "iljinError": "일진을 읽지 못했어요.",
+    "careerReportError": "리포트를 불러오지 못했어요.",
+    "healthWorkoutError": "운동을 불러오지 못했어요.",
+    "studyTipsError": "팁을 불러오지 못했어요.",
+    "loveCardError": "불러오지 못했어요.",
+    "collectionDrawError": "뽑기 중 알 수 없는 오류가 발생했어요.",
     "checkoutEmailRequired": "구독을 시작하려면 이메일이 필요해요.",
     "checkoutCreationFailed": "결제 페이지 생성 실패",
     "subscriptionCancelFailed": "취소 실패",
     "sessionCreateFailed": "세션 생성 실패",
     "sessionNotFound": "세션을 찾지 못했어요.",
-    "chatQuotaExceeded": "오늘의 문답 한도({n}회)를 모두 사용했어요.",
+    "chatQuotaExceeded": "오늘의 대화 한도({n}회)를 모두 사용했어요.",
     "chatBodyParseFailed": "요청 본문 파싱 실패",
     "chatBodyInvalid": "본문이 올바르지 않아요.",
-    "chatMessageRequired": "질문을 입력해줘.",
-    "chatMessageTooLong": "질문은 100자 이내로 짧게 부탁해.",
-    "fortuneAiFailed": "점술사가 풀이를 적지 못했어요: {message}",
-    "fortuneSajuFailed": "사주를 풀이할 별의 흐름을 읽지 못했어요: {message}",
-    "tarotAiFailed": "타로의 계시를 읽지 못했어요: {message}",
+    "chatMessageRequired": "대화를 입력해 주세요.",
+    "chatMessageTooLong": "대화는 100자 이내로 짧게 부탁해요.",
+    "fortuneAiFailed": "풀이를 불러오지 못했어요: {message}",
+    "fortuneSajuFailed": "사주 풀이를 불러오지 못했어요: {message}",
+    "tarotAiFailed": "타로 풀이를 불러오지 못했어요: {message}",
     "lenormandAiFailed": "르노르망의 메시지를 읽지 못했어요: {message}",
     "lenormandThreeFailed": "르노르망 9장 해석을 만들지 못했어요: {message}",
-    "compatibilityAiFailed": "두 사람의 기운을 읽지 못했어요: {message}",
-    "compatibilityAiFailedShort": "사주를 풀이할 별의 흐름을 읽지 못했어요: {message}",
+    "compatibilityAiFailed": "궁합 풀이를 불러오지 못했어요: {message}",
+    "compatibilityAiFailedShort": "궁합 풀이를 불러오지 못했어요: {message}",
     "runeAiFailed": "룬의 메시지를 읽지 못했어요: {message}",
-    "deepReadingAiFailed": "심층 분석을 적지 못했어: {message}",
-    "deepReadingSajuFailed": "사주를 풀이할 별의 흐름을 읽지 못했어: {message}",
+    "deepReadingAiFailed": "사주 노트를 불러오지 못했어요: {message}",
+    "deepReadingSajuFailed": "사주 노트를 불러오지 못했어요: {message}",
     "unknownReason": "알 수 없는 원인",
-    "reloginRequired": "다시 로그인해 줘.",
-    "compatPremiumOnly": "라이트 전용 기능이야.",
-    "tarotQuotaUpgradeFull": "오늘의 타로 한도({n}회)를 모두 사용했어. 라이트 구독을 하면 한도가 크게 늘어.",
-    "lenormandQuotaUpgradeFull": "오늘의 무료 르노르망 한도({n}회)를 모두 사용했어. 라이트 구독을 하면 한도가 크게 늘어.",
+    "reloginRequired": "다시 로그인해 주세요.",
+    "compatPremiumOnly": "라이트 전용 기능이에요.",
+    "tarotQuotaUpgradeFull": "오늘의 타로 한도({n}회)를 모두 사용했어요. 라이트를 구독하면 한도가 크게 늘어요.",
+    "lenormandQuotaUpgradeFull": "오늘의 무료 르노르망 한도({n}회)를 모두 사용했어요. 라이트를 구독하면 한도가 크게 늘어요.",
     "lenormandPremiumSpread": "이 스프레드는 라이트 구독자 전용이에요. 구독하면 9장·그랑 타블로를 자유롭게 뽑을 수 있어요.",
-    "runeQuotaUpgradeFull": "오늘의 무료 룬 한도({n}회)를 모두 사용했어. 라이트 구독을 하면 한도가 크게 늘어.",
+    "runeQuotaUpgradeFull": "오늘의 무료 룬 한도({n}회)를 모두 사용했어요. 라이트를 구독하면 한도가 크게 늘어요.",
     "runePremiumSpread": "이 스프레드는 라이트 구독자 전용이에요. 구독하면 5개·9개 스프레드를 자유롭게 던질 수 있어요.",
     "questionTooLong": "질문은 100자 이내로 짧게 부탁해.",
     "compatTwoSidedHeader": "두 사람의 기운을 읽지 못했어요",
@@ -940,15 +1209,25 @@
     "grandTableauFailed": "그랑 타블로 분석에 실패했어요: {message}",
     "grandTableauInterpretFailed": "그랑 타블로 해석을 만들지 못했어요: {message}",
     "grandTableauSaveFailed": "그랑 타블로 결과 저장에 실패했어요.",
-    "grandTableauGenderRequired": "그랑 타블로는 시그니피케이터 성별이 필요해요."
+    "grandTableauGenderRequired": "그랑 타블로는 시그니피케이터 성별이 필요해요.",
+    "rateLimitedSeconds": "잠깐만, {n}초 뒤에 다시 시도해줘.",
+    "nameCompatibilityNameInvalid": "이름은 1~24자의 문자로 입력해 주세요.",
+    "nameCompatibilityGenericError": "궁합을 짚는 중 어긋났어. 잠시 후 다시 시도해줘.",
+    "nameReadingGenericError": "이름을 풀이하는 중 어긋났어. 잠시 후 다시 시도해줘.",
+    "palmConsentRequired": "사진 처리 동의가 필요해요.",
+    "palmImageRequired": "손바닥 사진을 첨부해줘.",
+    "palmImageTooLarge": "사진 용량이 너무 커. 5MB 이내로 부탁해.",
+    "palmUnsupportedType": "JPEG/PNG/WEBP 만 지원해.",
+    "palmPremiumOnly": "손금 풀이는 Light 구독자 전용이에요. 구독 후 이용해주세요.",
+    "palmQuotaExceeded": "오늘의 손금 풀이 한도({n}회)를 모두 사용했어. 내일 다시 만나.",
+    "aiSlowRetry": "답장이 늦어. 잠시 후 다시 시도해줘.",
+    "palmGenericError": "손금 풀이에 실패했어. 사진을 다시 찍어 보내볼래?"
   },
   "todayExtras": {
     "archive": "보관",
     "archiveSub": "존재의 기록",
-    "world": "세계",
-    "worldSub": "오늘의 흐름",
     "streakDaysRow": "{n}일 연속",
-    "streakActive": "흐름이 이어지고 있어요",
+    "streakActive": "기운이 이어지고 있어요",
     "streakNew": "기록이 쌓이고 있어요",
     "persona": "성격유형",
     "personaSub": "당신을 이루는 무늬",
@@ -957,11 +1236,12 @@
   },
   "quotaBar": {
     "proActive": "프로 사용 중",
-    "proSub": "운세·점술&사주·질문 모두 넉넉한 한도로 받고 있어.",
-    "fortune": "운세",
-    "tarot": "점술&사주",
-    "chat": "질문",
+    "proSub": "운세 | 점술 | 사주와 대화를 넉넉한 한도로 이용할 수 있어요.",
+    "fortune": "운세 | 점술 | 사주",
+    "tarot": "점술 | 사주",
+    "chat": "대화",
     "lightPlan": "라이트 플랜",
+    "freePlan": "무료 플랜",
     "upgradePro": "프로로 업그레이드",
     "upgrade": "업그레이드"
   },
@@ -973,7 +1253,8 @@
     "milestoneGeneric": "{n}일 연속 달성!",
     "reset": "스트릭이 초기화됐어. 오늘부터 다시 시작!",
     "badgeLabel": "{n}일 연속",
-    "bonus": "보너스 +{n}"
+    "bonus": "보너스 +{n}",
+    "streakActive": "오늘도 이어졌어요"
   },
   "dailyQuestion": {
     "eyebrow": "오늘의 질문",
@@ -986,13 +1267,14 @@
     "unlimitedCta": "라이트로 한도 늘리기",
     "analyzing": "분석 중…",
     "getReport": "리포트 받기",
-    "genericError": "오류가 발생했어.",
+    "genericError": "오류가 발생했어요.",
     "shortError": "오류가 났어",
-    "retry": "다시 시도"
+    "retry": "다시 시도",
+    "lockBullet3": "이번 주 직장운"
   },
   "generalPremium": {
-    "title": "오늘의 종합 운세 리포트",
-    "lockBody": "시간대별 기운, 6영역 운세 차트, DO/DON'T 까지 한 번에 보여줄게.",
+    "title": "오늘의 종합 운세",
+    "lockBody": "시간대별 운세와 오늘 조심할 일을 한 번에 봐요.",
     "lockBullet1": "시간대별 운세 (새벽·오전·오후·저녁)",
     "lockBullet2": "운세 레이더 차트 (6영역)",
     "lockBullet3": "오늘의 DO/DON'T",
@@ -1010,11 +1292,11 @@
     "radarStudy": "학업"
   },
   "careerReport": {
-    "title": "오늘의 직장 종합 리포트",
-    "lockBody": "오늘의 에너지·업무 타이밍·관계 운까지 한 번에 보여줄게.",
+    "title": "오늘의 직장운",
+    "lockBody": "일하기 좋은 때와 조심할 관계 포인트를 봐요.",
     "lockBullet1": "오늘의 직장 에너지 (집중력·관계·추진력)",
     "lockBullet2": "최적 업무 타이밍",
-    "lockBullet3": "이번 주 직장 흐름",
+    "lockBullet3": "이번 주 직장운",
     "lockBullet4": "오늘의 관계 운 (상사·동료)",
     "lockBullet5": "예쁨받는 방법",
     "energy": "오늘의 직장 에너지",
@@ -1027,7 +1309,7 @@
     "periodAfternoon": "오후",
     "periodGood": "{period}이 좋아요",
     "meetings": "회의·협상",
-    "weekly": "이մ 주 직장 흐름",
+    "weekly": "이번 주 직장운",
     "relation": "오늘의 관계 운",
     "askGood": "부탁하기 좋은 날",
     "askLater": "부탁은 내일로 미루기",
@@ -1052,7 +1334,7 @@
   },
   "healthReport": {
     "title": "오늘의 맞춤 운동",
-    "lockBody": "기구 없이 집에서 할 수 있는 운동을 추천해줄게.",
+    "lockBody": "오늘 몸 상태에 맞는 가벼운 운동을 골라줄게요.",
     "lockBullet1": "오늘 컨디션 분석",
     "lockBullet2": "맨몸 운동 추천",
     "lockBullet3": "스트레스 풀이 운동",
@@ -1063,15 +1345,15 @@
   },
   "studyReport": {
     "title": "집중력 높이는 공부 팁",
-    "lockBody": "나의 성격유형에 맞는 학습 전략 + 환경 조성법.",
+    "lockBody": "오늘 잘 맞는 공부법과 집중 시간을 봐요.",
     "lockBullet1": "오늘 가장 잘 흡수되는 과목",
     "lockBullet2": "최적 학습 시간",
     "lockBullet3": "성격유형 맞춤 학습법",
     "getTipsCta": "팁 받기"
   },
   "loveReport": {
-    "title": "오늘의 사랑 리포트",
-    "lockBody": "오늘 전할 달콤한 한마디 + 매력 어필 팁.",
+    "title": "오늘의 사랑운",
+    "lockBody": "오늘 전하기 좋은 말과 매력 포인트를 봐요.",
     "lockBullet1": "오늘의 한마디 (썸/연인용)",
     "lockBullet2": "오늘의 매력 어필 팁",
     "todayLine": "오늘 전할 한마디",
@@ -1080,27 +1362,34 @@
   },
   "lottoCard": {
     "title": "재산운 로또번호 생성기",
-    "subtitle": "오늘의 재산운 기운이 담긴 번호 6개를 뽑아드려요.",
+    "subtitle": "오늘의 재산운 기운이 담긴 로또와 연금복권 번호를 뽑아드려요.",
+    "lottoSectionTitle": "로또 6/45",
+    "lottoLockedPreview": "행운 번호 6개",
     "luckyNumberAria": "로또 번호 {n}",
+    "pensionTitle": "연금복권 720+",
+    "pensionSubtitle": "오늘의 오래 가는 재산운 기운으로 조와 6자리 번호를 함께 뽑아요.",
+    "pensionLockedPreview": "조 + 6자리 번호",
+    "pensionGroup": "{group}조",
+    "pensionAria": "연금복권 번호 {group}조 {numbers}",
     "getCta": "오늘의 행운 번호 받기",
     "againCta": "다시 보기",
     "fixedNote": "재산운 {score}점 기반 · 오늘 하루 고정된 번호예요",
     "lockedTitle": "라이트 전용 기능이에요",
-    "lockedBody": "재산운 기반 행운의 6자리 번호를 매일 생성해드려요.",
+    "lockedBody": "재산운 기반 로또와 연금복권 번호를 매일 생성해드려요.",
     "lockedCta": "라이트 시작하기"
   },
   "premiumGate": {
     "zodiacTitle": "별자리 운세 — 라이트 전용",
-    "zodiacBody": "별자리 운세는 라이트 구독자만 받을 수 있어. 매일 12별자리 중 너의 별자리 운세를 새로 적어줘.",
+    "zodiacBody": "별자리 운세는 라이트 구독자만 받을 수 있어요. 매일 12별자리 중 내 별자리 운세를 새로 풀어드려요.",
     "chineseTitle": "띠별 운세 — 라이트 전용",
-    "chineseBody": "띠별 운세는 라이트 구독자만 받을 수 있어. 매일 너의 띠에 맞춰 흐름을 새로 적어줘.",
+    "chineseBody": "띠별 운세는 라이트 구독자만 받을 수 있어요. 매일 내 띠에 맞춰 기운을 새로 풀어드려요.",
     "fallbackTitle": "라이트 전용",
-    "fallbackBody": "이 운세는 라이트 구독자 전용이야.",
+    "fallbackBody": "이 운세는 라이트 구독자 전용이에요.",
     "subscribeCta": "라이트 구독하기",
-    "footer": "구독 시 별자리·띠별 운세·라이트 전용 사주 풀이까지 모두 매일 받을 수 있어."
+    "footer": "구독하면 별자리·띠별 운세와 라이트 전용 사주 풀이까지 매일 받을 수 있어요."
   },
   "fortuneTrend": {
-    "lastNDays": "최근 {n}일 흐름",
+    "lastNDays": "최근 {n}일",
     "avgScore": "평균 {n}점",
     "deltaScore": "{delta}점"
   },
@@ -1155,40 +1444,41 @@
     "pig": "돼지띠"
   },
   "generateForm": {
-    "loading": "별의 흐름을 읽는 중…",
-    "askCta": "{name}에게 {category} 묻기",
+    "loading": "읽는 중…",
+    "eyebrow": "오늘의 운세",
+    "askCta": "{category} 보기",
     "unlimitedCta": "라이트로 한도 늘리기",
-    "fallbackBody": "{category} 흐름을 읽어줄게.",
-    "fallbackSaju": "사주를 살펴볼게.",
-    "copyGeneral": "오늘 하루 전체 흐름을 읽어줄게.",
-    "copyLove": "오늘의 연애·관계 흐름을 풀어줄게.",
-    "copyMoney": "오늘의 재물·금전 흐름을 짚어줄게.",
-    "copyCareer": "오늘의 직장·업무 흐름을 읽어줄게.",
-    "copyHealth": "오늘의 건강·컨디션 흐름을 살펴줄게.",
-    "copyStudy": "오늘의 공부·집중 흐름을 짚어줄게.",
-    "copyZodiac": "오늘의 별자리 흐름을 읽어줄게.",
-    "copyChineseZodiac": "오늘의 띠별 흐름을 짚어줄게."
+    "fallbackBody": "{category}을 볼게요.",
+    "fallbackSaju": "사주를 살펴볼게요.",
+    "copyGeneral": "오늘 전체운을 볼게요.",
+    "copyLove": "오늘 연애운을 볼게요.",
+    "copyMoney": "오늘 금전운을 볼게요.",
+    "copyCareer": "오늘 커리어운을 볼게요.",
+    "copyHealth": "오늘 컨디션을 볼게요.",
+    "copyStudy": "오늘 공부운을 볼게요.",
+    "copyZodiac": "오늘 별자리운을 볼게요.",
+    "copyChineseZodiac": "오늘 띠운세를 볼게요."
   },
   "tarotPage": {
     "metaTitle": "점술",
-    "metaDescription": "카드의 속삭임을 읽어.",
+    "metaDescription": "카드를 뽑아 오늘을 살펴봐요.",
     "tarotOrigin": "타로의 기원",
-    "tarotOriginBody": "타로 카드는 14세기 후반 유럽에서 시작된 카드 점술이야.\n메이저 22장 · 마이너 56장, 총 78장으로 인간의 모든 운명 패턴을 담아냈어.\n카드 한 장 한 장에 새겨진 상징을 읽어 흐름을 푸는 거지.",
+    "tarotOriginBody": "타로는 78장의 카드에 담긴 상징을 읽는 카드 점술이에요.",
     "lenormandOrigin": "르노르망의 기원",
-    "lenormandOriginBody": "르노르망은 18세기 후반 프랑스의 점술가 마드모아젤 르노르망의 이름을 딴 36장의 카드. 일상에서 마주칠 사물·동물·자연을 그대로 카드로 옮긴 거야.\n인접한 카드끼리 조합으로 의미를 만들지.",
+    "lenormandOriginBody": "르노르망은 일상의 상징을 읽는 36장 카드예요.",
     "runeOrigin": "룬의 기원",
-    "runeOriginBody": "엘더 푸타르크는 게르만 부족의 24개 룬 문자로 짠 점술 체계야.\n룬 한 글자가 신들의 언어이자 운명의 한 조각. 자루에서 룬을 뽑아 흐름과 길을 묻는 게 북방의 방식이지.",
+    "runeOriginBody": "룬은 오래된 문자 상징으로 오늘의 방향을 살펴보는 점술이에요.",
     "todaysTarot": "오늘 본 카드",
     "todaysLenormand": "오늘 뽑은 카드",
     "todaysRune": "오늘 던진 룬"
   },
   "cardTabs": {
     "tarot": "타로",
-    "tarotDesc": "78장의 카드로 운명의 흐름을 읽어.",
+    "tarotDesc": "78장의 카드로 오늘을 살펴봐요.",
     "lenormand": "르노르망",
     "lenormandDesc": "36장의 카드로 일상의 메시지를 받아.",
     "rune": "룬",
-    "runeDesc": "24개의 룬으로 북방의 신탁을 묻어.",
+    "runeDesc": "24개의 룬으로 북방의 지혜를 읽어.",
     "aria": "카드 점술 종류"
   },
   "tarotForm": {
@@ -1197,7 +1487,7 @@
     "selected": "선택됨",
     "drawCard": "카드 뽑기",
     "drawCardHeading": "카드 한 장 뽑기",
-    "drawCardBody": "질문을 떠올린 채 카드를 한 장 뽑아봐.",
+    "drawCardBody": "궁금한 걸 떠올리고 카드 한 장을 골라봐.",
     "cardBackAlt": "타로 카드 뒷면",
     "questionLabel": "질문 (선택)",
     "questionPlaceholderOne": "예: 이번 주 일이 어떻게 흘러갈까? (100자 이내)",
@@ -1205,17 +1495,17 @@
     "subscribeCta": "라이트 구독하기",
     "threeTitle": "과거-현재-미래 (3장)",
     "threeLightTitle": "과거-현재-미래 (라이트)",
-    "threeBody": "세 장의 카드가 들려주는 흐름을 받아봐.",
+    "threeBody": "세 장으로 과거·현재·미래를 봐요.",
     "threeBullet1": "과거 · 지금까지의 결",
     "threeBullet2": "현재 · 머무는 자리",
-    "threeBullet3": "미래 · 다가올 흐름",
+    "threeBullet3": "미래 · 다가올 방향",
     "threeBullet4": "세 장을 묶는 종합 풀이",
     "threeCta": "라이트로 풀어보기",
-    "threeLoading": "세 장의 흐름을 읽는 중…",
+    "threeLoading": "세 장을 읽는 중…",
     "threeDraw": "3장 뽑기",
     "threeError": "오류가 났어",
     "threeQuestionPlaceholder": "예: 이 일은 어떻게 흘러갈까? (100자 이내)",
-    "threeQuestionHint": "비워두고 그냥 흐름만 살펴봐도 OK.",
+    "threeQuestionHint": "비워두면 오늘의 기운만 볼 수 있어요.",
     "reversedBadge": "거꾸로 선 카드",
     "uprightBadge": "바로 선 카드",
     "cardAriaReversed": "{name} 거꾸로 선",
@@ -1235,9 +1525,10 @@
   },
   "sajuPage": {
     "metaTitle": "사주",
-    "metaDescription": "당신의 사주를 살펴봐.",
+    "metaDescription": "내 사주를 한눈에 살펴봐요.",
     "tipTitle": "기억해두면 좋은 것",
-    "tipBody": "사주는 태어난 순간의 별 배치예요. 사주가 풀이의 뿌리가 되니까, 한 번 살펴두면 운세·타로·궁합·일진 모두 더 깊어집니다."
+    "tipBody": "사주를 입력하면 운세·타로·궁합이 더 잘 맞춰져요.",
+    "body": "오늘의 기운과 내 사주가 어떻게 만나는지 살펴봐요."
   },
   "sajuPillars": {
     "pillarYear": "년주",
@@ -1251,7 +1542,7 @@
     "heading": "사주팔자",
     "subheading": "네 기둥 여덟 글자 — 글자를 누르면 의미를 볼 수 있어요.",
     "hourEmpty": "태어난 시각이 비어있어 시주는 비워뒀어.",
-    "tapHint": "글자를 탭하면 그 글자의 기운과 뜻을 볼 수 있어.",
+    "tapHint": "글자를 탭하면 그 글자의 기운과 뜻을 볼 수 있어요.",
     "popoverStem": "천간",
     "popoverBranch": "지지",
     "yinYang": "음양",
@@ -1285,7 +1576,7 @@
     "stem_辛_symbol": "보석·바늘",
     "stem_辛_description": "정교하고 예리한 감각, 다듬어진 아름다움.",
     "stem_壬_symbol": "큰 바다·강",
-    "stem_壬_description": "깊고 넓은 흐름, 포용력 있는 지혜.",
+    "stem_壬_description": "깊고 넓은 기운, 포용력 있는 지혜.",
     "stem_癸_symbol": "비·이슬",
     "stem_癸_description": "촉촉하고 섬세한 물기, 조용한 감수성.",
     "branch_子_animal": "쥐",
@@ -1336,7 +1627,7 @@
     "luckyHour": "좋은 시간",
     "caution": "주의",
     "retry": "다시 시도",
-    "body": "오늘의 기운이 내 타고난 기운과 어떻게 만나는지, 잘 맞는 흐름인지 부딪히는 흐름인지 조언을 받아봐.",
+    "body": "오늘의 기운이 내 타고난 기운과 어떻게 만나는지, 잘 맞는 기운인지 부딪히는 기운인지 조언을 받아봐.",
     "analyzing": "분석 중…",
     "showCta": "오늘 일진 보기",
     "energyPositive": "긍정적",
@@ -1358,10 +1649,10 @@
     "section5Sub": "잘 풀리는 분야",
     "section6Title": "건강",
     "section6Sub": "관리 포인트",
-    "section7Title": "인생 흐름",
+    "section7Title": "인생 큰 그림",
     "section7Sub": "큰 그림",
-    "heading": "심층 분석",
-    "intro": "한 번 적힌 풀이는 평생 곁에 있어. 사주의 결을 일곱 가지 관점으로 펼쳐봤어.",
+    "heading": "사주 노트",
+    "intro": "사주를 일곱 가지로 나눠 읽어줘요.",
     "pillarYear": "년주",
     "pillarMonth": "월주",
     "pillarDay": "일주",
@@ -1371,8 +1662,8 @@
     "stemRevealed": "천간 · 드러난 결",
     "branchHidden": "지지 · 감춰진 결",
     "eightSummary": "여덟 글자 종합",
-    "premiumTitle": "심층 분석은 라이트 멤버십",
-    "premiumBody": "사주 7가지 관점 풀이는 라이트 구독자에게 평생 제공돼요.",
+    "premiumTitle": "사주 노트",
+    "premiumBody": "일곱 가지 관점으로 읽어주는 사주 노트예요.",
     "premiumLockBullets": [
       "성격 · 타고난 결",
       "강점 · 빛이 나는 자리",
@@ -1380,25 +1671,25 @@
       "사랑 · 연애 스타일",
       "일 · 잘 풀리는 분야",
       "건강 · 관리 포인트",
-      "인생 흐름 · 큰 그림"
+      "인생 큰 그림 · 전체 방향"
     ],
-    "solveCta": "라이트로 풀어보기",
-    "noneTitle": "심층 분석이 아직 없어",
-    "noneBody": "사주 풀이는 한 번만 받으면 평생 저장돼. 7가지 관점으로 결을 펼쳐줄게.",
-    "loading": "깊이 살펴보는 중…",
-    "getCta": "심층 분석 받기",
+    "solveCta": "라이트로 열기",
+    "noneTitle": "아직 사주 노트가 없어요",
+    "noneBody": "내 사주를 더 자세히 읽어줄 수 있어요.",
+    "loading": "살펴보는 중…",
+    "getCta": "사주 노트 받기",
     "shortError": "오류가 났어"
   },
   "sajuButtons": {
     "calculating": "사주를 살펴보는 중…",
     "calculateCta": "내 사주 보기",
-    "resetConfirm": "사주를 다시 계산할게. 기존 심층 분석도 초기화돼. 계속할까?",
+    "resetConfirm": "사주를 다시 계산할게. 기존 사주 노트도 초기화돼. 계속할까?",
     "resetCta": "사주 재계산",
     "error": "오류가 났어"
   },
   "compatibilityPage": {
     "metaTitle": "궁합",
-    "metaDescription": "두 사람의 기운이 어떻게 어울리는지 살펴봐.",
+    "metaDescription": "두 사람의 기운이 어떻게 어울리는지 살펴봐요.",
     "todayHeading": "오늘의 궁합"
   },
   "compatibilityHub": {
@@ -1441,7 +1732,7 @@
   },
   "zodiacCompat": {
     "heading": "별자리 궁합",
-    "yourSignIs": "내 별자리는 {sign} 이야.",
+    "yourSignIs": "내 별자리는 {sign}이에요.",
     "pickPartner": "상대의 별자리를 골라봐.",
     "score": "{n}점"
   },
@@ -1491,7 +1782,7 @@
   },
   "compatConflict": {
     "title": "갈등 패턴 + 화해법",
-    "lockBody": "두 사람이 어디서 부딪히는지 + 풀어내는 방법까지.",
+    "lockBody": "두 사람이 어디서 부딪히는지, 어떻게 풀면 좋은지 봐요.",
     "lockBullets": [
       "갈등 유발 상황 3가지",
       "반복되는 갈등 패턴",
@@ -1508,7 +1799,7 @@
   },
   "compatToday": {
     "title": "오늘 이 사람에게 어떻게?",
-    "lockBody": "오늘 일진과 두 사람의 궁합을 함께 살펴 오늘만의 접근법을 줄게.",
+    "lockBody": "오늘은 이 사람에게 어떻게 다가가면 좋을지 봐요.",
     "lockBullets": [
       "오늘 가까이 지내기 좋은 날인지",
       "오늘의 접근법",
@@ -1529,12 +1820,12 @@
     "metaDescription": "16가지 유형 중 나는 어떤 유형일까?",
     "title": "나는 어떤 유형?",
     "bodyWithProfile": "20문항 테스트로 너의 결을 16가지 유형 중 하나로 풀어줄게. 결과는 운세·타로·사주 풀이에 자동으로 녹아들어가.",
-    "bodyNoProfile": "20문항 테스트로 너의 결을 16가지 유형 중 하나로 풀어줄게."
+    "bodyNoProfile": "20문항으로 내 성격유형을 16가지 중 하나로 풀어드려요."
   },
   "personalityTest": {
     "startTitle": "나는 어떤 유형일까?",
     "startBody1": "20문항으로 나의 본성을 알아봐.",
-    "startBody2": "결과는 점술사 채팅·운세·타로 풀이에 자동 반영돼.",
+    "startBody2": "결과는 멤버 채팅·운세·타로 풀이에 자동 반영돼.",
     "duration": "약 3~5분",
     "questionCount": "20문항",
     "typeCount": "16가지 유형",
@@ -1552,7 +1843,7 @@
     "axisP": "P 인식",
     "strengthsHeading": "성향 강도",
     "careersHeading": "어울리는 직업",
-    "iAm": "나는 이런 사람이야",
+    "iAm": "나는 이런 사람이에요",
     "strengths": "강점",
     "cautions": "이런 점 주의해",
     "compatible": "잘 맞는",
@@ -1567,8 +1858,8 @@
     "chooseRetakeHint": "20문항 · 3~5분"
   },
   "careerFit": {
-    "title": "직업 적성 심층 리포트",
-    "lockBody": "어떤 업무 환경·직군이 잘 맞는지 심층 분석. 한 번 생성하면 평생 보관돼.",
+    "title": "나에게 맞는 일",
+    "lockBody": "나와 잘 맞는 업무 환경과 직군을 자세히 봐요.",
     "lockBullets": [
       "빛나는 업무 환경",
       "잘 맞는 직군 5가지",
@@ -1584,7 +1875,7 @@
   },
   "stressProfile": {
     "title": "스트레스 유형 + 회복법",
-    "lockBody": "내가 스트레스 받을 때 어떻게 무너지는지 + 빠른 회복 루틴.",
+    "lockBody": "스트레스 받을 때의 패턴과 회복 루틴을 봐요.",
     "lockBullets": [
       "스트레스 유발 상황",
       "무너지는 패턴",
@@ -1600,7 +1891,7 @@
   },
   "tripleAnalysis": {
     "title": "사주 × 별자리 × 성격유형 통합 분석",
-    "lockBody": "세 시스템이 같이 말하는 너의 진짜 본성.",
+    "lockBody": "사주, 별자리, 성격유형이 함께 보여주는 내 모습을 봐요.",
     "lockBullets": [
       "세 시스템이 공통으로 말하는 성격",
       "서로 모순되는 부분",
@@ -1614,13 +1905,9 @@
     "trueNature": "통합한 진짜 본성",
     "uniqueStrength": "이 조합만의 강점"
   },
-  "crackAtmosphere": {
-    "boundaryWithDate": "사이의 결 · {date}",
-    "boundaryShort": "사이의 결"
-  },
   "shareCard": {
-    "fortuneTitle": "오늘의 흐름",
-    "fortuneFallbackName": "점술사",
+    "fortuneTitle": "오늘의 기운",
+    "fortuneFallbackName": "멤버",
     "appName": "인생의 회전목마",
     "luckyColor": "행운의 색",
     "luckyNumber": "행운의 숫자",
@@ -1631,7 +1918,9 @@
     "tarotReversed": "역방향",
     "tarotTitle": "타로 · {spread}",
     "boundaryToday": "오늘",
-    "boundaryReadBy": "{name}이 읽어줬어"
+    "boundaryReadBy": "{name}이 읽어줬어",
+    "boundaryWithDate": "오늘의 기운 · {date}",
+    "boundaryShort": "오늘의 기운"
   },
   "personalityQuestions": {
     "q1_a": "사람들과 함께 있을 때 에너지가 충전된다.",
@@ -1677,8 +1966,8 @@
   },
   "personalityTypes": {
     "ISTJ_nickname": "신뢰의 기둥",
-    "ISTJ_summary": "철저하고 책임감이 강한 현실주의자. 규칙과 의무를 중시해.",
-    "ISTJ_description": "ISTJ는 성실함과 신뢰가 몸에 배어 있는 유형이야.\n한번 맡은 일은 끝까지 완수하고, 약속을 어기는 일이 거의 없어.\n감정보다 사실과 논리를 중시하며, 오랜 시간 검증된 전통과 방식을 신뢰해. 겉으로 차가워 보일 수 있지만 속으로는 주변 사람을 깊이 아끼는 따뜻한 면도 있어.",
+    "ISTJ_summary": "철저하고 책임감이 강한 현실주의자. 규칙과 의무를 중시해요.",
+    "ISTJ_description": "ISTJ는 성실함과 신뢰가 몸에 배어 있는 유형이에요.\n한번 맡은 일은 끝까지 완수하고, 약속을 어기는 일이 거의 없어요.\n감정보다 사실과 논리를 중시하며, 오랜 시간 검증된 전통과 방식을 신뢰해요. 겉으로 차가워 보일 수 있지만 속으로는 주변 사람을 깊이 아끼는 따뜻한 면도 있어요.",
     "ISTJ_strengths": [
       "강한 책임감과 성실함",
       "세심하고 체계적인 계획력",
@@ -1698,7 +1987,7 @@
     ],
     "ISFJ_nickname": "따뜻한 수호자",
     "ISFJ_summary": "헌신적이고 따뜻한 마음을 지닌 조용한 보호자.",
-    "ISFJ_description": "ISFJ는 주변 사람들의 필요를 본능적으로 알아채고 조용히 도와주는 유형이야.\n기억력이 좋아 지인의 소소한 취향이나 특별한 날을 잘 기억해. 자신보다 타인을 먼저 생각하는 경향이 강하고, 안정된 환경과 깊은 인간관계를 소중히 여겨. 갑작스러운 변화보다는 익숙하고 안전한 것을 선호해.",
+    "ISFJ_description": "ISFJ는 주변 사람들의 필요를 본능적으로 알아채고 조용히 도와주는 유형이에요.\n기억력이 좋아 지인의 소소한 취향이나 특별한 날을 잘 기억해요. 자신보다 타인을 먼저 생각하는 경향이 강하고, 안정된 환경과 깊은 인간관계를 소중히 여겨요. 갑작스러운 변화보다는 익숙하고 안전한 것을 선호해요.",
     "ISFJ_strengths": [
       "세심하고 깊은 배려심",
       "꼼꼼하고 책임감 있는 실행력",
@@ -1716,9 +2005,9 @@
       "비서",
       "행정 지원"
     ],
-    "INFJ_nickname": "영감의 예언자",
+    "INFJ_nickname": "영감의 안내자",
     "INFJ_summary": "이상을 향해 조용히 나아가는 드문 통찰가.",
-    "INFJ_description": "INFJ는 16가지 유형 중 가장 드문 유형 중 하나야.\n사람의 마음을 꿰뚫어 보는 직관력과 깊은 공감 능력을 동시에 갖고 있어.\n혼자만의 시간이 필요하지만 동시에 인류 전체에 긍정적인 영향을 끼치고 싶어 해. 이상과 가치를 위해서라면 강한 의지로 오랜 시간 노력할 수 있어.",
+    "INFJ_description": "INFJ는 16가지 유형 중 가장 드문 유형 중 하나예요.\n사람의 마음을 꿰뚫어 보는 직관력과 깊은 공감 능력을 동시에 갖고 있어요.\n혼자만의 시간이 필요하지만 동시에 인류 전체에 긍정적인 영향을 끼치고 싶어 해요. 이상과 가치를 위해서라면 강한 의지로 오랜 시간 노력할 수 있어요.",
     "INFJ_strengths": [
       "남다른 직관력과 통찰력",
       "강한 공감과 이해 능력",
@@ -1738,7 +2027,7 @@
     ],
     "INTJ_nickname": "전략가",
     "INTJ_summary": "독립적이고 전략적인 큰 그림의 설계자.",
-    "INTJ_description": "INTJ는 복잡한 시스템과 패턴을 꿰뚫어 보는 뛰어난 전략적 사고를 지닌 유형이야.\n혼자 깊이 생각하고 분석하는 걸 즐기며, 높은 기준을 스스로에게도 타인에게도 적용해. 비효율을 참지 못하고 자신의 판단을 강하게 믿는 경향이 있어.\n겉으로는 냉철해 보이지만 자신이 선택한 분야에서는 놀라운 열정을 보여.",
+    "INTJ_description": "INTJ는 복잡한 시스템과 패턴을 꿰뚫어 보는 뛰어난 전략적 사고를 지닌 유형이에요.\n혼자 깊이 생각하고 분석하는 걸 즐기며, 높은 기준을 스스로에게도 타인에게도 적용해요. 비효율을 참지 못하고 자신의 판단을 강하게 믿는 경향이 있어요.\n겉으로는 냉철해 보이지만 자신이 선택한 분야에서는 놀라운 열정을 보여요.",
     "INTJ_strengths": [
       "장기적이고 탁월한 전략 수립",
       "독립적이고 창의적인 사고",
@@ -1757,8 +2046,8 @@
       "투자 분석가"
     ],
     "ISTP_nickname": "만능 재주꾼",
-    "ISTP_summary": "실용적이고 냉정한 관찰자. 손으로 직접 해결하는 걸 즐겨.",
-    "ISTP_description": "ISTP는 어떤 상황이든 침착하게 분석하고 최적의 해결책을 찾아내는 유형이야.\n도구와 기계, 손으로 직접 만지고 고치는 것을 즐기며 탁월한 공간 감각을 지녀. 불필요한 규칙보다는 자유롭게 자신의 방식으로 문제를 해결하는 걸 좋아해. 위기 상황에서 가장 빛을 발하는 유형이야.",
+    "ISTP_summary": "실용적이고 냉정한 관찰자. 손으로 직접 해결하는 걸 즐겨요.",
+    "ISTP_description": "ISTP는 어떤 상황이든 침착하게 분석하고 최적의 해결책을 찾아내는 유형이에요.\n도구와 기계, 손으로 직접 만지고 고치는 것을 즐기며 탁월한 공간 감각을 지녔어요. 불필요한 규칙보다는 자유롭게 자신의 방식으로 문제를 해결하는 걸 좋아해요. 위기 상황에서 가장 빛을 발하는 유형이에요.",
     "ISTP_strengths": [
       "탁월한 문제 해결력과 손재주",
       "위기 상황에서도 침착한 대처",
@@ -1778,7 +2067,7 @@
     ],
     "ISFP_nickname": "자유로운 예술가",
     "ISFP_summary": "조용하고 따뜻한 감성을 지닌 현재를 즐기는 탐험가.",
-    "ISFP_description": "ISFP는 눈에 띄지 않게 조용히 존재하지만, 세상을 아름다움과 조화의 눈으로 바라보는 섬세한 감성의 소유자야.\n자신만의 독창적인 방식으로 자신을 표현하며, 삶의 소소한 순간에서 진짜 행복을 찾아. 경쟁보다는 협력을, 논쟁보다는 조화를 택하는 유형이야.",
+    "ISFP_description": "ISFP는 눈에 띄지 않게 조용히 존재하지만, 세상을 아름다움과 조화의 눈으로 바라보는 섬세한 감성의 소유자예요.\n자신만의 독창적인 방식으로 자신을 표현하며, 삶의 소소한 순간에서 진짜 행복을 찾아요. 경쟁보다는 협력을, 논쟁보다는 조화를 택하는 유형이에요.",
     "ISFP_strengths": [
       "풍부하고 섬세한 감수성",
       "편견 없이 열린 따뜻한 마음",
@@ -1798,7 +2087,7 @@
     ],
     "INFP_nickname": "이상주의 몽상가",
     "INFP_summary": "깊은 감성과 신념을 가진 조용한 이상주의자.",
-    "INFP_description": "INFP는 자신만의 가치관과 이상을 가장 소중히 여기는 유형이야.\n겉으로는 조용하지만 내면에는 풍부하고 복잡한 감정의 세계를 품고 있어.\n진정성 있는 관계와 의미 있는 삶을 추구하며, 세상을 더 나은 곳으로 만들고 싶다는 소망을 품고 있어.\n창의적인 글쓰기, 예술, 음악 등으로 내면을 표현하는 걸 즐겨.",
+    "INFP_description": "INFP는 자신만의 가치관과 이상을 가장 소중히 여기는 유형이에요.\n겉으로는 조용하지만 내면에는 풍부하고 복잡한 감정의 세계를 품고 있어요.\n진정성 있는 관계와 의미 있는 삶을 추구하며, 세상을 더 나은 곳으로 만들고 싶다는 소망을 품고 있어요.\n창의적인 글쓰기, 예술, 음악 등으로 내면을 표현하는 걸 즐겨요.",
     "INFP_strengths": [
       "깊고 섬세한 공감력",
       "독창적이고 창의적인 사고",
@@ -1818,7 +2107,7 @@
     ],
     "INTP_nickname": "논리적 사색가",
     "INTP_summary": "끝없는 호기심으로 세상을 분석하는 조용한 혁신가.",
-    "INTP_description": "INTP는 세상의 모든 것을 이해하고 설명하고 싶어 하는 지적 탐구자야.\n복잡한 이론과 개념을 다루는 걸 즐기며, 논리적 허점을 발견하는 데 탁월한 능력을 보여. 대화보다는 혼자 생각하는 시간이 더 편하고, 때로는 머릿속 아이디어가 너무 많아 실행이 늦어지기도 해. 기존 틀을 뒤집는 독창적인 아이디어로 세상에 기여하고 싶어.",
+    "INTP_description": "INTP는 세상의 모든 것을 이해하고 설명하고 싶어 하는 지적 탐구자예요.\n복잡한 이론과 개념을 다루는 걸 즐기며, 논리적 허점을 발견하는 데 탁월한 능력을 보여요. 대화보다는 혼자 생각하는 시간이 더 편하고, 때로는 머릿속 아이디어가 너무 많아 실행이 늦어지기도 해요. 기존 틀을 뒤집는 독창적인 아이디어로 세상에 기여하고 싶어 해요.",
     "INTP_strengths": [
       "날카롭고 깊은 분석력",
       "기존 틀을 깨는 독창적 사고",
@@ -1837,8 +2126,8 @@
       "데이터 분석가"
     ],
     "ESTP_nickname": "대담한 사업가",
-    "ESTP_summary": "에너지 넘치고 현실적인 행동파. 지금 이 순간을 즐겨.",
-    "ESTP_description": "ESTP는 어떤 상황에서도 기회를 발견하고 즉각 행동으로 옮기는 타고난 실행가야.\n주의을 두려워하지 않고 오히려 스릴을 즐기며, 빠른 판단력과 순발력이 탁월해. 지루한 이론보다는 직접 몸으로 부딪히며 배우는 걸 선호하고, 사람들 사이에서 분위기를 주도하는 자연스러운 능력을 갖고 있어.",
+    "ESTP_summary": "에너지 넘치고 현실적인 행동파. 지금 이 순간을 즐겨요.",
+    "ESTP_description": "ESTP는 어떤 상황에서도 기회를 발견하고 즉각 행동으로 옮기는 타고난 실행가예요.\n위험을 두려워하지 않고 오히려 스릴을 즐기며, 빠른 판단력과 순발력이 탁월해요. 지루한 이론보다는 직접 몸으로 부딪히며 배우는 걸 선호하고, 사람들 사이에서 분위기를 주도하는 자연스러운 능력을 갖고 있어요.",
     "ESTP_strengths": [
       "즉각적이고 과감한 실행력",
       "위기 상황에서 빛나는 대처 능력",
@@ -1858,7 +2147,7 @@
     ],
     "ESFP_nickname": "자유로운 연예인",
     "ESFP_summary": "활기차고 즉흥적인 삶의 즐거움을 퍼트리는 사람.",
-    "ESFP_description": "ESFP는 어디에 있든 그 자리를 활기차게 만드는 천생 엔터테이너야.\n삶 자체를 무대로 여기며, 사람들과 어울리고 즐거운 순간을 만들어 내는 걸 사랑해. 지금 이 순간에 집중하며, 미래 계획보다는 현재의 경험을 소중히 여겨. 주변 사람들을 행복하게 만드는 놀라운 재주를 가지고 있어.",
+    "ESFP_description": "ESFP는 어디에 있든 그 자리를 활기차게 만드는 천생 엔터테이너예요.\n삶 자체를 무대로 여기며, 사람들과 어울리고 즐거운 순간을 만들어 내는 걸 사랑해요. 지금 이 순간에 집중하며, 미래 계획보다는 현재의 경험을 소중히 여겨요. 주변 사람들을 행복하게 만드는 놀라운 재주를 가지고 있어요.",
     "ESFP_strengths": [
       "넘치는 긍정 에너지와 활력",
       "뛰어난 사교성과 공감 능력",
@@ -1878,7 +2167,7 @@
     ],
     "ENFP_nickname": "열정적 활동가",
     "ENFP_summary": "상상력과 열정이 넘치는 자유로운 영혼.",
-    "ENFP_description": "ENFP는 세상을 가능성으로 가득 찬 곳으로 보는 낙관적인 열정가야.\n새로운 아이디어와 사람들에게 쉽게 흥미를 느끼고, 자신의 열정으로 주변 사람들에게 영감을 줘. 깊은 인간 이해와 탁월한 공감 능력으로 누구와도 금방 친해지는 편이야.\n다만 너무 많은 것에 관심을 가져 한 가지에 집중하기 어려울 때도 있어.",
+    "ENFP_description": "ENFP는 세상을 가능성으로 가득 찬 곳으로 보는 낙관적인 열정가예요.\n새로운 아이디어와 사람들에게 쉽게 흥미를 느끼고, 자신의 열정으로 주변 사람들에게 영감을 줘요. 깊은 인간 이해와 탁월한 공감 능력으로 누구와도 금방 친해지는 편이에요.\n다만 너무 많은 것에 관심을 가져 한 가지에 집중하기 어려울 때도 있어요.",
     "ENFP_strengths": [
       "넘치는 창의력과 상상력",
       "깊은 공감과 따뜻한 연결 능력",
@@ -1898,7 +2187,7 @@
     ],
     "ENTP_nickname": "논쟁을 즐기는 발명가",
     "ENTP_summary": "도전을 즐기고 아이디어가 넘치는 혁신가.",
-    "ENTP_description": "ENTP는 기존의 틀에 도전하고 새로운 아이디어를 끊임없이 쏟아내는 창의적 혁신가야.\n지적 논쟁을 즐기며, 반대 의견에도 당당히 자신의 주장을 펼쳐. 다양한 분야에 폭넓은 관심을 가지고 있으며, 불가능해 보이는 것도 가능하게 만드는 방법을 찾는 걸 즐겨. 아이디어는 넘치지만 실행과 마무리에서 약점을 보이기도 해.",
+    "ENTP_description": "ENTP는 기존의 틀에 도전하고 새로운 아이디어를 끊임없이 쏟아내는 창의적 혁신가예요.\n지적 논쟁을 즐기며, 반대 의견에도 당당히 자신의 주장을 펼쳐요. 다양한 분야에 폭넓은 관심을 가지고 있으며, 불가능해 보이는 것도 가능하게 만드는 방법을 찾는 걸 즐겨요. 아이디어는 넘치지만 실행과 마무리에서 약점을 보이기도 해요.",
     "ENTP_strengths": [
       "빠른 통찰력과 지적 유연성",
       "복잡한 문제를 새롭게 해결하는 창의력",
@@ -1918,7 +2207,7 @@
     ],
     "ESTJ_nickname": "엄격한 관리자",
     "ESTJ_summary": "체계와 질서를 중시하는 타고난 리더.",
-    "ESTJ_description": "ESTJ는 공동체의 질서와 규칙을 지키는 것을 사명으로 여기는 타고난 조직자야.\n명확한 목표를 세우고 체계적으로 실행하는 능력이 뛰어나며, 책임감이 강해 주변 사람들의 신뢰를 받아. 전통과 검증된 방식을 중시하며, 비효율을 참지 못하는 성향이 있어.\n리더 자리에서 가장 뛰어난 능력을 발휘해.",
+    "ESTJ_description": "ESTJ는 공동체의 질서와 규칙을 지키는 것을 사명으로 여기는 타고난 조직자예요.\n명확한 목표를 세우고 체계적으로 실행하는 능력이 뛰어나며, 책임감이 강해 주변 사람들의 신뢰를 받아요. 전통과 검증된 방식을 중시하며, 비효율을 참지 못하는 성향이 있어요.\n리더 자리에서 가장 뛰어난 능력을 발휘해요.",
     "ESTJ_strengths": [
       "탁월한 조직력과 실행력",
       "명확한 의사결정과 리더십",
@@ -1938,7 +2227,7 @@
     ],
     "ESFJ_nickname": "사교적 외교관",
     "ESFJ_summary": "주변을 배려하고 조화를 추구하는 따뜻한 외교관.",
-    "ESFJ_description": "ESFJ는 주변 사람들의 필요를 먼저 알아채고 챙기는 따뜻한 성격의 소유자야.\n사람들이 서로 잘 어울리도록 분위기를 조성하는 데 탁월하며, 갈등 상황에서도 중재 역할을 자연스럽게 맡아. 타인의 인정과 감사를 통해 에너지를 얻는 편이며, 전통적인 가치와 공동체를 소중히 여겨.",
+    "ESFJ_description": "ESFJ는 주변 사람들의 필요를 먼저 알아채고 챙기는 따뜻한 성격의 소유자예요.\n사람들이 서로 잘 어울리도록 분위기를 조성하는 데 탁월하며, 갈등 상황에서도 중재 역할을 자연스럽게 맡아요. 타인의 인정과 감사를 통해 에너지를 얻는 편이며, 전통적인 가치와 공동체를 소중히 여겨요.",
     "ESFJ_strengths": [
       "뛰어난 공감과 세심한 배려심",
       "강한 협동력과 팀워크",
@@ -1958,7 +2247,7 @@
     ],
     "ENFJ_nickname": "정의로운 사회운동가",
     "ENFJ_summary": "카리스마 넘치고 타인을 성장시키는 천부적 리더.",
-    "ENFJ_description": "ENFJ는 타인의 성장과 발전에서 보람을 느끼는 천부적인 멘토야.\n뛰어난 언변과 공감 능력으로 사람들에게 영감을 주고, 집단 전체가 목표를 향해 나아가도록 이끌어.\n타인의 감정을 본능적으로 파악하고 필요한 말을 건네는 데 탁월해. 다만 다른 사람을 위해 자신을 너무 소모할 때도 있어.",
+    "ENFJ_description": "ENFJ는 타인의 성장과 발전에서 보람을 느끼는 천부적인 멘토예요.\n뛰어난 언변과 공감 능력으로 사람들에게 영감을 주고, 집단 전체가 목표를 향해 나아가도록 이끌어요.\n타인의 감정을 본능적으로 파악하고 필요한 말을 건네는 데 탁월해요. 다만 다른 사람을 위해 자신을 너무 소모할 때도 있어요.",
     "ENFJ_strengths": [
       "타고난 카리스마와 리더십",
       "깊은 공감과 영감을 주는 소통 능력",
@@ -1977,8 +2266,8 @@
       "방송인"
     ],
     "ENTJ_nickname": "대담한 지도자",
-    "ENTJ_summary": "카리스마 있는 전략적 리더. 목표를 향해 거침없이 나아가.",
-    "ENTJ_description": "ENTJ는 목표를 설정하고 그것을 달성하기 위해 모든 자원을 동원하는 타고난 사령관이야.\n비효율적인 것을 참지 못하고 항상 더 나은 방법을 찾아. 강한 자신감과 결단력으로 위기 상황에서도 흔들리지 않고 리더십을 발휘해. 장기적 비전을 품고 있으며, 불가능해 보이는 목표도 달성 가능한 계획으로 만드는 능력이 있어.",
+    "ENTJ_summary": "카리스마 있는 전략적 리더. 목표를 향해 거침없이 나아가요.",
+    "ENTJ_description": "ENTJ는 목표를 설정하고 그것을 달성하기 위해 모든 자원을 동원하는 타고난 사령관이에요.\n비효율적인 것을 참지 못하고 항상 더 나은 방법을 찾아요. 강한 자신감과 결단력으로 위기 상황에서도 흔들리지 않고 리더십을 발휘해요. 장기적 비전을 품고 있으며, 불가능해 보이는 목표도 달성 가능한 계획으로 만드는 능력이 있어요.",
     "ENTJ_strengths": [
       "강력한 추진력과 결단력",
       "장기적 전략과 뛰어난 기획력",
@@ -1996,5 +2285,327 @@
       "정치인",
       "프로젝트 매니저"
     ]
+  },
+  "fanService": {
+    "today-general": {
+      "eyebrow": "Ian Daily Briefing",
+      "title": "이안이 읽어주는\n오늘 운세",
+      "body": "오늘 조심할 점과 기대해볼 일을 이안이 담담하게 말해줘요.",
+      "imageAlt": "이안이 오늘의 운세를 읽어주는 모습"
+    },
+    "today-love": {
+      "eyebrow": "Yujun Heart Note",
+      "title": "유준이 봐주는 오늘의 연애운",
+      "body": "마음이 어디로 향하는지 유준이 부드럽게 봐줘요.",
+      "imageAlt": "유준이 연애운을 읽어주는 모습"
+    },
+    "today-money": {
+      "eyebrow": "Ihyun Money Check",
+      "title": "이현이 봐주는 오늘의 금전운",
+      "body": "돈 쓸 일과 아껴둘 일을 이현이 현실적으로 봐줘요.",
+      "imageAlt": "이현이 재물운을 봐주는 모습"
+    },
+    "today-career": {
+      "eyebrow": "Sion Career Cut",
+      "title": "시온이 봐주는 오늘의 커리어운",
+      "body": "일에서 먼저 챙길 일을 시온이 선명하게 말해줘요.",
+      "imageAlt": "시온이 커리어운을 읽어주는 모습"
+    },
+    "today-health": {
+      "eyebrow": "Theo Body Signal",
+      "title": "태오가 봐주는 오늘의 건강운",
+      "body": "오늘 몸 상태에 맞춰 무리하지 않는 쪽을 태오가 알려줘요.",
+      "imageAlt": "태오가 건강운을 봐주는 모습"
+    },
+    "today-study": {
+      "eyebrow": "Doyoon Study Push",
+      "title": "도윤이 봐주는 오늘의 공부운",
+      "body": "공부를 시작하기 좋은 때와 집중법을 도윤이 알려줘요.",
+      "imageAlt": "도윤이 공부운을 봐주는 모습"
+    },
+    "today-zodiac": {
+      "eyebrow": "Hamin Star Mood",
+      "title": "하민이 읽어주는 오늘의 별자리운",
+      "body": "별자리로 본 오늘의 분위기를 하민이 조용히 들려줘요.",
+      "imageAlt": "하민이 별자리 운세를 들려주는 모습"
+    },
+    "today-chinese-zodiac": {
+      "eyebrow": "Jaeha Old Sign",
+      "title": "재하가 읽어주는 오늘의 띠운세",
+      "body": "오늘 조심하면 좋을 점을 재하가 차분히 말해줘요.",
+      "imageAlt": "재하가 띠운세를 풀어주는 모습"
+    },
+    "tarot": {
+      "eyebrow": "Hamin Tarot Service",
+      "title": "하민이 봐주는 타로 한 장",
+      "body": "하민이 펼친 카드로 지금 마음에 필요한 말을 들려줘요.",
+      "imageAlt": "하민이 타로 카드를 봐주는 모습"
+    },
+    "saju": {
+      "eyebrow": "Doyoon Saju Note",
+      "title": "도윤이 읽어주는 사주 노트",
+      "body": "도윤이 내 사주를 보고 성향과 방향을 읽어줘요.",
+      "imageAlt": "도윤이 사주를 읽어주는 모습"
+    },
+    "flower": {
+      "eyebrow": "Haru Flower Pick",
+      "title": "하루가 골라주는 오늘의 꽃",
+      "body": "하루가 오늘 내게 어울리는 꽃 한 송이를 골라줘요.",
+      "imageAlt": "하루가 꽃점을 봐주는 모습"
+    },
+    "compatibility": {
+      "eyebrow": "Yujun Pair Mood",
+      "title": "유준이 봐주는 두 사람의 궁합",
+      "body": "두 사람 사이의 닮은 점과 다른 점을 유준이 읽어줘요.",
+      "imageAlt": "유준이 궁합을 읽어주는 모습"
+    },
+    "name-reading": {
+      "eyebrow": "Jaeha Name Tone",
+      "title": "재하가 읽어주는 이름의 울림",
+      "body": "이름에 담긴 느낌과 결을 재하가 들려줘요.",
+      "imageAlt": "재하가 이름풀이를 들려주는 모습"
+    },
+    "name-compatibility": {
+      "eyebrow": "Ihyun Name Match",
+      "title": "이현이 봐주는 이름 궁합",
+      "body": "두 이름이 어떻게 맞물리는지 이현이 비교해줘요.",
+      "imageAlt": "이현이 이름 궁합을 비교해주는 모습"
+    },
+    "personality": {
+      "eyebrow": "Sion Type Check",
+      "title": "시온이 읽어주는 내 성격",
+      "body": "내가 자주 보이는 패턴을 시온이 선명하게 말해줘요.",
+      "imageAlt": "시온이 성격유형을 읽어주는 모습"
+    },
+    "dream": {
+      "eyebrow": "Jaeha Dream Note",
+      "title": "재하가 풀어주는 꿈 이야기",
+      "body": "꿈에 남은 장면과 감정을 재하가 조용히 풀어줘요.",
+      "imageAlt": "재하가 꿈해몽을 풀어주는 모습"
+    },
+    "palm": {
+      "eyebrow": "Theo Palm Routine",
+      "title": "태오가 봐주는 손금 이야기",
+      "body": "손바닥에 남은 선과 생활 습관을 태오가 연결해봐요.",
+      "imageAlt": "태오가 손금 결을 봐주는 모습"
+    }
+  },
+  "weeklyPage": {
+    "title": "주간 리포트",
+    "fortuneStat": "운세·점술",
+    "chatStat": "멤버와 대화",
+    "visitStat": "이번 주 방문",
+    "countTimes": "{n}회",
+    "countMessages": "{n}개",
+    "countDays": "{n}일",
+    "streakDays": "연속 {n}일",
+    "topMemberTitle": "이번 주 가장 많이 만난 멤버",
+    "emptyTopMember": "이번 주에는 아직 대화가 없어요.",
+    "emptyTopMemberCta": "멤버에게 말 걸어보기 →",
+    "memberClosingTitle": "{name}의 한 주 마무리",
+    "todayCta": "오늘의 운세 보러 가기 →",
+    "lines": {
+      "child": "이번 주도 잘 버텼어요. 다음 주는 내가 옆에서 더 챙길게요.",
+      "witch": "한 주 동안 들려준 이야기, 전부 기억하고 있어요. 다음 주도 함께해요.",
+      "sage": "이번 주 텐션 좋았어요! 다음 주는 더 신나게 가보자고요.",
+      "shaman": "이번 주의 기록들, 좋은 멜로디가 될 것 같아요. 다음 주에도 들려줘요.",
+      "taoist": "한 주 동안 수고했어!! 다음 주에도 맛있는 거 먹고 와서 다 얘기해줘요.",
+      "dokkaebi": "한 주 끝. …다음 주에도 와요. 기다릴 테니까.",
+      "god": "이번 주도 완주! 다음 주엔 더 높이 가보자고요. 같이!",
+      "hunter": "이번 주 데이터를 보면, 다음 주는 더 좋아질 확률이 높아요.",
+      "runeshaman": "한 주 동안 고마웠어요… 다음 주에도 제 곁에 있어 줄 거죠?"
+    }
+  },
+  "nameReadingPage": {
+    "title": "이름풀이",
+    "description": "한자·획수·오행과 사주를 함께 살펴 이름의 결을 읽어봐요."
+  },
+  "nameCompatibilityPage": {
+    "title": "이름 궁합",
+    "descriptionLine1": "두 사람의 이름만으로 궁합을 살펴봐요.",
+    "descriptionLine2": "자음과 소리의 울림을 읽어 점수와 한 마디를 들려드립니다."
+  },
+  "onboardingPage": {
+    "title": "당신을 알려주세요",
+    "description": "사주 풀이를 위해 태어난 때를 알려주세요."
+  },
+  "nameReadingForm": {
+    "cardTitle": "풀이할 이름",
+    "nameLabel": "이름",
+    "namePlaceholder": "예: 최영탁",
+    "nameHelp": "어떤 언어의 이름이든 입력할 수 있어요. 한자는 아래 칸에 별도로 적어주세요.",
+    "hanjaLabel": "한자 표기 (선택)",
+    "hanjaPlaceholder": "예: 崔英卓 (없으면 비워두기)",
+    "hanjaHelp": "한자가 있으면 더 정확한 풀이가 가능해요.",
+    "ownerLabel": "누구의 이름인가요?",
+    "ownerSelf": "본인 이름",
+    "ownerOther": "다른 사람 이름",
+    "loading": "이름의 결을 짚는 중…",
+    "submit": "풀이 받기",
+    "score": "{n}점",
+    "meaningTitle": "이름의 의미",
+    "sajuHarmonyTitle": "사주와의 조화",
+    "fortuneTitle": "오늘의 기운",
+    "adviceTitle": "권유·주의"
+  },
+  "nameCompatibilityForm": {
+    "cardTitle": "두 사람의 이름",
+    "myName": "내 이름",
+    "partnerName": "상대 이름",
+    "nameInputTitle": "1~24자의 이름을 입력해 주세요.",
+    "myNamePlaceholder": "예: 최영탁",
+    "partnerNamePlaceholder": "예: 김영희",
+    "nameHelp": "한글, 영어, 일본어 이름 모두 사용할 수 있어요.",
+    "loading": "이름의 결을 짚는 중…",
+    "submit": "궁합 보기",
+    "adviceTitle": "조언",
+    "shareText": "{nameA}과(와) {nameB}의 이름 궁합: {score}점 ({label})\n\"{headline}\""
+  },
+  "nameCompatibilityLabels": {
+    "soulmate": "천생연분",
+    "perfectPair": "환상의 짝꿍",
+    "goodBond": "좋은 인연",
+    "easyFlow": "괜찮은 기운",
+    "takesEffort": "노력하면 통해",
+    "differentRhythm": "조금 다른 결",
+    "crossedStars": "엇갈리는 별",
+    "differentPaths": "다른 길의 인연"
+  },
+  "dreamForm": {
+    "cardTitle": "꿈을 적어보세요",
+    "contentLabel": "꿈 내용",
+    "contentPlaceholder": "예: 큰 강을 건너는 꿈을 꿨어요. 물이 맑았고...",
+    "contentHelp": "10-500자 사이. 인상 깊었던 장면·인물·감정을 간결하게 적어주세요.",
+    "moodLabel": "꿈의 분위기",
+    "moodNeutral": "특별한 분위기 없음",
+    "moodBright": "밝고 따뜻한 분위기",
+    "moodDark": "어둡고 무거운 분위기",
+    "moodWeird": "기괴하거나 비현실적인 분위기",
+    "loading": "꿈의 결을 짚는 중…",
+    "submit": "풀이 받기",
+    "fortuneGood": "길몽",
+    "fortuneCaution": "주의 몽",
+    "fortuneBad": "흉몽",
+    "fortuneNeutral": "중립 몽",
+    "meaningTitle": "꿈의 의미",
+    "sajuConnectionTitle": "당신 사주와의 연결",
+    "adviceTitle": "오늘의 권유"
+  },
+  "palmForm": {
+    "cardTitle": "손금 풀이",
+    "photoLabel": "손바닥 사진",
+    "photoAlt": "업로드한 손바닥 사진",
+    "removePhoto": "사진 제거",
+    "camera": "카메라",
+    "gallery": "갤러리",
+    "uploadPhoto": "사진 업로드",
+    "photoHelp": "밝은 곳에서 손바닥을 펴고 정면으로 촬영. 선이 잘 보일수록 정확해져.",
+    "questionLabel": "궁금한 점",
+    "questionOptional": "(선택, 100자)",
+    "questionPlaceholder": "예: 올해 연애운이 궁금해",
+    "consent": "사진은 분석 즉시 폐기되며 저장하지 않아. 풀이는 의학·심리 진단이 아니라 재미용임에 동의해.",
+    "imageOnlyError": "이미지 파일을 선택해줘.",
+    "imageProcessError": "이미지 처리에 실패했어. 다시 시도해줘.",
+    "loading": "손금을 살펴보는 중...",
+    "submit": "손금 풀이 받기",
+    "resultTitle": "손금 풀이 결과"
+  },
+  "fanProfileCard": {
+    "fallbackFanName": "라이더",
+    "daysTogetherPrefix": "{name}과 함께한 지",
+    "biasLine": "{fanName}님의 Equestrian 최애 · 레벨 Lv.{level}",
+    "noBiasTitle": "아직 최애가 없어요",
+    "noBiasBody": "멤버와 대화하고 ♥ 버튼으로 최애를 등록해보세요.",
+    "level": "레벨",
+    "giftsSent": "보낸 선물",
+    "starPieces": "별조각",
+    "weeklyCta": "📋 주간 리포트 보기",
+    "meetMembersCta": "멤버 보러 가기"
+  },
+  "dreamPage": {
+    "title": "꿈해몽",
+    "description": "어젯밤이나 최근에 꾼 꿈을 적어주세요. 사주와 함께 살펴볼게요."
+  },
+  "palmPage": {
+    "title": "손금 풀이",
+    "description": "손바닥 주요 선을 보고 생활 습관까지 살펴봐요."
+  },
+  "biasGallery": {
+    "title": "{name} 갤러리",
+    "biasBadge": "내 최애",
+    "viewAll": "전체 보기 →",
+    "lockedAlt": "잠긴 사진",
+    "photoAlt": "{name} 사진 {n}",
+    "unlockHint": "멤버십에 가입하면 {name}의 모든 사진이 열려요."
+  },
+  "emailLoginForm": {
+    "missingFields": "이메일과 비밀번호를 모두 입력해 주세요.",
+    "passwordTooShort": "비밀번호는 8자 이상이어야 해요.",
+    "signupComplete": "가입 완료. 잠시만요…",
+    "confirmationSent": "확인 메일을 보냈어요. 메일함에서 링크를 눌러 가입을 완료해 주세요.",
+    "loginComplete": "로그인 되었어요",
+    "email": "이메일",
+    "password": "비밀번호",
+    "passwordSignup": "비밀번호 (8자 이상)",
+    "processing": "처리 중…",
+    "signupWithEmail": "이메일로 회원가입",
+    "loginWithEmail": "이메일로 로그인",
+    "alreadyAccount": "이미 가입했나요?",
+    "noAccount": "계정이 없나요?",
+    "login": "로그인",
+    "signup": "회원가입"
+  },
+  "biasButton": {
+    "unset": "최애 해제",
+    "set": "최애로 등록",
+    "current": "내 최애",
+    "setShort": "최애 등록"
+  },
+  "affinityBar": {
+    "max": "최대",
+    "nextPrefix": "다음 Lv.{level} —",
+    "unlock": "잠금 해제",
+    "reward2": "가벼운 농담",
+    "reward3": "반말 · 애칭",
+    "reward5": "속마음 · 비밀",
+    "reward7": "더 깊은 일상",
+    "reward10": "가장 가까운 사이"
+  },
+  "dashboardError": {
+    "title": "잠시 별빛이 흐려졌어요",
+    "body": "풀이를 가져오는 중 어긋남이 생겼어요. 잠시 후 다시 시도해 주세요. 문제가 이어지면 설정 페이지에서 고객 지원으로 알려주세요.",
+    "code": "오류 코드: {code}",
+    "retry": "다시 시도"
+  },
+  "flowerOracleForm": {
+    "cardTitle": "한 송이를 펴주세요",
+    "description": "오늘의 꽃은 같은 날엔 같은 송이를 보여줘요. 다른 결을 보고 싶다면 자유 뽑기로 한 송이 더 펴볼 수 있어요.",
+    "loading": "꽃잎을 읽는 중…",
+    "dailyCta": "오늘의 꽃 받기",
+    "freeCta": "자유 뽑기",
+    "dailyResult": "오늘의 꽃",
+    "freeResult": "한 송이 더",
+    "flowerImageAlt": "{name} 일러스트",
+    "meaningLabel": "꽃말",
+    "todayAction": "오늘의 작은 행동",
+    "drawAgain": "한 송이 더",
+    "shareTitle": "{name}",
+    "shareText": "오늘의 꽃: {name}\n\"{headline}\"\n\n— 인생의 회전목마 · 플로로랜시"
+  },
+  "albumPlayer": {
+    "lyrics": "가사",
+    "lyricsEmpty": "이 곡의 가사는 준비 중이에요.",
+    "pause": "일시정지",
+    "play": "재생",
+    "dockPinned": "앨범 켜놓는 중",
+    "dockPin": "앨범 켜놓기",
+    "seek": "재생 위치",
+    "albumSeek": "앨범 재생 위치",
+    "dockListening": "{group} 앨범 듣는 중",
+    "closePlayer": "앨범 플레이어 닫기"
+  },
+  "albumPage": {
+    "subtitle": "{titleEn} · {group} 9명이 부른 정규 1집",
+    "releaseDate": "발매일 {date}"
   }
 }

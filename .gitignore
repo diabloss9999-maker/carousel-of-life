@@ -78,3 +78,28 @@ logo-source.png
 .git-commit-msg.txt
 
 lint-report.txt
+
+# Codex/QA screenshots and temporary generated assets
+.codex-*.png
+.tmp-*.png
+.tmp-*.jpg
+.tmp-*.jpeg
+.tmp-*.webp
+tmp-*.png
+tmp-*.jpg
+tmp-*.jpeg
+tmp-*.webp
+tmp-sensitive-tests/
+ian-four-check.png
+*.tmp.webp
+**/_backup_before_*/
+
+# Local promo render outputs
+/promo/*.mp4
+/promo/*.jpg
+/promo/*.png
+
+# Android release artifacts generated locally
+/android/*.aab
+/android/*.apk
+/android/*.apk.idsig

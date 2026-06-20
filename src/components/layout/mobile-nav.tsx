@@ -120,7 +120,7 @@ export function MobileNav() {
             <NavGroupTile
               key={entry.id}
               groupId={entry.id}
-              label={tNav(entry.labelKey)}
+              label={entry.id === "fortune-suite" ? tNav("fortuneGroup") : tNav(entry.labelKey)}
               iconSrc={entry.iconSrc}
               isActive={active}
               isOpen={isOpen}
@@ -168,7 +168,9 @@ function ExpandedPanelPortal({
       );
       if (!tile) return;
       const r = tile.getBoundingClientRect();
-      const sheetWidth = Math.min(260, Math.max(216, window.innerWidth - 24));
+      const sheetWidth = group.sections
+        ? Math.min(420, Math.max(300, window.innerWidth - 24))
+        : Math.min(260, Math.max(216, window.innerWidth - 24));
       const viewportMargin = 12;
       const desiredCenter = r.left + r.width / 2;
       // 좌/우 가장자리에서 화면 밖으로 튀어나가지 않도록 clamp.
@@ -196,7 +198,7 @@ function ExpandedPanelPortal({
       window.removeEventListener("scroll", schedulePosition, true);
       window.removeEventListener("resize", schedulePosition);
     };
-  }, [group.id]);
+  }, [group.id, group.sections]);
 
   if (!mounted || !coords) return null;
 
@@ -224,38 +226,90 @@ function ExpandedPanelPortal({
           zIndex: 100,
           minWidth: coords.width,
           padding: "6px",
+          maxHeight: "min(68vh, 500px)",
+          overflowY: "auto",
           // 인라인 backdrop-filter 도 같이 — Tailwind/Lightning CSS 빠짐 케이스 보정.
           backdropFilter: "blur(28px)",
           WebkitBackdropFilter: "blur(28px)",
         }}
       >
-        {group.children.map((child) => {
-          const active = isLeafActive(child, pathname, search, hash);
-          return (
-            <li key={child.href as string}>
-              <Link
-                href={child.href}
-                aria-current={active ? "page" : undefined}
-                className="block rounded-xl px-4 py-2.5 text-[15px] font-medium transition-colors"
-                style={
-                  active
-                    ? {
-                        color: NAV_ACTIVE,
-                        background: "rgba(255,255,255,0.10)",
-                        fontWeight: 700,
-                      }
-                    : { color: NAV_MUTED }
-                }
-                onClick={(e) => handleLeafClick(e, child.href as string, onClose)}
+        {group.sections ? (
+          group.sections.map((section, index) => (
+            <li
+              key={section.id}
+              className="rounded-xl px-2 py-2"
+              style={
+                index > 0
+                  ? { borderTop: "1px solid rgba(0,0,0,0.14)" }
+                  : undefined
+              }
+            >
+              <p
+                className="mb-1.5 text-[12px] font-semibold leading-none"
+                style={{ color: NAV_ACTIVE }}
               >
-                {tNav(child.labelKey)}
-              </Link>
+                {tNav(section.labelKey)}
+              </p>
+              <div className="grid grid-cols-3 gap-1.5">
+                {section.children.map((child) => (
+                  <MobilePanelLink
+                    key={child.href as string}
+                    child={child}
+                    active={isLeafActive(child, pathname, search, hash)}
+                    label={tNav(child.labelKey)}
+                    onClose={onClose}
+                  />
+                ))}
+              </div>
             </li>
-          );
-        })}
+          ))
+        ) : (
+          group.children.map((child) => (
+            <li key={child.href as string}>
+              <MobilePanelLink
+                child={child}
+                active={isLeafActive(child, pathname, search, hash)}
+                label={tNav(child.labelKey)}
+                onClose={onClose}
+              />
+            </li>
+          ))
+        )}
       </ul>
     </>,
     document.body,
+  );
+}
+
+function MobilePanelLink({
+  child,
+  active,
+  label,
+  onClose,
+}: {
+  child: NavLeaf;
+  active: boolean;
+  label: string;
+  onClose: () => void;
+}) {
+  return (
+    <Link
+      href={child.href}
+      aria-current={active ? "page" : undefined}
+      className="flex min-h-8 items-center justify-center rounded-xl px-1.5 py-1.5 text-center text-[12px] font-semibold leading-tight transition-colors"
+      style={
+        active
+          ? {
+              color: NAV_ACTIVE,
+              background: "rgba(255,255,255,0.10)",
+              fontWeight: 700,
+            }
+          : { color: NAV_MUTED }
+      }
+      onClick={(e) => handleLeafClick(e, child.href as string, onClose)}
+    >
+      {label}
+    </Link>
   );
 }
 
@@ -311,12 +365,12 @@ function NavGroupTile({
       type="button"
       onClick={onToggle}
       aria-expanded={isOpen}
-      className="flex min-w-[52px] flex-1 shrink-0 flex-col items-center justify-center gap-1 min-h-[50px] px-1 transition-colors duration-150"
+      className="flex min-w-[76px] flex-1 shrink-0 flex-col items-center justify-center gap-1 min-h-[50px] px-1 transition-colors duration-150"
       style={{ color: isActive || isOpen ? NAV_ACTIVE : NAV_MUTED }}
     >
       <IconBubble iconSrc={iconSrc} isActive={isActive || isOpen} />
       <span
-        className="max-w-[58px] truncate text-center font-semibold leading-none flex items-center gap-0.5"
+        className="max-w-[88px] truncate text-center font-semibold leading-none flex items-center gap-0.5"
         style={{ fontSize: 10.5 }}
       >
         {label}

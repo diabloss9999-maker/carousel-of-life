@@ -23,7 +23,7 @@ const profileSchema = z.object({
   mbti: z
     .string()
     .max(4)
-    .regex(/^[A-Za-z]{0,4}$/, "MBTI 형식이 올바르지 않아.")
+    .regex(/^[A-Za-z]{0,4}$/, "성격유형 형식이 올바르지 않아.")
     .optional()
     .transform((v) => (v ? v.toUpperCase() : undefined)),
   birthPlace: z.string().max(80).optional(),
@@ -58,6 +58,7 @@ export async function updateProfileAction(
     .where(eq(profiles.userId, profile.userId));
 
   revalidatePath(ROUTES.settings, "page");
+  revalidatePath(ROUTES.appHome, "page");
   revalidatePath(ROUTES.today, "page");
 
   return { kind: "success", message: "정보가 업데이트됐어." };

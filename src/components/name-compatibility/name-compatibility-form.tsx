@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useTranslations } from "next-intl";
 import { Heart, Loader2, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,7 @@ import {
 } from "@/app/(dashboard)/name-compatibility/actions";
 
 const initial: NameCompatibilityActionState = { kind: "idle" };
-const NAME_INPUT_PATTERN = "[가-힣]{1,6}";
+const NAME_INPUT_PATTERN = "[\\p{L}\\p{M} .'-]{1,24}";
 
 interface NameCompatibilityFormProps {
   defaultMyName?: string;
@@ -32,31 +33,33 @@ export function NameCompatibilityForm({
     nameCompatibilityAction,
     initial,
   );
+  const t = useTranslations("nameCompatibilityForm");
 
   return (
     <div className="space-y-6">
       <Card className="app-surface">
         <CardHeader className="pb-3">
           <CardTitle className="font-mystic flex items-center gap-2 text-lg">
-            <Heart className="h-5 w-5 text-rose-400" aria-hidden />두 사람의 이름
+            <Heart className="h-5 w-5 text-rose-400" aria-hidden />
+            {t("cardTitle")}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <form action={formAction} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="nameA">
-                내 이름 <span className="text-destructive">*</span>
+                {t("myName")} <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="nameA"
                 name="nameA"
                 type="text"
                 required
-                maxLength={6}
+                maxLength={24}
                 pattern={NAME_INPUT_PATTERN}
-                title="한글 1~6자로 입력해 주세요."
+                title={t("nameInputTitle")}
                 defaultValue={defaultMyName}
-                placeholder="예: 최영탁"
+                placeholder={t("myNamePlaceholder")}
                 disabled={isPending}
                 autoComplete="off"
               />
@@ -64,22 +67,22 @@ export function NameCompatibilityForm({
 
             <div className="space-y-2">
               <Label htmlFor="nameB">
-                상대 이름 <span className="text-destructive">*</span>
+                {t("partnerName")} <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="nameB"
                 name="nameB"
                 type="text"
                 required
-                maxLength={6}
+                maxLength={24}
                 pattern={NAME_INPUT_PATTERN}
-                title="한글 1~6자로 입력해 주세요."
-                placeholder="예: 김영희"
+                title={t("nameInputTitle")}
+                placeholder={t("partnerNamePlaceholder")}
                 disabled={isPending}
                 autoComplete="off"
               />
               <p className="text-[15px] text-muted-foreground">
-                둘 다 한글 1~6자로 입력해 주세요.
+                {t("nameHelp")}
               </p>
             </div>
 
@@ -92,12 +95,12 @@ export function NameCompatibilityForm({
               {isPending ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                  자음의 결을 짚는 중…
+                  {t("loading")}
                 </>
               ) : (
                 <>
                   <Sparkles className="h-4 w-4" aria-hidden />
-                  궁합 보기
+                  {t("submit")}
                 </>
               )}
             </Button>
@@ -148,6 +151,7 @@ function ResultCard({
     Extract<NameCompatibilityActionState, { kind: "result" }>
   >["result"];
 }) {
+  const t = useTranslations("nameCompatibilityForm");
   const tone = TONE_STYLE[result.tone];
   return (
     <Card className={`app-surface ring-1 ${tone.ring}`} data-capture-root>
@@ -186,14 +190,20 @@ function ResultCard({
           {result.reading}
         </p>
         <div className="rounded-xl bg-muted/30 px-4 py-3">
-          <p className="text-[15px] text-muted-foreground/70 mb-1">조언</p>
+          <p className="text-[15px] text-muted-foreground/70 mb-1">{t("adviceTitle")}</p>
           <p className="text-foreground/85">{result.advice}</p>
         </div>
 
         <div className="flex items-center justify-end gap-2 pt-2">
           <ShareButton
             title={`${result.normalizedNameA} × ${result.normalizedNameB} — ${result.score}%`}
-            text={`${result.normalizedNameA}과(와) ${result.normalizedNameB}의 이름 궁합: ${result.score}점 (${result.label})\n"${result.headline}"`}
+            text={t("shareText", {
+              nameA: result.normalizedNameA,
+              nameB: result.normalizedNameB,
+              score: result.score,
+              label: result.label,
+              headline: result.headline,
+            })}
           />
         </div>
       </CardContent>

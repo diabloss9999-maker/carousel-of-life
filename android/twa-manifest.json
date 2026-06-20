@@ -4,23 +4,24 @@
   "name": "인생의 회전목마",
   "launcherName": "회전목마",
   "display": "standalone",
-  "themeColor": "#0d0a14",
-  "navigationColor": "#0d0a14",
-  "navigationColorDark": "#0d0a14",
-  "navigationDividerColor": "#0d0a14",
-  "navigationDividerColorDark": "#0d0a14",
-  "backgroundColor": "#0d0a14",
-  "enableNotifications": false,
-  "startUrl": "/today",
+  "themeColor": "#0D0A14",
+  "themeColorDark": "#000000",
+  "navigationColor": "#0D0A14",
+  "navigationColorDark": "#0D0A14",
+  "navigationDividerColor": "#0D0A14",
+  "navigationDividerColorDark": "#0D0A14",
+  "backgroundColor": "#0D0A14",
+  "enableNotifications": true,
+  "startUrl": "/today?appPlatform=android",
   "iconUrl": "https://carouseloflife.com/icons-pwa/icon-512.png",
   "maskableIconUrl": "https://carouseloflife.com/icons-pwa/icon-512-maskable.png",
   "splashScreenFadeOutDuration": 300,
   "signingKey": {
-    "path": "./android.keystore",
-    "alias": "android"
+    "path": "./release.keystore",
+    "alias": "carousel-release"
   },
-  "appVersionName": "1.0.0",
-  "appVersionCode": 2,
+  "appVersionName": "1.0.2",
+  "appVersionCode": 9,
   "shortcuts": [
     {
       "name": "오늘의 운세",
@@ -29,8 +30,8 @@
       "chosenIconUrl": "https://carouseloflife.com/icons-pwa/icon-192.png"
     },
     {
-      "name": "점술사와 대화",
-      "shortName": "점술사",
+      "name": "캐릭터와 대화",
+      "shortName": "캐릭터",
       "url": "/chat",
       "chosenIconUrl": "https://carouseloflife.com/icons-pwa/icon-192.png"
     },
@@ -45,8 +46,12 @@
   "webManifestUrl": "https://carouseloflife.com/manifest.webmanifest",
   "fallbackType": "customtabs",
   "features": {
-    "locationDelegation": { "enabled": false },
-    "playBilling": { "enabled": false }
+    "locationDelegation": {
+      "enabled": false
+    },
+    "playBilling": {
+      "enabled": true
+    }
   },
   "alphaDependencies": {
     "enabled": false
@@ -56,5 +61,10 @@
   "isMetaQuest": false,
   "fullScopeUrl": "https://carouseloflife.com/",
   "minSdkVersion": 23,
-  "orientation": "portrait"
+  "orientation": "portrait",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "displayOverride": [],
+  "appVersion": "1.0.2"
 }

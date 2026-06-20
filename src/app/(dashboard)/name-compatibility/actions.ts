@@ -1,6 +1,7 @@
 "use server";
 
 import { z } from "zod";
+import { getTranslations } from "next-intl/server";
 
 import { requireUser } from "@/lib/auth/get-user";
 import {
@@ -36,6 +37,7 @@ export async function nameCompatibilityAction(
   _prev: NameCompatibilityActionState,
   formData: FormData,
 ): Promise<NameCompatibilityActionState> {
+  const tErr = await getTranslations("actionErrors");
   const parsed = schema.safeParse({
     nameA: String(formData.get("nameA") ?? "").trim(),
     nameB: String(formData.get("nameB") ?? "").trim(),
@@ -43,7 +45,10 @@ export async function nameCompatibilityAction(
   if (!parsed.success) {
     return {
       kind: "error",
-      message: parsed.error.issues[0]?.message ?? "입력값을 확인해주세요.",
+      message:
+        parsed.error.issues[0]?.message === NAME_COMPATIBILITY_NAME_MESSAGE
+          ? tErr("nameCompatibilityNameInvalid")
+          : tErr("validationFailed"),
     };
   }
 
@@ -56,7 +61,7 @@ export async function nameCompatibilityAction(
     if (e instanceof RateLimitedError) {
       return {
         kind: "error",
-        message: `잠깐만, ${e.retryAfterSec}초 뒤에 다시 시도해줘.`,
+        message: tErr("rateLimitedSeconds", { n: e.retryAfterSec }),
       };
     }
     throw e;
@@ -67,11 +72,12 @@ export async function nameCompatibilityAction(
     userId: user.id,
     kind: "fortune",
     max: FREE_DAILY_LIMITS.fortune,
+    amount: 2,
   });
   if (!quota.ok) {
     return {
       kind: "error",
-      message: `오늘 풀이 한도(${quota.max}회)를 모두 사용했어. 내일 다시 만나.`,
+      message: tErr("fortuneQuotaExceeded", { n: quota.max }),
     };
   }
 
@@ -86,10 +92,7 @@ export async function nameCompatibilityAction(
     console.error("[nameCompatibilityAction]", e);
     return {
       kind: "error",
-      message:
-        e instanceof Error
-          ? e.message
-          : "궁합을 짚는 중 어긋났어. 잠시 후 다시 시도해줘.",
+      message: tErr("nameCompatibilityGenericError"),
     };
   }
 }

@@ -11,6 +11,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { streaks, type Streak } from "@/db/schema";
+import { creditReward } from "@/lib/gifts/service";
 
 /** 마일스톤 → 보너스 가챠 횟수 */
 const MILESTONES: Record<number, number> = {
@@ -19,6 +20,11 @@ const MILESTONES: Record<number, number> = {
   14: 2,
   30: 3,
 };
+
+/** 매일 출석 별조각 보상. */
+const DAILY_STAR_REWARD = 5;
+/** 7일 연속마다 추가 별조각 보상. */
+const WEEKLY_STAR_REWARD = 50;
 
 /** 30일 초과 이후 매 30일마다 지급되는 보너스 */
 const RECURRING_BONUS = 3;
@@ -35,6 +41,8 @@ export interface CheckInResult {
   milestoneBonus: number;
   /** 스트릭이 리셋됐는지 */
   wasReset: boolean;
+  /** 이번 체크인으로 받은 별조각 (매일 +5, 7일 연속마다 +50). */
+  starPiecesAwarded: number;
 }
 
 /** KST 오늘 날짜 YYYY-MM-DD */
@@ -95,6 +103,7 @@ export async function checkInStreak(userId: string): Promise<CheckInResult> {
       bonusGachaCredits: existing.bonusGachaCredits,
       milestoneBonus: 0,
       wasReset: false,
+      starPiecesAwarded: 0,
     };
   }
 
@@ -147,6 +156,18 @@ export async function checkInStreak(userId: string): Promise<CheckInResult> {
       .where(eq(streaks.userId, userId));
   }
 
+  // 출석 별조각 — 매일 +5, 7일 연속마다 +50. refId 로 하루 1회 보장.
+  const starPieces =
+    DAILY_STAR_REWARD +
+    (newStreak > 0 && newStreak % 7 === 0 ? WEEKLY_STAR_REWARD : 0);
+  let starPiecesAwarded = 0;
+  try {
+    const { awarded } = await creditReward(userId, starPieces, `streak-${today}`);
+    if (awarded) starPiecesAwarded = starPieces;
+  } catch {
+    // 보상 지급 실패가 출석 자체를 막지 않도록 무시 (다음 날 다시 시도됨).
+  }
+
   return {
     isNew: true,
     currentStreak: newStreak,
@@ -155,6 +176,7 @@ export async function checkInStreak(userId: string): Promise<CheckInResult> {
     bonusGachaCredits: newBonus,
     milestoneBonus,
     wasReset,
+    starPiecesAwarded,
   };
 }
 

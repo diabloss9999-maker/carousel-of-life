@@ -42,10 +42,11 @@ const onboardingSchema = z.object({
     .string()
     .trim()
     .toUpperCase()
-    .regex(MBTI_PATTERN, "MBTI 네 글자를 정확히 입력해주세요.")
+    .regex(MBTI_PATTERN, "성격유형 네 글자를 정확히 입력해주세요.")
     .optional()
     .or(z.literal("")),
   birthPlace: z.string().max(80).optional().or(z.literal("")),
+  startWith: z.enum(["today", "tarot", "saju"]).default("today"),
 });
 
 export async function onboardingAction(
@@ -62,6 +63,7 @@ export async function onboardingAction(
     gender: formData.get("gender"),
     mbti: formData.get("mbti") ?? "",
     birthPlace: formData.get("birthPlace") ?? "",
+    startWith: formData.get("startWith") ?? "today",
   });
 
   if (!parsed.success) {
@@ -114,5 +116,11 @@ export async function onboardingAction(
   }
 
   revalidatePath("/", "layout");
-  redirect(ROUTES.chat);
+  const nextRoute =
+    parsed.data.startWith === "tarot"
+      ? ROUTES.tarot
+      : parsed.data.startWith === "saju"
+        ? ROUTES.saju
+        : ROUTES.today;
+  redirect(nextRoute);
 }

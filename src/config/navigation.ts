@@ -1,19 +1,11 @@
-/**
- * 네비게이션 메뉴 정의.
- *
- * 구조:
- *   - 그룹(group) : 헤더 하나 + 하위 leaf 들 (드롭다운으로 표시)
- *   - 잎(leaf)   : 단일 링크
- *
- * 데스크톱 = 호버 드롭다운 / 모바일 = 탭 시 확장.
- */
 import type { Route } from "next";
 import {
-  Sparkles,
-  Compass,
-  MessageCircle,
+  CalendarDays,
+  Disc3,
   Library,
+  MessageCircle,
   Settings,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 
@@ -21,7 +13,6 @@ export interface NavLeaf {
   type: "leaf";
   href: Route;
   labelKey: string;
-  /** i18n nav.* 키. */
   description?: string;
   icon?: LucideIcon;
   iconSrc?: string;
@@ -33,60 +24,89 @@ export interface NavGroup {
   labelKey: string;
   icon?: LucideIcon;
   iconSrc?: string;
-  /** 그룹 헤더를 어디로 보낼지 (탭 시) — children 첫 항목 권장. */
   defaultHref?: Route;
+  children: NavLeaf[];
+  sections?: NavSection[];
+}
+
+export interface NavSection {
+  id: string;
+  labelKey: string;
   children: NavLeaf[];
 }
 
 export type NavEntry = NavLeaf | NavGroup;
 
+const fortuneChildren: NavLeaf[] = [
+  { type: "leaf", href: "/today?category=general" as Route, labelKey: "fortuneGeneral" },
+  { type: "leaf", href: "/today?category=love" as Route, labelKey: "fortuneLove" },
+  { type: "leaf", href: "/today?category=money" as Route, labelKey: "fortuneMoney" },
+  { type: "leaf", href: "/today?category=career" as Route, labelKey: "fortuneCareer" },
+  { type: "leaf", href: "/today?category=health" as Route, labelKey: "fortuneHealth" },
+  { type: "leaf", href: "/today?category=study" as Route, labelKey: "fortuneStudy" },
+];
+
+const divinationChildren: NavLeaf[] = [
+  { type: "leaf", href: "/tarot#tarot" as Route, labelKey: "tarot" },
+  { type: "leaf", href: "/flower-oracle" as Route, labelKey: "flowerOracle" },
+  { type: "leaf", href: "/today?category=zodiac" as Route, labelKey: "zodiac" },
+  { type: "leaf", href: "/today?category=chinese_zodiac" as Route, labelKey: "chineseZodiac" },
+  { type: "leaf", href: "/personality" as Route, labelKey: "personality" },
+  { type: "leaf", href: "/name-reading" as Route, labelKey: "nameReading" },
+  { type: "leaf", href: "/name-compatibility" as Route, labelKey: "nameCompatibility" },
+];
+
+const sajuChildren: NavLeaf[] = [
+  { type: "leaf", href: "/saju" as Route, labelKey: "saju" },
+  { type: "leaf", href: "/palm" as Route, labelKey: "palm" },
+  { type: "leaf", href: "/compatibility" as Route, labelKey: "compatibility" },
+  { type: "leaf", href: "/dream" as Route, labelKey: "dream" },
+];
+
+const deepReportChildren: NavLeaf[] = [
+  {
+    type: "leaf",
+    href: "/monthly" as Route,
+    labelKey: "monthlyReport",
+    icon: CalendarDays,
+  },
+  {
+    type: "leaf",
+    href: "/yearly" as Route,
+    labelKey: "yearlyReport",
+    icon: Sparkles,
+  },
+];
+
+const recordChildren: NavLeaf[] = [
+  {
+    type: "leaf",
+    href: "/archive" as Route,
+    labelKey: "records",
+    icon: Library,
+  },
+];
+
 export const mainNav: NavEntry[] = [
   {
     type: "group",
-    id: "fortune",
-    labelKey: "fortuneGroup",
+    id: "fortune-suite",
+    labelKey: "fortuneSuiteGroup",
     iconSrc: "/nav/nav_fortune.svg",
     defaultHref: "/today" as Route,
     children: [
-      { type: "leaf", href: "/today?category=general" as Route, labelKey: "fortuneGeneral" },
-      { type: "leaf", href: "/today?category=love"    as Route, labelKey: "fortuneLove" },
-      { type: "leaf", href: "/today?category=money"   as Route, labelKey: "fortuneMoney" },
-      { type: "leaf", href: "/today?category=career"  as Route, labelKey: "fortuneCareer" },
-      { type: "leaf", href: "/today?category=health"  as Route, labelKey: "fortuneHealth" },
-      { type: "leaf", href: "/today?category=study"   as Route, labelKey: "fortuneStudy" },
+      ...fortuneChildren,
+      ...divinationChildren,
+      ...sajuChildren,
+      ...deepReportChildren,
+      ...recordChildren,
     ],
-  },
-  {
-    type: "group",
-    id: "divination",
-    labelKey: "divinationGroup",
-    iconSrc: "/nav/nav_tarot.svg",
-    icon: Sparkles,
-    defaultHref: "/tarot" as Route,
-    children: [
-      { type: "leaf", href: "/tarot#tarot"            as Route, labelKey: "tarot" },
-      { type: "leaf", href: "/tarot#lenormand"        as Route, labelKey: "lenormand" },
-      { type: "leaf", href: "/tarot#runes"            as Route, labelKey: "runes" },
-      { type: "leaf", href: "/flower-oracle"          as Route, labelKey: "flowerOracle" },
-      { type: "leaf", href: "/today?category=zodiac"  as Route, labelKey: "zodiac" },
-    ],
-  },
-  {
-    type: "group",
-    id: "east",
-    labelKey: "eastGroup",
-    iconSrc: "/nav/nav_saju.svg",
-    icon: Compass,
-    defaultHref: "/saju" as Route,
-    children: [
-      { type: "leaf", href: "/saju"                          as Route, labelKey: "saju" },
-      { type: "leaf", href: "/palm"                          as Route, labelKey: "palm" },
-      { type: "leaf", href: "/compatibility"                 as Route, labelKey: "compatibility" },
-      { type: "leaf", href: "/personality"                   as Route, labelKey: "personality" },
-      { type: "leaf", href: "/dream"                         as Route, labelKey: "dream" },
-      { type: "leaf", href: "/name-reading"                  as Route, labelKey: "nameReading" },
-      { type: "leaf", href: "/name-compatibility"            as Route, labelKey: "nameCompatibility" },
-      { type: "leaf", href: "/today?category=chinese_zodiac" as Route, labelKey: "chineseZodiac" },
+    sections: [
+      { id: "fortune", labelKey: "fortuneGroup", children: fortuneChildren },
+      { id: "divination", labelKey: "divinationGroup", children: divinationChildren },
+      { id: "east", labelKey: "eastGroup", children: sajuChildren },
+      { id: "deep-reports", labelKey: "deepReportsGroup", children: deepReportChildren },
+      { id: "records", labelKey: "records", children: recordChildren },
     ],
   },
   {
@@ -95,7 +115,15 @@ export const mainNav: NavEntry[] = [
     labelKey: "shaman",
     icon: MessageCircle,
     iconSrc: "/nav/nav_chat.svg",
-    description: "점술사와의 마주침",
+    description: "멤버 대화",
+  },
+  {
+    type: "leaf",
+    href: "/album" as Route,
+    labelKey: "album",
+    icon: Disc3,
+    iconSrc: "/nav/nav_album.svg",
+    description: "Carousel Nine 앨범",
   },
   {
     type: "leaf",
@@ -103,7 +131,7 @@ export const mainNav: NavEntry[] = [
     labelKey: "archive",
     icon: Library,
     iconSrc: "/nav/nav_collection.svg",
-    description: "도감 — 지나온 날들의 자국",
+    description: "컬렉션",
   },
   {
     type: "leaf",
@@ -115,10 +143,6 @@ export const mainNav: NavEntry[] = [
   },
 ];
 
-/**
- * pathname + searchParams 가 주어진 NavLeaf 와 매치되는지.
- * - 쿼리(/today?category=love) 와 해시(/tarot#tarot) 도 매치.
- */
 export function isLeafActive(
   leaf: NavLeaf,
   pathname: string,
@@ -130,30 +154,31 @@ export function isLeafActive(
   if (pathname !== hrefPath) return false;
 
   if (href.includes("?")) {
-    // 쿼리 매칭 — category=love 비교
     const qs = new URLSearchParams(search);
     const expected = new URLSearchParams(href.split("?")[1]);
-    for (const [k, v] of expected) {
-      if (qs.get(k) !== v) return false;
+    for (const [key, value] of expected) {
+      if (qs.get(key) !== value) return false;
     }
     return true;
   }
+
   if (href.includes("#")) {
     const expectedHash = rest ?? "";
-    const actual = (hash || "").replace(/^#/, "");
-    // 해시가 없으면 첫 번째 항목(tarot)이 기본 활성으로 간주.
-    if (actual === "") return expectedHash === "tarot";
-    return actual === expectedHash;
+    const actualHash = (hash || "").replace(/^#/, "");
+    if (actualHash === "") return expectedHash === "tarot";
+    return actualHash === expectedHash;
   }
+
   return true;
 }
 
-/** 그룹의 자식 중 하나라도 활성이면 그룹도 활성. */
 export function isGroupActive(
   group: NavGroup,
   pathname: string,
   search: string,
   hash: string,
 ): boolean {
-  return group.children.some((c) => isLeafActive(c, pathname, search, hash));
+  return group.children.some((child) =>
+    isLeafActive(child, pathname, search, hash),
+  );
 }

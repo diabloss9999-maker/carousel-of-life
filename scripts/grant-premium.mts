@@ -1,7 +1,7 @@
 /**
  * 개발자/운영자용: 본인 계정에 프리미엄 구독을 강제로 부여한다.
  *
- * - 결제 흐름 우회 (dev_grant 라는 가짜 subscription_id 사용)
+ * - 결제 절차 우회 (dev_grant 라는 가짜 subscription_id 사용)
  * - 1년 유효기간으로 active 구독 row INSERT/UPDATE
  * - hasActiveSubscription() 가 true 가 되어 모든 풀이 무제한
  *

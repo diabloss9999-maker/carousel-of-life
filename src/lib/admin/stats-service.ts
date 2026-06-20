@@ -8,7 +8,7 @@
  *   - 구독         → subscriptions
  *   - 가입         → profiles.created_at
  *   - 기능 사용    → usage_quotas + 각 readings 테이블
- *   - 점술사 인기  → chat_sessions.character + chat_messages
+ *   - 멤버 인기  → chat_sessions.character + chat_messages
  *   - 활동 시간대  → chat_messages.created_at 의 시(hour) 분포 (KST)
  *
  * 방문자(page view) 추적은 별도 테이블이 없으므로 "활동 사용자" 로 근사한다.
@@ -25,7 +25,6 @@ import {
   portonePayments,
   chatSessions,
   chatMessages,
-  tarotReadings,
   runeReadings,
   lenormandReadings,
   compatibilityReadings,
@@ -164,7 +163,7 @@ export async function getTodayFeatureUsage(): Promise<FeatureUsage[]> {
     timeZone: "Asia/Seoul",
   });
 
-  const [quotaRows, tarotRows, runeRows, lenoRows, compatRows] =
+  const [quotaRows, runeRows, lenoRows, compatRows] =
     await Promise.all([
       db
         .select({
@@ -175,10 +174,6 @@ export async function getTodayFeatureUsage(): Promise<FeatureUsage[]> {
         })
         .from(usageQuotas)
         .where(eq(usageQuotas.usageDate, todayKst)),
-      db
-        .select({ n: count() })
-        .from(tarotReadings)
-        .where(gte(tarotReadings.createdAt, todayStart)),
       db
         .select({ n: count() })
         .from(runeReadings)
@@ -196,7 +191,7 @@ export async function getTodayFeatureUsage(): Promise<FeatureUsage[]> {
   const q = quotaRows[0];
   const usage: FeatureUsage[] = [
     { label: "오늘의 운세", count: Number(q?.fortune ?? 0) },
-    { label: "점술사 대화", count: Number(q?.chat ?? 0) },
+    { label: "멤버 대화", count: Number(q?.chat ?? 0) },
     { label: "타로", count: Number(q?.tarot ?? 0) },
     { label: "손금", count: Number(q?.palm ?? 0) },
     { label: "룬", count: runeRows[0]?.n ?? 0 },
@@ -208,7 +203,7 @@ export async function getTodayFeatureUsage(): Promise<FeatureUsage[]> {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 점술사 인기 랭킹 (오늘 대화 메시지 수 기준)
+// 멤버 인기 랭킹 (오늘 대화 메시지 수 기준)
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface CharacterRank {
@@ -216,7 +211,7 @@ export interface CharacterRank {
   messageCount: number;
 }
 
-/** 오늘(KST) 점술사별 대화 메시지 수 랭킹. */
+/** 오늘(KST) 멤버별 대화 메시지 수 랭킹. */
 export async function getTodayCharacterRank(): Promise<CharacterRank[]> {
   const todayStart = kstTodayStartUtc();
 

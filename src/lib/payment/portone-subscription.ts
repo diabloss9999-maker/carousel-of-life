@@ -1,7 +1,7 @@
 /**
  * PortOne 빌링키 발급 검증 + 첫 청구 + DB 저장.
  *
- * 흐름:
+ * 기운:
  *  1. 브라우저 SDK 가 `requestIssueBillingKey()` → successUrl 로 issueId 전달
  *  2. /api/billing/portone/callback 이 이 함수 호출
  *  3. 여기서:

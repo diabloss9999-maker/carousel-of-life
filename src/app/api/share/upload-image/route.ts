@@ -7,7 +7,7 @@
  *
  * 응답: { url: string }
  *
- * 흐름:
+ * 기운:
  *   1. 인증 확인
  *   2. 크기·타입 검증
  *   3. share-images bucket 의 {userId}/ 폴더에 업로드

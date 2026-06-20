@@ -1,15 +1,14 @@
 import type { Metadata, Viewport } from "next";
+import { cookies, headers } from "next/headers";
 import { Toaster } from "sonner";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale, getMessages } from "next-intl/server";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { TimeAwareBg } from "@/components/layout/time-aware-bg";
 import { Footer } from "@/components/layout/footer";
-import { AmbientTrack } from "@/components/effects/ambient-track";
-import { GlobalMusicToggle } from "@/components/effects/global-music-toggle";
 import { KakaoSdkScript } from "@/components/shared/kakao-sdk-script";
 import { PlatformBridge } from "@/components/platform/platform-bridge";
 import { defaultMetadata } from "@/config/site";
@@ -36,10 +35,26 @@ export default async function RootLayout({
 }>) {
   const locale = await getLocale();
   const messages = await getMessages();
+  const tCommon = await getTranslations("common");
+
+  // 스토어 앱(TWA) 감지를 서버에서 선반영 — col_platform 쿠키(영속) 또는
+  // 최초 진입의 android-app referer 를 읽어 <html data-platform> 을 SSR 에 박는다.
+  // 이렇게 하면 첫 페인트부터 결제 진입점이 숨겨져 'JS 실행 전 결제 UI 깜빡임'이
+  // 사라진다 (스토어 정책 준수 안정성↑). 클라이언트 PlatformBridge 는 쿠키 영속·줌
+  // 잠금·iOS/쿼리 케이스를 보완한다.
+  const cookiePlatform = (await cookies()).get("col_platform")?.value;
+  const referer = (await headers()).get("referer") ?? "";
+  const appPlatform: "android" | "ios" | undefined =
+    cookiePlatform === "android" || cookiePlatform === "ios"
+      ? cookiePlatform
+      : referer.startsWith("android-app://com.leonardocode.carouseloflife")
+        ? "android"
+        : undefined;
 
   return (
     <html
       lang={locale}
+      data-platform={appPlatform}
       suppressHydrationWarning
       className="h-full antialiased"
     >
@@ -62,13 +77,15 @@ export default async function RootLayout({
           붙여 넣으세요. 그 전까지는 빈 자리로 남겨둡니다.
         */}
       </head>
-      <body className="relative min-h-full text-foreground">
+      <body
+        className={`relative min-h-full text-foreground${appPlatform ? " is-app-shell" : ""}`}
+      >
         {/* 키보드 사용자용 skip-to-main — 평소엔 안 보이고 Tab 포커스 시에만 노출. */}
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:shadow-xl"
         >
-          본문으로 건너뛰기
+          {tCommon("skipToMain")}
         </a>
         {/* KST 시간대 배경 — 06~20시 낮, 21~05시 밤 */}
         <TimeAwareBg />
@@ -90,10 +107,6 @@ export default async function RootLayout({
           >
             {children}
             <Footer />
-            {/* 배경 BGM — 시간대에 따라 낮/밤 트랙 자동 교차 (UI 없음, 볼륨 0.18) */}
-            <AmbientTrack />
-            {/* 비대시보드 페이지용 떠있는 음소거 토글 (대시보드는 헤더 내 토글 사용) */}
-            <GlobalMusicToggle />
             <Toaster
               position="top-center"
               theme="dark"
@@ -103,6 +116,9 @@ export default async function RootLayout({
                   fontFamily: "var(--font-sans), system-ui",
                   background: "rgba(255,255,255,0.05)",
                   border: "1px solid rgba(255,255,255,0.18)",
+                  borderRadius: "16px",
+                  padding: "14px 16px",
+                  fontSize: "14px",
                   boxShadow:
                     "inset 0 1px 0 rgba(255,255,255,0.12), 0 8px 32px rgba(0,0,0,0.22)",
                   backdropFilter: "blur(28px)",

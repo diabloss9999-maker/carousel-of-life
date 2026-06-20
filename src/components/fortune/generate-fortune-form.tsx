@@ -1,21 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { CharacterImage } from "@/components/shared/character-image";
 import { useActionState } from "react";
-import { Loader2 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { Loader2, Sparkles } from "lucide-react";
+import { track } from "@vercel/analytics";
 
-import { Button } from "@/components/ui/button";
-import { FormMessage } from "@/components/ui/form-message";
-import { useScrollToResult } from "@/hooks/use-scroll-to-result";
-import { ROUTES } from "@/lib/constants";
 import {
   generateFortuneAction,
   type FortuneActionState,
 } from "@/app/(dashboard)/today/actions";
-import { CHARACTERS } from "@/lib/chat/characters";
-import { getTodayCharacter } from "@/lib/daily-question/rotation";
+import { Button } from "@/components/ui/button";
+import { FormMessage } from "@/components/ui/form-message";
+import { useScrollToResult } from "@/hooks/use-scroll-to-result";
+import { ROUTES } from "@/lib/constants";
 
 interface GenerateFortuneFormProps {
   category: string;
@@ -24,17 +21,22 @@ interface GenerateFortuneFormProps {
 
 const initial: FortuneActionState = { kind: "idle" };
 
-/** 카테고리 id → generateForm 의 line 메시지 키. sub 는 fallbackSaju 공통. */
-const COPY_TKEY: Record<string, string> = {
-  general: "copyGeneral",
-  love: "copyLove",
-  money: "copyMoney",
-  career: "copyCareer",
-  health: "copyHealth",
-  study: "copyStudy",
-  zodiac: "copyZodiac",
-  chinese_zodiac: "copyChineseZodiac",
+const COPY: Record<string, string> = {
+  general: "오늘 하루의 전체 흐름을 먼저 확인해볼게요.",
+  love: "오늘 마음과 관계의 온도를 차분히 살펴볼게요.",
+  money: "오늘 돈의 흐름과 조심할 소비를 확인해볼게요.",
+  career: "오늘 일과 선택의 우선순위를 정리해볼게요.",
+  health: "오늘 몸과 마음의 컨디션 신호를 확인해볼게요.",
+  study: "오늘 집중이 잘 붙는 방향을 찾아볼게요.",
+  zodiac: "별자리 흐름으로 오늘의 분위기를 살펴볼게요.",
+  chinese_zodiac: "띠별 흐름으로 오늘의 기준을 정리해볼게요.",
 };
+
+const PREVIEW_POINTS = [
+  "오늘 조심할 흐름",
+  "붙잡아야 할 기회",
+  "바로 해볼 행동",
+] as const;
 
 export function GenerateFortuneForm({
   category,
@@ -44,51 +46,58 @@ export function GenerateFortuneForm({
     generateFortuneAction,
     initial,
   );
-  const t = useTranslations("generateForm");
-  const tChar = useTranslations("characters");
 
   useScrollToResult(isPending, "fortune-result");
 
-  const charId = getTodayCharacter();
-  const character = CHARACTERS[charId];
-  const name = tChar(`${charId}.name`);
-  const title = tChar(`${charId}.title`);
-  const copyKey = COPY_TKEY[category];
-  const line = copyKey
-    ? t(copyKey as "copyGeneral" | "copyLove" | "copyMoney" | "copyCareer" | "copyHealth" | "copyStudy" | "copyZodiac" | "copyChineseZodiac")
-    : t("fallbackBody", { category: categoryLabel });
-  const sub = t("fallbackSaju");
+  const line = COPY[category] ?? `${categoryLabel}을 지금 기준으로 정리해볼게요.`;
+
+  function trackedFormAction(formData: FormData) {
+    track("fortune_generate_submit", { category });
+    formAction(formData);
+  }
 
   return (
     <div className="liquid-glass-panel liquid-fortune-card overflow-hidden p-4 sm:p-5">
-      <div className="liquid-oracle-header flex gap-0 overflow-hidden">
-        {/* 캐릭터 이미지 */}
-        <div className="relative w-24 flex-shrink-0 sm:w-32">
-          <CharacterImage
-            character={character}
-            width={600}
-            height={900}
-            quality={85}
-            className="h-full w-full object-cover object-top opacity-90"
-            style={{ minHeight: "160px", maxHeight: "200px" }}
-            sizes="128px"
-          />
-          <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-r from-transparent to-white/20" />
-        </div>
-
-        {/* 콘텐츠 */}
-        <div className="flex flex-1 flex-col justify-between gap-4 p-4 sm:p-5">
-          <div className="space-y-1">
-            <p className="text-[15px] text-muted-foreground/50 uppercase tracking-widest">
-              {name} · {title}
-            </p>
-            <p className="font-mystic text-base font-semibold text-foreground/90 leading-snug">
+      <div className="liquid-oracle-header overflow-hidden">
+        <div className="flex flex-col justify-between gap-4 p-4 sm:p-5">
+          <div className="space-y-2">
+            <div className="flex items-center gap-3">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-primary/15 text-primary">
+                <Sparkles className="h-6 w-6" aria-hidden />
+              </div>
+              <div className="min-w-0">
+                <p className="text-keep flex items-center gap-2 text-[13px] font-semibold uppercase tracking-widest text-muted-foreground/60">
+                  Personal Reading
+                </p>
+                <p className="font-mystic text-pretty-ko text-lg font-semibold leading-snug text-foreground/90">
+                  {categoryLabel} 리포트를 시작해요
+                </p>
+              </div>
+            </div>
+            <p className="font-mystic text-pretty-ko text-base font-semibold leading-snug text-foreground/90">
               {line}
             </p>
-            <p className="text-[15px] text-muted-foreground/60">{sub}</p>
+            <p className="text-keep text-[15px] text-muted-foreground/60">
+              생년월일과 사주 흐름을 함께 참고해 오늘의 기준을 만들어요.
+            </p>
+            <div className="grid gap-2 pt-1 sm:grid-cols-3">
+              {PREVIEW_POINTS.map((item, index) => (
+                <div
+                  key={item}
+                  className="rounded-2xl border border-white/10 bg-white/[0.06] px-3 py-2"
+                >
+                  <p className="text-[12px] font-semibold text-primary">
+                    {index + 1}
+                  </p>
+                  <p className="mt-1 text-[13px] leading-5 text-foreground/80">
+                    {item}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <form action={formAction}>
+          <form action={trackedFormAction}>
             <input type="hidden" name="category" value={category} />
             <Button
               type="submit"
@@ -99,24 +108,26 @@ export function GenerateFortuneForm({
               {isPending ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                  {t("loading")}
+                  운세를 불러오는 중
                 </>
               ) : (
-                t("askCta", { name, category: categoryLabel })
+                `${categoryLabel} 보기`
               )}
             </Button>
           </form>
 
-          {state.kind === "error" && (
+          {state.kind === "error" ? (
             <div className="space-y-2">
-              <FormMessage state={{ kind: "error", message: state.message ?? "" }} />
-              {state.quotaExceeded && (
+              <FormMessage
+                state={{ kind: "error", message: state.message ?? "" }}
+              />
+              {state.quotaExceeded ? (
                 <Button asChild className="w-full" variant="outline" size="sm">
-                  <Link href={ROUTES.pricing}>{t("unlimitedCta")}</Link>
+                  <Link href={ROUTES.pricing}>무제한으로 이용하기</Link>
                 </Button>
-              )}
+              ) : null}
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     </div>

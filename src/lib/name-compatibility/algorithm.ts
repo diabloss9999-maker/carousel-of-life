@@ -10,9 +10,9 @@
  * 같은 입력은 항상 같은 결과 — DB 캐시 불필요. AI 해설은 별도 service.
  */
 
-export const NAME_COMPATIBILITY_NAME_PATTERN = /^[가-힣]{1,6}$/;
+export const NAME_COMPATIBILITY_NAME_PATTERN = /^[\p{L}\p{M} .'-]{1,24}$/u;
 export const NAME_COMPATIBILITY_NAME_MESSAGE =
-  "이름은 한글 1~6자로 입력해 주세요.";
+  "이름은 1~24자의 문자로 입력해 주세요.";
 
 /** 한글 자음별 획수 표준 표. */
 const STROKE_MAP: Record<string, number> = {
@@ -52,10 +52,16 @@ const STROKE_MAP: Record<string, number> = {
 const CHO_LIST = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ".split("");
 const JONG_LIST = ["", ..."ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ".split("")];
 
-/** 한 글자의 자음 획수 합 (초성 + 종성). 한글이 아니면 0. */
+/** 한 글자의 결정론적 이름 값. 한글은 자음 획수, 그 외 문자는 코드포인트 기반. */
 function strokeOfChar(ch: string): number {
   const code = ch.charCodeAt(0);
-  if (code < 0xac00 || code > 0xd7a3) return 0;
+  if (code < 0xac00 || code > 0xd7a3) {
+    if (/[\p{L}\p{M}]/u.test(ch)) {
+      const codePoint = ch.codePointAt(0) ?? code;
+      return (codePoint % 9) + 1;
+    }
+    return 0;
+  }
   const idx = code - 0xac00;
   const cho = Math.floor(idx / (21 * 28));
   const jong = idx % 28;
@@ -68,8 +74,10 @@ function strokeOfChar(ch: string): number {
 export interface NameCompatibilityResult {
   /** 0~99 사이의 궁합 점수. */
   score: number;
-  /** 점수 등급 라벨 (예: "천생연분", "노력하면 통해" 등). */
+  /** 점수 등급 라벨 (현재 locale 에 맞춰 service 에서 치환될 수 있음). */
   label: string;
+  /** i18n 등급 라벨 키. */
+  toneScoreKey: NameCompatibilityGradeKey;
   /** 시각·문구 톤 결정용 등급 분류. */
   tone: "best" | "good" | "ok" | "tough";
   /** 계산에 사용된 정규화 이름. */
@@ -77,21 +85,35 @@ export interface NameCompatibilityResult {
   normalizedNameB: string;
 }
 
+export type NameCompatibilityGradeKey =
+  | "soulmate"
+  | "perfectPair"
+  | "goodBond"
+  | "easyFlow"
+  | "takesEffort"
+  | "differentRhythm"
+  | "crossedStars"
+  | "differentPaths";
+
 /** 점수 → 등급 라벨 매핑. */
-function gradeOf(score: number): { label: string; tone: NameCompatibilityResult["tone"] } {
-  if (score >= 90) return { label: "천생연분", tone: "best" };
-  if (score >= 80) return { label: "환상의 짝꿍", tone: "best" };
-  if (score >= 70) return { label: "좋은 인연", tone: "good" };
-  if (score >= 60) return { label: "괜찮은 흐름", tone: "good" };
-  if (score >= 50) return { label: "노력하면 통해", tone: "ok" };
-  if (score >= 40) return { label: "조금 다른 결", tone: "ok" };
-  if (score >= 30) return { label: "엇갈리는 별", tone: "tough" };
-  return { label: "다른 길의 인연", tone: "tough" };
+function gradeOf(score: number): {
+  label: string;
+  toneScoreKey: NameCompatibilityGradeKey;
+  tone: NameCompatibilityResult["tone"];
+} {
+  if (score >= 90) return { label: "천생연분", toneScoreKey: "soulmate", tone: "best" };
+  if (score >= 80) return { label: "환상의 짝꿍", toneScoreKey: "perfectPair", tone: "best" };
+  if (score >= 70) return { label: "좋은 인연", toneScoreKey: "goodBond", tone: "good" };
+  if (score >= 60) return { label: "괜찮은 기운", toneScoreKey: "easyFlow", tone: "good" };
+  if (score >= 50) return { label: "노력하면 통해", toneScoreKey: "takesEffort", tone: "ok" };
+  if (score >= 40) return { label: "조금 다른 결", toneScoreKey: "differentRhythm", tone: "ok" };
+  if (score >= 30) return { label: "엇갈리는 별", toneScoreKey: "crossedStars", tone: "tough" };
+  return { label: "다른 길의 인연", toneScoreKey: "differentPaths", tone: "tough" };
 }
 
 /** 이름 입력값을 계산에 사용할 형태로 정리한다. */
 function normalizeName(raw: string): string {
-  const name = raw.trim();
+  const name = raw.trim().replace(/\s+/g, " ");
   if (!NAME_COMPATIBILITY_NAME_PATTERN.test(name)) {
     throw new Error(NAME_COMPATIBILITY_NAME_MESSAGE);
   }
@@ -101,7 +123,7 @@ function normalizeName(raw: string): string {
 /**
  * 이름 궁합 점수 계산.
  *
- * @throws 두 이름 중 하나라도 한글 1~6자가 아니면 예외.
+ * @throws 두 이름 중 하나라도 지원하는 문자 이름 형식이 아니면 예외.
  */
 export function calculateNameCompatibility(
   rawNameA: string,
@@ -122,9 +144,9 @@ export function calculateNameCompatibility(
 
   // 2) 각 글자 → 자음 획수 합
   let nums = merged.map(strokeOfChar);
-  // 모두 0 이면 계산 불가 (모음·외국어 같은 비정상 케이스 안전망)
+  // 모두 0 이면 계산 불가.
   if (nums.every((n) => n === 0)) {
-    throw new Error("이름에서 자음을 찾지 못했어요. 한글 이름을 확인해 주세요.");
+    throw new Error(NAME_COMPATIBILITY_NAME_MESSAGE);
   }
 
   // 3) 인접 합산 → 자리수만 → 길이 2 까지 반복.
@@ -143,11 +165,12 @@ export function calculateNameCompatibility(
   nums = [nums[0] % 10, nums[1] % 10];
 
   const score = nums[0] * 10 + nums[1];
-  const { label, tone } = gradeOf(score);
+  const { label, toneScoreKey, tone } = gradeOf(score);
 
   return {
     score,
     label,
+    toneScoreKey,
     tone,
     normalizedNameA: a,
     normalizedNameB: b,

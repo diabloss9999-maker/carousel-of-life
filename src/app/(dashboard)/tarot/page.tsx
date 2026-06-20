@@ -1,128 +1,112 @@
 import type { Metadata } from "next";
 
-/** Vercel Hobby 최대 허용치(30s) — AI 카드 풀이 타임아웃 방지. */
 export const maxDuration = 30;
 
-import { LenormandDrawForm } from "@/components/lenormand/lenormand-draw-form";
-import { LenormandReadingCard } from "@/components/lenormand/lenormand-reading-card";
-import { RuneDrawForm } from "@/components/runes/rune-draw-form";
-import { RuneReadingCard } from "@/components/runes/rune-reading-card";
-import { CardDivinationTabs } from "@/components/tarot/card-divination-tabs";
-import { TarotDrawForm } from "@/components/tarot/tarot-draw-form";
-import { TarotReadingCard } from "@/components/tarot/tarot-reading-card";
-import { TarotThreeForm } from "@/components/tarot/tarot-three-form";
-import { TarotThreeReadingCard } from "@/components/tarot/tarot-three-reading-card";
-import { QuotaBar } from "@/components/fortune/quota-bar";
-import { PageBg } from "@/components/layout/page-bg";
-import { requireProfile } from "@/lib/auth/get-user";
-import { getTodayLenormandReadings } from "@/lib/lenormand/service";
-import {
-  getSubscriptionTier,
-  hasActiveSubscription,
-} from "@/lib/payment/subscription-state";
-import { getTodayRuneReadings } from "@/lib/runes/service";
-import { getTodayTarotReadings } from "@/lib/tarot/service";
-import { getTodayUsage } from "@/lib/usage/quota";
-import { getTranslations } from "next-intl/server";
+import { Layers3, LockKeyhole, MessageSquareText, Sparkles } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const tPage = await getTranslations("tarotPage");
-  return { title: tPage("metaTitle"), description: tPage("metaDescription") };
-}
+import { RelatableReadingCard } from "@/components/shared/relatable-reading-card";
+import { CardDivinationTabs } from "@/components/tarot/card-divination-tabs";
+import type { TarotReader } from "@/components/tarot/reader";
+import { TarotModeSwitch } from "@/components/tarot/tarot-mode-switch";
+import { TarotReadingCard } from "@/components/tarot/tarot-reading-card";
+import { TarotThreeReadingCard } from "@/components/tarot/tarot-three-reading-card";
+import { requireProfile } from "@/lib/auth/get-user";
+import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import { getTodayTarotReadings } from "@/lib/tarot/service";
+
+export const metadata: Metadata = {
+  title: "타로",
+  description:
+    "카드 한 장 또는 과거, 현재, 미래 3장 흐름으로 지금의 선택을 정리해요.",
+};
 
 export default async function TarotPage() {
   const { profile } = await requireProfile();
-  const tTarot = await getTranslations("tarot");
-  const tPage = await getTranslations("tarotPage");
+  const tarotReader: TarotReader = {
+    id: "runeshaman",
+    name: "타로 리딩",
+    role: "Card Reading",
+    avatarSrc: "/tarot/card_back.webp",
+    tarotImageSrc: "/backgrounds/tarot.webp",
+    label: "Tarot Reading",
+    line: "",
+    voiceGuide: "",
+  };
 
-  const [readings, usage, subscribed, tier, lenormandReadings, runeReadings] =
-    await Promise.all([
-      getTodayTarotReadings(profile.userId),
-      getTodayUsage(profile.userId),
-      hasActiveSubscription(profile.userId),
-      getSubscriptionTier(profile.userId),
-      getTodayLenormandReadings(profile.userId),
-      getTodayRuneReadings(profile.userId),
-    ]);
+  const [readings, subscribed] = await Promise.all([
+    getTodayTarotReadings(profile.userId),
+    hasActiveSubscription(profile.userId).catch(() => false),
+  ]);
+  const singleReadings = readings.filter(
+    (reading) => reading.spreadType !== "three",
+  );
+  const threeReadings = readings.filter(
+    (reading) => reading.spreadType === "three",
+  );
 
   return (
     <div className="space-y-8">
-      <PageBg src="/backgrounds/tarot.webp" />
       <header className="space-y-2">
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
-          {tTarot("title")}
+          타로
         </h1>
         <p className="text-muted-foreground">
-          {tTarot("description")}
+          지금 마음에 걸리는 선택을 카드 흐름으로 차분히 정리해요.
         </p>
       </header>
 
-      <div className="rounded-2xl ring-1 ring-primary/25 shadow-lg shadow-primary/5">
-        <QuotaBar
-          fortuneCount={usage.fortuneCount}
-          tarotCount={usage.tarotCount}
-          chatCount={usage.chatCount}
-          tier={tier}
+      <RelatableReadingCard kind="tarot" />
+
+      <TarotStartGuide subscribed={subscribed} />
+
+      <div className="mx-auto max-w-2xl">
+        <TarotModeSwitch
+          oneCardReader={tarotReader}
+          threeCardReader={tarotReader}
+          subscribed={subscribed}
         />
       </div>
 
       <CardDivinationTabs
         tarotPanel={
           <div className="space-y-6">
-            {/* 타로 유래 */}
-            <div className="rounded-2xl border border-amber-200/20 bg-amber-50/5 px-5 py-4 space-y-2 backdrop-blur-sm">
-              <p className="font-mystic text-[15px] font-semibold text-amber-300/90">{tPage("tarotOrigin")}</p>
-              <p className="text-[15px] leading-relaxed text-muted-foreground whitespace-pre-line">
-                {tPage("tarotOriginBody")}
+            <div className="space-y-2 rounded-2xl border border-amber-200/20 bg-amber-50/5 px-5 py-4 backdrop-blur-sm">
+              <p className="font-mystic text-[15px] font-semibold text-amber-300/90">
+                타로는 정답보다 방향을 보는 도구예요
+              </p>
+              <p className="whitespace-pre-line text-[15px] leading-relaxed text-muted-foreground">
+                카드는 미래를 단정하기보다, 지금 마음이 어디에 걸려 있는지
+                보여줘요. 결과는 오늘의 선택을 더 선명하게 만드는 참고로
+                읽어주세요.
               </p>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2">
-              <TarotDrawForm />
-              <TarotThreeForm subscribed={subscribed} />
-            </div>
-
-            {readings.length > 0 ? (
+            {singleReadings.length > 0 ? (
               <section id="tarot-results" className="space-y-4">
                 <h2 className="font-mystic text-2xl font-semibold tracking-tight">
-                  {tPage("todaysTarot")}
+                  오늘 뽑은 카드
                 </h2>
                 <div className="space-y-6">
-                  {readings.map((reading) =>
-                    reading.spreadType === "three" ? (
-                      <TarotThreeReadingCard
-                        key={reading.id}
-                        reading={reading}
-                      />
-                    ) : (
-                      <TarotReadingCard key={reading.id} reading={reading} />
-                    ),
-                  )}
+                  {singleReadings.map((reading) => (
+                    <TarotReadingCard
+                      key={reading.id}
+                      reading={reading}
+                      subscribed={subscribed}
+                    />
+                  ))}
                 </div>
               </section>
             ) : null}
-          </div>
-        }
-        lenormandPanel={
-          <div className="space-y-6">
-            {/* 르노르망 유래 */}
-            <div className="rounded-2xl border border-amber-200/20 bg-amber-50/5 px-5 py-4 space-y-2 backdrop-blur-sm">
-              <p className="font-mystic text-[15px] font-semibold text-amber-300/90">🌙 {tPage("lenormandOrigin")}</p>
-              <p className="text-[15px] leading-relaxed text-muted-foreground whitespace-pre-line">
-                {tPage("lenormandOriginBody")}
-              </p>
-            </div>
 
-            <LenormandDrawForm subscribed={subscribed} />
-
-            {lenormandReadings.length > 0 ? (
-              <section id="lenormand-results" className="space-y-4">
+            {threeReadings.length > 0 ? (
+              <section className="space-y-4">
                 <h2 className="font-mystic text-2xl font-semibold tracking-tight">
-                  {tPage("todaysLenormand")}
+                  3장 타로
                 </h2>
-                <div className="space-y-4">
-                  {lenormandReadings.map((reading) => (
-                    <LenormandReadingCard
+                <div className="space-y-6">
+                  {threeReadings.map((reading) => (
+                    <TarotThreeReadingCard
                       key={reading.id}
                       reading={reading}
                     />
@@ -132,35 +116,57 @@ export default async function TarotPage() {
             ) : null}
           </div>
         }
-        runesPanel={
-          <div className="space-y-6">
-            {/* 룬 유래 */}
-            <div className="rounded-2xl border border-amber-200/20 bg-amber-50/5 px-5 py-4 space-y-2 backdrop-blur-sm">
-              <p className="font-mystic text-[15px] font-semibold text-amber-300/90">
-                ᚠ {tPage("runeOrigin")}
-              </p>
-              <p className="text-[15px] leading-relaxed text-muted-foreground whitespace-pre-line">
-                {tPage("runeOriginBody")}
-              </p>
-            </div>
+      />
+    </div>
+  );
+}
 
-            <RuneDrawForm subscribed={subscribed} />
-
-            {runeReadings.length > 0 ? (
-              <section id="rune-results" className="space-y-4">
-                <h2 className="font-mystic text-2xl font-semibold tracking-tight">
-                  {tPage("todaysRune")}
-                </h2>
-                <div className="space-y-4">
-                  {runeReadings.map((reading) => (
-                    <RuneReadingCard key={reading.id} reading={reading} />
-                  ))}
-                </div>
-              </section>
-            ) : null}
-          </div>
+function TarotStartGuide({ subscribed }: { subscribed: boolean }) {
+  return (
+    <section className="grid gap-2 sm:grid-cols-3">
+      <GuideTile
+        icon={Sparkles}
+        title="한 장 리딩"
+        body="지금 마음에 걸리는 질문 하나를 빠르게 정리해요."
+      />
+      <GuideTile
+        icon={Layers3}
+        title="3장 리딩"
+        body={
+          subscribed
+            ? "과거, 현재, 미래를 차례로 뒤집어 흐름을 봐요."
+            : "라이트 이상에서 과거, 현재, 미래 3장 리딩이 열려요."
         }
       />
+      <GuideTile
+        icon={subscribed ? MessageSquareText : LockKeyhole}
+        title={subscribed ? "질문 확장" : "라이트 잠금"}
+        body={
+          subscribed
+            ? "상황과 선택지를 구체적으로 넣을수록 더 선명해져요."
+            : "멤버십에서 더 깊은 카드 흐름을 볼 수 있어요."
+        }
+      />
+    </section>
+  );
+}
+
+function GuideTile({
+  body,
+  icon: Icon,
+  title,
+}: {
+  body: string;
+  icon: LucideIcon;
+  title: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/[0.045] px-4 py-3">
+      <div className="flex items-center gap-2 text-primary">
+        <Icon className="h-4 w-4 shrink-0" aria-hidden />
+        <p className="text-[13px] font-semibold">{title}</p>
+      </div>
+      <p className="mt-2 text-[13px] leading-5 text-muted-foreground">{body}</p>
     </div>
   );
 }

@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
+import type { Route } from "next";
 import { useRouter } from "next/navigation";
 import { Home, RefreshCw } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
+import { ROUTES } from "@/lib/constants";
 
 interface GlobalErrorBoundaryProps {
   error: Error & { digest?: string };
@@ -46,7 +48,11 @@ export default function GlobalErrorBoundary({
           </code>
         ) : null}
         <div className="flex flex-col gap-3 w-full max-w-xs">
-          <Button size="lg" onClick={() => router.push("/today")} className="w-full">
+          <Button
+            size="lg"
+            onClick={() => router.push(ROUTES.appHome as Route)}
+            className="w-full"
+          >
             <Home className="h-4 w-4" aria-hidden />
             {t("errorHome")}
           </Button>

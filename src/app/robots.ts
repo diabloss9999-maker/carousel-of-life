@@ -23,7 +23,6 @@ export default function robots(): MetadataRoute.Robots {
           "/tarot",
           "/saju",
           "/compatibility",
-          "/history",
           "/settings",
           "/onboarding",
         ],

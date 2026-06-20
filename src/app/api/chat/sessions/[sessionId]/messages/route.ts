@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 채팅 메시지 전송 + AI 스트리밍 응답.
  *
  * POST /api/chat/sessions/[sessionId]/messages
@@ -24,18 +24,9 @@ import {
   getAffinity,
 } from "@/lib/affinity/service";
 import { resolveReadingFlow, type ReadingResult } from "@/lib/chat/reading-detector";
-import { addCrack, reduceCrack, getCrackScore, getCrackContext } from "@/lib/crack/service";
-import { checkHiddenEvents } from "@/lib/observe/hidden-events";
-import { calcLevel } from "@/lib/affinity/levels";
 import type { CharacterId } from "@/lib/chat/characters";
 import { API_ERROR_CODES } from "@/types/api";
-import { getDailySeed, seedValue } from "@/lib/systems/daily-seed";
-import {
-  computeEntityMood,
-  getCharacterSilenceHint,
-  MOOD_CONTEXT,
-  characterToEntityKey,
-} from "@/lib/systems/entity-mood";
+import { getCharacterSilenceHint } from "@/lib/systems/entity-mood";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -47,39 +38,6 @@ const bodySchema = z.object({
     .min(1, "질문을 입력해줘.")
     .max(100, "질문은 100자 이내로 짧게 부탁해."),
 });
-
-/**
- * 캐릭터별 메시지당 흐림 변동량 — 선·악 스펙트럼.
- *
- *  강한 선 (-2): 라엘
- *  선     (-1): 소율 · 헬가
- *  중립    (0): 루나 · 현도 · 외르문드
- *  악     (+1): 카엘 · 비요른
- *  강한 악 (+2): 흑랑
- */
-const CHARACTER_CRACK_DELTA: Record<CharacterId, number> = {
-  sage:       -2, // 라엘 — 강한 선
-  shaman:     -1, // 소율
-  runeshaman: -1, // 헬가
-  witch:       0, // 루나
-  taoist:      0, // 현도
-  god:         0, // 외르문드
-  child:      +1, // 카엘
-  hunter:     +1, // 비요른
-  dokkaebi:   +2, // 흑랑 — 강한 악
-};
-
-/**
- * 한 메시지에 대해 캐릭터별 흐림 변동을 적용.
- */
-async function applyCharacterCrackDelta(
-  userId: string,
-  characterId: CharacterId,
-): Promise<void> {
-  const delta = CHARACTER_CRACK_DELTA[characterId] ?? 0;
-  if (delta > 0) await addCrack(userId, delta);
-  else if (delta < 0) await reduceCrack(userId, Math.abs(delta));
-}
 
 export async function POST(
   request: NextRequest,
@@ -142,26 +100,10 @@ export async function POST(
   // 친밀도 맥락 — 세션의 실제 character 사용 (시스템 프롬프트 내 다른 캐릭터 이름 언급 때문에 잘못 매칭되는 버그 방지)
   const characterId: CharacterId = prepared.characterId;
 
-  const [affinityRow, crackData] = await Promise.all([
-    getAffinity(profile.userId, characterId),
-    getCrackScore(profile.userId),
-  ]);
+  const affinityRow = await getAffinity(profile.userId, characterId);
   const currentPoints = affinityRow?.points ?? 0;
   const locale = await getLocale();
   const affinityCtx = affinityContext(characterId, currentPoints);
-  const crackCtx = getCrackContext(crackData.level, locale);
-
-  // 숨겨진 이벤트 체크
-  const dokkaebiLevel = characterId === "dokkaebi"
-    ? calcLevel("dokkaebi", affinityRow?.points ?? 0).level
-    : 0;
-  const hiddenEvent = checkHiddenEvents({
-    characterId,
-    crackLevel: crackData.level,
-    dokkaebiAffinityLevel: dokkaebiLevel,
-    hourKst: new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" })).getHours(),
-    locale,
-  });
 
   const messages = prepared.messages;
 
@@ -188,41 +130,12 @@ export async function POST(
     /* 점술 흐름 판정 실패 시 무시하고 일반 대화로 진행 */
   }
 
-  // 존재 기분 — 9명 캐릭터 전체 적용
-  const dailySeed = getDailySeed();
-  const entityId = characterToEntityKey(characterId);
-  // 캐릭터별 고유 seed index (이세계 10~12 / 동양 13~15 / 북유럽 16~18)
-  const ENTITY_SEED_INDEX: Record<typeof entityId, number> = {
-    luna: 10,
-    rael: 11,
-    gael: 12,
-    soryeong: 13,
-    hyundo: 14,
-    gwiyeom: 15,
-    bjorn: 16,
-    helga: 17,
-    ormund: 18,
-  };
-  const mood = computeEntityMood({
-    entityId,
-    seed: seedValue(dailySeed, ENTITY_SEED_INDEX[entityId]),
-    kstHour: new Date(
-      new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }),
-    ).getHours(),
-    fractureLevel: crackData.level,
-    repeatedQuestionCount: 0,
-    nightVisitCount: 0,
-  });
-  const moodCtx = MOOD_CONTEXT[mood];
   const silenceHint = getCharacterSilenceHint(characterId, locale);
 
   const enrichedSystem =
     prepared.systemPrompt +
     affinityCtx +
-    crackCtx +
-    hiddenEvent.eventContext +
     cardSystemInject +
-    moodCtx +
     silenceHint;
 
   const aiStream = streamChat({
@@ -245,8 +158,6 @@ export async function POST(
           cards: reading?.cards,
         }),
         addAffinityPoint(prepared.profile.userId, characterId),
-        // 캐릭터 본질에 따른 흐림 변동 — 선/악 스펙트럼.
-        applyCharacterCrackDelta(prepared.profile.userId, characterId),
       ]);
     },
   });

@@ -8,11 +8,11 @@ export const siteConfig = {
   shortName: "회전목마",
   englishName: "Carousel of Life",
   slug: "carousel-of-life",
-  tagline: "별의 흐름과 카드의 계시로 오늘의 운명을 읽어드려요",
+  tagline: "캐러셀나인과 함께 보는 사주·타로 운세",
   description:
-    "사주팔자·타로·성격유형을 통합한 AI 운명 풀이. 신비한 점술사가 매일의 기운을 읽어드립니다.",
+    "캐러셀나인 멤버들과 오늘의 운세, 타로, 사주를 살펴보고 대화로 이어가는 한국어 운세 앱.",
   url: process.env.NEXT_PUBLIC_APP_URL ?? "https://carouseloflife.com",
-  ogImage: "/og-image.png",
+  ogImage: "/og-carousel-meadow.png",
   author: {
     name: "인생의 회전목마",
     email: "support@carouselof.life",

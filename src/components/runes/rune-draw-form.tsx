@@ -144,7 +144,7 @@ export function RuneDrawForm({ subscribed }: Props) {
             />
             <div className="flex items-center justify-between gap-2 px-1">
               <p className="text-muted-foreground text-[15px]">
-                비워두면 오늘의 전반적 흐름을 봅니다.
+                비워두면 오늘의 전반적인 기운을 봅니다.
               </p>
               <span
                 className={cn(

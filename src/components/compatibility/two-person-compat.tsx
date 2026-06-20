@@ -1,12 +1,16 @@
 "use client";
 
-/**
- * 타인 간 궁합 — 제3자 두 명(A, B)의 궁합을 분석한다.
- */
+import type React from "react";
 import { useActionState } from "react";
 import { Heart, Loader2, UsersRound } from "lucide-react";
-import { useTranslations } from "next-intl";
 
+import {
+  twoPersonCompatAction,
+  type TwoPersonCompatState,
+} from "@/app/(dashboard)/compatibility/actions";
+import { CompatConflict } from "@/components/compatibility/compat-conflict";
+import { CompatPurpose } from "@/components/compatibility/compat-purpose";
+import { CompatToday } from "@/components/compatibility/compat-today";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,17 +24,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { useScrollToResult } from "@/hooks/use-scroll-to-result";
+import { safeReadingText, safeShortText } from "@/lib/content/safety";
 import { cn } from "@/lib/utils";
-import {
-  twoPersonCompatAction,
-  type TwoPersonCompatState,
-} from "@/app/(dashboard)/compatibility/actions";
-import { CompatPurpose } from "@/components/compatibility/compat-purpose";
-import { CompatConflict } from "@/components/compatibility/compat-conflict";
-import { CompatToday } from "@/components/compatibility/compat-today";
 
 const twoPersonCompatIdleState: TwoPersonCompatState = { kind: "idle" };
-
 const TODAY_ISO = (): string => new Date().toISOString().slice(0, 10);
 
 interface TwoPersonCompatProps {
@@ -42,8 +39,6 @@ export function TwoPersonCompat({ subscribed }: TwoPersonCompatProps) {
     twoPersonCompatAction,
     twoPersonCompatIdleState,
   );
-  const t = useTranslations("twoPersonCompat");
-  const tForm = useTranslations("compatibilityForm");
 
   useScrollToResult(isPending, "two-person-result", 200);
 
@@ -53,25 +48,17 @@ export function TwoPersonCompat({ subscribed }: TwoPersonCompatProps) {
         <CardHeader>
           <CardTitle className="font-mystic flex items-center gap-2 text-lg">
             <UsersRound className="h-5 w-5 text-accent" aria-hidden />
-            {t("heading")}
+            두 사람 궁합
           </CardTitle>
           <CardDescription className="text-[15px]">
-            {t("body")}
+            나와 상대를 따로 입력해서 관계의 균형, 갈등 포인트, 오늘의 접근법을 봐요.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form action={formAction} className="space-y-6">
             <div className="grid gap-6 md:grid-cols-2">
-              <PersonFieldset
-                title={t("person1")}
-                prefix="a"
-                disabled={isPending}
-              />
-              <PersonFieldset
-                title={t("person2")}
-                prefix="b"
-                disabled={isPending}
-              />
+              <PersonFieldset title="첫 번째 사람" prefix="a" disabled={isPending} />
+              <PersonFieldset title="두 번째 사람" prefix="b" disabled={isPending} />
             </div>
 
             {state.kind === "error" ? (
@@ -89,12 +76,12 @@ export function TwoPersonCompat({ subscribed }: TwoPersonCompatProps) {
               {isPending ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                  {tForm("submitLoading")}
+                  분석하는 중
                 </>
               ) : (
                 <>
                   <Heart className="h-4 w-4" aria-hidden />
-                  {tForm("submitCta")}
+                  두 사람 궁합 보기
                 </>
               )}
             </Button>
@@ -148,7 +135,6 @@ interface PersonFieldsetProps {
 function PersonFieldset({ title, prefix, disabled }: PersonFieldsetProps) {
   const id = (suffix: string): string => `${prefix}${suffix}`;
   const name = (suffix: string): string => `${prefix}${suffix}`;
-  const tForm = useTranslations("compatibilityForm");
 
   return (
     <fieldset className="space-y-4 rounded-xl app-surface p-4">
@@ -157,20 +143,20 @@ function PersonFieldset({ title, prefix, disabled }: PersonFieldsetProps) {
       </legend>
 
       <div className="space-y-2">
-        <Label htmlFor={id("Name")}>{tForm("name")}</Label>
+        <Label htmlFor={id("Name")}>이름</Label>
         <Input
           id={id("Name")}
           name={name("Name")}
           type="text"
           maxLength={40}
           required
-          placeholder={tForm("namePlaceholder")}
+          placeholder="예: 서윤"
           disabled={disabled}
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor={id("BirthDate")}>{tForm("birthDate")}</Label>
+        <Label htmlFor={id("BirthDate")}>생년월일</Label>
         <Input
           id={id("BirthDate")}
           name={name("BirthDate")}
@@ -183,7 +169,7 @@ function PersonFieldset({ title, prefix, disabled }: PersonFieldsetProps) {
 
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
-          <Label htmlFor={id("CalendarSystem")}>{tForm("calendar")}</Label>
+          <Label htmlFor={id("CalendarSystem")}>달력</Label>
           <Select
             id={id("CalendarSystem")}
             name={name("CalendarSystem")}
@@ -191,12 +177,12 @@ function PersonFieldset({ title, prefix, disabled }: PersonFieldsetProps) {
             required
             disabled={disabled}
           >
-            <option value="solar">{tForm("calendarSolar")}</option>
-            <option value="lunar">{tForm("calendarLunar")}</option>
+            <option value="solar">양력</option>
+            <option value="lunar">음력</option>
           </Select>
         </div>
         <div className="space-y-2">
-          <Label htmlFor={id("Gender")}>{tForm("gender")}</Label>
+          <Label htmlFor={id("Gender")}>성별</Label>
           <Select
             id={id("Gender")}
             name={name("Gender")}
@@ -205,23 +191,23 @@ function PersonFieldset({ title, prefix, disabled }: PersonFieldsetProps) {
             disabled={disabled}
           >
             <option value="" disabled>
-              {tForm("genderPick")}
+              선택
             </option>
-            <option value="male">{tForm("genderMale")}</option>
-            <option value="female">{tForm("genderFemale")}</option>
-            <option value="other">{tForm("genderOther")}</option>
+            <option value="male">남성</option>
+            <option value="female">여성</option>
+            <option value="other">기타</option>
           </Select>
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor={id("Mbti")}>{tForm("mbti")}</Label>
+        <Label htmlFor={id("Mbti")}>MBTI 선택 입력</Label>
         <Input
           id={id("Mbti")}
           name={name("Mbti")}
           type="text"
           maxLength={4}
-          placeholder={tForm("mbtiPlaceholder")}
+          placeholder="예: INFP"
           className="uppercase"
           disabled={disabled}
         />
@@ -235,22 +221,31 @@ interface TwoPersonResultProps {
 }
 
 function TwoPersonResultCard({ result }: TwoPersonResultProps) {
-  const { score, summary, detail } = result.output;
-  const t = useTranslations("twoPersonCompat");
+  const { score } = result.output;
+  const summary = safeReadingText(
+    result.output.summary,
+    "두 사람은 서로의 리듬을 이해할수록 관계가 안정되는 흐름이에요.",
+  );
+  const detail = safeReadingText(
+    result.output.detail,
+    "표현 방식의 차이를 먼저 인정하고, 서두르지 않는 대화가 관계를 더 편하게 만들어줘요.",
+  );
+  const aName = safeShortText(result.aName, "첫 번째 사람");
+  const bName = safeShortText(result.bName, "두 번째 사람");
 
   return (
-    <Card className="app-surface">
+    <Card className="app-surface ring-1 ring-accent/15">
       <CardHeader className="space-y-3 pb-3">
-        <div className="flex items-center justify-between">
-          <p className="font-mystic text-base flex items-center gap-2">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <p className="font-mystic flex flex-wrap items-center gap-x-2 gap-y-1 text-base">
             <Heart className="h-4 w-4 text-accent" aria-hidden />
-            <span>{result.aName}</span>
-            <span className="text-[15px] text-muted-foreground font-normal">
+            <span>{aName}</span>
+            <span className="text-[13px] font-normal text-muted-foreground">
               ({result.aBirthDate})
             </span>
             <span className="text-muted-foreground">×</span>
-            <span>{result.bName}</span>
-            <span className="text-[15px] text-muted-foreground font-normal">
+            <span>{bName}</span>
+            <span className="text-[13px] font-normal text-muted-foreground">
               ({result.bBirthDate})
             </span>
           </p>
@@ -258,62 +253,63 @@ function TwoPersonResultCard({ result }: TwoPersonResultProps) {
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <ScoreGauge score={score} />
-        <p className="font-mystic text-lg leading-relaxed font-medium">
-          {summary}
-        </p>
-        <p className="font-mystic whitespace-pre-line leading-relaxed text-foreground/85">
+        <ScoreGauge score={score} label="궁합 점수" />
+        <div className="rounded-2xl border border-accent/20 bg-accent/[0.07] px-4 py-3">
+          <p className="font-mystic text-lg font-medium leading-relaxed">
+            {summary}
+          </p>
+        </div>
+        <p className="whitespace-pre-line font-mystic text-[15px] leading-7 text-foreground/85">
           {detail}
         </p>
       </CardContent>
     </Card>
   );
+}
 
-  function ScoreGauge({ score }: { score: number }) {
-    const clamped = Math.max(0, Math.min(100, score));
-    const gaugeStyle = { "--gauge": `${clamped}%` } as React.CSSProperties;
+function ScoreGauge({ score, label }: { score: number; label: string }) {
+  const clamped = Math.max(0, Math.min(100, score));
+  const gaugeStyle = { "--gauge": `${clamped}%` } as React.CSSProperties;
 
-    return (
-      <div className="space-y-1">
-        <div className="flex items-center justify-between text-[15px] text-muted-foreground">
-          <span>{t("score")}</span>
-          <span className="font-mystic font-semibold text-foreground">
-            {clamped} / 100
-          </span>
-        </div>
-        <div
-          className="h-2 w-full overflow-hidden rounded-full bg-card"
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={clamped}
-          style={gaugeStyle}
-        >
-          <div className="h-full w-[var(--gauge)] rounded-full bg-gradient-to-r from-primary via-accent to-primary transition-[width] duration-700 ease-out" />
-        </div>
+  return (
+    <div className="space-y-1">
+      <div className="flex items-center justify-between text-[13px] text-muted-foreground">
+        <span>{label}</span>
+        <span className="font-mystic font-semibold text-foreground">
+          {clamped} / 100
+        </span>
       </div>
-    );
-  }
+      <div
+        className="h-2 w-full overflow-hidden rounded-full bg-card"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={clamped}
+        style={gaugeStyle}
+      >
+        <div className="h-full w-[var(--gauge)] rounded-full bg-gradient-to-r from-primary via-accent to-primary transition-[width] duration-700 ease-out" />
+      </div>
+    </div>
+  );
 }
 
 function ScoreBadge({ score }: { score: number }) {
-  const t = useTranslations("twoPersonCompat");
   const tone =
     score >= 80
-      ? "bg-accent/15 text-accent"
+      ? "border-accent/30 bg-accent/15 text-accent"
       : score >= 50
-        ? "bg-primary/15 text-primary"
-        : "bg-destructive/10 text-destructive";
+        ? "border-primary/30 bg-primary/15 text-primary"
+        : "border-destructive/20 bg-destructive/10 text-destructive";
 
   return (
     <span
       className={cn(
-        "rounded-full px-3 py-0.5 font-mystic text-[15px] font-medium",
+        "w-fit rounded-full border px-3 py-1 font-mystic text-[13px] font-medium",
         tone,
       )}
-      aria-label={t("scoreUnit", { n: score })}
+      aria-label={`궁합 점수 ${score}점`}
     >
-      {t("scoreUnit", { n: score })}
+      {score}점
     </span>
   );
 }

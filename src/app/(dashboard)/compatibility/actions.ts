@@ -9,6 +9,7 @@ import { z } from "zod";
 
 import { requireProfile } from "@/lib/auth/get-user";
 import { createCompatibility } from "@/lib/compatibility/service";
+import type { CompatibilityReading } from "@/db/schema";
 import { generateJson } from "@/lib/ai/generate";
 import {
   enforceAiRateLimit,
@@ -25,10 +26,10 @@ import {
   compatTodaySchema,
   type CompatTodayOutput,
 } from "@/lib/ai/types";
-import { AI_LIMITS, AI_MODELS } from "@/lib/constants";
+import { AI_LIMITS, AI_MODELS, FREE_DAILY_LIMITS } from "@/lib/constants";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
-import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
-import { getTodayCharacter } from "@/lib/daily-question/rotation";
+import { NEUTRAL_CARD_VOICE } from "@/lib/ai/character-voice";
+import { checkAndIncrementQuota } from "@/lib/usage/quota";
 
 const MBTI_PATTERN = /^[EI][NS][TF][JP]$/i;
 const COMPATIBILITY_ROUTE = "/compatibility";
@@ -58,6 +59,7 @@ export interface CompatibilityActionState {
   kind: "idle" | "done" | "error";
   message?: string;
   quotaExceeded?: boolean;
+  reading?: CompatibilityReading;
 }
 
 
@@ -132,7 +134,7 @@ export async function submitCompatibilityAction(
 
   if (result.ok) {
     revalidatePath(COMPATIBILITY_ROUTE);
-    return { kind: "done" };
+    return { kind: "done", reading: result.reading };
   }
 
   if (result.reason === "quota_exceeded") {
@@ -235,6 +237,19 @@ export async function twoPersonCompatAction(
         };
       }
       throw e;
+    }
+
+    const quota = await checkAndIncrementQuota({
+      userId: profile.userId,
+      kind: "fortune",
+      max: FREE_DAILY_LIMITS.fortune,
+      amount: 2,
+    });
+    if (!quota.ok) {
+      return {
+        kind: "error",
+        message: tErr("compatFreeExceeded", { n: quota.max }),
+      };
     }
 
     const output = await generateJson({
@@ -361,7 +376,7 @@ export async function generateCompatPurposeAction(
 [지시]
 두 사람이 각각 다른 관계 목적(연애·결혼·비즈니스·친구)에서 얼마나 잘 맞는지 0~100점으로 분석해줘.
 사주·별자리·성격유형(있다면)를 종합적으로 고려해.
-모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
+모든 문장은 특정 멤버 말투가 아니라 차분한 존댓말 리포트 톤으로 써. '~야', '~해', '~줘' 같은 반말은 금지.
 
 반드시 아래 JSON 형식으로만 응답해. 마크다운·설명 없이 JSON만:
 {
@@ -379,7 +394,7 @@ export async function generateCompatPurposeAction(
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 800,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      systemSuffix: NEUTRAL_CARD_VOICE,
       locale: await getLocale(),
     });
 
@@ -429,7 +444,7 @@ export async function generateCompatConflictAction(
 
 [지시]
 두 사람이 갈등할 때 어디서 부딪히는지 + 화해법을 분석해줘.
-모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
+모든 문장은 특정 멤버 말투가 아니라 차분한 존댓말 리포트 톤으로 써. '~야', '~해', '~줘' 같은 반말은 금지.
 
 반드시 아래 JSON 형식으로만 응답해. 마크다운·설명 없이 JSON만:
 {
@@ -444,7 +459,7 @@ export async function generateCompatConflictAction(
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 800,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      systemSuffix: NEUTRAL_CARD_VOICE,
       locale: await getLocale(),
     });
 
@@ -497,7 +512,7 @@ ${mbtiLine.join("\n")}
 
 [지시]
 오늘의 일진과 두 사람의 궁합을 함께 살펴 ${aName}이(가) ${bName}에게 오늘 어떻게 접근하면 좋을지 조언해줘.
-모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
+모든 문장은 특정 멤버 말투가 아니라 차분한 존댓말 리포트 톤으로 써. '~야', '~해', '~줘' 같은 반말은 금지.
 
 반드시 아래 JSON 형식으로만 응답해. 마크다운·설명 없이 JSON만:
 {
@@ -512,7 +527,7 @@ ${mbtiLine.join("\n")}
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 800,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      systemSuffix: NEUTRAL_CARD_VOICE,
       locale: await getLocale(),
     });
 

@@ -5,7 +5,7 @@
  *   body: { plan: "lite" | "pro" }
  *   응답: { issueId }
  *
- * 흐름:
+ * 기운:
  *   1. 인증 사용자만
  *   2. pending_billing_issues 에 issueId 등록 (15분 유효)
  *   3. issueId 반환 → 클라이언트가 PortOne SDK 호출 시 사용

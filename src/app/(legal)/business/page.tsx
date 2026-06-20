@@ -38,14 +38,14 @@ export default function BusinessPage() {
           {rows.map((r, i) => (
             <div
               key={r.label}
-              className={`grid grid-cols-[10rem_1fr] gap-4 px-5 py-3 ${
+              className={`grid gap-1 px-5 py-3 sm:grid-cols-[10rem_1fr] sm:gap-4 ${
                 i % 2 === 0 ? "bg-white/5" : ""
               }`}
             >
               <dt className="font-semibold text-foreground/70 text-[15px]">
                 {r.label}
               </dt>
-              <dd className="text-[15px] text-foreground/90 break-keep">
+              <dd className="break-words text-[15px] text-foreground/90">
                 {r.value}
               </dd>
             </div>

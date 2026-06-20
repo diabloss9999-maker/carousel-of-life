@@ -3,7 +3,6 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, RefreshCw } from "lucide-react";
-import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { resetSajuAction } from "@/app/(dashboard)/saju/actions";
@@ -12,15 +11,14 @@ export function ResetSajuButton() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
-  const t = useTranslations("sajuButtons");
 
   function handleClick() {
-    if (!confirm(t("resetConfirm"))) return;
+    if (!confirm("사주 정보를 다시 계산할까요?")) return;
     setError(null);
     startTransition(async () => {
       const result = await resetSajuAction();
       if (result.kind === "error") {
-        setError(result.message ?? t("error"));
+        setError(result.message ?? "사주 초기화에 실패했어요.");
         return;
       }
       router.refresh();
@@ -41,7 +39,7 @@ export function ResetSajuButton() {
         ) : (
           <RefreshCw className="h-3.5 w-3.5" />
         )}
-        {t("resetCta")}
+        다시 계산하기
       </Button>
       {error ? <p className="text-[15px] text-destructive">{error}</p> : null}
     </div>

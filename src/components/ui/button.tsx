@@ -14,7 +14,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:     "primary",
-        destructive: "fracture",
+        destructive: "danger",
         outline:     "",              // 베이스 그대로
         secondary:   "",
         ghost:       "ghost",

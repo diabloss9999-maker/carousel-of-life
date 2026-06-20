@@ -1,11 +1,11 @@
 /**
  * 결제 발급 사전 바인딩 (pending_billing_issues).
  *
- * 흐름:
+ * 기운:
  *   1. 사용자가 결제 시작 클릭 → 서버에서 issueId 발급 + DB 등록 (15분 유효)
  *   2. 클라이언트가 PortOne SDK 로 redirectUrl 호출
  *   3. callback 진입 시 issueId 로 DB 조회 → userId 일치 검증
- *   4. 검증 OK → consumedAt 표시 + 기존 결제 흐름 진행
+ *   4. 검증 OK → consumedAt 표시 + 기존 결제 절차 진행
  *
  * 보안 효과:
  *   - callback URL 이 유출되어도 다른 사용자 카드로 내 구독 생성 불가

@@ -47,7 +47,7 @@ export default function PrivacyPage() {
         <h3>자동 수집 항목</h3>
         <ul>
           <li>접속 IP, 쿠키, 서비스 이용 기록(접속 일시 등)</li>
-          <li>점술사와의 채팅 내용 (서비스 품질 개선 및 친밀도 시스템 운영)</li>
+          <li>멤버와의 채팅 내용 (서비스 품질 개선 및 호감도 시스템 운영)</li>
         </ul>
         <h3>손금 풀이 시 일시 처리 항목 (영구 저장 X)</h3>
         <ul>
@@ -64,7 +64,7 @@ export default function PrivacyPage() {
         <ul>
           <li>회원 가입 및 회원관리 — 본인 확인, 부정 이용 방지</li>
           <li>
-            서비스 제공 — 사주팔자 계산, AI 운세 풀이, 타로 해석, 점술사 채팅,
+            서비스 제공 — 사주팔자 계산, 운세 풀이, 타로 해석, 멤버 채팅,
             성격유형 분석 및 궁합 풀이
           </li>
           <li>결제 및 환불 처리</li>
@@ -110,7 +110,7 @@ export default function PrivacyPage() {
             <strong>Vercel Inc.</strong> — 웹 서비스 호스팅
           </li>
           <li>
-            <strong>Anthropic PBC</strong> — AI 풀이 생성. 회사는 이용자가 입력한
+            <strong>Anthropic PBC</strong> — 풀이 생성. 회사는 이용자가 입력한
             텍스트만 API 호출 시 전송하며, 식별 정보(이름·이메일·계정 ID 등)는
             함께 전송하지 않습니다.
           </li>

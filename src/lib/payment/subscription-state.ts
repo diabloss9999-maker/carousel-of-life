@@ -9,8 +9,7 @@
  *   - 그 외 활성 구독은 → "lite"
  *   - 활성 구독 없음 → "free"
  *
- * (Toss 폴백 코드 제거됨 — PortOne 단일화)
- * LS 사용자(legacy)는 ls_variant_id 가 있는 경우 무조건 lite 로 폴백 처리.
+ * (Toss·Lemon Squeezy 폴백 코드 제거됨 — PortOne 단일화)
  */
 import "server-only";
 

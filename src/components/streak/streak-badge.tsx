@@ -5,8 +5,7 @@
  * 마일스톤 달성 시 축하 메시지를 보여준다.
  */
 import { useEffect, useRef } from "react";
-import Link from "next/link";
-import { Flame, Gift } from "lucide-react";
+import { Flame, Gift, Star } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 
@@ -18,13 +17,27 @@ interface StreakBadgeProps {
 }
 
 export function StreakBadge({ checkIn }: StreakBadgeProps) {
-  const { currentStreak, milestoneBonus, bonusGachaCredits, wasReset } = checkIn;
+  const { currentStreak, milestoneBonus, bonusGachaCredits, wasReset, starPiecesAwarded } = checkIn;
   const notified = useRef(false);
   const t = useTranslations("streak");
 
   useEffect(() => {
     if (notified.current) return;
     notified.current = true;
+
+    if (starPiecesAwarded > 0) {
+      setTimeout(
+        () =>
+          toast.success(`오늘 출석 보상 ✦ 별조각 ${starPiecesAwarded}개!`, {
+            description:
+              currentStreak % 7 === 0
+                ? `${currentStreak}일 연속 보너스 포함이에요. 멤버에게 선물해보세요 🎁`
+                : "7일 연속이면 +50개 보너스가 있어요.",
+            duration: 5000,
+          }),
+        700,
+      );
+    }
 
     if (milestoneBonus > 0) {
       const key =
@@ -43,17 +56,16 @@ export function StreakBadge({ checkIn }: StreakBadgeProps) {
         300,
       );
     }
-  }, [currentStreak, milestoneBonus, wasReset, t]);
+  }, [currentStreak, milestoneBonus, wasReset, starPiecesAwarded, t]);
 
   const isHot = currentStreak >= 7;
 
   return (
     <div className="flex items-center gap-3">
       {/* 연속 출석 — 클릭 시 운명 로그로 이동 */}
-      <Link
-        href="/history"
+      <div
         className={cn(
-          "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[15px] font-semibold transition-opacity hover:opacity-80",
+          "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[15px] font-semibold",
           isHot
             ? "bg-orange-500/15 text-orange-500 dark:text-orange-400"
             : "bg-muted/50 text-muted-foreground",
@@ -62,11 +74,10 @@ export function StreakBadge({ checkIn }: StreakBadgeProps) {
         {isHot ? (
           <Flame className="h-4 w-4 animate-pulse" aria-hidden />
         ) : (
-           
-          <img src="/icons/fracture-mark.svg" alt="" aria-hidden className="h-4 w-4 opacity-60" />
+          <Star className="h-4 w-4 opacity-70" aria-hidden />
         )}
         <span>{t("badgeLabel", { n: currentStreak })}</span>
-      </Link>
+      </div>
 
       {/* 보너스 가챠 크레딧 */}
       {bonusGachaCredits > 0 && (

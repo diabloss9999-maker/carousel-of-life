@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * 채팅 진입 시 무작위 점술사 환영 인사.
+ * 채팅 진입 시 무작위 멤버 환영 인사.
  * 세션당 1회 (sessionStorage).
  */
 import Image from "next/image";
@@ -37,7 +37,7 @@ export function WelcomeGreeting() {
     // 마운트 1회 client-only 초기화 — SSR 하이드레이션 불일치 회피를 위한 의도된 패턴.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setCharId(pickedId);
-    // 캐릭터별 3개 인사 중 무작위 1개 — i18n 번역에서 가져온다.
+    // 멤버별 3개 인사 중 무작위 1개 — i18n 번역에서 가져온다.
     const lines = tGreetings.raw(pickedId) as string[];
     const picked = lines[Math.floor(Math.random() * lines.length)] ?? "";
      

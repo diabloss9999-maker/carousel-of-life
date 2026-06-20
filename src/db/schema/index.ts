@@ -111,6 +111,13 @@ export const profiles = pgTable("profiles", {
     .default("solar"),
   gender: genderEnum("gender").notNull(),
   mbti: text("mbti"),
+  /** 최애(bias) 멤버 CharacterId. 선톡 우선순위 + 관계망 프롬프트에 사용. */
+  biasCharacter: text("bias_character"),
+  /**
+   * 멤버가 나를 부르는 애칭(호칭). 미설정 시 기본 "라이더".
+   * 챗 프롬프트의 기본 호칭으로 주입 — bubble 식 친밀감 훅. (마이그 0020)
+   */
+  memberNickname: text("member_nickname"),
   birthPlace: text("birth_place"),
   /** 사주 8자: { year, month, day, hour } 각 { stem, branch } 형태. */
   sajuPillars: jsonb("saju_pillars"),
@@ -201,7 +208,7 @@ export const tarotReadings = pgTable(
      * 예: [{ position: "past", cardId: "the_fool", isReversed: false }, ...]
      */
     cards: jsonb("cards").notNull(),
-    /** 점술사 풀이 본문. */
+    /** 멤버 풀이 본문. */
     interpretation: text("interpretation").notNull(),
     model: text("model").notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
@@ -358,7 +365,7 @@ export type SavedPartner = typeof savedPartners.$inferSelect;
 export type NewSavedPartner = typeof savedPartners.$inferInsert;
 
 // =============================================================================
-// chat_sessions - AI 도사님과의 대화 세션
+// chat_sessions - AI 멤버와의 대화 세션
 // =============================================================================
 
 export const chatSessions = pgTable(
@@ -369,8 +376,8 @@ export const chatSessions = pgTable(
       .notNull()
       .references(() => authUsers.id, { onDelete: "cascade" }),
     /** AI 가 대화 초입에 자동 생성하는 짧은 제목. */
-    title: text("title").notNull().default("새로운 문답"),
-    /** 선택된 점술사 캐릭터 ID. null 이면 기본값(witch) 사용. */
+    title: text("title").notNull().default("새로운 대화"),
+    /** 선택된 멤버 ID. null 이면 기본값(witch) 사용. */
     character: text("character").default("witch"),
     lastMessageAt: timestamp("last_message_at", { withTimezone: true })
       .notNull()
@@ -425,7 +432,7 @@ export type ChatMessage = typeof chatMessages.$inferSelect;
 export type NewChatMessage = typeof chatMessages.$inferInsert;
 
 // =============================================================================
-// subscriptions - Lemon Squeezy 정기구독
+// subscriptions - 정기구독 (PortOne)
 // =============================================================================
 
 export const subscriptions = pgTable(
@@ -435,7 +442,7 @@ export const subscriptions = pgTable(
     userId: uuid("user_id")
       .notNull()
       .references(() => authUsers.id, { onDelete: "cascade" }),
-    /** 결제 PG 식별 — 'portone' | 'toss' | 'lemonsqueezy'(레거시). */
+    /** 결제 PG 식별 — 'portone' | 'toss'(레거시). */
     provider: text("provider").notNull().default("portone"),
     /**
      * 'lite' | 'pro'. 가격 변동에 안전한 plan 식별자 (마이그 0012).
@@ -443,10 +450,6 @@ export const subscriptions = pgTable(
      * 비교는 폴백.
      */
     planKey: text("plan_key"),
-    // ── LS 컬럼 (provider='lemonsqueezy' 일 때만 채워짐) ──
-    lsSubscriptionId: text("ls_subscription_id").unique(),
-    lsCustomerId: text("ls_customer_id"),
-    lsVariantId: text("ls_variant_id"),
     // ── Toss 컬럼 (provider='toss' 일 때만 채워짐, 마이그 0005) ──
     tossBillingKey: text("toss_billing_key").unique(),
     tossCustomerKey: text("toss_customer_key"),
@@ -458,6 +461,10 @@ export const subscriptions = pgTable(
     portoneChannelKey: text("portone_channel_key"),
     portoneCardCompany: text("portone_card_company"),
     portoneCardNumberMasked: text("portone_card_number_masked"),
+    // ── Google Play 컬럼 (provider='google_play' 일 때만 채워짐, 마이그 0019) ──
+    googlePlayPurchaseToken: text("google_play_purchase_token").unique(),
+    googlePlayProductId: text("google_play_product_id"),
+    googlePlayBasePlanId: text("google_play_base_plan_id"),
     // ── 공통 ──
     status: subscriptionStatusEnum("status").notNull(),
     currentPeriodStartsAt: timestamp("current_period_starts_at", {
@@ -596,6 +603,48 @@ export const portonePayments = pgTable(
 
 export type PortonePayment = typeof portonePayments.$inferSelect;
 export type NewPortonePayment = typeof portonePayments.$inferInsert;
+
+// =============================================================================
+// google_play_purchases - Google Play 구매/RTDN 이력 (마이그 0019)
+//
+// 안드로이드 앱(TWA) 인앱결제. 웹훅(RTDN)·검증 API 가 멱등 처리하며,
+// purchase_token 으로 구독 갱신/취소 상태를 동기화한다.
+// =============================================================================
+
+export const googlePlayPurchases = pgTable(
+  "google_play_purchases",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id").references(() => authUsers.id, {
+      onDelete: "cascade",
+    }),
+    subscriptionId: uuid("subscription_id").references(
+      () => subscriptions.id,
+      { onDelete: "set null" },
+    ),
+    /** Google Play 구매 토큰 (구독 갱신 시에도 동일 토큰 유지). */
+    purchaseToken: text("purchase_token").notNull().unique(),
+    productId: text("product_id").notNull(),
+    /** 'SUBSCRIPTION' | 'INAPP'. */
+    purchaseType: text("purchase_type").notNull().default("SUBSCRIPTION"),
+    /** Google RTDN 알림 유형 코드. */
+    notificationType: integer("notification_type"),
+    acknowledged: boolean("acknowledged").notNull().default(false),
+    expiryTime: timestamp("expiry_time", { withTimezone: true }),
+    /** Google Developer API 응답 원본 (증빙). */
+    raw: jsonb("raw"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("google_play_purchases_user_idx").on(t.userId)],
+);
+
+export type GooglePlayPurchase = typeof googlePlayPurchases.$inferSelect;
+export type NewGooglePlayPurchase = typeof googlePlayPurchases.$inferInsert;
 
 // =============================================================================
 // push_subscriptions - 웹푸시 알림 구독 (마이그 0009)
@@ -829,7 +878,7 @@ export type Streak = typeof streaks.$inferSelect;
 export type NewStreak = typeof streaks.$inferInsert;
 
 // =============================================================================
-// daily_questions - 캐릭터가 매일 먼저 건네는 개인화 질문
+// daily_questions - 멤버가 매일 먼저 건네는 개인화 질문
 // =============================================================================
 
 export const dailyQuestions = pgTable(
@@ -841,7 +890,7 @@ export const dailyQuestions = pgTable(
       .references(() => authUsers.id, { onDelete: "cascade" }),
     /** KST 기준 날짜 (YYYY-MM-DD). */
     questionDate: date("question_date").notNull(),
-    /** 질문을 건네는 캐릭터 ID (witch | child | sage). */
+    /** 질문을 건네는 멤버 ID (witch | child | sage). */
     characterId: text("character_id").notNull(),
     /** AI 가 생성한 오늘의 질문 본문. */
     question: text("question").notNull(),
@@ -911,7 +960,7 @@ export type MoodEntry = typeof moodEntries.$inferSelect;
 export type NewMoodEntry = typeof moodEntries.$inferInsert;
 
 // =============================================================================
-// character_affinities - 캐릭터별 친밀도 포인트
+// character_affinities - 멤버별 친밀도 포인트
 // =============================================================================
 
 export const characterAffinities = pgTable(
@@ -1142,6 +1191,62 @@ export const personalityCareerFit = pgTable("personality_career_fit", {
 
 export type PersonalityCareerFit = typeof personalityCareerFit.$inferSelect;
 
+// =============================================================================
+// 선물 재화 (별조각) — 잔액 · 원장 · 선물 기록 (마이그 0018)
+// =============================================================================
+
+export const userCurrency = pgTable("user_currency", {
+  userId: uuid("user_id")
+    .primaryKey()
+    .references(() => authUsers.id, { onDelete: "cascade" }),
+  balance: integer("balance").notNull().default(0),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export type UserCurrency = typeof userCurrency.$inferSelect;
+
+export const currencyLogs = pgTable(
+  "currency_logs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    delta: integer("delta").notNull(),
+    /** 'purchase'(구매 충전) | 'gift'(선물 사용) | 'admin'(운영 보정). */
+    reason: text("reason").notNull(),
+    /** purchase: PortOne paymentId / gift: gift_logs.id. */
+    refId: text("ref_id"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("currency_logs_user_idx").on(t.userId, t.createdAt)],
+);
+
+export type CurrencyLog = typeof currencyLogs.$inferSelect;
+
+export const giftLogs = pgTable(
+  "gift_logs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => authUsers.id, { onDelete: "cascade" }),
+    character: text("character").notNull(),
+    giftId: text("gift_id").notNull(),
+    cost: integer("cost").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("gift_logs_user_idx").on(t.userId, t.createdAt)],
+);
+
+export type GiftLog = typeof giftLogs.$inferSelect;
+
 export const allTables = {
   profiles,
   dailyFortunes,
@@ -1172,6 +1277,10 @@ export const allTables = {
   pushSubscriptions,
   sharedFortunes,
   pendingBillingIssues,
+  userCurrency,
+  currencyLogs,
+  giftLogs,
+  googlePlayPurchases,
 } as const;
 
 // `sql` re-export — RLS 마이그레이션에서 raw SQL 작성 시 활용.

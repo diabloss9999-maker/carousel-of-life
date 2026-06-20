@@ -80,7 +80,7 @@ export function SessionDrawer({ sessions }: SessionDrawerProps) {
                 className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors"
                 onClick={() => setOpen(false)}
               >
-                {/* 캐릭터 미니 초상화 */}
+                {/* 멤버 미니 초상화 */}
                 {char && (
                   <div className="relative h-10 w-7 flex-shrink-0 overflow-hidden rounded-lg">
                     <CharacterImage

@@ -26,9 +26,14 @@ import { cn } from "@/lib/utils";
 interface PersonalityTestProps {
   /** 이미 저장된 유형 (재테스트 or 첫 시작 여부 판단). */
   currentType: string | null;
+  gender?: "male" | "female" | "other";
 }
 
-export function PersonalityTest({ currentType }: PersonalityTestProps) {
+function getMbtiImageSrc(type: string, gender?: "male" | "female" | "other") {
+  return gender === "female" ? `/mbti/female/${type}.webp` : `/mbti/${type}.webp`;
+}
+
+export function PersonalityTest({ currentType, gender }: PersonalityTestProps) {
   // 사용자가 가입 시 MBTI 를 입력했으면 진입 화면에서 두 옵션 카드를 보여준다.
   // - "saved": 입력한 유형으로 결과 카드 보기
   // - "test":  직접 20문항 테스트 진행
@@ -152,7 +157,7 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
   /** 결과 화면 (테스트 완료 후 or 입력한 유형으로 보기) */
   if (resultType && !started) {
     const info = TYPE_INFO[resultType as keyof typeof TYPE_INFO];
-    return <ResultCard info={info} axes={axes} onRetest={resetToTest} />;
+    return <ResultCard info={info} axes={axes} onRetest={resetToTest} gender={gender} />;
   }
 
   /** 시작 전 화면 */
@@ -201,7 +206,7 @@ export function PersonalityTest({ currentType }: PersonalityTestProps) {
   /** 결과가 나온 직후 (테스트 완료) */
   if (resultType) {
     const info = TYPE_INFO[resultType as keyof typeof TYPE_INFO];
-    return <ResultCard info={info} axes={axes} onRetest={resetToTest} />;
+    return <ResultCard info={info} axes={axes} onRetest={resetToTest} gender={gender} />;
   }
 
   /** 테스트 진행 화면 */
@@ -313,10 +318,12 @@ function ResultCard({
   info,
   axes,
   onRetest,
+  gender,
 }: {
   info: (typeof TYPE_INFO)[keyof typeof TYPE_INFO];
   axes: Record<string, AxisResult> | null;
   onRetest: () => void;
+  gender?: "male" | "female" | "other";
 }) {
   const t = useTranslations("personalityTest");
   const tT = useTranslations("personalityTypes");
@@ -330,7 +337,7 @@ function ResultCard({
         {/* MBTI 카드 이미지 */}
         <div className="relative w-44 sm:w-52 aspect-[2/3] overflow-hidden rounded-2xl shadow-xl">
           <Image
-            src={`/mbti/${info.type}.webp`}
+            src={getMbtiImageSrc(info.type, gender)}
             alt={info.type}
             fill
             className="object-cover"
@@ -443,7 +450,7 @@ function ResultCard({
               return (
                 <div key={typeCode} className="flex flex-col items-center gap-1">
                   <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-primary/40">
-                    <Image src={`/mbti/${typeCode}.webp`} alt={typeCode} fill className="object-cover" sizes="96px" />
+                    <Image src={getMbtiImageSrc(typeCode, gender)} alt={typeCode} fill className="object-cover" sizes="96px" />
                   </div>
                   <p className="font-mystic text-[15px] font-bold text-primary">{typeCode}</p>
                   <p className="text-[15px] text-muted-foreground text-center leading-tight">{tT(`${typeCode}_nickname`)}</p>
@@ -461,7 +468,7 @@ function ResultCard({
               return (
                 <div key={typeCode} className="flex flex-col items-center gap-1">
                   <div className="relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-md ring-2 ring-destructive/40 grayscale-[30%]">
-                    <Image src={`/mbti/${typeCode}.webp`} alt={typeCode} fill className="object-cover" sizes="96px" />
+                    <Image src={getMbtiImageSrc(typeCode, gender)} alt={typeCode} fill className="object-cover" sizes="96px" />
                   </div>
                   <p className="font-mystic text-[15px] font-bold text-destructive">{typeCode}</p>
                   <p className="text-[15px] text-muted-foreground text-center leading-tight">{tT(`${typeCode}_nickname`)}</p>

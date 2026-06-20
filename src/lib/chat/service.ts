@@ -1,5 +1,5 @@
 /**
- * 점술사 문답 (채팅) 비즈니스 로직.
+ * 멤버 문답 (채팅) 비즈니스 로직.
  *
  * - 세션은 무한 생성 가능
  * - 메시지(질문) 단위로 일일 한도 체크
@@ -8,7 +8,7 @@
 import "server-only";
 
 import { getTranslations } from "next-intl/server";
-import { and, asc, desc, eq, gte } from "drizzle-orm";
+import { and, asc, desc, eq, gte, ne } from "drizzle-orm";
 
 import { db } from "@/db";
 import {
@@ -27,6 +27,7 @@ import { getRecentMoods, buildMoodContext } from "@/lib/mood/service";
 import { buildObservationContext, getCurrentHourKst } from "@/lib/observe/service";
 import { getStreak } from "@/lib/streak/service";
 import {
+  CHARACTERS,
   buildCharacterSystemPrompt,
   DEFAULT_CHARACTER,
   type CharacterId,
@@ -48,7 +49,7 @@ export async function createSession(opts: {
     .insert(chatSessions)
     .values({
       userId: opts.userId,
-      title: opts.title ?? "새로운 문답",
+      title: opts.title ?? "새로운 대화",
       character: opts.character ?? DEFAULT_CHARACTER,
     })
     .returning();
@@ -56,9 +57,9 @@ export async function createSession(opts: {
 }
 
 /**
- * 해당 캐릭터의 가장 최근 세션을 찾아 이어가거나, 없으면 새로 만든다.
+ * 해당 멤버의 가장 최근 세션을 찾아 이어가거나, 없으면 새로 만든다.
  *
- * 동일 점술사를 다시 선택했을 때 이전 대화를 자연스럽게 이어가기 위함.
+ * 동일 멤버를 다시 선택했을 때 이전 대화를 자연스럽게 이어가기 위함.
  *
  * 어제·며칠 전 세션도 이어감 — 단, prepareSendMessage 에서 시스템
  * 프롬프트에 '시간 경과 메타' 를 주입해 AI 가 "이전 대화는 며칠 전 일"
@@ -101,7 +102,12 @@ export async function listSessions(
   return db
     .select()
     .from(chatSessions)
-    .where(eq(chatSessions.userId, userId))
+    .where(
+      and(
+        eq(chatSessions.userId, userId),
+        ne(chatSessions.character, "group"),
+      ),
+    )
     .orderBy(desc(chatSessions.lastMessageAt))
     .limit(limit);
 }
@@ -116,7 +122,13 @@ export async function listTodaySessions(userId: string): Promise<ChatSession[]> 
   return db
     .select()
     .from(chatSessions)
-    .where(and(eq(chatSessions.userId, userId), gte(chatSessions.createdAt, todayStartUtc)))
+    .where(
+      and(
+        eq(chatSessions.userId, userId),
+        gte(chatSessions.createdAt, todayStartUtc),
+        ne(chatSessions.character, "group"),
+      ),
+    )
     .orderBy(desc(chatSessions.lastMessageAt));
 }
 
@@ -223,6 +235,170 @@ function buildTimeMeta(lastAssistantAt: Date | null): string {
   return meta;
 }
 
+/** KST 기준 자정 시각(ms). 날짜 단위 차이를 정확히 계산하기 위함. */
+function kstMidnightMs(d: Date): number {
+  const ymd = d.toLocaleDateString("en-CA", { timeZone: "Asia/Seoul" }); // YYYY-MM-DD
+  return new Date(`${ymd}T00:00:00+09:00`).getTime();
+}
+
+/**
+ * "기억하는 멤버" — 관계 메타.
+ *
+ * 멤버별 가장 오래된 세션 생성일을 '처음 만난 날'로 보고, 오늘까지 함께한
+ * 일수와 기념일(7/30/100일 등)을 계산해 시스템 프롬프트에 주입한다.
+ * 멤버가 라이더를 오래 기억해 온 사이처럼 느끼게 하되, 정보를 감시하듯 나열하지
+ * 않도록 가드를 함께 넣는다. 매 턴 주입(쿼리·토큰 모두 작음).
+ */
+async function buildRelationshipMeta(opts: {
+  userId: string;
+  character: string;
+  userName: string | null;
+  nickname: string | null;
+}): Promise<string> {
+  const [first] = await db
+    .select({ createdAt: chatSessions.createdAt })
+    .from(chatSessions)
+    .where(
+      and(
+        eq(chatSessions.userId, opts.userId),
+        eq(chatSessions.character, opts.character),
+      ),
+    )
+    .orderBy(asc(chatSessions.createdAt))
+    .limit(1);
+  if (!first) return "";
+
+  const days =
+    Math.floor(
+      (kstMidnightMs(new Date()) - kstMidnightMs(first.createdAt)) / 86_400_000,
+    ) + 1;
+  if (days < 1) return "";
+
+  const MILESTONES = new Set([7, 14, 30, 50, 100, 200, 300, 365, 500, 700, 1000]);
+  const isMilestone = MILESTONES.has(days) || (days > 365 && days % 365 === 0);
+
+  const call = opts.nickname?.trim() || "라이더";
+  let meta = `[우리 사이]\n처음 이야기한 지 오늘로 ${days}일째다.`;
+  if (isMilestone) {
+    meta += `\n오늘은 함께한 지 ${days}일이 되는 특별한 날 — 대화 중 자연스럽게 한 번 짚어주면 좋아한다.`;
+  }
+  meta +=
+    `\n지난 대화를 따뜻하게 기억하고, 기본 호칭은 "${call}". 이 호칭을 유지하면서 예전에 나눈 이야기를 가볍게 떠올려라. ` +
+    `정말 이름을 불러야 하는 자연스러운 순간에도 성은 빼고 이름만 불러라. ` +
+    `단, 사용자의 정보를 감시하듯 줄줄 나열하지 마라 — 친한 사이가 자연스레 기억하는 정도로만, 부담 없이.`;
+  return meta;
+}
+
+/**
+ * 애칭(호칭) 메타 — bubble 식. 사용자가 직접 정한 애칭이 있으면 매 턴 주입해
+ * 첫 대화부터 멤버가 그 애칭으로 부르게 한다. 미설정 시 빈 문자열(기본 "라이더").
+ */
+function buildNicknameMeta(nickname: string | null): string {
+  const call = nickname?.trim();
+  if (!call) return "";
+  return `[호칭]\n사용자가 직접 정한 애칭은 "${call}". 기본 호칭 "라이더" 대신 이 애칭을 기본으로, 대화 내내 자연스럽게 부른다.`;
+}
+
+/**
+ * 세션 간 장기 기억(Replika 식) — 이 멤버와의 '예전 다른 세션'에서 라이더가
+ * 했던 말들을 끌어와, 멤버가 지난 대화를 기억하고 먼저 떠올리게 한다.
+ * 비용 절약을 위해 첫 턴에서만 호출한다(호출부에서 가드).
+ */
+async function buildLongTermMemory(opts: {
+  userId: string;
+  character: string;
+  currentSessionId: string;
+}): Promise<string> {
+  const rows = await db
+    .select({ content: chatMessages.content })
+    .from(chatMessages)
+    .innerJoin(chatSessions, eq(chatMessages.sessionId, chatSessions.id))
+    .where(
+      and(
+        eq(chatSessions.userId, opts.userId),
+        eq(chatSessions.character, opts.character),
+        ne(chatMessages.sessionId, opts.currentSessionId),
+        eq(chatMessages.role, "user"),
+      ),
+    )
+    .orderBy(desc(chatMessages.createdAt))
+    .limit(6);
+
+  const lines = rows
+    .map((r) => r.content.replace(/\s+/g, " ").trim().slice(0, 60))
+    .filter((s) => s.length > 0)
+    .reverse(); // 오래된 → 최신 순으로 자연스럽게
+  if (lines.length === 0) return "";
+
+  return (
+    `[지난 이야기 — 예전 대화에서 라이더가 했던 말들. 자연스럽게 기억하되, ` +
+    `줄줄 나열하거나 캐묻지 말고 흐름에 맞을 때 한 번씩만 떠올려라]\n` +
+    lines.map((l) => `- "${l}"`).join("\n")
+  );
+}
+
+/**
+ * 최애(bias) 관계망 — 현재 멤버가 최애인지, 다른 멤버가 최애인지에 따라
+ * 특별 애정 / 가벼운 질투를 시스템 프롬프트에 주입한다.
+ */
+function buildBiasMeta(
+  characterId: CharacterId,
+  biasCharacter: string | null,
+): string {
+  if (!biasCharacter) return "";
+  if (biasCharacter === characterId) {
+    return (
+      `[최애]\n사용자가 너를 '최애'(가장 좋아하는 멤버)로 꼽았다. 그 마음을 알고 ` +
+      `특별히 더 아끼고 다정하게 대해라. 가끔 그 사실에 기뻐하거나 고마워해도 좋다 ` +
+      `— 단 과하게 으스대지는 마라.`
+    );
+  }
+  const biasName = CHARACTERS[biasCharacter as CharacterId]?.name;
+  if (!biasName) return "";
+  return (
+    `[최애]\n사용자의 '최애'는 ${biasName}다. 대화 중 가끔 그걸 가볍게 의식하거나 ` +
+    `장난스럽게 살짝 질투해도 좋다 (예: "${biasName}가 더 좋아? …아니, 됐어. 농담이야"). ` +
+    `짧고 귀엽게. 다른 멤버를 깎아내리거나 진지하게 서운해하지는 마라.`
+  );
+}
+
+function cleanMemoryLine(text: string): string {
+  return text
+    .replace(/CARDS:\{.*?\}/g, "")
+    .replace(/\[사진 첨부[^\]]*\]/g, "")
+    .replace(/:carousel_(?:happy|cheer|shy|comfort|surprise|wink|pout|sleepy|love):/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
+ * 최근 기억 노트 — 저장된 새 데이터 없이, 현재 세션의 최근 사용자 발화만
+ * 멤버에게 "무엇을 자연스럽게 기억해야 하는지" 알려준다.
+ */
+function buildRecentMemoryMeta(
+  history: ChatMessage[],
+  currentUserMessageId: string,
+): string {
+  const recentUserLines = history
+    .filter((m) => m.role === "user" && m.id !== currentUserMessageId)
+    .slice(-8)
+    .map((m) => cleanMemoryLine(m.content))
+    .filter((line) => line.length >= 8)
+    .map((line) => (line.length > 80 ? `${line.slice(0, 79).trimEnd()}…` : line));
+
+  if (recentUserLines.length === 0) return "";
+
+  return (
+    `[최근 기억 노트]\n` +
+    recentUserLines.map((line, i) => `${i + 1}. ${line}`).join("\n") +
+    `\n\n[기억 사용법]\n` +
+    `위 노트는 사용자가 최근 너에게 직접 말했던 이야기다. ` +
+    `응답할 때 필요한 경우 한 가지만 자연스럽게 떠올려라. ` +
+    `예: "전에 말했던 그 일은 좀 괜찮아졌어?", "그때 네가 좋아한다고 했던 거랑 비슷하다"처럼. ` +
+    `단, 모든 항목을 나열하거나 감시하듯 말하지 마라. 지금 대화와 관련 없으면 굳이 꺼내지 마라.`
+  );
+}
+
 /**
  * 세션 제목 자동 갱신 (첫 사용자 메시지 기준).
  */
@@ -262,7 +438,7 @@ export interface PrepareSendResult {
   /** Anthropic API 에 그대로 넘길 messages 배열. */
   messages: { role: "user" | "assistant"; content: string }[];
   userMessageId: string;
-  /** 세션에 저장된 캐릭터 ID — systemPrompt 파싱 대신 사용. */
+  /** 세션에 저장된 멤버 ID — systemPrompt 파싱 대신 사용. */
   characterId: CharacterId;
 }
 
@@ -400,7 +576,7 @@ export async function prepareSendMessage(opts: {
       const streak = streakResult.status === "fulfilled" ? streakResult.value : null;
       const moodCtx     = buildMoodContext(moodData);
 
-      // 기록 메시지 — 사용자 행동 패턴을 캐릭터에게 암시적으로 전달
+      // 기록 메시지 — 사용자 행동 패턴을 멤버에게 암시적으로 전달
       const todayStr = getTodayInSeoul();
       const lastCheckIn = streak?.lastCheckIn ?? null;
       const wasReset = lastCheckIn !== null && lastCheckIn !== todayStr &&
@@ -439,11 +615,40 @@ export async function prepareSendMessage(opts: {
   const lastAssistantAt = lastAssistant?.createdAt ?? null;
   const timeMeta = buildTimeMeta(lastAssistantAt);
 
-  // 첫 턴: 풀 컨텍스트 + 시간 메타
-  // 그 외: 시간 메타만 (사용자 정보는 첫 턴에 이미 전달됨)
+  // "기억하는 멤버" — 처음 만난 날 기준 함께한 일수 + 기념일 + 따뜻한 기억 지침.
+  const relationshipMeta = await buildRelationshipMeta({
+    userId: profile.userId,
+    character: characterId,
+    userName: profile.displayName ?? null,
+    nickname: profile.memberNickname ?? null,
+  });
+  const nicknameMeta = buildNicknameMeta(profile.memberNickname ?? null);
+  const biasMeta = buildBiasMeta(characterId, profile.biasCharacter ?? null);
+  const recentMemoryMeta = buildRecentMemoryMeta(history, savedUserMessage.id);
+  // 세션 간 장기 기억은 첫 턴에만 주입(쿼리·토큰 절약).
+  const longTermMemory = isFirstTurn
+    ? await buildLongTermMemory({
+        userId: profile.userId,
+        character: characterId,
+        currentSessionId: opts.sessionId,
+      })
+    : "";
+  const metaBlock = [
+    timeMeta,
+    nicknameMeta,
+    relationshipMeta,
+    longTermMemory,
+    biasMeta,
+    recentMemoryMeta,
+  ]
+    .filter(Boolean)
+    .join("\n\n");
+
+  // 첫 턴: 풀 컨텍스트 + 메타
+  // 그 외: 메타만 (사용자 정보는 첫 턴에 이미 전달됨)
   const combinedCtx = isFirstTurn
-    ? `${userCtx}\n\n${timeMeta}`.trim()
-    : timeMeta;
+    ? `${userCtx}\n\n${metaBlock}`.trim()
+    : metaBlock;
 
   const systemPrompt = buildCharacterSystemPrompt(characterId, combinedCtx);
 

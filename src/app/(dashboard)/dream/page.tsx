@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 
-import { requireProfile } from "@/lib/auth/get-user";
 import { DreamReadingForm } from "@/components/dream/dream-reading-form";
+import { requireProfile } from "@/lib/auth/get-user";
 
 export const metadata: Metadata = {
   title: "꿈해몽",
-  description: "꿈을 사주와 결합해 풀이해드려요.",
+  description: "기억나는 꿈을 현실적인 메시지로 풀어봐요.",
 };
 
 export default async function DreamPage() {
@@ -18,7 +18,7 @@ export default async function DreamPage() {
           꿈해몽
         </h1>
         <p className="text-[15px] text-muted-foreground">
-          어젯밤·최근에 꿨던 꿈을 적어주세요. 당신의 사주와 결합해 풀이해드려요.
+          어젯밤 꿈에 남은 장면을 적으면 상징, 감정, 오늘의 조언으로 정리해요.
         </p>
       </header>
 

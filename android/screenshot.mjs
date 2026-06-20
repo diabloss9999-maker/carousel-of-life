@@ -9,7 +9,7 @@
  *
  * ⚠️ 로그인된 상태 캡처가 필요하다면:
  *   - .env.local 에 SCREENSHOT_EMAIL · SCREENSHOT_PASSWORD 설정
- *   - 또는 manuallyLogin 함수에서 SSO 흐름 추가
+ *   - 또는 manuallyLogin 함수에서 SSO 절차 추가
  *
  * 미로그인 상태에서도 캡처되는 페이지: /, /pricing, /privacy, /terms
  * 로그인 상태 필요: /today, /chat, /tarot, /saju, /palm

@@ -94,7 +94,7 @@ export type SajuDeepAiOutput = z.infer<typeof sajuDeepAiSchema>;
  * - tips: 직장에서 예쁨받는 방법 3가지
  * - energy: 오늘의 에너지 리포트(집중력/대인관계/추진력 + 피해야 할 것)
  * - timing: 최적 업무 타이밍(오전/오후 + 회의 팁)
- * - weeklyFlow: 이번 주 직장 흐름(월~금 5일)
+ * - weeklyFlow: 이번 주 직장운(월~금 5일)
  * - relationship: 관계 운(부탁하기 좋은 날 여부 + 상사/동료/돋보임 팁)
  */
 const numField = z.union([z.number(), z.string()]).transform(Number);
@@ -272,7 +272,7 @@ export const stressProfileSchema = z.object({
 });
 export type StressProfileOutput = z.infer<typeof stressProfileSchema>;
 
-/** 유형 라이트 F — 직업 적성 심층 리포트 */
+/** 유형 라이트 F — 직업 적성 풀이 */
 export const careerFitSchema = z.object({
   bestEnvironment: z.string(),
   fitRoles: z.array(z.string()).min(1),
@@ -308,7 +308,7 @@ export const dreamReadingAiSchema = z.object({
   summary: z.string().min(1).max(80),
   /** 길흉 — 좋음/주의/나쁨/중립. */
   fortune: z.enum(["good", "caution", "bad", "neutral"]),
-  /** 꿈의 의미 — 사주·상징·동양 해석 기반. */
+  /** 꿈의 의미 — 사주·상징·전통 해석 기반. */
   meaning: z.string().min(1).max(1500),
   /** 사용자 사주와의 연결 — 일간·오행과 어떻게 이어지는지. */
   sajuConnection: z.string().min(1).max(800),
@@ -327,7 +327,7 @@ export const nameReadingAiSchema = z.object({
   meaning: z.string().min(1).max(1000),
   /** 사주(일간·오행)와의 상생/상극. */
   sajuHarmony: z.string().min(1).max(800),
-  /** 운세 흐름 (사회운·재물운·건강운). */
+  /** 오늘의 기운 (사회운·재물운·건강운). */
   fortune: z.string().min(1).max(1000),
   /** 권유·주의 사항. */
   advice: z.string().min(1).max(600),
@@ -336,7 +336,7 @@ export type NameReadingAiOutput = z.infer<typeof nameReadingAiSchema>;
 
 /** 플로로랜시 (꽃점) AI 응답 — 부드러운 한 마디. */
 export const flowerOracleAiSchema = z.object({
-  /** 한 줄 헤드라인 (40자 이내, 점술사 톤). */
+  /** 한 줄 헤드라인 (40자 이내, 차분한 존댓말 톤). */
   headline: z.string().min(1).max(80),
   /** 본문 풀이 3-4문장 (꽃말 + 사주·MBTI 결합). */
   reading: z.string().min(1).max(500),
@@ -347,7 +347,7 @@ export type FlowerOracleAiOutput = z.infer<typeof flowerOracleAiSchema>;
 
 /** 이름 궁합 AI 응답 — 짧고 빠른 풀이. */
 export const nameCompatibilityAiSchema = z.object({
-  /** 한 줄 요약 (40자 이내). 점술사 톤. */
+  /** 한 줄 요약 (40자 이내, 차분한 존댓말 톤). */
   headline: z.string().min(1).max(80),
   /** 본문 3-4줄 풀이 (두 이름의 결을 짚어주는). */
   reading: z.string().min(1).max(500),

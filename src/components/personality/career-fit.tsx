@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * 유형 라이트 F — 직업 적성 심층 리포트 카드.
+ * 유형 라이트 F — 직업 적성 풀이 카드.
  */
 import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";

@@ -6,6 +6,7 @@
  */
 import "server-only";
 
+import { getLocale } from "next-intl/server";
 import { generateJson } from "@/lib/ai/generate";
 import { buildNameReadingPrompt } from "@/lib/ai/prompts";
 import {
@@ -14,7 +15,7 @@ import {
 } from "@/lib/ai/types";
 import { AI_MODELS } from "@/lib/constants";
 import type { Profile } from "@/db/schema";
-import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
+import { NEUTRAL_CARD_VOICE } from "@/lib/ai/character-voice";
 
 export interface NameReadingInput {
   profile: Profile;
@@ -22,23 +23,13 @@ export interface NameReadingInput {
   hanja?: string | null;
   /** 본인 이름인지 다른 사람 이름인지. */
   isOwnName: boolean;
-  /** 풀이해줄 캐릭터 — 동양 캐릭터(현도·소율) 권장. */
-  characterId?: "taoist" | "shaman";
 }
 
-export interface NameReadingResult extends NameReadingAiOutput {
-  characterId: "taoist" | "shaman";
-}
-
-const DEFAULT_CHARACTER = "taoist" as const;
+export type NameReadingResult = NameReadingAiOutput;
 
 export async function generateNameReading(
   input: NameReadingInput,
 ): Promise<NameReadingResult> {
-  const characterId: "taoist" | "shaman" =
-    input.characterId ?? DEFAULT_CHARACTER;
-  const voice = CHARACTER_CARD_VOICE[characterId];
-
   const userPrompt = buildNameReadingPrompt({
     profile: input.profile,
     targetName: input.targetName,
@@ -47,12 +38,13 @@ export async function generateNameReading(
   });
 
   const data = await generateJson({
-    systemSuffix: voice,
+    systemSuffix: NEUTRAL_CARD_VOICE,
     userPrompt,
     schema: nameReadingAiSchema,
     model: AI_MODELS.premium,
     maxTokens: 1500,
+    locale: await getLocale(),
   });
 
-  return { ...data, characterId };
+  return data;
 }

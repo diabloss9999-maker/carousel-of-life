@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import { requireProfile } from "@/lib/auth/get-user";
 import { NameCompatibilityForm } from "@/components/name-compatibility/name-compatibility-form";
@@ -6,21 +7,22 @@ import { NameCompatibilityForm } from "@/components/name-compatibility/name-comp
 export const metadata: Metadata = {
   title: "이름 궁합",
   description:
-    "두 사람의 이름만으로 궁합을 짚어드려요. 한글 자음의 결과 점술사의 한 마디.",
+    "Name compatibility based on the rhythm of two names.",
 };
 
 export default async function NameCompatibilityPage() {
+  const t = await getTranslations("nameCompatibilityPage");
   const { profile } = await requireProfile();
 
   return (
     <div className="mx-auto w-full max-w-3xl space-y-6">
       <header className="space-y-2 text-center">
         <h1 className="font-mystic text-3xl font-semibold tracking-tight sm:text-4xl">
-          이름 궁합
+          {t("title")}
         </h1>
         <p className="text-[15px] text-muted-foreground leading-relaxed">
-          두 사람의 이름만으로 궁합을 짚어드려요.
-          <br className="hidden sm:inline" /> 자음의 결과 소리의 울림을 읽어 점수와 한 마디를 들려드립니다.
+          {t("descriptionLine1")}
+          <br className="hidden sm:inline" /> {t("descriptionLine2")}
         </p>
       </header>
 

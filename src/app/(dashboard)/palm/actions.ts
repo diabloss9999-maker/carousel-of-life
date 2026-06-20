@@ -5,7 +5,6 @@
  *
  * FormData 입력:
  *   - image: 손바닥 사진 (File, JPEG/PNG/WEBP, 1MB 미만 권장)
- *   - characterId: 풀이해줄 캐릭터 (witch | sage | child)
  *   - question: 궁금한 점 (선택, 100자 이내)
  *   - consent: 사용자 동의 (true 가 아니면 거부)
  *
@@ -15,29 +14,22 @@
  */
 import { requireProfile } from "@/lib/auth/get-user";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import { getTranslations } from "next-intl/server";
 import {
   enforceAiRateLimit,
   RateLimitedError,
 } from "@/lib/rate-limit/in-memory";
-import {
-  readPalm,
-  PALM_ENABLED_CHARACTERS,
-} from "@/lib/palm/service";
-import type { CharacterId } from "@/lib/chat/characters";
+import { readPalm } from "@/lib/palm/service";
 import { checkAndIncrementQuota } from "@/lib/usage/quota";
 import { FREE_DAILY_LIMITS } from "@/lib/constants";
 
 /** 손금 액션 상태 — UI 가 결과 표시·에러 분기에 사용. */
 export type PalmActionState =
   | { kind: "idle" }
-  | { kind: "result"; interpretation: string; characterId: CharacterId }
+  | { kind: "result"; interpretation: string }
   | { kind: "error"; message: string };
 
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5MB 한도 (클라이언트 압축 후 보통 200KB 정도)
-
-function isAllowedCharacter(id: string): id is CharacterId {
-  return PALM_ENABLED_CHARACTERS.includes(id as CharacterId);
-}
 
 function isAllowedMediaType(
   t: string,
@@ -49,19 +41,12 @@ export async function analyzePalmAction(
   _prev: PalmActionState,
   formData: FormData,
 ): Promise<PalmActionState> {
+  const tErr = await getTranslations("actionErrors");
   const consent = formData.get("consent");
   if (consent !== "true") {
     return {
       kind: "error",
-      message: "사진 처리 동의가 필요해요.",
-    };
-  }
-
-  const rawChar = String(formData.get("characterId") ?? "");
-  if (!isAllowedCharacter(rawChar)) {
-    return {
-      kind: "error",
-      message: "손금 풀이는 이세계 캐릭터(루나·카엘·라엘) 만 가능해요.",
+      message: tErr("palmConsentRequired"),
     };
   }
 
@@ -69,19 +54,19 @@ export async function analyzePalmAction(
   if (!(file instanceof File) || file.size === 0) {
     return {
       kind: "error",
-      message: "손바닥 사진을 첨부해줘.",
+      message: tErr("palmImageRequired"),
     };
   }
   if (file.size > MAX_IMAGE_BYTES) {
     return {
       kind: "error",
-      message: "사진 용량이 너무 커. 5MB 이내로 부탁해.",
+      message: tErr("palmImageTooLarge"),
     };
   }
   if (!isAllowedMediaType(file.type)) {
     return {
       kind: "error",
-      message: "JPEG/PNG/WEBP 만 지원해.",
+      message: tErr("palmUnsupportedType"),
     };
   }
 
@@ -95,7 +80,7 @@ export async function analyzePalmAction(
   if (!subscribed) {
     return {
       kind: "error",
-      message: "손금 풀이는 라이트 구독자 전용이에요. 구독 후 이용해주세요.",
+      message: tErr("palmPremiumOnly"),
     };
   }
 
@@ -105,7 +90,7 @@ export async function analyzePalmAction(
     if (e instanceof RateLimitedError) {
       return {
         kind: "error",
-        message: `너무 빠르게 호출하고 있어. ${e.retryAfterSec}초 뒤에 다시 시도해줘.`,
+        message: tErr("rateLimitedSeconds", { n: e.retryAfterSec }),
       };
     }
     throw e;
@@ -116,12 +101,13 @@ export async function analyzePalmAction(
   const quota = await checkAndIncrementQuota({
     userId: profile.userId,
     kind: "palm",
-    max: FREE_DAILY_LIMITS.palm,
+    max: FREE_DAILY_LIMITS.fortune,
+    amount: 2,
   });
   if (!quota.ok) {
     return {
       kind: "error",
-      message: `오늘의 손금 풀이 한도(${quota.max}회)를 모두 사용했어. 내일 다시 만나.`,
+      message: tErr("palmQuotaExceeded", { n: quota.max }),
     };
   }
 
@@ -133,14 +119,12 @@ export async function analyzePalmAction(
     const result = await readPalm({
       imageBase64,
       mediaType: file.type,
-      characterId: rawChar,
       question,
     });
 
     return {
       kind: "result",
       interpretation: result.interpretation,
-      characterId: result.characterId,
     };
   } catch (e) {
     console.error("[analyzePalmAction]", {
@@ -151,8 +135,8 @@ export async function analyzePalmAction(
       kind: "error",
       message:
         e instanceof Error && e.message.includes("API")
-          ? "AI 응답이 늦어. 잠시 후 다시 시도해줘."
-          : "손금 풀이에 실패했어. 사진을 다시 찍어 보내볼래?",
+          ? tErr("aiSlowRetry")
+          : tErr("palmGenericError"),
     };
   }
 }

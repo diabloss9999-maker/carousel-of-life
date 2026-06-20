@@ -53,7 +53,7 @@ export function SajuZodiacCards({ pillars }: SajuZodiacCardsProps) {
       <h3 className="font-mystic text-base font-semibold text-foreground/80">
         {tZ("heading")}
       </h3>
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-4 gap-2 sm:gap-3">
         {entries.map(({ key, labelKey, branch, info }) => (
           <div key={key} className="flex flex-col items-center gap-2 text-center">
             <span className="text-[15px] font-medium text-muted-foreground">

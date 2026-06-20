@@ -1,6 +1,5 @@
 "use client";
 
-import { CharacterImage } from "@/components/shared/character-image";
 import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { Layers, Loader2, Lock, Sparkles } from "lucide-react";
@@ -14,8 +13,6 @@ import {
   type TripleAnalysisState,
 } from "@/app/(dashboard)/personality/actions";
 import type { TripleAnalysisOutput } from "@/lib/ai/types";
-import { CHARACTERS } from "@/lib/chat/characters";
-import { getTodayCharacter } from "@/lib/daily-question/rotation";
 
 interface TripleAnalysisProps {
   subscribed: boolean;
@@ -28,7 +25,6 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
   const didAutoLoadRef = useRef(false);
   const t = useTranslations("tripleAnalysis");
   const tPrem = useTranslations("premiumCard");
-  const tChar = useTranslations("characters");
 
   useEffect(() => {
     if (!subscribed || didAutoLoadRef.current) return;
@@ -85,9 +81,6 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
   }
 
   if (data) {
-    const charId = getTodayCharacter();
-    const character = CHARACTERS[charId];
-    const charName = tChar(`${charId}.name`);
     return (
       <Card className="app-surface">
         <CardHeader>
@@ -96,12 +89,9 @@ export function TripleAnalysis({ subscribed }: TripleAnalysisProps) {
               <Layers className="h-4 w-4 text-accent" />
               {t("title")}
             </CardTitle>
-            <div className="flex items-center gap-2 flex-shrink-0">
-              <div className="relative h-9 w-6 overflow-hidden rounded-lg shadow-sm">
-                <CharacterImage character={character} fill className="object-cover object-top" sizes="24px" />
-              </div>
-              <p className="font-mystic text-[15px] font-semibold text-foreground/70">{charName}</p>
-            </div>
+            <span className="flex-shrink-0 rounded-full border border-accent/30 px-2 py-0.5 text-[15px] text-accent">
+              성격 분석
+            </span>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">

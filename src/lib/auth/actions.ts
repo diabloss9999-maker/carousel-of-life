@@ -4,7 +4,7 @@
  * 인증 관련 Server Action.
  *
  * 이메일/비밀번호 가입·로그인은 카카오·구글 OAuth 로 대체되었으므로 제거됨.
- * 로그인/회원가입 흐름은 Supabase OAuth → `/auth/callback` 라우트에서 처리.
+ * 로그인/회원가입 절차는 Supabase OAuth → `/auth/callback` 라우트에서 처리.
  */
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";

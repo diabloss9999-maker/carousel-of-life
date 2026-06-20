@@ -1,7 +1,7 @@
 /**
  * next-intl 요청별 메시지 로더.
  *
- * 쿠키 NEXT_LOCALE 을 읽어 ko/en 메시지를 불러온다.
+ * 쿠키 NEXT_LOCALE 을 읽어 ko/en/ja 메시지를 불러온다.
  */
 import { cookies } from "next/headers";
 import { getRequestConfig } from "next-intl/server";

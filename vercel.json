@@ -22,6 +22,14 @@
       "schedule": "0 23 * * *"
     },
     {
+      "path": "/api/cron/member-dm",
+      "schedule": "0 11 * * *"
+    },
+    {
+      "path": "/api/cron/member-dm?slot=noon",
+      "schedule": "30 3 * * *"
+    },
+    {
       "path": "/api/cron/cleanup-share-images",
       "schedule": "0 19 * * *"
     }

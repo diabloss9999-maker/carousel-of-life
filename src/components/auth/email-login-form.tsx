@@ -12,6 +12,8 @@
 import { useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Route } from "next";
+import { useTranslations } from "next-intl";
+import { track } from "@vercel/analytics";
 import { Loader2, Lock, Mail } from "lucide-react";
 import { toast } from "sonner";
 
@@ -27,6 +29,7 @@ interface EmailLoginFormProps {
 }
 
 export function EmailLoginForm({ className }: EmailLoginFormProps) {
+  const t = useTranslations("emailLoginForm");
   const router = useRouter();
   const params = useSearchParams();
   const [mode, setMode] = useState<Mode>("signIn");
@@ -39,15 +42,16 @@ export function EmailLoginForm({ className }: EmailLoginFormProps) {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!email || !password) {
-      toast.error("이메일과 비밀번호를 모두 입력해 주세요.");
+      toast.error(t("missingFields"));
       return;
     }
     if (password.length < 8) {
-      toast.error("비밀번호는 8자 이상이어야 해요.");
+      toast.error(t("passwordTooShort"));
       return;
     }
 
     startTransition(async () => {
+      track("auth_submit", { mode: isSignUp ? "sign_up" : "sign_in" });
       const supabase = createClient();
 
       if (isSignUp) {
@@ -59,21 +63,22 @@ export function EmailLoginForm({ className }: EmailLoginFormProps) {
           },
         });
         if (error) {
+          track("auth_error", { mode: "sign_up" });
           toast.error(error.message);
           return;
         }
         // Supabase 가 email 확인을 끄면 바로 세션 발급, 켜져 있으면 메일 발송.
         if (data.session) {
-          toast.success("가입 완료. 잠시만요…");
+          track("auth_success", { mode: "sign_up" });
+          toast.success(t("signupComplete"));
           const ref = params.get("ref");
           const url = ref
             ? (`${ROUTES.onboarding}?ref=${encodeURIComponent(ref)}` as Route)
             : (ROUTES.onboarding as Route);
           router.replace(url);
         } else {
-          toast.success(
-            "확인 메일을 보냈어요. 메일함에서 링크를 눌러 가입을 완료해 주세요.",
-          );
+          track("auth_email_confirmation_sent");
+          toast.success(t("confirmationSent"));
         }
         return;
       }
@@ -84,11 +89,18 @@ export function EmailLoginForm({ className }: EmailLoginFormProps) {
         password,
       });
       if (error) {
+        track("auth_error", { mode: "sign_in" });
         toast.error(error.message);
         return;
       }
-      toast.success("로그인 되었어요");
-      router.replace(ROUTES.today);
+      track("auth_success", { mode: "sign_in" });
+      toast.success(t("loginComplete"));
+      const redirectTo = params.get("redirect");
+      router.replace(
+        redirectTo?.startsWith("/")
+          ? (redirectTo as Route)
+          : (ROUTES.appHome as Route),
+      );
       router.refresh();
     });
   }
@@ -96,7 +108,7 @@ export function EmailLoginForm({ className }: EmailLoginFormProps) {
   return (
     <form onSubmit={handleSubmit} className={cn("space-y-3", className)}>
       <label className="block">
-        <span className="sr-only">이메일</span>
+        <span className="sr-only">{t("email")}</span>
         <div className="relative">
           <Mail
             className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
@@ -107,7 +119,7 @@ export function EmailLoginForm({ className }: EmailLoginFormProps) {
             autoComplete="email"
             inputMode="email"
             required
-            placeholder="이메일"
+            placeholder={t("email")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="h-11 w-full rounded-lg border border-input bg-background pl-10 pr-3 text-[15px] outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-primary"
@@ -116,7 +128,7 @@ export function EmailLoginForm({ className }: EmailLoginFormProps) {
       </label>
 
       <label className="block">
-        <span className="sr-only">비밀번호</span>
+        <span className="sr-only">{t("password")}</span>
         <div className="relative">
           <Lock
             className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
@@ -127,7 +139,7 @@ export function EmailLoginForm({ className }: EmailLoginFormProps) {
             autoComplete={isSignUp ? "new-password" : "current-password"}
             required
             minLength={8}
-            placeholder={isSignUp ? "비밀번호 (8자 이상)" : "비밀번호"}
+            placeholder={isSignUp ? t("passwordSignup") : t("password")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="h-11 w-full rounded-lg border border-input bg-background pl-10 pr-3 text-[15px] outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-primary"
@@ -139,23 +151,23 @@ export function EmailLoginForm({ className }: EmailLoginFormProps) {
         {isPending ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
-            처리 중…
+            {t("processing")}
           </>
         ) : isSignUp ? (
-          "이메일로 회원가입"
+          t("signupWithEmail")
         ) : (
-          "이메일로 로그인"
+          t("loginWithEmail")
         )}
       </Button>
 
       <div className="pt-1 text-center text-[15px] text-muted-foreground">
-        {isSignUp ? "이미 가입했나요? " : "계정이 없나요? "}
+        {isSignUp ? t("alreadyAccount") : t("noAccount")}{" "}
         <button
           type="button"
           onClick={() => setMode(isSignUp ? "signIn" : "signUp")}
           className="underline-offset-2 hover:underline text-foreground"
         >
-          {isSignUp ? "로그인" : "회원가입"}
+          {isSignUp ? t("login") : t("signup")}
         </button>
       </div>
     </form>

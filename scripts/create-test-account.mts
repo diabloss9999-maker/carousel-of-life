@@ -4,7 +4,7 @@
  * 절차:
  *   1. Supabase Admin API 로 이메일/비밀번호 계정 생성 (이메일 확인 skip)
  *   2. profiles row 자동 생성 (가짜 생년월일·성별)
- *   3. (선택) 라이트 구독 부여 — 결제 흐름 우회, premium 콘텐츠 확인용
+ *   3. (선택) 라이트 구독 부여 — 결제 절차 우회, premium 콘텐츠 확인용
  *
  * 카드사가 이 계정으로 로그인 → /pricing → 결제창 진입까지 확인 가능.
  *
@@ -177,7 +177,7 @@ async function main() {
   console.log(`    비밀번호: ${args.password}`);
   console.log(`    user_id: ${userId}`);
   console.log(
-    `    플랜    : ${args.premium ? "라이트 (premium 콘텐츠 확인 가능)" : "무료 (결제 흐름 직접 시연)"}`,
+    `    플랜    : ${args.premium ? "라이트 (premium 콘텐츠 확인 가능)" : "무료 (결제 절차 직접 시연)"}`,
   );
   console.log(
     "  로그인 URL: https://carouseloflife.com/login  (또는 staging URL)",

@@ -230,7 +230,8 @@ function GroupDropdown({
               left: coords.left,
               transform: "translateX(-50%)",
               zIndex: 100,
-              minWidth: 160,
+              width: group.sections ? "min(720px, calc(100vw - 24px))" : 160,
+              minWidth: group.sections ? 360 : 160,
               // Portal 로 body 직속이라 헤더 backdrop-filter 영향 X
               // → .app-surface 의 backdrop-filter 가 진짜로 페이지를 blur.
               // 일부 환경에서 클래스 backdrop-filter 가 누락될 수 있으니 인라인도 추가.
@@ -238,51 +239,101 @@ function GroupDropdown({
               WebkitBackdropFilter: "blur(28px)",
             }}
           >
-            <ul className="py-1.5">
-              {group.children.map((child) => {
-                const active = isLeafActive(child, pathname, search, hash);
-                return (
-                  <li key={child.href as string} role="none">
-                    <Link
-                      href={child.href}
-                      role="menuitem"
-                      aria-current={active ? "page" : undefined}
-                      className="block px-4 py-2 text-[15px] font-medium transition-colors"
-                      style={
-                        active
-                          ? {
-                              color: NAV_ACTIVE_CLR,
-                              background: "rgba(255,255,255,0.10)",
-                              fontWeight: 700,
-                            }
-                          : { color: NAV_MUTED }
-                      }
-                      onClick={(e) =>
-                        handleLeafClick(e, child.href as string, () => setOpen(false))
-                      }
-                      onMouseEnter={(e) => {
-                        if (!active) {
-                          e.currentTarget.style.background = "rgba(255,255,255,0.06)";
-                          e.currentTarget.style.color = NAV_ACTIVE_CLR;
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (!active) {
-                          e.currentTarget.style.background = "transparent";
-                          e.currentTarget.style.color = NAV_MUTED;
-                        }
-                      }}
+            {group.sections ? (
+              <div className="space-y-1.5 p-2">
+                {group.sections.map((section, index) => (
+                  <div
+                    key={section.id}
+                    className="grid grid-cols-[72px_minmax(0,1fr)] items-center gap-2 rounded-xl px-2 py-2"
+                    style={
+                      index > 0
+                        ? { borderTop: "1px solid rgba(0,0,0,0.14)" }
+                        : undefined
+                    }
+                  >
+                    <p
+                      className="text-[13px] font-semibold"
+                      style={{ color: NAV_ACTIVE_CLR }}
                     >
-                      {tNav(child.labelKey)}
-                    </Link>
+                      {tNav(section.labelKey)}
+                    </p>
+                    <div className="flex min-w-0 gap-1.5 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                      {section.children.map((child) => (
+                        <GroupMenuLink
+                          key={child.href as string}
+                          child={child}
+                          active={isLeafActive(child, pathname, search, hash)}
+                          label={tNav(child.labelKey)}
+                          closeMenu={() => setOpen(false)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <ul className="py-1.5">
+                {group.children.map((child) => (
+                  <li key={child.href as string} role="none">
+                    <GroupMenuLink
+                      child={child}
+                      active={isLeafActive(child, pathname, search, hash)}
+                      label={tNav(child.labelKey)}
+                      closeMenu={() => setOpen(false)}
+                    />
                   </li>
-                );
-              })}
-            </ul>
+                ))}
+              </ul>
+            )}
           </div>,
           document.body,
         )}
     </div>
+  );
+}
+
+function GroupMenuLink({
+  child,
+  active,
+  label,
+  closeMenu,
+}: {
+  child: NavLeaf;
+  active: boolean;
+  label: string;
+  closeMenu: () => void;
+}) {
+  return (
+    <Link
+      href={child.href}
+      role="menuitem"
+      aria-current={active ? "page" : undefined}
+      className="block whitespace-nowrap rounded-lg px-3 py-2 text-[15px] font-medium transition-colors"
+      style={
+        active
+          ? {
+              color: NAV_ACTIVE_CLR,
+              background: "rgba(255,255,255,0.10)",
+              fontWeight: 700,
+            }
+          : { color: NAV_MUTED }
+      }
+      onClick={(e) => handleLeafClick(e, child.href as string, closeMenu)}
+      onMouseEnter={(e) => {
+        if (!active) {
+          e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+          e.currentTarget.style.color = NAV_ACTIVE_CLR;
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!active) {
+          e.currentTarget.style.background = "transparent";
+          e.currentTarget.style.color = NAV_MUTED;
+        }
+      }}
+    >
+      {label}
+    </Link>
   );
 }
 

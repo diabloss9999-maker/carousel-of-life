@@ -1,21 +1,24 @@
 "use client";
 
 /**
- * 캐릭터 친밀도 표시 바.
- * 레벨 호칭 + 포인트 진행 바를 보여준다.
+ * 멤버 친밀도 표시 바.
+ * 레벨 + 포인트 진행 바를 보여준다.
  */
+import { useTranslations } from "next-intl";
+
 import { cn } from "@/lib/utils";
 import { calcLevel } from "@/lib/affinity/levels";
+import { nextAffinityReward } from "@/lib/affinity/rewards";
 import type { CharacterId } from "@/lib/chat/characters";
 
 interface AffinityBarProps {
   characterId: CharacterId;
   points: number;
-  /** 작은 크기 (캐릭터 선택 카드 내부용) */
+  /** 작은 크기 (멤버 선택 카드 내부용) */
   compact?: boolean;
 }
 
-/** 캐릭터별 진행 바 색상 */
+/** 멤버별 진행 바 색상 */
 const BAR_COLOR: Record<CharacterId, string> = {
   child:      "bg-red-500",
   witch:      "bg-blue-500",
@@ -29,7 +32,8 @@ const BAR_COLOR: Record<CharacterId, string> = {
 };
 
 export function AffinityBar({ characterId, points, compact = false }: AffinityBarProps) {
-  const { level, label, minPoints, nextPoints } = calcLevel(characterId, points);
+  const t = useTranslations("affinityBar");
+  const { level, minPoints, nextPoints } = calcLevel(characterId, points);
   const isMax = nextPoints === null;
 
   const progress = isMax
@@ -37,6 +41,7 @@ export function AffinityBar({ characterId, points, compact = false }: AffinityBa
     : Math.min(100, Math.round(((points - minPoints) / (nextPoints - minPoints)) * 100));
 
   const barColor = BAR_COLOR[characterId];
+  const nextReward = nextAffinityReward(level);
 
   if (compact) {
     return (
@@ -44,7 +49,7 @@ export function AffinityBar({ characterId, points, compact = false }: AffinityBa
         <div className="flex items-center justify-between gap-1.5">
           {/* min-w-0 + truncate: 좁은 카드에서 라벨이 글자 단위로 깨지는 것 방지 */}
           <span className="min-w-0 flex-1 truncate text-[15px] text-muted-foreground">
-            Lv.{level} {label}
+            Lv.{level}
           </span>
           <span className="shrink-0 whitespace-nowrap text-[15px] text-muted-foreground tabular-nums">
             {points}
@@ -68,10 +73,9 @@ export function AffinityBar({ characterId, points, compact = false }: AffinityBa
           <span className="rounded-full border border-border/40 bg-muted/30 px-2 py-0.5 text-[15px] font-semibold text-muted-foreground">
             Lv.{level}
           </span>
-          <span className="text-[15px] text-foreground/70">{label}</span>
         </div>
         <span className="text-[15px] text-muted-foreground tabular-nums">
-          {isMax ? "최대" : `${points} / ${nextPoints}`}
+          {isMax ? t("max") : `${points} / ${nextPoints}`}
         </span>
       </div>
       <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
@@ -80,6 +84,13 @@ export function AffinityBar({ characterId, points, compact = false }: AffinityBa
           style={{ width: `${progress}%` }}
         />
       </div>
+      {nextReward ? (
+        <p className="text-[13px] text-muted-foreground/70">
+          {t("nextPrefix", { level: nextReward.level })}{" "}
+          <span className="text-foreground/75">{t(`reward${nextReward.level}`)}</span>{" "}
+          {t("unlock")}
+        </p>
+      ) : null}
     </div>
   );
 }

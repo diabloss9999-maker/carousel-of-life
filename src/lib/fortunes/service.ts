@@ -15,13 +15,9 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { generateJson } from "@/lib/ai/generate";
 import {
   buildDailyFortunePrompt,
+  dailyFortuneScoreFor,
   type FortuneCategory,
 } from "@/lib/ai/prompts";
-import {
-  getTodayCharacter,
-  getTodayCharacterByCategory,
-} from "@/lib/daily-question/rotation";
-import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
 import { dailyFortuneAiSchema } from "@/lib/ai/types";
 import {
   AI_LIMITS,
@@ -29,6 +25,7 @@ import {
   FREE_DAILY_LIMITS,
 } from "@/lib/constants";
 import { ensureSajuCalculated } from "@/lib/saju/calculate";
+import { getDailyManse } from "@/lib/saju/daily-manse";
 import {
   checkAndIncrementQuota,
   getTodayInSeoul,
@@ -46,6 +43,7 @@ export async function getDailyFortune(
   userId: string,
   category: FortuneCategory,
   date = getTodayInSeoul(),
+  profile?: Profile,
 ): Promise<DailyFortune | null> {
   const [row] = await db
     .select()
@@ -59,7 +57,24 @@ export async function getDailyFortune(
     )
     .limit(1);
 
-  return row ?? null;
+  if (!row) return null;
+
+  if (!profile) return row;
+
+  // 캐시된 운세도 점수는 오늘의 명리 흐름으로 재계산 — 생성 시 점수와 일치.
+  const manse = getDailyManse(profile, date, category);
+
+  return {
+    ...row,
+    score: dailyFortuneScoreFor(
+      {
+        profile,
+        category,
+        fortuneDate: date,
+      },
+      manse?.delta ?? 0,
+    ),
+  };
 }
 
 /**
@@ -72,7 +87,12 @@ export async function getOrCreateDailyFortune(opts: {
   const date = getTodayInSeoul();
 
   // 1) 캐시.
-  const cached = await getDailyFortune(opts.profile.userId, opts.category, date);
+  const cached = await getDailyFortune(
+    opts.profile.userId,
+    opts.category,
+    date,
+    opts.profile,
+  );
   if (cached) {
     return { ok: true, fortune: cached, cached: true };
   }
@@ -82,6 +102,10 @@ export async function getOrCreateDailyFortune(opts: {
     userId: opts.profile.userId,
     kind: "fortune",
     max: FREE_DAILY_LIMITS.fortune,
+    amount:
+      opts.category === "zodiac" || opts.category === "chinese_zodiac"
+        ? 2
+        : 1,
   });
   if (!quota.ok) {
     return { ok: false, reason: "quota_exceeded", max: quota.max };
@@ -102,33 +126,30 @@ export async function getOrCreateDailyFortune(opts: {
     };
   }
 
-  // 4) AI 운세 풀이.
+  // 4) 오늘의 명리 흐름 (일진×사주 충·합·오행·십성) — 정확도 핵심.
+  const manse = getDailyManse(profile, date, opts.category);
+
+  // 5) AI 운세 풀이.
   let aiOutput;
   try {
-    /**
-     * 카테고리별 해설 점술사 분기.
-     * - 별자리 (zodiac)        → 북유럽 (외르문드·비요른·헬가)
-     * - 십이간지 (chinese_zodiac) → 동양 (소율·현도·흑랑)
-     * - 그 외 카테고리         → 9명 전체 풀에서 일일 순환
-     */
-    const characterId =
-      opts.category === "zodiac"
-        ? getTodayCharacterByCategory("북유럽", date)
-        : opts.category === "chinese_zodiac"
-          ? getTodayCharacterByCategory("동양", date)
-          : getTodayCharacter(date);
-
     aiOutput = await generateJson({
       schema: dailyFortuneAiSchema,
-      userPrompt: buildDailyFortunePrompt({
+      userPrompt: `${buildDailyFortunePrompt({
         profile,
         category: opts.category,
         fortuneDate: date,
-        characterId,
-      }),
+        manse,
+      })}
+
+[Neutral daily fortune rules]
+- Do not mention any member, idol, fan-service concept, or Carousel Nine worldbuilding.
+- Write as an independent Korean fortune report in polite language.
+- Keep the title concise, not like a character quote. Max 20 Korean characters if possible.
+- The content should be 5 to 7 practical sentences focused on today's mood, caution, and useful action.
+- Avoid fixed predictions, excessive mysticism, banmal, emoji, markdown, and stage/performance metaphors.
+- luckyColor, luckyNumber, and luckyDirection must be simple values users can understand immediately.`,
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.fortuneMaxTokens,
-      systemSuffix: CHARACTER_CARD_VOICE[characterId],
       locale: await getLocale(),
     });
   } catch (e) {
@@ -142,7 +163,7 @@ export async function getOrCreateDailyFortune(opts: {
     };
   }
 
-  // 5) DB 저장.
+  // 6) DB 저장.
   const [row] = await db
     .insert(dailyFortunes)
     .values({
@@ -151,7 +172,14 @@ export async function getOrCreateDailyFortune(opts: {
       category: opts.category,
       title: aiOutput.title,
       content: aiOutput.content,
-      score: aiOutput.score,
+      score: dailyFortuneScoreFor(
+        {
+          profile,
+          category: opts.category,
+          fortuneDate: date,
+        },
+        manse?.delta ?? 0,
+      ),
       luckyColor: aiOutput.luckyColor,
       luckyNumber: aiOutput.luckyNumber,
       luckyDirection: aiOutput.luckyDirection,
@@ -168,7 +196,12 @@ export async function getOrCreateDailyFortune(opts: {
 
   // 동시 INSERT 시 row 가 비어있을 수 있음 → 다시 조회.
   if (!row) {
-    const recached = await getDailyFortune(profile.userId, opts.category, date);
+    const recached = await getDailyFortune(
+      profile.userId,
+      opts.category,
+      date,
+      profile,
+    );
     if (!recached) {
       return {
         ok: false,

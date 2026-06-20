@@ -53,7 +53,7 @@ export const LENORMAND_DECK: LenormandCard[] = [
   { id: 31, nameKo: "태양", nameEn: "Sun", keywords: ["성공", "에너지", "행복", "승리"], meaning: "밝은 성공과 에너지, 행복이 가득한 때다.", imageSrc: "/lenormand/31_sun.webp" },
   { id: 32, nameKo: "달", nameEn: "Moon", keywords: ["감정", "직관", "명성", "꿈"], meaning: "감정과 직관이 강해지고 명성이 높아진다.", imageSrc: "/lenormand/32_moon.webp" },
   { id: 33, nameKo: "열쇠", nameEn: "Key", keywords: ["해결", "중요성", "발견", "열림"], meaning: "중요한 해결책이나 기회가 열린다.", imageSrc: "/lenormand/33_key.webp" },
-  { id: 34, nameKo: "물고기", nameEn: "Fish", keywords: ["풍요", "재정", "흐름", "독립"], meaning: "재정적 흐름과 풍요, 독립적인 에너지를 나타낸다.", imageSrc: "/lenormand/34_fish.webp" },
+  { id: 34, nameKo: "물고기", nameEn: "Fish", keywords: ["풍요", "재정", "기운", "독립"], meaning: "재정적 기운과 풍요, 독립적인 에너지를 나타낸다.", imageSrc: "/lenormand/34_fish.webp" },
   { id: 35, nameKo: "닻", nameEn: "Anchor", keywords: ["안정", "인내", "직업", "지속"], meaning: "안정과 인내, 오래 지속되는 것을 나타낸다.", imageSrc: "/lenormand/35_anchor.webp" },
   { id: 36, nameKo: "십자가", nameEn: "Cross", keywords: ["운명", "부담", "신앙", "시련"], meaning: "피할 수 없는 운명이나 시련, 깊은 의미를 나타낸다.", imageSrc: "/lenormand/36_cross.webp" },
 ];

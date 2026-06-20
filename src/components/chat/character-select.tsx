@@ -1,62 +1,57 @@
 "use client";
 
 import { CharacterImage } from "@/components/shared/character-image";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { AffinityBar } from "@/components/affinity/affinity-bar";
+import { calcLevel } from "@/lib/affinity/levels";
 import {
   CHARACTERS,
   CHARACTERS_BY_CATEGORY,
   type CharacterId,
   type CharacterCategory,
 } from "@/lib/chat/characters";
-import {
-  VACATION_POSTCARD_BY_CHARACTER,
-  type CharacterVacationRoster,
-} from "@/lib/chat/character-vacation";
 import { SPECIALTY_KEY } from "@/i18n/character-display";
 import { cn } from "@/lib/utils";
 
 interface CharacterSelectProps {
   affinities?: Record<string, number>;
-  vacationRoster: CharacterVacationRoster;
-  /** 유저 MBTI 기준 캐릭터별 궁합 점수 (없으면 궁합 배지 미표시). */
+  /** 유저 MBTI 기준 멤버별 궁합 점수 (없으면 궁합 배지 미표시). */
   matchScores?: Record<string, number> | null;
 }
 
-const CATEGORY_ORDER: CharacterCategory[] = ["이세계", "동양", "북유럽"];
+const CATEGORY_ORDER: CharacterCategory[] = ["기본", "확장", "보관"];
 
 /** 카테고리별 디자인 — 라벨은 i18n 에서, 색상은 여기서. */
 const CATEGORY_DECO: Record<CharacterCategory, {
-  labelKey: "Otherworld" | "Eastern" | "Nordic";
+  labelKey: "Primary" | "Extended" | "Archive";
   border: string;
   text: string;
   dot: string;
   panel: string;
   method: string;
 }> = {
-  이세계: {
-    labelKey: "Otherworld",
+  기본: {
+    labelKey: "Primary",
     border: "border-violet-500/30",
     text: "text-violet-400",
     dot: "bg-violet-500",
     panel: "bg-violet-500/5",
     method: "border-violet-400/40 bg-violet-500/10 text-violet-200",
   },
-  동양: {
-    labelKey: "Eastern",
+  확장: {
+    labelKey: "Extended",
     border: "border-emerald-500/30",
     text: "text-emerald-400",
     dot: "bg-emerald-500",
     panel: "bg-emerald-500/5",
     method: "border-emerald-400/40 bg-emerald-500/10 text-emerald-200",
   },
-  북유럽: {
-    labelKey: "Nordic",
+  보관: {
+    labelKey: "Archive",
     border: "border-sky-500/30",
     text: "text-sky-300",
     dot: "bg-sky-400",
@@ -65,17 +60,17 @@ const CATEGORY_DECO: Record<CharacterCategory, {
   },
 };
 
-/** 캐릭터별 호버 강조 색 */
+/** 멤버별 호버 강조 색 — 링 + 멤버 컬러 글로우 */
 const CHAR_ACCENT: Record<CharacterId, string> = {
-  child:      "hover:ring-red-700/50 hover:border-red-800/50",
-  witch:      "hover:ring-blue-700/50 hover:border-blue-800/50",
-  sage:       "hover:ring-amber-600/50 hover:border-amber-700/50",
-  shaman:     "hover:ring-rose-700/50 hover:border-rose-800/50",
-  taoist:     "hover:ring-cyan-700/50 hover:border-cyan-800/50",
-  dokkaebi:   "hover:ring-purple-700/50 hover:border-purple-800/50",
-  hunter:     "hover:ring-stone-600/50 hover:border-stone-700/50",
-  runeshaman: "hover:ring-indigo-600/50 hover:border-indigo-700/50",
-  god:        "hover:ring-sky-500/50 hover:border-sky-600/50",
+  child:      "hover:ring-red-700/50 hover:border-red-800/50 hover:shadow-[0_18px_40px_-16px_rgba(185,28,28,0.45)]",
+  witch:      "hover:ring-blue-700/50 hover:border-blue-800/50 hover:shadow-[0_18px_40px_-16px_rgba(29,78,216,0.45)]",
+  sage:       "hover:ring-amber-600/50 hover:border-amber-700/50 hover:shadow-[0_18px_40px_-16px_rgba(217,119,6,0.45)]",
+  shaman:     "hover:ring-rose-700/50 hover:border-rose-800/50 hover:shadow-[0_18px_40px_-16px_rgba(190,18,60,0.45)]",
+  taoist:     "hover:ring-cyan-700/50 hover:border-cyan-800/50 hover:shadow-[0_18px_40px_-16px_rgba(14,116,144,0.45)]",
+  dokkaebi:   "hover:ring-purple-700/50 hover:border-purple-800/50 hover:shadow-[0_18px_40px_-16px_rgba(126,34,206,0.45)]",
+  hunter:     "hover:ring-stone-600/50 hover:border-stone-700/50 hover:shadow-[0_18px_40px_-16px_rgba(87,83,78,0.5)]",
+  runeshaman: "hover:ring-indigo-600/50 hover:border-indigo-700/50 hover:shadow-[0_18px_40px_-16px_rgba(79,70,229,0.45)]",
+  god:        "hover:ring-sky-500/50 hover:border-sky-600/50 hover:shadow-[0_18px_40px_-16px_rgba(2,132,199,0.45)]",
 };
 
 const CHAR_SELECTED: Record<CharacterId, string> = {
@@ -90,77 +85,6 @@ const CHAR_SELECTED: Record<CharacterId, string> = {
   god:        "ring-sky-500/60 border-sky-600/60 bg-sky-950/20",
 };
 
-type VacationReasonKey =
-  | "vacationReasonPools.otherworld.rift"
-  | "vacationReasonPools.otherworld.contract"
-  | "vacationReasonPools.otherworld.memory"
-  | "vacationReasonPools.otherworld.court"
-  | "vacationReasonPools.otherworld.cloud"
-  | "vacationReasonPools.eastern.shrine"
-  | "vacationReasonPools.eastern.spirit"
-  | "vacationReasonPools.eastern.dokkaebi"
-  | "vacationReasonPools.eastern.talisman"
-  | "vacationReasonPools.eastern.bamboo"
-  | "vacationReasonPools.nordic.rune"
-  | "vacationReasonPools.nordic.trail"
-  | "vacationReasonPools.nordic.hearth"
-  | "vacationReasonPools.nordic.worldTree"
-  | "vacationReasonPools.nordic.starSea";
-
-const OTHERWORLD_VACATION_REASONS = [
-  "vacationReasonPools.otherworld.rift",
-  "vacationReasonPools.otherworld.contract",
-  "vacationReasonPools.otherworld.memory",
-  "vacationReasonPools.otherworld.court",
-  "vacationReasonPools.otherworld.cloud",
-] as const satisfies readonly VacationReasonKey[];
-
-const EASTERN_VACATION_REASONS = [
-  "vacationReasonPools.eastern.shrine",
-  "vacationReasonPools.eastern.spirit",
-  "vacationReasonPools.eastern.dokkaebi",
-  "vacationReasonPools.eastern.talisman",
-  "vacationReasonPools.eastern.bamboo",
-] as const satisfies readonly VacationReasonKey[];
-
-const NORDIC_VACATION_REASONS = [
-  "vacationReasonPools.nordic.rune",
-  "vacationReasonPools.nordic.trail",
-  "vacationReasonPools.nordic.hearth",
-  "vacationReasonPools.nordic.worldTree",
-  "vacationReasonPools.nordic.starSea",
-] as const satisfies readonly VacationReasonKey[];
-
-const VACATION_REASON_KEYS_BY_CHARACTER: Record<CharacterId, readonly VacationReasonKey[]> = {
-  child: OTHERWORLD_VACATION_REASONS,
-  witch: OTHERWORLD_VACATION_REASONS,
-  sage: OTHERWORLD_VACATION_REASONS,
-  shaman: EASTERN_VACATION_REASONS,
-  taoist: EASTERN_VACATION_REASONS,
-  dokkaebi: EASTERN_VACATION_REASONS,
-  hunter: NORDIC_VACATION_REASONS,
-  runeshaman: NORDIC_VACATION_REASONS,
-  god: NORDIC_VACATION_REASONS,
-};
-
-function hashVacationSeed(value: string): number {
-  let hash = 2166136261;
-  for (let i = 0; i < value.length; i++) {
-    hash ^= value.charCodeAt(i);
-    hash = Math.imul(hash, 16777619);
-  }
-  return hash >>> 0;
-}
-
-function pickVacationLineKey(
-  dateKey: string,
-  characterId: CharacterId,
-): VacationReasonKey {
-  const keys = VACATION_REASON_KEYS_BY_CHARACTER[characterId];
-  const seed = hashVacationSeed(`${dateKey}:${characterId}:vacation-line`);
-  return keys[seed % keys.length];
-}
-
 interface CreateSessionResponse {
   ok: boolean;
   data?: { sessionId: string };
@@ -171,20 +95,15 @@ interface CreateSessionResponse {
 
 export function CharacterSelect({
   affinities = {},
-  vacationRoster,
   matchScores = null,
 }: CharacterSelectProps) {
   const router = useRouter();
   const [selected, setSelected] = useState<CharacterId | null>(null);
+  const [hoveredCharacterId, setHoveredCharacterId] = useState<CharacterId | null>(null);
   const [isPending, startTransition] = useTransition();
-  const vacationByCharacter = new Map(
-    vacationRoster.vacations.map((item) => [item.characterId, item]),
-  );
-
-  // 가장 궁합 높은 캐릭터 — "최고의 짝" 배지용 (휴가 중 제외)
+  // 가장 궁합 높은 멤버를 "최고의 짝" 배지에 사용한다.
   const bestMatchId: CharacterId | null = matchScores
     ? ((Object.entries(matchScores) as [CharacterId, number][])
-        .filter(([id]) => !vacationByCharacter.has(id))
         .sort((a, b) => b[1] - a[1])[0]?.[0] ?? null)
     : null;
 
@@ -216,10 +135,10 @@ export function CharacterSelect({
       {CATEGORY_ORDER.map((category) => {
         const deco = CATEGORY_DECO[category];
         const ids = CHARACTERS_BY_CATEGORY[category];
-        const label = tCat(`category${deco.labelKey}` as "categoryOtherworld" | "categoryEastern" | "categoryNordic");
-        const sub = tCat(`categorySub${deco.labelKey}` as "categorySubOtherworld" | "categorySubEastern" | "categorySubNordic");
-        const method = tCat(`categoryMethod${deco.labelKey}` as "categoryMethodOtherworld" | "categoryMethodEastern" | "categoryMethodNordic");
-        const flavor = tCat(`categoryFlavor${deco.labelKey}` as "categoryFlavorOtherworld" | "categoryFlavorEastern" | "categoryFlavorNordic");
+        const label = tCat(`category${deco.labelKey}` as "categoryPrimary" | "categoryExtended" | "categoryArchive");
+        const sub = tCat(`categorySub${deco.labelKey}` as "categorySubPrimary" | "categorySubExtended" | "categorySubArchive");
+        const method = tCat(`categoryMethod${deco.labelKey}` as "categoryMethodPrimary" | "categoryMethodExtended" | "categoryMethodArchive");
+        const flavor = tCat(`categoryFlavor${deco.labelKey}` as "categoryFlavorPrimary" | "categoryFlavorExtended" | "categoryFlavorArchive");
 
         return (
           <div key={category} className="space-y-4">
@@ -257,73 +176,63 @@ export function CharacterSelect({
               <div className={cn("mt-3 h-px", deco.border, "border-t")} />
             </div>
 
-            {/* 캐릭터 카드 그리드. 이미지 슬롯은 기존 캐릭터 원본과 같은 2:3 카드 비율. */}
+            {/* 멤버 카드 그리드. 이미지 슬롯은 기존 멤버 원본과 같은 2:3 카드 비율. */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-3">
               {ids.map((id) => {
                 const char = CHARACTERS[id];
-                const vacation = vacationByCharacter.get(id);
-                const vacationImage = VACATION_POSTCARD_BY_CHARACTER[id];
                 const isLoading = isPending && selected === id;
                 const isSelected = selected === id;
                 const name = tChar(`${id}.name`);
                 const title = tChar(`${id}.title`);
                 const hook = tChar(`${id}.hook`);
-                const vacationLineKey = pickVacationLineKey(
-                  vacationRoster.dateKey,
-                  id,
+                // 친밀도 레벨로 스냅 해금 — Lv.0=1장, 레벨당 +1장 (최대 5장).
+                const affinityLevel = calcLevel(id, affinities[id] ?? 0).level;
+                const totalSlides = char.imageSlides?.length ?? 1;
+                const baseSlideCount = Math.min(5, totalSlides);
+                const bonusUnlockLevels = [10, 15, 20, 25, 30, 35];
+                const unlockedBonusSlides = bonusUnlockLevels.filter(
+                  (unlockLevel, index) =>
+                    affinityLevel >= unlockLevel && totalSlides > baseSlideCount + index,
+                ).length;
+                const unlockedSlides = Math.min(
+                  totalSlides,
+                  Math.min(affinityLevel, baseSlideCount) + unlockedBonusSlides,
                 );
-                const vacationReason = tCat(vacationLineKey);
-                const specialty = tSpec(SPECIALTY_KEY[id] as "tarot" | "pillarsCelestial" | "runeOmen" | "runeOracle" | "runeVoice");
+                const nextSlideUnlockLevel =
+                  unlockedSlides < baseSlideCount
+                    ? unlockedSlides + 1
+                    : bonusUnlockLevels[unlockedSlides - baseSlideCount] ?? 35;
+                const specialty = tSpec(SPECIALTY_KEY[id] as "fortune" | "tarot" | "pillarsCelestial" | "runeOmen" | "runeOracle" | "runeVoice");
 
                 return (
                   <button
                     key={id}
                     type="button"
-                    onClick={vacation ? undefined : () => handleSelect(id)}
-                    disabled={isPending || Boolean(vacation)}
-                    aria-label={
-                      vacation
-                        ? `${name} ${tCat("vacationBadge")}. ${vacationReason}.`
-                        : name
-                    }
+                    onClick={() => handleSelect(id)}
+                    onMouseEnter={() => setHoveredCharacterId(id)}
+                    onMouseLeave={() => setHoveredCharacterId(null)}
+                    disabled={isPending}
+                    aria-label={name}
                     className={cn(
                       "group relative flex flex-col items-center gap-3 sm:gap-2",
                       "rounded-2xl border ring-1 ring-transparent p-3 text-center transition-all duration-200",
+                      "hover:-translate-y-1 motion-reduce:hover:translate-y-0",
                       "disabled:cursor-not-allowed",
-                      vacation && "cursor-default",
                       isSelected
                         ? CHAR_SELECTED[id]
                         : cn("app-surface", CHAR_ACCENT[id]),
                     )}
                   >
-                    <div className="relative aspect-[2/3] w-full overflow-hidden rounded-xl shadow-md">
-                      {vacation ? (
-                        <Image
-                          src={vacationImage}
-                          alt={`${name} ${tCat("vacationBadge")}`}
-                          fill
-                          className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 25vw, 220px"
-                        />
-                      ) : (
-                        <CharacterImage
-                          character={char}
-                          fill
-                          quality={95}
-                          className="transition-transform duration-300 group-hover:scale-[1.03]"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 25vw, 220px"
-                        />
-                      )}
-                      {vacation && (
-                        <div className="absolute inset-x-3 bottom-3 rounded-lg bg-black/70 px-3 py-2 text-left on-character-image">
-                          <p className="font-mystic text-[15px] font-semibold leading-tight">
-                            {tCat("vacationBadge")}
-                          </p>
-                          <p className="mt-1 text-[15px] leading-tight text-white/80">
-                            {vacationReason}
-                          </p>
-                        </div>
-                      )}
+                    <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl shadow-md sm:aspect-[2/3]">
+                      <CharacterImage
+                        character={char}
+                        fill
+                        quality={95}
+                        slideshowActive={hoveredCharacterId === id}
+                        maxSlides={unlockedSlides}
+                        className="origin-top scale-[1.18] transition-transform duration-300 group-hover:scale-[1.22] sm:scale-100 sm:group-hover:scale-[1.03]"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 25vw, 220px"
+                      />
                       {isLoading && (
                         <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-xl">
                           <Loader2 className="h-7 w-7 text-white animate-spin" />
@@ -332,30 +241,25 @@ export function CharacterSelect({
                       {/* 전문 배지 */}
                       <div className="absolute top-2 left-2 on-character-image">
                         <span className="rounded-md bg-black/65 px-2 py-0.5 text-[15px] font-medium leading-none">
-                          {vacation ? tCat("vacationBadge") : specialty}
+                          {specialty}
                         </span>
                       </div>
-                      {/* MBTI + 궁합 배지 — 우상단 (휴가 중엔 숨김) */}
-                      {!vacation && (
-                        <div className="absolute top-2 right-2 flex flex-col items-end gap-1 on-character-image">
-                          <span className="rounded-md bg-black/65 px-2 py-0.5 text-[13px] font-bold leading-none tracking-wide">
-                            {char.mbti}
+                      {/* 궁합 배지 */}
+                      <div className="absolute top-2 right-2 flex flex-col items-end gap-1 on-character-image">
+                        {matchScores && matchScores[id] != null && (
+                          <span
+                            className={cn(
+                              "rounded-md px-2 py-0.5 text-[12px] font-semibold leading-none",
+                              id === bestMatchId
+                                ? "bg-amber-400/90 text-black"
+                                : "bg-black/65 text-white/90",
+                            )}
+                          >
+                            {id === bestMatchId ? "★ " : ""}
+                            궁합 {matchScores[id]}%
                           </span>
-                          {matchScores && matchScores[id] != null && (
-                            <span
-                              className={cn(
-                                "rounded-md px-2 py-0.5 text-[12px] font-semibold leading-none",
-                                id === bestMatchId
-                                  ? "bg-amber-400/90 text-black"
-                                  : "bg-black/65 text-white/90",
-                              )}
-                            >
-                              {id === bestMatchId ? "★ " : ""}
-                              궁합 {matchScores[id]}%
-                            </span>
-                          )}
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </div>
 
                     {/* 이름 + 직함 — 모바일은 여기까지만 */}
@@ -367,10 +271,7 @@ export function CharacterSelect({
                         {title}
                       </p>
                       {/* 훅 — 데스크탑(sm+)에서만 */}
-                      <p className={cn(
-                        "hidden sm:block text-[15px] text-foreground/80 leading-snug font-mystic italic",
-                        vacation && "text-muted-foreground/70",
-                      )}>
+                      <p className="hidden sm:block text-[15px] text-foreground/80 leading-snug font-mystic italic">
                         &ldquo;{hook}&rdquo;
                       </p>
                       {/* 친밀도 — 데스크탑(sm+)에서만 */}
@@ -380,6 +281,16 @@ export function CharacterSelect({
                           points={affinities[id] ?? 0}
                           compact
                         />
+                        {unlockedSlides < totalSlides ? (
+                          // AffinityBar 표기는 Lv.1부터 시작(floor(pt/10)+1) — 동일 기준으로 안내.
+                          <p className="mt-1 text-[11px] text-muted-foreground/70">
+                            📸 {unlockedSlides}/{totalSlides}장 — Lv.{nextSlideUnlockLevel} 달성 시 새 사진 해금
+                          </p>
+                        ) : totalSlides > 1 ? (
+                          <p className="mt-1 text-[11px] text-muted-foreground/70">
+                            📸 사진 {totalSlides}장 모두 해금!
+                          </p>
+                        ) : null}
                       </div>
                     </div>
                   </button>

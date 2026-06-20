@@ -38,6 +38,8 @@ export async function tryCatch<T>(
  */
 export function formatKoreanDate(date: Date): string {
   return new Intl.DateTimeFormat("ko-KR", {
+    // 서버(Vercel)는 UTC — KST 명시 없으면 자정~09시 사이 어제 날짜로 표시된다.
+    timeZone: "Asia/Seoul",
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -53,4 +55,28 @@ export function formatKoreanDate(date: Date): string {
  */
 export function formatKRW(amount: number): string {
   return `${new Intl.NumberFormat("ko-KR").format(amount)}원`;
+}
+
+/**
+ * 긴 운세·풀이 문장을 한 문장씩 줄바꿈한다.
+ *
+ * 문장 끝 부호(. ! ?)와 그 뒤 따옴표·괄호 다음의 공백을 줄바꿈으로 바꿔,
+ * 다음 문장이 새 줄에서 시작하도록 만든다. 렌더 측에서 `whitespace-pre-line`
+ * 과 함께 쓴다. 같은 문자열에 두 번 적용해도 결과가 같다(멱등).
+ *
+ * - 소수점(예: 3.5)은 뒤에 공백이 없어 끊기지 않는다.
+ * - 말줄임표(…)는 문장 중간 여운이므로 끊지 않는다.
+ *
+ * @example
+ *   breakSentences("좋은 날이에요. 천천히 가요.");
+ *   // "좋은 날이에요.\n천천히 가요."
+ */
+export function breakSentences(text: string): string {
+  if (!text) return text;
+  return text
+    .replace(/\r\n/g, "\n")
+    .replace(/([.!?]["'”’)\]]?)[ \t]+/g, "$1\n")
+    .replace(/[ \t]*\n[ \t]*/g, "\n")
+    .replace(/\n{2,}/g, "\n")
+    .trim();
 }

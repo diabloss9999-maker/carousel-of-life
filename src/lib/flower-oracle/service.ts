@@ -1,96 +1,101 @@
-/**
- * 플로로랜시 service — 알고리즘 + AI 풀이 통합.
- *
- * - 오늘의 꽃: 사용자 + 날짜 결정론적 (캐시 가능)
- * - 자유 뽑기: 매번 다른 꽃
- * - AI 풀이: 점술사 voice 매핑 (꽃 카테고리 → 캐릭터)
- */
 import "server-only";
 
-import type { Profile } from "@/db/schema";
+import { getLocale } from "next-intl/server";
+
 import { generateJson } from "@/lib/ai/generate";
-import { buildFlowerOraclePrompt } from "@/lib/ai/prompts";
+import { NEUTRAL_CARD_VOICE } from "@/lib/ai/character-voice";
 import {
   flowerOracleAiSchema,
   type FlowerOracleAiOutput,
 } from "@/lib/ai/types";
 import { AI_MODELS } from "@/lib/constants";
-import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
-import { type CharacterId } from "@/lib/chat/characters";
+import type { Profile } from "@/db/schema";
 import {
   drawDaily,
   drawRandom,
   flowerById,
 } from "@/lib/flower-oracle/algorithm";
-import {
-  FLOWER_CHARACTER_BY_CATEGORY,
-  type FlowerCard,
-} from "@/lib/flower-oracle/flowers";
+import { type FlowerCard } from "@/lib/flower-oracle/flowers";
 
 export type FlowerOracleMode = "daily" | "free";
 
 export interface FlowerOracleInput {
   profile: Profile;
   mode: FlowerOracleMode;
-  /** 자유 뽑기 시 제외할 꽃 ID (직전 카드 등). */
   excludeIds?: string[];
-  /** 강제 카드 (테스트용). */
   forceFlowerId?: string;
 }
 
 export interface FlowerOracleResult extends FlowerOracleAiOutput {
   flower: FlowerCard;
-  characterId: CharacterId;
   mode: FlowerOracleMode;
 }
 
 export async function generateFlowerOracle(
   input: FlowerOracleInput,
 ): Promise<FlowerOracleResult> {
-  // 1) 카드 결정
   let flower: FlowerCard;
   if (input.forceFlowerId) {
-    const f = flowerById(input.forceFlowerId);
-    if (!f) throw new Error(`존재하지 않는 꽃 ID: ${input.forceFlowerId}`);
-    flower = f;
+    const forced = flowerById(input.forceFlowerId);
+    if (!forced) throw new Error(`존재하지 않는 꽃 ID: ${input.forceFlowerId}`);
+    flower = forced;
   } else if (input.mode === "daily") {
-    const fe =
+    const fiveElements =
       (input.profile.fiveElements as Record<string, number> | null) ?? null;
-    flower = drawDaily({ userId: input.profile.userId, fiveElements: fe });
+    flower = drawDaily({ userId: input.profile.userId, fiveElements });
   } else {
     flower = drawRandom(input.excludeIds ?? []);
   }
 
-  // 2) 점술사 voice 매핑
-  const characterId: CharacterId = FLOWER_CHARACTER_BY_CATEGORY[flower.category];
-  const voice = CHARACTER_CARD_VOICE[characterId];
-
-  // 3) AI 풀이 — Claude Haiku
-  const userPrompt = buildFlowerOraclePrompt({
-    profile: input.profile,
-    flower: {
-      koreanName: flower.koreanName,
-      scientificName: flower.scientificName,
-      category: flower.category,
-      meaning: flower.meaning,
-      keywords: flower.keywords,
-      season: flower.season,
-    },
-    mode: input.mode,
-  });
-
   const ai = await generateJson({
-    systemSuffix: voice,
-    userPrompt,
+    systemSuffix: NEUTRAL_CARD_VOICE,
+    userPrompt: buildFlowerPrompt(input.profile, flower, input.mode),
     schema: flowerOracleAiSchema,
     model: AI_MODELS.fast,
     maxTokens: 600,
+    locale: await getLocale(),
   });
 
   return {
     ...ai,
     flower,
-    characterId,
     mode: input.mode,
   };
+}
+
+function buildFlowerPrompt(
+  profile: Profile,
+  flower: FlowerCard,
+  mode: FlowerOracleMode,
+): string {
+  const profileLines = [
+    profile.displayName ? `이름: ${profile.displayName}` : null,
+    `생년월일: ${profile.birthDate}`,
+    profile.birthTime ? `태어난 시간: ${profile.birthTime}` : "태어난 시간: 모름",
+    `달력: ${profile.calendarSystem === "lunar" ? "음력" : "양력"}`,
+    profile.mbti ? `MBTI: ${profile.mbti}` : null,
+  ].filter(Boolean);
+
+  return `[사용자 정보]
+${profileLines.join("\n")}
+
+[선택된 꽃]
+이름: ${flower.koreanName}
+학명: ${flower.scientificName}
+꽃말: ${flower.meaning}
+키워드: ${flower.keywords.join(", ")}
+계절: ${flower.season}
+모드: ${mode === "daily" ? "오늘의 꽃" : "자유 뽑기"}
+
+[작성 지침]
+너는 꽃점 결과를 현실적이고 따뜻한 한국어로 정리한다.
+꽃말을 과장하지 말고, 사용자의 오늘 감정과 선택에 연결해서 짧고 선명하게 말한다.
+아이돌, 멤버, 팬서비스 콘셉트는 언급하지 않는다.
+
+반드시 아래 JSON 형식만 반환한다.
+{
+  "headline": "꽃이 건네는 핵심 메시지. 50자 이내.",
+  "reading": "꽃말과 키워드를 바탕으로 한 오늘의 해석. 4-6문장.",
+  "todayAction": "오늘 바로 해볼 수 있는 작은 행동 1가지. 1-2문장."
+}`;
 }

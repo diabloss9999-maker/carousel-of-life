@@ -5,7 +5,7 @@
  */
 import "server-only";
 
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import {
@@ -22,6 +22,8 @@ export type HistoryItem =
   | { kind: "fortune"; data: DailyFortune; date: Date }
   | { kind: "tarot"; data: TarotReading; date: Date }
   | { kind: "compatibility"; data: CompatibilityReading; date: Date };
+
+export type HistoryKind = HistoryItem["kind"];
 
 /**
  * 사용자의 전체 풀이 기록 (최신순, 합본).
@@ -108,4 +110,83 @@ export async function getHistoryCounts(userId: string): Promise<{
     compatibility: compats.length,
     total: fortunes.length + tarots.length + compats.length,
   };
+}
+
+export async function getHistoryItem(
+  userId: string,
+  kind: HistoryKind,
+  id: string,
+): Promise<HistoryItem | null> {
+  if (kind === "fortune") {
+    const [fortune] = await db
+      .select()
+      .from(dailyFortunes)
+      .where(and(eq(dailyFortunes.userId, userId), eq(dailyFortunes.id, id)))
+      .limit(1);
+    return fortune
+      ? { kind: "fortune", data: fortune, date: new Date(fortune.createdAt) }
+      : null;
+  }
+
+  if (kind === "tarot") {
+    const [tarot] = await db
+      .select()
+      .from(tarotReadings)
+      .where(and(eq(tarotReadings.userId, userId), eq(tarotReadings.id, id)))
+      .limit(1);
+    return tarot
+      ? { kind: "tarot", data: tarot, date: new Date(tarot.createdAt) }
+      : null;
+  }
+
+  const [compatibility] = await db
+    .select()
+    .from(compatibilityReadings)
+    .where(
+      and(
+        eq(compatibilityReadings.userId, userId),
+        eq(compatibilityReadings.id, id),
+      ),
+    )
+    .limit(1);
+  return compatibility
+    ? {
+        kind: "compatibility",
+        data: compatibility,
+        date: new Date(compatibility.createdAt),
+      }
+    : null;
+}
+
+export async function deleteHistoryItem(
+  userId: string,
+  kind: HistoryKind,
+  id: string,
+): Promise<boolean> {
+  if (kind === "fortune") {
+    const deleted = await db
+      .delete(dailyFortunes)
+      .where(and(eq(dailyFortunes.userId, userId), eq(dailyFortunes.id, id)))
+      .returning({ id: dailyFortunes.id });
+    return deleted.length > 0;
+  }
+
+  if (kind === "tarot") {
+    const deleted = await db
+      .delete(tarotReadings)
+      .where(and(eq(tarotReadings.userId, userId), eq(tarotReadings.id, id)))
+      .returning({ id: tarotReadings.id });
+    return deleted.length > 0;
+  }
+
+  const deleted = await db
+    .delete(compatibilityReadings)
+    .where(
+      and(
+        eq(compatibilityReadings.userId, userId),
+        eq(compatibilityReadings.id, id),
+      ),
+    )
+    .returning({ id: compatibilityReadings.id });
+  return deleted.length > 0;
 }

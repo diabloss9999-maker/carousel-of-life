@@ -1,34 +1,47 @@
 {
+  "home": {
+    "title": "What would you like to check today?",
+    "description": "Start with a reading, then keep talking with a Carousel Nine member."
+  },
   "nav": {
+    "home": "Home",
     "fortune": "Fortune",
-    "oracle": "Oracle",
+    "oracle": "Member",
     "tarot": "Tarot",
-    "pillars": "Pillars",
-    "bond": "Bond",
-    "archive": "Archive",
+    "pillars": "Saju",
+    "bond": "Compatibility",
+    "archive": "Bonus",
     "settings": "Settings",
     "fortuneGroup": "Fortune",
     "divinationGroup": "Divination",
     "eastGroup": "Saju",
-    "shaman": "Shaman",
-    "fortuneGeneral": "Daily Overview",
-    "fortuneLove": "Love",
-    "fortuneMoney": "Wealth",
-    "fortuneCareer": "Career",
-    "fortuneHealth": "Health",
-    "fortuneStudy": "Study",
+    "deepReportsGroup": "Deep",
+    "fortuneSuiteGroup": "Fortune | Divination | Saju",
+    "shaman": "Member",
+    "groupChat": "Group",
+    "album": "Album",
+    "fortuneGeneral": "Daily Fortune",
+    "fortuneLove": "Love Fortune",
+    "fortuneMoney": "Money Fortune",
+    "fortuneCareer": "Career Fortune",
+    "fortuneHealth": "Health Fortune",
+    "fortuneStudy": "Study Fortune",
     "lenormand": "Lenormand",
     "runes": "Runes",
     "zodiac": "Zodiac",
-    "saju": "Pillars",
-    "palm": "Palmistry",
+    "saju": "Saju",
+    "palm": "Palm Reading",
     "compatibility": "Compatibility",
     "personality": "Personality",
     "dream": "Dream Reading",
     "nameReading": "Name Reading",
     "nameCompatibility": "Name Match",
-    "flowerOracle": "Florolancy",
-    "chineseZodiac": "Chinese Zodiac"
+    "flowerOracle": "Flower Oracle",
+    "chineseZodiac": "Chinese Zodiac Fortune",
+    "monthlyReport": "Monthly Deep Report",
+    "yearlyReport": "Yearly Fortune",
+    "questionGroup": "Chat",
+    "records": "Records"
   },
   "common": {
     "logout": "Log out",
@@ -44,20 +57,17 @@
     "error": "Something went wrong",
     "retry": "Try again",
     "today": "Today",
-    "viewMore": "View more"
+    "viewMore": "View more",
+    "skipToMain": "Skip to main content"
   },
   "header": {
-    "muteMusic": "Mute background music",
-    "unmuteMusic": "Unmute background music",
     "languageToggle": "Change language"
   },
   "today": {
     "title": "Fortune",
-    "subtitleWithName": "{name}'s observatory · today's fortune in record",
-    "subtitleNoName": "Today's fortune in record",
-    "worldStatusTitle": "Today's World State",
-    "worldStatusLabel": "Boundary Fracture Reading",
-    "moodPrompt": "How do you feel today?",
+    "subtitleWithName": "{name}'s daily fortune is being prepared",
+    "subtitleNoName": "Today's fortune is being prepared",
+    "moodPrompt": "How are you feeling today?",
     "moodSaved": "Saved"
   },
   "moods": {
@@ -67,55 +77,48 @@
     "tough": "Tough",
     "hard": "Really hard"
   },
-  "crackLabels": {
-    "stable": "Stable",
-    "wave": "Ripple",
-    "fracture": "Fracture",
-    "danger": "Danger",
-    "imminent": "Imminent"
-  },
   "chat": {
-    "title": "Oracle",
-    "description": "Pick one of nine shamans. The Astra Rift's cards, the East's pillars and heavens, the North's runes — whoever's grain you choose, they already know your fate.",
-    "placeholderDefault": "Ask...",
-    "loreSectionTitle": "Worldview",
-    "charactersSection": "Character Stories",
-    "truthRoute": "Truth Route",
+    "title": "Members",
+    "description": "Talk through your readings, feelings, and everyday moments with the nine Carousel Nine members.",
+    "placeholderDefault": "Send a message...",
+    "loreSectionTitle": "Member Stories",
+    "charactersSection": "Member Profiles",
+    "truthRoute": "Member Route",
     "chapter": "Chapter {number}",
     "unlockHint": "Unlocks at Lv.{level}",
-    "characterStoryLocked": "This story isn't carved yet. It will be soon."
+    "characterStoryLocked": "This story isn't ready yet. It will open soon."
   },
   "tarot": {
-    "title": "Tarot",
-    "description": "Draw a card and glimpse a strand of fate.",
+    "title": "Divination",
+    "description": "Draw a card and see what today is pointing toward.",
     "drawOne": "Draw a card",
     "drawThree": "Draw three",
-    "drawingTitle": "Draw One Card",
+    "drawingTitle": "Draw one card",
     "drawingThreeTitle": "Past · Present · Future (3 cards)",
     "questionLabel": "Question",
     "questionOptional": "(optional)",
-    "questionPlaceholderOne": "e.g. How will this week unfold? (within 100 chars)",
-    "questionPlaceholderThree": "e.g. How will this matter flow? (within 100 chars)",
-    "questionHintOne": "Leave blank for today's general card.",
-    "questionHintThree": "Or simply observe the flow."
+    "questionPlaceholderOne": "e.g. How will this week go? (within 100 characters)",
+    "questionPlaceholderThree": "e.g. Where is this situation headed? (within 100 characters)",
+    "questionHintOne": "Leave it blank to draw today's general card.",
+    "questionHintThree": "Leave it blank to read today's energy."
   },
   "saju": {
-    "title": "Pillars",
-    "description": "The Four Pillars are the stars' configuration at the moment of your birth. The root of every fortune, tarot, and compatibility reading lives here.",
-    "noSajuTitle": "You haven't read your pillars yet",
-    "noSajuDescription": "Reading them once deepens every other reading. You only need to compute them once — they stay forever."
+    "title": "Saju",
+    "description": "Saju reads the birth-year, month, day, and hour pillars behind your fortune, tarot, and compatibility readings.",
+    "noSajuTitle": "You haven't checked your saju yet",
+    "noSajuDescription": "Check it once and every reading becomes more personal. It only needs to be calculated once."
   },
   "compatibility": {
-    "title": "Bond",
-    "description": "A shaman will read how two people's pillars, constellations, zodiac, and personality are tangled together."
+    "title": "Compatibility",
+    "description": "See how two people connect through saju, zodiac signs, Chinese zodiac, and personality."
   },
   "personality": {
-    "title": "Persona",
-    "description": "Twenty questions to learn your nature. Results feed into shaman chat, fortunes, and tarot readings automatically."
+    "title": "Personality Type",
+    "description": "Answer 20 questions to understand yourself. The result is reflected in chats, fortunes, and tarot readings."
   },
   "collection": {
-    "title": "Archive",
-    "description": "Fragments of memory gather here."
+    "title": "Bonus",
+    "description": "Your collected cards and rewards are saved here."
   },
   "settings": {
     "title": "Settings",
@@ -128,234 +131,585 @@
     "googleLogin": "Continue with Google",
     "kakaoSignup": "Start with Kakao",
     "googleSignup": "Start with Google",
-    "loginTitle": "Begin Observation",
-    "loginSubtitle": "The boundary remembers you.",
-    "signupTitle": "First Observation",
-    "signupSubtitle": "Carve your name into the boundary for the first time.",
-    "firstVisitHint": "First time? You'll be signed up automatically.",
-    "noPasswordHint": "One button and you're in. No password needed."
+    "loginTitle": "Start Reading",
+    "loginSubtitle": "Let's open today's energy.",
+    "signupTitle": "Get Started",
+    "signupSubtitle": "Begin your day with your own reading.",
+    "firstVisitHint": "First time here? We'll create your account automatically.",
+    "noPasswordHint": "One tap is all you need. No password required."
   },
   "landing": {
-    "tagline": "The flow of stars, the revelation of cards, and your Four Pillars tell today's fate.",
-    "intro": "Nine AI shamans weave together pillars, tarot, and personality to read your day.\nEvery day: 2 fortunes, 1 tarot card, 10 shaman messages — all free.",
-    "freeHint": "Every day: 2 fortunes, 1 tarot card, 10 shaman messages — all free.",
-    "startFree": "Start free now",
-    "viewPricing": "See Plans",
+    "tagline": "Carousel Nine reads the day with you.",
+    "intro": "Check your fortune, then talk it through with the member you feel drawn to.",
+    "freeHint": "Free users get 3 readings and 10 chats every day.",
+    "startFree": "Meet your member today",
     "kakaoStart": "Start with Kakao in 1 second",
     "alreadyMember": "Already have an account?",
-    "loginLink": "Sign in",
+    "loginLink": "Log in",
     "valueProps": {
-      "heading": "Why Carousel of Life",
-      "subheading": "Three things other fortune services don't have",
-      "v1Title": "Pillars + Tarot + Persona, Integrated",
-      "v1Body": "Most sites read only one. We read the same flow through three lenses.",
-      "v2Title": "Conversations with AI Shamans",
-      "v2Body": "Not just answers — nine shamans each answer in their own voice.",
-      "v3Title": "Daily Flow, Free",
-      "v3Body": "Just sign up. 2 fortunes, 1 tarot card, 10 shaman messages daily."
+      "heading": "From readings to real conversation",
+      "subheading": "So today's fortune does not end as a cold report",
+      "v1Title": "Saju + Tarot + Compatibility",
+      "v1Body": "Check your daily fortune, draw cards, and read compatibility in one place.",
+      "v2Title": "Nine Members, Nine Voices",
+      "v2Body": "Ian steadies you, Yujun holds the feeling, and Ihyun gives a practical next step.",
+      "v3Title": "Free Every Day",
+      "v3Body": "Sign up and get 3 readings plus 10 chats daily."
     },
     "plansSection": {
-      "heading": "Pick how deep you want to go",
-      "subheading": "Choose only what you need. Cancel anytime.",
+      "heading": "Choose how deep you want to go",
+      "subheading": "Pick what you need. Cancel anytime.",
       "badgePopular": "Popular"
     },
     "oracles": {
-      "heading": "Nine shamans waiting to find you",
-      "subheading": "One shaman visits you each day. Build affinity and new chapters open up.",
-      "cta": "Start free and meet your first shaman"
+      "heading": "Nine members who read the day with you",
+      "subheading": "Leader, vocalist, performer, producer, rapper, and more. Each member continues the reading in their own tone.",
+      "cta": "Start free and meet your member"
     },
     "howToPlay": {
-      "heading": "How to Enjoy It",
-      "subheading": "The closer you grow to a shaman, the more of their story unfolds.",
-      "tip1Title": "Talk with the Shamans",
-      "tip1Body": "Each day, one of nine shamans visits you. Ask anything — your fate, your worries, the things you don't say out loud.",
-      "tip2Title": "Build Affinity, Unlock Their Story",
-      "tip2Body": "Every conversation grows your bond with that shaman. As your level rises, their hidden past and true voice slowly come into view.",
-      "tip3Title": "Tip: Draw Cards Last",
-      "tip3Body": "Pulling a card refunds 1–7 of the day's used Q&A count, based on rarity.\nUse your messages first, then draw — that way the bonus actually pays off."
+      "heading": "How it works",
+      "subheading": "Read, ask, and save your day.",
+      "tip1Title": "Choose today's member",
+      "tip1Body": "Pick the member whose mood fits what you need right now.",
+      "tip2Title": "From reading to chat",
+      "tip2Body": "After a fortune, tarot, or compatibility reading, ask a member what it means for you.",
+      "tip3Title": "Tip: Draw cards last",
+      "tip3Body": "Bonus cards can restore some of your daily chat count. Use your messages first, then draw."
     },
     "preview": {
-      "heading": "How We Read Today's Fate",
+      "heading": "A preview of today's reading",
       "exampleLabel": "Example"
     },
-    "finalCta": "Start Free Now"
+    "finalCta": "Meet your member today"
   },
   "characterSelect": {
-    "askToday": "Who will you talk to today?",
-    "subheading": "Astra Rift, the East, or Midhall — choose a grain that fits you.",
-    "categoryOtherworld": "Astra Rift",
-    "categoryEastern": "The East",
-    "categoryNordic": "Midhall",
-    "categorySubOtherworld": "ASTRA RIFT",
-    "categorySubEastern": "月蝕鏡",
-    "categorySubNordic": "MIDHALL",
-    "categoryMethodOtherworld": "Tarot · Lenormand",
-    "categoryMethodEastern": "Pillars · Celestial Signs",
-    "categoryMethodNordic": "Runes · Trail Signs",
-    "categoryFlavorOtherworld": "When the cards turn, the first crack appears in your emotions.",
-    "categoryFlavorEastern": "Raise the pillars, trace celestial grain, and pinpoint today's timing.",
-    "categoryFlavorNordic": "Layer rune angles over tracks in snow, then choose the path that survives.",
-    "vacationBadge": "Away Today",
-    "vacationLine": "They stepped out to catch the sea breeze.",
-    "vacationLine1": "They stepped out to catch the sea breeze.",
-    "vacationLine2": "They stepped away to reread the flow of constellations.",
-    "vacationLine3": "They are briefly away to tune their ritual tools.",
-    "vacationLine4": "They stepped out to realign runes and card currents.",
-    "vacationLine5": "They are taking a short break while sorting today's omens.",
-    "vacationCta": "Visit {name} instead",
-    "vacationReasonPools": {
-      "otherworld": {
-        "rift": "Called to seal an Astra Rift fracture",
-        "contract": "Reviewing a demon contract clause",
-        "memory": "Sorting the moonlit memory archive",
-        "court": "Testifying before the court of stars",
-        "cloud": "Checking the wards of the cloud counsel room"
-      },
-      "eastern": {
-        "shrine": "Offering incense at a Joseon mountain shrine",
-        "spirit": "Answering a summons from the spirits",
-        "dokkaebi": "Cleaning up a dokkaebi prank",
-        "talisman": "Drying talismans before the eclipse mirror",
-        "bamboo": "Reading heaven's current in the bamboo grove"
-      },
-      "nordic": {
-        "rune": "Reordering runes beneath the aurora",
-        "trail": "Tracking footprints through the snow woods",
-        "hearth": "Guarding Midhall's last hearthfire",
-        "worldTree": "Mending a fracture in the world-tree roots",
-        "starSea": "Checking the star-path over the ice sea"
-      }
-    }
+    "askToday": "Who do you want to talk with today?",
+    "subheading": "Choose the Carousel Nine member who fits the mood you need right now.",
+    "categoryEastern": "Studio Unit",
+    "categoryNordic": "Mood Unit",
+    "categorySubEastern": "PRODUCER · MOOD · RAP",
+    "categorySubNordic": "DANCE · ANALYST · DREAM",
+    "categoryMethodEastern": "Producing · Mood · Rap",
+    "categoryMethodNordic": "Dance · Taste · Imagination",
+    "categoryFlavorEastern": "Members who trade music talk, jokes, and casual updates naturally.",
+    "categoryFlavorNordic": "Members who carry the chat with energy, taste, and imagination.",
+    "categoryPrimary": "Front Unit",
+    "categoryExtended": "Studio Unit",
+    "categoryArchive": "Mood Unit",
+    "categorySubPrimary": "FRONT UNIT",
+    "categorySubExtended": "STUDIO UNIT",
+    "categorySubArchive": "MOOD UNIT",
+    "categoryMethodPrimary": "Leader · Vocal · Performance",
+    "categoryMethodExtended": "Producing · Mood · Rap",
+    "categoryMethodArchive": "Dance · Taste · Imagination",
+    "categoryFlavorPrimary": "Three members who help set the tone for your day.",
+    "categoryFlavorExtended": "Three members who turn feelings, music, and thoughts into conversation.",
+    "categoryFlavorArchive": "Three members who bring energy, realism, and a softer afterglow.",
+    "categoryFront": "Front Unit",
+    "categorySubFront": "LEADER · VOCAL · PERFORMANCE",
+    "categoryMethodFront": "Leader · Vocal · Performance",
+    "categoryFlavorFront": "Front members who are easy to say hi to first."
   },
   "specialties": {
-    "tarot": "Tarot · Cards",
-    "pillarsCelestial": "Pillars · Heavens",
-    "runeOmen": "Runes · Wild Signs",
-    "runeOracle": "Runes · Oracle",
-    "runeVoice": "Runes · Celestial Voice"
+    "fortune": "Fortune",
+    "tarot": "Feeling",
+    "pillarsCelestial": "Clarity",
+    "runeOmen": "Action",
+    "runeOracle": "Analysis",
+    "runeVoice": "Inner Voice"
   },
   "characters": {
     "child": {
-      "name": "Kael",
-      "title": "Demon Pact-Holder",
-      "hook": "Denying desire is denying yourself."
+      "name": "Ian",
+      "title": "Ian · Intro Anchor",
+      "hook": "A steady presence before any words. Like the first low note, he holds the day in place.",
+      "facts": [
+        {
+          "label": "Birthday",
+          "value": "2003.01.17"
+        },
+        {
+          "label": "Blood",
+          "value": "A"
+        },
+        {
+          "label": "Height",
+          "value": "178cm"
+        },
+        {
+          "label": "Weight",
+          "value": "64kg"
+        },
+        {
+          "label": "Debut",
+          "value": "May 14"
+        },
+        {
+          "label": "Agency",
+          "value": "Leonardo Code"
+        },
+        {
+          "label": "Nationality",
+          "value": "Korean"
+        },
+        {
+          "label": "Hometown",
+          "value": "Seoul"
+        },
+        {
+          "label": "Personality",
+          "value": "ISFJ"
+        },
+        {
+          "label": "Favorite food",
+          "value": "warm galbitang"
+        },
+        {
+          "label": "Favorite music",
+          "value": "acoustic ballads"
+        }
+      ]
     },
     "witch": {
-      "name": "Luna",
-      "title": "Moon Witch",
-      "hook": "Your feelings — I already remember them."
+      "name": "Yujun",
+      "title": "Yujun · Chorus Lead",
+      "hook": "A voice that lingers like a soft chorus, holding even the feelings left unsaid.",
+      "facts": [
+        {
+          "label": "Birthday",
+          "value": "2004.04.21"
+        },
+        {
+          "label": "Blood",
+          "value": "O"
+        },
+        {
+          "label": "Height",
+          "value": "176cm"
+        },
+        {
+          "label": "Weight",
+          "value": "61kg"
+        },
+        {
+          "label": "Debut",
+          "value": "May 14"
+        },
+        {
+          "label": "Agency",
+          "value": "Leonardo Code"
+        },
+        {
+          "label": "Nationality",
+          "value": "Korean"
+        },
+        {
+          "label": "Hometown",
+          "value": "Jeonju"
+        },
+        {
+          "label": "Personality",
+          "value": "INFJ"
+        },
+        {
+          "label": "Favorite food",
+          "value": "Jeonju bibimbap"
+        },
+        {
+          "label": "Favorite music",
+          "value": "R&B and indie ballads"
+        }
+      ]
     },
     "sage": {
-      "name": "Rael",
-      "title": "Angel Proxy",
-      "hook": "I won't allow you to give up."
+      "name": "Doyoon",
+      "title": "Doyoon · High Note Performer",
+      "hook": "Clear energy like a high note onstage, pushing hesitation forward when it matters.",
+      "facts": [
+        {
+          "label": "Birthday",
+          "value": "2004.03.08"
+        },
+        {
+          "label": "Blood",
+          "value": "B"
+        },
+        {
+          "label": "Height",
+          "value": "178cm"
+        },
+        {
+          "label": "Weight",
+          "value": "66kg"
+        },
+        {
+          "label": "Debut",
+          "value": "May 14"
+        },
+        {
+          "label": "Agency",
+          "value": "Leonardo Code"
+        },
+        {
+          "label": "Nationality",
+          "value": "Korean"
+        },
+        {
+          "label": "Hometown",
+          "value": "Busan"
+        },
+        {
+          "label": "Personality",
+          "value": "ENFJ"
+        },
+        {
+          "label": "Favorite food",
+          "value": "dwaeji gukbap"
+        },
+        {
+          "label": "Favorite music",
+          "value": "funky dance pop"
+        }
+      ]
     },
     "shaman": {
-      "name": "Soryeong",
-      "title": "Spirit-Borne Shaman",
-      "hook": "The spirits keep calling your name."
+      "name": "Jaeha",
+      "title": "Jaeha · Bridge Producer",
+      "hook": "Quiet like a bridge between verses, he catches the shape of a feeling without overexplaining it.",
+      "facts": [
+        {
+          "label": "Birthday",
+          "value": "2004.05.30"
+        },
+        {
+          "label": "Blood",
+          "value": "AB"
+        },
+        {
+          "label": "Height",
+          "value": "175cm"
+        },
+        {
+          "label": "Weight",
+          "value": "58kg"
+        },
+        {
+          "label": "Debut",
+          "value": "May 14"
+        },
+        {
+          "label": "Agency",
+          "value": "Leonardo Code"
+        },
+        {
+          "label": "Nationality",
+          "value": "Korean"
+        },
+        {
+          "label": "Hometown",
+          "value": "Gwangju"
+        },
+        {
+          "label": "Personality",
+          "value": "INFP"
+        },
+        {
+          "label": "Favorite food",
+          "value": "tteokgalbi"
+        },
+        {
+          "label": "Favorite music",
+          "value": "lo-fi and alternative"
+        }
+      ]
     },
     "taoist": {
-      "name": "Hyundo",
-      "title": "Heaven-Reading Daoist",
-      "hook": "I see the fork in your fate right now."
+      "name": "Haru",
+      "title": "Haru · Dance Break Spark",
+      "hook": "A spark that changes the air like a dance break, getting a stopped heart moving again.",
+      "facts": [
+        {
+          "label": "Birthday",
+          "value": "2005.07.14"
+        },
+        {
+          "label": "Blood",
+          "value": "O"
+        },
+        {
+          "label": "Height",
+          "value": "174cm"
+        },
+        {
+          "label": "Weight",
+          "value": "59kg"
+        },
+        {
+          "label": "Debut",
+          "value": "May 14"
+        },
+        {
+          "label": "Agency",
+          "value": "Leonardo Code"
+        },
+        {
+          "label": "Nationality",
+          "value": "Korean"
+        },
+        {
+          "label": "Hometown",
+          "value": "Daegu"
+        },
+        {
+          "label": "Personality",
+          "value": "ESFP"
+        },
+        {
+          "label": "Favorite food",
+          "value": "napjak mandu"
+        },
+        {
+          "label": "Favorite music",
+          "value": "city pop and house"
+        }
+      ]
     },
     "dokkaebi": {
-      "name": "Heuklang",
-      "title": "King of the Underworld",
-      "hook": "What is it. I want it."
+      "name": "Sion",
+      "title": "Sion · Rap Verse",
+      "hook": "A line that lands clean like a rap verse, stripping the noise from complicated feelings.",
+      "facts": [
+        {
+          "label": "Birthday",
+          "value": "2003.08.26"
+        },
+        {
+          "label": "Blood",
+          "value": "B"
+        },
+        {
+          "label": "Height",
+          "value": "179cm"
+        },
+        {
+          "label": "Weight",
+          "value": "63kg"
+        },
+        {
+          "label": "Debut",
+          "value": "May 14"
+        },
+        {
+          "label": "Agency",
+          "value": "Leonardo Code"
+        },
+        {
+          "label": "Nationality",
+          "value": "Korean"
+        },
+        {
+          "label": "Hometown",
+          "value": "Incheon"
+        },
+        {
+          "label": "Personality",
+          "value": "ISTP"
+        },
+        {
+          "label": "Favorite food",
+          "value": "ganjjajang"
+        },
+        {
+          "label": "Favorite music",
+          "value": "hip-hop and trap beats"
+        }
+      ]
     },
     "hunter": {
-      "name": "Bjorn",
-      "title": "Wild Hunter",
-      "hook": "...the blood trail leads to you."
+      "name": "Ihyun",
+      "title": "Ihyun · Low Rap Analyst",
+      "hook": "A low, composed rap tone that reads the room and points to the most realistic move.",
+      "facts": [
+        {
+          "label": "Birthday",
+          "value": "2003.10.04"
+        },
+        {
+          "label": "Blood",
+          "value": "A"
+        },
+        {
+          "label": "Height",
+          "value": "180cm"
+        },
+        {
+          "label": "Weight",
+          "value": "64kg"
+        },
+        {
+          "label": "Debut",
+          "value": "May 14"
+        },
+        {
+          "label": "Agency",
+          "value": "Leonardo Code"
+        },
+        {
+          "label": "Nationality",
+          "value": "Korean"
+        },
+        {
+          "label": "Hometown",
+          "value": "Daejeon"
+        },
+        {
+          "label": "Personality",
+          "value": "INTJ"
+        },
+        {
+          "label": "Favorite food",
+          "value": "kalguksu"
+        },
+        {
+          "label": "Favorite music",
+          "value": "jazz and neo-soul"
+        }
+      ]
     },
     "runeshaman": {
-      "name": "Helga",
-      "title": "Rune Carver",
-      "hook": "Twenty-four signs are calling your name."
+      "name": "Hamin",
+      "title": "Hamin · Outro Ad-lib",
+      "hook": "Soft as an outro ad-lib, he listens to the feeling still hanging at the end of a sentence.",
+      "facts": [
+        {
+          "label": "Birthday",
+          "value": "2006.12.28"
+        },
+        {
+          "label": "Blood",
+          "value": "AB"
+        },
+        {
+          "label": "Height",
+          "value": "175cm"
+        },
+        {
+          "label": "Weight",
+          "value": "57kg"
+        },
+        {
+          "label": "Debut",
+          "value": "May 14"
+        },
+        {
+          "label": "Agency",
+          "value": "Leonardo Code"
+        },
+        {
+          "label": "Nationality",
+          "value": "Korean"
+        },
+        {
+          "label": "Hometown",
+          "value": "Jeju"
+        },
+        {
+          "label": "Personality",
+          "value": "ISFP"
+        },
+        {
+          "label": "Favorite food",
+          "value": "abalone porridge"
+        },
+        {
+          "label": "Favorite music",
+          "value": "dream pop and orchestral pop"
+        }
+      ]
     },
     "god": {
-      "name": "Ormund",
-      "title": "God of the North",
-      "hook": "I will call your final road."
-    }
-  },
-  "worldLore": {
-    "sectionTitle": "Worldview",
-    "episodeLabel": "Episode",
-    "figuresLabel": "Characters",
-    "charactersSection": "Character Stories",
-    "truthRoute": "🌌 Truth Route",
-    "finalChapterPrefix": "Final Chapter",
-    "lockedStory": "This story isn't carved yet. It will be soon.",
-    "levelLabel": "Lv.{level} · {count}/10",
-    "chapterUnlockHint": "Unlocks at Lv.{level}",
-    "otherworld": {
-      "opening": "Emotions don't disappear. The things people turn away from gather somewhere — and eventually tear the sky and return.",
-      "p1": "Regret, anger, longing, desire, loss. The feelings people believed they had let go did not scatter — they collected in one place. That vast silent lake some call 'The Abyss Archive.' No one dared speak its name until it awakened.",
-      "p2": "The sky began to split. People call it disaster — but it is no enemy from outside. It is the passage by which the things humans dropped come back. Only three know this, dimly. And even those three do not believe they see the whole truth.",
-      "p3": "Kael was born of desire, Luna of memory, Rael of prayer. The three may seal the cracks or split them wider. Their fates are strangely entwined — only this much is certain: if one of them falls, the other two fall with them. Why, even they do not fully know.",
-      "fig1Line": "A child who nearly lost his mother, and the pact he made with the dark. His mother opened her eyes again that night. But whether what he saw was truly his mother — Kael has never been able to ask, his whole life.",
-      "fig2Line": "A witch who handles emotion. The other witches say her power was 'sealed.' What was truly sealed — even she has forgotten.",
-      "fig3Line": "The last angel of the heavens. He took up the sword by divine command. But the real reason the heavens fell — not even the god who sent him would tell him.",
-      "closing": "Their listening to your story is no mere counsel. It is the world's question to humankind — and you are the one giving them the answer.",
-      "theme": "Emotion · Desire · Memory · Fracture"
-    },
-    "eastern": {
-      "opening": "A small mountain village at the southern edge of Joseon. On every full-moon night, people began to vanish.",
-      "p1": "On the seventh night, those who had disappeared came back of their own accord. Rope marks on their necks, mud on their feet, eyes empty. They all repeated the same words — “Beneath the moon, someone called our name.” The villagers sent for Soryeong, the shaman of Mt. Cheonghwa.",
-      "p2": "Soryeong looked up at the red eclipse rotting like blood at its edges and said, “The gate of the underworld is opening.” That same night a blue talisman cut through the air, and Hyundo, a taoist in a black robe, arrived. The stars he had read warned him: once the third eclipse is complete, the world of the living and the dead overlap — and at the center of that rift was Soryeong herself.",
-      "p3": "In a black hall of a ruined palace, untouched by moonlight, a man slowly opened his eyes. Red eyes, black gold ornaments, a beast-like smile — Heuklang, king of the underworld. Black mist coiled at his feet as he murmured, “The child who can open the gate has awakened.” From that night, the fate of all three is bound to the same event.",
-      "fig1Line": "The shaman of Mt. Cheonghwa, in red silk, shaking her bell. She has long forgotten that she was born as a 'child of the boundary' between human and afterlife.",
-      "fig2Line": "The taoist of blue lightning. Reading the heavens too long has shortened his lifespan, yet he still tries to bend one single fate.",
-      "fig3Line": "The king of the underworld. The name he bore as a human is lost. Why he never raises a hand against Soryeong — he refuses to say.",
-      "closing": "The three walk through the same night together. But what that night will close and what it will leave behind — only the last eclipse reveals.",
-      "theme": "Name · Forgetting · Boundary · Seal"
-    },
-    "nordic": {
-      "opening": "The northern wind is cold. That cold is not merely a season — for the whole world's fate is carved into it.",
-      "p1": "The name of this world is 'Midhall.' A land of blizzards and blood and iron, of beast-bone and runes. Humans are unspeakably small before nature, gods, and fate. War and survival are the whole of life.",
-      "p2": "Every fate is woven of twenty-four ancient runes. Runes are no mere letters, no mere magic. They are the language of the gods and the primal force that composes the world — and humans can handle only a small fraction. Those who use runes deeply have their souls eaten away, black cracks spreading across their skin, and slowly lose the language of men.",
-      "p3": "The tribes war without end. Officially the cause is territory and food, but the true reason is another: the legendary 'twenty-fifth rune' — the forbidden power not to read fate, but to rewrite it. Everyone covets it. Everyone fears it.",
-      "fig1Line": "Midhall's last god. The other gods were forgotten and faded — only he remains, because the people still remember him. That he too was once a man, only he knows.",
-      "fig2Line": "A wild hunter. He reads fate from beast-tracks and the grain of the wind. He cannot wield runes deeply, but on one blizzard night he saw the twenty-fifth rune in a dream, just once.",
-      "fig3Line": "The tribe's foremost runeshaman, who handles all twenty-four runes. She is forgetting human language. Of all the futures she sees, only her own death is hidden from her.",
-      "closing": "The three stand in balance around the twenty-fifth rune. Track, rune, oracle. If one of them vanishes, Midhall falls with them.",
-      "theme": "Rune · Fate · Wild · Oracle"
+      "name": "Theo",
+      "title": "Theo · Performance Break",
+      "hook": "A performance break in human form, switching on the momentum you need right now.",
+      "facts": [
+        {
+          "label": "Birthday",
+          "value": "2004.11.16"
+        },
+        {
+          "label": "Blood",
+          "value": "O"
+        },
+        {
+          "label": "Height",
+          "value": "178cm"
+        },
+        {
+          "label": "Weight",
+          "value": "67kg"
+        },
+        {
+          "label": "Debut",
+          "value": "May 14"
+        },
+        {
+          "label": "Agency",
+          "value": "Leonardo Code"
+        },
+        {
+          "label": "Nationality",
+          "value": "Korean"
+        },
+        {
+          "label": "Hometown",
+          "value": "Suwon"
+        },
+        {
+          "label": "Personality",
+          "value": "ESTP"
+        },
+        {
+          "label": "Favorite food",
+          "value": "Suwon galbi"
+        },
+        {
+          "label": "Favorite music",
+          "value": "rock and EDM"
+        }
+      ]
     }
   },
   "onboarding": {
     "skip": "Skip",
     "next": "Next",
     "start": "Begin",
-    "step1Title": "Three worlds\ncall to you",
+    "step1Title": "Check today's\nflow first",
     "step1Subtitle": "Carousel of Life",
-    "step1Desc": "Shamans of the Astra Rift, spirits of the East, runeshamans of the North.\nNine beings already know your pillars and your fate.",
-    "step2Title": "Astra Rift",
-    "step2Subtitle": "ASTRA RIFT",
-    "step2Desc": "Three beings born from the abyss of human emotion and memory.\nThey read your flow through tarot and cards.",
-    "step3Title": "Lunar Mirror",
-    "step3Subtitle": "月蝕鏡",
-    "step3Desc": "The boundary fractured after a red eclipse 500 years ago.\nThey read fate through pillars and heavens.",
-    "step4Title": "Midhall",
-    "step4Subtitle": "MIDHALL",
-    "step4Desc": "A cold, harsh North. Fate woven from 24 ancient runes.\nThey read your flow through runes and tracks.",
-    "step5Title": "Today, who will\nlisten to your story?",
-    "step5Desc": "A new shaman speaks to you each day.\nFortunes, tarot, pillars, bond, runes — they read everything."
+    "step1Desc": "Follow fortune, tarot, saju, and compatibility as separate paths, then go deeper when you need to.",
+    "step2Title": "Front Unit",
+    "step2Subtitle": "FRONT",
+    "step2Desc": "Ian, Yujun, and Doyoon keep the first hello calm, warm, and lively.",
+    "step3Title": "Studio Unit",
+    "step3Subtitle": "STUDIO",
+    "step3Desc": "Jaeha, Haru, and Sion bring studio talk, bright chatter, and sharp banter.",
+    "step4Title": "Mood Unit",
+    "step4Subtitle": "MOOD",
+    "step4Desc": "Theo, Evan, and Luhan bring energy, taste, and soft imagination.",
+    "step5Title": "Open the answer\nyou need today",
+    "step5Desc": "Use the home screen for fortune, tarot, saju, and compatibility, then continue the flow step by step."
   },
   "appShell": {
-    "errorTitle": "The flow of stars has dimmed",
+    "errorTitle": "Something went wrong",
     "errorBody": "An unexpected error occurred.",
     "errorHome": "Back to home",
     "errorRetry": "Try again",
-    "globalErrorTitle": "The flow of stars has stopped completely",
-    "globalErrorBody": "A fatal error occurred. Please try again in a moment.",
+    "globalErrorTitle": "Something went wrong",
+    "globalErrorBody": "A serious error occurred. Please try again in a moment.",
     "globalErrorRetry": "Try again",
-    "notFoundTitle": "This path is not written in fate",
-    "notFoundBody": "What you're looking for isn't here. Shall we return to the start?",
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "The page you're looking for isn't here. Want to go back?",
     "notFoundHome": "Back to start",
-    "loadingText": "Reading the flow of stars…"
+    "loadingText": "Loading..."
   },
   "authButton": {
     "googleFailed": "Google sign-in failed: {message}",
@@ -366,10 +720,10 @@
   },
   "onboardingForm": {
     "name": "Name",
-    "namePlaceholder": "The name the shaman will call you",
+    "namePlaceholder": "The name members can use for you",
     "birthDate": "Birth date",
     "birthTime": "Birth time",
-    "birthTimeHelp": "Leave blank if unknown. The hour pillar will be skipped.",
+    "birthTimeHelp": "Leave it blank if you don't know it. The hour pillar will be skipped.",
     "calendarSystem": "Calendar",
     "calendarSolar": "Solar",
     "calendarLunar": "Lunar",
@@ -383,9 +737,9 @@
     "mbtiPlaceholder": "e.g., INFP",
     "birthplace": "Birthplace",
     "birthplacePlaceholder": "e.g., Seoul",
-    "submitLoading": "Unfolding the book of fate…",
+    "submitLoading": "Preparing your profile...",
     "submit": "Begin",
-    "privacy": "Your details are used only for the reading."
+    "privacy": "Your details are used only to personalize your readings."
   },
   "pricing": {
     "metaTitle": "Plans",
@@ -399,14 +753,14 @@
     "proName": "Pro",
     "proTagline": "Most generous limits",
     "recommended": "Recommended",
-    "fortuneLine": "Daily fortunes × {n}",
+    "fortuneLine": "Fortune | Divination | Saju - {n} daily uses",
     "tarotLine": "Daily tarot × {n}",
-    "chatLine": "Daily shaman messages × {n}",
-    "fortuneUnlimited": "Plenty of daily fortunes",
-    "tarotUnlimited": "Plenty of tarot",
-    "chatUnlimited": "Plenty of shaman messages",
+    "chatLine": "Chat - {n} daily messages",
+    "fortuneUnlimited": "More Fortune | Divination | Saju uses",
+    "tarotUnlimited": "More tarot draws",
+    "chatUnlimited": "More chat messages",
     "premiumReports": "Light-only reports (career · health · study · love)",
-    "compatibilityUnlimited": "Plenty of compatibility readings",
+    "compatibilityUnlimited": "More compatibility readings",
     "ctaFreeStart": "Start free",
     "ctaCurrent": "Current plan",
     "ctaFree": "Free plan",
@@ -416,12 +770,13 @@
     "ctaProStart": "Start Pro",
     "loading": "One moment…",
     "footer": "Secure card payment, auto-renews monthly. Cancel anytime.",
-    "metaDescriptionFull": "Compare Free / Light / Pro. Light raises every daily limit. Pro gives 50 fortunes · 50 tarot · 100 chats per day.",
+    "metaDescriptionFull": "Compare Free / Light / Pro. Light raises every daily limit. Pro gives 45 Fortune | Divination | Saju uses and 120 chats per day.",
     "h1": "Three plans",
     "h1Sub": "Pick the one that fits you.",
+    "appFreeNote": "Enjoy all the core features for free in the app. Look around and have fun.",
     "freeDesc": "Get a light reading every day.",
-    "lightDesc": "Raise your daily limits and meet them more often.",
-    "proDesc": "Generous daily limits across every reading.",
+    "lightDesc": "Raise your daily limits and spend more time with the members.",
+    "proDesc": "The most generous daily limits for readings and chat.",
     "tarotOneLine": "Tarot · 1 card × {n} per day",
     "perMonth": "/ month",
     "bulletZodiac": "Zodiac & Chinese zodiac fortunes",
@@ -430,7 +785,7 @@
     "bulletTarotCeltic": "Tarot daily × {n} (incl. Celtic Cross)",
     "bulletLenormand": "Lenormand 9-card · Grand Tableau",
     "bulletRunes": "Rune · 5-card & 9-card spreads",
-    "bulletSajuDeep": "Deep pillars reading (saved for life)",
+    "bulletSajuDeep": "Deep saju reading (saved permanently)",
     "bulletGacha": "Card gacha · 3 daily draws",
     "palmLine": "Palm reading · {n} per day"
   },
@@ -439,15 +794,15 @@
     "pro": "PRO"
   },
   "settingsPage": {
-    "heading": "My space",
-    "subheading": "Manage your plan and details.",
+    "heading": "My Page",
+    "subheading": "Manage your plan and profile.",
     "lightActive": "Light is active. Daily limits raised.",
     "proActive": "Pro is active. Most generous daily limits.",
     "freeMembership": "You're on the free plan right now.",
     "nextBilling": "Next billing",
     "upgradeCta": "Upgrade to Light",
     "myInfo": "My information",
-    "myInfoHelp": "Used for your pillars and readings.",
+    "myInfoHelp": "Used to personalize your saju and readings.",
     "labelName": "Name",
     "labelEmail": "Email",
     "labelBirthDate": "Birth date",
@@ -462,9 +817,6 @@
     "genderMale": "Male",
     "genderFemale": "Female",
     "genderOther": "Other",
-    "fateLog": "Reading history",
-    "fateLogHelp": "Every past fortune, tarot, and bond reading in one place.",
-    "fateLogCta": "View history",
     "feedbackCta": "Send feedback to the team",
     "openChatCta": "Join the open chat",
     "greetingNamed": "{name}, the stars are still with you today.",
@@ -487,158 +839,160 @@
   },
   "chatShell": {
     "newSession": "New conversation",
-    "drawerTitle": "Today's encounters",
+    "drawerTitle": "Today's chats",
     "deleteTitle": "Delete conversation",
     "deleteConfirm": "Delete this conversation? This cannot be undone.",
-    "sendAriaLabel": "Send signal",
+    "sendAriaLabel": "Send message",
+    "inputPlaceholder": "Type a message",
+    "typing": "Typing",
     "quotaExceeded": "You've used all of today's conversation limit.",
     "upgradeChatCta": "Go Light for more chat",
-    "messageTooLong": "Please keep your question under {n} characters.",
+    "messageTooLong": "Please keep your chat under {n} characters.",
     "excuseFallback": "I need to step away for a moment.",
     "startChat": "Start a conversation with {name}",
     "greetings": {
       "child": [
-        "You're back. Tell me what you want.",
-        "Want to see what you really mean today?",
-        "Lies waste time. Get to it."
+        "You're here. How was your day?",
+        "I was waiting. Tell me slowly.",
+        "You can start with a song you heard or what you ate today."
       ],
       "witch": [
         "I was waiting for you.",
-        "The grain of your feelings is different today.",
-        "The moon is calling your name."
+        "You're here. It's nice to hear from you.",
+        "What should we talk about first today?"
       ],
       "sage": [
-        "You came back.",
-        "You didn't give up. Good.",
-        "What's on your heart today?"
+        "I just finished practice. Good timing.",
+        "How's your energy today?",
+        "Stage talk or daily talk, I can keep up."
       ],
       "shaman": [
-        "The spirits were waiting for you again today.",
-        "The bell is turned toward you.",
-        "...I can see your flow."
+        "I'm in the studio. Want to stay for a bit?",
+        "What was on your playlist today?",
+        "It's a good time for a quiet chat."
       ],
       "taoist": [
-        "The heavens are turned toward you.",
-        "I see today's fork in your road.",
-        "You came. What do you want to ask."
+        "Hey, you're here! What did you eat today?",
+        "Say anything. I'm good at reacting.",
+        "Even weather talk can be fun."
       ],
       "dokkaebi": [
-        "...what. You came back?",
-        "You bring anything interesting?",
-        "Tch. Fine, I'll listen."
+        "You're here. Say it, I'm listening.",
+        "What did you do today?",
+        "Short is fine. I'll keep it going."
       ],
       "hunter": [
-        "...your tracks followed you back.",
-        "...the smell of blood is fainter. Good.",
-        "...the wind carried your story."
+        "Did you watch or hear anything good today?",
+        "Tell me what you're into lately.",
+        "Taste talk can run long. That's fine."
       ],
       "runeshaman": [
-        "Twenty-four runes are calling your name again.",
-        "...ᚱ Raidho is over your path.",
-        "Take today's rune."
+        "Were you waiting for me?",
+        "Any strange thoughts today?",
+        "Dreams, photos, random ideas, all good."
       ],
       "god": [
-        "You returned.",
-        "...your steps call the storm.",
-        "The horn is ready to sound for you."
+        "You're here again. Want to raise the energy?",
+        "The practice-room air is still with me.",
+        "What's your energy score today?"
       ]
     },
     "shamanCall": {
       "child": [
-        "What do you want today? Be honest.",
-        "You're holding that desire down again.",
-        "So — what do you really mean?"
+        "Ian is asking about your day.",
+        "If you want a calm first hello, go to Ian.",
+        "Even a short update is enough for Ian."
       ],
       "witch": [
-        "Your feelings look heavy today.",
-        "I want to hear more of your story.",
-        "What rose up in your memory?"
+        "Yujun is waiting quietly.",
+        "Tell Yujun about a song or your day.",
+        "If you want a gentle chat, Yujun fits."
       ],
       "sage": [
-        "What's the flow today?",
-        "It's okay to pause for a moment. Want to talk?",
-        "Your light reached me."
+        "Doyoon just came back from practice.",
+        "If you want an energetic chat, go to Doyoon.",
+        "Stage talk or daily talk, Doyoon can take it."
       ],
       "shaman": [
-        "The spirits are calling you. Come.",
-        "I can see your grain today — want to hear?",
-        "The bell rang. Let me tell you what it meant."
+        "Jaeha is waiting in the studio.",
+        "Jaeha likes playlist talk.",
+        "For a quiet late-night chat, go to Jaeha."
       ],
       "taoist": [
-        "Your name has risen in the heavens.",
-        "I can see today's fork — want to read it together?",
-        "The stars pointed at you."
+        "Want to chat lightly with Haru?",
+        "You can start with food. Haru will love it.",
+        "If you want bright reactions, go to Haru."
       ],
       "dokkaebi": [
-        "Hey. What are you doing.",
-        "I'm bored. Talk to me.",
-        "Bring me something interesting."
+        "Sion is pretending not to wait.",
+        "Sion is good at playful back-and-forth.",
+        "Even a short message is enough for Sion."
       ],
       "hunter": [
-        "...I saw your tracks. May I follow.",
-        "The wind brought you. Step quietly.",
-        "The smell of blood is on you. What happened."
+        "Tell Evan what you're into lately.",
+        "Movies and music reviews fit Evan well.",
+        "For a calm taste chat, go to Evan."
       ],
       "runeshaman": [
-        "One of the twenty-four runes woke up. It's calling you.",
-        "...what was that word again. Anyway — it's you.",
-        "Your name was carved between black cracks."
+        "Luhan is waiting for a strange little story.",
+        "Tell Luhan about a dream or photo.",
+        "For a loose and cute chat, go to Luhan."
       ],
       "god": [
-        "The horn's echo reached you.",
-        "The storm has paused. Speak in this gap.",
-        "I once lived as you do. I'll listen."
+        "Theo is waiting with full energy.",
+        "Tell Theo your energy level today.",
+        "For a backstage-after-show vibe, go to Theo."
       ]
     },
     "emptyLines": {
       "child": {
-        "line1": "Speak.",
-        "line2": "Desire or scar — I'll see it either way."
+        "line1": "How was your day?",
+        "line2": "Start with a short update."
       },
       "witch": {
-        "line1": "The moon is calling you.",
-        "line2": "Inside the fog of memory, what do you see?"
+        "line1": "I was waiting.",
+        "line2": "What should we talk about first?"
       },
       "sage": {
-        "line1": "I'm here.",
-        "line2": "I'll listen to whatever you bring. It's all right."
+        "line1": "I just finished practice.",
+        "line2": "How's your energy today?"
       },
       "shaman": {
-        "line1": "The spirits say…",
-        "line2": "Your name is folded into the bell."
+        "line1": "The studio is quiet.",
+        "line2": "Any songs you heard today?"
       },
       "taoist": {
-        "line1": "Reading the heavens.",
-        "line2": "I can see the fork waiting in front of you."
+        "line1": "Hey, you're here!",
+        "line2": "Tell me what you ate today."
       },
       "dokkaebi": {
-        "line1": "Why are you here.",
-        "line2": "You wouldn't come unless you wanted something."
+        "line1": "If you're here, talk.",
+        "line2": "I'm listening."
       },
       "hunter": {
-        "line1": "...I see your tracks.",
-        "line2": "Come quietly. The prey is listening."
+        "line1": "What are you watching lately?",
+        "line2": "Want to start with taste talk?"
       },
       "runeshaman": {
-        "line1": "ᚱ Raidho is turned toward you.",
-        "line2": "The twenty-four runes are calling your name."
+        "line1": "Were you waiting for me?",
+        "line2": "Tell me a thought from today."
       },
       "god": {
-        "line1": "The horn sounded.",
-        "line2": "I once lived as you do. I will listen."
+        "line1": "You're here again.",
+        "line2": "What's your energy score?"
       }
     }
   },
   "onboardingHooks": {
-    "child": "Demon who sees through desire",
-    "witch": "Witch who reads memory",
-    "sage": "Angel who carries hope",
-    "shaman": "Shaman who delivers the spirits' voice",
-    "taoist": "Five-century daoist who reads fate",
-    "dokkaebi": "Goblin king of the underworld",
-    "god": "The last god of the North",
-    "hunter": "Wild hunter",
-    "runeshaman": "Runeshaman who carves the 24 runes"
+    "child": "Calm leader",
+    "witch": "Warm vocalist",
+    "sage": "Clear performer",
+    "shaman": "Quiet producer",
+    "taoist": "Bright mood maker",
+    "dokkaebi": "Chic rapper",
+    "god": "Energetic main dancer",
+    "hunter": "Calm analyst",
+    "runeshaman": "Dreamy youngest"
   },
   "collectionPage": {
     "heading": "My archive",
@@ -649,10 +1003,10 @@
     "rarityLegend": "Legendary",
     "drawingNow": "Drawing…",
     "drawDoneToday": "Done for today",
-    "drawBonus": "Bonus draw ({n} left)",
-    "drawCount": "Draw card ({used}/{max})",
-    "drawAction": "Draw today's card",
-    "drawAriaLabel": "Draw card",
+    "drawBonus": "Pick a bonus card ({n} left)",
+    "drawCount": "Pick a card ({used}/{max})",
+    "drawAction": "Today's bonus card",
+    "drawAriaLabel": "Pick a bonus card",
     "lockedAriaLabel": "Card not yet owned",
     "lockedBadge": "Not owned",
     "detailAriaLabel": "View {name} detail",
@@ -665,27 +1019,31 @@
     "resultNew": "A new card has joined your archive!",
     "resultDupe": "A card you already own.",
     "resultBonus": "+{n} chat bonus earned!",
-    "resultIdle": "Draw a card and the result will appear here.",
+    "resultIdle": "Tap the button to reveal three bonus cards.",
     "drawError": "Something went wrong with the draw.",
-    "subDescSubscribed": "Subscribers can draw more each day (Light 3 / Pro 5).",
-    "subDescFree": "Free 1 / Light 3 / Pro 5. Rare and Legendary cards also grant chat bonuses.",
-    "dupeDetailLine": "A card you already own — only one draw was spent."
+    "subDescSubscribed": "Subscribers can pick more cards each day. Light 3, Pro 5.",
+    "subDescFree": "Free 1, Light 3, Pro 5. Rare and Legendary cards also grant chat bonuses.",
+    "dupeDetailLine": "A card you already own. Only one draw was spent.",
+    "bonusBackAlt": "Bonus card back",
+    "pickOneHint": "Choose one of the three cards.",
+    "pickOneAria": "Pick bonus card {n}",
+    "bonusDeductNotice": "When a card grants a bonus, the shown chat count is deducted from today's used chats."
   },
   "fortuneCard": {
     "categoryFallback": "Fortune",
-    "chatCta": "Talk to them",
+    "chatCta": "Chat with them",
     "shareFilename": "CarouselOfLife_{label}",
     "shareTextLine": "[{label}] {title}\n\n{content}\n\nLucky: {color} / {number} / {direction}",
     "askMore": "Want to ask {name} more?",
     "luckyColor": "Lucky color",
     "luckyNumber": "Lucky number",
     "luckyDirection": "Lucky direction",
-    "categoryGeneral": "General fortune",
+    "categoryGeneral": "Daily Fortune",
     "categoryLove": "Love",
     "categoryCareer": "Career",
     "categoryHealth": "Health",
     "categoryStudy": "Study",
-    "categoryWealth": "Wealth",
+    "categoryWealth": "Money Fortune",
     "categoryZodiac": "Zodiac",
     "categoryChineseZodiac": "Chinese zodiac"
   },
@@ -704,49 +1062,85 @@
     "loveHeading": "Love — Light report"
   },
   "historyPage": {
-    "metaTitle": "Fate Log",
-    "metaDescription": "The trail you've walked. The boundary remembers.",
-    "category": "Boundary · Layer of Memory",
-    "heading": "Fate Log",
-    "emptyTitle": "No traces yet.",
-    "emptyBody": "Pull a fortune or talk to a shaman, and your trail will appear here.",
-    "myStory": "My story",
-    "crackStatus": "Boundary status",
+    "metaTitle": "My Records",
+    "metaDescription": "Review your fortune, tarot, and compatibility records in one place.",
+    "category": "My Records",
+    "heading": "Records",
+    "intro": "Your fortune, tarot, and compatibility readings are saved here in order, so you can revisit your flow later.",
+    "emptyTitle": "No records yet.",
+    "emptyBody": "Read a fortune, draw tarot, or check compatibility and your records will appear here.",
+    "totalRecords": "All records",
+    "latestRecords": "Recent records",
+    "showingRecent": "Latest {n}",
+    "filterAll": "All",
+    "filterEmptyTitle": "No records of this type yet.",
+    "filterEmptyBody": "Try this reading once and it will appear here.",
+    "deleteRecord": "Delete record",
+    "deleteConfirm": "Delete this record? This cannot be undone.",
+    "deleteFailed": "Could not delete the record. Please try again soon.",
+    "periodLabel": "Period",
+    "periodAll": "All",
+    "periodWeek": "Last 7 days",
+    "periodMonth": "Last 30 days",
+    "detailMetaTitle": "Record Detail",
+    "detailMetaDescription": "Review a saved fortune, tarot, or compatibility result.",
+    "detailCategory": "Saved record",
+    "detailHeading": "Record Detail",
+    "detailIntro": "You opened a result you saved earlier. Read it again and compare it with how things feel now.",
+    "detailKindLabel": "Type",
+    "detailDateLabel": "Recorded",
+    "detailFortuneCategoryLabel": "Category",
+    "detailTarotQuestionLabel": "Question",
+    "detailTarotNoQuestion": "Card drawn without a question",
+    "detailCompatibilityPartnerLabel": "Partner",
+    "detailCompatibilityNoPartner": "No partner info",
+    "nextActionTitle": "Continue from here",
+    "nextActionBody": "After reviewing this result, you can read today's flow again or keep browsing your records.",
+    "actionFortuneTitle": "Read today's fortune again",
+    "actionFortuneBody": "Check today's flow again from where you are now.",
+    "actionTarotTitle": "Draw tarot again",
+    "actionTarotBody": "Open a fresh card for your current question.",
+    "actionCompatTitle": "Check compatibility again",
+    "actionCompatBody": "Review this partner again or check someone new.",
+    "backToArchiveBody": "Keep browsing your saved records.",
+    "backToArchive": "Back to records",
+    "startFortune": "Read fortune",
+    "startFortuneBody": "Start with today?s practical flow.",
+    "startTarot": "Draw tarot",
+    "startTarotBody": "Check the choice on your mind.",
+    "startCompat": "Check compatibility",
+    "startCompatBody": "Review the flow between two people.",
+    "myStory": "My flow",
     "recordedAt": "Recorded",
     "drawnCard": "Drawn card",
     "repeatPattern": "Repeating pattern",
-    "encounterRecord": "Encounter log",
+    "encounterRecord": "Chat log",
     "patternDetected": "Pattern detected",
-    "todayBoundaryCard": "Today's boundary card",
+    "todayBoundaryCard": "Today?s record card",
     "saveBtn": "Save",
-    "boundaryFilename": "BoundaryCard_{date}.png",
-    "countSuffix": "× {n}",
+    "boundaryFilename": "RecordCard-{date}.png",
+    "countSuffix": "{n} times",
     "itemFortune": "Fortune",
-    "itemTarotThree": "Tarot · 3 cards",
-    "itemTarotOne": "Tarot · 1 card",
-    "itemCompat": "Bond · {date}",
-    "itemCompatTitle": "Bond with {partner}",
+    "itemTarot": "Tarot",
+    "itemTarotThree": "Tarot ? 3 cards",
+    "itemTarotOne": "Tarot ? 1 card",
+    "itemCompat": "Compatibility ? {date}",
+    "itemCompatShort": "Compatibility",
+    "itemCompatTitle": "Compatibility with {partner}",
     "compatScore": "{score} pts",
     "daysVisited": "Days recorded",
     "daysCount": "{n} days",
     "cardsDrawn": "Cards drawn",
-    "cardsCount": "× {n}",
+    "cardsCount": "{n} cards",
     "mostMet": "Most met",
-    "mostMetWithCount": "{name} (× {n})",
+    "mostMetWithCount": "{name} ({n} times)",
     "dominantMood": "Dominant mood",
     "repeatedDetected": "Repeating pattern",
-    "repeatedCardLine": "The ‘{card}’ card appeared {n} times.",
+    "repeatedCardLine": "The ?{card}? card appeared {n} times.",
     "encounter": "Encounter log",
-    "encounterCount": "{name} × {n}",
+    "encounterCount": "{name} {n} times",
     "patternsDetected": "Patterns detected",
     "downloadSave": "Save"
-  },
-  "crackLabelsFull": {
-    "stable": "Stable",
-    "wave": "Ripple detected",
-    "fracture": "Fracture widening",
-    "danger": "Danger",
-    "imminent": "Imminent"
   },
   "moodLabels": {
     "great": "Great",
@@ -755,152 +1149,28 @@
     "tough": "Tough",
     "hard": "Really hard"
   },
-  "archivePanel": {
-    "memoryFallback": "Observer of the Boundary",
-    "memoryHint": "This name was derived by the boundary from the traces you've left.",
-    "boundaryStable": "The boundary is stable.",
-    "boundaryWave": "Observation signal is fading.",
-    "boundaryFracture": "The boundary is thinner than usual.",
-    "boundaryDanger": "The fracture is deepening.",
-    "boundaryImminent": "The boundary is imminent.",
-    "sectionObserve": "Observation",
-    "sectionNight": "Night observation",
-    "sectionDawn": "Dawn record",
-    "sectionFracture": "Fracture witnessed",
-    "sectionClosest": "Closest presence",
-    "sectionStatus": "Boundary state",
-    "result": "Observation result",
-    "dawnRecordOpen": "Reading the dawn record.",
-    "observedNew": "The boundary noticed you for the first time.",
-    "observedCount": "The boundary has observed you × {n}.",
-    "nightNone": "No trace of nighttime visits yet.",
-    "nightCount": "Luna remembers × {n} night visits of yours.",
-    "dawnNone": "You haven't crossed the dawn boundary yet.",
-    "dawnCount": "The dawn boundary has met you × {n}.",
-    "fractureNone": "You haven't witnessed a fracture yet.",
-    "fractureCount": "A fracture revealed itself before you × {n}.",
-    "closestRemember": "{name} remembers you most deeply.",
-    "closestNone": "No being yet remembers you deeply.",
-    "boundaryStableLong": "The boundary is stable.",
-    "boundaryWaveLong": "A faint ripple is felt.",
-    "boundaryFractureLong": "The fracture is deepening.",
-    "boundaryDangerLong": "The breath of the Nameless seeps in.",
-    "boundaryImminentLong": "Something nameless is about to wake."
-  },
-  "worldAtmosphere": {
-    "obsLog": "Observation Log · DAILY LOG",
-    "logCount": "× {n}",
-    "logCorrupted": "※ Some records are partially corrupted by observation limits.",
-    "memoryLoss": "Record loss",
-    "panelStableMsg": "The observatory is running calmly.",
-    "panelWaveMsg": "Observation signal is fading.",
-    "panelFractureMsg": "The boundary is thinner than usual.",
-    "panelDangerMsg": "The fracture is deepening.",
-    "panelImminentMsg": "The boundary is imminent.",
-    "sessionFade": [
-      "The record wavers…",
-      "Observation grows dim for a moment.",
-      "The signal is cutting out.",
-      "The boundary is narrowing."
-    ],
-    "sessionAftertaste": [
-      "...something stayed.",
-      "...it hasn't closed yet.",
-      "...the memory is settling."
-    ],
-    "sessionClosing": [
-      "Today's observation has been quietly sealed.",
-      "Luna is still arranging the sentence.",
-      "The traces left today do not fade easily.",
-      "The record is slowly closing.",
-      "Today's light dimmed a little later than usual."
-    ],
-    "sessionAftertasteFull": [
-      "Today's record has not fully closed yet.",
-      "Luna kept looking at your last sentence for a long time.",
-      "A flow like this does not vanish easily.",
-      "This sentence remains only for today."
-    ],
-    "entityDialogs": [
-      [
-        {
-          "who": "Luna",
-          "line": "Lately they show up by day more than by night."
-        },
-        {
-          "who": "Kael",
-          "line": "And the same question still keeps repeating."
-        },
-        {
-          "who": "Rael",
-          "line": "It seems to be a steadier flow now."
-        }
-      ],
-      [
-        {
-          "who": "Kael",
-          "line": "They're circling the same card again."
-        },
-        {
-          "who": "Luna",
-          "line": "Maybe they think that one is their answer."
-        }
-      ],
-      [
-        {
-          "who": "Rael",
-          "line": "You arrived a little late today."
-        },
-        {
-          "who": "Luna",
-          "line": "It's always been that way."
-        }
-      ],
-      [
-        {
-          "who": "Luna",
-          "line": "They appear too often at dawn."
-        },
-        {
-          "who": "Kael",
-          "line": "They mustn't sleep."
-        },
-        {
-          "who": "Rael",
-          "line": "That's why we're here."
-        }
-      ]
-    ]
-  },
-  "homeHidden": {
-    "midnight": "It is midnight.",
-    "fullMoon": "The moon is full.",
-    "namelessNear": "The Nameless draws near.",
-    "rifDeep": "The fracture is deepening.",
-    "boundaryOpen": "The boundary is open."
-  },
   "actionErrors": {
-    "premiumOnly": "Light-only feature.",
+    "premiumOnly": "This feature is for Light members.",
     "completePersonalityFirst": "Please complete the personality test first.",
     "analysisFailed": "Analysis failed.",
     "validationFailed": "Your input isn't valid.",
     "authError": "Auth error: {message}",
-    "compatibilityError": "Something went wrong with the bond reading: {message}",
-    "compatFreeExceeded": "Free bond readings are capped at {n} per day. Want to raise the limit with Light?",
+    "compatibilityError": "Something went wrong with the compatibility reading: {message}",
+    "compatFreeExceeded": "Free compatibility readings are capped at {n} per day. Light raises the limit.",
     "categoryInvalid": "Category isn't valid.",
     "zodiacPremiumOnly": "Zodiac and Chinese zodiac fortunes are Light-only.",
-    "fortuneQuotaExceeded": "You've used today's fortune limit ({n}).",
-    "tarotQuotaExceeded": "You've used today's tarot limit ({n}).",
+    "fortuneQuotaExceeded": "You've used all {n} fortune readings for today.",
+    "tarotQuotaExceeded": "You've used all {n} tarot draws for today.",
     "tarotThreePremium": "The 3-card spread is part of the Light plan.",
     "tarotGenericError": "Something went wrong",
     "lenormandGrandTableauGender": "Grand Tableau needs the significator's gender.",
-    "lenormandQuotaExceeded": "You've used today's free Lenormand limit ({n}).",
+    "lenormandQuotaExceeded": "You've used all {n} free Lenormand readings for today.",
     "lenormandGenericError": "Something went wrong.",
-    "runeQuotaExceeded": "You've used today's free rune limit ({n}).",
+    "runeQuotaExceeded": "You've used all {n} free rune readings for today.",
     "runeGenericError": "Couldn't cast the runes.",
     "sajuDeepPremium": "Deep readings are part of the Light plan.",
-    "sajuRequired": "Please compute your pillars first.",
-    "iljinError": "Couldn't read today's pillar.",
+    "sajuRequired": "Please calculate your saju first.",
+    "iljinError": "Couldn't read today's energy.",
     "careerReportError": "Couldn't load the report.",
     "healthWorkoutError": "Couldn't load today's workout.",
     "studyTipsError": "Couldn't load today's tips.",
@@ -914,11 +1184,11 @@
     "chatQuotaExceeded": "You've used today's chat limit ({n}).",
     "chatBodyParseFailed": "Couldn't parse the request body",
     "chatBodyInvalid": "The body isn't valid.",
-    "chatMessageRequired": "Please enter a question.",
-    "chatMessageTooLong": "Please keep your question under 100 characters.",
-    "fortuneAiFailed": "The shaman couldn't write the reading: {message}",
-    "fortuneSajuFailed": "Couldn't read the stellar flow for your pillars: {message}",
-    "tarotAiFailed": "Couldn't read the tarot's message: {message}",
+    "chatMessageRequired": "Please enter a chat message.",
+    "chatMessageTooLong": "Please keep your chat under 100 characters.",
+    "fortuneAiFailed": "Could not write the reading: {message}",
+    "fortuneSajuFailed": "Couldn't read your saju: {message}",
+    "tarotAiFailed": "Couldn't read the card: {message}",
     "lenormandAiFailed": "Couldn't read the Lenormand's message: {message}",
     "lenormandThreeFailed": "Couldn't generate the 9-card Lenormand reading: {message}",
     "compatibilityAiFailed": "Couldn't read the two energies: {message}",
@@ -940,13 +1210,23 @@
     "grandTableauFailed": "Grand Tableau analysis failed: {message}",
     "grandTableauInterpretFailed": "Couldn't generate the Grand Tableau interpretation: {message}",
     "grandTableauSaveFailed": "Couldn't save the Grand Tableau result.",
-    "grandTableauGenderRequired": "Grand Tableau needs the significator's gender."
+    "grandTableauGenderRequired": "Grand Tableau needs the significator's gender.",
+    "rateLimitedSeconds": "Please wait {n}s and try again.",
+    "nameCompatibilityNameInvalid": "Enter a name between 1 and 24 characters.",
+    "nameCompatibilityGenericError": "Could not read the name compatibility. Please try again shortly.",
+    "nameReadingGenericError": "Could not read the name. Please try again shortly.",
+    "palmConsentRequired": "Photo processing consent is required.",
+    "palmImageRequired": "Please attach a palm photo.",
+    "palmImageTooLarge": "The photo is too large. Please keep it under 5 MB.",
+    "palmUnsupportedType": "Only JPEG, PNG, and WEBP are supported.",
+    "palmPremiumOnly": "Palm reading is available to Light subscribers.",
+    "palmQuotaExceeded": "You have used today’s palm reading limit ({n}). Please come back tomorrow.",
+    "aiSlowRetry": "The AI response is taking too long. Please try again shortly.",
+    "palmGenericError": "Palm reading failed. Please try another photo."
   },
   "todayExtras": {
     "archive": "Archive",
     "archiveSub": "Records of presence",
-    "world": "World",
-    "worldSub": "Today's flow",
     "streakDaysRow": "{n}-day streak",
     "streakActive": "Your flow is keeping up",
     "streakNew": "Your record is building up",
@@ -957,11 +1237,12 @@
   },
   "quotaBar": {
     "proActive": "Pro active",
-    "proSub": "Fortune, Divination & Saju, Questions — all on highest limits.",
-    "fortune": "Fortune",
-    "tarot": "Divination & Saju",
-    "chat": "Questions",
+    "proSub": "Fortune | Divination | Saju and chats are on generous limits.",
+    "fortune": "Fortune | Divination | Saju",
+    "tarot": "Divination | Saju",
+    "chat": "Chat",
     "lightPlan": "Light plan",
+    "freePlan": "Free plan",
     "upgradePro": "Upgrade to Pro",
     "upgrade": "Upgrade"
   },
@@ -988,7 +1269,9 @@
     "getReport": "Get report",
     "genericError": "Something went wrong.",
     "shortError": "Something went wrong",
-    "retry": "Try again"
+    "retry": "Try again",
+    "lockBody": "See your day by time of day, a 6-area score chart, and today's DO/DON'T in one report.",
+    "radarAria": "6-area fortune score chart"
   },
   "generalPremium": {
     "title": "Today's full fortune report",
@@ -1051,19 +1334,19 @@
     "weekdayFri": "Fri"
   },
   "healthReport": {
-    "title": "Today's tailored workout",
-    "lockBody": "An at-home, no-equipment workout for today.",
-    "lockBullet1": "Today's condition analysis",
+    "title": "Today's custom workout",
+    "lockBody": "A no-equipment workout you can do at home today.",
+    "lockBullet1": "Today's condition check",
     "lockBullet2": "Bodyweight workout",
-    "lockBullet3": "Stress-relief workout",
-    "lockBullet4": "Workouts to avoid",
+    "lockBullet3": "Stress-relief routine",
+    "lockBullet4": "Movements to avoid",
     "workoutCta": "Get workout",
-    "bodyweight": "Bodyweight",
-    "equipment": "Equipment"
+    "bodyweight": "At home",
+    "equipment": "Gym equipment"
   },
   "studyReport": {
-    "title": "Tips to sharpen focus",
-    "lockBody": "Study strategy and environment design tailored to your personality type.",
+    "title": "Focus tips for today",
+    "lockBody": "Study strategy and environment tips based on your personality type.",
     "lockBullet1": "Subjects you'll absorb best today",
     "lockBullet2": "Optimal study time",
     "lockBullet3": "Personality-tailored study method",
@@ -1080,24 +1363,31 @@
   },
   "lottoCard": {
     "title": "Wealth-luck lottery generator",
-    "subtitle": "Six numbers drawn with today's wealth energy.",
+    "subtitle": "Lotto and pension lottery numbers drawn with today's wealth energy.",
+    "lottoSectionTitle": "Lotto 6/45",
+    "lottoLockedPreview": "Six lucky numbers",
     "luckyNumberAria": "Lottery number {n}",
+    "pensionTitle": "Pension Lottery 720+",
+    "pensionSubtitle": "A set and six digits for a longer-running wealth flow.",
+    "pensionLockedPreview": "Set + six digits",
+    "pensionGroup": "Set {group}",
+    "pensionAria": "Pension lottery number set {group}, {numbers}",
     "getCta": "Get today's lucky numbers",
     "againCta": "View again",
     "fixedNote": "Based on wealth luck {score} · fixed for today",
     "lockedTitle": "Light-only feature",
-    "lockedBody": "Get six lucky numbers based on your wealth luck, every day.",
+    "lockedBody": "Get daily lotto and pension lottery numbers based on your wealth luck.",
     "lockedCta": "Start Light"
   },
   "premiumGate": {
-    "zodiacTitle": "Zodiac fortune — Light only",
-    "zodiacBody": "Zodiac fortunes are for Light subscribers. We write your sign's reading anew each day across 12 signs.",
-    "chineseTitle": "Chinese zodiac — Light only",
-    "chineseBody": "Chinese zodiac fortunes are for Light subscribers. We write your animal's reading anew each day.",
+    "zodiacTitle": "Zodiac Fortune - Light only",
+    "zodiacBody": "Daily zodiac readings are available with Light.",
+    "chineseTitle": "Chinese Zodiac - Light only",
+    "chineseBody": "Daily Chinese zodiac readings are available with Light.",
     "fallbackTitle": "Light only",
-    "fallbackBody": "This fortune is for Light subscribers.",
+    "fallbackBody": "This reading is available with Light.",
     "subscribeCta": "Subscribe to Light",
-    "footer": "Subscribing unlocks zodiac, Chinese zodiac, and Light-only pillar readings every day."
+    "footer": "Light unlocks zodiac, Chinese zodiac, and extra saju readings every day."
   },
   "fortuneTrend": {
     "lastNDays": "Last {n} days",
@@ -1155,44 +1445,45 @@
     "pig": "Pig"
   },
   "generateForm": {
-    "loading": "Reading the flow of stars…",
-    "askCta": "Ask {name} for {category}",
+    "loading": "Reading...",
+    "eyebrow": "Today's Reading",
+    "askCta": "View {category}",
     "unlimitedCta": "Raise limits with Light",
-    "fallbackBody": "I'll read the {category} flow for you.",
-    "fallbackSaju": "I'll look at your pillars.",
-    "copyGeneral": "I'll read your overall flow for today.",
-    "copyLove": "I'll unfold your love and relationship flow.",
-    "copyMoney": "I'll trace your wealth and money flow.",
-    "copyCareer": "I'll read your work and career flow.",
+    "fallbackBody": "I'll read {category} for you.",
+    "fallbackSaju": "I'll look at your saju.",
+    "copyGeneral": "I'll read your overall fortune for today.",
+    "copyLove": "I'll read your love and relationship luck.",
+    "copyMoney": "I'll read your money luck.",
+    "copyCareer": "I'll read your career luck.",
     "copyHealth": "I'll check your health and condition.",
-    "copyStudy": "I'll trace your study and focus.",
-    "copyZodiac": "I'll read your zodiac flow today.",
-    "copyChineseZodiac": "I'll trace your Chinese zodiac flow today."
+    "copyStudy": "I'll read your focus and study luck.",
+    "copyZodiac": "I'll read today's zodiac fortune.",
+    "copyChineseZodiac": "I'll read today's Chinese zodiac fortune."
   },
   "tarotPage": {
-    "metaTitle": "Oracle",
-    "metaDescription": "Listen to what the cards whisper.",
+    "metaTitle": "Divination",
+    "metaDescription": "See what the cards and runes are pointing toward.",
     "tarotOrigin": "Origins of Tarot",
-    "tarotOriginBody": "Tarot is a divination system born in late-14th-century Europe — 22 Major and 56 Minor arcana, 78 cards in all, encoding every pattern of human fate.\nEach card carries a symbol; reading them reads the flow.",
+    "tarotOriginBody": "Tarot is a 78-card divination system from Europe, made of 22 Major Arcana and 56 Minor Arcana. Each card carries a symbol, and a reading connects that symbol to your question.",
     "lenormandOrigin": "Origins of Lenormand",
     "lenormandOriginBody": "Lenormand is a 36-card deck named after the late-18th-century French cartomancer Mademoiselle Lenormand.\nEveryday objects, animals, and nature appear as cards.\nMeaning emerges from how adjacent cards combine.",
     "runeOrigin": "Origins of the Runes",
-    "runeOriginBody": "The Elder Futhark is a divination system woven from the Germanic tribes' 24 rune letters.\nA single rune is the gods' language and a fragment of fate.\nDrawing runes from a pouch is the northern way of asking the flow.",
-    "todaysTarot": "Today's tarot",
+    "runeOriginBody": "The Elder Futhark is a set of 24 runes used in Northern European divination. A single rune can point to a theme, warning, or next step.",
+    "todaysTarot": "Today's Tarot",
     "todaysLenormand": "Today's Lenormand",
-    "todaysRune": "Today's runes"
+    "todaysRune": "Today's Runes"
   },
   "cardTabs": {
     "tarot": "Tarot",
-    "tarotDesc": "78 cards read the flow of fate.",
+    "tarotDesc": "78 cards for reading your question.",
     "lenormand": "Lenormand",
-    "lenormandDesc": "36 cards bring the message of the everyday.",
+    "lenormandDesc": "36 everyday symbols with direct messages.",
     "rune": "Runes",
-    "runeDesc": "24 runes carry the oracle of the North.",
-    "aria": "Card divination type"
+    "runeDesc": "24 runes for themes, warnings, and next steps.",
+    "aria": "Divination type"
   },
   "tarotForm": {
-    "drawing": "Reading the fate...",
+    "drawing": "Reading...",
     "shuffling": "Shuffling...",
     "selected": "Selected",
     "drawCard": "Draw a card",
@@ -1200,22 +1491,22 @@
     "drawCardBody": "Hold a question in mind and draw one card.",
     "cardBackAlt": "Tarot card back",
     "questionLabel": "Question (optional)",
-    "questionPlaceholderOne": "e.g., How will this week unfold? (within 100 chars)",
+    "questionPlaceholderOne": "e.g. How will this week go? (within 100 characters)",
     "questionHintOne": "Leave blank to draw a general card for today.",
     "subscribeCta": "Subscribe to Light",
     "threeTitle": "Past · Present · Future (3 cards)",
     "threeLightTitle": "Past · Present · Future (Light)",
-    "threeBody": "A flow told by three cards.",
-    "threeBullet1": "Past · the grain so far",
-    "threeBullet2": "Present · where you stand",
-    "threeBullet3": "Future · the flow approaching",
-    "threeBullet4": "A synthesis of the three",
+    "threeBody": "A three-card reading for the situation.",
+    "threeBullet1": "Past · what led here",
+    "threeBullet2": "Present · where you are now",
+    "threeBullet3": "Future · what may come next",
+    "threeBullet4": "A summary of the three cards",
     "threeCta": "Unlock with Light",
-    "threeLoading": "Reading the flow of three cards…",
+    "threeLoading": "Reading three cards...",
     "threeDraw": "Draw three",
     "threeError": "Something went wrong",
-    "threeQuestionPlaceholder": "e.g., How will this matter flow? (within 100 chars)",
-    "threeQuestionHint": "Or just observe the flow.",
+    "threeQuestionPlaceholder": "e.g. Where is this situation headed? (within 100 characters)",
+    "threeQuestionHint": "Or leave it blank for a general reading.",
     "reversedBadge": "Reversed",
     "uprightBadge": "Upright",
     "cardAriaReversed": "{name} reversed",
@@ -1234,10 +1525,10 @@
     "shareFilename": "CarouselOfLife_Tarot_{date}"
   },
   "sajuPage": {
-    "metaTitle": "Pillars",
-    "metaDescription": "Look at the configuration of your pillars.",
+    "metaTitle": "Saju",
+    "metaDescription": "Check your Four Pillars.",
     "tipTitle": "Worth remembering",
-    "tipBody": "The Four Pillars are the stars' configuration at the moment of your birth. Every reading roots back to them — once you compute them, every fortune, tarot, bond, and daily pillar reading runs deeper."
+    "tipBody": "Saju is based on your birth year, month, day, and hour. Once calculated, it makes your fortunes, tarot, compatibility, and daily readings more personal."
   },
   "sajuPillars": {
     "pillarYear": "Year",
@@ -1249,9 +1540,9 @@
     "pillarHour": "Hour",
     "pillarHourSub": "Inner",
     "heading": "Four Pillars · Eight Characters",
-    "subheading": "Four pillars and eight characters — tap a character to see its meaning.",
-    "hourEmpty": "Hour pillar left blank — birth time unknown.",
-    "tapHint": "Tap a character to see its yin-yang, element, and meaning.",
+    "subheading": "Tap each character to see its element, yin-yang, and meaning.",
+    "hourEmpty": "Birth time unknown, so the hour pillar is empty.",
+    "tapHint": "Tap a character to see its element, yin-yang, and meaning.",
     "popoverStem": "Heavenly Stem",
     "popoverBranch": "Earthly Branch",
     "yinYang": "Yin-Yang",
@@ -1347,7 +1638,7 @@
   },
   "deepReading": {
     "section1Title": "Character",
-    "section1Sub": "Born grain",
+    "section1Sub": "Born pattern",
     "section2Title": "Strengths",
     "section2Sub": "Where you shine",
     "section3Title": "Cautions",
@@ -1361,12 +1652,12 @@
     "section7Title": "Life flow",
     "section7Sub": "The big picture",
     "heading": "Deep reading",
-    "intro": "Once written, the deep reading stays with you for life. We spread the grain of your pillars through seven lenses.",
+    "intro": "Once written, the deep reading stays with you for life. We spread the pattern of your pillars through seven lenses.",
     "pillarYear": "Year",
     "pillarMonth": "Month",
     "pillarDay": "Day",
     "pillarHour": "Hour",
-    "eightChars": "The eight characters' grain",
+    "eightChars": "The eight characters' pattern",
     "whyEight": "Why each character appeared",
     "stemRevealed": "Heavenly stems · what is revealed",
     "branchHidden": "Earthly branches · what is hidden",
@@ -1374,7 +1665,7 @@
     "premiumTitle": "Deep reading — Light only",
     "premiumBody": "The seven-lens pillar reading is provided for life to Light subscribers.",
     "premiumLockBullets": [
-      "Character · born grain",
+      "Character · born pattern",
       "Strengths · where you shine",
       "Cautions · weaker currents",
       "Love · style of love",
@@ -1479,7 +1770,7 @@
       "Friendship score",
       "Best vs. weakest relationship"
     ],
-    "analyzing": "Reading the bond grain…",
+    "analyzing": "Reading the bond pattern…",
     "getCta": "Get relationship scores",
     "tryAgain": "Read again",
     "bestKey": "Best fit",
@@ -1498,7 +1789,7 @@
       "Reconciliation method",
       "Conflict-prevention tip"
     ],
-    "analyzing": "Reading the conflict grain…",
+    "analyzing": "Reading the conflict pattern…",
     "getCta": "Analyze conflicts",
     "tryAgain": "Read again",
     "triggers": "Triggers",
@@ -1515,7 +1806,7 @@
       "A good message idea for today",
       "What to avoid today"
     ],
-    "analyzing": "Reading today's grain…",
+    "analyzing": "Reading today's pattern…",
     "getCta": "Get today's approach",
     "tryAgain": "Read again",
     "approach": "Today's approach",
@@ -1528,13 +1819,13 @@
     "metaTitle": "Persona",
     "metaDescription": "Which of the 16 types are you?",
     "title": "Which type am I?",
-    "bodyWithProfile": "A 20-question test reads your grain into one of 16 types. The result is automatically woven into fortunes, tarot, and pillar readings.",
-    "bodyNoProfile": "A 20-question test reads your grain into one of 16 types."
+    "bodyWithProfile": "A 20-question test reads your pattern into one of 16 types. The result is automatically woven into fortunes, tarot, and pillar readings.",
+    "bodyNoProfile": "A 20-question test reads your pattern into one of 16 types."
   },
   "personalityTest": {
     "startTitle": "Which type are you?",
     "startBody1": "Twenty questions to learn your nature.",
-    "startBody2": "Results feed into shaman chat, fortunes, and tarot readings automatically.",
+    "startBody2": "Results feed into character chat, fortunes, and tarot readings automatically.",
     "duration": "About 3–5 min",
     "questionCount": "20 questions",
     "typeCount": "16 types",
@@ -1591,7 +1882,7 @@
       "Three recovery routines",
       "Warning signs"
     ],
-    "analyzing": "Reading the stress grain…",
+    "analyzing": "Reading the stress pattern…",
     "getCta": "Analyze stress",
     "triggers": "Stress triggers",
     "collapsePattern": "Collapse pattern",
@@ -1614,13 +1905,9 @@
     "trueNature": "Integrated true nature",
     "uniqueStrength": "Unique strength of this combination"
   },
-  "crackAtmosphere": {
-    "boundaryWithDate": "Boundary · {date}",
-    "boundaryShort": "Boundary"
-  },
   "shareCard": {
     "fortuneTitle": "Today's flow",
-    "fortuneFallbackName": "Shaman",
+    "fortuneFallbackName": "Character",
     "appName": "Carousel of Life",
     "luckyColor": "Lucky color",
     "luckyNumber": "Lucky number",
@@ -1828,7 +2115,7 @@
       "Practice moving from thinking to doing",
       "Tend to relationships and communication too"
     ],
-    "INTP_imageRole": "Philosopher at the observatory · Theorist",
+    "INTP_imageRole": "Philosopher - Theorist",
     "INTP_suitableJobs": [
       "Scientist",
       "Philosopher",
@@ -1996,5 +2283,327 @@
       "Politician",
       "Project manager"
     ]
+  },
+  "fanService": {
+    "today-general": {
+      "eyebrow": "Ian Daily Briefing",
+      "title": "Ian sorts out\ntoday’s flow",
+      "body": "Ian calmly lays out your fortune for the day.",
+      "imageAlt": "Ian summarizing today’s fortune for the fan"
+    },
+    "today-love": {
+      "eyebrow": "Yujun Heart Note",
+      "title": "Yujun listens to the temperature of your heart",
+      "body": "Yujun helps you check in with your feelings slowly.",
+      "imageAlt": "Yujun reading a love fortune for the fan"
+    },
+    "today-money": {
+      "eyebrow": "Ihyun Money Check",
+      "title": "Ihyun checks today’s decision points",
+      "body": "Ihyun points out what to watch before spending today.",
+      "imageAlt": "Ihyun checking today’s money luck for the fan"
+    },
+    "today-career": {
+      "eyebrow": "Sion Career Cut",
+      "title": "Sion sorts today’s work priorities",
+      "body": "Sion separates what to do today from what can wait.",
+      "imageAlt": "Sion organizing today’s career fortune for the fan"
+    },
+    "today-health": {
+      "eyebrow": "Theo Body Signal",
+      "title": "Theo turns on today’s condition switch",
+      "body": "Theo suggests a light routine that fits today’s condition.",
+      "imageAlt": "Theo reading today’s health fortune for the fan"
+    },
+    "today-study": {
+      "eyebrow": "Doyoon Study Push",
+      "title": "Doyoon sets today’s focus rhythm",
+      "body": "Doyoon helps you start studying with a clearer beat.",
+      "imageAlt": "Doyoon reading today’s study luck for the fan"
+    },
+    "today-zodiac": {
+      "eyebrow": "Hamin Star Mood",
+      "title": "Hamin reads the mood of your sign",
+      "body": "Hamin calmly explains today’s zodiac atmosphere.",
+      "imageAlt": "Hamin sharing today’s zodiac fortune for the fan"
+    },
+    "today-chinese-zodiac": {
+      "eyebrow": "Jaeha Old Sign",
+      "title": "Jaeha quietly reads your zodiac animal",
+      "body": "Jaeha tells you what to be careful with today.",
+      "imageAlt": "Jaeha reading today’s Chinese zodiac fortune for the fan"
+    },
+    "tarot": {
+      "eyebrow": "Hamin Tarot Service",
+      "title": "A tarot card Hamin reads as a hobby",
+      "body": "Hamin uses the cards to help you sort out what you feel now.",
+      "imageAlt": "Hamin reading tarot cards for the fan"
+    },
+    "saju": {
+      "eyebrow": "Doyoon Saju Note",
+      "title": "Doyoon’s casual saju notes",
+      "body": "Doyoon uses saju to sum up your tendencies clearly.",
+      "imageAlt": "Doyoon explaining saju for the fan"
+    },
+    "flower": {
+      "eyebrow": "Haru Flower Pick",
+      "title": "Haru picks today’s flower",
+      "body": "Haru chooses one flower that fits your day.",
+      "imageAlt": "Haru reading a flower oracle for the fan"
+    },
+    "compatibility": {
+      "eyebrow": "Yujun Pair Mood",
+      "title": "Yujun reads the rhythm between two people",
+      "body": "Yujun gently reads the temperature of the relationship.",
+      "imageAlt": "Yujun reading compatibility for the fan"
+    },
+    "name-reading": {
+      "eyebrow": "Jaeha Name Tone",
+      "title": "Jaeha listens to the sound of your name",
+      "body": "Jaeha quietly reads what remains in a name.",
+      "imageAlt": "Jaeha reading a name for the fan"
+    },
+    "name-compatibility": {
+      "eyebrow": "Ihyun Name Match",
+      "title": "Ihyun compares two names",
+      "body": "Ihyun checks how well the two names fit together.",
+      "imageAlt": "Ihyun comparing name compatibility for the fan"
+    },
+    "personality": {
+      "eyebrow": "Sion Type Check",
+      "title": "Sion pinpoints your personality core",
+      "body": "Sion sums up your personality pattern in a clear way.",
+      "imageAlt": "Sion explaining a personality type for the fan"
+    },
+    "dream": {
+      "eyebrow": "Jaeha Dream Note",
+      "title": "Jaeha quietly reads the trace of a dream",
+      "body": "Jaeha helps organize the scenes and feelings left by a dream.",
+      "imageAlt": "Jaeha interpreting a dream for the fan"
+    },
+    "palm": {
+      "eyebrow": "Theo Palm Routine",
+      "title": "Theo reads your palm and daily habits",
+      "body": "Theo lightly connects your palm lines with everyday habits.",
+      "imageAlt": "Theo reading palm lines for the fan"
+    }
+  },
+  "weeklyPage": {
+    "title": "Weekly Report",
+    "fortuneStat": "Fortunes & readings",
+    "chatStat": "Member chats",
+    "visitStat": "Visits this week",
+    "countTimes": "{n} times",
+    "countMessages": "{n} messages",
+    "countDays": "{n} days",
+    "streakDays": "{n}-day streak",
+    "topMemberTitle": "Members you met most this week",
+    "emptyTopMember": "No chats yet this week.",
+    "emptyTopMemberCta": "Say hi to a member →",
+    "memberClosingTitle": "{name}'s week-end note",
+    "todayCta": "Go to today's fortune →",
+    "lines": {
+      "child": "You made it through this week. Next week, I'll stay closer.",
+      "witch": "I remember everything you told me this week. Let's stay together next week too.",
+      "sage": "Your energy was good this week! Next week, let’s go even brighter.",
+      "shaman": "This week’s records could become a good melody. Tell me more next week.",
+      "taoist": "You worked hard this week!! Eat something good next week and tell me everything.",
+      "dokkaebi": "Week done. ...Come back next week too. I’ll be waiting.",
+      "god": "You finished the week! Next week, let’s go higher. Together.",
+      "hunter": "Looking at this week’s data, next week has a good chance of being better.",
+      "runeshaman": "Thank you for this week… You’ll stay beside me next week too, right?"
+    }
+  },
+  "nameReadingPage": {
+    "title": "Name Reading",
+    "description": "Read the tone of a name through characters, strokes, elements, and your saju profile."
+  },
+  "nameCompatibilityPage": {
+    "title": "Name Compatibility",
+    "descriptionLine1": "Check compatibility using only two names.",
+    "descriptionLine2": "We read the sound and rhythm of the names, then give you a score and a short note."
+  },
+  "onboardingPage": {
+    "title": "Tell us about you",
+    "description": "Share your birth details so we can read your saju."
+  },
+  "nameReadingForm": {
+    "cardTitle": "Name to read",
+    "nameLabel": "Name",
+    "namePlaceholder": "e.g. Alex Kim",
+    "nameHelp": "You can enter a name in any language. Add Chinese characters separately if you use them.",
+    "hanjaLabel": "Chinese characters (optional)",
+    "hanjaPlaceholder": "e.g. 金英卓, or leave blank",
+    "hanjaHelp": "If you know the characters, the reading can be more specific.",
+    "ownerLabel": "Whose name is this?",
+    "ownerSelf": "My name",
+    "ownerOther": "Someone else's name",
+    "loading": "Reading the name…",
+    "submit": "Get reading",
+    "score": "{n} pts",
+    "meaningTitle": "Meaning of the name",
+    "sajuHarmonyTitle": "Fit with your saju",
+    "fortuneTitle": "Fortune flow",
+    "adviceTitle": "Advice and cautions"
+  },
+  "nameCompatibilityForm": {
+    "cardTitle": "Two names",
+    "myName": "My name",
+    "partnerName": "Partner name",
+    "nameInputTitle": "Enter a name between 1 and 24 characters.",
+    "myNamePlaceholder": "e.g. Alex",
+    "partnerNamePlaceholder": "e.g. Jamie",
+    "nameHelp": "Korean, English, Japanese, and other letter-based names are supported.",
+    "loading": "Reading the names…",
+    "submit": "Check compatibility",
+    "adviceTitle": "Advice",
+    "shareText": "Name compatibility for {nameA} and {nameB}: {score}% ({label})\n\"{headline}\""
+  },
+  "nameCompatibilityLabels": {
+    "soulmate": "Soulmate match",
+    "perfectPair": "Perfect pair",
+    "goodBond": "Good connection",
+    "easyFlow": "Easy flow",
+    "takesEffort": "Works with effort",
+    "differentRhythm": "Different rhythms",
+    "crossedStars": "Crossed stars",
+    "differentPaths": "Different paths"
+  },
+  "dreamForm": {
+    "cardTitle": "Write down your dream",
+    "contentLabel": "Dream details",
+    "contentPlaceholder": "e.g. I dreamed I crossed a wide river. The water was clear...",
+    "contentHelp": "Use 10-500 characters. Briefly describe the scenes, people, and feelings that stayed with you.",
+    "moodLabel": "Dream mood",
+    "moodNeutral": "No strong mood",
+    "moodBright": "Bright and warm",
+    "moodDark": "Dark and heavy",
+    "moodWeird": "Strange or unreal",
+    "loading": "Reading the dream…",
+    "submit": "Get reading",
+    "fortuneGood": "Positive dream",
+    "fortuneCaution": "Caution dream",
+    "fortuneBad": "Difficult dream",
+    "fortuneNeutral": "Neutral dream",
+    "meaningTitle": "Meaning of the dream",
+    "sajuConnectionTitle": "Connection with your saju",
+    "adviceTitle": "Today’s advice"
+  },
+  "palmForm": {
+    "cardTitle": "Palm Reading",
+    "photoLabel": "Palm photo",
+    "photoAlt": "Uploaded palm photo",
+    "removePhoto": "Remove photo",
+    "camera": "Camera",
+    "gallery": "Gallery",
+    "uploadPhoto": "Upload photo",
+    "photoHelp": "Take a front-facing photo of your open palm in bright light. Clear lines give a better reading.",
+    "questionLabel": "Question",
+    "questionOptional": "(optional, 100 chars)",
+    "questionPlaceholder": "e.g. I’m curious about love this year",
+    "consent": "I agree that the photo is discarded right after analysis and not stored. This is for entertainment, not medical or psychological diagnosis.",
+    "imageOnlyError": "Please choose an image file.",
+    "imageProcessError": "Could not process the image. Please try again.",
+    "loading": "Reading your palm...",
+    "submit": "Get palm reading",
+    "resultTitle": "Palm reading result"
+  },
+  "fanProfileCard": {
+    "fallbackFanName": "Rider",
+    "daysTogetherPrefix": "With {name} for",
+    "biasLine": "{fanName}'s Equestrian bias · Level Lv.{level}",
+    "noBiasTitle": "No bias member yet",
+    "noBiasBody": "Chat with a member and tap ♥ to set your bias.",
+    "level": "Level",
+    "giftsSent": "Gifts sent",
+    "starPieces": "Star pieces",
+    "weeklyCta": "📋 View weekly report",
+    "meetMembersCta": "Meet members"
+  },
+  "dreamPage": {
+    "title": "Dream Reading",
+    "description": "Write down a dream from last night or recently. We’ll read it together with your saju profile."
+  },
+  "palmPage": {
+    "title": "Palm Reading",
+    "description": "Upload a palm photo and receive a calm report on the main lines."
+  },
+  "biasGallery": {
+    "title": "{name}'s gallery",
+    "biasBadge": "My bias",
+    "viewAll": "View all →",
+    "lockedAlt": "Locked photo",
+    "photoAlt": "{name} photo {n}",
+    "unlockHint": "Join a membership to unlock all photos of {name}."
+  },
+  "emailLoginForm": {
+    "missingFields": "Please enter both email and password.",
+    "passwordTooShort": "Password must be at least 8 characters.",
+    "signupComplete": "Account created. One moment…",
+    "confirmationSent": "Confirmation email sent. Open your inbox and follow the link to finish signing up.",
+    "loginComplete": "You are signed in.",
+    "email": "Email",
+    "password": "Password",
+    "passwordSignup": "Password (8+ characters)",
+    "processing": "Processing…",
+    "signupWithEmail": "Sign up with email",
+    "loginWithEmail": "Log in with email",
+    "alreadyAccount": "Already have an account?",
+    "noAccount": "No account yet?",
+    "login": "Log in",
+    "signup": "Sign up"
+  },
+  "biasButton": {
+    "unset": "Remove bias",
+    "set": "Set as bias",
+    "current": "My bias",
+    "setShort": "Set bias"
+  },
+  "affinityBar": {
+    "max": "Max",
+    "nextPrefix": "Next Lv.{level} —",
+    "unlock": "unlocks",
+    "reward2": "Light jokes",
+    "reward3": "Casual tone · nicknames",
+    "reward5": "Inner thoughts · small secrets",
+    "reward7": "Deeper everyday moments",
+    "reward10": "Closest bond"
+  },
+  "dashboardError": {
+    "title": "The stars dimmed for a moment",
+    "body": "Something went wrong while loading the reading. Please try again shortly. If it keeps happening, contact support from Settings.",
+    "code": "Error code: {code}",
+    "retry": "Try again"
+  },
+  "flowerOracleForm": {
+    "cardTitle": "Open one flower",
+    "description": "Today’s flower stays the same on the same day. If you want another angle, draw one more freely.",
+    "loading": "Reading the petals…",
+    "dailyCta": "Get today’s flower",
+    "freeCta": "Free draw",
+    "dailyResult": "Today’s flower",
+    "freeResult": "One more flower",
+    "flowerImageAlt": "{name} illustration",
+    "meaningLabel": "Flower meaning",
+    "todayAction": "Small action for today",
+    "drawAgain": "Draw one more",
+    "shareTitle": "{name}",
+    "shareText": "Today’s flower: {name}\n\"{headline}\"\n\n— Carousel of Life · Floromancy"
+  },
+  "albumPlayer": {
+    "lyrics": "Lyrics",
+    "lyricsEmpty": "Lyrics for this song are coming soon.",
+    "pause": "Pause",
+    "play": "Play",
+    "dockPinned": "Album is pinned",
+    "dockPin": "Keep album playing",
+    "seek": "Playback position",
+    "albumSeek": "Album playback position",
+    "dockListening": "Listening to {group}",
+    "closePlayer": "Close album player"
+  },
+  "albumPage": {
+    "subtitle": "{titleEn} · the first full album sung by all 9 members of {group}",
+    "releaseDate": "Released {date}"
   }
 }

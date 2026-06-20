@@ -280,15 +280,15 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
             <Clock className="h-4 w-4 text-primary" aria-hidden />
             {t("section1")}
           </h3>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-2">
             {data.timeSlots.map((slot, i) => {
               const pct = Math.max(0, Math.min(100, slot.score));
               return (
                 <div
                   key={i}
-                  className="space-y-2 rounded-xl app-surface p-3"
+                  className="space-y-2 rounded-xl app-surface p-4 sm:p-3"
                 >
-                  <p className="text-[15px] text-muted-foreground">
+                  <p className="text-[15px] text-muted-foreground break-keep">
                     {slot.label}
                   </p>
                   <p className="font-mystic text-[15px] font-bold text-primary">
@@ -300,7 +300,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
                       style={{ width: `${pct}%` }}
                     />
                   </div>
-                  <p className="text-[15px] leading-relaxed text-muted-foreground">
+                  <p className="text-[15px] leading-relaxed text-muted-foreground break-keep">
                     {slot.advice}
                   </p>
                 </div>
@@ -324,7 +324,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
             <ListChecks className="h-4 w-4 text-primary" aria-hidden />
             {t("section3")}
           </h3>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-3">
             <div className="space-y-2">
               <p className="text-[15px] font-semibold text-emerald-400">
                 {t("doToday")}
@@ -334,7 +334,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
                   <span className="mt-0.5 flex-shrink-0 text-[15px] text-emerald-400">
                     •
                   </span>
-                  <p className="text-[15px] leading-relaxed text-muted-foreground">
+                  <p className="text-[15px] leading-relaxed text-muted-foreground break-keep">
                     {item}
                   </p>
                 </div>
@@ -349,7 +349,7 @@ export function GeneralPremium({ subscribed }: GeneralPremiumProps) {
                   <span className="mt-0.5 flex-shrink-0 text-[15px] text-red-400">
                     •
                   </span>
-                  <p className="text-[15px] leading-relaxed text-muted-foreground">
+                  <p className="text-[15px] leading-relaxed text-muted-foreground break-keep">
                     {item}
                   </p>
                 </div>

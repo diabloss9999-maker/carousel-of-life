@@ -1,5 +1,7 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import type { Route } from "next";
+import { getTranslations } from "next-intl/server";
 
 import {
   Card,
@@ -37,21 +39,22 @@ function pickDisplayName(meta: Record<string, unknown> | null | undefined): stri
 }
 
 export default async function OnboardingPage() {
+  const t = await getTranslations("onboardingPage");
   const user = await requireUser();
   const existing = await getProfile(user.id);
   if (existing) {
-    redirect(ROUTES.today);
+    redirect(ROUTES.appHome as Route);
   }
 
   return (
-    <div className="mx-auto w-full max-w-xl">
+    <div className="mx-auto w-full max-w-2xl">
       <Card className="app-surface">
         <CardHeader className="space-y-2 text-center">
           <CardTitle className="font-mystic text-2xl">
-            당신을 알려주세요
+            {t("title")}
           </CardTitle>
           <CardDescription>
-            사주 풀이를 위해 태어난 때를 알려주세요.
+            {t("description")}
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -1,8 +1,5 @@
 "use client";
 
-/**
- * 궁합 허브 — 5개의 탭을 한 화면에서 전환한다.
- */
 import { useState } from "react";
 import type { ReactNode } from "react";
 import {
@@ -13,7 +10,6 @@ import {
   UsersRound,
   type LucideIcon,
 } from "lucide-react";
-import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 
@@ -39,6 +35,14 @@ interface CompatibilityHubProps {
   defaultTab?: CompatibilityTabId;
 }
 
+const TABS: CompatibilityTab[] = [
+  { id: "new", label: "새 궁합", icon: Heart },
+  { id: "twoPerson", label: "두 사람", icon: UsersRound },
+  { id: "zodiac", label: "별자리", icon: Sparkles },
+  { id: "chineseZodiac", label: "띠궁합", icon: CalendarDays },
+  { id: "mbti", label: "MBTI", icon: BookHeart },
+];
+
 export function CompatibilityHub({
   newReading,
   twoPerson,
@@ -48,24 +52,15 @@ export function CompatibilityHub({
   defaultTab = "new",
 }: CompatibilityHubProps) {
   const [active, setActive] = useState<CompatibilityTabId>(defaultTab);
-  const t = useTranslations("compatibilityHub");
-
-  const tabs: CompatibilityTab[] = [
-    { id: "new", label: t("tabMine"), icon: Heart },
-    { id: "twoPerson", label: t("tabTwoPerson"), icon: UsersRound },
-    { id: "zodiac", label: t("tabZodiac"), icon: Sparkles },
-    { id: "chineseZodiac", label: t("tabChinese"), icon: CalendarDays },
-    { id: "mbti", label: t("tabMbti"), icon: BookHeart },
-  ];
 
   return (
     <div className="space-y-6">
       <div
         role="tablist"
-        aria-label={t("aria")}
+        aria-label="궁합 보기 방식"
         className="flex gap-1 overflow-x-auto rounded-full app-surface p-1 backdrop-blur"
       >
-        {tabs.map((tab) => {
+        {TABS.map((tab) => {
           const Icon = tab.icon;
           const selected = tab.id === active;
           return (
@@ -76,7 +71,7 @@ export function CompatibilityHub({
               type="button"
               onClick={() => setActive(tab.id)}
               className={cn(
-                "flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-2 text-[15px] font-medium transition-colors sm:px-3 sm:text-[15px]",
+                "flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-2 text-[15px] font-medium transition-colors sm:px-3",
                 selected
                   ? "bg-primary text-primary-foreground shadow"
                   : "text-muted-foreground hover:bg-card/70 hover:text-foreground",
@@ -90,11 +85,11 @@ export function CompatibilityHub({
       </div>
 
       <div role="tabpanel">
-        {active === "new"           && newReading}
-        {active === "twoPerson"     && twoPerson}
-        {active === "zodiac"        && zodiac}
+        {active === "new" && newReading}
+        {active === "twoPerson" && twoPerson}
+        {active === "zodiac" && zodiac}
         {active === "chineseZodiac" && chineseZodiac}
-        {active === "mbti"          && mbti}
+        {active === "mbti" && mbti}
       </div>
     </div>
   );

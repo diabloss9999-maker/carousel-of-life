@@ -20,7 +20,7 @@ function getIsDay(): boolean {
 }
 
 /**
- * 현재 KST 시간대에 맞는 캐릭터 이미지 경로를 반환한다.
+ * 현재 KST 시간대에 맞는 멤버 이미지 경로를 반환한다.
  * 1분마다 시간대를 재확인한다.
  */
 export function useCharacterImage(character: Character): string {

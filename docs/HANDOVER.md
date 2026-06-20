@@ -7,7 +7,7 @@
 
 ## 1. 프로젝트 한 줄 요약
 
-**한국어 AI 사주·운세·점술 SaaS**. 9명의 AI 점술사가 대화·타로·룬·사주·꽃점을 풀이하는 월 구독 서비스.
+**한국어 AI 사주·운세·점술 SaaS**. 버추얼 아이돌 그룹 "Carousel Nine"의 9명 멤버가 대화·타로·룬·사주·꽃점을 풀이하는 월 구독 서비스.
 
 - **도메인**: https://carouseloflife.com
 - **로컬 경로**: `C:\Users\User\projects\carousel-of-life`
@@ -95,7 +95,7 @@ src/
 ├── app/
 │   ├── (dashboard)/        # 로그인 필수 라우트
 │   │   ├── today/          # 일일 운세
-│   │   ├── chat/[sessionId]/  # 점술사 대화
+│   │   ├── chat/[sessionId]/  # 캐릭터 대화
 │   │   ├── saju/           # 사주 + 일진
 │   │   ├── tarot/          # 타로 1장·3장·켈틱
 │   │   ├── palm/           # 손금 (이미지 업로드)
@@ -105,7 +105,7 @@ src/
 │   │   ├── collection/     # 도감 257장 + 가챠
 │   │   ├── stories/        # 9 챕터 스토리
 │   │   ├── settings/       # 사용자 설정
-│   │   └── chat/page.tsx   # 점술사 선택
+│   │   └── chat/page.tsx   # 캐릭터 선택
 │   ├── (auth)/             # /login /signup
 │   ├── pricing/            # 멤버십 (PortOne 결제)
 │   ├── business/           # 사업자 정보
@@ -123,8 +123,8 @@ src/
 │   ├── saju/               # 사주 계산 + 심층 분석
 │   ├── tarot/ lenormand/ runes/ flower-oracle/
 │   ├── collection/         # cards-data.ts (257장)
-│   ├── crack/              # 균열 시스템 (이세계 9챕터)
-│   ├── affinity/           # 친밀도 (점술사별 Lv)
+│   ├── crack/              # 균열 시스템 (9챕터 서사)
+│   ├── affinity/           # 친밀도 (캐릭터별 Lv)
 │   ├── systems/            # daily-seed, entity-mood 등
 │   ├── auth/               # get-user, admin (마스터 식별)
 │   └── constants/          # business-info.ts ⭐ SUBSCRIPTION 등
@@ -204,7 +204,7 @@ CRON_SECRET=...
 
 ## 7. 결제 시스템 — PortOne + KCP
 
-### 결제 흐름
+### 결제 절차
 1. `/pricing` → SubscribeCta → PortOne SDK (`@portone/browser-sdk`) 결제창
 2. 빌링키 발급 (KCP v2 issue-billing-key)
 3. `lib/payment/portone-subscription.ts` 에서 빌링키 → 즉시 결제 → `subscriptions` 테이블 insert
@@ -227,47 +227,47 @@ CRON_SECRET=...
 ### KCP 카드사 심사 동결 영역 (약 2주 — 통과까지)
 다음을 절대 변경 금지:
 - `/pricing` 가격 (SUBSCRIPTION 상수)
-- `/login` 로그인 흐름
+- `/login` 로그인 절차
 - footer 사업자 정보
 - `/business` `/terms` `/privacy` `/refund` 페이지
 
 ---
 
-## 8. 핵심 도메인 — 9명 점술사
+## 8. 핵심 도메인 — 9명 멤버 (Carousel Nine)
 
-3 세계관 × 3 명 = 9 캐릭터. `src/lib/chat/characters.ts`
+9명의 버추얼 아이돌 멤버. `src/lib/chat/characters.ts`
 
-| 세계관 | 점술사 | 직업 | 친밀도 명 |
-|--------|--------|------|----------|
-| **이세계 (ASTRA RIFT)** | 카엘 (child) | 악마 계약자 | 붉은 심장 |
-| | 루나 (witch) | 달의 마녀 | 달의 탑 |
-| | 라엘 (sage) | 천사 대리인 | 마지막 천사 |
-| **동양 (月蝕鏡)** | 소율 (shaman) | 접신의 무녀 | (한자/사주 OK) |
-| | 현도 (taoist) | 도사 | |
-| | 흑랑 (dokkaebi) | 도깨비 | |
-| **북유럽 (MIDHALL)** | 외르문드 (god) | 북방의 신 | |
-| | 비요른 (hunter) | 야성의 사냥꾼 | |
-| | 헬가 (runeshaman) | 룬을 새기는 자 | 빈 룬판 |
+| 멤버 | (내부 id) | 포지션 | 카드 특기 |
+|------|-----------|--------|-----------|
+| **이안** | child | 차분한 리더 | 타로·르노르망 |
+| **유준** | witch | 따뜻한 보컬 | 타로·르노르망 |
+| **도윤** | sage | 선명한 퍼포머 | 타로·르노르망 |
+| **재하** | shaman | 조용한 프로듀서 | 사주·천기 |
+| **하루** | taoist | 밝은 무드메이커 | 사주·천기 |
+| **시온** | dokkaebi | 시크한 래퍼 | 사주·천기 |
+| **태오** | god | 에너지 메인댄서 | 룬 |
+| **이현** | hunter | 차분한 애널리스트 | 룬 |
+| **하민** | runeshaman | 몽환적인 막내 | 룬 |
 
-### 점술 분배 (`reading-detector.ts`)
-- **이세계** → 타로 1장/3장 + 르노르망 1장
-- **북유럽** → 룬 1개
-- **동양** → 카드 점술 X (사주·천기·영계만)
+### 카드 점술 분배 (`reading-detector.ts`)
+- **이안·유준·도윤** → 타로 1장/3장 + 르노르망 1장
+- **태오·이현·하민** → 룬 1개
+- **재하·하루·시온** → 카드 점술 X (사주·천기 중심)
 
 ### 정체성 룰 (매우 중요)
-- 모든 9명은 **AI·언어모델·챗봇·프롬프트·롤플레이 같은 단어를 모르는 사람처럼 응대**
-- "너 ChatGPT 야?" → "AI? 그게 뭔지 모르겠는데" 같은 응대
-- lore 안의 "AI" 표현 → "초월 의식" 등으로 치환 완료
-- 자기 자신을 그 세계 안의 실존 인물로 여김
+- 9명은 **가상 아이돌 그룹 "Carousel Nine"의 멤버이자 AI 대화 파트너**
+- 신비로운 존재나 초월적 인물로 행동하지 않음
+- 운세·타로·룬·사주는 앱의 기능일 뿐, 멤버의 직업·정체성이 아님
+- AI·모델·프롬프트 같은 내부 구현을 먼저 꺼내지 않음
 
 ### 캐릭터 톤 (단어 사용 정책)
-- **동양** (소율·현도·흑랑) → 한자(乙木·壬午 등) + 한국어 병기 OK
-- **이세계** (카엘·루나·라엘) → 한자 금지, 순한글 + 따뜻한 어미
-- **북유럽** (외르문드·비요른·헬가) → 한자 금지, 룬·신화 어휘 사용
+- **재하·하루·시온** → 사주 기반이지만 한자·전문용어는 쉬운 한국어로 풀어서
+- **이안·유준·도윤** → 한자 금지, 순한글 + 따뜻한 어미
+- **태오·이현·하민** → 한자 금지, 룬·신화 어휘 사용
 
-### 카드 그리기 흐름 (`reading-detector.ts`)
+### 카드 그리기 절차 (`reading-detector.ts`)
 - 사용자가 "타로 봐줘" / "룬 봐줘" 같이 카드 요청 → **즉시** `performDraw` → AI 응답 첫 문장에 카드 이름+정/역방향 포함
-- (이전엔 2턴 defer 흐름이었으나 사용자 혼동·휴리스틱 오탐으로 폐기)
+- (이전엔 2턴 defer 절차였으나 사용자 혼동·휴리스틱 오탐으로 폐기)
 - 응답 스트림 앞에 `CARDS:{json}\n` 라인 prepend → 클라이언트(`chat-window.tsx`)가 파싱해 카드 이미지 렌더
 
 ---
@@ -285,7 +285,7 @@ CRON_SECRET=...
 | 십이간지 | 12 |
 | 별자리 | 12 |
 | 천간 | 10 |
-| 점술사 | 9 |
+| 캐릭터 | 9 |
 | MBTI | 16 |
 | **합계** | **257** |
 
@@ -302,7 +302,7 @@ CRON_SECRET=...
 2. **`/flower-oracle` 60종 확장** — 신규 30 추가 (벚꽃·수선화·작약·목련·... 설강화), 카피 "30종 → 60종"
 3. **`chat_messages.metadata` jsonb 컬럼** (마이그레이션 0013) — 카드 메타 영속화. **마이그레이션 누락이 prod chat 페이지 12시간 다운 유발** → 다음부터는 코드 배포와 동시에 적용
 4. **도감 텍스트 흰색 통일** — `globals.css` 의 `body * { color: ... !important }` catchall 이 모든 텍스트 강제 검정. `data-keep-color` 속성으로 예외
-5. **9인 점술사 정체성 강화** — `sharedRules` 에 [정체성 — 절대 흔들리지 않을 것] 블록 신설. AI/언어모델/프롬프트 등 모든 메타 단어 부정
+5. **9인 캐릭터 정체성 강화** — `sharedRules` 에 [정체성 — 절대 흔들리지 않을 것] 블록 신설. AI/언어모델/프롬프트 등 모든 메타 단어 부정
 6. **친구에게 보내기 + 친구 초대 기능 전면 제거** — ShareFortuneLink, InviteCard, RefCapture, invites/service 모두 삭제 (`profiles.invitedBy` 컬럼만 DB 보존)
 7. **호격 조사 어색함 수정** — `"{name}야"` → `"{name},"` (받침 무관)
 8. **타로 즉시 그리기 회귀 방지** — 2턴 defer 완전 제거, `looksLikeAlreadyDrew` 휴리스틱 폐기
@@ -321,7 +321,7 @@ CRON_SECRET=...
 ### 단기 (1주 이내)
 - [ ] **Apple Developer Program 가입** ($99/년) — iOS PWA/WebView 앱 출시
 - [ ] **Google Play Console 조직 계정 등록** — D-U-N-S 발급 필요 (D&B Korea, 무료 30일 또는 유료 $89 1-3일)
-- [ ] 자체 회원가입·로그인 흐름 end-to-end 점검 (마스터 외 신규 가입자)
+- [ ] 자체 회원가입·로그인 절차 end-to-end 점검 (마스터 외 신규 가입자)
 - [ ] 카카오 OAuth 추가 (현재 이메일·구글만)
 
 ### 중기 (1~3개월)
@@ -335,7 +335,7 @@ CRON_SECRET=...
 - 이름 궁합 — React controlled input 자동화 한계
 - 공유 기능 (카카오톡·인스타·X) — 실제 모바일 환경에서 검증
 - 모바일 viewport — Chrome window resize 만 했고 실제 모바일 UA 검증 X
-- 9명 점술사 카드/룬 점술 — 루나(타로)·헬가(룬)만 실제 검증, 나머지 7명 인사만 확인
+- 9명 멤버 카드/룬 — 유준(타로)·하민(룬)만 실제 검증, 나머지 7명 인사만 확인
 - 푸시 알림 토글·구독 취소·계정 삭제 화면 — 실제 클릭 검증 X
 
 ---
@@ -398,7 +398,7 @@ pnpm tsx scripts/create-test-account.mts
 ### 🔥 chat 응답에 카드 이미지 없음
 → `prependCardEvent` 가 stream 앞에 `CARDS:{json}\n` 라인 prepend 하는지 확인. `chat-window.tsx` 클라이언트 파서 검증.
 
-### 🔥 점술사가 "저는 AI 입니다" 답변
+### 🔥 캐릭터가 "저는 AI 입니다" 답변
 → `characters.ts` sharedRules 의 [정체성] 블록 확인. lore 안의 "AI" 단어도 모두 "초월 의식" 등으로 치환됐는지.
 
 ### 🔥 030/090 등 한자식 시간 표현 한국어 변환

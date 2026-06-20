@@ -35,8 +35,7 @@ import {
 import { AI_MODELS } from "@/lib/constants";
 import { getOrCreateDailyFortune } from "@/lib/fortunes/service";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
-import { CHARACTER_CARD_VOICE } from "@/lib/ai/character-voice";
-import { getTodayCharacter } from "@/lib/daily-question/rotation";
+import { NEUTRAL_CARD_VOICE } from "@/lib/ai/character-voice";
 
 /** KST 오늘 날짜 YYYY-MM-DD */
 function todayKst(): string {
@@ -144,7 +143,7 @@ function todayWeekdayKst(): (typeof WEEKDAY_ENUMS)[number] {
 }
 
 /**
- * 직장 운세 라이트 전용 — 4개 섹션 종합 리포트(에너지/타이밍/주간흐름/관계운) + 팁 3가지를 AI로 생성한다.
+ * 직장 운세 라이트 전용 — 4개 섹션 종합 리포트(에너지/타이밍/주간기운/관계운) + 팁 3가지를 AI로 생성한다.
  *
  * - 라이트 구독자에게만 동작한다.
  * - 사용자 성격유형/생년월일/성별을 기반으로 개인화된 리포트를 생성한다.
@@ -193,7 +192,7 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
 
 이 사용자의 오늘 직장 운세 종합 리포트를 작성해줘.
 구체적이고 실천 가능하게, 이 사람의 성격유형과 오늘 요일을 반영해서 작성해.
-모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
+모든 문장은 특정 멤버 말투가 아니라 차분한 존댓말 리포트 톤으로 써. '~야', '~해', '~줘' 같은 반말은 금지.
 
 반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력.
 "day" 필드는 영문 enum 으로만 ("mon"|"tue"|"wed"|"thu"|"fri"). 한글 요일 금지.
@@ -215,11 +214,11 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
     "meetingTip": "회의·협상 팁 1문장"
   },
   "weeklyFlow": [
-    { "day": "mon", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 },
-    { "day": "tue", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 },
-    { "day": "wed", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 },
-    { "day": "thu", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 },
-    { "day": "fri", "forecast": "흐름 한 줄(15자 이내)", "score": 0~100 }
+    { "day": "mon", "forecast": "기운 한 줄(15자 이내)", "score": 0~100 },
+    { "day": "tue", "forecast": "기운 한 줄(15자 이내)", "score": 0~100 },
+    { "day": "wed", "forecast": "기운 한 줄(15자 이내)", "score": 0~100 },
+    { "day": "thu", "forecast": "기운 한 줄(15자 이내)", "score": 0~100 },
+    { "day": "fri", "forecast": "기운 한 줄(15자 이내)", "score": 0~100 }
   ],
   "relationship": {
     "isGoodToAsk": true 또는 false,
@@ -234,7 +233,7 @@ export async function generateCareerTipsAction(): Promise<CareerTipsState> {
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 1500,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      systemSuffix: NEUTRAL_CARD_VOICE,
       locale: await getLocale(),
     });
 
@@ -316,14 +315,15 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
 
 이 사람에게 오늘 어울리는 운동을 추천해줘.
 맨몸 운동 3가지(기구 없이 집에서 가능)와 기구 운동 3가지(헬스장 기구 사용) 각각 추천해.
-모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
+모든 문장은 특정 멤버 말투가 아니라 차분한 존댓말 리포트 톤으로 써. '~야', '~해', '~줘' 같은 반말은 금지.
+각 howTo는 1문장, benefit은 1문장으로 짧게 써. JSON이 잘리지 않도록 군더더기 없이 간결하게 작성해.
 
 반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:
 {
   "bodyworkouts": [
     {
       "name": "맨몸 운동 이름",
-      "howTo": "어떻게 하는지 2~3문장",
+      "howTo": "어떻게 하는지 1문장",
       "benefit": "어디에 좋은지 1문장",
       "reps": "권장 세트/횟수 예: 3세트 × 15회"
     },
@@ -333,7 +333,7 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
   "gymWorkouts": [
     {
       "name": "기구 운동 이름",
-      "howTo": "어떻게 하는지 2~3문장",
+      "howTo": "어떻게 하는지 1문장",
       "benefit": "어디에 좋은지 1문장",
       "reps": "권장 세트/횟수 예: 3세트 × 12회"
     },
@@ -350,8 +350,8 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
       schema: healthWorkoutSchema,
       userPrompt,
       model: AI_MODELS.premium,
-      maxTokens: 1200,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      maxTokens: 2200,
+      systemSuffix: NEUTRAL_CARD_VOICE,
       locale: await getLocale(),
     });
 
@@ -373,9 +373,10 @@ export async function generateHealthWorkoutAction(): Promise<HealthWorkoutState>
 
     return { kind: "success", bodyworkouts: result.bodyworkouts, gymWorkouts: result.gymWorkouts, quote: result.quote };
   } catch (e) {
+    console.error("[generateHealthWorkoutAction] failed", e);
     return {
       kind: "error",
-      message: e instanceof Error ? e.message : (await getTranslations("actionErrors"))("healthWorkoutError"),
+      message: (await getTranslations("actionErrors"))("healthWorkoutError"),
     };
   }
 }
@@ -429,7 +430,7 @@ export async function generateStudyTipsAction(): Promise<StudyTipsState> {
 
 이 사람의 성격유형에 맞는 "집중력 높이는 공부 팁" 3가지를 알려줘.
 구체적이고 바로 실천 가능한 방법으로.
-모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
+모든 문장은 특정 멤버 말투가 아니라 차분한 존댓말 리포트 톤으로 써. '~야', '~해', '~줘' 같은 반말은 금지.
 
 반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:
 {
@@ -449,7 +450,7 @@ export async function generateStudyTipsAction(): Promise<StudyTipsState> {
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 800,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      systemSuffix: NEUTRAL_CARD_VOICE,
       locale: await getLocale(),
     });
 
@@ -525,7 +526,7 @@ export async function generateLovePremiumAction(): Promise<LovePremiumState> {
 - 성별: ${profile.gender}
 
 이 사람에게 맞는 사랑 운세 라이트 리포트를 작성해줘.
-모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
+모든 문장은 특정 멤버 말투가 아니라 차분한 존댓말 리포트 톤으로 써. '~야', '~해', '~줘' 같은 반말은 금지.
 
 반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:
 {
@@ -545,7 +546,7 @@ export async function generateLovePremiumAction(): Promise<LovePremiumState> {
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 1000,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      systemSuffix: NEUTRAL_CARD_VOICE,
       locale: await getLocale(),
     });
 
@@ -622,7 +623,7 @@ export async function generateGeneralPremiumAction(): Promise<GeneralPremiumStat
 - 성별: ${profile.gender}
 
 오늘 이 사람의 종합 운세 라이트 리포트를 작성해줘.
-모든 문장은 시스템 프롬프트에 지정된 캐릭터의 말투와 어미로 써. 캐릭터가 직접 말하는 것처럼.
+모든 문장은 특정 멤버 말투가 아니라 차분한 존댓말 리포트 톤으로 써. '~야', '~해', '~줘' 같은 반말은 금지.
 
 반드시 아래 JSON 형식으로만 응답해. 설명·마크다운 없이 JSON만 출력:
 {
@@ -648,7 +649,7 @@ export async function generateGeneralPremiumAction(): Promise<GeneralPremiumStat
       userPrompt,
       model: AI_MODELS.premium,
       maxTokens: 1000,
-      systemSuffix: CHARACTER_CARD_VOICE[getTodayCharacter()],
+      systemSuffix: NEUTRAL_CARD_VOICE,
       locale: await getLocale(),
     });
 

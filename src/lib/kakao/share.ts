@@ -3,7 +3,7 @@
 /**
  * 카카오 Share SDK 통합.
  *
- * 사용 흐름:
+ * 사용 기운:
  *   1. KakaoSdkScript 컴포넌트가 페이지에 한 번 로드 (next/script)
  *   2. 사용자가 공유 클릭 시 ensureKakaoInit() 호출 — 초기화 보장
  *   3. shareToKakao({ ... }) 호출 → 카카오톡 공유 창

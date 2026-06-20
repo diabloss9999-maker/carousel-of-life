@@ -1,66 +1,43 @@
-/**
- * 운세 카드 내부의 행운 정보(색·수·방향)를 시각적으로 표현하는 컴포넌트.
- * 텍스트 한 줄 대신 3등분 아이콘 카드로 노출한다.
- */
 "use client";
 
 import { ArrowUp } from "lucide-react";
-import { useTranslations } from "next-intl";
 
-/** 한글 색 이름 → CSS 색상 매핑. 매칭 실패 시 회색 fallback. */
 const COLOR_MAP: Record<string, string> = {
-  빨간색: "#FF4444",
-  빨강: "#FF4444",
-  주황색: "#FF9933",
-  주황: "#FF9933",
-  노란색: "#FFD93D",
-  노랑: "#FFD93D",
-  연두색: "#90EE90",
-  연두: "#90EE90",
-  초록색: "#22C55E",
-  초록: "#22C55E",
-  녹색: "#22C55E",
-  청록색: "#14B8A6",
-  청록: "#14B8A6",
-  하늘색: "#87CEEB",
-  하늘: "#87CEEB",
-  파란색: "#4488FF",
-  파랑: "#4488FF",
-  남색: "#1E3A8A",
-  보라색: "#A855F7",
-  보라: "#A855F7",
-  자주색: "#9333EA",
-  분홍색: "#FF8FB1",
-  분홍: "#FF8FB1",
-  핑크: "#FF8FB1",
-  갈색: "#92400E",
-  검정색: "#1F2937",
-  검정: "#1F2937",
-  흰색: "#F9FAFB",
-  하양: "#F9FAFB",
-  회색: "#9CA3AF",
-  은색: "#C0C0C0",
-  금색: "#FFD700",
-  황금색: "#FFD700",
+  빨강: "#ef4444",
+  빨간색: "#ef4444",
+  주황: "#f97316",
+  주황색: "#f97316",
+  노랑: "#facc15",
+  노란색: "#facc15",
+  연두: "#84cc16",
+  연두색: "#84cc16",
+  초록: "#22c55e",
+  초록색: "#22c55e",
+  녹색: "#22c55e",
+  청록: "#14b8a6",
+  청록색: "#14b8a6",
+  하늘: "#38bdf8",
+  하늘색: "#38bdf8",
+  파랑: "#3b82f6",
+  파란색: "#3b82f6",
+  남색: "#1e3a8a",
+  보라: "#a855f7",
+  보라색: "#a855f7",
+  자주색: "#9333ea",
+  분홍: "#fb7185",
+  분홍색: "#fb7185",
+  핑크: "#fb7185",
+  갈색: "#92400e",
+  검정: "#111827",
+  검은색: "#111827",
+  흰색: "#f9fafb",
+  하양: "#f9fafb",
+  회색: "#9ca3af",
+  은색: "#c0c0c0",
+  금색: "#facc15",
+  황금색: "#facc15",
 };
 
-const FALLBACK_COLOR = "#9CA3AF";
-
-/**
- * 한글 색 이름에서 CSS 색상을 추론한다. 정확 매칭 → 부분 매칭 → fallback 순.
- */
-function resolveColor(name: string | null | undefined): string {
-  if (!name) return FALLBACK_COLOR;
-  const trimmed = name.trim();
-  if (COLOR_MAP[trimmed]) return COLOR_MAP[trimmed];
-  // 부분 매칭: "은은한 연두" 같은 표현 대응.
-  for (const key of Object.keys(COLOR_MAP)) {
-    if (trimmed.includes(key)) return COLOR_MAP[key];
-  }
-  return FALLBACK_COLOR;
-}
-
-/** 한글 방향 이름 → 회전 각도(deg). 0deg = 위(북). */
 const DIRECTION_ROTATION: Record<string, number> = {
   북: 0,
   북쪽: 0,
@@ -80,18 +57,7 @@ const DIRECTION_ROTATION: Record<string, number> = {
   북서쪽: 315,
 };
 
-/**
- * 한글 방향에서 회전 각도를 추론한다. 매칭 실패 시 null (화살표 미표시).
- */
-function resolveDirectionRotation(name: string | null | undefined): number | null {
-  if (!name) return null;
-  const trimmed = name.trim();
-  if (trimmed in DIRECTION_ROTATION) return DIRECTION_ROTATION[trimmed];
-  for (const key of Object.keys(DIRECTION_ROTATION)) {
-    if (trimmed.includes(key)) return DIRECTION_ROTATION[key];
-  }
-  return null;
-}
+const FALLBACK_COLOR = "#9ca3af";
 
 interface LuckyInfoProps {
   color: string | null;
@@ -100,54 +66,70 @@ interface LuckyInfoProps {
 }
 
 export function LuckyInfo({ color, number, direction }: LuckyInfoProps) {
-  const t = useTranslations("fortuneCard");
   const colorHex = resolveColor(color);
   const rotation = resolveDirectionRotation(direction);
 
   return (
     <div className="liquid-lucky-grid grid grid-cols-3 gap-0">
-      {/* 행운의 색 */}
-      <LuckyTile label={t("luckyColor")}>
+      <LuckyTile label="행운 색">
         <span
           className="liquid-lucky-color inline-block h-9 w-9 rounded-full sm:h-10 sm:w-10"
           style={{ backgroundColor: colorHex }}
-          aria-hidden="true"
+          aria-hidden
         />
         <span className="font-mystic text-[15px] font-semibold text-foreground/90">
-          {color ?? "—"}
+          {color ?? "-"}
         </span>
       </LuckyTile>
 
-      {/* 행운의 수 */}
-      <LuckyTile label={t("luckyNumber")}>
+      <LuckyTile label="행운 숫자">
         <span
           className="liquid-lucky-number font-mystic text-3xl font-bold sm:text-4xl"
-          aria-hidden="true"
+          aria-hidden
         >
-          {number ?? "—"}
+          {number ?? "-"}
         </span>
-        <span className="sr-only">{number ?? "—"}</span>
+        <span className="sr-only">{number ?? "-"}</span>
       </LuckyTile>
 
-      {/* 행운의 방향 */}
-      <LuckyTile label={t("luckyDirection")}>
+      <LuckyTile label="행운 방향">
         {rotation !== null ? (
           <ArrowUp
             className="h-8 w-8 text-foreground/85 sm:h-9 sm:w-9"
             style={{ transform: `rotate(${rotation}deg)` }}
-            aria-hidden="true"
+            aria-hidden
           />
         ) : (
-          <span className="text-2xl text-muted-foreground" aria-hidden="true">
-            —
+          <span className="text-2xl text-muted-foreground" aria-hidden>
+            -
           </span>
         )}
         <span className="font-mystic text-[15px] font-semibold text-foreground/90">
-          {direction ?? "—"}
+          {direction ?? "-"}
         </span>
       </LuckyTile>
     </div>
   );
+}
+
+function resolveColor(name: string | null | undefined): string {
+  if (!name) return FALLBACK_COLOR;
+  const trimmed = name.trim();
+  if (COLOR_MAP[trimmed]) return COLOR_MAP[trimmed];
+  for (const key of Object.keys(COLOR_MAP)) {
+    if (trimmed.includes(key)) return COLOR_MAP[key];
+  }
+  return FALLBACK_COLOR;
+}
+
+function resolveDirectionRotation(name: string | null | undefined): number | null {
+  if (!name) return null;
+  const trimmed = name.trim();
+  if (trimmed in DIRECTION_ROTATION) return DIRECTION_ROTATION[trimmed];
+  for (const key of Object.keys(DIRECTION_ROTATION)) {
+    if (trimmed.includes(key)) return DIRECTION_ROTATION[key];
+  }
+  return null;
 }
 
 interface LuckyTileProps {
@@ -161,9 +143,7 @@ function LuckyTile({ label, children }: LuckyTileProps) {
       <div className="flex flex-1 flex-col items-center justify-center gap-1.5">
         {children}
       </div>
-      <span className="text-[15px] text-muted-foreground">
-        {label}
-      </span>
+      <span className="text-[15px] text-muted-foreground">{label}</span>
     </div>
   );
 }

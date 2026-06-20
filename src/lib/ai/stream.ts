@@ -44,7 +44,7 @@ export function streamChat(opts: StreamChatOptions): ReadableStream<Uint8Array> 
         const stream = anthropic.messages.stream({
           model: opts.model,
           max_tokens: opts.maxTokens,
-          // 시스템 프롬프트 캐싱 — 동일 캐릭터 반복 호출 시 입력 토큰 절감
+          // 시스템 프롬프트 캐싱 — 동일 멤버 반복 호출 시 입력 토큰 절감
           system: [
             {
               type: "text" as const,
@@ -70,11 +70,11 @@ export function streamChat(opts: StreamChatOptions): ReadableStream<Uint8Array> 
           }
         }
 
-        controller.close();
-
         if (opts.onComplete) {
           await opts.onComplete({ fullText, inputTokens, outputTokens });
         }
+
+        controller.close();
       } catch (e) {
         const message = e instanceof Error ? e.message : String(e);
         controller.enqueue(encoder.encode(`\n\n[오류] ${message}`));

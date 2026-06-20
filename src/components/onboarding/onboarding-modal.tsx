@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 const STORAGE_KEY = "carousel_onboarded_v1";
 
 /** STEP 디자인 메타 — 텍스트는 i18n 에서 가져옴. */
-/** 각 step 의 캐릭터 미리보기는 character id 만 보관하고 이름·훅은 i18n 에서 lookup. */
+/** 각 step 의 멤버 미리보기는 character id 만 보관하고 이름·훅은 i18n 에서 lookup. */
 type CharId = "child" | "witch" | "sage" | "shaman" | "taoist" | "dokkaebi" | "god" | "hunter" | "runeshaman";
 
 const STEPS_META = [
@@ -34,9 +34,9 @@ const STEPS_META = [
     bg: "from-[#0d0818] via-[#1a0a30] to-[#0a0520]",
     accent: "text-violet-400",
     characters: [
-      { id: "child" as CharId, img: "/characters/child_v2.webp", color: "ring-red-800/50" },
-      { id: "witch" as CharId, img: "/characters/witch_night_v2.webp", color: "ring-blue-800/50" },
-      { id: "sage" as CharId,  img: "/characters/sage_night_v2.webp",  color: "ring-amber-700/50" },
+      { id: "child" as CharId, img: "/characters/idols/snaps/ian-01-school.webp", color: "ring-red-800/50" },
+      { id: "witch" as CharId, img: "/characters/idols/snaps/yujun-01-acoustic.webp", color: "ring-blue-800/50" },
+      { id: "sage" as CharId,  img: "/characters/idols/snaps/doyoon-01-practice.webp",  color: "ring-amber-700/50" },
     ],
   },
   {
@@ -46,9 +46,9 @@ const STEPS_META = [
     bg: "from-[#050d08] via-[#0a1a10] to-[#030a06]",
     accent: "text-emerald-400",
     characters: [
-      { id: "shaman" as CharId,   img: "/characters/shaman_v1.webp",   color: "ring-rose-800/50" },
-      { id: "taoist" as CharId,   img: "/characters/taoist_v1.webp",   color: "ring-cyan-800/50" },
-      { id: "dokkaebi" as CharId, img: "/characters/dokkaebi_night_v2.webp", color: "ring-purple-800/50" },
+      { id: "shaman" as CharId,   img: "/characters/idols/snaps/jaeha-01-studio.webp",   color: "ring-rose-800/50" },
+      { id: "taoist" as CharId,   img: "/characters/idols/snaps/haru-01-denim.webp",   color: "ring-cyan-800/50" },
+      { id: "dokkaebi" as CharId, img: "/characters/idols/snaps/sion-01-night.webp", color: "ring-purple-800/50" },
     ],
   },
   {
@@ -58,9 +58,9 @@ const STEPS_META = [
     bg: "from-[#050a18] via-[#0a1428] to-[#020612]",
     accent: "text-sky-300",
     characters: [
-      { id: "god" as CharId,        img: "/characters/god_night.webp",        color: "ring-sky-800/50" },
-      { id: "hunter" as CharId,     img: "/characters/hunter_night.webp",     color: "ring-stone-700/50" },
-      { id: "runeshaman" as CharId, img: "/characters/runeshaman_night.webp", color: "ring-indigo-800/50" },
+      { id: "god" as CharId,        img: "/characters/idols/snaps/theo-01-practice.webp",        color: "ring-sky-800/50" },
+      { id: "hunter" as CharId,     img: "/characters/idols/snaps/evan-01-suit.webp",     color: "ring-stone-700/50" },
+      { id: "runeshaman" as CharId, img: "/characters/idols/snaps/luhan-01-blue.webp", color: "ring-indigo-800/50" },
     ],
   },
   {
@@ -115,8 +115,8 @@ export function OnboardingModal() {
   const subtitle = current.subtitleKey ? t(current.subtitleKey) : null;
   const desc = t(current.descKey);
   // step 2~4 만 카테고리 라벨 존재
-  const worldLabel =
-    step === 1 ? tCat("categoryOtherworld")
+  const unitLabel =
+    step === 1 ? tCat("categoryFront")
     : step === 2 ? tCat("categoryEastern")
     : step === 3 ? tCat("categoryNordic")
     : null;
@@ -146,8 +146,8 @@ export function OnboardingModal() {
         </button>
 
         <div className="flex flex-col items-center gap-6 px-8 py-10 text-center">
-          {/* 세계 라벨 — step 2~4 */}
-          {worldLabel && subtitle && (
+          {/* 유닛 라벨 — step 2~4 */}
+          {unitLabel && subtitle && (
             <span className={cn(
               "rounded-full border px-4 py-1 text-[15px] font-bold tracking-widest uppercase",
               step === 1
@@ -156,13 +156,13 @@ export function OnboardingModal() {
                   ? "border-emerald-500/40 text-emerald-400"
                   : "border-sky-500/40 text-sky-300",
             )}>
-              {worldLabel} — {subtitle}
+              {unitLabel} — {subtitle}
             </span>
           )}
 
           {/* 제목 */}
           <div className="space-y-1">
-            {subtitle && !worldLabel && (
+            {subtitle && !unitLabel && (
               <p className="text-[15px] tracking-widest text-zinc-500 uppercase">{subtitle}</p>
             )}
             <h2 className="font-mystic text-3xl font-bold leading-tight whitespace-pre-line text-zinc-900">
@@ -170,7 +170,7 @@ export function OnboardingModal() {
             </h2>
           </div>
 
-          {/* 캐릭터 미리보기 (이세계/동양/북유럽 스텝) */}
+          {/* 멤버 미리보기 (프론트/스튜디오/무드 유닛) */}
           {current.characters && (
             <div className="flex justify-center gap-3 w-full">
               {current.characters.map((c) => {

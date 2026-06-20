@@ -1,8 +1,21 @@
 import type { Metadata, Route } from "next";
 import Link from "next/link";
-import { Archive, BarChart3, Bell, Crown, MessageCircleHeart, User } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import {
+  BarChart3,
+  Bell,
+  CalendarClock,
+  Crown,
+  MessageCircleHeart,
+  ShieldCheck,
+  User,
+} from "lucide-react";
 
+import { CancelSubscriptionButton } from "@/components/subscription/cancel-subscription-button";
+import { DeleteAccountButton } from "@/components/settings/delete-account-button";
+import { FanProfileCard } from "@/components/settings/fan-profile-card";
+import { MemberNicknameCard } from "@/components/settings/member-nickname-card";
+import { ProfileEditForm } from "@/components/settings/profile-edit-form";
+import { PushToggle } from "@/components/settings/push-toggle";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,66 +24,94 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CancelSubscriptionButton } from "@/components/subscription/cancel-subscription-button";
-import { ProfileEditForm } from "@/components/settings/profile-edit-form";
-import { DeleteAccountButton } from "@/components/settings/delete-account-button";
-import { PushToggle } from "@/components/settings/push-toggle";
+import type { CharacterId } from "@/lib/chat/characters";
 import { ROUTES } from "@/lib/constants";
-import { requireProfile } from "@/lib/auth/get-user";
 import { isAdmin } from "@/lib/auth/admin";
+import { requireProfile } from "@/lib/auth/get-user";
 import {
   getLatestSubscription,
+  getSubscriptionTier,
   hasActiveSubscription,
 } from "@/lib/payment/subscription-state";
+import { getFanStats } from "@/lib/profile/fan-stats";
 import { formatKoreanDate } from "@/lib/utils";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations("settingsPage");
-  return { title: t("metaTitle") };
-}
+export const metadata: Metadata = {
+  title: "설정",
+};
 
 export default async function SettingsPage() {
   const { user, profile } = await requireProfile();
-  const subscribed = await hasActiveSubscription(user.id);
-  const subscription = await getLatestSubscription(user.id);
+  const [subscribed, subscription, tier] = await Promise.all([
+    hasActiveSubscription(user.id),
+    getLatestSubscription(user.id),
+    getSubscriptionTier(user.id),
+  ]);
   const adminMode = isAdmin(user.email);
-  const t = await getTranslations("settingsPage");
+  const biasId = (profile.biasCharacter ?? null) as CharacterId | null;
+  const fanStats = await getFanStats(profile.userId, biasId).catch(() => ({
+    daysTogether: null,
+    level: 0,
+    points: 0,
+    giftCount: 0,
+    starBalance: 0,
+  }));
 
   const calendarLabel =
     profile.calendarSystem === "lunar"
-      ? t("calendarLunar")
+      ? "음력"
       : profile.calendarSystem === "solar"
-        ? t("calendarSolar")
-        : t("calendarUnknown");
+        ? "양력"
+        : "미입력";
 
   const genderLabel =
     profile.gender === "male"
-      ? t("genderMale")
+      ? "남성"
       : profile.gender === "female"
-        ? t("genderFemale")
-        : t("genderOther");
+        ? "여성"
+        : "기타";
 
   return (
     <div className="space-y-6">
       <header className="space-y-1">
         <h1 className="font-mystic text-3xl font-semibold tracking-tight">
-          {t("heading")}
+          설정
         </h1>
         <p className="text-[15px] text-muted-foreground">
-          {t("subheading")}
+          내 정보, 멤버십, 알림, 계정 상태를 관리해요.
         </p>
       </header>
 
-      {/* 마스터 전용 — 운영자 통계 */}
-      {adminMode && (
+      <FanProfileCard
+        displayName={profile.displayName ?? null}
+        biasCharacterId={biasId}
+        stats={fanStats}
+      />
+
+      <Card className="app-surface">
+        <CardHeader className="pb-3">
+          <CardTitle className="font-mystic flex items-center gap-2 text-lg">
+            <MessageCircleHeart className="h-5 w-5 text-primary" aria-hidden />
+            멤버가 부르는 애칭
+          </CardTitle>
+          <CardDescription className="text-[15px]">
+            멤버들이 대화에서 나를 부를 애칭을 정해요. 비우면 기본 “라이더”예요.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <MemberNicknameCard initialNickname={profile.memberNickname ?? null} />
+        </CardContent>
+      </Card>
+
+      {adminMode ? (
         <Card className="app-surface ring-1 ring-amber-400/30">
           <CardHeader className="pb-3">
             <CardTitle className="font-mystic flex items-center gap-2 text-lg">
               <BarChart3 className="h-5 w-5 text-amber-400" aria-hidden />
-              운영자 통계
+              운영 통계
             </CardTitle>
             <CardDescription className="text-[15px]">
-              방문·결제·기능 사용 통계를 한눈에 봐요. (마스터 전용)
+              방문, 결제, 기능 사용 통계를 확인할 수 있어요.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -79,86 +120,52 @@ export default async function SettingsPage() {
             </Button>
           </CardContent>
         </Card>
-      )}
+      ) : null}
 
-      {/* Plan card */}
-      <Card
-        className={
-          subscribed
-            ? "app-surface ring-1 ring-accent/20"
-            : "app-surface"
-        }
-      >
-        <CardHeader className="pb-3">
-          <CardTitle className="font-mystic flex items-center gap-2 text-lg">
-            <Crown
-              className={
-                subscribed
-                  ? "h-5 w-5 text-accent"
-                  : "h-5 w-5 text-muted-foreground"
-              }
-              aria-hidden
-            />
-            {t("membership")}
-          </CardTitle>
-          <CardDescription className="text-[15px]">
-            {subscribed ? t("lightActive") : t("freeMembership")}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {subscribed && subscription ? (
-            <>
-              <div className="rounded-2xl bg-muted/30 p-3 text-[15px]">
-                <Row
-                  label={t("nextBilling")}
-                  value={
-                    subscription.currentPeriodEndsAt
-                      ? formatKoreanDate(
-                          new Date(subscription.currentPeriodEndsAt),
-                        )
-                      : "—"
-                  }
-                />
-                {subscription.cancelAtPeriodEnd ? (
-                  <p className="mt-2 text-[15px] text-muted-foreground">
-                    {t("autoExpireNote")}
-                  </p>
-                ) : null}
-              </div>
-              {!subscription.cancelAtPeriodEnd ? (
-                <CancelSubscriptionButton />
-              ) : null}
-            </>
-          ) : (
-            <Button asChild className="w-full" size="sm">
-              <Link href={ROUTES.pricing}>{t("upgradeCta")}</Link>
-            </Button>
-          )}
-        </CardContent>
-      </Card>
+      <div className="grid gap-6 sm:grid-cols-2">
+        <MembershipCard
+          subscribed={subscribed}
+          subscription={subscription}
+          tier={tier}
+        />
 
-      {/* Profile card */}
+        <Card className="app-surface">
+          <CardHeader className="pb-3">
+            <CardTitle className="font-mystic flex items-center gap-2 text-lg">
+              <Bell className="h-5 w-5 text-primary" aria-hidden />
+              매일 알림
+            </CardTitle>
+            <CardDescription className="text-[15px]">
+              오늘의 운세와 중요한 안내를 알림으로 받을 수 있어요.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <PushToggle />
+          </CardContent>
+        </Card>
+      </div>
+
       <Card className="app-surface">
         <CardHeader className="pb-3">
           <CardTitle className="font-mystic flex items-center gap-2 text-lg">
             <User className="h-5 w-5 text-primary" aria-hidden />
-            {t("myInfo")}
+            내 정보
           </CardTitle>
           <CardDescription className="text-[15px]">
-            {t("myInfoHelp")}
+            운세와 사주 풀이에 사용하는 기본 정보를 확인해요.
           </CardDescription>
         </CardHeader>
         <CardContent className="text-[15px]">
-          <Row label={t("labelName")} value={profile.displayName ?? "—"} />
-          <Row label={t("labelEmail")} value={user.email ?? "—"} />
+          <Row label="이름" value={profile.displayName ?? "미입력"} />
+          <Row label="이메일" value={user.email ?? "미입력"} />
           <Row
-            label={t("labelBirthDate")}
-            value={`${profile.birthDate} (${calendarLabel})`}
+            label="생년월일"
+            value={profile.birthDate ? `${profile.birthDate} (${calendarLabel})` : "미입력"}
           />
-          <Row label={t("labelBirthTime")} value={profile.birthTime ?? t("calendarUnknown")} />
-          <Row label={t("labelGender")} value={genderLabel} />
-          <Row label={t("labelMbti")} value={profile.mbti ?? "—"} />
-          <Row label={t("labelBirthplace")} value={profile.birthPlace ?? "—"} />
+          <Row label="태어난 시간" value={profile.birthTime ?? "미입력"} />
+          <Row label="성별" value={genderLabel} />
+          <Row label="MBTI" value={profile.mbti ?? "미입력"} />
+          <Row label="출생지" value={profile.birthPlace ?? "미입력"} />
           <div className="pt-2">
             <ProfileEditForm
               displayName={profile.displayName ?? ""}
@@ -169,93 +176,155 @@ export default async function SettingsPage() {
         </CardContent>
       </Card>
 
-      {/* History card */}
-      <Card className="app-surface">
-        <CardHeader className="pb-3">
-          <CardTitle className="font-mystic flex items-center gap-2 text-lg">
-            <Archive className="h-5 w-5 text-primary" aria-hidden />
-            {t("fateLog")}
-          </CardTitle>
-          <CardDescription className="text-[15px]">
-            {t("fateLogHelp")}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Button asChild variant="outline" size="sm" className="w-full">
-            <Link href={ROUTES.history as Route}>{t("fateLogCta")}</Link>
-          </Button>
-        </CardContent>
-      </Card>
+      <div className="grid gap-6 sm:grid-cols-2">
+        <Card className="app-surface">
+          <CardHeader className="pb-3">
+            <CardTitle className="font-mystic flex items-center gap-2 text-lg">
+              <MessageCircleHeart className="h-5 w-5 text-primary" aria-hidden />
+              문의하기
+            </CardTitle>
+            <CardDescription className="text-[15px]">
+              결제, 오류, 개선 의견은 오픈채팅으로 편하게 알려주세요.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild className="w-full" variant="outline" size="sm">
+              <a
+                href="https://invite.kakao.com/tc/W5meqEedOZ"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                오픈채팅 열기
+              </a>
+            </Button>
+          </CardContent>
+        </Card>
 
-      {/* Push notification card */}
-      <Card className="app-surface">
-        <CardHeader className="pb-3">
-          <CardTitle className="font-mystic flex items-center gap-2 text-lg">
-            <Bell className="h-5 w-5 text-primary" aria-hidden />
-            매일 알림
-          </CardTitle>
-          <CardDescription className="text-[15px]">
-            아침마다 별의 흐름을 알림으로 받아볼 수 있어요.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <PushToggle />
-        </CardContent>
-      </Card>
-
-      {/* Feedback card */}
-      <Card className="app-surface">
-        <CardHeader className="pb-3">
-          <CardTitle className="font-mystic flex items-center gap-2 text-lg">
-            <MessageCircleHeart className="h-5 w-5 text-primary" aria-hidden />
-            {t("feedbackCta")}
-          </CardTitle>
-          <CardDescription className="text-[15px]">
-            {t("feedbackBody")}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Button asChild className="w-full" variant="outline" size="sm">
-            <a
-              href="https://invite.kakao.com/tc/W5meqEedOZ"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t("openChatCta")}
-            </a>
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* 계정 삭제 — Google Play 데이터 안전 섹션 필수 */}
-      <Card className="app-surface">
-        <CardHeader className="pb-3">
-          <CardTitle className="font-mystic text-lg text-muted-foreground">
-            계정 관리
-          </CardTitle>
-          <CardDescription className="text-[15px]">
-            계정과 모든 데이터를 영구 삭제할 수 있어요.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <DeleteAccountButton userEmail={user.email ?? ""} />
-        </CardContent>
-      </Card>
+        <Card className="app-surface">
+          <CardHeader className="pb-3">
+            <CardTitle className="font-mystic flex items-center gap-2 text-lg text-muted-foreground">
+              <ShieldCheck className="h-5 w-5" aria-hidden />
+              계정 관리
+            </CardTitle>
+            <CardDescription className="text-[15px]">
+              계정과 모든 데이터를 영구 삭제할 수 있어요.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <DeleteAccountButton userEmail={user.email ?? ""} />
+          </CardContent>
+        </Card>
+      </div>
 
       <p className="text-center text-[15px] text-muted-foreground/60">
         {profile.displayName
-          ? t("greetingNamed", { name: profile.displayName })
-          : t("greetingAnon")}
+          ? `${profile.displayName}님, 오늘도 필요한 만큼만 가볍게 확인해요.`
+          : "오늘도 필요한 만큼만 가볍게 확인해요."}
       </p>
     </div>
   );
 }
 
+function MembershipCard({
+  subscribed,
+  subscription,
+  tier,
+}: {
+  subscribed: boolean;
+  subscription: Awaited<ReturnType<typeof getLatestSubscription>>;
+  tier: "free" | "lite" | "pro";
+}) {
+  const planName =
+    tier === "pro" ? "프로 멤버십" : tier === "lite" ? "라이트 멤버십" : "무료 이용 중";
+  const provider =
+    subscription?.provider === "google_play"
+      ? "Google Play"
+      : subscription?.provider === "portone"
+        ? "카드/간편결제"
+        : "없음";
+  const nextDate = subscription?.currentPeriodEndsAt
+    ? formatKoreanDate(new Date(subscription.currentPeriodEndsAt))
+    : "확인 중";
+
+  return (
+    <Card className={subscribed ? "app-surface ring-1 ring-accent/20" : "app-surface"}>
+      <CardHeader className="pb-3">
+        <CardTitle className="font-mystic flex items-center gap-2 text-lg">
+          <Crown
+            className={subscribed ? "h-5 w-5 text-accent" : "h-5 w-5 text-muted-foreground"}
+            aria-hidden
+          />
+          멤버십
+        </CardTitle>
+        <CardDescription className="text-[15px]">
+          {subscribed
+            ? "심층 리포트와 확장 기능을 이용할 수 있어요."
+            : "무료 기능을 이용 중이에요."}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        {subscribed && subscription ? (
+          <>
+            <div className="rounded-2xl bg-muted/30 p-3 text-[15px]">
+              <Row label="현재 플랜" value={planName} />
+              <Row label="결제 수단" value={provider} />
+              <Row
+                label={subscription.cancelAtPeriodEnd ? "이용 종료 예정일" : "다음 결제 예정일"}
+                value={nextDate}
+              />
+              <Row
+                label="상태"
+                value={subscription.cancelAtPeriodEnd ? "해지 예약" : "정상 이용 중"}
+              />
+            </div>
+            {subscription.cancelAtPeriodEnd ? (
+              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-3 text-[14px] leading-6 text-muted-foreground">
+                해지 예약 상태예요. 표시된 날짜까지 멤버십 기능은 계속 이용할 수 있어요.
+              </div>
+            ) : (
+              <CancelSubscriptionButton />
+            )}
+          </>
+        ) : (
+          <div className="space-y-3">
+            <div className="rounded-2xl bg-muted/30 p-3 text-[15px]">
+              <Row label="현재 플랜" value={planName} />
+              <Row label="심층 리포트" value="잠금" />
+              <Row label="멤버 대화" value="기본 제공" />
+            </div>
+            <Button asChild className="w-full" size="sm">
+              <Link href={ROUTES.pricing}>멤버십 보기</Link>
+            </Button>
+          </div>
+        )}
+        {subscribed ? (
+          <div className="grid gap-2 sm:grid-cols-2">
+            <QuickLink href={ROUTES.monthly as Route} label="월간 심층" />
+            <QuickLink href={ROUTES.saju as Route} label="사주 심층" />
+          </div>
+        ) : null}
+      </CardContent>
+    </Card>
+  );
+}
+
+function QuickLink({ href, label }: { href: Route; label: string }) {
+  return (
+    <Link
+      href={href}
+      className="inline-flex items-center justify-center gap-2 rounded-full border border-primary/20 px-3 py-2 text-[13px] font-semibold text-primary transition hover:bg-primary/10"
+    >
+      <CalendarClock className="h-3.5 w-3.5" aria-hidden />
+      {label}
+    </Link>
+  );
+}
+
 function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between border-b border-border/30 py-2 last:border-0">
-      <dt className="text-[15px] text-muted-foreground">{label}</dt>
-      <dd className="font-medium text-[15px]">{value}</dd>
+    <div className="flex items-center justify-between gap-4 border-b border-border/30 py-2 last:border-0">
+      <dt className="shrink-0 text-[15px] text-muted-foreground">{label}</dt>
+      <dd className="text-right text-[15px] font-medium">{value}</dd>
     </div>
   );
 }

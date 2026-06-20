@@ -52,6 +52,22 @@ function generateLottoNumbers(
   return [...pool].sort((a, b) => a - b);
 }
 
+/**
+ * 연금복권 720+ 형식: 1~5조 + 6자리 번호.
+ * 로또와 다른 시드를 써서 같은 운세 안에서도 별도 기운으로 고정한다.
+ */
+function generatePensionLottery(
+  score: number,
+  luckyNumber: number | null,
+): { group: number; digits: number[] } {
+  const seed = score * 1543 + (luckyNumber ?? 0) * 79 + 720;
+  const rand = makePrng(seed);
+  const group = Math.floor(rand() * 5) + 1;
+  const digits = Array.from({ length: 6 }, () => Math.floor(rand() * 10));
+
+  return { group, digits };
+}
+
 /** 한국 로또 볼 색상 (1-9 노랑 / 10-19 파랑 / 20-29 빨강 / 30-39 회색 / 40-45 초록). */
 function ballColor(n: number): string {
   if (n <= 9) return "from-yellow-400 to-amber-500 text-gray-900";
@@ -64,6 +80,7 @@ function ballColor(n: number): string {
 export function LottoGenerator({ fortune, subscribed }: LottoGeneratorProps) {
   const [revealed, setRevealed] = useState(false);
   const numbers = generateLottoNumbers(fortune.score, fortune.luckyNumber);
+  const pensionLottery = generatePensionLottery(fortune.score, fortune.luckyNumber);
   const t = useTranslations("lottoCard");
   const tPrem = useTranslations("premiumCard");
 
@@ -87,26 +104,67 @@ export function LottoGenerator({ fortune, subscribed }: LottoGeneratorProps) {
       <CardContent className="space-y-6">
         {subscribed ? (
           <>
-            {/* 번호 볼 */}
-            <div className="flex flex-wrap justify-center gap-3 py-2">
-              {numbers.map((n, i) => (
-                <div
-                  key={n}
-                  className={cn(
-                    "flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br",
-                    "font-mystic text-lg font-bold shadow-md",
-                    "transition-all duration-500",
-                    ballColor(n),
-                    revealed ? "scale-100 opacity-100" : "scale-50 opacity-0",
-                  )}
-                  style={{
-                    transitionDelay: revealed ? `${i * 90}ms` : "0ms",
-                  }}
-                  aria-label={t("luckyNumberAria", { n })}
-                >
-                  {n}
-                </div>
-              ))}
+            <div className="space-y-3">
+              <p className="text-center font-mystic text-base font-semibold text-foreground/90">
+                {t("lottoSectionTitle")}
+              </p>
+              <div className="flex flex-wrap justify-center gap-3 py-2">
+                {numbers.map((n, i) => (
+                  <div
+                    key={n}
+                    className={cn(
+                      "flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br",
+                      "font-mystic text-lg font-bold shadow-md",
+                      "transition-all duration-500",
+                      ballColor(n),
+                      revealed ? "scale-100 opacity-100" : "scale-50 opacity-0",
+                    )}
+                    style={{
+                      transitionDelay: revealed ? `${i * 90}ms` : "0ms",
+                    }}
+                    aria-label={t("luckyNumberAria", { n })}
+                  >
+                    {n}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3 rounded-2xl border border-white/15 bg-white/5 px-4 py-4">
+              <div className="space-y-1 text-center">
+                <p className="font-mystic text-base font-semibold text-foreground/90">
+                  {t("pensionTitle")}
+                </p>
+                <p className="text-[15px] text-muted-foreground">
+                  {t("pensionSubtitle")}
+                </p>
+              </div>
+              <div
+                className={cn(
+                  "flex flex-wrap items-center justify-center gap-2 transition-all duration-500",
+                  revealed ? "scale-100 opacity-100" : "scale-95 opacity-0",
+                )}
+                aria-label={t("pensionAria", {
+                  group: pensionLottery.group,
+                  numbers: pensionLottery.digits.join(""),
+                })}
+              >
+                <span className="rounded-full border border-amber-300/45 bg-amber-200/20 px-3 py-2 font-mystic text-lg font-bold text-foreground">
+                  {t("pensionGroup", { group: pensionLottery.group })}
+                </span>
+                <span className="text-muted-foreground">-</span>
+                {pensionLottery.digits.map((digit, i) => (
+                  <span
+                    key={`${digit}-${i}`}
+                    className="grid h-10 w-10 place-items-center rounded-xl border border-white/20 bg-white/10 font-mystic text-lg font-bold shadow-sm"
+                    style={{
+                      transitionDelay: revealed ? `${(i + 6) * 70}ms` : "0ms",
+                    }}
+                  >
+                    {digit}
+                  </span>
+                ))}
+              </div>
             </div>
 
             {!revealed ? (
@@ -139,6 +197,24 @@ export function LottoGenerator({ fortune, subscribed }: LottoGeneratorProps) {
         ) : (
           /* 비구독자 잠금 UI */
           <div className="flex flex-col items-center gap-4 py-6 text-center">
+            <div className="grid w-full max-w-md gap-3 sm:grid-cols-2">
+              <div className="rounded-2xl border border-white/15 bg-white/5 px-4 py-4">
+                <p className="font-mystic text-base font-semibold text-foreground/90">
+                  {t("lottoSectionTitle")}
+                </p>
+                <p className="mt-1 text-[15px] text-muted-foreground">
+                  {t("lottoLockedPreview")}
+                </p>
+              </div>
+              <div className="rounded-2xl border border-white/15 bg-white/5 px-4 py-4">
+                <p className="font-mystic text-base font-semibold text-foreground/90">
+                  {t("pensionTitle")}
+                </p>
+                <p className="mt-1 text-[15px] text-muted-foreground">
+                  {t("pensionLockedPreview")}
+                </p>
+              </div>
+            </div>
             <div className="rounded-full bg-muted/60 p-4">
               <Lock className="h-8 w-8 text-muted-foreground" aria-hidden />
             </div>
