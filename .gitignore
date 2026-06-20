@@ -81,6 +81,7 @@ lint-report.txt
 
 # Codex/QA screenshots and temporary generated assets
 .codex-*.png
+.codex-qa*/
 .tmp-*.png
 .tmp-*.jpg
 .tmp-*.jpeg

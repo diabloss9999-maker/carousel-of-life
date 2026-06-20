@@ -115,28 +115,25 @@ export function GiftShop({ characterId, characterName, returnTo, compact = false
     setIsAndroidApp(androidApp);
 
     if (androidApp) {
-      setTopupNotice(
+      const message =
         missingCount != null && missingCount > 0
-          ? `별조각 ${missingCount.toLocaleString()}개가 더 필요해요. 앱 안 별조각 충전은 Google Play 상품으로 준비 중이라, 지금은 출석 보상과 보너스에서 모을 수 있어요.`
-          : "앱 안 별조각 충전은 Google Play 상품으로 준비 중이에요. 지금은 출석 보상과 보너스에서 별조각을 모을 수 있어요.",
-      );
-      toast("별조각이 부족해요", {
-        description:
-          "앱에서는 Google Play 별조각 충전을 준비 중이에요. 지금은 출석 보상으로 별조각을 모을 수 있어요.",
-      });
+          ? `별조각 ${missingCount.toLocaleString()}개가 더 필요해요. 설치 앱에서는 별조각 충전을 준비 중이라 지금은 출석 보상과 보너스로 모을 수 있어요.`
+          : "설치 앱에서는 별조각 충전을 준비 중이에요. 지금은 출석 보상과 보너스로 별조각을 모을 수 있어요.";
+      setTopupNotice(message);
+      toast("별조각이 부족해요", { description: message });
       return;
     }
 
+    const message =
+      missingCount != null && missingCount > 0
+        ? `별조각 ${missingCount.toLocaleString()}개가 더 필요해요. 아래 충전 상품 중 하나를 선택하면 바로 결제창이 열려요.`
+        : "아래 충전 상품 중 하나를 선택하면 바로 결제창이 열려요.";
+    setTopupNotice(message);
     topupSectionRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });
-    toast("별조각이 부족해요", {
-      description:
-        missingCount != null && missingCount > 0
-          ? `${missingCount.toLocaleString()}개 더 필요해요. 아래에서 충전 상품을 선택해 주세요.`
-          : "아래에서 충전 상품을 선택해 주세요.",
-    });
+    toast("별조각이 부족해요", { description: message });
   }
 
   async function handleTopup(packId: string) {
@@ -350,7 +347,7 @@ export function GiftShop({ characterId, characterName, returnTo, compact = false
                         >
                           {tooExpensive ? (
                             <>
-                              <span>{isAndroidApp ? "안내" : "충전"}</span>
+                              <span>{isAndroidApp ? "부족" : "충전 이동"}</span>
                             </>
                           ) : (
                             "보내기"
