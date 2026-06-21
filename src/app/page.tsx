@@ -112,7 +112,7 @@ const structuredData = {
 export default async function HomePage() {
   const t = await getTranslations("landing");
   return (
-    <main className="relative min-h-dvh">
+    <main className="relative min-h-dvh overflow-hidden">
       <script
         type="application/ld+json"
         // 정적 객체를 직렬화하는 표준 JSON-LD 패턴. </script> 시퀀스를 이스케이프해 인젝션 방지.
@@ -129,45 +129,55 @@ export default async function HomePage() {
         className="pointer-events-none fixed inset-0 -z-[5] bg-gradient-to-t from-background/30 via-transparent to-background/15"
       />
 
-      <section className="relative z-10 mx-auto flex min-h-dvh max-w-6xl flex-col items-center justify-start overflow-hidden px-6 pt-16 pb-36 text-center sm:justify-center sm:pt-12 sm:pb-16">
-        <div className="relative z-10 flex max-w-3xl flex-col items-center gap-5">
-          <p className="rounded-full border border-white/40 bg-white/25 px-4 py-1.5 text-[13px] font-semibold text-foreground/80 shadow-sm backdrop-blur-md">
+      <section className="landing-hero relative z-10 mx-auto flex min-h-[78dvh] max-w-6xl flex-col items-center justify-center overflow-hidden px-5 pb-10 pt-14 text-center sm:min-h-[74dvh] sm:px-6 sm:pb-12 sm:pt-16">
+        <div className="relative z-10 flex max-w-3xl flex-col items-center gap-4 sm:gap-5">
+          <p className="rounded-full border border-black/10 bg-white/70 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.22em] text-foreground/70 shadow-[0_4px_16px_rgba(35,39,48,0.05)] backdrop-blur-md">
             CAROUSEL NINE
           </p>
 
-          <h1 className="font-mystic text-balance text-5xl font-semibold leading-tight tracking-tight text-foreground sm:text-6xl drop-shadow-[0_2px_8px_rgba(60,30,100,0.3)]">
+          <h1 className="font-mystic text-balance text-[44px] font-semibold leading-[1.05] tracking-tight text-foreground sm:text-6xl">
             {siteConfig.name}
           </h1>
 
-          <p className="font-mystic text-balance text-lg leading-relaxed text-foreground/95 sm:text-xl drop-shadow-[0_1px_4px_rgba(60,30,100,0.25)]">
+          <p className="font-mystic text-balance text-lg leading-relaxed text-foreground/90 sm:text-xl">
             {t("tagline")}
           </p>
 
           {/* 페이지 설명 — 앱이 무엇을 하는지 한 단락 */}
-          <p className="max-w-xl whitespace-pre-line text-balance text-[15px] leading-relaxed text-foreground/85 drop-shadow-sm">
+          <p className="max-w-xl whitespace-pre-line text-balance text-[15px] leading-relaxed text-foreground/68">
             {t("intro")}
           </p>
 
           {/* 1차 CTA: 멤버 경험 진입 */}
-          <div className="mt-2 flex w-full max-w-sm flex-col gap-3">
+          <div className="mt-1 flex w-full max-w-sm flex-col gap-3">
             <Button
               asChild
               size="lg"
-              className="rounded-full border border-white/65 bg-white/45 px-7 text-foreground shadow-[0_12px_34px_rgba(96,64,26,0.22),inset_0_1px_0_rgba(255,255,255,0.65)] backdrop-blur-md transition hover:bg-white/60"
+              className="h-12 rounded-full border border-black/80 bg-[#16181d] px-7 text-white shadow-[0_12px_30px_rgba(18,20,24,0.18),inset_0_1px_0_rgba(255,255,255,0.18)] transition hover:bg-[#23262c]"
             >
               <Link href={ROUTES.login}>
                 {t("startFree")}
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </Link>
             </Button>
+            <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+              {["오늘운세", "사주", "타로", "궁합"].map((label) => (
+                <span
+                  key={label}
+                  className="rounded-full border border-black/8 bg-white/55 px-3 py-1 text-[12px] font-semibold text-foreground/60 backdrop-blur-sm"
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
           </div>
 
           {/* 스크롤 아래로 힌트 */}
           <div
             aria-hidden
-            className="flex flex-col items-center gap-1 text-foreground/60 animate-bounce"
+            className="mt-2 flex flex-col items-center gap-1 text-foreground/45"
           >
-            <span className="text-[15px] tracking-widest">SCROLL</span>
+            <span className="text-[11px] tracking-[0.22em]">SCROLL</span>
             <ChevronDown className="h-5 w-5" />
           </div>
         </div>
@@ -204,7 +214,7 @@ async function ValuePropsSection() {
   ];
 
   return (
-    <section className="relative z-10 mx-auto max-w-5xl space-y-6 px-6 pt-12 sm:pt-16">
+    <section className="relative z-10 mx-auto max-w-5xl space-y-6 px-5 pt-10 sm:px-6 sm:pt-14">
       <div className="space-y-2 text-center">
         <h2 className="font-mystic text-2xl font-semibold sm:text-3xl">
           {t("heading")}
@@ -215,9 +225,9 @@ async function ValuePropsSection() {
       </div>
       <div className="grid gap-4 sm:grid-cols-3">
         {items.map(({ icon: Icon, title, body }) => (
-          <Card key={title} className="h-full">
-            <CardHeader className="space-y-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
+          <Card key={title} className="h-full border-black/10 bg-white/70">
+            <CardHeader className="space-y-3 p-5">
+              <div className="flex h-10 w-10 items-center justify-center rounded-[14px] bg-primary/[0.09] text-primary ring-1 ring-primary/10">
                 <Icon className="h-5 w-5" aria-hidden />
               </div>
               <CardTitle className="text-base">{title}</CardTitle>
@@ -244,7 +254,7 @@ async function OraclesSection() {
   ];
 
   return (
-    <section className="relative z-10 mx-auto max-w-5xl space-y-8 px-6 pt-12 sm:pt-16">
+    <section className="relative z-10 mx-auto max-w-5xl space-y-8 px-5 pt-10 sm:px-6 sm:pt-14">
       <div className="space-y-2 text-center">
         <h2 className="font-mystic text-2xl font-semibold sm:text-3xl">
           {t("heading")}
@@ -309,18 +319,18 @@ function OracleCard({
   const imageSrc = CHARACTERS[id].imageSrcDay;
 
   return (
-    <Card className="app-surface overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-xl">
-      <div className="relative aspect-[3/4] w-full overflow-hidden">
+    <Card className="app-surface overflow-hidden rounded-[22px] transition duration-200 hover:-translate-y-1 hover:border-primary/20 hover:shadow-[0_18px_42px_rgba(35,39,48,0.12)]">
+      <div className="relative aspect-[3/4] w-full overflow-hidden bg-white/40">
         <Image
           src={imageSrc}
           alt={name}
           fill
           sizes="(max-width: 640px) 100vw, 320px"
-          className="object-cover object-top"
+          className="object-cover object-top transition duration-500 hover:scale-[1.025]"
         />
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent"
+          className="absolute inset-0 bg-gradient-to-t from-black/58 via-black/10 to-transparent"
         />
         <div className="on-character-image absolute bottom-0 left-0 right-0 p-4 space-y-0.5">
           <p className="font-mystic text-lg font-semibold drop-shadow">
@@ -337,7 +347,7 @@ function OracleCard({
           {facts.map((fact) => (
             <div
               key={`${fact.label}-${fact.value}`}
-              className="rounded-md border border-border/60 bg-background/45 px-2 py-1.5"
+              className="rounded-[10px] border border-black/8 bg-white/55 px-2 py-1.5"
             >
               <dt className="text-[12px] font-medium text-muted-foreground">
                 {fact.label}
@@ -380,7 +390,7 @@ async function HowToPlaySection() {
   ];
 
   return (
-    <section className="relative z-10 mx-auto max-w-5xl space-y-6 px-6 pt-12 sm:pt-16">
+    <section className="relative z-10 mx-auto max-w-5xl space-y-6 px-5 pt-10 sm:px-6 sm:pt-14">
       <div className="space-y-2 text-center">
         <h2 className="font-mystic text-2xl font-semibold sm:text-3xl">
           {t("heading")}
@@ -421,7 +431,7 @@ async function HowToPlaySection() {
 async function PreviewSection() {
   const t = await getTranslations("landing.preview");
   return (
-    <section className="relative z-10 mx-auto max-w-3xl space-y-6 px-6 pt-12 sm:pt-16">
+    <section className="relative z-10 mx-auto max-w-3xl space-y-16 px-5 pt-10 sm:space-y-6 sm:px-6 sm:pt-10">
       <div className="space-y-2 text-center">
         <h2 className="font-mystic text-2xl font-semibold sm:text-3xl">
           {t("heading")}
@@ -431,7 +441,7 @@ async function PreviewSection() {
 
       <div className="mx-auto grid max-w-3xl gap-6 sm:grid-cols-2">
         {/* 타로 미리보기 */}
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden border-black/10 bg-white/72">
           <CardHeader className="space-y-2">
             <div className="flex items-center justify-between">
               <CardTitle className="text-base">타로 한 장</CardTitle>
@@ -444,7 +454,7 @@ async function PreviewSection() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="mx-auto h-44 w-28 overflow-hidden rounded-lg ring-1 ring-border">
+            <div className="mx-auto h-44 w-28 overflow-hidden rounded-[14px] shadow-[0_14px_32px_rgba(35,39,48,0.14)] ring-1 ring-black/10">
               <Image
                 src="/tarot/the_star.webp"
                 alt="타로 The Star 카드"
@@ -465,7 +475,7 @@ async function PreviewSection() {
         </Card>
 
         {/* 운세 미리보기 */}
-        <Card>
+        <Card className="border-black/10 bg-white/72">
           <CardHeader className="space-y-2">
             <div className="flex items-center justify-between">
               <CardTitle className="text-base">오늘 종합운</CardTitle>
@@ -510,7 +520,7 @@ function FaqSection() {
   const faqs = LANDING_FAQS;
 
   return (
-    <section className="relative z-10 mx-auto max-w-2xl space-y-6 px-6 pt-12 sm:pt-16">
+    <section className="relative z-10 mx-auto max-w-2xl space-y-6 px-5 pt-10 sm:px-6 sm:pt-14">
       <div className="space-y-2 text-center">
         <h2 className="font-mystic text-2xl font-semibold sm:text-3xl">
           자주 묻는 질문
@@ -520,7 +530,7 @@ function FaqSection() {
         {faqs.map(({ q, a }) => (
           <details
             key={q}
-            className="app-surface group rounded-xl p-4 [&_summary::-webkit-details-marker]:hidden"
+            className="app-surface group rounded-[18px] p-4 [&_summary::-webkit-details-marker]:hidden"
           >
             <summary className="flex cursor-pointer items-center justify-between gap-3 text-[15px] font-semibold">
               <span>{q}</span>
