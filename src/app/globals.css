@@ -449,8 +449,8 @@ body:not([data-time]):not(.ritual-night) .ritual-readable-scrim {
   .app-surface {
     border-radius: 18px;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.42),
-      0 14px 34px rgba(42, 35, 58, 0.16);
+      inset 0 1px 0 rgba(255, 255, 255, 0.58),
+      0 14px 30px rgba(32, 37, 48, 0.10);
   }
 
   .liquid-fortune-card {
@@ -958,12 +958,12 @@ html[data-platform="ios"] [data-hide-in-app] {
 
 /* Frosted Glass 移대뱶 ??v7: .ritual-message ??backdrop-filter 媛 鍮뚮뱶瑜??듦낵??   ?좎씪??耳?댁뒪?쇱꽌 媛숈? ?뺥깭濡??⑥닚?? saturate() 쨌 -webkit prefix ?쒓굅. */
 .app-surface {
-  border: 1px solid rgba(255,255,255,0.18);
-  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(22, 24, 29, 0.08);
+  background: rgba(255, 255, 255, 0.58);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.12),
-    0 8px 32px rgba(0,0,0,0.22);
-  backdrop-filter: blur(28px);
+    inset 0 1px 0 rgba(255,255,255,0.58),
+    0 18px 42px rgba(32, 37, 48, 0.10);
+  backdrop-filter: blur(22px);
   /* color 紐낆떆 ?쒓굅 ??遺紐⑤줈遺??inherit. ?꾧컧泥섎읆 遺紐⑥뿉 text-white 諛뺤?
      寃쎌슦 ?먯떇 ?띿뒪?멸? ?먮룞?쇰줈 ?곗깋???섎룄濡? (?덉쟾??var(--foreground)
      瑜?媛뺤젣濡?諛뺤븘???꾧컧???곗깋 泥섎━媛 ??癒밸뒗 踰꾧렇媛 ?덉뿀??) */
@@ -975,17 +975,16 @@ html[data-platform="ios"] [data-hide-in-app] {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.46);
+  border: 1px solid rgba(22, 24, 29, 0.08);
   background:
-    radial-gradient(circle at 14% 8%, rgba(255, 255, 255, 0.86), transparent 34%),
-    linear-gradient(140deg, rgba(255, 255, 255, 0.62), rgba(236, 241, 255, 0.38) 45%, rgba(228, 244, 239, 0.28) 68%, rgba(244, 228, 255, 0.30)),
-    rgba(255, 255, 255, 0.24);
+    radial-gradient(circle at 14% 8%, rgba(255, 255, 255, 0.72), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.68), rgba(249, 250, 252, 0.52) 52%, rgba(242, 245, 248, 0.48)),
+    rgba(255, 255, 255, 0.50);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.82),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.22),
-    0 28px 64px rgba(42, 35, 58, 0.22),
-    0 9px 22px rgba(70, 58, 74, 0.10);
-  backdrop-filter: blur(34px) saturate(1.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 22px 54px rgba(32, 37, 48, 0.12),
+    0 8px 20px rgba(48, 54, 66, 0.07);
+  backdrop-filter: blur(24px);
 }
 
 .liquid-glass-panel::before {
@@ -994,25 +993,15 @@ html[data-platform="ios"] [data-hide-in-app] {
   position: absolute;
   inset: 1px 1px auto;
   z-index: 0;
-  height: 48%;
+  height: 34%;
   border-radius: inherit;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.10)),
-    linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.36) 38%, transparent 66%);
-  opacity: 0.82;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0.06));
+  opacity: 0.52;
 }
 
 .liquid-glass-panel::after {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: inherit;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.36),
-    inset 10px 12px 28px rgba(255, 255, 255, 0.18),
-    inset -16px -18px 32px rgba(106, 76, 140, 0.10);
+  content: none;
 }
 
 .liquid-glass-panel > * {
@@ -1029,13 +1018,11 @@ html[data-platform="ios"] [data-hide-in-app] {
 .liquid-reading-copy,
 .liquid-lucky-grid,
 .liquid-conversation-cta {
-  border: 1px solid rgba(255, 255, 255, 0.34);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0.16)),
-    rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(22, 24, 29, 0.07);
+  background: rgba(255, 255, 255, 0.48);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.52),
-    0 10px 26px rgba(48, 41, 60, 0.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.58),
+    0 10px 24px rgba(32, 37, 48, 0.07);
 }
 
 .liquid-oracle-header {
@@ -1135,13 +1122,12 @@ html[data-platform="ios"] [data-hide-in-app] {
 }
 
 .liquid-glass-action {
-  border-color: rgba(255, 255, 255, 0.54) !important;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(231, 244, 241, 0.56)) !important;
+  border-color: rgba(22, 24, 29, 0.08) !important;
+  background: rgba(255, 255, 255, 0.62) !important;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.75),
-    0 10px 20px rgba(66, 70, 86, 0.14);
-  backdrop-filter: blur(18px);
+    inset 0 1px 0 rgba(255, 255, 255, 0.62),
+    0 10px 20px rgba(32, 37, 48, 0.08);
+  backdrop-filter: blur(14px);
 }
 
 .liquid-chat-action,
@@ -1150,12 +1136,12 @@ html[data-platform="ios"] [data-hide-in-app] {
 }
 
 .liquid-soft-button {
-  border-color: rgba(255, 255, 255, 0.42) !important;
-  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(22, 24, 29, 0.08) !important;
+  background: rgba(255, 255, 255, 0.64) !important;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.42),
-    0 8px 18px rgba(48, 41, 60, 0.08);
-  backdrop-filter: blur(16px);
+    inset 0 1px 0 rgba(255, 255, 255, 0.58),
+    0 8px 18px rgba(32, 37, 48, 0.06);
+  backdrop-filter: blur(12px);
 }
 
 .liquid-share-row {
@@ -1499,6 +1485,72 @@ html[data-platform="ios"] [data-hide-in-app] {
     transition: none;
     animation: none !important;
   }
+}
+
+.ritual-button {
+  border: 1px solid rgba(22, 24, 29, 0.10);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.68);
+  color: rgba(18, 20, 24, 0.90);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.68),
+    0 8px 20px rgba(32, 37, 48, 0.08);
+  backdrop-filter: blur(14px);
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    opacity 160ms ease;
+}
+
+.ritual-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(22, 24, 29, 0.14);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 12px 26px rgba(32, 37, 48, 0.10);
+}
+
+.ritual-button:active {
+  transform: translateY(0);
+  box-shadow:
+    inset 0 1px 2px rgba(22, 24, 29, 0.08),
+    0 4px 12px rgba(32, 37, 48, 0.06);
+}
+
+.ritual-button.primary {
+  border-color: rgba(18, 20, 24, 0.90);
+  background: rgba(18, 20, 24, 0.92);
+  color: #fff !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 14px 28px rgba(18, 20, 24, 0.18);
+}
+
+.ritual-button.primary,
+.ritual-button.primary * {
+  color: #fff !important;
+}
+
+.ritual-button.primary:hover {
+  background: rgba(18, 20, 24, 0.96);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 18px 34px rgba(18, 20, 24, 0.22);
+}
+
+.ritual-button.ghost {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.ritual-button.ghost:hover {
+  background: rgba(255, 255, 255, 0.54);
+  box-shadow: none;
 }
 
 /* =============================================================================
