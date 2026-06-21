@@ -7,7 +7,7 @@
  * - 별자리 12장
  * - 십이간지 12장
  * - 천간 10장
- * - 점술사 9장 (카드 3 · 동양 3 · 룬 3)
+ * - Carousel Nine 멤버 9장
  *
  * 발견 여부는 service.ts 가 기존 사용자 데이터(profiles, tarotReadings,
  * chatSessions)에서 계산한다. 이 파일은 카드의 표시 정보만을 담는다.
@@ -338,99 +338,96 @@ export const CHEONGAN_CARDS: CollectionCardMeta[] = CHEONGAN_ORDER.map(
   },
 );
 
-/** 점술사 캐릭터 9장 메타데이터 — 카드 3 + 동양 3 + 룬 3. */
+/** Carousel Nine 멤버 9장 메타데이터. */
 export const CHARACTER_CARDS: CollectionCardMeta[] = [
-  // 카드
   {
     id: "witch",
     category: "characters",
-    nameKo: "루나",
-    nameEn: "Luna",
+    nameKo: "유준",
+    nameEn: "Yujun",
     imageSrc: "/characters/witch_night_v2.webp",
     description:
-      "달빛 아래 수정구슬을 응시하며 운명을 읽는 달빛의 마녀. 어둠 속에서 가장 선명하게 진실을 본다.",
+      "부드러운 후렴처럼 오래 남는 목소리. 말하지 못한 마음까지 조용히 안아주는 멤버.",
     rarity: "legendary",
   },
   {
     id: "child",
     category: "characters",
-    nameKo: "카엘",
-    nameEn: "Kael",
+    nameKo: "이안",
+    nameEn: "Ian",
     imageSrc: "/characters/child_v2.webp",
     description:
-      "운명과의 계약서를 손에 쥔 악마 계약자. 냉정하고 정확하게 진실만을 말한다.",
+      "낮은 첫 음처럼 팀의 중심을 잡아주는 리더. 말보다 먼저 곁을 지키는 멤버.",
     rarity: "legendary",
   },
   {
     id: "sage",
     category: "characters",
-    nameKo: "라엘",
-    nameEn: "Rael",
+    nameKo: "도윤",
+    nameEn: "Doyoon",
     imageSrc: "/characters/sage_night_v2.webp",
     description:
-      "하늘의 뜻을 전하는 천상의 대리인. 빛과 희망의 언어로 당신의 길을 밝혀준다.",
+      "무대 위 고음처럼 선명한 에너지. 망설이는 순간을 앞으로 밀어주는 멤버.",
     rarity: "legendary",
   },
-  // 동양 — 《월식경》
   {
     id: "shaman",
     category: "characters",
-    nameKo: "소율",
-    nameEn: "Soryeong",
+    nameKo: "재하",
+    nameEn: "Jaeha",
     imageSrc: "/characters/shaman_v1.webp",
     description:
-      "한 번 죽었다 신들에게 되살린 접신의 무녀. 인간도 신도 아닌 결의 존재로, 신령의 목소리를 모두 들을 수 있다.",
+      "조용한 브릿지처럼 감정의 결을 이어주는 프로듀서. 무심한 듯 깊이 들어주는 멤버.",
     rarity: "legendary",
   },
   {
     id: "taoist",
     category: "characters",
-    nameKo: "현도",
-    nameEn: "Hyundo",
+    nameKo: "하루",
+    nameEn: "Haru",
     imageSrc: "/characters/taoist_v1.webp",
     description:
-      "500년 전 금기를 써서 시간에서 지워진 도사. 천기역전을 쓸 때마다 소율과 흑랑의 기억이 사라진다.",
+      "댄스 브레이크처럼 공기를 바꾸는 반짝임. 멈춘 마음도 다시 움직이게 하는 멤버.",
     rarity: "legendary",
   },
   {
     id: "dokkaebi",
     category: "characters",
-    nameKo: "흑랑",
-    nameEn: "Gwieyeom",
+    nameKo: "시온",
+    nameEn: "Sion",
     imageSrc: "/characters/dokkaebi_night_v2.webp",
     description:
-      "소율을 살리기 위해 스스로 귀왕이 된 도깨비. 진짜 이름을 잃었고, 그 사실을 소율은 모른다.",
+      "짧은 랩 벌스처럼 정확하게 꽂히는 말. 복잡한 마음의 군더더기를 덜어내는 멤버.",
     rarity: "legendary",
   },
-  // 룬 — 《죽은 별의 밤》
   {
     id: "god",
     category: "characters",
-    nameKo: "외르문드",
-    nameEn: "Ormund",
+    nameKo: "태오",
+    nameEn: "Theo",
     imageSrc: "/characters/god_night.webp",
     description:
-      "폭풍 끝에서 호른을 부는 자. 마지막 별 「에인하르」를 자기 몸 안에 품은 채로 늙지도 죽지도 못한다.",
+      "퍼포먼스 브레이크처럼 몸을 깨우는 힘. 지금 필요한 추진력을 바로 켜주는 멤버.",
     rarity: "legendary",
   },
   {
     id: "hunter",
     category: "characters",
-    nameKo: "비요른",
-    nameEn: "Bjorn",
+    nameKo: "이현",
+    nameEn: "Ihyun",
     imageSrc: "/characters/hunter_night.webp",
     description:
-      "룬 늑대 부족의 사냥꾼. 신을 죽이기 위해 태어난 「검은 숲의 왕」의 마지막 후손 — 손등에 짐승의 룬이 자라난다.",
+      "낮게 깔리는 랩처럼 차분한 시선. 흔들리는 상황에서도 현실적인 쪽을 봐주는 멤버.",
     rarity: "legendary",
   },
   {
     id: "runeshaman",
     category: "characters",
-    nameKo: "헬가",
-    nameEn: "Helga",
+    nameKo: "하민",
+    nameEn: "Hamin",
     imageSrc: "/characters/runeshaman_night.webp",
     description:
-      "24개 고대 룬을 모두 다루는 부족 최고의 룬샤먼. 룬의 대가로 인간의 언어를 잊어가지만 누군가의 운명만은 마지막까지 새기려 한다.",
+      "아웃트로의 애드리브처럼 은은하게 남는 사람. 말끝의 여운까지 부드럽게 들어주는 멤버.",
     rarity: "legendary",
   },
 ];
@@ -512,7 +509,7 @@ export const CATEGORY_META: Record<
   zodiac:        { label: "별자리",  emoji: "", cardBackSrc: "/collection/card_back_zodiac.webp" },
   chineseZodiac: { label: "십이간지",emoji: "", cardBackSrc: "/collection/card_back_chinese_zodiac.webp" },
   cheongan:      { label: "천간",    emoji: "", cardBackSrc: "/collection/card_back_cheongan.webp" },
-  characters:    { label: "점술사",  emoji: "", cardBackSrc: "/collection/card_back_characters.webp" },
+  characters:    { label: "멤버",  emoji: "", cardBackSrc: "/collection/card_back_characters.webp" },
   lenormand:     { label: "르노르망",emoji: "", cardBackSrc: "/collection/card_back_lenormand.webp" },
   runes:         { label: "룬",      emoji: "", cardBackSrc: "/collection/card_back_runes.webp" },
   flowers:       { label: "꽃점",    emoji: "", cardBackSrc: "/collection/card_back_flowers.png" },
