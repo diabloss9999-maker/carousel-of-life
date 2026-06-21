@@ -50,8 +50,9 @@ export default async function TarotPage() {
   const olderSingleReadings = singleReadings.slice(1);
 
   return (
-    <div className="space-y-8">
-      <header className="space-y-2">
+    <div className="reading-page mx-auto w-full space-y-8">
+      <header className="reading-hero space-y-2">
+        <p className="reading-kicker">Tarot Reading</p>
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
           타로
         </h1>
@@ -75,7 +76,7 @@ export default async function TarotPage() {
       <CardDivinationTabs
         tarotPanel={
           <div className="space-y-6">
-            <div className="space-y-2 rounded-2xl border border-amber-200/20 bg-amber-50/5 px-5 py-4 backdrop-blur-sm">
+            <div className="reading-guide-tile space-y-2">
               <p className="font-mystic text-[15px] font-semibold text-amber-300/90">
                 타로는 정답보다 방향을 보는 도구예요
               </p>
@@ -97,7 +98,7 @@ export default async function TarotPage() {
                     reading={latestThreeReading}
                   />
                   {olderThreeReadings.length > 0 ? (
-                    <details className="group rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+                    <details className="group app-surface rounded-[18px] px-4 py-3">
                       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[15px] font-semibold [&::-webkit-details-marker]:hidden">
                         <span>이전 3장 타로 {olderThreeReadings.length}개</span>
                         <span className="text-muted-foreground transition group-open:rotate-180">
@@ -133,7 +134,7 @@ export default async function TarotPage() {
                     subscribed={subscribed}
                   />
                   {olderSingleReadings.length > 0 ? (
-                    <details className="group rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+                    <details className="group app-surface rounded-[18px] px-4 py-3">
                       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[15px] font-semibold [&::-webkit-details-marker]:hidden">
                         <span>이전 한 장 타로 {olderSingleReadings.length}개</span>
                         <span className="text-muted-foreground transition group-open:rotate-180">
@@ -201,7 +202,7 @@ function GuideTile({
   title: string;
 }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.045] px-4 py-3">
+    <div className="reading-guide-tile">
       <div className="flex items-center gap-2 text-primary">
         <Icon className="h-4 w-4 shrink-0" aria-hidden />
         <p className="text-[13px] font-semibold">{title}</p>

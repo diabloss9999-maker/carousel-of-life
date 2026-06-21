@@ -124,12 +124,12 @@ export default async function PricingPage({ searchParams }: PricingPageProps) {
   const paymentReady = appPlatform === "android" || portOneReady;
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-5 py-12 sm:px-6 sm:py-16">
-      <header className="app-surface mb-8 rounded-3xl border px-5 py-6 text-center sm:px-8">
-        <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/20">
+    <main className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-6 sm:py-12">
+      <header className="reading-hero mb-7 text-center sm:px-8">
+        <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-[16px] bg-primary/[0.09] text-primary ring-1 ring-primary/10">
           <Sparkles className="h-5 w-5" aria-hidden />
         </div>
-        <p className="mt-4 text-[12px] font-semibold uppercase tracking-[0.24em] text-primary/70">
+        <p className="reading-kicker mx-auto mt-4 w-fit">
           Membership
         </p>
         <h1 className="mt-2 font-mystic text-3xl font-semibold tracking-tight sm:text-5xl">
@@ -147,7 +147,7 @@ export default async function PricingPage({ searchParams }: PricingPageProps) {
       ) : null}
 
       <section className="mb-8 grid gap-4 lg:grid-cols-[1fr_0.8fr]">
-        <div className="app-surface rounded-3xl border p-5">
+        <div className="app-surface rounded-[24px] border p-5">
           <div className="flex items-center gap-2">
             <LockKeyhole className="h-5 w-5 text-primary" aria-hidden />
             <h2 className="text-xl font-semibold">멤버십에서 열리는 것</h2>
@@ -158,7 +158,7 @@ export default async function PricingPage({ searchParams }: PricingPageProps) {
             ))}
           </div>
         </div>
-        <div className="app-surface rounded-3xl border border-primary/20 p-5">
+        <div className="app-surface rounded-[24px] border border-primary/15 p-5">
           <p className="text-[13px] font-semibold text-primary">추천 흐름</p>
           <h2 className="mt-2 text-xl font-semibold">{context.recommendation}</h2>
           <p className="mt-3 text-[14px] leading-6 text-muted-foreground">
@@ -315,10 +315,10 @@ function PlanDecisionStrip({ context }: { context: PricingContext }) {
   return (
     <section className="mb-5 grid gap-3 md:grid-cols-2">
       <div
-        className={`rounded-3xl border p-4 ${
+        className={`rounded-[20px] border p-4 ${
           context.recommendedPlan === "lite"
-            ? "border-primary/35 bg-primary/[0.08] ring-1 ring-primary/20"
-            : "border-white/10 bg-white/[0.04]"
+            ? "border-primary/25 bg-primary/[0.07] ring-1 ring-primary/15"
+            : "border-black/10 bg-white/60"
         }`}
       >
         <div className="flex items-center justify-between gap-3">
@@ -332,10 +332,10 @@ function PlanDecisionStrip({ context }: { context: PricingContext }) {
         <p className="mt-2 text-[14px] leading-6 text-muted-foreground">{context.liteFit}</p>
       </div>
       <div
-        className={`rounded-3xl border p-4 ${
+        className={`rounded-[20px] border p-4 ${
           context.recommendedPlan === "pro"
-            ? "border-primary/35 bg-primary/[0.08] ring-1 ring-primary/20"
-            : "border-white/10 bg-white/[0.04]"
+            ? "border-primary/25 bg-primary/[0.07] ring-1 ring-primary/15"
+            : "border-black/10 bg-white/60"
         }`}
       >
         <div className="flex items-center justify-between gap-3">
@@ -374,10 +374,10 @@ function PlanCard({
   recommended?: boolean;
 }) {
   return (
-    <Card className={`app-surface plan-glass-card relative overflow-hidden ${recommended ? "ring-2 ring-primary/40" : ""}`}>
+    <Card className={`app-surface plan-glass-card relative overflow-hidden rounded-[24px] ${recommended ? "ring-1 ring-primary/30" : ""}`}>
       {recommended ? (
         <div className="absolute right-0 top-0">
-          <div className="flex items-center gap-1 rounded-bl-xl bg-primary px-3 py-1.5 text-[13px] font-bold text-primary-foreground">
+          <div className="flex items-center gap-1 rounded-bl-[14px] bg-[#16181d] px-3 py-1.5 text-[13px] font-bold text-white">
             <Crown className="h-3.5 w-3.5" aria-hidden />
             추천
           </div>
@@ -415,7 +415,7 @@ function PlanCard({
 
 function ComparisonTable() {
   return (
-    <section className="mt-10 app-surface rounded-3xl border p-5">
+    <section className="mt-10 app-surface rounded-[24px] border p-5">
       <h2 className="text-xl font-semibold">무료와 멤버십 비교</h2>
       <div className="mt-4 overflow-x-auto">
         <table className="w-full min-w-[680px] text-left text-[14px]">
@@ -517,7 +517,7 @@ function PaymentSetupNotice() {
 
 function Benefit({ children }: { children: ReactNode }) {
   return (
-    <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-3">
+    <div className="flex items-center gap-2 rounded-[16px] border border-black/10 bg-white/60 px-3 py-3">
       <Check className="h-4 w-4 shrink-0 text-primary" aria-hidden />
       <span className="text-[14px] font-medium">{children}</span>
     </div>

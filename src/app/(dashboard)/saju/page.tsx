@@ -92,8 +92,9 @@ export default async function SajuPage() {
   const hasSaju = !!(pillars && elements);
 
   return (
-    <div className="space-y-8">
-      <header className="space-y-2">
+    <div className="reading-page mx-auto w-full space-y-8">
+      <header className="reading-hero space-y-2">
+        <p className="reading-kicker">Saju Reading</p>
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
           사주
         </h1>
@@ -220,7 +221,7 @@ function GuideTile({
   title: string;
 }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.045] px-4 py-3">
+    <div className="reading-guide-tile">
       <div className="flex items-center gap-2 text-primary">
         <Icon className="h-4 w-4 shrink-0" aria-hidden />
         <p className="text-[13px] font-semibold">{title}</p>

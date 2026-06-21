@@ -117,15 +117,15 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
   const showMembershipSuccess = subscribedParam === "1" && subscribed;
 
   return (
-    <div className="mx-auto w-full max-w-5xl space-y-7">
+    <div className="reading-page mx-auto w-full space-y-7">
       <StreakNotifier checkIn={streakResult} />
       {showMembershipSuccess ? <MembershipSuccessBanner /> : null}
       {isBirthdayTodayKst(profile.birthDate) ? (
         <BirthdayBanner displayName={profile.displayName ?? null} />
       ) : null}
 
-      <header className="space-y-3">
-        <p className="text-[14px] font-medium text-muted-foreground">{today}</p>
+      <header className="reading-hero space-y-3">
+        <p className="reading-kicker">{today}</p>
         <h1 className="font-mystic text-4xl font-semibold tracking-tight sm:text-5xl">
           {t("title")}
         </h1>
@@ -211,7 +211,7 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
 function TodayContinuation({ subscribed }: { subscribed: boolean }) {
   if (subscribed) {
     return (
-      <section className="app-surface rounded-3xl border border-primary/20 p-5">
+      <section className="app-surface rounded-[24px] border border-primary/15 p-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <div className="flex items-center gap-2 text-primary">
@@ -258,7 +258,7 @@ function TodayContinuation({ subscribed }: { subscribed: boolean }) {
   }
 
   return (
-    <section className="app-surface rounded-3xl border border-primary/20 p-5">
+    <section className="app-surface rounded-[24px] border border-primary/15 p-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2 text-primary">
@@ -294,7 +294,7 @@ function ReadingValueStrip({
       {items.map(({ icon: Icon, label, value }) => (
         <div
           key={label}
-          className="rounded-2xl border border-white/10 bg-white/[0.045] px-4 py-3"
+          className="reading-guide-tile"
         >
           <div className="flex items-center gap-2 text-primary">
             <Icon className="h-4 w-4 shrink-0" aria-hidden />
@@ -323,7 +323,7 @@ function ContinuationLink({
   return (
     <Link
       href={href}
-      className="group rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-4 transition hover:bg-white/[0.08]"
+      className="group reading-guide-tile block transition hover:border-primary/20 hover:bg-white/80"
     >
       <span className="flex items-center gap-2 text-primary">
         <Icon className="h-4 w-4" aria-hidden />

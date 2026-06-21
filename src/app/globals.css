@@ -1056,6 +1056,68 @@ html[data-platform="ios"] [data-hide-in-app] {
   background: linear-gradient(90deg, transparent, rgba(24, 26, 32, 0.10), transparent);
 }
 
+.reading-page {
+  max-width: 64rem;
+}
+
+.reading-hero {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--app-line);
+  border-radius: var(--app-radius-panel);
+  background:
+    radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.92), transparent 34%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.84), rgba(250, 250, 250, 0.64)),
+    var(--app-surface);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    var(--app-shadow-soft);
+  padding: 22px;
+  backdrop-filter: blur(18px);
+}
+
+.reading-hero::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: auto -10% -45% 35%;
+  height: 150px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(191, 166, 106, 0.16), transparent 62%);
+}
+
+.reading-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.reading-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(24, 26, 32, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.58);
+  padding: 5px 10px;
+  color: rgba(24, 26, 32, 0.56);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.reading-guide-tile {
+  border: 1px solid var(--app-line);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.58)),
+    rgba(255, 255, 255, 0.62);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.68),
+    0 8px 20px rgba(35, 39, 48, 0.055);
+  padding: 14px 16px;
+}
+
 .liquid-fortune-card {
   border-radius: var(--app-radius-panel);
   color: rgba(24, 21, 30, 0.92);
