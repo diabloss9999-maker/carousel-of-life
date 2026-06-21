@@ -280,19 +280,25 @@ function UnlockedLink({
   return (
     <Link
       href={href}
-      className="group rounded-2xl border border-primary/15 bg-primary/5 px-4 py-4 transition hover:bg-primary/10"
+      className="group flex min-h-[112px] flex-col justify-between rounded-2xl border border-primary/15 bg-primary/5 px-4 py-4 transition hover:bg-primary/10"
     >
-      <span className="flex items-center gap-2 text-primary">
-        <Icon className="h-4 w-4" aria-hidden />
-        <span className="text-[12px] font-semibold">바로 열기</span>
-      </span>
-      <span className="mt-3 block text-[15px] font-semibold">{title}</span>
-      <span className="mt-1 block text-[13px] leading-5 text-muted-foreground">
-        {body}
+      <span className="block">
+        <span className="flex items-center gap-2 text-primary">
+          <Icon className="h-4 w-4" aria-hidden />
+          <span className="text-[15px] font-semibold text-foreground">
+            {title}
+          </span>
+        </span>
+        <span className="mt-2 block text-[13px] leading-5 text-muted-foreground">
+          {body}
+        </span>
       </span>
       <span className="mt-3 inline-flex items-center gap-1 text-[13px] font-semibold text-primary">
-        보러 가기
-        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
+        열기
+        <ArrowRight
+          className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+          aria-hidden
+        />
       </span>
     </Link>
   );
