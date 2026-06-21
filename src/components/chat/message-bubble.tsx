@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 import type { CharacterId } from "@/lib/chat/characters";
+import { safeShortText } from "@/lib/content/safety";
 
 interface MessageBubbleProps {
   role: "user" | "assistant";
@@ -215,9 +216,13 @@ export function MessageBubble({
     : DEFAULT_ORACLE_THEME;
   const speakerCharacterId = isAssistant ? characterId : undefined;
   const cleaned = cleanContent(content);
+  const safeCleaned = safeShortText(cleaned, "이전 메시지가 깨져 보여요.");
   const displayText = isAssistant
-    ? cleaned.replace(CAROUSEL_STICKER_RE, "").trim()
-    : cleaned;
+    ? safeShortText(
+        safeCleaned.replace(CAROUSEL_STICKER_RE, "").trim(),
+        "이전 답장이 깨져 보여요.",
+      )
+    : safeCleaned;
 
   return (
     <div className={cn("flex gap-2", isAssistant ? "flex-row" : "flex-row-reverse")}>
