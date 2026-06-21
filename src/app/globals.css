@@ -193,7 +193,7 @@ body.ritual-day {
   --ritual-text: rgba(0, 0, 0, 0.88);
   --ritual-muted: rgba(0, 0, 0, 0.55);
   color: rgba(0, 0, 0, 0.88) !important;
-  background: url("/backgrounds/carousel-meadow.webp") center / cover no-repeat fixed;
+  background: #f7f4ee;
 }
 
 /* 諛?諛곌꼍 ??寃???띿뒪??(?ъ슜???붿껌: 諛ㅼ뿉??湲???꾨? 寃?? */
@@ -212,7 +212,7 @@ body.ritual-night {
   --ritual-text: rgba(0, 0, 0, 0.92);
   --ritual-muted: rgba(0, 0, 0, 0.62);
   color: rgba(0, 0, 0, 0.92) !important;
-  background: url("/backgrounds/carousel-meadow.webp") center / cover no-repeat fixed !important;
+  background: #f0f1f4 !important;
 }
 
 /* ??? ?꾩뿭 諛곌꼍 ?덉씠?????뚯쟾紐⑸쭏??蹂꾩옄由?吏????? */
@@ -222,16 +222,16 @@ body.ritual-night {
   inset: 0;
   z-index: -30;
   overflow: hidden;
-  background: #f5ecd9;
+  background:
+    radial-gradient(circle at 14% 8%, rgba(236, 182, 102, 0.16), transparent 34%),
+    radial-gradient(circle at 86% 12%, rgba(115, 164, 190, 0.14), transparent 32%),
+    radial-gradient(circle at 50% 100%, rgba(210, 136, 132, 0.12), transparent 36%),
+    linear-gradient(180deg, #fbf8f2 0%, #f3f1ed 54%, #eceff2 100%);
   isolation: isolate;
 }
 
 .ritual-backdrop__image {
-  pointer-events: none !important;
-  object-fit: cover;
-  object-position: center;
-  transform: scale(1.025);
-  filter: saturate(1.04) contrast(1.02) brightness(1.02);
+  display: none;
 }
 
 .ritual-backdrop__veil,
@@ -247,8 +247,8 @@ body.ritual-night {
 .ritual-backdrop__veil {
   z-index: 1;
   background:
-    linear-gradient(112deg, rgba(255, 247, 225, 0.14) 0%, rgba(224, 237, 221, 0.06) 38%, rgba(226, 210, 232, 0.04) 70%, rgba(255, 239, 205, 0.08) 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.08) 58%, rgba(255, 255, 255, 0.05) 100%);
+    linear-gradient(115deg, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0.18) 42%, rgba(255, 255, 255, 0.36) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(245, 246, 248, 0.44));
 }
 
 .ritual-backdrop__wheel {
@@ -261,35 +261,34 @@ body.ritual-night {
   bottom: auto;
   border-radius: 999px;
   transform: translate3d(-50%, -50%, 0);
-  opacity: 0.12;
+  opacity: 0.045;
   background:
     conic-gradient(
       from -36deg,
       rgba(191, 166, 106, 0),
-      rgba(191, 166, 106, 0.72),
-      rgba(122, 169, 161, 0.42),
-      rgba(152, 128, 187, 0.30),
+      rgba(191, 166, 106, 0.46),
+      rgba(122, 169, 161, 0.32),
+      rgba(152, 128, 187, 0.24),
       rgba(191, 166, 106, 0)
     );
   mask:
     radial-gradient(circle, transparent 0 48%, #000 49% 50%, transparent 51% 59%, #000 60% 61%, transparent 62% 70%, #000 71% 71.5%, transparent 72%);
-  animation: ritual-wheel-drift 90s linear infinite;
+  animation: none;
 }
 
 .ritual-backdrop__threads {
   z-index: 3;
-  opacity: 0.16;
+  opacity: 0.055;
   background-image:
-    linear-gradient(rgba(70, 52, 36, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(70, 52, 36, 0.045) 1px, transparent 1px),
-    repeating-linear-gradient(118deg, transparent 0 54px, rgba(77, 58, 44, 0.06) 55px, transparent 57px 132px);
-  background-size: 88px 88px, 88px 88px, 240px 240px;
+    linear-gradient(rgba(70, 52, 36, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(70, 52, 36, 0.028) 1px, transparent 1px);
+  background-size: 88px 88px, 88px 88px;
   mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 78%, transparent 100%);
 }
 
 .ritual-backdrop__grain {
   z-index: 4;
-  opacity: 0.08;
+  opacity: 0.035;
   mix-blend-mode: multiply;
   background-image:
     repeating-linear-gradient(0deg, rgba(20, 14, 8, 0.05) 0 1px, transparent 1px 3px),
@@ -300,35 +299,35 @@ body.ritual-night {
 .ritual-readable-scrim {
   z-index: -10;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.03) 38%, rgba(255, 255, 255, 0.08) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.08) 42%, rgba(255, 255, 255, 0.18) 100%);
 }
 
 .ritual-backdrop.is-night {
-  background: #ebe2cd;
-}
-
-.ritual-backdrop.is-night .ritual-backdrop__image {
-  filter: saturate(0.88) contrast(1.04) brightness(0.96);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(232, 176, 110, 0.12), transparent 32%),
+    radial-gradient(circle at 88% 10%, rgba(96, 145, 178, 0.16), transparent 34%),
+    radial-gradient(circle at 48% 100%, rgba(150, 132, 190, 0.12), transparent 36%),
+    linear-gradient(180deg, #f4f5f7 0%, #eceff2 54%, #e7e8eb 100%);
 }
 
 .ritual-backdrop.is-night .ritual-backdrop__veil {
   background:
-    linear-gradient(114deg, rgba(245, 238, 219, 0.10) 0%, rgba(204, 226, 214, 0.05) 38%, rgba(226, 202, 221, 0.04) 72%, rgba(244, 224, 194, 0.08) 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.08) 58%, rgba(255, 255, 255, 0.06) 100%);
+    linear-gradient(114deg, rgba(255, 255, 255, 0.46) 0%, rgba(255, 255, 255, 0.18) 42%, rgba(255, 255, 255, 0.34) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(238, 241, 245, 0.42));
 }
 
 .ritual-backdrop.is-night .ritual-backdrop__wheel {
-  opacity: 0.14;
+  opacity: 0.035;
 }
 
 .ritual-backdrop.is-night .ritual-backdrop__threads {
-  opacity: 0.18;
+  opacity: 0.045;
 }
 
 body[data-time="night"] .ritual-readable-scrim,
 body.ritual-night .ritual-readable-scrim {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.04) 42%, rgba(255, 255, 255, 0.10) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.08) 42%, rgba(255, 255, 255, 0.18) 100%);
 }
 
 /*
@@ -339,7 +338,7 @@ body.ritual-night .ritual-readable-scrim {
 body[data-time="day"] .ritual-readable-scrim,
 body:not([data-time]):not(.ritual-night) .ritual-readable-scrim {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.12) 45%, rgba(255, 255, 255, 0.22) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0.10) 45%, rgba(255, 255, 255, 0.22) 100%);
 }
 
 @keyframes ritual-wheel-drift {
@@ -2580,7 +2579,7 @@ html.night .app-surface {
 }
 
 html.night body[data-time="night"] {
-  background-image: url("/backgrounds/carousel-meadow.webp");
+  background-image: none;
 }
 
 /* ===== ?덈꼍 紐⑤뱶 (02~04??KST) ===== */

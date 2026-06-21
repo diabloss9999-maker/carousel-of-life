@@ -1,16 +1,12 @@
 "use client";
 
 /**
- * KST 시간에 따라 배경 이미지를 자동으로 전환하는 컴포넌트.
+ * KST 시간에 따라 앱 배경 톤을 자동으로 전환하는 컴포넌트.
  *
- * 06:00 ~ 20:59 → 천국의 회전목마 (밝은 낮 배경)
- * 21:00 ~ 05:59 → 밤 회전목마 (어두운 밤 배경)
- *
- * 이미지 위에는 CSS 레이어로 별자리 지도·회전 원형·종이 질감을 얹어
- * 모든 페이지가 같은 세계 안에 놓인 느낌을 만든다.
+ * 이전의 풍경 이미지는 화면마다 텍스트·카드와 충돌해 앱보다 웹 배경처럼 보였다.
+ * 이제는 CSS 레이어만 사용해서 읽기 좋은 조용한 배경을 유지한다.
  */
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 function getKstHour(): number {
@@ -45,22 +41,11 @@ export function TimeAwareBg() {
     return () => clearInterval(timer);
   }, []);
 
-  const src = "/backgrounds/carousel-meadow.webp";
-
   return (
     <div
       aria-hidden
       className={`ritual-backdrop ${night ? "is-night" : "is-day"}`}
     >
-      <Image
-        key={src}
-        src={src}
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="ritual-backdrop__image"
-      />
       <div className="ritual-backdrop__veil" />
       <div className="ritual-backdrop__wheel" />
       <div className="ritual-backdrop__threads" />
