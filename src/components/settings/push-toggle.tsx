@@ -249,6 +249,9 @@ export function PushToggle() {
         <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">
           {state.reason}
         </p>
+        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+          Android 설치 앱은 휴대폰 설정에서 앱 알림이 허용되어 있어야 하고, iPhone은 홈 화면에 추가한 앱에서만 푸시 알림을 켤 수 있어요.
+        </p>
       </div>
     );
   }
@@ -257,10 +260,10 @@ export function PushToggle() {
     return (
       <div className="space-y-3 rounded-2xl border border-amber-300/30 bg-amber-50/10 p-3">
         <p className="text-[14px] font-semibold text-amber-200">알림 권한이 차단돼 있어요</p>
-        <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">
-          설치 앱에서는 휴대폰 설정 &gt; 앱 &gt; 인생의 회전목마 &gt; 알림에서 허용해 주세요.
-          브라우저에서는 주소창의 사이트 설정에서 알림을 허용하면 돼요.
-        </p>
+        <div className="space-y-2 text-[13px] leading-relaxed text-muted-foreground">
+          <p>설치 앱: 휴대폰 설정 &gt; 앱 &gt; 인생의 회전목마 &gt; 알림 &gt; 허용을 켜 주세요.</p>
+          <p>브라우저: 주소창 왼쪽 사이트 설정 &gt; 알림 &gt; 허용으로 바꾼 뒤 다시 확인을 눌러 주세요.</p>
+        </div>
         <Button
           type="button"
           size="sm"
@@ -278,11 +281,11 @@ export function PushToggle() {
     <div className="space-y-3">
       <div className="rounded-2xl border border-white/10 bg-muted/30 p-3">
         <p className="text-[14px] font-semibold">
-          {state.subscribed ? "알림이 켜져 있어요" : "매일 필요한 순간만 알려드려요"}
+          {state.subscribed ? "알림이 켜져 있어요" : "오늘 운세를 놓치지 않게 알려드려요"}
         </p>
         <ul className="mt-2 space-y-1 text-[13px] leading-5 text-muted-foreground">
-          <li>오늘 운세를 아직 안 봤을 때 가볍게 알려줘요.</li>
-          <li>주간·월간 리포트처럼 놓치기 쉬운 흐름을 챙겨줘요.</li>
+          <li>아침에 오늘 조심할 점과 행운 포인트를 알려줘요.</li>
+          <li>주간·월간 리포트처럼 놓치기 쉬운 흐름도 챙겨줘요.</li>
           <li>언제든 이 화면에서 다시 끌 수 있어요.</li>
         </ul>
       </div>
