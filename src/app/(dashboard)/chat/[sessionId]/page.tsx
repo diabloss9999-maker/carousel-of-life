@@ -8,6 +8,7 @@ import { ChatWindow, type InitialMessage } from "@/components/chat/chat-window";
 import { AffinityBar } from "@/components/affinity/affinity-bar";
 import { BiasButton } from "@/components/chat/bias-button";
 import { GiftShop } from "@/components/gifts/gift-shop";
+import { BodyClass } from "@/components/layout/body-class";
 import { CharacterImage } from "@/components/shared/character-image";
 import { CharacterBg } from "@/components/layout/character-bg";
 import {
@@ -105,6 +106,7 @@ export default async function ChatSessionPage({
 
   return (
     <div className={`entity-${entityKey} kakao-chat-page mobile-chat-page space-y-3 md:space-y-4`}>
+      <BodyClass className="chat-shell-active" />
       <CharacterBg characterId={charId} />
       {/* Messenger-style header */}
       <header className="mobile-chat-header kakao-chat-header flex items-center justify-between gap-2">

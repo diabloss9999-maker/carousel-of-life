@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { BodyClass } from "@/components/layout/body-class";
 import { requireProfile } from "@/lib/auth/get-user";
 import {
   findOrCreateGroupSession,
@@ -48,6 +49,7 @@ export default async function GroupPage() {
 
   return (
     <div className="kakao-chat-page mobile-chat-page group-chat-page mx-auto flex h-[calc(100dvh-11rem)] w-full max-w-3xl flex-col gap-2.5">
+      <BodyClass className="chat-shell-active" />
       <header className="mobile-chat-header kakao-chat-header flex items-center justify-between gap-2">
         <div className="kakao-chat-left">
           <Button asChild variant="ghost" size="sm" className="kakao-chat-back">

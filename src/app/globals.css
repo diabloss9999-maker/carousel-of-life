@@ -37,16 +37,24 @@ body.is-app-shell #main-content {
 }
 
 body:has(.kakao-chat-page) .mobile-app-header,
+body.chat-shell-active .mobile-app-header,
 body:has(.kakao-chat-page) .mobile-bottom-nav,
+body.chat-shell-active .mobile-bottom-nav,
 body:has(.kakao-chat-page) footer {
   display: none !important;
 }
 
-body:has(.kakao-chat-page) #main-content {
+body.chat-shell-active footer {
+  display: none !important;
+}
+
+body:has(.kakao-chat-page) #main-content,
+body.chat-shell-active #main-content {
   min-height: 100dvh;
 }
 
-.mobile-app-content:has(.kakao-chat-page) {
+.mobile-app-content:has(.kakao-chat-page),
+body.chat-shell-active .mobile-app-content {
   height: 100dvh;
   max-width: none !important;
   min-height: 0;
@@ -510,16 +518,24 @@ body.ritual-night .ritual-readable-scrim {
   }
 
   body:has(.kakao-chat-page) .mobile-app-header,
+  body.chat-shell-active .mobile-app-header,
   body:has(.kakao-chat-page) .mobile-bottom-nav,
+  body.chat-shell-active .mobile-bottom-nav,
   body:has(.kakao-chat-page) footer {
     display: none !important;
   }
 
-  body:has(.kakao-chat-page) #main-content {
+  body.chat-shell-active footer {
+    display: none !important;
+  }
+
+  body:has(.kakao-chat-page) #main-content,
+  body.chat-shell-active #main-content {
     min-height: 100dvh;
   }
 
-  .mobile-app-content:has(.kakao-chat-page) {
+  .mobile-app-content:has(.kakao-chat-page),
+  body.chat-shell-active .mobile-app-content {
     height: 100dvh;
     max-width: none !important;
     min-height: 0;
