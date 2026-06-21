@@ -117,8 +117,8 @@ export function GiftShop({ characterId, characterName, returnTo, compact = false
     if (androidApp) {
       const message =
         missingCount != null && missingCount > 0
-          ? `별조각 ${missingCount.toLocaleString()}개가 더 필요해요. 설치 앱에서는 별조각 충전을 준비 중이라 지금은 출석 보상과 보너스로 모을 수 있어요.`
-          : "설치 앱에서는 별조각 충전을 준비 중이에요. 지금은 출석 보상과 보너스로 별조각을 모을 수 있어요.";
+          ? `별조각 ${missingCount.toLocaleString()}개가 더 필요해요. 설치 앱에서는 별조각을 직접 충전할 수 없어서, 지금은 출석 보상과 보너스로 모을 수 있어요.`
+          : "설치 앱에서는 별조각을 직접 충전할 수 없어요. 지금은 출석 보상과 보너스로 별조각을 모을 수 있어요.";
       setTopupNotice(message);
       toast("별조각이 부족해요", { description: message });
       return;
@@ -141,7 +141,7 @@ export function GiftShop({ characterId, characterName, returnTo, compact = false
     const channelKey = clientEnv.NEXT_PUBLIC_PORTONE_CHANNEL_KEY;
     const pack = CURRENCY_PACKS.find((p) => p.id === packId);
     if (!storeId || !channelKey || !pack) {
-      toast.error("결제 시스템이 아직 준비되지 않았어요.");
+      toast.error("결제 설정을 확인할 수 없어요. 잠시 후 다시 시도하거나 문의해 주세요.");
       return;
     }
     if (payingPackId) return;
