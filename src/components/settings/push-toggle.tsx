@@ -255,11 +255,21 @@ export function PushToggle() {
 
   if (state.status === "denied") {
     return (
-      <div className="rounded-2xl border border-amber-300/30 bg-amber-50/10 p-3">
+      <div className="space-y-3 rounded-2xl border border-amber-300/30 bg-amber-50/10 p-3">
         <p className="text-[14px] font-semibold text-amber-200">알림 권한이 차단돼 있어요</p>
         <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">
-          휴대폰 설정 또는 브라우저 사이트 설정에서 알림을 허용한 뒤 다시 열어 주세요.
+          설치 앱에서는 휴대폰 설정 &gt; 앱 &gt; 인생의 회전목마 &gt; 알림에서 허용해 주세요.
+          브라우저에서는 주소창의 사이트 설정에서 알림을 허용하면 돼요.
         </p>
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          className="w-full"
+          onClick={() => void refresh()}
+        >
+          다시 확인
+        </Button>
       </div>
     );
   }
