@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { getLocale } from "next-intl/server";
 
-import { ContinueWithMemberCta } from "@/components/chat/continue-with-member-cta";
 import { ShareButton } from "@/components/shared/share-button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
@@ -96,10 +95,6 @@ export async function TarotThreeReadingCard({
   const question = looksCorruptedText(reading.question ?? "")
     ? null
     : reading.question;
-  const contextTitle = "3장 타로 · 과거-현재-미래";
-  const contextSummary = `요약: ${safeParsed.summary}`.slice(0, 120);
-  const continuePrompt =
-    "방금 본 과거, 현재, 미래 타로 결과를 내가 어떻게 받아들이면 좋을지 같이 정리해줘.";
 
   return (
     <Card className="app-surface ring-1 ring-accent/15" data-capture-root>
@@ -191,13 +186,6 @@ export async function TarotThreeReadingCard({
             </p>
           </div>
         </div>
-
-        <ContinueWithMemberCta
-          sourceLabel="3장 타로"
-          prompt={continuePrompt}
-          contextTitle={contextTitle}
-          contextSummary={contextSummary}
-        />
 
         <TarotThreeNextActions />
 

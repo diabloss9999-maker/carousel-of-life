@@ -1,7 +1,7 @@
 {
   "home": {
     "title": "What would you like to check today?",
-    "description": "Start with a reading, then keep talking with a Carousel Nine member."
+    "description": "Check your readings and enjoy Carousel Nine member content separately."
   },
   "nav": {
     "home": "Home",
@@ -79,7 +79,7 @@
   },
   "chat": {
     "title": "Members",
-    "description": "Talk through your readings, feelings, and everyday moments with the nine Carousel Nine members.",
+    "description": "Chat about feelings, music, and everyday moments with the nine Carousel Nine members.",
     "placeholderDefault": "Send a message...",
     "loreSectionTitle": "Member Stories",
     "charactersSection": "Member Profiles",
@@ -114,7 +114,7 @@
   },
   "personality": {
     "title": "Personality Type",
-    "description": "Answer 20 questions to understand yourself. The result is reflected in chats, fortunes, and tarot readings."
+    "description": "Answer 20 questions to understand yourself. The result personalizes your readings."
   },
   "collection": {
     "title": "Bonus",
@@ -139,20 +139,20 @@
     "noPasswordHint": "One tap is all you need. No password required."
   },
   "landing": {
-    "tagline": "Carousel Nine reads the day with you.",
-    "intro": "Check your fortune, then talk it through with the member you feel drawn to.",
+    "tagline": "Read your day. Meet Carousel Nine separately.",
+    "intro": "Use fortune, tarot, saju, and compatibility as your reading tools.\nEnjoy Carousel Nine as a separate member chat and music experience.",
     "freeHint": "Free users get 3 readings and 10 chats every day.",
     "startFree": "Meet your member today",
     "kakaoStart": "Start with Kakao in 1 second",
     "alreadyMember": "Already have an account?",
     "loginLink": "Log in",
     "valueProps": {
-      "heading": "From readings to real conversation",
-      "subheading": "So today's fortune does not end as a cold report",
+      "heading": "Readings and member content, clearly separated",
+      "subheading": "Fortune tools stay focused, while Carousel Nine remains its own experience.",
       "v1Title": "Saju + Tarot + Compatibility",
       "v1Body": "Check your daily fortune, draw cards, and read compatibility in one place.",
       "v2Title": "Nine Members, Nine Voices",
-      "v2Body": "Ian steadies you, Yujun holds the feeling, and Ihyun gives a practical next step.",
+      "v2Body": "Talk casually with Ian, Yujun, Ihyun, and the rest of Carousel Nine.",
       "v3Title": "Free Every Day",
       "v3Body": "Sign up and get 3 readings plus 10 chats daily."
     },
@@ -162,8 +162,8 @@
       "badgePopular": "Popular"
     },
     "oracles": {
-      "heading": "Nine members who read the day with you",
-      "subheading": "Leader, vocalist, performer, producer, rapper, and more. Each member continues the reading in their own tone.",
+      "heading": "Nine members as their own world",
+      "subheading": "Leader, vocalist, performer, producer, rapper, and more. Chat, albums, and member content are enjoyed separately from readings.",
       "cta": "Start free and meet your member"
     },
     "howToPlay": {
@@ -171,8 +171,8 @@
       "subheading": "Read, ask, and save your day.",
       "tip1Title": "Choose today's member",
       "tip1Body": "Pick the member whose mood fits what you need right now.",
-      "tip2Title": "From reading to chat",
-      "tip2Body": "After a fortune, tarot, or compatibility reading, ask a member what it means for you.",
+      "tip2Title": "Keep each lane clear",
+      "tip2Body": "Use readings for fortune and choice-making. Use member chat for casual conversation and fan content.",
       "tip3Title": "Tip: Draw cards last",
       "tip3Body": "Bonus cards can restore some of your daily chat count. Use your messages first, then draw."
     },
@@ -743,7 +743,7 @@
   },
   "pricing": {
     "metaTitle": "Plans",
-    "metaDescription": "Light and Pro plans for higher daily limits.",
+    "metaDescription": "Light and Pro plans for deeper reports and more member chat.",
     "heading": "Plans",
     "subheading": "Pick what you need. Cancel anytime.",
     "freeName": "Free",
@@ -751,14 +751,10 @@
     "lightName": "Light",
     "lightTagline": "Go deeper every day",
     "proName": "Pro",
-    "proTagline": "Most generous limits",
+    "proTagline": "Deepest reports",
     "recommended": "Recommended",
-    "fortuneLine": "Fortune | Divination | Saju - {n} daily uses",
-    "tarotLine": "Daily tarot × {n}",
-    "chatLine": "Chat - {n} daily messages",
-    "fortuneUnlimited": "More Fortune | Divination | Saju uses",
-    "tarotUnlimited": "More tarot draws",
-    "chatUnlimited": "More chat messages",
+    "chatLine": "Member chat - {n} daily messages",
+    "chatUnlimited": "More member chat",
     "premiumReports": "Light-only reports (career · health · study · love)",
     "compatibilityUnlimited": "More compatibility readings",
     "ctaFreeStart": "Start free",
@@ -770,13 +766,13 @@
     "ctaProStart": "Start Pro",
     "loading": "One moment…",
     "footer": "Secure card payment, auto-renews monthly. Cancel anytime.",
-    "metaDescriptionFull": "Compare Free / Light / Pro. Light raises every daily limit. Pro gives 45 Fortune | Divination | Saju uses and 120 chats per day.",
+    "metaDescriptionFull": "Compare Free / Light / Pro for deeper reports and member chat benefits.",
     "h1": "Three plans",
     "h1Sub": "Pick the one that fits you.",
     "appFreeNote": "Enjoy all the core features for free in the app. Look around and have fun.",
     "freeDesc": "Get a light reading every day.",
-    "lightDesc": "Raise your daily limits and spend more time with the members.",
-    "proDesc": "The most generous daily limits for readings and chat.",
+    "lightDesc": "Unlock 3-card tarot, monthly reports, and more member chat.",
+    "proDesc": "Open deep saju, compatibility, and yearly reports.",
     "tarotOneLine": "Tarot · 1 card × {n} per day",
     "perMonth": "/ month",
     "bulletZodiac": "Zodiac & Chinese zodiac fortunes",
@@ -796,8 +792,8 @@
   "settingsPage": {
     "heading": "My Page",
     "subheading": "Manage your plan and profile.",
-    "lightActive": "Light is active. Daily limits raised.",
-    "proActive": "Pro is active. Most generous daily limits.",
+    "lightActive": "Light is active. Deep features and member chat are open.",
+    "proActive": "Pro is active. The deepest reports are open.",
     "freeMembership": "You're on the free plan right now.",
     "nextBilling": "Next billing",
     "upgradeCta": "Upgrade to Light",
@@ -1199,10 +1195,10 @@
     "unknownReason": "unknown cause",
     "reloginRequired": "Please sign in again.",
     "compatPremiumOnly": "Light-only feature.",
-    "tarotQuotaUpgradeFull": "You've used today's tarot limit ({n}). Subscribe to Light to raise your daily limit.",
-    "lenormandQuotaUpgradeFull": "You've used today's free Lenormand limit ({n}). Subscribe to Light to raise your daily limit.",
+    "tarotQuotaUpgradeFull": "You've used today's free tarot draws ({n}). Light opens the 3-card spread and deeper flow readings.",
+    "lenormandQuotaUpgradeFull": "You've used today's free Lenormand readings ({n}). Light opens expanded spreads.",
     "lenormandPremiumSpread": "This spread is Light-only. Subscribe to draw 9-card and Grand Tableau freely.",
-    "runeQuotaUpgradeFull": "You've used today's free rune limit ({n}). Subscribe to Light to cast freely.",
+    "runeQuotaUpgradeFull": "You've used today's free rune readings ({n}). Light opens expanded spreads.",
     "runePremiumSpread": "This spread is Light-only. Subscribe to cast 5- and 9-rune spreads freely.",
     "questionTooLong": "Please keep your question under 100 characters.",
     "compatTwoSidedHeader": "Couldn't read the two energies",
@@ -1234,17 +1230,6 @@
     "personaSub": "The pattern within you",
     "navTopAria": "Top navigation",
     "navBottomAria": "Bottom navigation"
-  },
-  "quotaBar": {
-    "proActive": "Pro active",
-    "proSub": "Fortune | Divination | Saju and chats are on generous limits.",
-    "fortune": "Fortune | Divination | Saju",
-    "tarot": "Divination | Saju",
-    "chat": "Chat",
-    "lightPlan": "Light plan",
-    "freePlan": "Free plan",
-    "upgradePro": "Upgrade to Pro",
-    "upgrade": "Upgrade"
   },
   "streak": {
     "milestone3": "3-day streak!",
@@ -1819,13 +1804,13 @@
     "metaTitle": "Persona",
     "metaDescription": "Which of the 16 types are you?",
     "title": "Which type am I?",
-    "bodyWithProfile": "A 20-question test reads your pattern into one of 16 types. The result is automatically woven into fortunes, tarot, and pillar readings.",
+    "bodyWithProfile": "A 20-question test reads your pattern into one of 16 types. The result helps personalize fortune, tarot, and saju readings.",
     "bodyNoProfile": "A 20-question test reads your pattern into one of 16 types."
   },
   "personalityTest": {
     "startTitle": "Which type are you?",
     "startBody1": "Twenty questions to learn your nature.",
-    "startBody2": "Results feed into character chat, fortunes, and tarot readings automatically.",
+    "startBody2": "Results help personalize fortune, tarot, and saju readings.",
     "duration": "About 3–5 min",
     "questionCount": "20 questions",
     "typeCount": "16 types",

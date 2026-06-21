@@ -5,7 +5,6 @@ import type { Route } from "next";
 import { useLocale } from "next-intl";
 import { ArrowRight, CalendarDays, Compass, Sparkles } from "lucide-react";
 
-import { ContinueWithMemberCta } from "@/components/chat/continue-with-member-cta";
 import { DailyActionGuide } from "@/components/fortune/daily-action-guide";
 import { LuckyInfo } from "@/components/fortune/lucky-info";
 import { SaveImageButton } from "@/components/shared/save-image-button";
@@ -40,9 +39,6 @@ export function FortuneCard({ fortune }: FortuneCardProps) {
   const label = CATEGORY_LABEL[category] ?? "오늘의 운세";
   const title = sanitizeFortuneTitle(fortune.title);
   const content = sanitizeFortuneCopy(fortune.content);
-  const continuePrompt =
-    "방금 본 오늘 운세를 내가 어떻게 받아들이고 움직이면 좋을지 같이 정리해줘.";
-  const contextSummary = `${title} · ${content.replace(/\s+/g, " ").slice(0, 90)}`;
 
   function buildShareImageUrl(): string {
     const params = new URLSearchParams({
@@ -108,13 +104,6 @@ export function FortuneCard({ fortune }: FortuneCardProps) {
         />
 
         <DailyActionGuide fortune={fortune} />
-
-        <ContinueWithMemberCta
-          sourceLabel="오늘 운세"
-          prompt={continuePrompt}
-          contextTitle={`${label} · ${title}`}
-          contextSummary={contextSummary}
-        />
 
         <FortuneNextActions />
 

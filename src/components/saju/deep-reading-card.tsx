@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
-import { ContinueWithMemberCta } from "@/components/chat/continue-with-member-cta";
 import {
   Card,
   CardContent,
@@ -114,12 +113,6 @@ export function DeepReadingCard({ reading }: DeepReadingCardProps) {
   const coreTrait = getFirstSentence(cleaned.personality);
   const coreStrength = getFirstSentence(cleaned.strengths);
   const coreCaution = getFirstSentence(cleaned.cautions);
-  const continuePrompt = "방금 본 사주 심층 결과를 내가 오늘 어떻게 활용하면 좋을까?";
-  const contextSummary =
-    `성향: ${coreTrait} 강점: ${coreStrength} 주의: ${coreCaution}`.slice(
-      0,
-      120,
-    );
 
   return (
     <div className="space-y-4">
@@ -194,13 +187,6 @@ export function DeepReadingCard({ reading }: DeepReadingCardProps) {
           </Card>
         );
       })}
-
-      <ContinueWithMemberCta
-        sourceLabel="사주 심층"
-        prompt={continuePrompt}
-        contextTitle="사주 심층 리포트"
-        contextSummary={contextSummary}
-      />
 
       <SajuNextActions />
     </div>

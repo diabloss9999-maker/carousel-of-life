@@ -25,7 +25,6 @@ import { StudyTips } from "@/components/fortune/study-tips";
 import { TodaySummary } from "@/components/fortune/today-summary";
 import { ZodiacBanner } from "@/components/fortune/zodiac-banner";
 import { RelatableReadingCard } from "@/components/shared/relatable-reading-card";
-import { BiasDailyMessage } from "@/components/today/bias-daily-message";
 import { WeeklyTimingStrip } from "@/components/today/weekly-timing-strip";
 import { PhotocardTeaser } from "@/components/today/photocard-teaser";
 import { MembershipSuccessBanner } from "@/components/subscription/membership-success-banner";
@@ -131,8 +130,6 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           {t("title")}
         </h1>
       </header>
-
-      <BiasDailyMessage profile={profile} />
 
       <WeeklyTimingStrip profile={profile} />
 

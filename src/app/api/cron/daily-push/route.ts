@@ -7,19 +7,15 @@
  *
  * 로직:
  *   1. push_subscriptions 전체 순회 (sendToAll)
- *   2. 한국 시간 요일·날짜 기반으로 짧은 teaser 메시지 선택
- *   3. 클릭 → /today (개인화된 오늘의 운세)
+ *   2. 사용자 ID + 날짜 기반으로 짧은 운세 teaser 메시지 선택
+ *   3. 클릭 → /today
  *
  * 비용 고려:
  *   - 사용자별 AI 호출 없이 정적 메시지 풀에서 선택 → 1만 명 발송도 무비용
  *   - 실제 운세는 /today 진입 시점에 생성 (기존 캐시 활용)
  */
 import { NextResponse, type NextRequest } from "next/server";
-import { inArray } from "drizzle-orm";
 
-import { db } from "@/db";
-import { profiles, pushSubscriptions } from "@/db/schema";
-import { getBiasDailyMessage } from "@/lib/daily-message/service";
 import { sendToAll, type PushPayload } from "@/lib/push/service";
 
 export const runtime = "nodejs";
@@ -98,33 +94,7 @@ export async function GET(req: NextRequest) {
   const day = dayOfYear(today);
   const dateTag = `daily-${today.toISOString().slice(0, 10)}`;
 
-  // 푸시 구독자의 프로필을 한 번에 벌크 로드 (사용자당 추가 쿼리 없음).
-  const subscriberRows = await db
-    .select({ userId: pushSubscriptions.userId })
-    .from(pushSubscriptions);
-  const subscriberIds = [...new Set(subscriberRows.map((r) => r.userId))];
-  const profileRows = subscriberIds.length
-    ? await db
-        .select()
-        .from(profiles)
-        .where(inArray(profiles.userId, subscriberIds))
-    : [];
-  const profileByUser = new Map(profileRows.map((p) => [p.userId, p]));
-
-  // 최애의 오늘 한마디를 푸시 본문으로. 프로필 없으면 기존 teaser 풀로 폴백.
   const result = await sendToAll((userId) => {
-    const profile = profileByUser.get(userId);
-    if (profile) {
-      const message = getBiasDailyMessage(profile);
-      const payload: PushPayload = {
-        title: `${message.characterName}의 오늘 한마디`,
-        body: message.insight,
-        url: "/today",
-        tag: dateTag,
-        renotify: false,
-      };
-      return payload;
-    }
     const teaser = pickTeaserFor(userId, day);
     const payload: PushPayload = {
       title: teaser.title,

@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 import { useLocale } from "next-intl";
 
-import { ContinueWithMemberCta } from "@/components/chat/continue-with-member-cta";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { CompatibilityReading } from "@/db/schema";
 import { safeReadingText, safeShortText } from "@/lib/content/safety";
@@ -48,11 +47,6 @@ export function CompatibilityCard({ reading }: CompatibilityCardProps) {
   ].filter(Boolean);
   const partnerWithParticle = withParticle(partnerName, "과", "와");
   const tone = scoreTone(reading.score);
-  const prompt = `${partnerWithParticle}의 궁합 결과를 봤어. 이 관계에서 오늘 내가 어떻게 다가가면 좋을지 같이 정리해줘.`;
-  const contextSummary = `${partnerName} 궁합 ${reading.score}점. ${summary}`.slice(
-    0,
-    120,
-  );
 
   return (
     <Card className="app-surface overflow-hidden ring-1 ring-accent/15">
@@ -112,13 +106,6 @@ export function CompatibilityCard({ reading }: CompatibilityCardProps) {
             {breakSentences(detail)}
           </p>
         </div>
-
-        <ContinueWithMemberCta
-          sourceLabel="궁합"
-          prompt={prompt}
-          contextTitle={`${partnerName}와의 궁합`}
-          contextSummary={contextSummary}
-        />
       </CardContent>
     </Card>
   );

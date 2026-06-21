@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 import { getLocale } from "next-intl/server";
 
-import { ContinueWithMemberCta } from "@/components/chat/continue-with-member-cta";
 import { SaveImageButton } from "@/components/shared/save-image-button";
 import { ShareButton } from "@/components/shared/share-button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -72,10 +71,6 @@ export async function TarotReadingCard({
     getFirstSentence(interpretation),
     "새로 뽑으면 오늘의 타로 메시지를 볼 수 있어요.",
   );
-  const contextTitle = `타로 한 장 · ${cardName}`;
-  const contextSummary = `${cardName} ${orient} · ${coreMessage}`.slice(0, 120);
-  const continuePrompt =
-    "방금 본 타로 결과를 내가 어떻게 받아들이면 좋을지 같이 정리해줘.";
 
   return (
     <Card className="app-surface" data-capture-root>
@@ -143,12 +138,6 @@ export async function TarotReadingCard({
             </p>
           </div>
           {!subscribed ? <TarotUpgradeNudge /> : null}
-          <ContinueWithMemberCta
-            sourceLabel="타로 한 장"
-            prompt={continuePrompt}
-            contextTitle={contextTitle}
-            contextSummary={contextSummary}
-          />
           <TarotNextActions subscribed={subscribed} />
           <div className="flex items-center justify-end gap-2">
             {(() => {

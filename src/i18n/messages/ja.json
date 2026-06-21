@@ -1,7 +1,7 @@
 {
   "home": {
     "title": "今日はどんな流れを読んでみますか？",
-    "description": "四柱推命やタロットから始めて、その余韻をCarousel Nineのメンバーの声で続けられます。"
+    "description": "占いは占いとして、Carousel Nineのメンバーコンテンツは別の楽しみとして使えます。"
   },
   "nav": {
     "home": "ホーム",
@@ -79,7 +79,7 @@
   },
   "chat": {
     "title": "メンバー",
-    "description": "占いの余韻や日常の話を、9人のバーチャルアイドルメンバーと続けられます。",
+    "description": "気持ち、音楽、日常の話を9人のバーチャルアイドルメンバーと楽しめます。",
     "placeholderDefault": "話しかけてみて...",
     "loreSectionTitle": "メンバーストーリー",
     "charactersSection": "メンバープロフィール",
@@ -114,7 +114,7 @@
   },
   "personality": {
     "title": "性格診断",
-    "description": "20問であなたのタイプを見つけます。結果はチャット、運勢、タロットに自然に反映されます。"
+    "description": "20問であなたのタイプを見つけます。結果は占いの個人化に使われます。"
   },
   "collection": {
     "title": "ボーナス",
@@ -139,20 +139,20 @@
     "noPasswordHint": "ワンタップで入れます。パスワードは不要です。"
   },
   "landing": {
-    "tagline": "Carousel Nineが、今日を一緒に見てくれます。",
-    "intro": "運勢、タロット、相性を見て、そのまま気になるメンバーと話せます。\nレポートで流れを知って、メンバーチャットで気持ちを続けてみてください。",
+    "tagline": "占いは占いとして。Carousel Nineは別の楽しみとして。",
+    "intro": "運勢、タロット、四柱推命、相性は占いツールとして使えます。\nCarousel Nineはメンバーチャットと音楽コンテンツとして別に楽しめます。",
     "freeHint": "毎日、運勢3回・チャット10回まで無料で使えます。",
     "startFree": "無料ではじめる",
     "kakaoStart": "Kakaoで今すぐはじめる",
     "alreadyMember": "すでにアカウントをお持ちですか？",
     "loginLink": "ログイン",
     "valueProps": {
-      "heading": "運勢とメンバーをひとつの流れで",
-      "subheading": "リーディングを、冷たい結果だけで終わらせないために",
+      "heading": "占いとメンバーコンテンツを分けて楽しむ",
+      "subheading": "占いは占いとして集中し、Carousel Nineは別の体験として楽しめます。",
       "v1Title": "四柱推命・タロット・相性",
       "v1Body": "今日の流れ、質問へのカード、関係の相性をひとつの場所でつなげて見られます。",
-      "v2Title": "9人のメンバー解釈",
-      "v2Body": "イアンは中心を整え、ユジュンは気持ちを受け止め、ドユンは次の一歩を示します。",
+      "v2Title": "9人のメンバー、9つの声",
+      "v2Body": "イアン、ユジュン、イヒョンたちと、日常や音楽の話を自然に楽しめます。",
       "v3Title": "毎日の流れを無料で",
       "v3Body": "登録するだけで、毎日運勢3回・チャット10回まで使えます。"
     },
@@ -162,8 +162,8 @@
       "badgePopular": "人気"
     },
     "oracles": {
-      "heading": "運命を読んでくれる9人のメンバー",
-      "subheading": "リーダー、ボーカル、パフォーマー、プロデューサー、ラッパー。それぞれ違う温度でリーディングを続けます。",
+      "heading": "Carousel Nineは独立したメンバーコンテンツ",
+      "subheading": "リーダー、ボーカル、パフォーマー、プロデューサー、ラッパー。チャット、アルバム、メンバー体験として楽しめます。",
       "cta": "無料ではじめてメンバーに会う"
     },
     "howToPlay": {
@@ -171,8 +171,8 @@
       "subheading": "レポートを読んで、メンバーに聞いて、自分だけの記録に残せます。",
       "tip1Title": "今日のメンバーを選ぶ",
       "tip1Body": "今ほしい空気に合うメンバーを選んでください。慰め、勢い、関係の整理、静かな分析、それぞれ声が違います。",
-      "tip2Title": "レポートから会話へ",
-      "tip2Body": "四柱推命、タロット、相性で状況を見たあと、メンバーに続けて質問できます。",
+      "tip2Title": "使い分ける",
+      "tip2Body": "占いは運勢や選択の整理に。メンバーチャットは日常会話やファンコンテンツとして楽しめます。",
       "tip3Title": "コツ：カードは最後に",
       "tip3Body": "カードを引くと、レア度に応じてその日の使用済みチャット回数が1〜7回戻ります。\n先に話してから引くと、ボーナスを無駄なく使えます。"
     },
@@ -743,7 +743,7 @@
   },
   "pricing": {
     "metaTitle": "プラン",
-    "metaDescription": "毎日の利用回数を増やせるLight / Proプランです。",
+    "metaDescription": "深掘りレポートとメンバーチャットを広げるLight / Proプランです。",
     "heading": "プラン",
     "subheading": "必要なものだけ選べます。いつでも解約できます。",
     "freeName": "無料",
@@ -751,14 +751,10 @@
     "lightName": "Light",
     "lightTagline": "毎日もう少し深く",
     "proName": "Pro",
-    "proTagline": "いちばん余裕のある上限",
+    "proTagline": "もっと深いレポート",
     "recommended": "おすすめ",
-    "fortuneLine": "運勢 | 占い | 四柱推命 - 1日{n}回",
-    "tarotLine": "今日のタロット × {n}",
-    "chatLine": "チャット - 1日{n}回",
-    "fortuneUnlimited": "運勢 | 占い | 四柱推命をたっぷり",
-    "tarotUnlimited": "タロットをたっぷり",
-    "chatUnlimited": "チャットをたっぷり",
+    "chatLine": "メンバーチャット - 1日{n}回",
+    "chatUnlimited": "メンバーチャットをたっぷり",
     "premiumReports": "Light限定レポート（仕事・健康・勉強・恋愛）",
     "compatibilityUnlimited": "相性リーディングをたっぷり",
     "ctaFreeStart": "無料ではじめる",
@@ -770,13 +766,13 @@
     "ctaProStart": "Proを始める",
     "loading": "少々お待ちください...",
     "footer": "安全なカード決済です。毎月自動更新され、いつでも解約できます。",
-    "metaDescriptionFull": "無料 / Light / Proを比較できます。Lightは毎日の上限を増やし、Proは運勢 | 占い | 四柱推命45回、チャット120回まで使えます。",
+    "metaDescriptionFull": "無料 / Light / Proを比較できます。深掘りレポートとメンバーチャットの特典を確認できます。",
     "h1": "3つのプラン",
     "h1Sub": "自分に合うプランを選んでください。",
     "appFreeNote": "アプリでは基本機能を無料で楽しめます。まずは気軽に使ってみてください。",
     "freeDesc": "毎日、軽いリーディングを受けられます。",
-    "lightDesc": "毎日の上限を増やして、もっと頻繁に会えます。",
-    "proDesc": "すべてのリーディングを余裕のある回数で使えます。",
+    "lightDesc": "3枚タロット、月間レポート、メンバーチャットを広げます。",
+    "proDesc": "四柱推命、相性、新年運勢の深掘りまで開けます。",
     "tarotOneLine": "タロット・1枚引き × 1日{n}回",
     "perMonth": "/ 月",
     "bulletZodiac": "星座・干支の運勢",
@@ -796,8 +792,8 @@
   "settingsPage": {
     "heading": "マイスペース",
     "subheading": "プランとプロフィール情報を管理します。",
-    "lightActive": "Lightが有効です。1日の上限が増えています。",
-    "proActive": "Proが有効です。もっとも余裕のある上限です。",
+    "lightActive": "Lightが有効です。深掘り機能とメンバーチャットが開いています。",
+    "proActive": "Proが有効です。もっとも深いレポートまで開いています。",
     "freeMembership": "現在は無料プランです。",
     "nextBilling": "次回請求",
     "upgradeCta": "Lightにアップグレード",
@@ -1199,10 +1195,10 @@
     "unknownReason": "原因不明",
     "reloginRequired": "もう一度ログインしてください。",
     "compatPremiumOnly": "Light限定機能です。",
-    "tarotQuotaUpgradeFull": "今日のタロット上限（{n}回）を使い切りました。Lightで1日の上限を増やせます。",
-    "lenormandQuotaUpgradeFull": "今日の無料ルノルマン上限（{n}回）を使い切りました。Lightで1日の上限を増やせます。",
+    "tarotQuotaUpgradeFull": "今日の無料タロット（{n}回）を使い切りました。Lightでは3枚引きと深い流れを開けます。",
+    "lenormandQuotaUpgradeFull": "今日の無料ルノルマン（{n}回）を使い切りました。Lightでは拡張スプレッドを開けます。",
     "lenormandPremiumSpread": "このスプレッドはLight限定です。9枚引きとグランタブローを自由に使えます。",
-    "runeQuotaUpgradeFull": "今日の無料ルーン上限（{n}回）を使い切りました。Lightで自由に引けます。",
+    "runeQuotaUpgradeFull": "今日の無料ルーン（{n}回）を使い切りました。Lightでは拡張スプレッドを開けます。",
     "runePremiumSpread": "このスプレッドはLight限定です。5枚・9枚のルーンを自由に引けます。",
     "questionTooLong": "質問は100文字以内で入力してください。",
     "compatTwoSidedHeader": "2人のエネルギーを読めませんでした",
@@ -1234,17 +1230,6 @@
     "personaSub": "あなたの中のパターン",
     "navTopAria": "上部ナビゲーション",
     "navBottomAria": "下部ナビゲーション"
-  },
-  "quotaBar": {
-    "proActive": "Pro有効",
-    "proSub": "運勢 | 占い | 四柱推命とチャットを余裕のある上限で使えます。",
-    "fortune": "運勢 | 占い | 四柱推命",
-    "tarot": "占い | 四柱推命",
-    "chat": "チャット",
-    "lightPlan": "Lightプラン",
-    "freePlan": "無料プラン",
-    "upgradePro": "Proにアップグレード",
-    "upgrade": "アップグレード"
   },
   "streak": {
     "milestone3": "3日連続！",
@@ -1817,13 +1802,13 @@
     "metaTitle": "性格診断",
     "metaDescription": "あなたは16タイプのうちどれ？",
     "title": "私はどんなタイプ？",
-    "bodyWithProfile": "20問であなたのタイプを読みます。結果は運勢、タロット、四柱推命に自動で反映されます。",
+    "bodyWithProfile": "20問であなたのタイプを読みます。結果は運勢、タロット、四柱推命の個人化に使われます。",
     "bodyNoProfile": "20問であなたのタイプを読みます。"
   },
   "personalityTest": {
     "startTitle": "あなたはどんなタイプ？",
     "startBody1": "20問であなたの傾向を見ます。",
-    "startBody2": "結果はメンバーチャット、運勢、タロットに自然に反映されます。",
+    "startBody2": "結果は運勢、タロット、四柱推命の個人化に使われます。",
     "duration": "約3〜5分",
     "questionCount": "20問",
     "typeCount": "16タイプ",

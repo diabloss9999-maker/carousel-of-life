@@ -8,9 +8,9 @@ export const siteConfig = {
   shortName: "회전목마",
   englishName: "Carousel of Life",
   slug: "carousel-of-life",
-  tagline: "캐러셀나인과 함께 보는 사주·타로 운세",
+  tagline: "사주·타로 운세와 Carousel Nine 콘텐츠",
   description:
-    "캐러셀나인 멤버들과 오늘의 운세, 타로, 사주를 살펴보고 대화로 이어가는 한국어 운세 앱.",
+    "오늘의 운세, 타로, 사주, 궁합을 살펴보고 Carousel Nine 멤버 콘텐츠는 별도로 즐기는 한국어 라이프스타일 앱.",
   url: process.env.NEXT_PUBLIC_APP_URL ?? "https://carouseloflife.com",
   ogImage: "/og-carousel-meadow.png",
   author: {
