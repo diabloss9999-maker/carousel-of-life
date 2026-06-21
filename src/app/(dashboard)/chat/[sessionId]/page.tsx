@@ -35,34 +35,12 @@ export const metadata: Metadata = {
 
 interface ChatSessionPageProps {
   params: Promise<{ sessionId: string }>;
-  searchParams?: Promise<{
-    prefill?: string;
-    source?: string;
-    ctxTitle?: string;
-    ctxSummary?: string;
-  }>;
 }
 
 export default async function ChatSessionPage({
   params,
-  searchParams,
 }: ChatSessionPageProps) {
   const { sessionId } = await params;
-  const resolvedSearchParams = searchParams ? await searchParams : {};
-  const initialPrompt =
-    typeof resolvedSearchParams.prefill === "string"
-      ? resolvedSearchParams.prefill.slice(0, 100)
-      : undefined;
-  const readingContext =
-    typeof resolvedSearchParams.source === "string" ||
-    typeof resolvedSearchParams.ctxTitle === "string" ||
-    typeof resolvedSearchParams.ctxSummary === "string"
-      ? {
-          source: resolvedSearchParams.source?.slice(0, 24) ?? "방금 본 풀이",
-          title: resolvedSearchParams.ctxTitle?.slice(0, 48) ?? null,
-          summary: resolvedSearchParams.ctxSummary?.slice(0, 120) ?? null,
-        }
-      : undefined;
   const { profile } = await requireProfile();
 
   const session = await getSessionForUser({
@@ -192,12 +170,10 @@ export default async function ChatSessionPage({
             sessionId={sessionId}
             initialMessages={initial}
             characterId={charId}
-            initialPrompt={initialPrompt}
             chatUsage={{
               used: usage.chatCount,
               max: fortuneQuestionLimitForTier(tier).question,
             }}
-            readingContext={readingContext}
           />
         </div>
       </div>

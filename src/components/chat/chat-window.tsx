@@ -30,15 +30,9 @@ interface ChatWindowProps {
   sessionId: string;
   initialMessages: InitialMessage[];
   characterId?: CharacterId;
-  initialPrompt?: string;
   chatUsage?: {
     used: number;
     max: number;
-  };
-  readingContext?: {
-    source: string;
-    title: string | null;
-    summary: string | null;
   };
   onDeleteRequest?: () => void;
 }
@@ -153,9 +147,7 @@ export function ChatWindow({
   sessionId,
   initialMessages,
   characterId,
-  initialPrompt,
   chatUsage,
-  readingContext,
   onDeleteRequest,
 }: ChatWindowProps) {
   const router = useRouter();
@@ -167,8 +159,7 @@ export function ChatWindow({
       cards: m.cards ?? undefined,
     })),
   );
-  const [input, setInput] = useState(() => initialPrompt?.slice(0, MAX_MESSAGE_LENGTH) ?? "");
-  const [activeReadingContext, setActiveReadingContext] = useState(readingContext);
+  const [input, setInput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [chatUsed, setChatUsed] = useState(chatUsage?.used ?? 0);
   const [isPending, startTransition] = useTransition();
@@ -243,7 +234,6 @@ export function ChatWindow({
     track("chat_message_submit", {
       mode: "one_to_one",
       character: characterId ?? "unknown",
-      hasReadingContext: Boolean(activeReadingContext),
       source: clearComposer ? "composer" : "emoji",
     });
 
@@ -274,7 +264,6 @@ export function ChatWindow({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           content: trimmed,
-          readingContext: activeReadingContext,
         }),
       });
 
@@ -347,7 +336,6 @@ export function ChatWindow({
             : m,
         ),
       );
-      setActiveReadingContext(undefined);
       track("chat_message_success", {
         mode: "one_to_one",
         character: characterId ?? "unknown",
@@ -423,9 +411,6 @@ export function ChatWindow({
           className={cn("pointer-events-none absolute inset-0 z-0", theme.overlay)}
         />
         <div className="relative z-10">
-          {readingContext ? (
-            <ReadingContextCard context={readingContext} />
-          ) : null}
           {messages.length === 0 ? (
             <EmptyState characterId={characterId} />
           ) : (
@@ -538,33 +523,6 @@ export function ChatWindow({
           </span>
         </div>
       </form>
-    </div>
-  );
-}
-
-function ReadingContextCard({
-  context,
-}: {
-  context: NonNullable<ChatWindowProps["readingContext"]>;
-}) {
-  return (
-    <div className="mb-4 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 shadow-[0_12px_30px_rgba(0,0,0,0.12)] backdrop-blur-md">
-      <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-primary/80">
-        방금 본 {context.source}
-      </p>
-      {context.title ? (
-        <p className="mt-1 font-mystic text-[15px] font-semibold leading-snug text-foreground/90">
-          {context.title}
-        </p>
-      ) : null}
-      {context.summary ? (
-        <p className="mt-1 line-clamp-2 text-[13px] leading-relaxed text-muted-foreground">
-          {context.summary}
-        </p>
-      ) : null}
-      <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground/80">
-        아래 입력창에 이 내용을 이어서 물어볼 질문을 준비해뒀어요.
-      </p>
     </div>
   );
 }
