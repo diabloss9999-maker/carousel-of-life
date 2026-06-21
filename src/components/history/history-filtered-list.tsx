@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CalendarDays, Heart, Sparkles, Sun } from "lucide-react";
+import { CalendarDays, ChevronDown, Heart, Sparkles, Sun } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { HistoryItemCard } from "@/components/history/history-item-card";
@@ -15,6 +15,7 @@ interface HistoryFilteredListProps {
 
 type HistoryFilter = "all" | HistoryKind;
 type DateFilter = "all" | "week" | "month";
+const INITIAL_VISIBLE_COUNT = 10;
 
 const FILTERS: Array<{
   icon: typeof Sun;
@@ -43,6 +44,7 @@ export function HistoryFilteredList({ items }: HistoryFilteredListProps) {
   const [dateFilter, setDateFilter] = useState<DateFilter>("all");
   const [records, setRecords] = useState(items);
   const [now] = useState(() => Date.now());
+  const [showAll, setShowAll] = useState(false);
 
   const counts = useMemo(
     () => ({
@@ -71,6 +73,10 @@ export function HistoryFilteredList({ items }: HistoryFilteredListProps) {
     },
     [dateFilter, filter, now, records],
   );
+  const displayedItems = showAll
+    ? visibleItems
+    : visibleItems.slice(0, INITIAL_VISIBLE_COUNT);
+  const hiddenCount = Math.max(0, visibleItems.length - displayedItems.length);
 
   async function deleteRecord(item: HistoryItem) {
     const res = await fetch(`/api/history/${item.kind}/${item.data.id}`, {
@@ -108,7 +114,10 @@ export function HistoryFilteredList({ items }: HistoryFilteredListProps) {
             <button
               key={key}
               type="button"
-              onClick={() => setFilter(key)}
+              onClick={() => {
+                setFilter(key);
+                setShowAll(false);
+              }}
               className={cn(
                 "flex shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-2 text-[13px] font-semibold transition",
                 selected
@@ -138,7 +147,10 @@ export function HistoryFilteredList({ items }: HistoryFilteredListProps) {
             <button
               key={key}
               type="button"
-              onClick={() => setDateFilter(key)}
+              onClick={() => {
+                setDateFilter(key);
+                setShowAll(false);
+              }}
               className={cn(
                 "shrink-0 rounded-full border px-3.5 py-2 text-[13px] font-semibold transition",
                 selected
@@ -155,13 +167,23 @@ export function HistoryFilteredList({ items }: HistoryFilteredListProps) {
 
       {visibleItems.length > 0 ? (
         <div className="space-y-3">
-          {visibleItems.map((item) => (
+          {displayedItems.map((item) => (
             <HistoryItemCard
               key={`${item.kind}-${item.data.id}`}
               item={item}
               onDelete={deleteRecord}
             />
           ))}
+          {hiddenCount > 0 ? (
+            <button
+              type="button"
+              onClick={() => setShowAll(true)}
+              className="flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-3 text-[14px] font-semibold text-muted-foreground transition hover:border-primary/30 hover:text-foreground"
+            >
+              기록 {hiddenCount}개 더 보기
+              <ChevronDown className="h-4 w-4" aria-hidden />
+            </button>
+          ) : null}
         </div>
       ) : (
         <div className="app-surface rounded-2xl px-5 py-7 text-center">
