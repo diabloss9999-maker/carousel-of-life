@@ -28,13 +28,13 @@ export default async function HomeDashboardPage() {
   );
 
   return (
-    <div className="mx-auto w-full max-w-5xl space-y-7">
+    <div className="mx-auto w-full max-w-5xl space-y-6">
       <header
-        className="app-surface overflow-hidden rounded-3xl border px-4 py-5 sm:px-7 sm:py-6"
+        className="app-surface overflow-hidden rounded-[24px] border px-4 py-5 sm:px-7 sm:py-6"
         style={{
-          background: "rgba(255,255,255,0.86)",
-          backdropFilter: "blur(22px)",
-          WebkitBackdropFilter: "blur(22px)",
+          background: "var(--app-surface-strong)",
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
         }}
       >
         <div className="space-y-2">
@@ -61,7 +61,7 @@ export default async function HomeDashboardPage() {
           </HomeCta>
         </div>
 
-        <div className="mt-5 hidden gap-2.5 sm:grid sm:grid-cols-3">
+        <div className="mt-5 hidden gap-2 sm:grid sm:grid-cols-3">
           <SummaryPill label="매일" value="오늘 운세와 타로" />
           <SummaryPill label="기록" value="아카이브와 주간 리포트" />
           <SummaryPill
@@ -99,8 +99,8 @@ function HomeCta({
       href={href}
       className={
         primary
-          ? "inline-flex items-center justify-center gap-2 rounded-full bg-[#211812] px-4 py-2.5 text-[14px] font-semibold text-white shadow-[0_10px_24px_rgba(0,0,0,0.18)] transition hover:bg-[#2b2018]"
-          : "inline-flex items-center justify-center gap-2 rounded-full border border-white/60 bg-white/85 px-4 py-2.5 text-[14px] font-semibold text-[#241a12] shadow-sm transition hover:bg-white"
+          ? "inline-flex items-center justify-center gap-2 rounded-full bg-[#16181d] px-4 py-2.5 text-[14px] font-semibold text-white shadow-[0_10px_22px_rgba(18,20,24,0.16)] transition hover:bg-[#22252b]"
+          : "inline-flex items-center justify-center gap-2 rounded-full border border-black/10 bg-white/80 px-4 py-2.5 text-[14px] font-semibold text-[#1d2026] shadow-[0_4px_12px_rgba(35,39,48,0.05)] transition hover:bg-white"
       }
     >
       {children}
@@ -136,10 +136,10 @@ function DailyRoutinePanel({ subscribed }: { subscribed: boolean }) {
         <Link
           key={item.title}
           href={item.href}
-          className="group app-surface rounded-2xl border px-4 py-4 transition hover:-translate-y-0.5 hover:ring-1 hover:ring-primary/25"
+          className="group app-surface rounded-[20px] border px-4 py-3.5 transition hover:-translate-y-0.5 hover:border-primary/25 hover:bg-white/85"
         >
           <span className="flex items-center gap-2 text-primary">
-            <span className="grid h-7 w-7 place-items-center rounded-full bg-primary/10 text-[13px] font-bold">
+            <span className="grid h-7 w-7 place-items-center rounded-full bg-primary/[0.09] text-[13px] font-bold">
               {index + 1}
             </span>
             <span className="text-[12px] font-semibold uppercase tracking-[0.16em]">
@@ -164,10 +164,10 @@ function DailyRoutinePanel({ subscribed }: { subscribed: boolean }) {
 
 function WeeklyReportBanner() {
   return (
-    <section className="app-surface rounded-3xl border border-primary/20 p-5 sm:p-6">
+    <section className="app-surface rounded-[24px] border border-primary/15 p-5 sm:p-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex gap-3">
-          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/20">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[16px] bg-primary/[0.09] text-primary ring-1 ring-primary/10">
             <TrendingUp className="h-5 w-5" aria-hidden />
           </span>
           <div className="space-y-1">
@@ -196,7 +196,7 @@ function WeeklyReportBanner() {
 
 function SubscriberHub() {
   return (
-    <section className="app-surface rounded-3xl border border-primary/20 p-5 sm:p-6">
+    <section className="app-surface rounded-[24px] border border-primary/15 p-5 sm:p-6">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-primary">
@@ -233,7 +233,7 @@ function SubscriberHub() {
 
 function FreeUpgradePath() {
   return (
-    <section className="app-surface rounded-3xl border border-primary/20 p-5 sm:p-6">
+    <section className="app-surface rounded-[24px] border border-primary/15 p-5 sm:p-6">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-primary">
@@ -280,7 +280,7 @@ function UnlockedLink({
   return (
     <Link
       href={href}
-      className="group flex min-h-[112px] flex-col justify-between rounded-2xl border border-primary/15 bg-primary/5 px-4 py-4 transition hover:bg-primary/10"
+      className="group flex min-h-[108px] flex-col justify-between rounded-[20px] border border-primary/15 bg-primary/[0.055] px-4 py-4 transition hover:border-primary/25 hover:bg-primary/[0.08]"
     >
       <span className="block">
         <span className="flex items-center gap-2 text-primary">
@@ -318,10 +318,10 @@ function LockedReportLink({
   return (
     <Link
       href={href}
-      className="group flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-4 transition hover:bg-white/[0.07]"
+      className="group flex items-center justify-between gap-3 rounded-[20px] border border-black/10 bg-white/55 px-4 py-3.5 transition hover:border-primary/20 hover:bg-white/80"
     >
       <span className="flex min-w-0 items-center gap-3">
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/20">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[16px] bg-primary/[0.09] text-primary ring-1 ring-primary/10">
           <Icon className="h-5 w-5" aria-hidden />
         </span>
         <span className="min-w-0">
@@ -341,7 +341,7 @@ function LockedReportLink({
 
 function SummaryPill({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-white/12 bg-white/[0.06] px-4 py-3">
+    <div className="rounded-[18px] border border-black/10 bg-white/55 px-4 py-3">
       <p className="text-[12px] font-semibold text-muted-foreground">{label}</p>
       <p className="mt-0.5 text-[15px] font-semibold">{value}</p>
     </div>

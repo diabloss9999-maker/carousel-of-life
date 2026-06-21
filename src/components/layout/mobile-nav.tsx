@@ -19,8 +19,8 @@ import { useLocationHash } from "@/hooks/use-location-hash";
 
 const NAV_ACTIVE   = "var(--nav-active)";
 const NAV_MUTED    = "var(--nav-muted)";
-const NAV_SURFACE  = "rgba(255,255,255,0.16)";
-const NAV_SURFACE2 = "rgba(255,255,255,0.08)";
+const NAV_SURFACE  = "rgba(255,255,255,0.86)";
+const NAV_SURFACE2 = "rgba(255,255,255,0.68)";
 
 function subscribeToClientHydration(): () => void {
   return () => undefined;
@@ -72,11 +72,11 @@ export function MobileNav() {
       className="mobile-bottom-nav fixed inset-x-0 bottom-0 z-50 md:hidden"
       style={{
         background: `linear-gradient(to top, ${NAV_SURFACE}, ${NAV_SURFACE2})`,
-        borderRadius: "18px 18px 0 0",
+        borderRadius: "20px 20px 0 0",
         borderTop: "1px solid var(--header-border)",
-        boxShadow: "0 -10px 30px rgba(58,45,74,0.14)",
-        backdropFilter: "blur(24px)",
-        WebkitBackdropFilter: "blur(24px)",
+        boxShadow: "0 -8px 24px rgba(35,39,48,0.08)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
         paddingBottom: "calc(6px + env(safe-area-inset-bottom, 0px))",
         paddingLeft: 6,
         paddingRight: 6,

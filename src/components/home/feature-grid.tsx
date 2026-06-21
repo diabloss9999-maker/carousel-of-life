@@ -274,9 +274,9 @@ function FeatureTile({ compact, tile }: { compact: boolean; tile: HomeTile }) {
     <Link
       href={tile.href}
       className={cn(
-        "app-surface group flex min-h-[92px] items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-left",
-        "transition-transform duration-150 hover:-translate-y-0.5 hover:ring-1 hover:ring-primary/30 active:scale-[0.99]",
-        tile.emphasis && "border-primary/30 bg-primary/10",
+        "app-surface group flex min-h-[88px] items-center justify-between gap-3 rounded-[20px] border px-4 py-3 text-left",
+        "transition duration-150 hover:-translate-y-0.5 hover:border-primary/25 hover:bg-white/85 active:scale-[0.99]",
+        tile.emphasis && "border-primary/25 bg-primary/[0.07]",
         !compact && "sm:min-h-[132px] sm:flex-col sm:items-start sm:justify-between",
       )}
     >
@@ -286,7 +286,7 @@ function FeatureTile({ compact, tile }: { compact: boolean; tile: HomeTile }) {
           compact ? "items-center" : "items-start",
         )}
       >
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/20">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[16px] bg-primary/[0.08] text-primary ring-1 ring-primary/10">
           <Icon className="h-5 w-5 opacity-85" aria-hidden />
         </span>
         <span className="min-w-0 space-y-1">
