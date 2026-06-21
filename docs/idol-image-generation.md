@@ -5,12 +5,14 @@ Use this workflow for every Carousel Nine character image.
 ## Fixed Rule
 
 1. Pick one master image per character first.
-2. Every new image must use that master image as the visual reference.
+2. Every new image must use that master image as the visual identity reference.
 3. Keep the character sheet text exactly the same every time.
-4. Change only clothing, background, and pose.
+4. Change only clothing, background, activity, camera angle, and pose.
 5. Keep all members as adults aged 20-23.
-6. Keep the same Korean virtual idol editorial rendering quality, but do not make the faces look averaged together.
-7. Vary camera angles across each five-image set: three-quarter view, low-angle full body, high-angle seated/view, strict side profile, and front close-up or over-the-shoulder view.
+6. Preserve hair color, face shape, eye shape, jaw weight, neck length, shoulder width, body build, and core mood from the master image.
+7. Do not make slim members bulky, bodybuilder-like, thick-necked, or broad-shouldered.
+8. Keep the same Korean virtual idol editorial rendering quality, but do not average the faces together.
+9. Vary camera angles across each five-image set: three-quarter view, low-angle full body, high-angle seated/view, strict side profile, and front close-up or over-the-shoulder view.
 
 ## Master Images
 
@@ -29,18 +31,23 @@ Use this workflow for every Carousel Nine character image.
 ## Prompt Template
 
 ```text
-첨부한 마스터 이미지를 레퍼런스로 써서 같은 인물, 같은 얼굴, 같은 나이로 생성해.
-얼굴, 헤어, 나이, 체형은 절대 바꾸지 말고 의상, 배경, 포즈만 바꿔.
+Use the attached master image as the visual identity reference.
+Generate the same person with the same face, eyes, hair, body proportion, and mood.
+Change only clothing, background, activity, camera angle, and pose.
 
-[캐릭터 고정 설정 - 항상 동일하게]
+[Fixed character sheet - keep exactly every time]
 <Use the fixed sheet from src/lib/chat/idol-image-profiles.ts>
 
-[공통 고정 규칙 - 매번 동일하게]
-1) 나이대는 만 20~23세 성인으로 고정. 더 어리거나 더 나이 들어 보이게 그리지 마.
-2) 같은 세미리얼 일러스트 품질은 유지하되, 멤버끼리 얼굴 골격·눈매·헤어 실루엣이 평균화되지 않게 해.
-3) 5장 안에서 카메라 각도를 반복하지 마. 3/4, 로우앵글 전신, 하이앵글, 완전 측면, 정면 클로즈업처럼 확실히 나눠.
+[Common fixed rules - keep exactly every time]
+1. Keep the member as a clearly adult Korean virtual idol, age 20-23.
+2. Preserve the master image identity first. Do not change hair color, face width, jaw weight, neck length, shoulder width, or body build.
+3. Do not make slim members bulky, bodybuilder-like, thick-necked, or broad-shouldered.
+4. Keep the same high-end semi-realistic idol illustration quality.
+5. Do not average member faces together. Each member must remain distinct.
+6. Vary camera angles across a five-image set: three-quarter view, low-angle full body, high-angle seated/view, strict side profile, and front close-up or over-the-shoulder view.
+7. No text, no watermark, no logo, no extra people.
 
-[이번 컷에서만 변경할 내용]
+[Only change for this cut]
 <New clothing, background, and pose only>
 ```
 
