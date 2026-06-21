@@ -7,7 +7,6 @@ import { DesktopNav } from "@/components/layout/desktop-nav";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { PromoBanner } from "@/components/layout/promo-banner";
 import { LanguageToggle } from "@/components/layout/language-toggle";
-import { QuotaBar } from "@/components/fortune/quota-bar";
 import { AlbumAudioProvider } from "@/components/album/album-audio-provider";
 import { getTranslations } from "next-intl/server";
 
@@ -16,16 +15,14 @@ import { ROUTES } from "@/lib/constants";
 import { siteConfig } from "@/config/site";
 import { signOutAction } from "@/lib/auth/actions";
 import { requireUser } from "@/lib/auth/get-user";
-import { getSubscriptionTier } from "@/lib/payment/subscription-state";
 
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const user = await requireUser();
+  await requireUser();
   const tCommon = await getTranslations("common");
-  const tier = await getSubscriptionTier(user.id).catch(() => "free" as const);
 
   return (
     <AlbumAudioProvider>
@@ -76,9 +73,6 @@ export default async function DashboardLayout({
       <PromoBanner />
 
       <main id="main-content" className="flex-1">
-        <div className="quota-sticky-shell mx-auto w-full max-w-6xl px-safe-4 sm:px-safe-6">
-          <QuotaBar tier={tier} />
-        </div>
         <div className="mobile-app-content mx-auto w-full max-w-6xl px-safe-4 py-5 sm:px-safe-6 sm:py-7 md:py-10">
           {children}
         </div>
