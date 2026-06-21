@@ -494,7 +494,7 @@ export function GroupChat({ initialMessages, chatUsage }: GroupChatProps) {
               "disabled:cursor-not-allowed disabled:opacity-40",
             )}
           >
-            {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : "♪"}
+            {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : "↑"}
           </button>
         </div>
         <div className="flex items-center justify-between px-1 text-[13px]">
