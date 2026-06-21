@@ -16,22 +16,12 @@ export interface DrawnCardMeta {
   position?: string;
 }
 
-/** 어시스턴트 메시지를 공유 카드로 만들기 위한 데이터. 직전 user 질문과 함께 묶인다. */
-export interface ShareInfo {
-  characterId: CharacterId;
-  characterName: string;
-  question: string;
-  locale?: "ko" | "en";
-}
-
 interface MessageBubbleProps {
   role: "user" | "assistant";
   content: string;
   isStreaming?: boolean;
   /** 점술 요청 시 뽑힌 카드 메타데이터 */
   cards?: DrawnCardMeta[];
-  /** 어시스턴트 메시지가 공유 가능할 때 — 직전 user 질문 등 메타데이터 */
-  share?: ShareInfo;
   /** 현재 세션 멤버 (버블 테마용) */
   characterId?: CharacterId;
 }

@@ -4,12 +4,12 @@ import { useEffect, useRef, useState, useTransition, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader2, Trash2 } from "lucide-react";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { track } from "@vercel/analytics";
 
 import { Button } from "@/components/ui/button";
 import { ChatEmojiPicker } from "@/components/chat/chat-emoji-picker";
-import { MessageBubble, type DrawnCardMeta, type ShareInfo } from "@/components/chat/message-bubble";
+import { MessageBubble, type DrawnCardMeta } from "@/components/chat/message-bubble";
 import { ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { CHARACTERS, type CharacterId } from "@/lib/chat/characters";
@@ -178,9 +178,6 @@ export function ChatWindow({
 
   const theme = characterId ? (CHARACTER_THEME[characterId] ?? DEFAULT_THEME) : DEFAULT_THEME;
   const t = useTranslations("chatShell");
-  const tChars = useTranslations("characters");
-  const rawLocale = useLocale();
-  const shareLocale: "ko" | "en" = rawLocale === "en" ? "en" : "ko";
 
   const placeholder = t("inputPlaceholder");
 
@@ -432,30 +429,16 @@ export function ChatWindow({
           {messages.length === 0 ? (
             <EmptyState characterId={characterId} />
           ) : (
-            messages.map((m, i) => {
-              // Attach share data by pairing an assistant reply with the previous user message.
-              const prev = i > 0 ? messages[i - 1] : null;
-              const share: ShareInfo | undefined =
-                m.role === "assistant" && characterId && prev && prev.role === "user" && prev.content
-                  ? {
-                      characterId,
-                      characterName: tChars(`${characterId}.name`),
-                      question: prev.content,
-                      locale: shareLocale,
-                    }
-                  : undefined;
-              return (
-                <MessageBubble
-                  key={m.id}
-                  role={m.role}
-                  content={m.content}
-                  isStreaming={m.isStreaming}
-                  cards={m.cards}
-                  share={share}
-                  characterId={characterId}
-                />
-              );
-            })
+            messages.map((m) => (
+              <MessageBubble
+                key={m.id}
+                role={m.role}
+                content={m.content}
+                isStreaming={m.isStreaming}
+                cards={m.cards}
+                characterId={characterId}
+              />
+            ))
           )}
         </div>
       </div>
