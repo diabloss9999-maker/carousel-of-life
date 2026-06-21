@@ -25,10 +25,10 @@ import { StudyTips } from "@/components/fortune/study-tips";
 import { TodaySummary } from "@/components/fortune/today-summary";
 import { ZodiacBanner } from "@/components/fortune/zodiac-banner";
 import { RelatableReadingCard } from "@/components/shared/relatable-reading-card";
-import { WeeklyTimingStrip } from "@/components/today/weekly-timing-strip";
-import { PhotocardTeaser } from "@/components/today/photocard-teaser";
 import { MembershipSuccessBanner } from "@/components/subscription/membership-success-banner";
 import { StreakNotifier } from "@/components/streak/streak-notifier";
+import { PhotocardTeaser } from "@/components/today/photocard-teaser";
+import { WeeklyTimingStrip } from "@/components/today/weekly-timing-strip";
 import type { DailyFortune } from "@/db/schema";
 import { requireProfile } from "@/lib/auth/get-user";
 import {
@@ -46,7 +46,7 @@ export const maxDuration = 30;
 
 export const metadata: Metadata = {
   title: "오늘의 운세",
-  description: "오늘의 운세와 별의 기운을 살펴봐요.",
+  description: "오늘의 흐름을 현실적인 조언과 함께 확인해 보세요.",
 };
 
 const VALID_CATEGORIES = new Set<string>(FORTUNE_CATEGORIES.map((c) => c.id));
@@ -133,8 +133,6 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
 
       <WeeklyTimingStrip profile={profile} />
 
-      <PhotocardTeaser />
-
       <RelatableReadingCard kind="fortune" category={category} />
 
       <ReadingValueStrip
@@ -142,19 +140,19 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           {
             icon: Sparkles,
             label: "오늘의 핵심",
-            value: "지금 조심할 것과 밀어붙일 것을 먼저 잡아요.",
+            value: "지금 신경 써야 할 일과 내려놓아도 되는 일을 먼저 짚어줘요.",
           },
           {
             icon: Compass,
             label: "실천 기준",
-            value: "감정, 관계, 일의 흐름을 행동으로 연결해요.",
+            value: "감정, 관계, 일의 흐름을 오늘 바로 해볼 수 있는 행동으로 연결해요.",
           },
           {
             icon: CalendarDays,
             label: "다음 흐름",
             value: subscribed
-              ? "월간·사주 심층까지 이어서 볼 수 있어요."
-              : "멤버십에서 더 깊은 리포트가 열려요.",
+              ? "주간, 월간, 사주까지 이어서 더 깊게 볼 수 있어요."
+              : "구독하면 오늘 이후의 흐름까지 더 자세히 열려요.",
           },
         ]}
       />
@@ -204,6 +202,8 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
           </>
         )}
       </div>
+
+      <PhotocardTeaser />
     </div>
   );
 }
@@ -216,20 +216,20 @@ function TodayContinuation({ subscribed }: { subscribed: boolean }) {
           <div>
             <div className="flex items-center gap-2 text-primary">
               <Sparkles className="h-5 w-5" aria-hidden />
-              <p className="text-[13px] font-semibold">멤버십으로 이어보기</p>
+              <p className="text-[13px] font-semibold">구독으로 이어보기</p>
             </div>
             <h2 className="mt-2 text-xl font-semibold">
-              오늘 흐름을 더 깊게 연결해요
+              오늘의 흐름을 더 깊게 연결해요
             </h2>
             <p className="mt-2 max-w-2xl text-[14px] leading-6 text-muted-foreground">
-              오늘운세에서 잡은 감각을 월간 흐름, 사주 심층, 타로 질문으로 바로 이어갈 수 있어요.
+              오늘 운세에서 짚은 감각을 주간 흐름, 사주 해석, 타로 질문으로 바로 이어갈 수 있어요.
             </p>
           </div>
           <Link
             href={ROUTES.settings as Route}
             className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-primary/25 px-4 py-2.5 text-[14px] font-semibold text-primary transition hover:bg-primary/10"
           >
-            멤버십 확인
+            구독 상태 확인
             <ArrowRight className="h-4 w-4" aria-hidden />
           </Link>
         </div>
@@ -237,14 +237,14 @@ function TodayContinuation({ subscribed }: { subscribed: boolean }) {
           <ContinuationLink
             href={ROUTES.monthly as Route}
             icon={CalendarDays}
-            title="월간운세"
+            title="월간 운세"
             body="이번 달의 큰 흐름까지 이어보기"
           />
           <ContinuationLink
             href={ROUTES.saju as Route}
             icon={Compass}
-            title="사주 심층"
-            body="내 기질과 오늘 흐름 연결"
+            title="사주 해석"
+            body="타고난 기질과 오늘의 흐름 연결"
           />
           <ContinuationLink
             href={ROUTES.tarot as Route}
@@ -263,20 +263,20 @@ function TodayContinuation({ subscribed }: { subscribed: boolean }) {
         <div>
           <div className="flex items-center gap-2 text-primary">
             <LockKeyhole className="h-5 w-5" aria-hidden />
-            <p className="text-[13px] font-semibold">심층 리포트 잠금</p>
+            <p className="text-[13px] font-semibold">상세 리포트 잠금</p>
           </div>
           <h2 className="mt-2 text-xl font-semibold">
-            오늘운세 다음 흐름까지 열어보세요
+            오늘 운세 다음 흐름까지 이어보세요
           </h2>
           <p className="mt-2 max-w-2xl text-[14px] leading-6 text-muted-foreground">
-            멤버십에서는 월간운세, 사주 심층, 분야별 흐름까지 이어서 볼 수 있어요.
+            구독하면 월간 운세, 사주 해석, 분야별 흐름을 더 자세히 확인할 수 있어요.
           </p>
         </div>
         <Link
           href={ROUTES.pricing as Route}
           className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-[14px] font-semibold text-primary-foreground"
         >
-          멤버십 보기
+          구독 보기
           <ArrowRight className="h-4 w-4" aria-hidden />
         </Link>
       </div>

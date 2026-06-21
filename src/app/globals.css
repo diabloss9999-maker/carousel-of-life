@@ -331,6 +331,17 @@ body.ritual-night .ritual-readable-scrim {
     linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.04) 42%, rgba(255, 255, 255, 0.10) 100%);
 }
 
+/*
+ * 낮 모드 가독성 스크림. 밝은 회전목마 배경이 그대로 비쳐 카드·연한 글씨가
+ * 워시아웃되던 문제 보정. 콘텐츠 뒤를 부드러운 흰 워시로 고르게 깐다.
+ * SSR 초기(데이터 미설정) 상태도 함께 커버.
+ */
+body[data-time="day"] .ritual-readable-scrim,
+body:not([data-time]):not(.ritual-night) .ritual-readable-scrim {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.12) 45%, rgba(255, 255, 255, 0.22) 100%);
+}
+
 @keyframes ritual-wheel-drift {
   from { transform: translate3d(-50%, -50%, 0) rotate(0deg); }
   to { transform: translate3d(-50%, -50%, 0) rotate(360deg); }
