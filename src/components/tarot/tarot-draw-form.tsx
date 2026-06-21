@@ -188,7 +188,7 @@ export function TarotDrawForm(_props: TarotDrawFormProps) {
             />
             {state.quotaExceeded ? (
               <Button asChild className="w-full" variant="outline">
-                <Link href={ROUTES.pricing}>멤버십 보기</Link>
+                <Link href={ROUTES.pricing}>구독 보기</Link>
               </Button>
             ) : null}
           </div>

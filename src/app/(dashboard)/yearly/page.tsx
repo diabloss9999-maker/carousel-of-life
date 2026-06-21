@@ -244,7 +244,7 @@ export default async function YearlyPage({ searchParams }: YearlyPageProps) {
             href={ROUTES.settings as Route}
             className="inline-flex items-center justify-center rounded-full border border-white/15 px-4 py-2.5 text-[14px] font-semibold transition hover:bg-white/10"
           >
-            멤버십 확인
+            구독 확인
           </Link>
         </div>
       </section>
@@ -300,7 +300,7 @@ function PremiumYearlySection({
         </div>
       ) : (
         <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-[14px] leading-6 text-muted-foreground">
-          멤버십을 열면 2026년 관계 전환점, 돈이 모이는 시기, 일과
+          구독하면 2026년 관계 전환점, 돈이 모이는 시기, 일과
           공부에서 역할이 바뀌는 지점, 연말까지 가져갈 습관을 자세히
           볼 수 있어요.
         </div>
@@ -347,7 +347,7 @@ function PremiumYearlySection({
                   {item.preview}
                 </p>
                 <p className="text-[13px] font-medium text-primary">
-                  멤버십에서 자세히 열림
+                  구독하면 자세히 열림
                 </p>
               </div>
             )}
@@ -375,8 +375,8 @@ function UnlockedYearlyNotice({ justSubscribed }: { justSubscribed: boolean }) {
         <div>
           <p className="font-semibold text-primary">
             {justSubscribed
-              ? "멤버십 결제가 완료됐어요"
-              : "멤버십으로 연간 심층 리포트가 열려 있어요"}
+              ? "구독 결제가 완료됐어요"
+              : "구독으로 연간 심층 리포트가 열려 있어요"}
           </p>
           <p className="mt-1 text-[14px] leading-6 text-muted-foreground">
             {justSubscribed

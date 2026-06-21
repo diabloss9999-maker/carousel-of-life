@@ -184,7 +184,7 @@ function TarotStartGuide({ subscribed }: { subscribed: boolean }) {
         body={
           subscribed
             ? "상황과 선택지를 구체적으로 넣을수록 더 선명해져요."
-            : "멤버십에서 더 깊은 카드 흐름을 볼 수 있어요."
+            : "구독하면 더 깊은 카드 흐름을 볼 수 있어요."
         }
       />
     </section>

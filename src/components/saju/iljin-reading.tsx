@@ -97,7 +97,7 @@ export function IljinReading({ subscribed, hasSaju }: IljinReadingProps) {
           <Button asChild size="sm" className="w-full">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-3.5 w-3.5" />
-              멤버십 확인하기
+              구독 확인하기
             </Link>
           </Button>
         </CardContent>

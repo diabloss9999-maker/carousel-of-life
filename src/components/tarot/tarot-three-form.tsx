@@ -114,7 +114,7 @@ export function TarotThreeForm({
           <Button asChild className="w-full" size="lg">
             <Link href={ROUTES.pricing}>
               <Sparkles className="h-4 w-4" aria-hidden />
-              멤버십으로 3장 타로 열기
+              구독으로 3장 타로 열기
             </Link>
           </Button>
         </CardContent>

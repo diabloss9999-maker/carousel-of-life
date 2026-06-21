@@ -243,7 +243,7 @@ function TarotUpgradeNudge() {
             href={`${ROUTES.pricing}?from=tarot` as Route}
             className="mt-3 inline-flex items-center gap-1 text-[13px] font-semibold text-primary"
           >
-            라이트 멤버십 보기
+            라이트 구독 보기
             <ArrowRight className="h-3.5 w-3.5" aria-hidden />
           </Link>
         </div>
