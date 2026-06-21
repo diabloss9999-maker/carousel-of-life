@@ -332,26 +332,11 @@ export function ChatWindow({
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let acc = "";
-      let cardsExtracted = false;
-      let drawnCards: DrawnCardMeta[] | undefined;
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         acc += decoder.decode(value, { stream: true });
-
-        // 泥?以?"CARDS:{json}\n" ?뚯떛
-        if (!cardsExtracted && acc.startsWith("CARDS:")) {
-          const newlineIdx = acc.indexOf("\n");
-          if (newlineIdx !== -1) {
-            try {
-              const jsonStr = acc.slice("CARDS:".length, newlineIdx);
-              drawnCards = JSON.parse(jsonStr) as DrawnCardMeta[];
-            } catch { /* ignore */ }
-            acc = acc.slice(newlineIdx + 1);
-            cardsExtracted = true;
-          }
-        }
 
         // While streaming, keep the KakaoTalk-like typing state instead of repainting text.
         // The completed response is rendered once below.
@@ -361,7 +346,7 @@ export function ChatWindow({
       setMessages((prev) =>
         prev.map((m) =>
           m.id === assistantId
-            ? { ...m, content: acc, cards: drawnCards, isStreaming: false }
+            ? { ...m, content: acc, isStreaming: false }
             : m,
         ),
       );

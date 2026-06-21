@@ -1648,7 +1648,7 @@
     "branchHidden": "지지 · 감춰진 결",
     "eightSummary": "여덟 글자 종합",
     "premiumTitle": "사주 노트",
-    "premiumBody": "일곱 가지 관점으로 읽어주는 사주 노트예요.",
+    "premiumBody": "일곱 가지 관점으로 정리하는 사주 노트예요.",
     "premiumLockBullets": [
       "성격 · 타고난 결",
       "강점 · 빛이 나는 자리",
@@ -2270,110 +2270,6 @@
       "정치인",
       "프로젝트 매니저"
     ]
-  },
-  "fanService": {
-    "today-general": {
-      "eyebrow": "Ian Daily Briefing",
-      "title": "이안이 읽어주는\n오늘 운세",
-      "body": "오늘 조심할 점과 기대해볼 일을 이안이 담담하게 말해줘요.",
-      "imageAlt": "이안이 오늘의 운세를 읽어주는 모습"
-    },
-    "today-love": {
-      "eyebrow": "Yujun Heart Note",
-      "title": "유준이 봐주는 오늘의 연애운",
-      "body": "마음이 어디로 향하는지 유준이 부드럽게 봐줘요.",
-      "imageAlt": "유준이 연애운을 읽어주는 모습"
-    },
-    "today-money": {
-      "eyebrow": "Ihyun Money Check",
-      "title": "이현이 봐주는 오늘의 금전운",
-      "body": "돈 쓸 일과 아껴둘 일을 이현이 현실적으로 봐줘요.",
-      "imageAlt": "이현이 재물운을 봐주는 모습"
-    },
-    "today-career": {
-      "eyebrow": "Sion Career Cut",
-      "title": "시온이 봐주는 오늘의 커리어운",
-      "body": "일에서 먼저 챙길 일을 시온이 선명하게 말해줘요.",
-      "imageAlt": "시온이 커리어운을 읽어주는 모습"
-    },
-    "today-health": {
-      "eyebrow": "Theo Body Signal",
-      "title": "태오가 봐주는 오늘의 건강운",
-      "body": "오늘 몸 상태에 맞춰 무리하지 않는 쪽을 태오가 알려줘요.",
-      "imageAlt": "태오가 건강운을 봐주는 모습"
-    },
-    "today-study": {
-      "eyebrow": "Doyoon Study Push",
-      "title": "도윤이 봐주는 오늘의 공부운",
-      "body": "공부를 시작하기 좋은 때와 집중법을 도윤이 알려줘요.",
-      "imageAlt": "도윤이 공부운을 봐주는 모습"
-    },
-    "today-zodiac": {
-      "eyebrow": "Hamin Star Mood",
-      "title": "하민이 읽어주는 오늘의 별자리운",
-      "body": "별자리로 본 오늘의 분위기를 하민이 조용히 들려줘요.",
-      "imageAlt": "하민이 별자리 운세를 들려주는 모습"
-    },
-    "today-chinese-zodiac": {
-      "eyebrow": "Jaeha Old Sign",
-      "title": "재하가 읽어주는 오늘의 띠운세",
-      "body": "오늘 조심하면 좋을 점을 재하가 차분히 말해줘요.",
-      "imageAlt": "재하가 띠운세를 풀어주는 모습"
-    },
-    "tarot": {
-      "eyebrow": "Hamin Tarot Service",
-      "title": "하민이 봐주는 타로 한 장",
-      "body": "하민이 펼친 카드로 지금 마음에 필요한 말을 들려줘요.",
-      "imageAlt": "하민이 타로 카드를 봐주는 모습"
-    },
-    "saju": {
-      "eyebrow": "Doyoon Saju Note",
-      "title": "도윤이 읽어주는 사주 노트",
-      "body": "도윤이 내 사주를 보고 성향과 방향을 읽어줘요.",
-      "imageAlt": "도윤이 사주를 읽어주는 모습"
-    },
-    "flower": {
-      "eyebrow": "Haru Flower Pick",
-      "title": "하루가 골라주는 오늘의 꽃",
-      "body": "하루가 오늘 내게 어울리는 꽃 한 송이를 골라줘요.",
-      "imageAlt": "하루가 꽃점을 봐주는 모습"
-    },
-    "compatibility": {
-      "eyebrow": "Yujun Pair Mood",
-      "title": "유준이 봐주는 두 사람의 궁합",
-      "body": "두 사람 사이의 닮은 점과 다른 점을 유준이 읽어줘요.",
-      "imageAlt": "유준이 궁합을 읽어주는 모습"
-    },
-    "name-reading": {
-      "eyebrow": "Jaeha Name Tone",
-      "title": "재하가 읽어주는 이름의 울림",
-      "body": "이름에 담긴 느낌과 결을 재하가 들려줘요.",
-      "imageAlt": "재하가 이름풀이를 들려주는 모습"
-    },
-    "name-compatibility": {
-      "eyebrow": "Ihyun Name Match",
-      "title": "이현이 봐주는 이름 궁합",
-      "body": "두 이름이 어떻게 맞물리는지 이현이 비교해줘요.",
-      "imageAlt": "이현이 이름 궁합을 비교해주는 모습"
-    },
-    "personality": {
-      "eyebrow": "Sion Type Check",
-      "title": "시온이 읽어주는 내 성격",
-      "body": "내가 자주 보이는 패턴을 시온이 선명하게 말해줘요.",
-      "imageAlt": "시온이 성격유형을 읽어주는 모습"
-    },
-    "dream": {
-      "eyebrow": "Jaeha Dream Note",
-      "title": "재하가 풀어주는 꿈 이야기",
-      "body": "꿈에 남은 장면과 감정을 재하가 조용히 풀어줘요.",
-      "imageAlt": "재하가 꿈해몽을 풀어주는 모습"
-    },
-    "palm": {
-      "eyebrow": "Theo Palm Routine",
-      "title": "태오가 봐주는 손금 이야기",
-      "body": "손바닥에 남은 선과 생활 습관을 태오가 연결해봐요.",
-      "imageAlt": "태오가 손금 결을 봐주는 모습"
-    }
   },
   "weeklyPage": {
     "title": "주간 리포트",
