@@ -1190,7 +1190,7 @@
     "compatibilityAiFailed": "2人のエネルギーを読めませんでした: {message}",
     "compatibilityAiFailedShort": "四柱の星の流れを読めませんでした: {message}",
     "runeAiFailed": "ルーンのメッセージを読めませんでした: {message}",
-    "deepReadingAiFailed": "深掘りリーディングを書けませんでした: {message}",
+    "deepReadingAiFailed": "深掘りリーディングを一時的に作成できませんでした。少し待ってからもう一度お試しください。",
     "deepReadingSajuFailed": "四柱の星の流れを読めませんでした: {message}",
     "unknownReason": "原因不明",
     "reloginRequired": "もう一度ログインしてください。",

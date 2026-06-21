@@ -1190,7 +1190,7 @@
     "compatibilityAiFailed": "Couldn't read the two energies: {message}",
     "compatibilityAiFailedShort": "Couldn't read the stellar flow for your pillars: {message}",
     "runeAiFailed": "Couldn't read the runes' message: {message}",
-    "deepReadingAiFailed": "Couldn't write the deep reading: {message}",
+    "deepReadingAiFailed": "Couldn't write the deep reading right now. Please try again in a moment.",
     "deepReadingSajuFailed": "Couldn't read the stellar flow for your pillars: {message}",
     "unknownReason": "unknown cause",
     "reloginRequired": "Please sign in again.",

@@ -92,13 +92,12 @@ export async function getOrCreateDeepReading(
       locale: await getLocale(),
     });
   } catch (e) {
+    console.error("[saju] deep reading AI failed", e);
     const tErr = await getTranslations("actionErrors");
     return {
       ok: false,
       reason: "ai_failed",
-      message: tErr("deepReadingAiFailed", {
-        message: e instanceof Error ? e.message : tErr("unknownReason"),
-      }),
+      message: tErr("deepReadingAiFailed"),
     };
   }
 
