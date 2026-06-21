@@ -131,11 +131,11 @@ export default async function HomePage() {
 
       <section className="landing-hero relative z-10 mx-auto flex min-h-[78dvh] max-w-6xl flex-col items-center justify-center overflow-hidden px-5 pb-10 pt-14 text-center sm:min-h-[74dvh] sm:px-6 sm:pb-12 sm:pt-16">
         <div className="relative z-10 flex max-w-3xl flex-col items-center gap-4 sm:gap-5">
-          <p className="rounded-full border border-black/10 bg-white/70 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.22em] text-foreground/70 shadow-[0_4px_16px_rgba(35,39,48,0.05)] backdrop-blur-md">
+          <p className="rounded-full border border-black/10 bg-white/80 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.28em] text-foreground/68 shadow-[0_4px_16px_rgba(35,39,48,0.045)] backdrop-blur-md">
             CAROUSEL NINE
           </p>
 
-          <h1 className="font-mystic text-balance text-[44px] font-semibold leading-[1.05] tracking-tight text-foreground sm:text-6xl">
+          <h1 className="font-mystic text-balance text-[46px] font-semibold leading-[1.02] tracking-tight text-foreground sm:text-7xl">
             {siteConfig.name}
           </h1>
 
@@ -153,7 +153,7 @@ export default async function HomePage() {
             <Button
               asChild
               size="lg"
-              className="h-12 rounded-full border border-black/80 bg-[#16181d] px-7 text-white shadow-[0_12px_30px_rgba(18,20,24,0.18),inset_0_1px_0_rgba(255,255,255,0.18)] transition hover:bg-[#23262c]"
+              className="h-12 rounded-full border border-black/90 bg-[#111318] px-7 text-white shadow-[0_14px_30px_rgba(18,20,24,0.18),inset_0_1px_0_rgba(255,255,255,0.18)] transition hover:bg-[#20232a]"
             >
               <Link href={ROUTES.login}>
                 {t("startFree")}
@@ -164,7 +164,7 @@ export default async function HomePage() {
               {["오늘운세", "사주", "타로", "궁합"].map((label) => (
                 <span
                   key={label}
-                  className="rounded-full border border-black/8 bg-white/55 px-3 py-1 text-[12px] font-semibold text-foreground/60 backdrop-blur-sm"
+                className="rounded-full border border-black/8 bg-white/68 px-3 py-1 text-[12px] font-semibold text-foreground/60 backdrop-blur-sm"
                 >
                   {label}
                 </span>
@@ -290,7 +290,7 @@ async function OraclesSection() {
         <Button
           asChild
           size="lg"
-          className="h-auto min-h-12 max-w-full rounded-full border border-white/65 bg-white/45 px-7 py-3 text-center leading-tight text-foreground shadow-[0_12px_34px_rgba(96,64,26,0.22),inset_0_1px_0_rgba(255,255,255,0.65)] backdrop-blur-md transition hover:bg-white/60"
+          className="h-auto min-h-12 max-w-full rounded-full border border-black/10 bg-white/82 px-7 py-3 text-center leading-tight text-foreground shadow-[0_10px_24px_rgba(23,26,32,0.08),inset_0_1px_0_rgba(255,255,255,0.70)] backdrop-blur-md transition hover:bg-white"
         >
           <Link href={ROUTES.login}>
             {t("cta")}
@@ -319,7 +319,7 @@ function OracleCard({
   const imageSrc = CHARACTERS[id].imageSrcDay;
 
   return (
-    <Card className="app-surface overflow-hidden rounded-[22px] transition duration-200 hover:-translate-y-1 hover:border-primary/20 hover:shadow-[0_18px_42px_rgba(35,39,48,0.12)]">
+    <Card className="app-surface overflow-hidden rounded-[22px] transition duration-200 hover:-translate-y-1 hover:border-primary/20 hover:shadow-[0_18px_42px_rgba(23,26,32,0.11)]">
       <div className="relative aspect-[3/4] w-full overflow-hidden bg-white/40">
         <Image
           src={imageSrc}
@@ -330,7 +330,7 @@ function OracleCard({
         />
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-black/58 via-black/10 to-transparent"
+          className="absolute inset-0 bg-gradient-to-t from-black/62 via-black/12 to-transparent"
         />
         <div className="on-character-image absolute bottom-0 left-0 right-0 p-4 space-y-0.5">
           <p className="font-mystic text-lg font-semibold drop-shadow">

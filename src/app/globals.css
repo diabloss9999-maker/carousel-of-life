@@ -135,18 +135,21 @@ body.chat-shell-active .mobile-app-content {
   /* White Glass 怨듯넻 ?좏겙 ???? 寃?? 諛? ?곗깋 (body[data-time]??override) */
   --nav-active: rgba(0,0,0,0.88);
   --nav-muted: rgba(0,0,0,0.50);
-  --app-surface: rgba(255, 255, 255, 0.74);
-  --app-surface-strong: rgba(255, 255, 255, 0.88);
-  --app-surface-soft: rgba(255, 255, 255, 0.56);
-  --app-line: rgba(24, 26, 32, 0.085);
-  --app-line-strong: rgba(24, 26, 32, 0.13);
-  --app-shadow-soft: 0 10px 28px rgba(35, 39, 48, 0.075);
-  --app-shadow-panel: 0 18px 46px rgba(35, 39, 48, 0.095);
+  --app-ink: rgba(17, 18, 22, 0.94);
+  --app-muted: rgba(17, 18, 22, 0.58);
+  --app-faint: rgba(17, 18, 22, 0.36);
+  --app-surface: rgba(255, 255, 255, 0.80);
+  --app-surface-strong: rgba(255, 255, 255, 0.94);
+  --app-surface-soft: rgba(255, 255, 255, 0.64);
+  --app-line: rgba(18, 20, 24, 0.075);
+  --app-line-strong: rgba(18, 20, 24, 0.13);
+  --app-shadow-soft: 0 10px 26px rgba(23, 26, 32, 0.065);
+  --app-shadow-panel: 0 24px 58px rgba(23, 26, 32, 0.095);
   --app-radius-card: 18px;
-  --app-radius-panel: 24px;
-  --header-bg: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.66));
-  --header-border: rgba(24, 26, 32, 0.075);
-  --header-shadow: 0 8px 24px rgba(35, 39, 48, 0.07);
+  --app-radius-panel: 26px;
+  --header-bg: linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.72));
+  --header-border: rgba(18, 20, 24, 0.07);
+  --header-shadow: 0 8px 24px rgba(23, 26, 32, 0.055);
 }
 
 .dark {
@@ -201,12 +204,12 @@ body.ritual-day {
   --col-faint: rgba(0, 0, 0, 0.32);
   --ritual-text: rgba(0, 0, 0, 0.88);
   --ritual-muted: rgba(0, 0, 0, 0.55);
-  --app-surface: rgba(255, 255, 255, 0.76);
-  --app-surface-strong: rgba(255, 255, 255, 0.90);
-  --app-surface-soft: rgba(255, 255, 255, 0.58);
-  --header-bg: linear-gradient(180deg, rgba(255,255,255,0.84), rgba(255,255,255,0.68));
-  --header-border: rgba(24, 26, 32, 0.075);
-  --header-shadow: 0 8px 24px rgba(35, 39, 48, 0.065);
+  --app-surface: rgba(255, 255, 255, 0.82);
+  --app-surface-strong: rgba(255, 255, 255, 0.95);
+  --app-surface-soft: rgba(255, 255, 255, 0.66);
+  --header-bg: linear-gradient(180deg, rgba(255,255,255,0.90), rgba(255,255,255,0.74));
+  --header-border: rgba(18, 20, 24, 0.07);
+  --header-shadow: 0 8px 24px rgba(23, 26, 32, 0.055);
   color: rgba(0, 0, 0, 0.88) !important;
   background: #f7f4ee;
 }
@@ -226,12 +229,12 @@ body.ritual-night {
   --col-faint: rgba(0, 0, 0, 0.36);
   --ritual-text: rgba(0, 0, 0, 0.92);
   --ritual-muted: rgba(0, 0, 0, 0.62);
-  --app-surface: rgba(255, 255, 255, 0.72);
-  --app-surface-strong: rgba(255, 255, 255, 0.86);
-  --app-surface-soft: rgba(255, 255, 255, 0.54);
-  --header-bg: linear-gradient(180deg, rgba(255,255,255,0.80), rgba(255,255,255,0.64));
-  --header-border: rgba(24, 26, 32, 0.085);
-  --header-shadow: 0 8px 24px rgba(35, 39, 48, 0.075);
+  --app-surface: rgba(255, 255, 255, 0.78);
+  --app-surface-strong: rgba(255, 255, 255, 0.92);
+  --app-surface-soft: rgba(255, 255, 255, 0.62);
+  --header-bg: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,255,255,0.70));
+  --header-border: rgba(18, 20, 24, 0.08);
+  --header-shadow: 0 8px 24px rgba(23, 26, 32, 0.065);
   color: rgba(0, 0, 0, 0.92) !important;
   background: #f0f1f4 !important;
 }
@@ -244,10 +247,8 @@ body.ritual-night {
   z-index: -30;
   overflow: hidden;
   background:
-    radial-gradient(circle at 14% 8%, rgba(236, 182, 102, 0.16), transparent 34%),
-    radial-gradient(circle at 86% 12%, rgba(115, 164, 190, 0.14), transparent 32%),
-    radial-gradient(circle at 50% 100%, rgba(210, 136, 132, 0.12), transparent 36%),
-    linear-gradient(180deg, #fbf8f2 0%, #f3f1ed 54%, #eceff2 100%);
+    linear-gradient(115deg, rgba(246, 238, 224, 0.78) 0%, rgba(248, 248, 247, 0.58) 36%, rgba(234, 241, 243, 0.74) 100%),
+    linear-gradient(180deg, #fbfaf7 0%, #f3f3f1 54%, #eceff0 100%);
   isolation: isolate;
 }
 
@@ -268,8 +269,8 @@ body.ritual-night {
 .ritual-backdrop__veil {
   z-index: 1;
   background:
-    linear-gradient(115deg, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0.18) 42%, rgba(255, 255, 255, 0.36) 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(245, 246, 248, 0.44));
+    linear-gradient(90deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.16) 42%, rgba(255, 255, 255, 0.46)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(245, 246, 248, 0.52));
 }
 
 .ritual-backdrop__wheel {
@@ -282,7 +283,7 @@ body.ritual-night {
   bottom: auto;
   border-radius: 999px;
   transform: translate3d(-50%, -50%, 0);
-  opacity: 0.045;
+  opacity: 0.032;
   background:
     conic-gradient(
       from -36deg,
@@ -299,7 +300,7 @@ body.ritual-night {
 
 .ritual-backdrop__threads {
   z-index: 3;
-  opacity: 0.055;
+  opacity: 0.045;
   background-image:
     linear-gradient(rgba(70, 52, 36, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(70, 52, 36, 0.028) 1px, transparent 1px);
@@ -325,10 +326,8 @@ body.ritual-night {
 
 .ritual-backdrop.is-night {
   background:
-    radial-gradient(circle at 12% 8%, rgba(232, 176, 110, 0.12), transparent 32%),
-    radial-gradient(circle at 88% 10%, rgba(96, 145, 178, 0.16), transparent 34%),
-    radial-gradient(circle at 48% 100%, rgba(150, 132, 190, 0.12), transparent 36%),
-    linear-gradient(180deg, #f4f5f7 0%, #eceff2 54%, #e7e8eb 100%);
+    linear-gradient(115deg, rgba(239, 235, 226, 0.72) 0%, rgba(244, 246, 248, 0.62) 42%, rgba(228, 235, 239, 0.78) 100%),
+    linear-gradient(180deg, #f5f6f7 0%, #eceff2 54%, #e7e9ec 100%);
 }
 
 .ritual-backdrop.is-night .ritual-backdrop__veil {
@@ -984,9 +983,9 @@ html[data-platform="ios"] [data-hide-in-app] {
     linear-gradient(180deg, var(--app-surface-strong), var(--app-surface)),
     var(--app-surface);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.68),
+    inset 0 1px 0 rgba(255,255,255,0.76),
     var(--app-shadow-soft);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(16px);
   /* color 紐낆떆 ?쒓굅 ??遺紐⑤줈遺??inherit. ?꾧컧泥섎읆 遺紐⑥뿉 text-white 諛뺤?
      寃쎌슦 ?먯떇 ?띿뒪?멸? ?먮룞?쇰줈 ?곗깋???섎룄濡? (?덉쟾??var(--foreground)
      瑜?媛뺤젣濡?諛뺤븘???꾧컧???곗깋 泥섎━媛 ??癒밸뒗 踰꾧렇媛 ?덉뿀??) */
@@ -1000,13 +999,12 @@ html[data-platform="ios"] [data-hide-in-app] {
   overflow: hidden;
   border: 1px solid var(--app-line);
   background:
-    radial-gradient(circle at 14% 8%, rgba(255, 255, 255, 0.62), transparent 30%),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(250, 250, 250, 0.66) 54%, rgba(246, 247, 249, 0.58)),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(250, 250, 250, 0.70) 54%, rgba(246, 247, 249, 0.62)),
     var(--app-surface);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.76),
     var(--app-shadow-panel);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(18px);
 }
 
 .liquid-glass-panel::before {
@@ -1035,16 +1033,15 @@ html[data-platform="ios"] [data-hide-in-app] {
   content: "";
   pointer-events: none;
   position: absolute;
-  inset: 10% 50% auto auto;
-  width: min(520px, 80vw);
-  aspect-ratio: 1;
-  transform: translateX(50%);
-  border-radius: 999px;
+  inset: 16% 8% auto 8%;
+  height: 46%;
+  transform: none;
+  border-radius: 36px;
   background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.64), transparent 58%),
-    conic-gradient(from 18deg, rgba(191, 166, 106, 0.13), rgba(126, 169, 161, 0.10), rgba(143, 121, 201, 0.12), rgba(191, 166, 106, 0.13));
-  filter: blur(2px);
-  opacity: 0.74;
+    linear-gradient(90deg, transparent, rgba(255,255,255,0.72) 18%, rgba(255,255,255,0.46) 50%, rgba(255,255,255,0.72) 82%, transparent),
+    linear-gradient(180deg, rgba(255,255,255,0.30), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent);
+  opacity: 0.56;
 }
 
 .landing-hero::after {
@@ -1066,8 +1063,7 @@ html[data-platform="ios"] [data-hide-in-app] {
   border: 1px solid var(--app-line);
   border-radius: var(--app-radius-panel);
   background:
-    radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.92), transparent 34%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.84), rgba(250, 250, 250, 0.64)),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(250, 250, 250, 0.72)),
     var(--app-surface);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.72),
@@ -1080,10 +1076,10 @@ html[data-platform="ios"] [data-hide-in-app] {
   content: "";
   pointer-events: none;
   position: absolute;
-  inset: auto -10% -45% 35%;
-  height: 150px;
-  border-radius: 999px;
-  background: radial-gradient(circle, rgba(191, 166, 106, 0.16), transparent 62%);
+  inset: auto 22px 18px;
+  height: 1px;
+  border-radius: 0;
+  background: linear-gradient(90deg, transparent, rgba(18, 20, 24, 0.10), transparent);
 }
 
 .reading-hero > * {
