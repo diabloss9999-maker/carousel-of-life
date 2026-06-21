@@ -44,6 +44,10 @@ export default async function TarotPage() {
   const threeReadings = readings.filter(
     (reading) => reading.spreadType === "three",
   );
+  const latestThreeReading = threeReadings[0];
+  const olderThreeReadings = threeReadings.slice(1);
+  const latestSingleReading = singleReadings[0];
+  const olderSingleReadings = singleReadings.slice(1);
 
   return (
     <div className="space-y-8">
@@ -82,35 +86,71 @@ export default async function TarotPage() {
               </p>
             </div>
 
-            {threeReadings.length > 0 ? (
+            {latestThreeReading ? (
               <section id="tarot-results" className="space-y-4">
                 <h2 className="font-mystic text-2xl font-semibold tracking-tight">
                   3장 타로
                 </h2>
                 <div className="space-y-6">
-                  {threeReadings.map((reading) => (
-                    <TarotThreeReadingCard
-                      key={reading.id}
-                      reading={reading}
-                    />
-                  ))}
+                  <TarotThreeReadingCard
+                    key={latestThreeReading.id}
+                    reading={latestThreeReading}
+                  />
+                  {olderThreeReadings.length > 0 ? (
+                    <details className="group rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[15px] font-semibold [&::-webkit-details-marker]:hidden">
+                        <span>이전 3장 타로 {olderThreeReadings.length}개</span>
+                        <span className="text-muted-foreground transition group-open:rotate-180">
+                          ↓
+                        </span>
+                      </summary>
+                      <div className="mt-4 space-y-6">
+                        {olderThreeReadings.map((reading) => (
+                          <TarotThreeReadingCard
+                            key={reading.id}
+                            reading={reading}
+                          />
+                        ))}
+                      </div>
+                    </details>
+                  ) : null}
                 </div>
               </section>
             ) : null}
 
-            {singleReadings.length > 0 ? (
-              <section id={threeReadings.length > 0 ? undefined : "tarot-results"} className="space-y-4">
+            {latestSingleReading ? (
+              <section
+                id={latestThreeReading ? undefined : "tarot-results"}
+                className="space-y-4"
+              >
                 <h2 className="font-mystic text-2xl font-semibold tracking-tight">
                   오늘 뽑은 카드
                 </h2>
                 <div className="space-y-6">
-                  {singleReadings.map((reading) => (
-                    <TarotReadingCard
-                      key={reading.id}
-                      reading={reading}
-                      subscribed={subscribed}
-                    />
-                  ))}
+                  <TarotReadingCard
+                    key={latestSingleReading.id}
+                    reading={latestSingleReading}
+                    subscribed={subscribed}
+                  />
+                  {olderSingleReadings.length > 0 ? (
+                    <details className="group rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[15px] font-semibold [&::-webkit-details-marker]:hidden">
+                        <span>이전 한 장 타로 {olderSingleReadings.length}개</span>
+                        <span className="text-muted-foreground transition group-open:rotate-180">
+                          ↓
+                        </span>
+                      </summary>
+                      <div className="mt-4 space-y-6">
+                        {olderSingleReadings.map((reading) => (
+                          <TarotReadingCard
+                            key={reading.id}
+                            reading={reading}
+                            subscribed={subscribed}
+                          />
+                        ))}
+                      </div>
+                    </details>
+                  ) : null}
                 </div>
               </section>
             ) : null}
