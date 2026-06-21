@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-export const maxDuration = 30;
+export const maxDuration = 60;
 
 import { Layers3, LockKeyhole, MessageSquareText, Sparkles } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -82,8 +82,24 @@ export default async function TarotPage() {
               </p>
             </div>
 
-            {singleReadings.length > 0 ? (
+            {threeReadings.length > 0 ? (
               <section id="tarot-results" className="space-y-4">
+                <h2 className="font-mystic text-2xl font-semibold tracking-tight">
+                  3장 타로
+                </h2>
+                <div className="space-y-6">
+                  {threeReadings.map((reading) => (
+                    <TarotThreeReadingCard
+                      key={reading.id}
+                      reading={reading}
+                    />
+                  ))}
+                </div>
+              </section>
+            ) : null}
+
+            {singleReadings.length > 0 ? (
+              <section id={threeReadings.length > 0 ? undefined : "tarot-results"} className="space-y-4">
                 <h2 className="font-mystic text-2xl font-semibold tracking-tight">
                   오늘 뽑은 카드
                 </h2>
@@ -93,22 +109,6 @@ export default async function TarotPage() {
                       key={reading.id}
                       reading={reading}
                       subscribed={subscribed}
-                    />
-                  ))}
-                </div>
-              </section>
-            ) : null}
-
-            {threeReadings.length > 0 ? (
-              <section className="space-y-4">
-                <h2 className="font-mystic text-2xl font-semibold tracking-tight">
-                  3장 타로
-                </h2>
-                <div className="space-y-6">
-                  {threeReadings.map((reading) => (
-                    <TarotThreeReadingCard
-                      key={reading.id}
-                      reading={reading}
                     />
                   ))}
                 </div>

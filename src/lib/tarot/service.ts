@@ -182,9 +182,10 @@ export async function createThreeCardTarot(opts: {
 - Do not mention any member, idol, fan-service concept, or Carousel Nine worldbuilding.
 - Keep the past, present, and future structure clear, and reflect each card name and upright/reversed state accurately.
 - Do not write as a fixed prediction. Help the user organize the situation and choose a next action.
+- Keep each of past, present, future, and synthesis to 2 or 3 concise sentences.
 - Write summary, past, present, future, and synthesis in a calm Korean report tone.`,
       model: AI_MODELS.premium,
-      maxTokens: AI_LIMITS.tarotMaxTokens * 2,
+      maxTokens: AI_LIMITS.tarotMaxTokens,
       systemSuffix: NEUTRAL_CARD_VOICE,
       locale: await getLocale(),
     });
