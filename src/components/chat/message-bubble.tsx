@@ -7,21 +7,10 @@ import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import type { CharacterId } from "@/lib/chat/characters";
 
-export interface DrawnCardMeta {
-  id: string;
-  nameKo: string;
-  nameEn?: string;
-  imageSrc: string;
-  isReversed?: boolean;
-  position?: string;
-}
-
 interface MessageBubbleProps {
   role: "user" | "assistant";
   content: string;
   isStreaming?: boolean;
-  /** 점술 요청 시 뽑힌 카드 메타데이터 */
-  cards?: DrawnCardMeta[];
   /** 현재 세션 멤버 (버블 테마용) */
   characterId?: CharacterId;
 }
@@ -127,7 +116,6 @@ const ORACLE_BUBBLE_THEME: Record<
     icon: string;
     oracleBubble: string;
     observerBubble: string;
-    cardsRing: string;
     label: string;
   }
 > = {
@@ -135,63 +123,54 @@ const ORACLE_BUBBLE_THEME: Record<
     icon: "border-red-300/40 bg-red-500/20 text-red-100",
     oracleBubble: "border-red-300/30 bg-[linear-gradient(125deg,rgba(248,113,113,0.24),rgba(127,29,29,0.2)_55%,rgba(0,0,0,0.25))] rounded-bl-[10px]",
     observerBubble: "border-red-200/30 bg-[linear-gradient(135deg,rgba(254,202,202,0.28),rgba(127,29,29,0.18)_55%,rgba(0,0,0,0.22))] rounded-br-[10px]",
-    cardsRing: "ring-red-300/40",
     label: "Leader Note",
   },
   witch: {
     icon: "border-blue-300/40 bg-blue-500/20 text-blue-100",
     oracleBubble: "border-blue-300/30 bg-[linear-gradient(130deg,rgba(96,165,250,0.24),rgba(30,58,138,0.2)_55%,rgba(0,0,0,0.24))] rounded-bl-[10px]",
     observerBubble: "border-indigo-200/30 bg-[linear-gradient(135deg,rgba(191,219,254,0.25),rgba(49,46,129,0.18)_55%,rgba(0,0,0,0.22))] rounded-br-[10px]",
-    cardsRing: "ring-blue-300/40",
     label: "Vocal Note",
   },
   sage: {
     icon: "border-amber-300/45 bg-amber-400/20 text-amber-100",
     oracleBubble: "border-amber-300/30 bg-[linear-gradient(125deg,rgba(253,230,138,0.22),rgba(120,53,15,0.2)_58%,rgba(0,0,0,0.24))] rounded-bl-[10px]",
     observerBubble: "border-amber-200/30 bg-[linear-gradient(135deg,rgba(254,243,199,0.24),rgba(120,53,15,0.18)_56%,rgba(0,0,0,0.22))] rounded-br-[10px]",
-    cardsRing: "ring-amber-300/45",
     label: "Performer Note",
   },
   shaman: {
     icon: "border-rose-300/40 bg-rose-500/20 text-rose-100",
     oracleBubble: "border-rose-300/30 bg-[linear-gradient(128deg,rgba(251,113,133,0.23),rgba(136,19,55,0.2)_58%,rgba(0,0,0,0.24))] rounded-bl-[10px]",
     observerBubble: "border-rose-200/30 bg-[linear-gradient(135deg,rgba(254,205,211,0.24),rgba(136,19,55,0.18)_56%,rgba(0,0,0,0.22))] rounded-br-[10px]",
-    cardsRing: "ring-rose-300/40",
     label: "Producer Note",
   },
   taoist: {
     icon: "border-cyan-300/40 bg-cyan-500/20 text-cyan-100",
     oracleBubble: "border-cyan-300/30 bg-[linear-gradient(130deg,rgba(103,232,249,0.23),rgba(15,118,110,0.2)_58%,rgba(0,0,0,0.24))] rounded-bl-[10px]",
     observerBubble: "border-cyan-200/30 bg-[linear-gradient(135deg,rgba(207,250,254,0.24),rgba(15,118,110,0.18)_56%,rgba(0,0,0,0.22))] rounded-br-[10px]",
-    cardsRing: "ring-cyan-300/40",
     label: "Mood Note",
   },
   dokkaebi: {
     icon: "border-fuchsia-300/40 bg-fuchsia-500/20 text-fuchsia-100",
     oracleBubble: "border-purple-300/30 bg-[linear-gradient(130deg,rgba(216,180,254,0.24),rgba(88,28,135,0.2)_58%,rgba(0,0,0,0.24))] rounded-bl-[10px]",
     observerBubble: "border-purple-200/30 bg-[linear-gradient(135deg,rgba(233,213,255,0.24),rgba(88,28,135,0.18)_56%,rgba(0,0,0,0.22))] rounded-br-[10px]",
-    cardsRing: "ring-purple-300/40",
     label: "Rap Note",
   },
   hunter: {
     icon: "border-stone-300/40 bg-stone-500/20 text-stone-100",
     oracleBubble: "border-stone-300/30 bg-[linear-gradient(130deg,rgba(214,211,209,0.2),rgba(41,37,36,0.3)_58%,rgba(0,0,0,0.24))] rounded-bl-[10px]",
     observerBubble: "border-stone-200/30 bg-[linear-gradient(135deg,rgba(231,229,228,0.22),rgba(41,37,36,0.24)_56%,rgba(0,0,0,0.22))] rounded-br-[10px]",
-    cardsRing: "ring-stone-300/35",
     label: "Analyst Note",
   },
   runeshaman: {
     icon: "border-indigo-300/40 bg-indigo-500/20 text-indigo-100",
     oracleBubble: "border-indigo-300/30 bg-[linear-gradient(128deg,rgba(165,180,252,0.22),rgba(49,46,129,0.26)_58%,rgba(0,0,0,0.24))] rounded-bl-[10px]",
     observerBubble: "border-indigo-200/30 bg-[linear-gradient(135deg,rgba(224,231,255,0.24),rgba(49,46,129,0.2)_56%,rgba(0,0,0,0.22))] rounded-br-[10px]",
-    cardsRing: "ring-indigo-300/40",
     label: "Youngest Note",
   },
   god: {
     icon: "border-sky-300/40 bg-sky-500/20 text-sky-100",
     oracleBubble: "border-sky-300/30 bg-[linear-gradient(128deg,rgba(125,211,252,0.22),rgba(3,105,161,0.24)_58%,rgba(0,0,0,0.24))] rounded-bl-[10px]",
     observerBubble: "border-sky-200/30 bg-[linear-gradient(135deg,rgba(224,242,254,0.24),rgba(3,105,161,0.2)_56%,rgba(0,0,0,0.22))] rounded-br-[10px]",
-    cardsRing: "ring-sky-300/40",
     label: "Dance Note",
   },
 };
@@ -226,7 +205,6 @@ export function MessageBubble({
   role,
   content,
   isStreaming,
-  cards,
   characterId,
 }: MessageBubbleProps) {
   const tChars = useTranslations("characters");
@@ -272,32 +250,6 @@ export function MessageBubble({
       </div>
 
       <div className="flex-1 min-w-0 space-y-3">
-        {/* 카드 이미지 — 점술 요청 시 */}
-        {cards && cards.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {cards.map((card, i) => (
-              <div key={`${card.id}-${i}`} className="flex flex-col items-center gap-1">
-                {card.position && (
-                  <p className="text-[15px] text-muted-foreground">{card.position}</p>
-                )}
-                <div className={cn("relative w-20 sm:w-24 aspect-[2/3] overflow-hidden rounded-xl shadow-lg ring-1", oracleTheme.cardsRing)}>
-                  <Image
-                    src={card.imageSrc}
-                    alt={card.nameKo}
-                    fill
-                    className={cn("object-cover", card.isReversed && "rotate-180")}
-                    sizes="96px"
-                  />
-                </div>
-                <p className="text-[15px] text-center text-foreground/70 font-medium">
-                  {card.nameKo}
-                  {card.isReversed ? " ⤵" : ""}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
-
         {/* 텍스트 버블 — ritual 스타일 */}
         {isAssistant && characterId && (
           <p className="text-[15px] font-mystic font-semibold tracking-wide text-foreground/60">

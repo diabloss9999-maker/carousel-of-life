@@ -9,7 +9,7 @@ import { track } from "@vercel/analytics";
 
 import { Button } from "@/components/ui/button";
 import { ChatEmojiPicker } from "@/components/chat/chat-emoji-picker";
-import { MessageBubble, type DrawnCardMeta } from "@/components/chat/message-bubble";
+import { MessageBubble } from "@/components/chat/message-bubble";
 import { ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { CHARACTERS, type CharacterId } from "@/lib/chat/characters";
@@ -22,8 +22,6 @@ export interface InitialMessage {
   id: string;
   role: "user" | "assistant";
   content: string;
-  /** Card metadata saved with a reading message. */
-  cards?: DrawnCardMeta[] | null;
 }
 
 interface ChatWindowProps {
@@ -42,7 +40,6 @@ interface DisplayMessage {
   role: "user" | "assistant";
   content: string;
   isStreaming?: boolean;
-  cards?: DrawnCardMeta[];
 }
 
 /** Per-member chat color themes. */
@@ -156,7 +153,6 @@ export function ChatWindow({
       id: m.id,
       role: m.role,
       content: m.content,
-      cards: m.cards ?? undefined,
     })),
   );
   const [input, setInput] = useState("");
@@ -420,7 +416,6 @@ export function ChatWindow({
                 role={m.role}
                 content={m.content}
                 isStreaming={m.isStreaming}
-                cards={m.cards}
                 characterId={characterId}
               />
             ))
