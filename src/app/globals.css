@@ -598,20 +598,34 @@ body.ritual-night .ritual-readable-scrim {
   }
 
   .kakao-chat-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
     height: 44px;
   }
 
   .kakao-chat-actions > button {
-    height: 36px !important;
-    min-height: 36px !important;
-    width: 36px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    width: 40px !important;
     border: 0 !important;
-    background: transparent !important;
-    color: rgba(0, 0, 0, 0.66) !important;
+    border-radius: 999px !important;
+    background: rgba(0, 0, 0, 0.045) !important;
+    color: rgba(0, 0, 0, 0.72) !important;
     box-shadow: none !important;
   }
 
+  .kakao-chat-actions > button:hover {
+    background: rgba(0, 0, 0, 0.075) !important;
+  }
+
+  .kakao-chat-actions > button svg {
+    height: 18px !important;
+    width: 18px !important;
+  }
+
   .kakao-chat-actions > button[aria-pressed="true"] {
+    background: rgba(232, 75, 106, 0.12) !important;
     color: #e84b6a !important;
   }
 

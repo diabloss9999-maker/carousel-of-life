@@ -293,6 +293,7 @@ export function GiftShop({ characterId, characterName, returnTo, compact = false
                 <div className="gift-list space-y-2.5">
                   {GIFTS.map((gift) => {
                     const isSending = sendingGiftId === gift.id;
+                    const isBalanceLoading = balance == null;
                     const tooExpensive = balance != null && balance < gift.cost;
                     return (
                       <button
@@ -305,7 +306,7 @@ export function GiftShop({ characterId, characterName, returnTo, compact = false
                           }
                           void handleSendGift(gift.id);
                         }}
-                        disabled={!!sendingGiftId}
+                        disabled={!!sendingGiftId || isBalanceLoading}
                         className={cn(
                           "gift-row group w-full rounded-2xl border bg-white p-3 text-left shadow-sm transition",
                           tooExpensive
@@ -346,7 +347,9 @@ export function GiftShop({ characterId, characterName, returnTo, compact = false
                               : "bg-neutral-950 text-white",
                           )}
                         >
-                          {tooExpensive ? (
+                          {isBalanceLoading ? (
+                            "확인"
+                          ) : tooExpensive ? (
                             <>
                               <span>{isAndroidApp ? "안내" : "충전"}</span>
                             </>
