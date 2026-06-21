@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   // 랜딩은 사이트 기본 타이틀 그대로 노출 (template 우회).
   title: { absolute: `${siteConfig.name} — ${siteConfig.tagline}` },
   description:
-    "사주팔자·타로·궁합으로 오늘의 흐름을 살피고, Carousel Nine 콘텐츠는 별도로 즐겨요.",
+    "2026 신년운세, 사주팔자, 타로, 궁합으로 오늘과 한 해의 흐름을 살피고 Carousel Nine 콘텐츠는 별도로 즐겨요.",
   alternates: {
     canonical: "/",
   },
@@ -95,7 +95,7 @@ const structuredData = {
         "@type": "Offer",
         price: "0",
         priceCurrency: "KRW",
-        description: "무료 가입 후 매일 운세 3회·대화 10회 제공",
+        description: "무료 가입 후 오늘운세·사주·타로·궁합·2026 신년운세 일부 제공",
       },
     },
     {

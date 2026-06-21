@@ -57,6 +57,12 @@ export async function GET(req: NextRequest) {
   const number = sp.get("number") ?? null;
   const direction = sp.get("direction") ?? null;
   const date = sp.get("date") ?? "";
+  const readerName = sp.get("readerName")?.trim() || null;
+  const rawReaderImage = sp.get("readerImage")?.trim() || null;
+  const readerImage =
+    rawReaderImage && rawReaderImage.startsWith("/")
+      ? new URL(rawReaderImage, req.nextUrl.origin).toString()
+      : rawReaderImage;
 
   const { accent, soft } = scoreAccent(score);
 
@@ -101,6 +107,25 @@ export async function GET(req: NextRequest) {
             background: `radial-gradient(circle, ${accent}12 0%, transparent 70%)`,
           }}
         />
+        {readerImage ? (
+          <img
+            src={readerImage}
+            alt=""
+            width={460}
+            height={620}
+            style={{
+              position: "absolute",
+              right: -70,
+              bottom: -34,
+              width: 430,
+              height: 580,
+              objectFit: "cover",
+              objectPosition: "top center",
+              borderRadius: 34,
+              opacity: 0.82,
+            }}
+          />
+        ) : null}
 
         {/* 상단 — 브랜딩 + 카테고리 */}
         <div
@@ -125,6 +150,11 @@ export async function GET(req: NextRequest) {
             <span style={{ fontSize: 19, color: "#9b96a8", letterSpacing: 2 }}>
               {T.appName}
             </span>
+            {readerName ? (
+              <span style={{ marginTop: 8, fontSize: 21, color: soft }}>
+                {readerName}의 오늘 카드
+              </span>
+            ) : null}
           </div>
           <span
             style={{
