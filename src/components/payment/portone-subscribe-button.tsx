@@ -108,12 +108,12 @@ export function PortOneSubscribeButton({
         reason: "missing_channel",
       });
       setNotice(null);
-      setError("결제 시스템이 아직 설정되지 않았어요. 잠시 후 다시 시도해 주세요.");
+      setError("웹 결제 설정을 확인해야 해요. 잠시 후 다시 시도해 주세요.");
       return;
     }
 
     setError(null);
-    setNotice("결제 준비 중이에요.");
+    setNotice("결제창을 여는 중이에요.");
 
     startTransition(async () => {
       const issueId = await fetchIssueId(plan);
@@ -125,7 +125,7 @@ export function PortOneSubscribeButton({
           reason: "issue_prepare_failed",
         });
         setNotice(null);
-        setError("결제 준비에 실패했어요. 잠시 후 다시 시도해 주세요.");
+        setError("결제창 준비에 실패했어요. 잠시 후 다시 시도해 주세요.");
         return;
       }
 

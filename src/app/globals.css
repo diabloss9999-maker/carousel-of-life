@@ -209,7 +209,7 @@ body.ritual-night {
 
 /* ??? ?꾩뿭 諛곌꼍 ?덉씠?????뚯쟾紐⑸쭏??蹂꾩옄由?吏????? */
 .ritual-backdrop {
-  pointer-events: none;
+  pointer-events: none !important;
   position: fixed;
   inset: 0;
   z-index: -30;
@@ -219,6 +219,7 @@ body.ritual-night {
 }
 
 .ritual-backdrop__image {
+  pointer-events: none !important;
   object-fit: cover;
   object-position: center;
   transform: scale(1.025);
@@ -743,17 +744,16 @@ body .on-character-image * {
   color: rgba(255, 255, 255, 0.95) !important;
 }
 
-/* ?? ?ㅽ넗?????대? 寃곗젣 吏꾩엯??遺꾧린 ??????????????
-   Android TWA ?먯꽌??Google Play 援щ룆 踰꾪듉留??몄텧?섍퀬 ??PG 踰꾪듉? ?④릿??
-   iOS ?섑띁?먯꽌???몃?寃곗젣 吏꾩엯?먯쓣 ?④릿??
-   PlatformBridge 媛 ??而⑦뀓?ㅽ듃瑜?媛먯???<html data-platform="..."> 瑜??ㅼ젙?섍퀬,
-   ?꾨옒 洹쒖튃???뚮옯?쇰퀎 寃곗젣 踰꾪듉 ?몄텧???쒖뼱?쒕떎. */
+/* 앱 스토어 설치 환경별 결제 진입 분기.
+   Android TWA에서는 Google Play 구독 버튼만 노출하고 웹 PG 버튼은 숨긴다.
+   iOS 래퍼에서는 외부 결제 진입점을 숨긴다.
+   PlatformBridge가 <html data-platform="...">을 설정하면 아래 규칙이 적용된다. */
 [data-show-in-android] {
   display: none !important;
 }
 
 html[data-platform="android"] [data-show-in-android] {
-  display: contents !important;
+  display: block !important;
 }
 
 html[data-platform="android"] [data-hide-in-app],
@@ -762,7 +762,7 @@ html[data-platform="ios"] [data-hide-in-app] {
   display: none !important;
 }
 
-/* ?좊Ъ李쎌? ?묒? Android TWA ?붾㈃?먯꽌??湲?먭? ?몃줈濡?李?뼱吏吏 ?딄쾶 怨좎젙?쒕떎. */
+/* 선물창은 작은 Android TWA 화면에서도 글자가 세로로 찢어지지 않게 고정한다. */
 .gift-sheet,
 .gift-sheet * {
   letter-spacing: 0 !important;

@@ -136,12 +136,12 @@ export function SubscribeCta({
           className="w-full"
           variant={variant}
           disabled
-          title="결제 시스템을 준비 중입니다."
+          title="결제 설정을 확인한 뒤 다시 시도해 주세요."
         >
-          결제 준비 중
+          결제 설정 확인 필요
         </Button>
         <p className="text-[12px] leading-5 text-muted-foreground">
-          결제 설정이 완료되면 바로 멤버십 가입이 열려요.
+          지금은 웹 결제 설정을 확인 중이에요. Android 앱에서는 Google Play 결제로 진행돼요.
         </p>
       </div>
     </>

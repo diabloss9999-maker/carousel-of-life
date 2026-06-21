@@ -25,6 +25,7 @@ import {
   ROUTES,
   SUBSCRIPTION,
 } from "@/lib/constants";
+import { BUSINESS_INFO } from "@/lib/constants/business-info";
 import { getUser } from "@/lib/auth/get-user";
 import { getSubscriptionTier } from "@/lib/payment/subscription-state";
 import { formatKRW } from "@/lib/utils";
@@ -462,7 +463,7 @@ function PurchaseGuide() {
         />
         <PurchaseRow label="해지 방법" value="설정 → 멤버십에서 언제든 해지할 수 있어요. 해지해도 이미 결제된 기간까지는 이용할 수 있어요." />
         <PurchaseRow label="환불 안내" value="디지털 콘텐츠가 제공된 뒤에는 사용량에 따라 환불이 제한될 수 있어요. 자세한 내용은 환불 정책을 확인해 주세요." />
-        <PurchaseRow label="고객 문의" value="결제·환불 문의는 diabloss9999@gmail.com 으로 보내주세요." />
+        <PurchaseRow label="고객 문의" value={`결제·환불 문의는 ${BUSINESS_INFO.email} 으로 보내주세요.`} />
       </dl>
       <Link
         href="/refund"
@@ -503,10 +504,10 @@ function PaymentSetupNotice() {
         </div>
         <div className="space-y-1.5">
           <p className="font-mystic text-lg font-semibold text-foreground">
-            결제 시스템을 확인 중이에요
+            웹 결제 설정을 확인 중이에요
           </p>
           <p className="text-[15px] leading-relaxed text-foreground/80">
-            결제 설정이 완료되면 이 화면에서 바로 멤버십 가입을 진행할 수 있어요.
+            Android 앱에서는 Google Play 결제가 표시되고, 웹 결제는 설정 확인 후 다시 이용할 수 있어요.
           </p>
         </div>
       </div>

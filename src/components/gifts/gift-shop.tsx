@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { clientEnv } from "@/lib/env";
 import type { CharacterId } from "@/lib/chat/characters";
+import { BUSINESS_INFO } from "@/lib/constants/business-info";
 import {
   CURRENCY_EMOJI,
   CURRENCY_NAME,
@@ -347,7 +348,7 @@ export function GiftShop({ characterId, characterName, returnTo, compact = false
                         >
                           {tooExpensive ? (
                             <>
-                              <span>{isAndroidApp ? "부족" : "충전 이동"}</span>
+                              <span>{isAndroidApp ? "안내" : "충전"}</span>
                             </>
                           ) : (
                             "보내기"
@@ -408,7 +409,7 @@ export function GiftShop({ characterId, characterName, returnTo, compact = false
                 </div>
                 <p className="text-[11px] leading-relaxed text-neutral-500">
                   충전한 {CURRENCY_NAME}은 환불 정책에 따라 미사용분에 한해 환불 가능해요.
-                  결제 문의: diabloss9999@gmail.com
+                  결제 문의: {BUSINESS_INFO.email}
                 </p>
               </section>
             </div>
