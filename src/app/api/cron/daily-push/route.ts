@@ -1,18 +1,12 @@
 /**
- * 매일 아침 푸시 알림 cron.
+ * Daily morning push cron.
  *
- * Vercel Cron 매일 08:00 KST (UTC 23:00 전날) 호출:
+ * Vercel Cron calls this at 08:00 KST (23:00 UTC previous day):
  *   vercel.json:
  *     { "path": "/api/cron/daily-push", "schedule": "0 23 * * *" }
  *
- * 로직:
- *   1. push_subscriptions 전체 순회 (sendToAll)
- *   2. 사용자 ID + 날짜 기반으로 짧은 운세 teaser 메시지 선택
- *   3. 클릭 → /today
- *
- * 비용 고려:
- *   - 사용자별 AI 호출 없이 정적 메시지 풀에서 선택 → 1만 명 발송도 무비용
- *   - 실제 운세는 /today 진입 시점에 생성 (기존 캐시 활용)
+ * The actual reading is generated when the user opens /today. This route only
+ * picks a deterministic teaser by userId + date, so large sends stay cheap.
  */
 import { NextResponse, type NextRequest } from "next/server";
 
@@ -21,53 +15,46 @@ import { sendToAll, type PushPayload } from "@/lib/push/service";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-/** Vercel Cron 인증. CRON_SECRET 미설정이면 검증 생략. */
 function isAuthorizedCron(req: NextRequest): boolean {
   const secret = process.env.CRON_SECRET;
-  // production 에선 secret 필수. 미설정 시 fail-closed (외부에서 호출 불가).
   if (!secret) return process.env.NODE_ENV !== "production";
   const auth = req.headers.get("authorization");
   return auth === `Bearer ${secret}`;
 }
 
-/**
- * 오늘의 teaser 메시지 풀.
- * 30개 — 한 달간 매일 다른 알림.
- */
 const TEASER_MESSAGES: ReadonlyArray<{ title: string; body: string }> = [
-  { title: "오늘의 별 — 인생의 회전목마", body: "별의 기운이 새 페이지를 넘겼어요. 오늘의 운세를 확인해보세요." },
-  { title: "오늘은 어떤 카드가 떠올랐을까", body: "타로 한 장이 당신을 기다리고 있어요." },
-  { title: "사주의 한 줄", body: "오늘 당신에게 어울리는 사주풀이가 도착했어요." },
-  { title: "별이 속삭이는 아침", body: "오늘의 별자리 운세가 준비되었어요." },
-  { title: "오늘의 한 줄", body: "회전목마가 한 바퀴 더 돌았어요. 오늘의 운명을 살펴봐요." },
-  { title: "운명의 신호", body: "오늘은 어떤 점이 당신을 부를까요? 들어와 확인해보세요." },
-  { title: "조심스레 도착한 메시지", body: "오늘 당신을 위한 별빛 한 조각이 도착했어요." },
-  { title: "별의 기운이 바뀌었어요", body: "오늘 하루를 풀어줄 한 마디가 기다려요." },
-  { title: "오늘의 카드 한 장", body: "타로가 당신에게 건네는 오늘의 조언." },
-  { title: "운세가 도착했어요", body: "잠깐 들러서 오늘의 별을 받아가요." },
-  { title: "별이 살짝 기울었어요", body: "오늘은 평소와 조금 다른 기운이에요. 확인해볼래요?" },
-  { title: "오늘 어울리는 색", body: "별이 골라준 오늘의 컬러가 있어요." },
-  { title: "오늘의 사주 한 마디", body: "당신의 천간이 들려주는 짧은 이야기." },
-  { title: "회전목마, 오늘의 좌석", body: "오늘 당신이 앉을 자리를 별이 정해뒀어요." },
-  { title: "타로, 오늘의 답", body: "어제의 질문에 카드가 답을 준비했어요." },
-  { title: "오늘의 운, 한 조각", body: "사주가 알려주는 오늘의 작은 길조." },
-  { title: "별이 비추는 방향", body: "오늘 발걸음을 어디로 옮기면 좋을까요?" },
-  { title: "오늘의 키워드", body: "별이 골라준 단어 하나, 오늘을 비춰줄 거예요." },
-  { title: "별과 카드, 그 사이", body: "오늘의 풀이를 가볍게 살펴봐요." },
-  { title: "회전목마가 한 칸 돌았어요", body: "어제와 다른 오늘이 펼쳐졌어요." },
-  { title: "오늘의 행운 시간", body: "사주가 보여준 오늘의 좋은 시간대가 있어요." },
-  { title: "별빛 짧은 인사", body: "오늘도 잘 부탁해요 — 오늘의 운세 확인해보기." },
-  { title: "오늘의 조심할 점", body: "별이 살짝 알려주는 오늘의 주의 사항." },
-  { title: "타로, 짧은 한 장", body: "오늘은 어떤 카드가 떠올랐을까요?" },
-  { title: "오늘의 만남", body: "오늘 마주칠 사람과의 분위기를 별이 살짝 보여줘요." },
-  { title: "오늘의 마음 자세", body: "사주가 권하는 오늘의 마음가짐." },
-  { title: "별이 골라준 오늘", body: "당신을 위한 오늘의 한 줄이 도착했어요." },
-  { title: "오늘은 어떤 날일까", body: "별의 기운이 정해준 오늘을 살펴봐요." },
-  { title: "운명, 오늘의 한 줄", body: "회전목마가 들려주는 오늘의 짧은 풀이." },
-  { title: "오늘의 별이 떴어요", body: "들어와서 오늘의 운세를 받아가세요." },
+  { title: "오늘 운세가 준비됐어요", body: "하루를 시작하기 전에 오늘 조심할 점과 행운 포인트를 확인해요." },
+  { title: "오늘의 흐름 확인하기", body: "관계, 일, 컨디션 중 어디에 힘을 줄지 짧게 정리해볼까요?" },
+  { title: "아침 운세 리포트", body: "오늘의 선택 기준과 피하면 좋은 타이밍을 가볍게 확인해요." },
+  { title: "오늘 조심할 점", body: "말, 돈, 일정 중 어디를 살피면 좋을지 오늘 운세에서 확인해요." },
+  { title: "오늘의 행운 포인트", body: "색, 시간대, 대화 흐름까지 오늘 써먹을 힌트를 모았어요." },
+  { title: "잠깐, 오늘 운세", body: "하루가 바빠지기 전에 오늘의 방향을 먼저 잡아보세요." },
+  { title: "오늘 마음 체크", body: "지금 감정이 어디로 기울어 있는지 운세로 가볍게 정리해요." },
+  { title: "오늘의 선택 기준", body: "밀어붙일 일과 한 박자 늦출 일을 먼저 구분해볼까요?" },
+  { title: "오늘 대화운 보기", body: "괜히 오해가 생기기 쉬운 말투와 좋은 대화 타이밍을 확인해요." },
+  { title: "오늘 금전운 보기", body: "소비, 기회, 조율할 지점을 짧게 점검해보세요." },
+  { title: "오늘 일운 보기", body: "일정과 집중력이 잘 맞는 시간을 먼저 확인해요." },
+  { title: "오늘 컨디션 체크", body: "무리하기 좋은 날인지, 쉬어가야 하는 날인지 먼저 살펴봐요." },
+  { title: "오늘 타로 한 장", body: "마음에 걸리는 질문이 있다면 카드 한 장으로 정리해볼 수 있어요." },
+  { title: "오늘의 관계 힌트", body: "다가갈지, 기다릴지, 짧게 말할지 오늘 흐름으로 확인해요." },
+  { title: "오늘의 리듬", body: "빠르게 움직일 순간과 천천히 봐야 할 순간을 나눠봤어요." },
+  { title: "오늘 운세 1분 체크", body: "길게 읽기 전, 오늘의 핵심만 먼저 확인해보세요." },
+  { title: "오늘 해볼 작은 선택", body: "크게 바꾸지 않아도 되는 하루의 작은 방향을 추천해요." },
+  { title: "오늘의 주의 신호", body: "반복되는 실수를 줄이기 위한 짧은 체크포인트가 있어요." },
+  { title: "오늘의 좋은 시간", body: "연락, 결정, 정리에 어울리는 시간을 확인해요." },
+  { title: "오늘의 한 줄", body: "지금 필요한 태도와 오늘의 키워드를 짧게 정리했어요." },
+  { title: "하루 시작 전 체크", body: "오늘 운세로 마음의 속도와 일의 우선순위를 맞춰봐요." },
+  { title: "오늘의 기분 방향", body: "기분이 흔들릴 때 붙잡을 기준을 먼저 확인해요." },
+  { title: "오늘의 타이밍", body: "서두를 일과 기다릴 일을 나눠보면 하루가 조금 편해져요." },
+  { title: "오늘 필요한 말", body: "관계에서 도움이 되는 말투와 피하면 좋은 표현을 확인해요." },
+  { title: "오늘의 집중 포인트", body: "일, 공부, 정리 중 어디에 힘을 쓰면 좋을지 살펴봐요." },
+  { title: "오늘의 운세 알림", body: "하루를 시작하기 전에 오늘의 흐름을 짧게 확인해요." },
+  { title: "오늘 나에게 맞는 흐름", body: "내 프로필 기준으로 오늘의 운세를 다시 정리해볼까요?" },
+  { title: "오늘의 작은 전략", body: "관계, 돈, 일에서 무리하지 않는 방향을 먼저 잡아봐요." },
+  { title: "오늘의 체크리스트", body: "좋은 흐름은 살리고, 조심할 흐름은 가볍게 피해가요." },
+  { title: "오늘 운세 보러가기", body: "오늘의 핵심, 행운 포인트, 조심할 점이 준비됐어요." },
 ];
 
-/** userId + 날짜 기반 결정론적 해시. 같은 날도 사용자별로 다른 메시지. */
 function hashUserDay(userId: string, dayOfYear: number): number {
   let hash = dayOfYear;
   for (let i = 0; i < userId.length; i += 1) {
