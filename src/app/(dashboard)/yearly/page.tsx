@@ -17,7 +17,8 @@ import type { LucideIcon } from "lucide-react";
 
 import { requireProfile } from "@/lib/auth/get-user";
 import { ROUTES } from "@/lib/constants";
-import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import { getSubscriptionTier } from "@/lib/payment/subscription-state";
+import { getYearlyManse } from "@/lib/fortunes/period";
 
 type YearlyPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -28,6 +29,13 @@ type YearlyPremiumInsight = {
   label: string;
   preview: string;
   strategy: string;
+  title: string;
+};
+
+type LifeTimelineItem = {
+  action: string;
+  body: string;
+  label: string;
   title: string;
 };
 
@@ -100,7 +108,8 @@ const AREA_CARDS = [
 
 export default async function YearlyPage({ searchParams }: YearlyPageProps) {
   const { profile } = await requireProfile();
-  const subscribed = await hasActiveSubscription(profile.userId).catch(() => false);
+  const tier = await getSubscriptionTier(profile.userId).catch(() => "free" as const);
+  const isPro = tier === "pro";
   const params = (await searchParams) ?? {};
   const justSubscribed =
     params.subscribed === "1" ||
@@ -108,13 +117,16 @@ export default async function YearlyPage({ searchParams }: YearlyPageProps) {
   const seed = buildSeed(
     `${profile.userId}:${profile.birthDate ?? ""}:${profile.mbti ?? ""}:${YEAR}`,
   );
-  const keyword = YEAR_KEYWORDS[seed % YEAR_KEYWORDS.length];
+  // 사주 기반 세운/대운 — 사주가 있으면 실제 흐름, 없으면 seed 폴백.
+  const manse = getYearlyManse(profile, YEAR);
+  const keyword = manse?.theme ?? YEAR_KEYWORDS[seed % YEAR_KEYWORDS.length];
   const strengthMonth = (seed % 12) + 1;
   const cautionMonth = ((seed >>> 3) % 12) + 1;
-  const focusScore = 62 + (seed % 29);
-  const relationScore = 58 + ((seed >>> 4) % 31);
-  const moneyScore = 55 + ((seed >>> 8) % 34);
+  const focusScore = manse?.scores.focus ?? 62 + (seed % 29);
+  const relationScore = manse?.scores.relation ?? 58 + ((seed >>> 4) % 31);
+  const moneyScore = manse?.scores.money ?? 55 + ((seed >>> 8) % 34);
   const premiumInsights = getYearlyPremiumInsights(seed);
+  const lifeTimeline = getLifeTimelineItems(seed);
 
   return (
     <div className="mx-auto w-full max-w-5xl space-y-7">
@@ -142,7 +154,7 @@ export default async function YearlyPage({ searchParams }: YearlyPageProps) {
         </div>
       </header>
 
-      {subscribed ? <UnlockedYearlyNotice justSubscribed={justSubscribed} /> : null}
+      {isPro ? <UnlockedYearlyNotice justSubscribed={justSubscribed} /> : null}
 
       <section className="grid gap-4 lg:grid-cols-[1fr_0.9fr]">
         <div className="app-surface rounded-3xl border p-5 sm:p-6">
@@ -152,10 +164,14 @@ export default async function YearlyPage({ searchParams }: YearlyPageProps) {
           </div>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight">{keyword}</h2>
           <p className="mt-4 text-[15px] leading-7 text-muted-foreground">
-            {YEAR}년은 무조건 확장하기보다 나에게 맞는 방향을 선별하는
-            힘이 중요해요. 이미 가진 습관과 관계를 정리하면 새 기회가
-            더 선명하게 보일 수 있어요.
+            {manse?.flowNote ??
+              `${YEAR}년은 무조건 확장하기보다 나에게 맞는 방향을 선별하는 힘이 중요해요. 이미 가진 습관과 관계를 정리하면 새 기회가 더 선명하게 보일 수 있어요.`}
           </p>
+          {manse?.daeunNote ? (
+            <p className="mt-3 rounded-2xl border border-primary/20 bg-primary/[0.06] px-3 py-2.5 text-[14px] leading-6 text-muted-foreground">
+              {manse.daeunNote}
+            </p>
+          ) : null}
         </div>
 
         <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
@@ -217,7 +233,9 @@ export default async function YearlyPage({ searchParams }: YearlyPageProps) {
         ))}
       </section>
 
-      <PremiumYearlySection insights={premiumInsights} subscribed={subscribed} />
+      <PremiumYearlySection insights={premiumInsights} subscribed={isPro} />
+
+      <LifeTimelineSection items={lifeTimeline} isPro={isPro} />
 
       <section className="app-surface rounded-3xl border p-5">
         <h2 className="text-xl font-semibold">올해 붙잡을 세 가지</h2>
@@ -353,6 +371,141 @@ function PremiumYearlySection({
             )}
           </article>
         ))}
+      </div>
+    </section>
+  );
+}
+
+function LifeTimelineSection({
+  isPro,
+  items,
+}: {
+  isPro: boolean;
+  items: LifeTimelineItem[];
+}) {
+  const visibleItems = isPro ? items : items.slice(0, 2);
+
+  return (
+    <section className="app-surface overflow-hidden rounded-3xl border border-primary/20">
+      <div className="border-b border-white/10 p-5 sm:p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.22em] text-primary/70">
+              Pro Life Timeline
+            </p>
+            <h2 className="mt-1 text-2xl font-semibold tracking-tight">
+              인생 타임라인 리포트
+            </h2>
+            <p className="mt-2 max-w-2xl text-[14px] leading-6 text-muted-foreground">
+              올해의 흐름을 지금, 가까운 전환, 다음 준비 구간으로 나눠서
+              읽어요. 단순한 점수가 아니라 언제 힘을 주고 언제 정리해야
+              하는지까지 잡아주는 프로 전용 리포트예요.
+            </p>
+          </div>
+          {!isPro ? (
+            <Link
+              href={`${ROUTES.pricing}?from=yearly-timeline` as Route}
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-[14px] font-semibold text-primary-foreground"
+            >
+              프로로 타임라인 열기
+              <ArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
+          ) : (
+            <span className="inline-flex shrink-0 items-center justify-center rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-[12px] font-semibold text-primary">
+              프로 전용 사용 중
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className="grid gap-0 lg:grid-cols-[0.72fr_1fr]">
+        <div className="border-b border-white/10 p-5 lg:border-b-0 lg:border-r sm:p-6">
+          <div className="rounded-[2rem] border border-primary/15 bg-primary/[0.06] p-4">
+            <p className="text-[13px] font-semibold text-primary">
+              올해의 읽는 순서
+            </p>
+            <div className="mt-4 space-y-3">
+              {items.map((item, index) => (
+                <div
+                  key={item.label}
+                  className={`flex items-center gap-3 rounded-2xl px-3 py-2.5 ${
+                    isPro || index < 2
+                      ? "bg-background/65"
+                      : "bg-background/35 opacity-55"
+                  }`}
+                >
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-[12px] font-semibold text-primary-foreground">
+                    {index + 1}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="truncate text-[13px] font-semibold">
+                      {item.label}
+                    </p>
+                    <p className="truncate text-[12px] text-muted-foreground">
+                      {item.title}
+                    </p>
+                  </div>
+                  {!isPro && index >= 2 ? (
+                    <LockKeyhole
+                      className="ml-auto h-4 w-4 shrink-0 text-muted-foreground"
+                      aria-hidden
+                    />
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="p-5 sm:p-6">
+          <div className="space-y-3">
+            {visibleItems.map((item, index) => (
+              <article
+                key={item.label}
+                className="rounded-3xl border border-white/10 bg-white/[0.04] p-4"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-[12px] font-semibold text-primary">
+                      {String(index + 1).padStart(2, "0")} · {item.label}
+                    </p>
+                    <h3 className="mt-1 text-[17px] font-semibold">
+                      {item.title}
+                    </h3>
+                  </div>
+                  <Target className="h-4 w-4 shrink-0 text-primary" aria-hidden />
+                </div>
+                <p className="mt-3 text-[14px] leading-7 text-muted-foreground">
+                  {item.body}
+                </p>
+                <div className="mt-3 rounded-2xl border border-primary/20 bg-background/55 px-3 py-3">
+                  <p className="text-[12px] font-semibold text-primary">
+                    지금 할 일
+                  </p>
+                  <p className="mt-1 text-[14px] leading-6">{item.action}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          {!isPro ? (
+            <div className="mt-3 rounded-3xl border border-dashed border-primary/30 bg-primary/[0.055] p-4">
+              <div className="flex items-start gap-3">
+                <LockKeyhole
+                  className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                  aria-hidden
+                />
+                <div>
+                  <p className="font-semibold">남은 3개 구간은 프로에서 열려요.</p>
+                  <p className="mt-1 text-[14px] leading-6 text-muted-foreground">
+                    6개월 안의 전환, 1년 안의 선택, 다음 준비 구간까지 이어서
+                    보면 올해를 훨씬 전략적으로 쓸 수 있어요.
+                  </p>
+                </div>
+              </div>
+            </div>
+          ) : null}
+        </div>
       </div>
     </section>
   );
@@ -495,6 +648,61 @@ function getYearlyPremiumInsights(seed: number): YearlyPremiumInsight[] {
       preview: "올해 나를 오래 단단하게 해주는 생활 기준을 정리해요.",
       detail: `올해는 ${habitTurn}을 정리할 때 전체 운이 같이 올라와요. 몸과 시간이 흔들리면 기회를 붙잡기 어렵기 때문에 반복 가능한 생활 기준이 가장 큰 보호막이 됩니다.`,
       strategy: "큰 결심을 세우기보다 매주 같은 시간에 돌아보는 루틴 하나를 끝까지 유지하세요.",
+    },
+  ];
+}
+
+function getLifeTimelineItems(seed: number): LifeTimelineItem[] {
+  const toneA =
+    seed % 2 === 0
+      ? "속도를 올리기보다 기준을 다시 세워야 하는 흐름"
+      : "이미 시작한 일을 정리하면서 다음 선택지를 좁혀야 하는 흐름";
+  const toneB =
+    seed % 3 === 0
+      ? "관계와 일의 경계가 흐려지기 쉬운 시기"
+      : "기회는 보이지만 체력과 집중력이 먼저 받쳐줘야 하는 시기";
+  const toneC =
+    seed % 5 === 0
+      ? "오래 끌고 온 고민을 실제 행동으로 바꾸기 좋은 구간"
+      : "작은 변화가 누적되어 생활의 리듬을 바꾸는 구간";
+
+  return [
+    {
+      label: "지금 시기",
+      title: "기준을 다시 잡는 출발점",
+      body: `지금은 ${toneA}이에요. 무언가를 크게 늘리기보다 이미 하고 있는 일, 관계, 소비, 루틴 중에서 계속 가져갈 것과 내려놓을 것을 먼저 나누는 게 좋아요.`,
+      action:
+        "이번 주 안에 유지할 것 3개와 줄일 것 3개를 적고, 가장 부담이 큰 하나부터 정리하세요.",
+    },
+    {
+      label: "앞으로 3개월",
+      title: "작은 실험을 통해 방향을 확인하는 때",
+      body: `${toneB}예요. 확신이 없다고 멈추기보다, 작게 시도하고 반응을 보는 쪽이 훨씬 유리해요. 다만 한 번에 너무 많은 판을 벌리면 흐름이 흩어질 수 있어요.`,
+      action:
+        "3개월 동안 하나의 핵심 목표만 정하고, 매주 같은 요일에 진행 상황을 확인하세요.",
+    },
+    {
+      label: "6개월 안",
+      title: "관계와 선택의 무게가 드러나는 구간",
+      body: `${toneC}이에요. 이때는 주변의 기대와 내 기준이 충돌할 수 있어요. 좋은 선택은 모두를 만족시키는 선택이 아니라, 나중에 후회가 가장 적은 선택에 가까워요.`,
+      action:
+        "중요한 약속이나 결정은 바로 답하지 말고 하루 이상 시간을 둔 뒤 확정하세요.",
+    },
+    {
+      label: "1년 안",
+      title: "결과보다 구조가 남는 시기",
+      body:
+        "올해 후반으로 갈수록 단기 성과보다 구조가 중요해져요. 돈이 모이는 방식, 일이 굴러가는 방식, 관계를 유지하는 방식이 바뀌면 다음 해의 시작점도 달라져요.",
+      action:
+        "반복되는 지출, 반복되는 갈등, 반복되는 미루기 중 하나를 골라 시스템으로 바꾸세요.",
+    },
+    {
+      label: "다음 전환 준비",
+      title: "새로운 역할을 받아들이기 전의 정리",
+      body:
+        "다음 전환은 갑자기 오는 것처럼 보여도 사실 올해의 작은 정리에서 시작돼요. 내 에너지를 어디에 쓰고 싶은지 분명해질수록 새로운 제안이나 만남을 고르는 눈도 선명해져요.",
+      action:
+        "연말까지 남기고 싶은 정체성 한 문장을 정하고, 그 문장과 맞지 않는 일은 과감히 줄이세요.",
     },
   ];
 }

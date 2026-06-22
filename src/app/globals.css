@@ -2855,8 +2855,8 @@ body.presence-gael .app-surface {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 280px;
-  overflow: hidden;
+  min-height: 440px;
+  overflow: visible;
   border-radius: 0;
   background:
     radial-gradient(circle at 50% 42%, rgba(253, 230, 138, 0.22), transparent 34%),
@@ -2873,7 +2873,12 @@ body.presence-gael .app-surface {
 }
 
 .tarot-three-open-stage {
-  min-height: 250px;
+  min-height: 330px;
+  padding: 18px 4px;
+}
+
+.tarot-seven-open-stage {
+  min-height: 360px;
   padding: 18px 4px;
 }
 
@@ -2888,12 +2893,17 @@ body.presence-gael .app-surface {
 }
 
 .tarot-single-flip-card {
-  width: min(44vw, 180px);
+  width: clamp(260px, 38vw, 340px);
   aspect-ratio: 2 / 3;
 }
 
 .tarot-three-flip-card {
-  width: min(25vw, 118px);
+  width: clamp(112px, 18vw, 168px);
+  aspect-ratio: 2 / 3;
+}
+
+.tarot-seven-flip-card {
+  width: clamp(72px, 12vw, 104px);
   aspect-ratio: 2 / 3;
 }
 
@@ -2903,13 +2913,14 @@ body.presence-gael .app-surface {
 
 .tarot-flip-card:not(:disabled):hover .tarot-flip-card__inner,
 .tarot-flip-card:not(:disabled):focus-visible .tarot-flip-card__inner {
-  transform: translateY(-8px) rotateY(0deg);
+  transform: translateY(-8px) scale(1.01);
 }
 
 .tarot-flip-card.is-flipped .tarot-flip-card__inner,
 .tarot-flip-card.is-flipped:not(:disabled):hover .tarot-flip-card__inner,
 .tarot-flip-card.is-flipped:not(:disabled):focus-visible .tarot-flip-card__inner {
-  transform: translateY(-6px) rotateY(180deg);
+  transform: translateY(-6px) scale(1.02);
+  animation: tarot-front-reveal 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .tarot-flip-card__inner {
@@ -2943,39 +2954,118 @@ body.presence-gael .app-surface {
 
 .tarot-flip-card__back {
   background: #17100f;
+  opacity: 1;
+  transition: opacity 180ms ease, visibility 180ms ease;
 }
 
 .tarot-flip-card__front {
-  transform: rotateY(180deg);
-  border: 1px solid rgba(120, 84, 32, 0.24);
+  z-index: 2;
+  opacity: 0;
+  transform: scale(0.96);
+  border: 1px solid rgba(185, 149, 74, 0.28);
   background:
-    radial-gradient(circle at 50% 32%, rgba(255, 255, 255, 0.64), transparent 24%),
-    linear-gradient(145deg, rgba(253, 230, 138, 0.96), rgba(245, 208, 154, 0.88) 42%, rgba(186, 230, 253, 0.62));
+    radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.94), transparent 26%),
+    linear-gradient(145deg, #fffdf8, #f4ead6 52%, #e8d8b9);
   color: rgba(0, 0, 0, 0.82) !important;
   text-align: center;
-  padding: 12px;
+  padding: 4px;
+  transition: opacity 220ms ease 180ms, transform 280ms ease 180ms;
+}
+
+.tarot-flip-card__front--image {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.tarot-flip-card.is-flipped .tarot-flip-card__back {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.tarot-flip-card.is-flipped .tarot-flip-card__front {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .tarot-flip-card__front > * {
   color: rgba(0, 0, 0, 0.82) !important;
 }
 
+.tarot-front-orb {
+  display: block;
+  width: 42%;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  border: 2px solid rgba(185, 149, 74, 0.44);
+  background:
+    radial-gradient(circle, rgba(185, 149, 74, 0.88) 0 13%, transparent 14%),
+    conic-gradient(from 45deg, transparent 0 18%, rgba(185, 149, 74, 0.76) 18% 32%, transparent 32% 50%, rgba(185, 149, 74, 0.52) 50% 64%, transparent 64% 100%);
+  box-shadow: 0 0 34px rgba(185, 149, 74, 0.22);
+}
+
+.tarot-front-orb--small {
+  width: 48%;
+}
+
+@keyframes tarot-front-reveal {
+  0% {
+    transform: translateY(0) rotateY(0deg) scale(1);
+  }
+  45% {
+    transform: translateY(-10px) rotateY(84deg) scale(1.02);
+  }
+  100% {
+    transform: translateY(-6px) rotateY(0deg) scale(1.02);
+  }
+}
+
+@keyframes tarot-reading-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tarot-reading-image-first {
+  animation: tarot-reading-rise 420ms ease both;
+}
+
+.tarot-reading-text-delayed {
+  opacity: 0;
+  animation: tarot-reading-rise 520ms ease 520ms both;
+}
+
 @media (max-width: 420px) {
   .tarot-open-stage {
-    min-height: 250px;
+    min-height: 400px;
   }
 
   .tarot-three-open-stage {
-    min-height: 230px;
+    min-height: 270px;
     padding-left: 10px;
     padding-right: 10px;
   }
 
+  .tarot-seven-open-stage {
+    min-height: 300px;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
   .tarot-single-flip-card {
-    width: min(48vw, 164px);
+    width: min(78vw, 300px);
   }
 
   .tarot-three-flip-card {
-    width: min(25vw, 98px);
+    width: min(28vw, 118px);
+  }
+
+  .tarot-seven-flip-card {
+    width: min(20vw, 78px);
   }
 }

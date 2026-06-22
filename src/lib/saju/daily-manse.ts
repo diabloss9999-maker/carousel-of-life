@@ -15,6 +15,11 @@ import type { Profile } from "@/db/schema";
 import type { FortuneCategory } from "@/lib/ai/prompts";
 import { getDayPillar } from "@/lib/saju/iljin";
 import {
+  analyzeDayPrecision,
+  analyzeAuspiciousHours,
+} from "@/lib/saju/day-precision";
+import { getCurrentLuckCycles } from "@/lib/saju/luck-cycles";
+import {
   analyzeDayRelationship,
   type UserPillarInput,
 } from "@/lib/saju/relationships";
@@ -123,42 +128,57 @@ export function getDailyManse(
 
   const rels = analyzeDayRelationship(day.stemIdx, day.branchIdx, userPillars);
 
-  let delta = 0;
-  const notes: string[] = [];
+  // 모든 보정 요인을 "신호(노트 + 가중치)"로 모은다. delta=가중치 합,
+  // headline=|가중치| 최대 신호 → 헤드라인이 그날의 가장 큰 동력을 반영한다.
+  const signals: { note: string; weight: number }[] = [];
 
   for (const r of rels) {
     switch (r.type) {
       case "samhap":
-        delta += 10;
-        notes.push(
-          "오늘은 기운이 강하게 맞아떨어져 에너지가 크게 살아나는 흐름이에요. 평소 미뤄둔 일을 밀어붙이기 좋아요.",
-        );
+        signals.push({
+          weight: 10,
+          note: "오늘은 기운이 강하게 맞아떨어져 에너지가 크게 살아나는 흐름이에요. 평소 미뤄둔 일을 밀어붙이기 좋아요.",
+        });
         break;
       case "yukhap":
-        delta += 6;
-        notes.push(
-          "오늘은 기운이 부드럽게 맞물려 일이 순하게 풀리는 흐름이에요. 관계나 협력에서 마찰이 적어요.",
-        );
+        signals.push({
+          weight: 6,
+          note: "오늘은 기운이 부드럽게 맞물려 일이 순하게 풀리는 흐름이에요. 관계나 협력에서 마찰이 적어요.",
+        });
         break;
       case "stemhap":
-        delta += 5;
-        notes.push(
-          "오늘은 마음과 바깥 흐름이 잘 맞아 연결·협력이 수월한 흐름이에요.",
-        );
+        signals.push({
+          weight: 5,
+          note: "오늘은 마음과 바깥 흐름이 잘 맞아 연결·협력이 수월한 흐름이에요.",
+        });
         break;
       case "chung":
-        delta -= 8;
-        notes.push(
-          "오늘은 타고난 기운과 부딪히는 흐름이라 변동·긴장이 생기기 쉬워요. 큰 결정이나 무리한 추진은 하루 미루는 편이 좋아요.",
-        );
+        signals.push({
+          weight: -8,
+          note: "오늘은 타고난 기운과 부딪히는 흐름이라 변동·긴장이 생기기 쉬워요. 큰 결정이나 무리한 추진은 하루 미루는 편이 좋아요.",
+        });
         break;
       case "neutral":
-        notes.push(
-          "오늘은 큰 충돌도 큰 합도 없는 평온한 흐름이에요. 평소 페이스를 유지하기 좋아요.",
-        );
+        signals.push({
+          weight: 0,
+          note: "오늘은 큰 충돌도 큰 합도 없는 평온한 흐름이에요. 평소 페이스를 유지하기 좋아요.",
+        });
         break;
     }
   }
+
+  // 정밀 분석 — 용신(강약 기반)·신살(도화·역마·천을귀인·화개·공망)·형/파/해.
+  const precision = analyzeDayPrecision({
+    pillars: userPillars,
+    todayStemHanja: day.stemHanja,
+    todayBranchIdx: day.branchIdx,
+  });
+  signals.push(...precision.signals);
+
+  // 시간 다층 — 오늘이 놓인 대운(10년)·세운(올해)·월운(이달) 배경 흐름.
+  // 가중치가 작아 일진이 그날의 변동을 주도하되, 큰 흐름이 점수에 배경으로 깔린다.
+  const cycles = getCurrentLuckCycles(profile, fortuneDate);
+  signals.push(...cycles.signals);
 
   // 오행 균형 — 오늘 일진의 기운이 부족분을 채우는지, 과다에 더하는지.
   const fe = profile.fiveElements as FiveElements | null;
@@ -173,15 +193,15 @@ export function getDailyManse(
     const todayCount = todayKey ? (fe[todayKey] ?? 0) : 1;
 
     if (todayCount === min && min <= 1) {
-      delta += 4;
-      notes.push(
-        `평소 부족했던 ${ELEMENT_TRAIT[todayEl]}이(가) 오늘 채워지는 날이에요. 그 부분을 의식해서 움직이면 도움이 돼요.`,
-      );
+      signals.push({
+        weight: 4,
+        note: `평소 부족했던 ${ELEMENT_TRAIT[todayEl]}이(가) 오늘 채워지는 날이에요. 그 부분을 의식해서 움직이면 도움이 돼요.`,
+      });
     } else if (todayCount === max && max >= 3) {
-      delta -= 3;
-      notes.push(
-        `이미 강한 ${ELEMENT_TRAIT[todayEl]}이(가) 오늘 더 강해지는 날이에요. 한쪽으로 치우치지 않게 균형을 챙기는 게 좋아요.`,
-      );
+      signals.push({
+        weight: -3,
+        note: `이미 강한 ${ELEMENT_TRAIT[todayEl]}이(가) 오늘 더 강해지는 날이에요. 한쪽으로 치우치지 않게 균형을 챙기는 게 좋아요.`,
+      });
     }
 
     // 타고난 기운의 중심 + 비어 있는 결.
@@ -211,39 +231,68 @@ export function getDailyManse(
   const dayGod = tenGodForStem(pillars.day.stem, day.stemHanja);
   if (dayGod) {
     const grp = tenGodGroup(dayGod);
-    notes.push(
-      `오늘은 ${TEN_GOD_GROUP_MEANING[grp]}의 기운이 도는 날이에요.`,
-    );
+    signals.push({
+      weight: 0,
+      note: `오늘은 ${TEN_GOD_GROUP_MEANING[grp]}의 기운이 도는 날이에요.`,
+    });
 
     // 카테고리별 유리/불리 보정.
     const map = category ? CATEGORY_TENGOD[category] : undefined;
     if (map) {
       if (map.favor.includes(grp)) {
-        delta += 4;
-        notes.push(
-          "오늘 도는 기운이 이 영역과 특히 잘 맞아요. 이쪽으로 한 걸음 내딛기 좋은 날이에요.",
-        );
+        signals.push({
+          weight: 4,
+          note: "오늘 도는 기운이 이 영역과 특히 잘 맞아요. 이쪽으로 한 걸음 내딛기 좋은 날이에요.",
+        });
       } else if (map.against.includes(grp)) {
-        delta -= 4;
-        notes.push(
-          "오늘 도는 기운이 이 영역엔 다소 부담이 될 수 있어요. 욕심내기보다 지키는 쪽이 좋아요.",
-        );
+        signals.push({
+          weight: -4,
+          note: "오늘 도는 기운이 이 영역엔 다소 부담이 될 수 있어요. 욕심내기보다 지키는 쪽이 좋아요.",
+        });
       }
     }
   }
 
+  // 카테고리 보너스 — 연애 + 도화(매력) 겹치면 한층 더.
+  if (category === "love" && precision.flags.dohwa) {
+    signals.push({
+      weight: 2,
+      note: "특히 연애·만남 쪽으로 기운이 열리는 날이에요. 좋은 인상을 줄 자리에 나가보면 좋아요.",
+    });
+  }
+
+  let delta = signals.reduce((sum, s) => sum + s.weight, 0);
   delta = Math.max(-15, Math.min(15, delta));
 
   const tone: DailyManse["tone"] =
     delta >= 6 ? "good" : delta <= -6 ? "caution" : "calm";
+
+  // 헤드라인 = 가중치 절댓값이 가장 큰 신호(그날의 핵심 동력). 없으면 평온.
+  const ranked = [...signals]
+    .filter((s) => s.weight !== 0)
+    .sort((a, b) => Math.abs(b.weight) - Math.abs(a.weight));
   const headline =
-    notes[0] ?? "오늘은 큰 변동 없이 잔잔하게 흐르는 하루예요.";
+    ranked[0]?.note ??
+    signals[0]?.note ??
+    "오늘은 큰 변동 없이 잔잔하게 흐르는 하루예요.";
+
+  // 시간대 길흉 — 오늘 잘 맞는/조심할 시각. 점수엔 영향 없이 서술 맥락으로만.
+  const hours = analyzeAuspiciousHours({
+    pillars: userPillars,
+    todayBranchIdx: day.branchIdx,
+  });
+  const hourLine = hours.best
+    ? `오늘 흐름이 잘 맞는 시간대(본문에 자연스럽게 한 번 짚어줘라. '시진·지지' 같은 용어는 쓰지 말고 시간대만): ${hours.best}${
+        hours.caution ? ` / 한 박자 쉬어가면 좋은 시간대: ${hours.caution}` : ""
+      }`
+    : "";
 
   const block = [
-    "[오늘의 명리 흐름 — 내부 분석. 풀이에 자연스럽게 반영하되, 사주 용어·한자(천간·지지·충·합·오행·십성·일진 등)는 절대 글에 쓰지 말고 전부 쉬운 일상어로만 녹여라]",
+    "[오늘의 명리 흐름 — 내부 분석. 풀이에 자연스럽게 반영하되, 사주 용어·한자(천간·지지·충·합·오행·십성·일진·용신·신살·형파해 등)는 절대 글에 쓰지 말고 전부 쉬운 일상어로만 녹여라]",
     traitLine,
     `오늘 하루를 지배하는 결: ${ELEMENT_TRAIT[todayEl] ?? "잔잔한 흐름"}`,
-    ...notes.map((n) => `- ${n}`),
+    ...signals.map((s) => `- ${s.note}`),
+    hourLine,
   ]
     .filter(Boolean)
     .join("\n");

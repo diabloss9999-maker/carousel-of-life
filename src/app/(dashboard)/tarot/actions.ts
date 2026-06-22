@@ -16,9 +16,12 @@ import {
   type RuneSpreadType,
 } from "@/lib/runes/service";
 import {
+  createSevenCardTarot,
   createSingleTarot,
   createThreeCardTarot,
 } from "@/lib/tarot/service";
+import { getTarotCard } from "@/lib/tarot/cards";
+import type { DrawnCard } from "@/lib/tarot/draw";
 
 const drawSchema = z.object({
   question: z
@@ -28,6 +31,30 @@ const drawSchema = z.object({
     .optional()
     .or(z.literal("")),
 });
+
+function parsePreselectedCards(formData: FormData, count: number): DrawnCard[] | null {
+  const ids = formData.getAll("cardId").filter((value): value is string => typeof value === "string");
+  const reversed = formData
+    .getAll("cardReversed")
+    .filter((value): value is string => typeof value === "string");
+
+  if (ids.length !== count || reversed.length !== count) return null;
+  if (new Set(ids).size !== ids.length) return null;
+
+  try {
+    return ids.map((id, index) => {
+      const card = getTarotCard(id);
+      return {
+        id: card.id,
+        nameKo: card.nameKo,
+        nameEn: card.nameEn,
+        isReversed: reversed[index] === "true",
+      };
+    });
+  } catch {
+    return null;
+  }
+}
 
 export interface TarotDrawState {
   kind: "idle" | "error";
@@ -71,6 +98,7 @@ export async function drawSingleTarotAction(
   const result = await createSingleTarot({
     profile,
     question: parsed.data.question?.trim() || null,
+    drawnCards: parsePreselectedCards(formData, 1) ?? undefined,
   });
 
   if (result.ok) {
@@ -117,6 +145,7 @@ export async function drawThreeTarotAction(
   const result = await createThreeCardTarot({
     profile,
     question: parsed.data.question?.trim() || null,
+    drawnCards: parsePreselectedCards(formData, 3) ?? undefined,
   });
 
   if (result.ok) {
@@ -137,6 +166,55 @@ export async function drawThreeTarotAction(
   return {
     kind: "error",
     message: result.ok === false && "message" in result ? result.message : tErr("tarotGenericError"),
+  };
+}
+
+export async function drawSevenTarotAction(
+  _prev: TarotDrawState,
+  formData: FormData,
+): Promise<TarotDrawState> {
+  const parsed = drawSchema.safeParse({
+    question: formData.get("question") ?? "",
+  });
+  if (!parsed.success) {
+    return {
+      kind: "error",
+      message: await zodMessage(parsed.error.issues[0]?.message),
+    };
+  }
+
+  const { profile } = await requireProfile();
+
+  const result = await createSevenCardTarot({
+    profile,
+    question: parsed.data.question?.trim() || null,
+    drawnCards: parsePreselectedCards(formData, 7) ?? undefined,
+  });
+
+  if (result.ok) {
+    revalidatePath("/tarot");
+    return { kind: "idle" };
+  }
+
+  if (result.reason === "premium_only") {
+    return {
+      kind: "error",
+      premiumOnly: true,
+      message: "7장 프로 전략 타로는 프로 멤버십에서 열 수 있어요.",
+    };
+  }
+
+  if (result.reason === "quota_exceeded") {
+    return {
+      kind: "error",
+      quotaExceeded: true,
+      message: `오늘 사용 한도(${result.max}회)를 모두 사용했어요.`,
+    };
+  }
+
+  return {
+    kind: "error",
+    message: result.message,
   };
 }
 

@@ -125,7 +125,7 @@ export async function TarotThreeReadingCard({
             &ldquo;{question}&rdquo;
           </p>
         ) : null}
-        <div className="rounded-2xl border border-primary/20 bg-primary/[0.07] px-4 py-3">
+        <div className="tarot-reading-text-delayed rounded-2xl border border-primary/20 bg-primary/[0.07] px-4 py-3">
           <div className="flex items-center gap-2 text-primary">
             <Sparkles className="h-4 w-4 shrink-0" aria-hidden />
             <p className="text-[12px] font-semibold">흐름 요약</p>
@@ -136,7 +136,7 @@ export async function TarotThreeReadingCard({
         </div>
       </CardHeader>
       <CardContent className="space-y-8">
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="tarot-reading-image-first grid gap-8 md:grid-cols-3">
           {positions.map((pos, index) => {
             const Icon = pos.icon;
             const card = cards[index];
@@ -159,7 +159,7 @@ export async function TarotThreeReadingCard({
                   />
                   <CardOrientationBadge isReversed={card.isReversed} />
                 </div>
-                <p className="whitespace-pre-line text-center font-mystic text-[15px] leading-relaxed text-foreground/85 md:text-left">
+                <p className="tarot-reading-text-delayed whitespace-pre-line text-center font-mystic text-[15px] leading-relaxed text-foreground/85 md:text-left">
                   {breakSentences(safeParsed[POSITION_KEYS[index]])}
                 </p>
               </div>
@@ -167,7 +167,7 @@ export async function TarotThreeReadingCard({
           })}
         </div>
 
-        <div className="space-y-3 rounded-2xl border border-accent/25 bg-accent/10 p-5 shadow-sm">
+        <div className="tarot-reading-text-delayed space-y-3 rounded-2xl border border-accent/25 bg-accent/10 p-5 shadow-sm">
           <div className="flex items-center gap-1.5 text-[15px] font-medium text-accent">
             <Sparkles className="h-4 w-4" aria-hidden />
             <span className="font-mystic">종합 해석</span>

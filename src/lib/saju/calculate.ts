@@ -15,7 +15,7 @@
 import "server-only";
 
 import { eq } from "drizzle-orm";
-import { Solar, Lunar } from "lunar-typescript";
+import { Solar, Lunar, type EightChar } from "lunar-typescript";
 
 import { db } from "@/db";
 import { profiles, type Profile } from "@/db/schema";
@@ -71,6 +71,50 @@ function parseTime(birthTime: string | null): [number, number] | null {
   return [h, mn];
 }
 
+/** 출생 차트 — EightChar(8글자) + 보조 Lunar + 시각 입력 여부. */
+export interface BirthChart {
+  /** lunar-typescript EightChar — 년·월·일·시주 간지 추출용. */
+  ec: EightChar;
+  /** 보조 Lunar 객체 — 대운(getYun) 등 추가 계산용. */
+  lunar: Lunar;
+  /** birthTime 이 지정되어 시주가 유효한지. */
+  hasTime: boolean;
+}
+
+/**
+ * 생년월일시 + 양/음력으로 출생 EightChar 를 구성한다.
+ *
+ * calculateSaju(원국)·luck-cycles(대운/세운/월운)가 공유하는 단일 진입점.
+ * - calendarSystem === "lunar": Lunar 입력 → 양력 보정
+ * - 그 외: Solar 입력
+ * - 시각이 없으면 정오 12:00 으로 잡아 일주 날짜 경계를 안정화(시주는 별도 null 처리)
+ */
+export function getBirthEightChar(
+  profile: Pick<Profile, "birthDate" | "birthTime" | "calendarSystem">,
+): BirthChart {
+  const [year, month, day] = parseDate(profile.birthDate);
+  const time = parseTime(profile.birthTime);
+  const isLunar = profile.calendarSystem === "lunar";
+
+  const hour = time ? time[0] : 12;
+  const minute = time ? time[1] : 0;
+
+  let solar;
+  if (isLunar) {
+    const lunar = time
+      ? Lunar.fromYmdHms(year, month, day, hour, minute, 0)
+      : Lunar.fromYmd(year, month, day);
+    solar = lunar.getSolar();
+  } else {
+    solar = time
+      ? Solar.fromYmdHms(year, month, day, hour, minute, 0)
+      : Solar.fromYmd(year, month, day);
+  }
+
+  const lunar = solar.getLunar();
+  return { ec: lunar.getEightChar(), lunar, hasTime: !!time };
+}
+
 /**
  * 사주팔자 결정론적 계산.
  *
@@ -84,32 +128,8 @@ export function calculateSaju(
     "birthDate" | "birthTime" | "calendarSystem"
   >,
 ): SajuOutput {
-  const [year, month, day] = parseDate(profile.birthDate);
-  const time = parseTime(profile.birthTime);
-  const isLunar = profile.calendarSystem === "lunar";
-
-  // 1) 시각이 있으면 시·분 포함, 없으면 정오 12:00 으로 일주 계산 안정화
-  //    (lunar-typescript 가 hour 기본 0 일 때 자정 직전 케이스가 위태롭기에
-  //    중립 시각 12:00 으로 잡되, 시주는 별도로 null 처리)
-  const hour = time ? time[0] : 12;
-  const minute = time ? time[1] : 0;
-
-  // 2) Solar 객체 생성 — 음력 입력이면 Lunar.fromYmdHms 거쳐서 solar 추출
-  let solar;
-  if (isLunar) {
-    const lunar = time
-      ? Lunar.fromYmdHms(year, month, day, hour, minute, 0)
-      : Lunar.fromYmd(year, month, day);
-    solar = lunar.getSolar();
-  } else {
-    solar = time
-      ? Solar.fromYmdHms(year, month, day, hour, minute, 0)
-      : Solar.fromYmd(year, month, day);
-  }
-
-  // 3) EightChar — 자동으로 입춘 기준 년주, 절기 기반 월주, 60갑자 일주 처리
-  const lunar = solar.getLunar();
-  const ec = lunar.getEightChar();
+  // EightChar — 자동으로 입춘 기준 년주, 절기 기반 월주, 60갑자 일주 처리
+  const { ec, hasTime: time } = getBirthEightChar(profile);
 
   const yearStem  = ec.getYearGan();
   const yearBr    = ec.getYearZhi();
@@ -118,7 +138,7 @@ export function calculateSaju(
   const dayStem   = ec.getDayGan();
   const dayBr     = ec.getDayZhi();
 
-  // 4) 시주는 birthTime 있을 때만 포함
+  // 시주는 birthTime 있을 때만 포함
   let hourPillar: { stem: string; branch: string } | null = null;
   if (time) {
     hourPillar = {

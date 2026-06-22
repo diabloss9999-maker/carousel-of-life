@@ -118,11 +118,6 @@ export default async function PricingPage({ searchParams }: PricingPageProps) {
   const user = await getUser();
   const tier = user ? await getSubscriptionTier(user.id) : "free";
 
-  const portOneReady =
-    !!process.env.NEXT_PUBLIC_PORTONE_STORE_ID &&
-    !!process.env.NEXT_PUBLIC_PORTONE_CHANNEL_KEY;
-  const paymentReady = appPlatform === "android" || portOneReady;
-
   return (
     <main className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-6 sm:py-12">
       <header className="reading-hero mb-7 text-center sm:px-8">
@@ -139,12 +134,6 @@ export default async function PricingPage({ searchParams }: PricingPageProps) {
           {context.description}
         </p>
       </header>
-
-      {!paymentReady ? (
-        <div data-hide-in-app className="mb-8">
-          <PaymentSetupNotice />
-        </div>
-      ) : null}
 
       <section className="mb-8 grid gap-4 lg:grid-cols-[1fr_0.8fr]">
         <div className="app-surface rounded-[24px] border p-5">
@@ -454,14 +443,14 @@ function PurchaseGuide() {
         구매·결제 안내
       </h2>
       <dl className="space-y-3 text-[15px] leading-relaxed">
-        <PurchaseRow label="결제 수단" value="신용카드 / 체크카드 결제를 지원해요." />
+        <PurchaseRow label="결제 수단" value="안드로이드 앱의 Google Play 결제로 진행돼요. (웹 결제 미지원)" />
         <PurchaseRow label="결제 방식" value="매월 같은 날짜에 자동 결제되는 정기 멤버십이에요." />
-        <PurchaseRow label="구매 절차" value="상품 선택 → 결제하기 버튼 클릭 → 결제창에서 정보 입력 → 결제 완료 즉시 멤버십 활성화." />
+        <PurchaseRow label="구매 절차" value="앱 설치 → 로그인 → 멤버십 선택 → Google Play 결제 → 완료 즉시 멤버십 활성화." />
         <PurchaseRow
           label="결제 금액"
           value={`라이트 ${formatKRW(SUBSCRIPTION.lite.monthlyPriceKRW)} / 프로 ${formatKRW(SUBSCRIPTION.pro.monthlyPriceKRW)}가 매월 청구돼요.`}
         />
-        <PurchaseRow label="해지 방법" value="설정 → 멤버십에서 언제든 해지할 수 있어요. 해지해도 이미 결제된 기간까지는 이용할 수 있어요." />
+        <PurchaseRow label="해지 방법" value="Google Play 구독 관리 또는 설정 → 멤버십에서 언제든 해지할 수 있어요. 해지해도 이미 결제된 기간까지는 이용할 수 있어요." />
         <PurchaseRow label="환불 안내" value="디지털 콘텐츠가 제공된 뒤에는 사용량에 따라 환불이 제한될 수 있어요. 자세한 내용은 환불 정책을 확인해 주세요." />
         <PurchaseRow label="고객 문의" value={`결제·환불 문의는 ${BUSINESS_INFO.email} 으로 보내주세요.`} />
       </dl>
@@ -483,32 +472,12 @@ function ExternalPaymentGuide() {
         <div className="flex items-start gap-2.5">
           <Info className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
           <div className="space-y-1 leading-relaxed text-muted-foreground">
-            <p className="font-medium text-foreground">결제 시스템 안내</p>
+            <p className="font-medium text-foreground">결제 안내</p>
             <p>
-              웹 결제는 Google Play 결제가 아닌 외부 결제 시스템을 통해 진행돼요.
-              Android 앱에서는 Google Play 결제가 우선 표시됩니다.
+              구독·결제는 안드로이드 앱에서 Google Play 결제로만 진행돼요.
+              웹에서는 결제할 수 없으니, 앱을 설치하고 로그인해 멤버십을 시작해 주세요.
             </p>
           </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PaymentSetupNotice() {
-  return (
-    <div className="app-surface rounded-2xl p-5 ring-1 ring-accent/20" role="status">
-      <div className="flex items-start gap-3">
-        <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent/15">
-          <Sparkles className="h-5 w-5 text-accent" aria-hidden />
-        </div>
-        <div className="space-y-1.5">
-          <p className="font-mystic text-lg font-semibold text-foreground">
-            웹 결제 설정을 확인 중이에요
-          </p>
-          <p className="text-[15px] leading-relaxed text-foreground/80">
-            Android 앱에서는 Google Play 결제가 표시되고, 웹 결제는 설정 확인 후 다시 이용할 수 있어요.
-          </p>
         </div>
       </div>
     </div>

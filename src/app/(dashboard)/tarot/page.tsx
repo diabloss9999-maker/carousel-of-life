@@ -10,9 +10,13 @@ import { CardDivinationTabs } from "@/components/tarot/card-divination-tabs";
 import type { TarotReader } from "@/components/tarot/reader";
 import { TarotModeSwitch } from "@/components/tarot/tarot-mode-switch";
 import { TarotReadingCard } from "@/components/tarot/tarot-reading-card";
+import { TarotSevenReadingCard } from "@/components/tarot/tarot-seven-reading-card";
 import { TarotThreeReadingCard } from "@/components/tarot/tarot-three-reading-card";
 import { requireProfile } from "@/lib/auth/get-user";
-import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import {
+  getSubscriptionTier,
+  hasActiveSubscription,
+} from "@/lib/payment/subscription-state";
 import { getTodayTarotReadings } from "@/lib/tarot/service";
 
 export const metadata: Metadata = {
@@ -34,16 +38,23 @@ export default async function TarotPage() {
     voiceGuide: "",
   };
 
-  const [readings, subscribed] = await Promise.all([
+  const [readings, subscribed, tier] = await Promise.all([
     getTodayTarotReadings(profile.userId),
     hasActiveSubscription(profile.userId).catch(() => false),
+    getSubscriptionTier(profile.userId).catch(() => "free" as const),
   ]);
   const singleReadings = readings.filter(
-    (reading) => reading.spreadType !== "three",
+    (reading) =>
+      reading.spreadType !== "three" && reading.spreadType !== "seven",
   );
   const threeReadings = readings.filter(
     (reading) => reading.spreadType === "three",
   );
+  const sevenReadings = readings.filter(
+    (reading) => reading.spreadType === "seven",
+  );
+  const latestSevenReading = sevenReadings[0];
+  const olderSevenReadings = sevenReadings.slice(1);
   const latestThreeReading = threeReadings[0];
   const olderThreeReadings = threeReadings.slice(1);
   const latestSingleReading = singleReadings[0];
@@ -70,6 +81,7 @@ export default async function TarotPage() {
           oneCardReader={tarotReader}
           threeCardReader={tarotReader}
           subscribed={subscribed}
+          tier={tier}
         />
       </div>
 
@@ -87,8 +99,43 @@ export default async function TarotPage() {
               </p>
             </div>
 
-            {latestThreeReading ? (
+            {latestSevenReading ? (
               <section id="tarot-results" className="space-y-4">
+                <h2 className="font-mystic text-2xl font-semibold tracking-tight">
+                  7장 프로 전략 타로
+                </h2>
+                <div className="space-y-6">
+                  <TarotSevenReadingCard
+                    key={latestSevenReading.id}
+                    reading={latestSevenReading}
+                  />
+                  {olderSevenReadings.length > 0 ? (
+                    <details className="group app-surface rounded-[18px] px-4 py-3">
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[15px] font-semibold [&::-webkit-details-marker]:hidden">
+                        <span>이전 7장 프로 타로 {olderSevenReadings.length}개</span>
+                        <span className="text-muted-foreground transition group-open:rotate-180">
+                          ↓
+                        </span>
+                      </summary>
+                      <div className="mt-4 space-y-6">
+                        {olderSevenReadings.map((reading) => (
+                          <TarotSevenReadingCard
+                            key={reading.id}
+                            reading={reading}
+                          />
+                        ))}
+                      </div>
+                    </details>
+                  ) : null}
+                </div>
+              </section>
+            ) : null}
+
+            {latestThreeReading ? (
+              <section
+                id={latestSevenReading ? undefined : "tarot-results"}
+                className="space-y-4"
+              >
                 <h2 className="font-mystic text-2xl font-semibold tracking-tight">
                   3장 타로
                 </h2>
@@ -121,7 +168,11 @@ export default async function TarotPage() {
 
             {latestSingleReading ? (
               <section
-                id={latestThreeReading ? undefined : "tarot-results"}
+                id={
+                  latestSevenReading || latestThreeReading
+                    ? undefined
+                    : "tarot-results"
+                }
                 className="space-y-4"
               >
                 <h2 className="font-mystic text-2xl font-semibold tracking-tight">

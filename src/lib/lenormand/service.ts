@@ -26,6 +26,8 @@ import { generateJson, generateMarkdown } from "@/lib/ai/generate";
 import { buildUserContext } from "@/lib/ai/prompts";
 import { lenormandSingleAiSchema } from "@/lib/ai/types";
 import { AI_LIMITS, AI_MODELS } from "@/lib/constants";
+import { ensureSajuCalculated } from "@/lib/saju/calculate";
+import { buildSajuTodayBlock } from "@/lib/saju/today-resonance";
 import type { LenormandCard } from "@/lib/lenormand/cards";
 import {
   drawGrandTableau,
@@ -127,7 +129,11 @@ async function processSingleOrThree(
     })
     .join(", ");
 
-  const userCtx = buildUserContext({ profile: opts.profile });
+  const profile = await ensureSajuCalculated(opts.profile).catch(
+    () => opts.profile,
+  );
+  const userCtx = buildUserContext({ profile });
+  const sajuToday = buildSajuTodayBlock(profile);
   const questionPart = opts.question
     ? `\n질문: "${opts.question}"`
     : "\n질문: (없음 — 오늘의 전반적인 기운)";
@@ -146,6 +152,8 @@ async function processSingleOrThree(
 
   const userPrompt = `[사용자 정보]
 ${userCtx}${questionPart}
+
+${sajuToday}
 
 [뽑힌 르노르망 카드]
 ${cardDescriptions}
@@ -236,7 +244,11 @@ async function processNine(opts: {
 }): Promise<LenormandResult> {
   const drawnCards = drawNineCards();
 
-  const userCtx = buildUserContext({ profile: opts.profile });
+  const profile = await ensureSajuCalculated(opts.profile).catch(
+    () => opts.profile,
+  );
+  const userCtx = buildUserContext({ profile });
+  const sajuToday = buildSajuTodayBlock(profile);
   const questionPart = opts.question
     ? `\n질문: "${opts.question}"`
     : "\n질문: (없음 — 전반적인 기운)";
@@ -256,6 +268,8 @@ async function processNine(opts: {
 
   const userPrompt = `[사용자 정보]
 ${userCtx}${questionPart}
+
+${sajuToday}
 
 [뽑힌 9장 카드 — 3×3 박스]
 ${cardLines}
@@ -350,7 +364,11 @@ async function processGrandTableau(opts: {
     };
   }
 
-  const userCtx = buildUserContext({ profile: opts.profile });
+  const profile = await ensureSajuCalculated(opts.profile).catch(
+    () => opts.profile,
+  );
+  const userCtx = buildUserContext({ profile });
+  const sajuToday = buildSajuTodayBlock(profile);
   const questionPart = opts.question
     ? `\n질문: "${opts.question}"`
     : "\n질문: (없음 — 전반적인 인생 결)";
@@ -382,6 +400,8 @@ async function processGrandTableau(opts: {
   const userPrompt = `[사용자 정보]
 ${userCtx}
 시그니피케이터 성별: ${opts.gender === "male" ? "남성 (28번 신사)" : "여성 (29번 숙녀)"}${questionPart}
+
+${sajuToday}
 
 [그랑 타블로 36장 배치 — 8열 × 4행 + 하단 영혼 4장]
 ${gridLines.join("\n")}

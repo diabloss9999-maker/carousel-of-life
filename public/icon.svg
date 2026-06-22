@@ -4,34 +4,28 @@
     <radialGradient id="bg" cx="50%" cy="40%" r="75%">
       <stop offset="0%" stop-color="#FFFFFF"/>
       <stop offset="70%" stop-color="#FBFAF7"/>
-      <stop offset="100%" stop-color="#F1EEE8"/>
+      <stop offset="100%" stop-color="#F4F0E7"/>
     </radialGradient>
     <linearGradient id="gold" x1="18%" y1="12%" x2="82%" y2="88%">
       <stop offset="0%" stop-color="#D7B86E"/>
       <stop offset="52%" stop-color="#B9954A"/>
       <stop offset="100%" stop-color="#9A7434"/>
     </linearGradient>
-    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="9.216" result="blur"/>
-      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0.95 0 1 0 0 0.73 0 0 1 0 0.32 0 0 0 0.55 0"/>
-      <feMerge>
-        <feMergeNode/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="9.216" stdDeviation="13.312" flood-color="#A5823D" flood-opacity="0.18"/>
     </filter>
   </defs>
-  <rect x="0" y="0" width="512" height="512" rx="112.64" fill="url(#bg)"/>
-  <circle cx="256" cy="256" r="155.04000000000002" fill="none" stroke="url(#gold)" stroke-width="10.752" opacity="0.96"/>
+  <rect width="512" height="512" rx="112.64" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="155.04000000000002" fill="none" stroke="url(#gold)" stroke-width="10.752" opacity="0.96" filter="url(#soft)"/>
   <circle cx="256" cy="256" r="107.16" fill="none" stroke="#E7E2D8" stroke-width="4.608" opacity="0.95" stroke-dasharray="11.264 16.384"/>
   <path d="M 256 178.48
            C 269.9536 229.64319999999998, 282.3568 242.0464, 333.52 256
            C 282.3568 269.9536, 269.9536 282.3568, 256 333.52
            C 242.0464 282.3568, 229.64319999999998 269.9536, 178.48 256
-           C 229.64319999999998 242.0464, 242.0464 229.64319999999998, 256 178.48 Z"
-        fill="url(#gold)" filter="url(#glow)"/>
+           C 229.64319999999998 242.0464, 242.0464 229.64319999999998, 256 178.48 Z" fill="url(#gold)"/>
   <circle cx="256" cy="256" r="13.312" fill="#FFFFFF" opacity="0.98"/>
   <circle cx="256" cy="256" r="5.632" fill="#B9954A"/>
-  <g fill="#D7B86E" opacity="0.74">
+  <g fill="#D7B86E" opacity="0.76">
     <circle cx="256" cy="100.95999999999998" r="6.144"/>
     <circle cx="411.04" cy="256" r="5.12"/>
     <circle cx="256" cy="411.04" r="6.144"/>

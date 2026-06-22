@@ -12,7 +12,7 @@ export const siteConfig = {
   description:
     "2026 신년운세, 오늘의 운세, 사주, 타로, 궁합을 쉽고 빠르게 확인하고 Carousel Nine 멤버 콘텐츠는 별도로 즐기는 한국어 라이프스타일 앱.",
   url: process.env.NEXT_PUBLIC_APP_URL ?? "https://carouseloflife.com",
-  ogImage: "/og-carousel-meadow.png",
+  ogImage: "/kakao-share-20260622.png",
   author: {
     name: "인생의 회전목마",
     email: "support@carouselof.life",
@@ -71,6 +71,15 @@ export const defaultMetadata: Metadata = {
     },
   },
   manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon.ico?v=20260622", sizes: "any" },
+      { url: "/icon.svg?v=20260622", type: "image/svg+xml" },
+      { url: "/icons-pwa/icon-192.png?v=20260622", type: "image/png", sizes: "192x192" },
+      { url: "/icons-pwa/icon-512.png?v=20260622", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png?v=20260622", sizes: "180x180", type: "image/png" }],
+  },
   appleWebApp: {
     capable: true,
     title: siteConfig.shortName,

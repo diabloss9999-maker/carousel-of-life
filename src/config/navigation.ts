@@ -4,6 +4,7 @@ import {
   Disc3,
   Library,
   MessageCircle,
+  Newspaper,
   Settings,
   Sparkles,
   type LucideIcon,
@@ -108,6 +109,14 @@ export const mainNav: NavEntry[] = [
       { id: "deep-reports", labelKey: "deepReportsGroup", children: deepReportChildren },
       { id: "records", labelKey: "records", children: recordChildren },
     ],
+  },
+  {
+    type: "leaf",
+    href: "/feed" as Route,
+    labelKey: "feed",
+    icon: Newspaper,
+    iconSrc: "/nav/nav_chat.svg",
+    description: "멤버 소식",
   },
   {
     type: "leaf",

@@ -61,6 +61,7 @@ export const tarotSpreadEnum = pgEnum("tarot_spread", [
   "single",
   "three",
   "celtic",
+  "seven",
 ]);
 
 export const lenormandSpreadEnum = pgEnum("lenormand_spread", [

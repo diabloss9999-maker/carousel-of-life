@@ -18,7 +18,10 @@ import type { LucideIcon } from "lucide-react";
 
 import { requireProfile } from "@/lib/auth/get-user";
 import { ROUTES } from "@/lib/constants";
-import { hasActiveSubscription } from "@/lib/payment/subscription-state";
+import {
+  getSubscriptionTier,
+} from "@/lib/payment/subscription-state";
+import { getMonthlyManse } from "@/lib/fortunes/period";
 
 type MonthlyPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -92,7 +95,10 @@ const AREA_GUIDES = [
 
 export default async function MonthlyPage({ searchParams }: MonthlyPageProps) {
   const { profile } = await requireProfile();
-  const subscribed = await hasActiveSubscription(profile.userId).catch(() => false);
+  const tier = await getSubscriptionTier(profile.userId).catch(
+    () => "free" as const,
+  );
+  const isPro = tier === "pro";
   const params = (await searchParams) ?? {};
   const justSubscribed =
     params.subscribed === "1" ||
@@ -105,12 +111,14 @@ export default async function MonthlyPage({ searchParams }: MonthlyPageProps) {
   const seed = buildSeed(
     `${profile.userId}:${profile.birthDate ?? ""}:${profile.mbti ?? ""}:${year}-${month}`,
   );
-  const theme = MONTH_THEMES[seed % MONTH_THEMES.length];
+  // 사주 기반 월운/대운 — 사주가 있으면 실제 흐름, 없으면 seed 폴백.
+  const manse = getMonthlyManse(profile, year, month);
+  const theme = manse?.theme ?? MONTH_THEMES[seed % MONTH_THEMES.length];
   const strongWeek = (seed % 4) + 1;
   const cautionWeek = ((seed >>> 4) % 4) + 1;
-  const focusScore = 61 + (seed % 30);
-  const relationScore = 57 + ((seed >>> 5) % 32);
-  const moneyScore = 55 + ((seed >>> 9) % 34);
+  const focusScore = manse?.scores.focus ?? 61 + (seed % 30);
+  const relationScore = manse?.scores.relation ?? 57 + ((seed >>> 5) % 32);
+  const moneyScore = manse?.scores.money ?? 55 + ((seed >>> 9) % 34);
   const premiumInsights = getMonthlyPremiumInsights(seed, month);
 
   return (
@@ -139,7 +147,7 @@ export default async function MonthlyPage({ searchParams }: MonthlyPageProps) {
         </div>
       </header>
 
-      {subscribed ? <UnlockedNotice justSubscribed={justSubscribed} /> : null}
+      {isPro ? <UnlockedNotice justSubscribed={justSubscribed} /> : null}
 
       <section className="grid gap-4 lg:grid-cols-[1fr_0.9fr]">
         <div className="app-surface rounded-3xl border p-5 sm:p-6">
@@ -149,10 +157,14 @@ export default async function MonthlyPage({ searchParams }: MonthlyPageProps) {
           </div>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight">{theme}</h2>
           <p className="mt-4 text-[15px] leading-7 text-muted-foreground">
-            이번 달은 매일의 작은 선택이 누적되는 흐름이에요. 크게
-            바꾸기보다 반복되는 습관 하나를 고치면 체감 운이 훨씬
-            좋아질 수 있어요.
+            {manse?.flowNote ??
+              "이번 달은 매일의 작은 선택이 누적되는 흐름이에요. 크게 바꾸기보다 반복되는 습관 하나를 고치면 체감 운이 훨씬 좋아질 수 있어요."}
           </p>
+          {manse?.daeunNote ? (
+            <p className="mt-3 rounded-2xl border border-primary/20 bg-primary/[0.06] px-3 py-2.5 text-[14px] leading-6 text-muted-foreground">
+              {manse.daeunNote}
+            </p>
+          ) : null}
         </div>
 
         <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
@@ -220,7 +232,7 @@ export default async function MonthlyPage({ searchParams }: MonthlyPageProps) {
         ))}
       </section>
 
-      <PremiumDepthSection insights={premiumInsights} subscribed={subscribed} />
+      <PremiumDepthSection insights={premiumInsights} subscribed={isPro} />
 
       <NextActions
         primaryHref={ROUTES.today as Route}
@@ -250,15 +262,15 @@ function PremiumDepthSection({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <p className="text-[12px] font-semibold uppercase tracking-[0.22em] text-primary/70">
-            Premium Monthly
+            Pro Monthly Strategy
           </p>
           <h2 className="mt-1 text-2xl font-semibold tracking-tight">
-            월간 심층 리포트
+            월간 전략 리포트
           </h2>
           <p className="mt-2 max-w-2xl text-[14px] leading-6 text-muted-foreground">
-            무료 리포트가 이번 달의 방향을 보여준다면, 심층 리포트는
-            관계, 소비, 일과 컨디션까지 실제로 어떻게 움직이면 좋을지
-            구체적으로 안내해요.
+            기본 월간운세가 이번 달의 방향을 보여준다면, 프로 전략
+            리포트는 관계, 소비, 일, 컨디션까지 실제로 어떻게 움직이면
+            좋을지 구체적으로 정리해요.
           </p>
         </div>
         {!subscribed ? (
@@ -266,12 +278,12 @@ function PremiumDepthSection({
             href={`${ROUTES.pricing}?from=monthly` as Route}
             className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-[14px] font-semibold text-primary-foreground"
           >
-            심층 열기
+            프로로 전략 리포트 열기
             <ArrowRight className="h-4 w-4" aria-hidden />
           </Link>
         ) : (
           <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-[12px] font-semibold text-primary">
-            잠금 해제됨
+            프로 전용 사용 중
           </span>
         )}
       </div>
@@ -284,8 +296,8 @@ function PremiumDepthSection({
         </div>
       ) : (
         <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-[14px] leading-6 text-muted-foreground">
-          구독하면 관계, 금전, 일과 공부, 컨디션별 상세 해석과
-          이번 달 행동 기준까지 확인할 수 있어요.
+          프로로 업그레이드하면 관계, 금전, 일과 공부, 컨디션별 상세
+          해석과 이번 달 행동 기준까지 확인할 수 있어요.
         </div>
       )}
 
@@ -330,7 +342,7 @@ function PremiumDepthSection({
                   {item.preview}
                 </p>
                 <p className="text-[13px] font-medium text-primary">
-                  구독하면 자세히 열림
+                  프로에서 자세히 열림
                 </p>
               </div>
             )}

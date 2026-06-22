@@ -20,8 +20,8 @@
     "path": "./release.keystore",
     "alias": "carousel-release"
   },
-  "appVersionName": "1.0.3",
-  "appVersionCode": 10,
+  "appVersionName": "1.0.4",
+  "appVersionCode": 11,
   "shortcuts": [
     {
       "name": "오늘의 운세",
@@ -65,5 +65,5 @@
   "additionalTrustedOrigins": [],
   "retainedBundles": [],
   "displayOverride": [],
-  "appVersion": "1.0.3"
+  "appVersion": "1.0.4"
 }

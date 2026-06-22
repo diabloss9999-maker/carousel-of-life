@@ -17,10 +17,48 @@ import { sajuDeepAiSchema, type SajuDeepAiOutput } from "@/lib/ai/types";
 import { AI_LIMITS, AI_MODELS } from "@/lib/constants";
 import { ensureSajuCalculated } from "@/lib/saju/calculate";
 import { annotateHanjaDeep } from "@/lib/saju/hanja-annotate";
+import { buildDaeunTimelineBlock } from "@/lib/saju/luck-cycles";
+import {
+  analyzeNatal,
+  buildNatalAnalysisBlock,
+  type NatalPillars,
+} from "@/lib/saju/ten-gods";
 import {
   NEUTRAL_SAJU_VOICE,
   NEUTRAL_SAJU_VOICE_ID,
 } from "@/lib/ai/character-voice";
+
+/** profile.sajuPillars(jsonb) → NatalPillars(분석 입력). */
+function toNatalPillars(raw: unknown): NatalPillars | null {
+  if (!raw || typeof raw !== "object") return null;
+  const p = raw as Record<string, { stem?: string; branch?: string } | null>;
+  const norm = (
+    x: { stem?: string; branch?: string } | null | undefined,
+  ): { stem: string; branch: string } | null =>
+    x?.stem && x?.branch ? { stem: x.stem, branch: x.branch } : null;
+  return {
+    year: norm(p.year),
+    month: norm(p.month),
+    day: norm(p.day),
+    hour: norm(p.hour),
+  };
+}
+
+/**
+ * 심층 풀이 프롬프트에 주입할 결정론적 명리 분석 블록을 만든다.
+ * 강약/용신/십성/원국관계/신살·십이운성 + 대운 타임라인. 없으면 빈 문자열.
+ */
+function buildDeepAnalysisBlock(profile: Profile): string {
+  const parts: string[] = [];
+  const natalPillars = toNatalPillars(profile.sajuPillars);
+  if (natalPillars) {
+    const natal = analyzeNatal(natalPillars);
+    if (natal) parts.push(buildNatalAnalysisBlock(natal));
+  }
+  const daeun = buildDaeunTimelineBlock(profile);
+  if (daeun) parts.push(daeun);
+  return parts.join("\n\n");
+}
 
 export interface SajuDeepReading extends SajuDeepAiOutput {
   model: string;
@@ -85,7 +123,7 @@ export async function getOrCreateDeepReading(
   try {
     aiOutput = await generateJson({
       schema: sajuDeepAiSchema,
-      userPrompt: buildSajuDeepPrompt(withSaju),
+      userPrompt: buildSajuDeepPrompt(withSaju, buildDeepAnalysisBlock(withSaju)),
       model: AI_MODELS.premium,
       maxTokens: AI_LIMITS.sajuDeepMaxTokens,
       systemSuffix: NEUTRAL_SAJU_VOICE,

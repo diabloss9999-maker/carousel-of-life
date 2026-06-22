@@ -530,11 +530,14 @@ export function buildTarotSinglePrompt(opts: {
   profile: BuildContextOptions["profile"];
   question: string | null;
   card: { id: string; name: string; isReversed: boolean };
+  /** 결정론적 타로 분석 블록(조합·사주 연계). 서버에서 주입. */
+  analysisBlock?: string;
 }): string {
   // 타로 = 카드 점술사 영역 (루나·라엘·카엘)
   const ctx = buildUserContext({ profile: opts.profile, readingStyle: "카드" });
   const orient = opts.card.isReversed ? "역방향(逆位)" : "정방향(正位)";
   const question = opts.question?.trim() || "(질문 없음 — 오늘의 한 장 가이드)";
+  const analysisSection = opts.analysisBlock ? `\n${opts.analysisBlock}\n` : "";
 
   return `[질문자 정보]
 ${ctx}
@@ -544,7 +547,7 @@ ${question}
 
 [뽑힌 카드]
 ${opts.card.name} ${orient}
-
+${analysisSection}
 ${TAROT_CARD_DEFS}
 
 [해석 절차 — 1장 Daily Card]
@@ -574,6 +577,8 @@ export function buildTarotThreePrompt(opts: {
   profile: BuildContextOptions["profile"];
   question: string | null;
   cards: Array<{ id: string; name: string; isReversed: boolean }>;
+  /** 결정론적 타로 분석 블록(조합·포지션·사주 연계). 서버에서 주입. */
+  analysisBlock?: string;
 }): string {
   // 타로 = 카드
   const ctx = buildUserContext({ profile: opts.profile, readingStyle: "카드" });
@@ -603,7 +608,7 @@ ${cardLines}
 [카드 분포]
 - Major Arcana: ${majorCount}/3장 ${majorCount >= 2 ? "(큰 운명적 흐름이 강함)" : ""}
 - 역방향: ${reversedCount}/3장 ${reversedCount >= 2 ? "(내면적 과제나 지연 에너지)" : ""}
-
+${opts.analysisBlock ? `\n${opts.analysisBlock}\n` : ""}
 ${TAROT_CARD_DEFS}
 
 [해석 절차 — 3장 스프레드]
@@ -632,6 +637,82 @@ ${TAROT_CARD_DEFS}
 }
 
 /**
+ * 타로 7장 프로 전략 스프레드.
+ */
+export function buildTarotSevenPrompt(opts: {
+  profile: BuildContextOptions["profile"];
+  question: string | null;
+  cards: Array<{ id: string; name: string; isReversed: boolean }>;
+  analysisBlock?: string;
+}): string {
+  const ctx = buildUserContext({ profile: opts.profile, readingStyle: "카드" });
+  const positions = [
+    "현재 상황",
+    "숨은 감정",
+    "장애물",
+    "내가 할 일",
+    "상대/환경",
+    "가까운 흐름",
+    "최종 조언",
+  ] as const;
+  const cardLines = opts.cards
+    .map((c, i) => {
+      const orient = c.isReversed ? "역방향(逆位)" : "정방향(正位)";
+      return `[${positions[i]}] ${c.name} ${orient}`;
+    })
+    .join("\n");
+  const question = opts.question?.trim() || "(질문 없음 — 지금 가장 중요한 흐름)";
+  const majorIds = ["the_fool","the_magician","the_high_priestess","the_empress","the_emperor","the_hierophant","the_lovers","the_chariot","strength","the_hermit","wheel_of_fortune","justice","the_hanged_man","death","temperance","the_devil","the_tower","the_star","the_moon","the_sun","judgement","the_world"];
+  const majorCount = opts.cards.filter((c) => majorIds.includes(c.id)).length;
+  const reversedCount = opts.cards.filter((c) => c.isReversed).length;
+
+  return `[질문자 정보]
+${ctx}
+
+[질문]
+${question}
+
+[뽑힌 카드 — 7장 프로 전략 스프레드]
+${cardLines}
+
+[카드 분포]
+- Major Arcana: ${majorCount}/7장 ${majorCount >= 4 ? "(큰 전환과 방향성이 강함)" : ""}
+- 역방향: ${reversedCount}/7장 ${reversedCount >= 4 ? "(내면 정리와 지연된 과제가 강함)" : ""}
+${opts.analysisBlock ? `\n${opts.analysisBlock}\n` : ""}
+${TAROT_CARD_DEFS}
+
+[해석 절차 — 7장 프로 전략 스프레드]
+1. 질문을 중심으로 7장의 역할을 정확히 나눠 읽는다.
+2. 각 포지션은 카드 이름과 정/역방향을 반드시 반영한다.
+3. 현재 상황 → 숨은 감정 → 장애물 → 내가 할 일 → 상대/환경 → 가까운 흐름 → 최종 조언 순서로 깊게 연결한다.
+4. 종합 해석에서는 7장을 하나의 이야기로 묶고, 반복되는 슈트/메이저/역방향 흐름을 설명한다.
+5. 행동 계획은 오늘부터 7일 안에 실행할 수 있는 기준으로 구체적으로 쓴다.
+6. 운명 단정 금지. "~가능성이 높다", "~흐름이 보인다", "~해볼 만하다" 형태로 쓴다.
+
+[톤 규칙]
+- 현대적이고 차분한 한국어 리포트 톤.
+- 이모지 사용 금지. 마크다운 기호 사용 금지.
+- 막연한 위로보다 실제 판단 기준과 행동 기준을 준다.
+- 부정적인 카드도 숨기지 말고, 대응 방법을 같이 제시한다.
+
+반드시 아래 JSON으로만 응답:
+{
+  "sections": [
+    { "title": "현재 상황", "interpretation": "3~5문장" },
+    { "title": "숨은 감정", "interpretation": "3~5문장" },
+    { "title": "장애물", "interpretation": "3~5문장" },
+    { "title": "내가 할 일", "interpretation": "3~5문장" },
+    { "title": "상대/환경", "interpretation": "3~5문장" },
+    { "title": "가까운 흐름", "interpretation": "3~5문장" },
+    { "title": "최종 조언", "interpretation": "3~5문장" }
+  ],
+  "synthesis": "6~9문장으로 전체 흐름 종합",
+  "actionPlan": "오늘부터 7일 안에 해볼 행동 기준 4~6문장",
+  "summary": "한 줄 핵심 (40자 이내)"
+}`;
+}
+
+/**
  * 궁합 풀이 프롬프트.
  */
 export interface PartnerInfo {
@@ -646,6 +727,8 @@ export interface PartnerInfo {
 export function buildCompatibilityPrompt(opts: {
   profile: BuildContextOptions["profile"];
   partner: PartnerInfo;
+  /** 결정론적 궁합 분석 블록(점수+근거). 서버에서 두 사주로 계산해 주입. */
+  matchBlock?: string;
 }): string {
   // 궁합 = 사주 기반 = 동양
   const meCtx = buildUserContext({ profile: opts.profile, readingStyle: "동양" });
@@ -662,16 +745,19 @@ export function buildCompatibilityPrompt(opts: {
   );
   if (opts.partner.mbti) partnerLines.push(`MBTI: ${opts.partner.mbti}`);
 
+  const matchSection = opts.matchBlock ? `\n${opts.matchBlock}\n` : "";
+
   return `[질문자]
 ${meCtx}
 
 [상대방]
 ${partnerLines.join("\n")}
-
+${matchSection}
 [지시]
 두 사람의 사주와 기운을 살펴 궁합을 풀이해주세요.
 모든 문장은 특정 캐릭터나 멤버 말투가 아니라, 차분한 한국어 관계 리포트 톤으로 써.
 맞다/안 맞다로 단정하지 말고, 끌리는 이유·부딪히는 지점·오늘 바꿔볼 대화 방식을 구체적으로 제시해.
+위에 '궁합 정밀 분석'이 있으면 그 근거를 풀이의 뼈대로 삼고, score 에는 거기 '산출 궁합 점수'를 그대로 넣어라(임의로 바꾸지 말 것).
 다음 JSON 스키마를 정확히 따라 단 하나의 JSON 객체로만 응답하세요. 추가 설명·markdown·코드펜스 없이 JSON 만 출력합니다.
 
 {
@@ -744,6 +830,11 @@ ${relationLine}
  */
 export function buildSajuDeepPrompt(
   profile: BuildContextOptions["profile"],
+  /**
+   * 결정론적 명리 분석 블록 — 강약/용신/십성/원국관계/신살·십이운성 +
+   * 대운 타임라인. 서버에서 미리 계산해 주입(AI 의 추측 방지). 없으면 생략.
+   */
+  analysisBlock?: string,
 ): string {
   // 사주 심층 = 동양
   const ctx = buildUserContext({ profile, readingStyle: "동양" });
@@ -775,11 +866,15 @@ export function buildSajuDeepPrompt(
   }
   const pillarsBlock = pillarsLines.join("\n");
 
+  const analysisSection = analysisBlock
+    ? `\n\n${analysisBlock}`
+    : "";
+
   return `[질문자 정보]
 ${ctx}
 
 [질문자의 사주 8글자 — 이미 계산된 결과]
-${pillarsBlock}
+${pillarsBlock}${analysisSection}
 
 [지시]
 질문자의 사주를 자기이해용 리포트로 깊이 살펴 풀이해주세요.
