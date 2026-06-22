@@ -1229,10 +1229,19 @@ html[data-platform="ios"] [data-hide-in-app] {
 .liquid-glass-action {
   border-color: rgba(22, 24, 29, 0.08) !important;
   background: rgba(255, 255, 255, 0.62) !important;
+  /* 흰 배경 버튼이라 글자색을 어둡게 강제 — 기본 버튼의 흰 글자가 안 보이던 문제 해결. */
+  color: rgba(22, 24, 29, 0.92) !important;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.62),
     0 10px 20px rgba(32, 37, 48, 0.08);
   backdrop-filter: blur(14px);
+}
+
+/* primary 버튼은 흰 글자(.ritual-button.primary *)인데 liquid-glass-action 은
+   배경을 흰색으로 덮어 글자가 안 보였다. 더 높은 특이도(0,3,x)로 어둡게 덮는다. */
+.ritual-button.primary.liquid-glass-action,
+.ritual-button.primary.liquid-glass-action * {
+  color: rgba(22, 24, 29, 0.92) !important;
 }
 
 .liquid-chat-action,
