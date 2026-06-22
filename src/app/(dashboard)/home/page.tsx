@@ -12,7 +12,9 @@ import {
 } from "lucide-react";
 
 import { FeatureGrid } from "@/components/home/feature-grid";
+import { BiasGreetingCard } from "@/components/chat/bias-greeting-card";
 import { requireProfile } from "@/lib/auth/get-user";
+import { getBiasGreeting } from "@/lib/chat/bias-greeting";
 import { ROUTES } from "@/lib/constants";
 import { hasActiveSubscription } from "@/lib/payment/subscription-state";
 
@@ -23,9 +25,13 @@ export const metadata: Metadata = {
 
 export default async function HomeDashboardPage() {
   const { profile } = await requireProfile();
-  const subscribed = await hasActiveSubscription(profile.userId).catch(
-    () => false,
-  );
+  const [subscribed, biasGreeting] = await Promise.all([
+    hasActiveSubscription(profile.userId).catch(() => false),
+    getBiasGreeting({
+      userId: profile.userId,
+      biasCharacter: profile.biasCharacter,
+    }),
+  ]);
 
   return (
     <div className="mx-auto w-full max-w-5xl space-y-6">
@@ -70,6 +76,8 @@ export default async function HomeDashboardPage() {
           />
         </div>
       </header>
+
+      <BiasGreetingCard greeting={biasGreeting} />
 
       <DailyRoutinePanel subscribed={subscribed} />
 
