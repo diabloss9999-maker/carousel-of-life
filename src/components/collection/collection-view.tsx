@@ -267,10 +267,10 @@ export function CollectionView({
 
       {/* 진행도 표시 — 카테고리 탭 위 한 줄. */}
       <div className="flex items-end justify-between gap-3">
-        <h2 className="font-mystic text-lg font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)] sm:text-xl">
+        <h2 className="font-mystic text-lg font-semibold text-zinc-900 sm:text-xl">
           {t("heading")}
         </h2>
-        <p className="text-[15px] tabular-nums text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
+        <p className="text-[15px] tabular-nums text-zinc-600">
           {t("ownedFraction", { owned: ownedAll, total: totalAll })}
         </p>
       </div>
@@ -386,15 +386,15 @@ function GachaPanel({
   return (
     <div className="app-surface space-y-5 rounded-2xl border border-border/60 p-5 shadow-sm sm:p-7">
       <div className="flex flex-col items-center gap-1 text-center">
-        <h2 className="font-mystic text-xl font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)] sm:text-2xl">
+        <h2 className="font-mystic text-xl font-semibold text-zinc-900 sm:text-2xl">
           {t("drawAction")}
         </h2>
-        <p className="text-[15px] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] sm:text-[15px]">
+        <p className="text-[15px] text-zinc-600 sm:text-[15px]">
           {subscribed
             ? t("subDescSubscribed")
             : t("subDescFree")}
         </p>
-        <p className="text-[13px] text-amber-100/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.55)]">
+        <p className="text-[13px] text-amber-700">
           {t("bonusDeductNotice")}
         </p>
       </div>
@@ -474,7 +474,7 @@ function GachaPanel({
               <div className="h-full w-full bg-muted" />
             )}
             {pulled ? (
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent px-2 py-2 text-center">
+              <div data-keep-color className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent px-2 py-2 text-center">
                 <p className="line-clamp-1 text-[15px] font-medium text-white">
                   {displayName(pulled.card, locale)}
                 </p>
@@ -492,26 +492,26 @@ function GachaPanel({
         {pulled ? (
           <>
             {pulled.isNew ? (
-              <p className="text-[15px] font-semibold text-amber-200 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+              <p className="text-[15px] font-semibold text-amber-600">
                 {t("resultNew")}
               </p>
             ) : (
-              <p className="text-[15px] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
+              <p className="text-[15px] text-zinc-600">
                 {t("dupeDetailLine")}
               </p>
             )}
             {pulled.chatBonus > 0 ? (
-              <p className="font-mystic text-[15px] text-amber-200 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+              <p className="font-mystic text-[15px] text-amber-600">
                 {t("resultBonus", { n: pulled.chatBonus })}
               </p>
             ) : null}
           </>
         ) : choosing ? (
-          <p className="text-[15px] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
+          <p className="text-[15px] text-zinc-600">
             {t("pickOneHint")}
           </p>
         ) : (
-          <p className="text-[15px] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
+          <p className="text-[15px] text-zinc-600">
             {t("resultIdle")}
           </p>
         )}
@@ -529,7 +529,7 @@ function GachaPanel({
           {buttonLabel}
         </Button>
         {!subscribed && exhausted ? (
-          <p className="text-[15px] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
+          <p className="text-[15px] text-zinc-600">
             {t("upgradeHint", { n: GACHA_DAILY_LIMITS.lite })}
           </p>
         ) : null}
@@ -556,17 +556,17 @@ function TabButton({ active, onClick, label, owned, total }: TabButtonProps) {
       type="button"
       onClick={onClick}
       className={cn(
-        "flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[15px] font-medium transition-all drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]",
+        "flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[15px] font-medium transition-all",
         active
-          ? "border-white/70 bg-white/20 text-white shadow-inner"
-          : "border-white/30 bg-black/30 text-white/80 hover:bg-black/50 hover:text-white",
+          ? "border-zinc-400 bg-black/[0.07] font-semibold shadow-inner"
+          : "border-zinc-300 bg-white/60 hover:bg-white",
       )}
     >
       <span>{label}</span>
       <span
         className={cn(
           "tabular-nums text-[15px]",
-          active ? "text-white/90" : "text-white/70",
+          active ? "text-white/90" : "text-zinc-500",
         )}
       >
         {owned}/{total}
@@ -627,7 +627,7 @@ function CardCell({ card, owned, onClick }: CardCellProps) {
         sizes="(min-width: 1024px) 16vw, (min-width: 768px) 20vw, 33vw"
         className="object-cover transition-transform duration-300 group-hover:scale-105"
       />
-      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/55 to-transparent px-1.5 py-1.5 text-center">
+      <div data-keep-color className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/55 to-transparent px-1.5 py-1.5 text-center">
         <span className="line-clamp-1 text-[15px] font-medium text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
           {cardName}
         </span>
@@ -664,6 +664,7 @@ function CardDetailDialog({ card, onClose }: CardDetailDialogProps) {
       />
 
       <div
+        data-keep-color
         className={cn(
           "relative z-10 w-full max-w-md overflow-hidden rounded-2xl border shadow-2xl",
           "bg-[#1a1428]/95 backdrop-blur-md",

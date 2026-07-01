@@ -33,6 +33,22 @@ export const tarotThreeAiSchema = z.object({
 
 export type TarotThreeAiOutput = z.infer<typeof tarotThreeAiSchema>;
 
+export const tarotSevenAiSchema = z.object({
+  sections: z
+    .array(
+      z.object({
+        title: z.string().min(1).max(40),
+        interpretation: z.string().min(1).max(1800),
+      }),
+    )
+    .length(7),
+  synthesis: z.string().min(1).max(2600),
+  actionPlan: z.string().min(1).max(1600),
+  summary: z.string().min(1).max(80),
+});
+
+export type TarotSevenAiOutput = z.infer<typeof tarotSevenAiSchema>;
+
 /** 르노르망 풀이 (단일·3장 공용) AI 응답 스키마. */
 export const lenormandSingleAiSchema = z.object({
   interpretation: z.string().min(1).max(2000),
@@ -56,6 +72,18 @@ export const compatibilityAiSchema = z.object({
 });
 
 export type CompatibilityAiOutput = z.infer<typeof compatibilityAiSchema>;
+
+export const compatibilityProAiSchema = z.object({
+  relationshipPattern: z.string().min(1).max(1800),
+  attractionPoint: z.string().min(1).max(1500),
+  conflictPattern: z.string().min(1).max(1800),
+  conversationGuide: z.string().min(1).max(1800),
+  timingAdvice: z.string().min(1).max(1500),
+  thirtyDayPlan: z.string().min(1).max(2200),
+  summary: z.string().min(1).max(80),
+});
+
+export type CompatibilityProAiOutput = z.infer<typeof compatibilityProAiSchema>;
 
 export const sajuDeepAiSchema = z.object({
   personality: z.string().min(1).max(2000),

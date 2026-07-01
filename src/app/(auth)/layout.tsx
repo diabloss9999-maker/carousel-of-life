@@ -9,20 +9,20 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="relative flex min-h-dvh flex-col items-center justify-center px-6 py-12">
+    <main className="relative flex min-h-dvh flex-col items-center justify-center px-5 py-10 sm:px-6 sm:py-12">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,rgba(155,109,225,0.12),transparent_60%)]"
+        className="pointer-events-none absolute inset-x-6 top-[12%] -z-10 h-px bg-gradient-to-r from-transparent via-black/10 to-transparent"
       />
 
       <Link
         href={ROUTES.home}
-        className="font-mystic mb-8 text-2xl font-semibold tracking-tight text-foreground hover:text-primary transition-colors"
+        className="font-mystic mb-8 text-3xl font-semibold tracking-tight text-foreground transition-colors hover:text-primary"
       >
         {siteConfig.name}
       </Link>
 
-      <div className="w-full max-w-sm">{children}</div>
+      <div className="w-full max-w-[390px]">{children}</div>
     </main>
   );
 }

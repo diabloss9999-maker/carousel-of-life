@@ -23,7 +23,7 @@ import {
 import { useLocationHash } from "@/hooks/use-location-hash";
 
 /** Light Ritual 네비 색상 */
-const NAV_ACTIVE_BG  = "rgba(255,255,255,0.14)";
+const NAV_ACTIVE_BG  = "rgba(255,255,255,0.72)";
 const NAV_ACTIVE_CLR = "var(--nav-active)";
 const NAV_MUTED      = "var(--nav-muted)";
 
@@ -64,7 +64,8 @@ export function DesktopNav() {
         padding: "6px",
         borderRadius: "999px",
         border: "1px solid var(--header-border)",
-        background: "rgba(255,255,255,0.10)",
+        background: "rgba(255,255,255,0.54)",
+        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.62)",
       }}
       aria-label={tExtras("navTopAria")}
     >

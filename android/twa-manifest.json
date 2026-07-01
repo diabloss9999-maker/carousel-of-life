@@ -20,8 +20,8 @@
     "path": "./release.keystore",
     "alias": "carousel-release"
   },
-  "appVersionName": "1.0.2",
-  "appVersionCode": 9,
+  "appVersionName": "1.0.4",
+  "appVersionCode": 11,
   "shortcuts": [
     {
       "name": "오늘의 운세",
@@ -61,10 +61,9 @@
   "isMetaQuest": false,
   "fullScopeUrl": "https://carouseloflife.com/",
   "minSdkVersion": 23,
-  "orientation": "portrait",
   "fingerprints": [],
   "additionalTrustedOrigins": [],
   "retainedBundles": [],
   "displayOverride": [],
-  "appVersion": "1.0.2"
+  "appVersion": "1.0.4"
 }

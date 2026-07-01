@@ -44,6 +44,37 @@ function supportsAssistantPrefill(model: string): boolean {
   return !PREFILL_UNSUPPORTED_PATTERNS.some((p) => model.includes(p));
 }
 
+type TextLikeBlock = { type: string; text?: unknown };
+
+function collectResponseText(content: readonly TextLikeBlock[]): string {
+  return content
+    .map((block) =>
+      block.type === "text" && typeof block.text === "string"
+        ? block.text
+        : "",
+    )
+    .join("\n")
+    .trim();
+}
+
+function describeContentBlocks(content: readonly TextLikeBlock[]): string {
+  return content.map((block) => block.type).join(", ") || "empty";
+}
+
+function missingTextBlockError(opts: {
+  content: readonly TextLikeBlock[];
+  model: string;
+  stopReason?: string | null;
+}): Error {
+  console.warn("[ai] response contained no text block", {
+    model: opts.model,
+    stopReason: opts.stopReason ?? "unknown",
+    contentTypes: describeContentBlocks(opts.content),
+  });
+
+  return new Error("AI 응답이 비어있어요. 잠시 후 다시 시도해주세요.");
+}
+
 export async function generateJson<TSchema extends z.ZodTypeAny>(
   opts: GenerateJsonOptions<TSchema>,
 ): Promise<z.infer<TSchema>> {
@@ -87,14 +118,18 @@ export async function generateJson<TSchema extends z.ZodTypeAny>(
         ],
   });
 
-  const textBlock = response.content.find((b) => b.type === "text");
-  if (!textBlock || textBlock.type !== "text") {
-    throw new Error("AI 응답에서 텍스트 블록을 찾지 못했어.");
+  const responseText = collectResponseText(response.content);
+  if (!responseText) {
+    throw missingTextBlockError({
+      content: response.content,
+      model: opts.model,
+      stopReason: response.stop_reason,
+    });
   }
 
   // prefill 사용 시 응답엔 `{` 가 빠져 있으므로 다시 붙여 완전한 JSON 으로 복원.
   // 미사용 시 응답이 이미 JSON 전체를 포함.
-  const rawText = usePrefill ? JSON_PREFILL + textBlock.text : textBlock.text;
+  const rawText = usePrefill ? JSON_PREFILL + responseText : responseText;
 
   try {
     const json = extractJson(rawText);
@@ -144,10 +179,14 @@ export async function generateMarkdown(
     messages: [{ role: "user", content: opts.userPrompt }],
   });
 
-  const textBlock = response.content.find((b) => b.type === "text");
-  if (!textBlock || textBlock.type !== "text") {
-    throw new Error("AI 응답에서 텍스트 블록을 찾지 못했어.");
+  const responseText = collectResponseText(response.content);
+  if (!responseText) {
+    throw missingTextBlockError({
+      content: response.content,
+      model: opts.model,
+      stopReason: response.stop_reason,
+    });
   }
 
-  return textBlock.text.trim();
+  return responseText;
 }

@@ -1,45 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="인생의 회전목마">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
   <defs>
-    <radialGradient id="bg" cx="50%" cy="50%" r="60%">
-      <stop offset="0%" stop-color="#1a1430"/>
-      <stop offset="100%" stop-color="#0d0a14"/>
+    <radialGradient id="bg" cx="50%" cy="40%" r="75%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="70%" stop-color="#FBFAF7"/>
+      <stop offset="100%" stop-color="#F4F0E7"/>
     </radialGradient>
-    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#d4af6a"/>
-      <stop offset="100%" stop-color="#a4853d"/>
+    <linearGradient id="gold" x1="18%" y1="12%" x2="82%" y2="88%">
+      <stop offset="0%" stop-color="#D7B86E"/>
+      <stop offset="52%" stop-color="#B9954A"/>
+      <stop offset="100%" stop-color="#9A7434"/>
     </linearGradient>
-    <linearGradient id="purple" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#9b6de1"/>
-      <stop offset="100%" stop-color="#6b21a8"/>
-    </linearGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="9.216" stdDeviation="13.312" flood-color="#A5823D" flood-opacity="0.18"/>
+    </filter>
   </defs>
-
-  <!-- 배경 -->
-  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
-
-  <!-- 회전목마 원 (3겹) -->
-  <g fill="none" opacity="0.7">
-    <circle cx="256" cy="256" r="180" stroke="url(#purple)" stroke-width="2.5"/>
-    <circle cx="256" cy="256" r="140" stroke="url(#gold)" stroke-width="1.5" stroke-dasharray="3 6"/>
-    <circle cx="256" cy="256" r="100" stroke="url(#purple)" stroke-width="2"/>
-  </g>
-
-  <!-- 중심 별 (8각) -->
-  <g transform="translate(256 256)" fill="url(#gold)">
-    <path d="M0,-90 L18,-18 L90,0 L18,18 L0,90 L-18,18 L-90,0 L-18,-18 Z"/>
-    <circle r="14" fill="#0d0a14"/>
-    <circle r="6" fill="url(#gold)"/>
-  </g>
-
-  <!-- 작은 별들 (회전목마 위) -->
-  <g fill="url(#gold)" opacity="0.85">
-    <circle cx="256" cy="76" r="5"/>
-    <circle cx="436" cy="256" r="4"/>
-    <circle cx="256" cy="436" r="5"/>
-    <circle cx="76" cy="256" r="4"/>
-    <circle cx="383" cy="129" r="3"/>
-    <circle cx="383" cy="383" r="3"/>
-    <circle cx="129" cy="383" r="3"/>
-    <circle cx="129" cy="129" r="3"/>
+  <rect width="512" height="512" rx="112.64" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="155.04000000000002" fill="none" stroke="url(#gold)" stroke-width="10.752" opacity="0.96" filter="url(#soft)"/>
+  <circle cx="256" cy="256" r="107.16" fill="none" stroke="#E7E2D8" stroke-width="4.608" opacity="0.95" stroke-dasharray="11.264 16.384"/>
+  <path d="M 256 178.48
+           C 269.9536 229.64319999999998, 282.3568 242.0464, 333.52 256
+           C 282.3568 269.9536, 269.9536 282.3568, 256 333.52
+           C 242.0464 282.3568, 229.64319999999998 269.9536, 178.48 256
+           C 229.64319999999998 242.0464, 242.0464 229.64319999999998, 256 178.48 Z" fill="url(#gold)"/>
+  <circle cx="256" cy="256" r="13.312" fill="#FFFFFF" opacity="0.98"/>
+  <circle cx="256" cy="256" r="5.632" fill="#B9954A"/>
+  <g fill="#D7B86E" opacity="0.76">
+    <circle cx="256" cy="100.95999999999998" r="6.144"/>
+    <circle cx="411.04" cy="256" r="5.12"/>
+    <circle cx="256" cy="411.04" r="6.144"/>
+    <circle cx="100.95999999999998" cy="256" r="5.12"/>
   </g>
 </svg>

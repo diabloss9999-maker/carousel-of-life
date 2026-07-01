@@ -9,6 +9,8 @@ import {
   type DreamReadingAiOutput,
 } from "@/lib/ai/types";
 import { AI_MODELS } from "@/lib/constants";
+import { ensureSajuCalculated } from "@/lib/saju/calculate";
+import { buildSajuTodayBlock } from "@/lib/saju/today-resonance";
 import type { Profile } from "@/db/schema";
 
 export type DreamMood = "bright" | "dark" | "weird" | "neutral";
@@ -24,9 +26,15 @@ export type DreamReadingResult = DreamReadingAiOutput;
 export async function generateDreamReading(
   input: DreamReadingInput,
 ): Promise<DreamReadingResult> {
+  // 꿈해몽의 sajuConnection 필드를 실제 사주로 채우기 위해 사주를 보장한다.
+  const profile = await ensureSajuCalculated(input.profile).catch(
+    () => input.profile,
+  );
+  const sajuBlock = buildSajuTodayBlock(profile);
+
   const data = await generateJson({
     systemSuffix: NEUTRAL_CARD_VOICE,
-    userPrompt: buildCleanDreamReadingPrompt(input),
+    userPrompt: buildCleanDreamReadingPrompt({ ...input, profile }, sajuBlock),
     schema: dreamReadingAiSchema,
     model: AI_MODELS.premium,
     maxTokens: 1500,
@@ -36,7 +44,10 @@ export async function generateDreamReading(
   return data;
 }
 
-function buildCleanDreamReadingPrompt(input: DreamReadingInput): string {
+function buildCleanDreamReadingPrompt(
+  input: DreamReadingInput,
+  sajuBlock: string,
+): string {
   const profile = input.profile;
   const profileLines = [
     profile.displayName ? `이름: ${profile.displayName}` : null,
@@ -50,6 +61,8 @@ function buildCleanDreamReadingPrompt(input: DreamReadingInput): string {
 
   return `[질문자 정보]
 ${profileLines.join("\n")}
+
+${sajuBlock}
 
 [꿈 내용]
 ${input.dreamContent}

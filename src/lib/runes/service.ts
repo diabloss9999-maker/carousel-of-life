@@ -25,6 +25,8 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { generateMarkdown } from "@/lib/ai/generate";
 import { buildUserContext } from "@/lib/ai/prompts";
 import { AI_MODELS } from "@/lib/constants";
+import { ensureSajuCalculated } from "@/lib/saju/calculate";
+import { buildSajuTodayBlock } from "@/lib/saju/today-resonance";
 import { drawRunes, RUNE_SPREAD_POSITIONS } from "@/lib/runes/draw";
 
 /** 무료 사용자 일일 룬 뽑기 한도. */
@@ -144,7 +146,11 @@ export async function createRuneReading(opts: {
   const positions = RUNE_SPREAD_POSITIONS[opts.spreadType];
 
   // 4. AI 프롬프트 구성.
-  const userCtx = buildUserContext({ profile: opts.profile });
+  const profile = await ensureSajuCalculated(opts.profile).catch(
+    () => opts.profile,
+  );
+  const userCtx = buildUserContext({ profile });
+  const sajuToday = buildSajuTodayBlock(profile);
   const questionPart = opts.question
     ? `\n질문: "${opts.question}"`
     : "\n질문: (없음 — 전반적인 기운)";
@@ -186,6 +192,8 @@ export async function createRuneReading(opts: {
 
   const userPrompt = `[사용자 정보]
 ${userCtx}${questionPart}
+
+${sajuToday}
 
 [던진 룬 (${cardCount}개)]
 ${runeLines}

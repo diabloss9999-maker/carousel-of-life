@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -23,6 +23,7 @@ import { Label } from "@/components/ui/label";
 import type { TarotReader } from "@/components/tarot/reader";
 import { useScrollToResult } from "@/hooks/use-scroll-to-result";
 import { ROUTES } from "@/lib/constants";
+import { TAROT_DECK } from "@/lib/tarot/cards";
 import { cn } from "@/lib/utils";
 
 const initial: TarotDrawState = { kind: "idle" };
@@ -40,6 +41,12 @@ const POSITIONS = [
   { key: "present", label: "현재", sub: "지금의 자리" },
   { key: "future", label: "미래", sub: "다가올 방향" },
 ] as const;
+
+type PreviewCard = {
+  id: string;
+  nameEn: string;
+  isReversed: boolean;
+};
 
 interface TarotThreeFormProps {
   subscribed: boolean;
@@ -61,6 +68,11 @@ export function TarotThreeForm({
   );
   const [question, setQuestion] = useState("");
   const [revealed, setRevealed] = useState<boolean[]>([false, false, false]);
+  const [previewCards, setPreviewCards] = useState<(PreviewCard | null)[]>([
+    null,
+    null,
+    null,
+  ]);
   const [submitting, setSubmitting] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const charsLeft = MAX_QUESTION_LENGTH - question.length;
@@ -71,14 +83,28 @@ export function TarotThreeForm({
     if (!isPending && submitting) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setSubmitting(false);
-      setRevealed([false, false, false]);
     }
   }, [isPending, submitting]);
 
   async function handleReveal(index: number) {
     if (!subscribed || isPending || submitting || revealed[index]) return;
 
+    const usedIds = new Set(previewCards.flatMap((card) => (card ? [card.id] : [])));
+    const availableCards = TAROT_DECK.filter((card) => !usedIds.has(card.id));
+    const picked =
+      availableCards[Math.floor(Math.random() * availableCards.length)] ??
+      TAROT_DECK[Math.floor(Math.random() * TAROT_DECK.length)];
+    const nextPreviewCards = previewCards.map((value, i) =>
+      i === index
+        ? {
+            id: picked.id,
+            nameEn: picked.nameEn,
+            isReversed: Math.random() < 0.5,
+          }
+        : value,
+    );
     const next = revealed.map((value, i) => (i === index ? true : value));
+    setPreviewCards(nextPreviewCards);
     setRevealed(next);
 
     if (next.every(Boolean)) {
@@ -137,6 +163,7 @@ export function TarotThreeForm({
       <CardContent className="space-y-5">
         <ThreeCardStage
           revealed={revealed}
+          previewCards={previewCards}
           disabled={isBusy}
           onReveal={handleReveal}
         />
@@ -157,6 +184,18 @@ export function TarotThreeForm({
         </div>
 
         <form ref={formRef} action={formAction} className="space-y-4">
+          {previewCards.map((card, index) =>
+            card ? (
+              <span key={`${card.id}-${index}`}>
+                <input type="hidden" name="cardId" value={card.id} />
+                <input
+                  type="hidden"
+                  name="cardReversed"
+                  value={card.isReversed ? "true" : "false"}
+                />
+              </span>
+            ) : null,
+          )}
           <div className="space-y-1.5">
             <Label htmlFor="three-question">질문</Label>
             <Input
@@ -219,10 +258,12 @@ export function TarotThreeForm({
 
 function ThreeCardStage({
   revealed,
+  previewCards = [null, null, null],
   disabled = false,
   onReveal,
 }: {
   revealed: boolean[];
+  previewCards?: (PreviewCard | null)[];
   disabled?: boolean;
   onReveal?: (index: number) => void;
 }) {
@@ -249,16 +290,32 @@ function ThreeCardStage({
                     alt=""
                     fill
                     sizes="110px"
-                    className="object-cover"
+                    className="object-contain"
                   />
                 </span>
-                <span className="tarot-flip-card__face tarot-flip-card__front">
-                  <span className="font-mystic text-xs font-semibold">
-                    {position.label}
-                  </span>
-                  <span className="text-[10px] leading-3 opacity-70">
-                    {position.sub}
-                  </span>
+                <span
+                  className={cn(
+                    "tarot-flip-card__face tarot-flip-card__front",
+                    previewCards[index] && "tarot-flip-card__front--image",
+                  )}
+                >
+                  {previewCards[index] ? (
+                    <Image
+                      src={`/tarot/${previewCards[index].id}.webp`}
+                      alt={previewCards[index].nameEn}
+                      fill
+                      sizes="110px"
+                      className={cn(
+                        "object-cover",
+                        previewCards[index].isReversed && "rotate-180",
+                      )}
+                    />
+                  ) : (
+                    <span
+                      className="tarot-front-orb tarot-front-orb--small"
+                      aria-hidden
+                    />
+                  )}
                 </span>
               </span>
             </button>
@@ -274,3 +331,4 @@ function ThreeCardStage({
     </div>
   );
 }
+

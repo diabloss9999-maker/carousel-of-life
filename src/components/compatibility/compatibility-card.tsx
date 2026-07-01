@@ -2,15 +2,19 @@
 
 import {
   CalendarDays,
+  Compass,
   Heart,
   HeartHandshake,
+  MessageCircle,
   Sparkles,
+  Target,
   UserRound,
 } from "lucide-react";
 import { useLocale } from "next-intl";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { CompatibilityReading } from "@/db/schema";
+import { parseCompatibilityDetail } from "@/lib/compatibility/detail";
 import { safeReadingText, safeShortText } from "@/lib/content/safety";
 import { breakSentences, cn, formatKoreanDate } from "@/lib/utils";
 
@@ -29,15 +33,17 @@ export function CompatibilityCard({ reading }: CompatibilityCardProps) {
         })
       : formatKoreanDate(new Date(reading.createdAt));
 
+  const detailPayload = parseCompatibilityDetail(reading.detail);
   const partnerName = safeShortText(reading.partnerName, "상대");
   const summary = safeReadingText(
     reading.summary,
     "두 사람의 관계 흐름을 다시 정리해볼게요.",
   );
   const detail = safeReadingText(
-    reading.detail,
+    detailPayload.basic,
     "상대의 리듬과 나의 표현 방식이 어떻게 맞물리는지 천천히 살펴보면 좋아요.",
   );
+  const pro = detailPayload.pro;
   const partnerMeta = [
     reading.partnerBirthDate,
     reading.partnerBirthTime
@@ -83,7 +89,7 @@ export function CompatibilityCard({ reading }: CompatibilityCardProps) {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-5">
         <div className={cn("rounded-2xl border px-4 py-3", tone.panel)}>
           <div className="flex items-center gap-2">
             <Sparkles
@@ -106,8 +112,82 @@ export function CompatibilityCard({ reading }: CompatibilityCardProps) {
             {breakSentences(detail)}
           </p>
         </div>
+
+        {pro ? (
+          <div className="space-y-4 rounded-3xl border border-primary/20 bg-primary/[0.055] p-4">
+            <div className="flex items-start gap-3">
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-primary/15 text-primary">
+                <Sparkles className="h-5 w-5" aria-hidden />
+              </div>
+              <div>
+                <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-primary">
+                  Pro Deep Report
+                </p>
+                <p className="mt-1 font-mystic text-[17px] font-semibold leading-7">
+                  {safeShortText(
+                    pro.summary,
+                    "관계의 속도와 대화 방식을 정리해보세요.",
+                  )}
+                </p>
+              </div>
+            </div>
+
+            <ProSection
+              icon={HeartHandshake}
+              title="관계 패턴"
+              body={pro.relationshipPattern}
+            />
+            <ProSection
+              icon={Heart}
+              title="끌리는 지점"
+              body={pro.attractionPoint}
+            />
+            <ProSection
+              icon={Compass}
+              title="부딪히는 이유"
+              body={pro.conflictPattern}
+            />
+            <ProSection
+              icon={MessageCircle}
+              title="대화 가이드"
+              body={pro.conversationGuide}
+            />
+            <ProSection
+              icon={CalendarDays}
+              title="속도와 타이밍"
+              body={pro.timingAdvice}
+            />
+            <ProSection
+              icon={Target}
+              title="30일 관계 전략"
+              body={pro.thirtyDayPlan}
+            />
+          </div>
+        ) : null}
       </CardContent>
     </Card>
+  );
+}
+
+function ProSection({
+  body,
+  icon: Icon,
+  title,
+}: {
+  body: string;
+  icon: typeof Sparkles;
+  title: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-border/45 bg-background/50 px-4 py-3">
+      <div className="flex items-center gap-2 text-primary">
+        <Icon className="h-4 w-4 shrink-0" aria-hidden />
+        <p className="text-[13px] font-semibold">{title}</p>
+      </div>
+      <p className="mt-2 whitespace-pre-line text-[14px] leading-6 text-foreground/85">
+        {breakSentences(safeReadingText(body))}
+      </p>
+    </div>
   );
 }
 

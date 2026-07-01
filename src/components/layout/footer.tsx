@@ -14,15 +14,15 @@ export function Footer() {
 
   return (
     <footer
-      className="relative z-10 border-t border-white/15 mt-8 bg-black/15 backdrop-blur-sm"
+      className="relative z-10 mt-12 border-t border-black/5 bg-white/28 backdrop-blur-md"
       role="contentinfo"
     >
-      <div className="mx-auto max-w-5xl px-4 py-5 space-y-4 sm:px-6 sm:py-6">
+      <div className="mx-auto max-w-5xl space-y-4 px-5 py-5 sm:px-6 sm:py-6">
         <div className="grid gap-4 md:grid-cols-[1fr_auto] md:gap-6">
           {/* 1) 사업자 정보 — 맨 왼쪽. NHN KCP 가맹점 심사 필수 6항목 모두 노출.
                   순서: 상호 → 대표 → 사업자등록번호 → 통신판매신고번호
                        → 사업장 주소 → 전화번호 */}
-          <dl className="space-y-1 text-[13px] leading-snug text-foreground/80">
+          <dl className="space-y-1 text-[12px] leading-snug text-foreground/56 sm:text-[13px]">
             <BusinessRow label="상호" value={BUSINESS_INFO.companyName} />
             <BusinessRow label="대표" value={BUSINESS_INFO.ownerName} />
             <BusinessRow
@@ -42,7 +42,7 @@ export function Footer() {
           {/* 2) 약관 링크 — 오른쪽 */}
           <nav
             aria-label="법적 안내"
-            className="grid grid-cols-2 gap-x-4 gap-y-1 text-[13px] text-foreground/85 md:block md:space-y-1"
+            className="grid grid-cols-2 gap-x-4 gap-y-1 text-[12px] font-medium text-foreground/58 sm:text-[13px] md:block md:space-y-1"
           >
             <FooterLink href="/terms">이용약관</FooterLink>
             <FooterLink href="/privacy">개인정보처리방침</FooterLink>
@@ -51,7 +51,7 @@ export function Footer() {
           </nav>
         </div>
 
-        <p className="text-[12px] text-foreground/55 text-center border-t border-white/10 pt-3">
+        <p className="border-t border-black/5 pt-3 text-center text-[12px] text-foreground/45">
           © {year} {BUSINESS_INFO.companyName}. All rights reserved.
         </p>
       </div>
@@ -62,7 +62,7 @@ export function Footer() {
 function BusinessRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex gap-2">
-      <dt className="font-medium text-foreground/60 shrink-0 min-w-[4.2rem]">
+      <dt className="min-w-[4.2rem] shrink-0 font-medium text-foreground/45">
         {label}
       </dt>
       <dd className="break-keep">{value}</dd>
@@ -82,7 +82,7 @@ function FooterLink({
   return (
     <Link
       href={href as Route}
-      className="block hover:text-primary hover:underline underline-offset-4"
+      className="block underline-offset-4 transition hover:text-primary hover:underline"
     >
       {children}
     </Link>

@@ -135,9 +135,21 @@ body.chat-shell-active .mobile-app-content {
   /* White Glass 怨듯넻 ?좏겙 ???? 寃?? 諛? ?곗깋 (body[data-time]??override) */
   --nav-active: rgba(0,0,0,0.88);
   --nav-muted: rgba(0,0,0,0.50);
-  --header-bg: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.07));
-  --header-border: rgba(255,255,255,0.22);
-  --header-shadow: 0 8px 32px rgba(0,0,0,0.16);
+  --app-ink: rgba(17, 18, 22, 0.94);
+  --app-muted: rgba(17, 18, 22, 0.58);
+  --app-faint: rgba(17, 18, 22, 0.36);
+  --app-surface: rgba(255, 255, 255, 0.80);
+  --app-surface-strong: rgba(255, 255, 255, 0.94);
+  --app-surface-soft: rgba(255, 255, 255, 0.64);
+  --app-line: rgba(18, 20, 24, 0.075);
+  --app-line-strong: rgba(18, 20, 24, 0.13);
+  --app-shadow-soft: 0 10px 26px rgba(23, 26, 32, 0.065);
+  --app-shadow-panel: 0 24px 58px rgba(23, 26, 32, 0.095);
+  --app-radius-card: 18px;
+  --app-radius-panel: 26px;
+  --header-bg: linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.72));
+  --header-border: rgba(18, 20, 24, 0.07);
+  --header-shadow: 0 8px 24px rgba(23, 26, 32, 0.055);
 }
 
 .dark {
@@ -192,8 +204,14 @@ body.ritual-day {
   --col-faint: rgba(0, 0, 0, 0.32);
   --ritual-text: rgba(0, 0, 0, 0.88);
   --ritual-muted: rgba(0, 0, 0, 0.55);
+  --app-surface: rgba(255, 255, 255, 0.82);
+  --app-surface-strong: rgba(255, 255, 255, 0.95);
+  --app-surface-soft: rgba(255, 255, 255, 0.66);
+  --header-bg: linear-gradient(180deg, rgba(255,255,255,0.90), rgba(255,255,255,0.74));
+  --header-border: rgba(18, 20, 24, 0.07);
+  --header-shadow: 0 8px 24px rgba(23, 26, 32, 0.055);
   color: rgba(0, 0, 0, 0.88) !important;
-  background: url("/backgrounds/carousel-meadow.webp") center / cover no-repeat fixed;
+  background: #f7f4ee;
 }
 
 /* 諛?諛곌꼍 ??寃???띿뒪??(?ъ슜???붿껌: 諛ㅼ뿉??湲???꾨? 寃?? */
@@ -211,8 +229,14 @@ body.ritual-night {
   --col-faint: rgba(0, 0, 0, 0.36);
   --ritual-text: rgba(0, 0, 0, 0.92);
   --ritual-muted: rgba(0, 0, 0, 0.62);
+  --app-surface: rgba(255, 255, 255, 0.78);
+  --app-surface-strong: rgba(255, 255, 255, 0.92);
+  --app-surface-soft: rgba(255, 255, 255, 0.62);
+  --header-bg: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,255,255,0.70));
+  --header-border: rgba(18, 20, 24, 0.08);
+  --header-shadow: 0 8px 24px rgba(23, 26, 32, 0.065);
   color: rgba(0, 0, 0, 0.92) !important;
-  background: url("/backgrounds/carousel-meadow.webp") center / cover no-repeat fixed !important;
+  background: #f0f1f4 !important;
 }
 
 /* ??? ?꾩뿭 諛곌꼍 ?덉씠?????뚯쟾紐⑸쭏??蹂꾩옄由?吏????? */
@@ -222,16 +246,14 @@ body.ritual-night {
   inset: 0;
   z-index: -30;
   overflow: hidden;
-  background: #f5ecd9;
+  background:
+    linear-gradient(115deg, rgba(246, 238, 224, 0.78) 0%, rgba(248, 248, 247, 0.58) 36%, rgba(234, 241, 243, 0.74) 100%),
+    linear-gradient(180deg, #fbfaf7 0%, #f3f3f1 54%, #eceff0 100%);
   isolation: isolate;
 }
 
 .ritual-backdrop__image {
-  pointer-events: none !important;
-  object-fit: cover;
-  object-position: center;
-  transform: scale(1.025);
-  filter: saturate(1.04) contrast(1.02) brightness(1.02);
+  display: none;
 }
 
 .ritual-backdrop__veil,
@@ -247,8 +269,8 @@ body.ritual-night {
 .ritual-backdrop__veil {
   z-index: 1;
   background:
-    linear-gradient(112deg, rgba(255, 247, 225, 0.14) 0%, rgba(224, 237, 221, 0.06) 38%, rgba(226, 210, 232, 0.04) 70%, rgba(255, 239, 205, 0.08) 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.08) 58%, rgba(255, 255, 255, 0.05) 100%);
+    linear-gradient(90deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.16) 42%, rgba(255, 255, 255, 0.46)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(245, 246, 248, 0.52));
 }
 
 .ritual-backdrop__wheel {
@@ -261,35 +283,34 @@ body.ritual-night {
   bottom: auto;
   border-radius: 999px;
   transform: translate3d(-50%, -50%, 0);
-  opacity: 0.12;
+  opacity: 0.032;
   background:
     conic-gradient(
       from -36deg,
       rgba(191, 166, 106, 0),
-      rgba(191, 166, 106, 0.72),
-      rgba(122, 169, 161, 0.42),
-      rgba(152, 128, 187, 0.30),
+      rgba(191, 166, 106, 0.46),
+      rgba(122, 169, 161, 0.32),
+      rgba(152, 128, 187, 0.24),
       rgba(191, 166, 106, 0)
     );
   mask:
     radial-gradient(circle, transparent 0 48%, #000 49% 50%, transparent 51% 59%, #000 60% 61%, transparent 62% 70%, #000 71% 71.5%, transparent 72%);
-  animation: ritual-wheel-drift 90s linear infinite;
+  animation: none;
 }
 
 .ritual-backdrop__threads {
   z-index: 3;
-  opacity: 0.16;
+  opacity: 0.045;
   background-image:
-    linear-gradient(rgba(70, 52, 36, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(70, 52, 36, 0.045) 1px, transparent 1px),
-    repeating-linear-gradient(118deg, transparent 0 54px, rgba(77, 58, 44, 0.06) 55px, transparent 57px 132px);
-  background-size: 88px 88px, 88px 88px, 240px 240px;
+    linear-gradient(rgba(70, 52, 36, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(70, 52, 36, 0.028) 1px, transparent 1px);
+  background-size: 88px 88px, 88px 88px;
   mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 78%, transparent 100%);
 }
 
 .ritual-backdrop__grain {
   z-index: 4;
-  opacity: 0.08;
+  opacity: 0.035;
   mix-blend-mode: multiply;
   background-image:
     repeating-linear-gradient(0deg, rgba(20, 14, 8, 0.05) 0 1px, transparent 1px 3px),
@@ -300,35 +321,33 @@ body.ritual-night {
 .ritual-readable-scrim {
   z-index: -10;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.03) 38%, rgba(255, 255, 255, 0.08) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.08) 42%, rgba(255, 255, 255, 0.18) 100%);
 }
 
 .ritual-backdrop.is-night {
-  background: #ebe2cd;
-}
-
-.ritual-backdrop.is-night .ritual-backdrop__image {
-  filter: saturate(0.88) contrast(1.04) brightness(0.96);
+  background:
+    linear-gradient(115deg, rgba(239, 235, 226, 0.72) 0%, rgba(244, 246, 248, 0.62) 42%, rgba(228, 235, 239, 0.78) 100%),
+    linear-gradient(180deg, #f5f6f7 0%, #eceff2 54%, #e7e9ec 100%);
 }
 
 .ritual-backdrop.is-night .ritual-backdrop__veil {
   background:
-    linear-gradient(114deg, rgba(245, 238, 219, 0.10) 0%, rgba(204, 226, 214, 0.05) 38%, rgba(226, 202, 221, 0.04) 72%, rgba(244, 224, 194, 0.08) 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.08) 58%, rgba(255, 255, 255, 0.06) 100%);
+    linear-gradient(114deg, rgba(255, 255, 255, 0.46) 0%, rgba(255, 255, 255, 0.18) 42%, rgba(255, 255, 255, 0.34) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(238, 241, 245, 0.42));
 }
 
 .ritual-backdrop.is-night .ritual-backdrop__wheel {
-  opacity: 0.14;
+  opacity: 0.035;
 }
 
 .ritual-backdrop.is-night .ritual-backdrop__threads {
-  opacity: 0.18;
+  opacity: 0.045;
 }
 
 body[data-time="night"] .ritual-readable-scrim,
 body.ritual-night .ritual-readable-scrim {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.04) 42%, rgba(255, 255, 255, 0.10) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.08) 42%, rgba(255, 255, 255, 0.18) 100%);
 }
 
 /*
@@ -339,7 +358,7 @@ body.ritual-night .ritual-readable-scrim {
 body[data-time="day"] .ritual-readable-scrim,
 body:not([data-time]):not(.ritual-night) .ritual-readable-scrim {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.12) 45%, rgba(255, 255, 255, 0.22) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0.10) 45%, rgba(255, 255, 255, 0.22) 100%);
 }
 
 @keyframes ritual-wheel-drift {
@@ -450,8 +469,8 @@ body:not([data-time]):not(.ritual-night) .ritual-readable-scrim {
   .app-surface {
     border-radius: 18px;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.42),
-      0 14px 34px rgba(42, 35, 58, 0.16);
+      inset 0 1px 0 rgba(255, 255, 255, 0.58),
+      0 14px 30px rgba(32, 37, 48, 0.10);
   }
 
   .liquid-fortune-card {
@@ -959,12 +978,14 @@ html[data-platform="ios"] [data-hide-in-app] {
 
 /* Frosted Glass 移대뱶 ??v7: .ritual-message ??backdrop-filter 媛 鍮뚮뱶瑜??듦낵??   ?좎씪??耳?댁뒪?쇱꽌 媛숈? ?뺥깭濡??⑥닚?? saturate() 쨌 -webkit prefix ?쒓굅. */
 .app-surface {
-  border: 1px solid rgba(255,255,255,0.18);
-  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--app-line);
+  background:
+    linear-gradient(180deg, var(--app-surface-strong), var(--app-surface)),
+    var(--app-surface);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.12),
-    0 8px 32px rgba(0,0,0,0.22);
-  backdrop-filter: blur(28px);
+    inset 0 1px 0 rgba(255,255,255,0.76),
+    var(--app-shadow-soft);
+  backdrop-filter: blur(16px);
   /* color 紐낆떆 ?쒓굅 ??遺紐⑤줈遺??inherit. ?꾧컧泥섎읆 遺紐⑥뿉 text-white 諛뺤?
      寃쎌슦 ?먯떇 ?띿뒪?멸? ?먮룞?쇰줈 ?곗깋???섎룄濡? (?덉쟾??var(--foreground)
      瑜?媛뺤젣濡?諛뺤븘???꾧컧???곗깋 泥섎━媛 ??癒밸뒗 踰꾧렇媛 ?덉뿀??) */
@@ -976,17 +997,14 @@ html[data-platform="ios"] [data-hide-in-app] {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.46);
+  border: 1px solid var(--app-line);
   background:
-    radial-gradient(circle at 14% 8%, rgba(255, 255, 255, 0.86), transparent 34%),
-    linear-gradient(140deg, rgba(255, 255, 255, 0.62), rgba(236, 241, 255, 0.38) 45%, rgba(228, 244, 239, 0.28) 68%, rgba(244, 228, 255, 0.30)),
-    rgba(255, 255, 255, 0.24);
+    linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(250, 250, 250, 0.70) 54%, rgba(246, 247, 249, 0.62)),
+    var(--app-surface);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.82),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.22),
-    0 28px 64px rgba(42, 35, 58, 0.22),
-    0 9px 22px rgba(70, 58, 74, 0.10);
-  backdrop-filter: blur(34px) saturate(1.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.76),
+    var(--app-shadow-panel);
+  backdrop-filter: blur(18px);
 }
 
 .liquid-glass-panel::before {
@@ -995,25 +1013,15 @@ html[data-platform="ios"] [data-hide-in-app] {
   position: absolute;
   inset: 1px 1px auto;
   z-index: 0;
-  height: 48%;
+  height: 34%;
   border-radius: inherit;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.10)),
-    linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.36) 38%, transparent 66%);
-  opacity: 0.82;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0.06));
+  opacity: 0.34;
 }
 
 .liquid-glass-panel::after {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: inherit;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.36),
-    inset 10px 12px 28px rgba(255, 255, 255, 0.18),
-    inset -16px -18px 32px rgba(106, 76, 140, 0.10);
+  content: none;
 }
 
 .liquid-glass-panel > * {
@@ -1021,8 +1029,93 @@ html[data-platform="ios"] [data-hide-in-app] {
   z-index: 1;
 }
 
+.landing-hero::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 16% 8% auto 8%;
+  height: 46%;
+  transform: none;
+  border-radius: 36px;
+  background:
+    linear-gradient(90deg, transparent, rgba(255,255,255,0.72) 18%, rgba(255,255,255,0.46) 50%, rgba(255,255,255,0.72) 82%, transparent),
+    linear-gradient(180deg, rgba(255,255,255,0.30), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent);
+  opacity: 0.56;
+}
+
+.landing-hero::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: auto 12% 5% 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(24, 26, 32, 0.10), transparent);
+}
+
+.reading-page {
+  max-width: 64rem;
+}
+
+.reading-hero {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--app-line);
+  border-radius: var(--app-radius-panel);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(250, 250, 250, 0.72)),
+    var(--app-surface);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    var(--app-shadow-soft);
+  padding: 22px;
+  backdrop-filter: blur(18px);
+}
+
+.reading-hero::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: auto 22px 18px;
+  height: 1px;
+  border-radius: 0;
+  background: linear-gradient(90deg, transparent, rgba(18, 20, 24, 0.10), transparent);
+}
+
+.reading-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.reading-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(24, 26, 32, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.58);
+  padding: 5px 10px;
+  color: rgba(24, 26, 32, 0.56);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.reading-guide-tile {
+  border: 1px solid var(--app-line);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.58)),
+    rgba(255, 255, 255, 0.62);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.68),
+    0 8px 20px rgba(35, 39, 48, 0.055);
+  padding: 14px 16px;
+}
+
 .liquid-fortune-card {
-  border-radius: 28px;
+  border-radius: var(--app-radius-panel);
   color: rgba(24, 21, 30, 0.92);
 }
 
@@ -1030,13 +1123,11 @@ html[data-platform="ios"] [data-hide-in-app] {
 .liquid-reading-copy,
 .liquid-lucky-grid,
 .liquid-conversation-cta {
-  border: 1px solid rgba(255, 255, 255, 0.34);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0.16)),
-    rgba(255, 255, 255, 0.14);
+  border: 1px solid var(--app-line);
+  background: var(--app-surface-soft);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.52),
-    0 10px 26px rgba(48, 41, 60, 0.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.62),
+    0 8px 18px rgba(32, 37, 48, 0.055);
 }
 
 .liquid-oracle-header {
@@ -1136,13 +1227,21 @@ html[data-platform="ios"] [data-hide-in-app] {
 }
 
 .liquid-glass-action {
-  border-color: rgba(255, 255, 255, 0.54) !important;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(231, 244, 241, 0.56)) !important;
+  border-color: rgba(22, 24, 29, 0.08) !important;
+  background: rgba(255, 255, 255, 0.62) !important;
+  /* 흰 배경 버튼이라 글자색을 어둡게 강제 — 기본 버튼의 흰 글자가 안 보이던 문제 해결. */
+  color: rgba(22, 24, 29, 0.92) !important;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.75),
-    0 10px 20px rgba(66, 70, 86, 0.14);
-  backdrop-filter: blur(18px);
+    inset 0 1px 0 rgba(255, 255, 255, 0.62),
+    0 10px 20px rgba(32, 37, 48, 0.08);
+  backdrop-filter: blur(14px);
+}
+
+/* primary 버튼은 흰 글자(.ritual-button.primary *)인데 liquid-glass-action 은
+   배경을 흰색으로 덮어 글자가 안 보였다. 더 높은 특이도(0,3,x)로 어둡게 덮는다. */
+.ritual-button.primary.liquid-glass-action,
+.ritual-button.primary.liquid-glass-action * {
+  color: rgba(22, 24, 29, 0.92) !important;
 }
 
 .liquid-chat-action,
@@ -1151,12 +1250,12 @@ html[data-platform="ios"] [data-hide-in-app] {
 }
 
 .liquid-soft-button {
-  border-color: rgba(255, 255, 255, 0.42) !important;
-  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(22, 24, 29, 0.08) !important;
+  background: rgba(255, 255, 255, 0.64) !important;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.42),
-    0 8px 18px rgba(48, 41, 60, 0.08);
-  backdrop-filter: blur(16px);
+    inset 0 1px 0 rgba(255, 255, 255, 0.58),
+    0 8px 18px rgba(32, 37, 48, 0.06);
+  backdrop-filter: blur(12px);
 }
 
 .liquid-share-row {
@@ -1500,6 +1599,72 @@ html[data-platform="ios"] [data-hide-in-app] {
     transition: none;
     animation: none !important;
   }
+}
+
+.ritual-button {
+  border: 1px solid var(--app-line-strong);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.90), rgba(255, 255, 255, 0.72));
+  color: rgba(18, 20, 24, 0.90);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.74),
+    0 6px 16px rgba(32, 37, 48, 0.065);
+  backdrop-filter: blur(12px);
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    opacity 160ms ease;
+}
+
+.ritual-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(22, 24, 29, 0.16);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 10px 22px rgba(32, 37, 48, 0.085);
+}
+
+.ritual-button:active {
+  transform: translateY(0);
+  box-shadow:
+    inset 0 1px 2px rgba(22, 24, 29, 0.08),
+    0 4px 12px rgba(32, 37, 48, 0.06);
+}
+
+.ritual-button.primary {
+  border-color: rgba(18, 20, 24, 0.92);
+  background: linear-gradient(180deg, rgba(31, 33, 38, 0.96), rgba(16, 18, 22, 0.96));
+  color: #fff !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 12px 24px rgba(18, 20, 24, 0.16);
+}
+
+.ritual-button.primary,
+.ritual-button.primary * {
+  color: #fff !important;
+}
+
+.ritual-button.primary:hover {
+  background: linear-gradient(180deg, rgba(36, 38, 44, 0.98), rgba(14, 16, 20, 0.98));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 14px 28px rgba(18, 20, 24, 0.20);
+}
+
+.ritual-button.ghost {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.ritual-button.ghost:hover {
+  background: rgba(255, 255, 255, 0.54);
+  box-shadow: none;
 }
 
 /* =============================================================================
@@ -2580,7 +2745,7 @@ html.night .app-surface {
 }
 
 html.night body[data-time="night"] {
-  background-image: url("/backgrounds/carousel-meadow.webp");
+  background-image: none;
 }
 
 /* ===== ?덈꼍 紐⑤뱶 (02~04??KST) ===== */
@@ -2699,8 +2864,8 @@ body.presence-gael .app-surface {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 280px;
-  overflow: hidden;
+  min-height: 440px;
+  overflow: visible;
   border-radius: 0;
   background:
     radial-gradient(circle at 50% 42%, rgba(253, 230, 138, 0.22), transparent 34%),
@@ -2717,7 +2882,12 @@ body.presence-gael .app-surface {
 }
 
 .tarot-three-open-stage {
-  min-height: 250px;
+  min-height: 330px;
+  padding: 18px 4px;
+}
+
+.tarot-seven-open-stage {
+  min-height: 360px;
   padding: 18px 4px;
 }
 
@@ -2732,12 +2902,17 @@ body.presence-gael .app-surface {
 }
 
 .tarot-single-flip-card {
-  width: min(44vw, 180px);
+  width: clamp(260px, 38vw, 340px);
   aspect-ratio: 2 / 3;
 }
 
 .tarot-three-flip-card {
-  width: min(25vw, 118px);
+  width: clamp(112px, 18vw, 168px);
+  aspect-ratio: 2 / 3;
+}
+
+.tarot-seven-flip-card {
+  width: clamp(72px, 12vw, 104px);
   aspect-ratio: 2 / 3;
 }
 
@@ -2747,13 +2922,14 @@ body.presence-gael .app-surface {
 
 .tarot-flip-card:not(:disabled):hover .tarot-flip-card__inner,
 .tarot-flip-card:not(:disabled):focus-visible .tarot-flip-card__inner {
-  transform: translateY(-8px) rotateY(0deg);
+  transform: translateY(-8px) scale(1.01);
 }
 
 .tarot-flip-card.is-flipped .tarot-flip-card__inner,
 .tarot-flip-card.is-flipped:not(:disabled):hover .tarot-flip-card__inner,
 .tarot-flip-card.is-flipped:not(:disabled):focus-visible .tarot-flip-card__inner {
-  transform: translateY(-6px) rotateY(180deg);
+  transform: translateY(-6px) scale(1.02);
+  animation: tarot-front-reveal 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .tarot-flip-card__inner {
@@ -2787,39 +2963,118 @@ body.presence-gael .app-surface {
 
 .tarot-flip-card__back {
   background: #17100f;
+  opacity: 1;
+  transition: opacity 180ms ease, visibility 180ms ease;
 }
 
 .tarot-flip-card__front {
-  transform: rotateY(180deg);
-  border: 1px solid rgba(120, 84, 32, 0.24);
+  z-index: 2;
+  opacity: 0;
+  transform: scale(0.96);
+  border: 1px solid rgba(185, 149, 74, 0.28);
   background:
-    radial-gradient(circle at 50% 32%, rgba(255, 255, 255, 0.64), transparent 24%),
-    linear-gradient(145deg, rgba(253, 230, 138, 0.96), rgba(245, 208, 154, 0.88) 42%, rgba(186, 230, 253, 0.62));
+    radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.94), transparent 26%),
+    linear-gradient(145deg, #fffdf8, #f4ead6 52%, #e8d8b9);
   color: rgba(0, 0, 0, 0.82) !important;
   text-align: center;
-  padding: 12px;
+  padding: 4px;
+  transition: opacity 220ms ease 180ms, transform 280ms ease 180ms;
+}
+
+.tarot-flip-card__front--image {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.tarot-flip-card.is-flipped .tarot-flip-card__back {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.tarot-flip-card.is-flipped .tarot-flip-card__front {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .tarot-flip-card__front > * {
   color: rgba(0, 0, 0, 0.82) !important;
 }
 
+.tarot-front-orb {
+  display: block;
+  width: 42%;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  border: 2px solid rgba(185, 149, 74, 0.44);
+  background:
+    radial-gradient(circle, rgba(185, 149, 74, 0.88) 0 13%, transparent 14%),
+    conic-gradient(from 45deg, transparent 0 18%, rgba(185, 149, 74, 0.76) 18% 32%, transparent 32% 50%, rgba(185, 149, 74, 0.52) 50% 64%, transparent 64% 100%);
+  box-shadow: 0 0 34px rgba(185, 149, 74, 0.22);
+}
+
+.tarot-front-orb--small {
+  width: 48%;
+}
+
+@keyframes tarot-front-reveal {
+  0% {
+    transform: translateY(0) rotateY(0deg) scale(1);
+  }
+  45% {
+    transform: translateY(-10px) rotateY(84deg) scale(1.02);
+  }
+  100% {
+    transform: translateY(-6px) rotateY(0deg) scale(1.02);
+  }
+}
+
+@keyframes tarot-reading-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tarot-reading-image-first {
+  animation: tarot-reading-rise 420ms ease both;
+}
+
+.tarot-reading-text-delayed {
+  opacity: 0;
+  animation: tarot-reading-rise 520ms ease 520ms both;
+}
+
 @media (max-width: 420px) {
   .tarot-open-stage {
-    min-height: 250px;
+    min-height: 400px;
   }
 
   .tarot-three-open-stage {
-    min-height: 230px;
+    min-height: 270px;
     padding-left: 10px;
     padding-right: 10px;
   }
 
+  .tarot-seven-open-stage {
+    min-height: 300px;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
   .tarot-single-flip-card {
-    width: min(48vw, 164px);
+    width: min(78vw, 300px);
   }
 
   .tarot-three-flip-card {
-    width: min(25vw, 98px);
+    width: min(28vw, 118px);
+  }
+
+  .tarot-seven-flip-card {
+    width: min(20vw, 78px);
   }
 }

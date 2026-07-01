@@ -34,9 +34,9 @@ const I18N_EN = {
 
 /** 점수대별 강조색 — 높을수록 따뜻한 골드, 낮을수록 차분한 라벤더. */
 function scoreAccent(score: number): { accent: string; soft: string } {
-  if (score >= 80) return { accent: "#fbbf24", soft: "#fde68a" };
-  if (score >= 60) return { accent: "#60a5fa", soft: "#bfdbfe" };
-  return { accent: "#a78bfa", soft: "#ddd6fe" };
+  if (score >= 80) return { accent: "#b9954a", soft: "#ead9ad" };
+  if (score >= 60) return { accent: "#497a8f", soft: "#c9dde4" };
+  return { accent: "#8c6f9f", soft: "#ded0e8" };
 }
 
 function truncate(text: string, max: number) {
@@ -57,6 +57,12 @@ export async function GET(req: NextRequest) {
   const number = sp.get("number") ?? null;
   const direction = sp.get("direction") ?? null;
   const date = sp.get("date") ?? "";
+  const readerName = sp.get("readerName")?.trim() || null;
+  const rawReaderImage = sp.get("readerImage")?.trim() || null;
+  const readerImage =
+    rawReaderImage && rawReaderImage.startsWith("/")
+      ? new URL(rawReaderImage, req.nextUrl.origin).toString()
+      : rawReaderImage;
 
   const { accent, soft } = scoreAccent(score);
 
@@ -69,10 +75,10 @@ export async function GET(req: NextRequest) {
           display: "flex",
           flexDirection: "column",
           background:
-            "linear-gradient(155deg, #141022 0%, #0d0a18 55%, #120e20 100%)",
+            "radial-gradient(circle at 78% 28%, #ffffff 0%, #fbfaf7 58%, #f1eee8 100%)",
           fontFamily:
             'Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif',
-          color: "#f4f1ee",
+          color: "#171717",
           padding: "64px 76px",
           position: "relative",
           overflow: "hidden",
@@ -87,7 +93,7 @@ export async function GET(req: NextRequest) {
             width: 660,
             height: 660,
             borderRadius: "50%",
-            background: `radial-gradient(circle, ${accent}22 0%, transparent 70%)`,
+            background: `radial-gradient(circle, ${accent}1c 0%, transparent 70%)`,
           }}
         />
         <div
@@ -98,9 +104,37 @@ export async function GET(req: NextRequest) {
             width: 520,
             height: 520,
             borderRadius: "50%",
-            background: `radial-gradient(circle, ${accent}12 0%, transparent 70%)`,
+            background: `radial-gradient(circle, ${accent}10 0%, transparent 70%)`,
           }}
         />
+        <div
+          style={{
+            position: "absolute",
+            inset: 42,
+            border: "1.5px solid #e7e2d8",
+            borderRadius: 42,
+            background: "#ffffffaa",
+          }}
+        />
+        {readerImage ? (
+          <img
+            src={readerImage}
+            alt=""
+            width={460}
+            height={620}
+            style={{
+              position: "absolute",
+              right: -70,
+              bottom: -34,
+              width: 430,
+              height: 580,
+              objectFit: "cover",
+              objectPosition: "top center",
+              borderRadius: 34,
+              opacity: 0.16,
+            }}
+          />
+        ) : null}
 
         {/* 상단 — 브랜딩 + 카테고리 */}
         <div
@@ -122,17 +156,22 @@ export async function GET(req: NextRequest) {
             >
               CAROUSEL OF LIFE
             </span>
-            <span style={{ fontSize: 19, color: "#9b96a8", letterSpacing: 2 }}>
+            <span style={{ fontSize: 19, color: "#71717a", letterSpacing: 2 }}>
               {T.appName}
             </span>
+            {readerName ? (
+              <span style={{ marginTop: 8, fontSize: 21, color: "#3f3f46" }}>
+                {readerName}의 오늘 카드
+              </span>
+            ) : null}
           </div>
           <span
             style={{
               fontSize: 21,
               fontWeight: 700,
-              color: soft,
-              background: `${accent}1f`,
-              border: `1.5px solid ${accent}55`,
+              color: accent,
+              background: "#ffffff",
+              border: `1.5px solid ${accent}45`,
               borderRadius: 100,
               padding: "8px 26px",
               letterSpacing: 1,
@@ -170,7 +209,7 @@ export async function GET(req: NextRequest) {
             width: 420,
             height: 10,
             borderRadius: 6,
-            background: "#ffffff14",
+            background: "#e7e2d8",
             display: "flex",
             marginBottom: 40,
           }}
@@ -192,7 +231,7 @@ export async function GET(req: NextRequest) {
             fontWeight: 800,
             lineHeight: 1.3,
             marginBottom: 22,
-            color: "#ffffff",
+            color: "#171717",
           }}
         >
           {title}
@@ -204,7 +243,7 @@ export async function GET(req: NextRequest) {
             style={{
               fontSize: 28,
               lineHeight: 1.65,
-              color: "#cfc8c0",
+              color: "#3f3f46",
               marginBottom: 36,
               flexGrow: 1,
             }}
@@ -231,23 +270,23 @@ export async function GET(req: NextRequest) {
             justifyContent: "space-between",
             alignItems: "center",
             paddingTop: 26,
-            borderTop: `1px solid ${accent}30`,
+            borderTop: `1px solid ${accent}24`,
           }}
         >
           <span
             style={{
               fontSize: 22,
               fontWeight: 700,
-              color: soft,
+              color: accent,
               letterSpacing: 1,
             }}
           >
             carouseloflife.com
           </span>
           <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-            <span style={{ fontSize: 20, color: "#9b96a8" }}>{T.cta}</span>
+            <span style={{ fontSize: 20, color: "#71717a" }}>{T.cta}</span>
             {date ? (
-              <span style={{ fontSize: 20, color: "#6f6a7c" }}>{date}</span>
+              <span style={{ fontSize: 20, color: "#a1a1aa" }}>{date}</span>
             ) : null}
           </div>
         </div>
@@ -272,14 +311,14 @@ function LuckyChip({
         display: "flex",
         flexDirection: "column",
         gap: 6,
-        background: "#ffffff0a",
-        border: `1px solid ${accent}35`,
+        background: "#ffffff",
+        border: `1px solid ${accent}2f`,
         borderRadius: 18,
         padding: "16px 26px",
       }}
     >
-      <span style={{ fontSize: 17, color: "#9b96a8" }}>{label}</span>
-      <span style={{ fontSize: 26, fontWeight: 700, color: "#f0ece6" }}>
+      <span style={{ fontSize: 17, color: "#71717a" }}>{label}</span>
+      <span style={{ fontSize: 26, fontWeight: 700, color: "#171717" }}>
         {value}
       </span>
     </div>

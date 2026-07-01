@@ -1,29 +1,20 @@
 "use client";
 
 /**
- * 멤버 선물 가게 — 별조각으로 선물 보내기 + 별조각 충전.
+ * 멤버 선물 가게 — 별조각으로 선물 보내기.
  *
  * - 채팅 화면 헤더의 "선물" 버튼으로 열리는 오버레이 패널.
  * - 선물을 보내면 친밀도가 오르고 멤버의 감사 멘트가 토스트로 표시된다.
- * - 충전 섹션은 PortOne 일회성 결제. Android 앱(TWA)에서는 Google Play 정책상
- *   `data-hide-in-app` 으로 숨긴다 (웹/iOS 브라우저에서만 노출).
+ * - 별조각은 출석·대화 보너스로만 모은다 (충전 결제 없음 — 결제는 앱 전용 정책).
  */
-import { useCallback, useRef, useState } from "react";
-import * as PortOne from "@portone/browser-sdk/v2";
+import { useCallback, useState } from "react";
 import { AlertCircle, Gift, Loader2, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { clientEnv } from "@/lib/env";
 import type { CharacterId } from "@/lib/chat/characters";
-import { BUSINESS_INFO } from "@/lib/constants/business-info";
-import {
-  CURRENCY_EMOJI,
-  CURRENCY_NAME,
-  CURRENCY_PACKS,
-  GIFTS,
-} from "@/lib/gifts/catalog";
-import { cn, formatKRW } from "@/lib/utils";
+import { CURRENCY_EMOJI, CURRENCY_NAME, GIFTS } from "@/lib/gifts/catalog";
+import { cn } from "@/lib/utils";
 
 interface GiftShopProps {
   characterId: CharacterId;
@@ -39,21 +30,11 @@ interface ApiEnvelope<T> {
   error?: { message?: string };
 }
 
-export function GiftShop({ characterId, characterName, returnTo, compact = false }: GiftShopProps) {
+export function GiftShop({ characterId, characterName, compact = false }: GiftShopProps) {
   const [open, setOpen] = useState(false);
   const [balance, setBalance] = useState<number | null>(null);
   const [sendingGiftId, setSendingGiftId] = useState<string | null>(null);
-  const [payingPackId, setPayingPackId] = useState<string | null>(null);
   const [topupNotice, setTopupNotice] = useState<string | null>(null);
-  const [isAndroidApp, setIsAndroidApp] = useState(false);
-  const topupSectionRef = useRef<HTMLElement | null>(null);
-
-  function isRunningInAndroidApp(): boolean {
-    return (
-      typeof document !== "undefined" &&
-      document.documentElement.dataset.platform === "android"
-    );
-  }
 
   const refreshBalance = useCallback(async () => {
     try {
@@ -68,7 +49,6 @@ export function GiftShop({ characterId, characterName, returnTo, compact = false
   function openShop(): void {
     setOpen(true);
     setTopupNotice(null);
-    setIsAndroidApp(isRunningInAndroidApp());
     void refreshBalance();
   }
 
@@ -111,87 +91,12 @@ export function GiftShop({ characterId, characterName, returnTo, compact = false
   function handleNeedTopup(requiredCost: number): void {
     const missingCount =
       balance == null ? null : Math.max(0, requiredCost - balance);
-
-    const androidApp = isRunningInAndroidApp();
-    setIsAndroidApp(androidApp);
-
-    if (androidApp) {
-      const message =
-        missingCount != null && missingCount > 0
-          ? `별조각 ${missingCount.toLocaleString()}개가 더 필요해요. 설치 앱에서는 별조각을 직접 충전할 수 없어서, 지금은 출석 보상과 보너스로 모을 수 있어요.`
-          : "설치 앱에서는 별조각을 직접 충전할 수 없어요. 지금은 출석 보상과 보너스로 별조각을 모을 수 있어요.";
-      setTopupNotice(message);
-      toast("별조각이 부족해요", { description: message });
-      return;
-    }
-
     const message =
       missingCount != null && missingCount > 0
-        ? `별조각 ${missingCount.toLocaleString()}개가 더 필요해요. 아래 충전 상품 중 하나를 선택하면 바로 결제창이 열려요.`
-        : "아래 충전 상품 중 하나를 선택하면 바로 결제창이 열려요.";
+        ? `별조각 ${missingCount.toLocaleString()}개가 더 필요해요. 별조각은 출석 보상과 대화 보너스로 모을 수 있어요.`
+        : "별조각은 출석 보상과 대화 보너스로 모을 수 있어요.";
     setTopupNotice(message);
-    topupSectionRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
     toast("별조각이 부족해요", { description: message });
-  }
-
-  async function handleTopup(packId: string) {
-    const storeId = clientEnv.NEXT_PUBLIC_PORTONE_STORE_ID;
-    const channelKey = clientEnv.NEXT_PUBLIC_PORTONE_CHANNEL_KEY;
-    const pack = CURRENCY_PACKS.find((p) => p.id === packId);
-    if (!storeId || !channelKey || !pack) {
-      toast.error("결제 설정을 확인할 수 없어요. 잠시 후 다시 시도하거나 문의해 주세요.");
-      return;
-    }
-    if (payingPackId) return;
-    setPayingPackId(packId);
-
-    const paymentId = `cur-${crypto.randomUUID()}`;
-    const origin = window.location.origin;
-    const backTo = returnTo ?? window.location.pathname;
-    const redirectUrl = `${origin}/api/currency/confirm?packId=${encodeURIComponent(packId)}&returnTo=${encodeURIComponent(backTo)}`;
-
-    try {
-      const response = await PortOne.requestPayment({
-        storeId,
-        channelKey,
-        paymentId,
-        orderName: `${CURRENCY_NAME} ${pack.amount}${"개"}`,
-        totalAmount: pack.priceKRW,
-        currency: "KRW",
-        payMethod: "CARD",
-        redirectUrl,
-      });
-
-      // redirect 모드면 response 가 undefined — 페이지가 redirectUrl 로 이동.
-      if (!response) return;
-      if (response.code != null) {
-        toast.error(response.message ?? "결제가 취소되었어요.");
-        return;
-      }
-
-      // popup/iframe 모드 — 서버 검증 + 충전.
-      const res = await fetch("/api/currency/confirm", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ paymentId: response.paymentId ?? paymentId, packId }),
-      });
-      const json = (await res.json()) as ApiEnvelope<{ balance: number }>;
-      if (!json.ok || !json.data) {
-        toast.error(json.error?.message ?? "충전 확인에 실패했어요.");
-        return;
-      }
-      setBalance(json.data.balance);
-      toast.success(`${CURRENCY_EMOJI} ${CURRENCY_NAME} ${pack.amount}개 충전 완료!`);
-    } catch (e) {
-      toast.error(
-        `결제창 호출 실패: ${e instanceof Error ? e.message : String(e)}`,
-      );
-    } finally {
-      setPayingPackId(null);
-    }
   }
 
   return (
@@ -350,9 +255,7 @@ export function GiftShop({ characterId, characterName, returnTo, compact = false
                           {isBalanceLoading ? (
                             "확인"
                           ) : tooExpensive ? (
-                            <>
-                              <span>{isAndroidApp ? "안내" : "충전"}</span>
-                            </>
+                            "안내"
                           ) : (
                             "보내기"
                           )}
@@ -363,56 +266,14 @@ export function GiftShop({ characterId, characterName, returnTo, compact = false
                 </div>
               </section>
 
-              {/* 충전 — Android 앱에서는 숨김 (Google Play 정책) */}
-              <section
-                ref={topupSectionRef}
-                data-hide-in-app
-                className="space-y-3 border-t border-neutral-200 pt-4"
-              >
-                <div className="flex items-end justify-between">
-                  <h3 className="text-base font-bold text-neutral-950">
-                    {CURRENCY_NAME} 충전
-                  </h3>
-                  <p className="text-[12px] text-neutral-500">
-                    웹 결제
-                  </p>
-                </div>
-                <div className="gift-pack-list space-y-2">
-                  {CURRENCY_PACKS.map((pack) => (
-                    <button
-                      key={pack.id}
-                      type="button"
-                      onClick={() => handleTopup(pack.id)}
-                      disabled={!!payingPackId}
-                      className={cn(
-                        "gift-pack-row relative flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition",
-                        pack.popular
-                          ? "border-yellow-400 bg-yellow-50"
-                          : "border-neutral-200 bg-neutral-50",
-                        "hover:border-neutral-900 disabled:cursor-not-allowed disabled:opacity-50",
-                      )}
-                    >
-                      {pack.popular ? (
-                        <span className="absolute -top-2 left-4 rounded-full bg-yellow-300 px-2 py-0.5 text-[10px] font-black text-neutral-950">
-                          추천
-                        </span>
-                      ) : null}
-                      <span className="text-[15px] font-black tabular-nums text-neutral-950">
-                        {payingPackId === pack.id ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : (
-                          `${CURRENCY_EMOJI} ${pack.amount.toLocaleString()}개`
-                        )}
-                      </span>
-                      <span className="text-[13px] font-bold text-neutral-600">
-                        {formatKRW(pack.priceKRW)}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-                <p className="text-[11px] leading-relaxed text-neutral-500">
-                  충전한 {CURRENCY_NAME}은 환불 정책에 따라 미사용분에 한해 환불 가능해요.
-                  결제 문의: {BUSINESS_INFO.email}
+              {/* 별조각은 출석·대화 보너스로만 모은다 (충전 결제 없음 — 앱 전용 정책) */}
+              <section className="space-y-2 border-t border-neutral-200 pt-4">
+                <h3 className="text-base font-bold text-neutral-950">
+                  {CURRENCY_NAME} 모으는 법
+                </h3>
+                <p className="text-[13px] leading-relaxed text-neutral-600">
+                  {CURRENCY_NAME}은 매일 출석 보상과 대화 보너스로 모을 수 있어요.
+                  모은 {CURRENCY_NAME}으로 멤버에게 선물해 친밀도를 올려보세요.
                 </p>
               </section>
             </div>

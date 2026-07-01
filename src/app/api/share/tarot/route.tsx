@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
   const spread   = sp.get("spread")   ?? T.defaultSpread;
   const date     = sp.get("date")     ?? "";
 
-  const accent = "#c8a96e";
+  const accent = "#b9954a";
 
   return new ImageResponse(
     (
@@ -49,9 +49,9 @@ export async function GET(req: NextRequest) {
           height: 1080,
           display: "flex",
           flexDirection: "column",
-          background: "linear-gradient(160deg, #0f1825 0%, #09101d 55%, #0e1520 100%)",
-          fontFamily: '"Noto Serif KR", "Malgun Gothic", serif',
-          color: "#f0e8d8",
+          background: "radial-gradient(circle at 76% 26%, #ffffff 0%, #fbfaf7 58%, #f1eee8 100%)",
+          fontFamily: 'Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif',
+          color: "#171717",
           padding: "72px 80px",
           position: "relative",
           overflow: "hidden",
@@ -66,20 +66,30 @@ export async function GET(req: NextRequest) {
             width: 560,
             height: 560,
             borderRadius: "50%",
-            background: "radial-gradient(circle, #c8a96e14 0%, transparent 70%)",
+            background: "radial-gradient(circle, #b9954a18 0%, transparent 70%)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            inset: 42,
+            border: "1.5px solid #e7e2d8",
+            borderRadius: 42,
+            background: "#ffffffaa",
           }}
         />
 
         {/* 상단: 앱 이름 + 스프레드 */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 64 }}>
-          <span style={{ fontSize: 26, color: "#90809a", letterSpacing: 2 }}>
+          <span style={{ fontSize: 26, color: "#71717a", letterSpacing: 2 }}>
             {T.appName}
           </span>
           <span
             style={{
               fontSize: 20,
               color: accent,
-              border: `1.5px solid ${accent}60`,
+              background: "#ffffff",
+              border: `1.5px solid ${accent}45`,
               borderRadius: 100,
               padding: "6px 20px",
               letterSpacing: 1,
@@ -95,7 +105,7 @@ export async function GET(req: NextRequest) {
             style={{
               fontSize: 88,
               fontWeight: 700,
-              color: "#f5ecd8",
+              color: "#171717",
               lineHeight: 1,
             }}
           >
@@ -105,8 +115,9 @@ export async function GET(req: NextRequest) {
             <span
               style={{
                 fontSize: 24,
-                color: "#a07070",
-                border: "1.5px solid #a0707060",
+                color: "#8c6f9f",
+                background: "#ffffff",
+                border: "1.5px solid #8c6f9f45",
                 borderRadius: 100,
                 padding: "4px 16px",
               }}
@@ -131,7 +142,7 @@ export async function GET(req: NextRequest) {
             style={{
               fontSize: 34,
               lineHeight: 1.65,
-              color: "#c8b8a8",
+              color: "#3f3f46",
               flexGrow: 1,
             }}
           >
@@ -141,7 +152,7 @@ export async function GET(req: NextRequest) {
 
         {/* 하단 날짜 */}
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <span style={{ fontSize: 20, color: "#50405a" }}>{date}</span>
+          <span style={{ fontSize: 20, color: "#a1a1aa" }}>{date}</span>
         </div>
       </div>
     ),

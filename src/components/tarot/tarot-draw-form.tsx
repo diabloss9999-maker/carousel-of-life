@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -23,6 +23,7 @@ import { Label } from "@/components/ui/label";
 import type { TarotReader } from "@/components/tarot/reader";
 import { useScrollToResult } from "@/hooks/use-scroll-to-result";
 import { ROUTES } from "@/lib/constants";
+import { TAROT_DECK } from "@/lib/tarot/cards";
 import { cn } from "@/lib/utils";
 
 const initial: TarotDrawState = { kind: "idle" };
@@ -36,6 +37,12 @@ const QUESTION_EXAMPLES = [
 ] as const;
 
 type AnimPhase = "idle" | "flipped" | "pending";
+
+type PreviewCard = {
+  id: string;
+  nameEn: string;
+  isReversed: boolean;
+};
 
 interface TarotDrawFormProps {
   reader: TarotReader;
@@ -53,6 +60,7 @@ export function TarotDrawForm(_props: TarotDrawFormProps) {
   );
   const [question, setQuestion] = useState("");
   const [phase, setPhase] = useState<AnimPhase>("idle");
+  const [previewCard, setPreviewCard] = useState<PreviewCard | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const charsLeft = MAX_QUESTION_LENGTH - question.length;
 
@@ -67,6 +75,12 @@ export function TarotDrawForm(_props: TarotDrawFormProps) {
 
   async function handleDraw() {
     if (phase !== "idle" || isPending) return;
+    const card = TAROT_DECK[Math.floor(Math.random() * TAROT_DECK.length)];
+    setPreviewCard({
+      id: card.id,
+      nameEn: card.nameEn,
+      isReversed: Math.random() < 0.5,
+    });
     setPhase("flipped");
     await sleep(FLIP_TO_DRAW_MS);
     setPhase("pending");
@@ -108,15 +122,31 @@ export function TarotDrawForm(_props: TarotDrawFormProps) {
                   alt="타로 카드 뒷면"
                   fill
                   sizes="180px"
-                  className="object-cover"
+                  className="object-contain"
                   priority
                 />
               </span>
-              <span className="tarot-flip-card__face tarot-flip-card__front">
-                <span className="font-mystic text-sm font-semibold">Tarot</span>
-                <span className="text-[11px] leading-4 opacity-70">
-                  흐름을 읽는 중
-                </span>
+              <span
+                className={cn(
+                  "tarot-flip-card__face tarot-flip-card__front",
+                  previewCard && "tarot-flip-card__front--image",
+                )}
+              >
+                {previewCard ? (
+                  <Image
+                    src={`/tarot/${previewCard.id}.webp`}
+                    alt={previewCard.nameEn}
+                    fill
+                    sizes="180px"
+                    className={cn(
+                      "object-cover",
+                      previewCard.isReversed && "rotate-180",
+                    )}
+                    priority
+                  />
+                ) : (
+                  <span className="tarot-front-orb" aria-hidden />
+                )}
               </span>
             </span>
           </button>
@@ -136,6 +166,16 @@ export function TarotDrawForm(_props: TarotDrawFormProps) {
         </div>
 
         <form ref={formRef} action={formAction} className="space-y-4">
+          {previewCard ? (
+            <>
+              <input type="hidden" name="cardId" value={previewCard.id} />
+              <input
+                type="hidden"
+                name="cardReversed"
+                value={previewCard.isReversed ? "true" : "false"}
+              />
+            </>
+          ) : null}
           <div className="space-y-1.5">
             <Label htmlFor="question">질문</Label>
             <Input
@@ -197,3 +237,4 @@ export function TarotDrawForm(_props: TarotDrawFormProps) {
     </Card>
   );
 }
+

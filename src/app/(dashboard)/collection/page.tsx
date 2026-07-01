@@ -62,33 +62,32 @@ export default async function CollectionPage() {
   );
 
   return (
-    // 도감 wrapper 에 data-keep-color 박으면 globals.css 의 body * catchall
-    // (모든 텍스트 강제 검정 !important) 의 예외로 들어가 자식 모두 흰색.
-    // 다이얼로그 안 배지(amber/sky/stone) 는 자체 text-{color} 명시지만
-    // catchall 이 더 강해서 검정 — 이 wrapper 안에서는 모두 흰색으로 통일.
-    <div data-keep-color className="space-y-7">
+    // 보너스(도감) 페이지는 밝은 배경이라 전역 catchall(텍스트 검정)을 그대로 따른다.
+    // 카드 이미지 위 라벨·다크 모달처럼 흰색이 필요한 곳에만 collection-view 내부에서
+    // 개별적으로 data-keep-color 를 붙인다.
+    <div className="space-y-7">
       <header className="space-y-3">
         <div className="flex items-end justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-0.5">
               <img src="/icons/memory-vessel.svg" alt="" aria-hidden className="h-6 w-6 opacity-60" />
-              <h1 className="font-mystic text-2xl font-semibold tracking-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)] sm:text-3xl">
+              <h1 className="font-mystic text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
                 {t("title")}
               </h1>
             </div>
-            <p className="mt-1 text-[15px] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
+            <p className="mt-1 text-[15px] text-zinc-600">
               {t("description")}
             </p>
           </div>
           <div className="text-right">
-            <p className="font-mystic text-2xl font-bold tabular-nums text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)] sm:text-3xl">
+            <p className="font-mystic text-2xl font-bold tabular-nums text-zinc-900 sm:text-3xl">
               {displayOwnedCount}
-              <span className="text-base font-normal text-white/75">
+              <span className="text-base font-normal text-zinc-500">
                 {" / "}
                 {TOTAL_CARDS}
               </span>
             </p>
-            <p className="text-[15px] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
+            <p className="text-[15px] text-zinc-600">
               {adminMode ? "마스터 — 전체 공개" : "소장 카드"}
             </p>
           </div>
@@ -107,7 +106,7 @@ export default async function CollectionPage() {
             style={{ width: `${percent}%` }}
           />
         </div>
-        <p className="text-right text-[15px] tabular-nums text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
+        <p className="text-right text-[15px] tabular-nums text-zinc-600">
           {percent}% 달성
         </p>
       </header>
